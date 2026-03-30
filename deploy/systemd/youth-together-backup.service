@@ -1,0 +1,20 @@
+[Unit]
+Description=Youth Together state backup
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+User=youthtogether
+Group=youthtogether
+WorkingDirectory=/opt/youth-together
+Environment=TZ=Asia/Seoul
+EnvironmentFile=-/etc/youth-together.env
+ExecStart=/opt/youth-together/deploy/linux/backup_state.sh
+TimeoutStartSec=900
+Nice=10
+NoNewPrivileges=yes
+PrivateTmp=yes
+
+[Install]
+WantedBy=multi-user.target

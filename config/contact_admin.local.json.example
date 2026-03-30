@@ -1,0 +1,6 @@
+{
+  "algorithm": "pbkdf2_sha256",
+  "iterations": 250000,
+  "password_hash": "replace-me",
+  "password_salt": "replace-me"
+}

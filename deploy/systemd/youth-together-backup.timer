@@ -1,0 +1,11 @@
+[Unit]
+Description=Run Youth Together daily backup
+
+[Timer]
+OnCalendar=*-*-* 02:30:00
+Persistent=true
+AccuracySec=5min
+Unit=youth-together-backup.service
+
+[Install]
+WantedBy=timers.target

@@ -1,0 +1,122 @@
+{
+  "sources": [
+    {
+      "name": "정책브리핑 RSS",
+      "kind": "official",
+      "enabled": true,
+      "parser": "rss",
+      "url": "https://www.korea.kr/rss/policy.xml",
+      "include_youth_related": true,
+      "limit": 20
+    },
+    {
+      "name": "정책브리핑 청년정책 뉴스",
+      "kind": "official",
+      "enabled": true,
+      "parser": "korea_withyou_policy_news",
+      "url": "https://www.korea.kr/withyou/",
+      "detail_enrichment": true,
+      "detail_parser": "korea_policy_news",
+      "limit": 20
+    },
+    {
+      "name": "국무조정실 보도자료",
+      "kind": "official",
+      "enabled": true,
+      "parser": "opm_press_release",
+      "url": "https://www.opm.go.kr/opm/news/press-release.do?mode=list&srSearchVal=%EC%B2%AD%EB%85%84&articleLimit=20",
+      "detail_enrichment": true,
+      "detail_parser": "opm_press_release",
+      "include_youth_related": true,
+      "limit": 20
+    },
+    {
+      "name": "연합뉴스",
+      "kind": "news",
+      "enabled": true,
+      "parser": "rss",
+      "url": "https://www.yna.co.kr/rss/news.xml",
+      "include_keywords": [
+        "청년",
+        "청년층",
+        "청년정책",
+        "청년보좌역",
+        "2030자문단",
+        "청년자문단",
+        "청년정책조정위원회",
+        "청년협의체",
+        "청년위원회",
+        "청년네트워크"
+      ],
+      "exclude_keywords": [
+        "청소년",
+        "초등",
+        "중학생",
+        "고등학생"
+      ],
+      "limit": 120
+    },
+    {
+      "name": "구글뉴스 청년(7일)",
+      "kind": "news",
+      "enabled": true,
+      "parser": "rss",
+      "url": "https://news.google.com/rss/search?q=%EC%B2%AD%EB%85%84%20when%3A7d&hl=ko&gl=KR&ceid=KR:ko",
+      "exclude_keywords": [
+        "청소년",
+        "초등",
+        "중학생",
+        "고등학생"
+      ],
+      "limit": 100
+    },
+    {
+      "name": "구글뉴스 청년정책(7일)",
+      "kind": "news",
+      "enabled": true,
+      "parser": "rss",
+      "url": "https://news.google.com/rss/search?q=%EC%B2%AD%EB%85%84%20%EC%A0%95%EC%B1%85%20when%3A7d&hl=ko&gl=KR&ceid=KR:ko",
+      "exclude_keywords": [
+        "청소년",
+        "초등",
+        "중학생",
+        "고등학생"
+      ],
+      "limit": 100
+    },
+    {
+      "name": "구글뉴스 거버넌스(30일)",
+      "kind": "news",
+      "enabled": true,
+      "parser": "rss",
+      "url": "https://news.google.com/rss/search?q=2030%EC%9E%90%EB%AC%B8%EB%8B%A8%20OR%20%EC%B2%AD%EB%85%84%EB%B3%B4%EC%A2%8C%EC%97%AD%20OR%20%EC%B2%AD%EB%85%84%EC%A0%95%EC%B1%85%EC%A1%B0%EC%A0%95%EC%9C%84%EC%9B%90%ED%9A%8C%20OR%20%EC%B2%AD%EB%85%84%ED%98%91%EC%9D%98%EC%B2%B4%20OR%20%EC%B2%AD%EB%85%84%EC%9C%84%EC%9B%90%ED%9A%8C%20OR%20%EC%B2%AD%EB%85%84%EC%A0%95%EC%B1%85%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC%20when%3A30d&hl=ko&gl=KR&ceid=KR:ko",
+      "limit": 100
+    },
+    {
+      "name": "YTN",
+      "kind": "news",
+      "enabled": false,
+      "parser": "rss",
+      "url": "https://www.ytn.co.kr/_rss/news.xml",
+      "include_keywords": [
+        "청년",
+        "청년층",
+        "청년정책",
+        "청년보좌역",
+        "2030자문단",
+        "청년자문단",
+        "청년정책조정위원회",
+        "청년협의체",
+        "청년위원회",
+        "청년네트워크"
+      ],
+      "exclude_keywords": [
+        "청소년",
+        "초등",
+        "중학생",
+        "고등학생"
+      ],
+      "limit": 120
+    }
+  ]
+}
