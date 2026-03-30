@@ -17,6 +17,7 @@
       "url": "https://www.korea.kr/withyou/",
       "detail_enrichment": true,
       "detail_parser": "korea_policy_news",
+      "detail_limit": 6,
       "limit": 20
     },
     {
@@ -27,6 +28,7 @@
       "url": "https://www.opm.go.kr/opm/news/press-release.do?mode=list&srSearchVal=%EC%B2%AD%EB%85%84&articleLimit=20",
       "detail_enrichment": true,
       "detail_parser": "opm_press_release",
+      "detail_limit": 6,
       "include_youth_related": true,
       "limit": 20
     },

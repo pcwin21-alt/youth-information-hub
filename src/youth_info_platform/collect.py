@@ -289,23 +289,25 @@ def enrich_articles_with_detail(articles: list[dict[str, Any]], source: dict[str
         return articles
 
     detail_parser = source.get("detail_parser") or source.get("parser")
+    detail_limit = int(source.get("detail_limit", len(articles)))
     enriched: list[dict[str, Any]] = []
-    for article in articles:
+    for index, article in enumerate(articles):
         updated = dict(article)
-        try:
-            detail_text = fetch_url(article["url"])
-            if detail_parser == "opm_press_release":
-                detail_body = parse_opm_detail(detail_text)
-                if detail_body:
-                    updated["lead_text"] = detail_body
-            elif detail_parser == "korea_policy_news":
-                detail_data = parse_korea_policy_detail(detail_text)
-                if detail_data.get("lead_text"):
-                    updated["lead_text"] = detail_data["lead_text"]
-                if detail_data.get("published_date"):
-                    updated["published_date"] = detail_data["published_date"]
-        except Exception:
-            pass
+        if index < detail_limit:
+            try:
+                detail_text = fetch_url(article["url"])
+                if detail_parser == "opm_press_release":
+                    detail_body = parse_opm_detail(detail_text)
+                    if detail_body:
+                        updated["lead_text"] = detail_body
+                elif detail_parser == "korea_policy_news":
+                    detail_data = parse_korea_policy_detail(detail_text)
+                    if detail_data.get("lead_text"):
+                        updated["lead_text"] = detail_data["lead_text"]
+                    if detail_data.get("published_date"):
+                        updated["published_date"] = detail_data["published_date"]
+            except Exception:
+                pass
         enriched.append(updated)
     return enriched
 
