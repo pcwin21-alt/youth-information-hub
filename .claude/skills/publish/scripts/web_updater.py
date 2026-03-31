@@ -1949,7 +1949,8 @@ def build_home_page(
         <div class="welcome-meta">
           <span class="welcome-pill"><strong>무료</strong><span>회원가입 없이 볼 수 있습니다.</span></span>
           <span class="welcome-pill"><strong>5개 메뉴</strong><span>뉴스, 정책, 허브, 도구, 연락</span></span>
-          <span class="welcome-pill"><strong>최근 기준</strong><span>{describe_article_basis(recent_news_articles, f"최근 {NEWS_WINDOW_DAYS}일 기사 없음")}</span></span>
+          <span class="welcome-pill"><strong>기사 기준</strong><span>{describe_article_basis(recent_news_articles, f"최근 {NEWS_WINDOW_DAYS}일 기사 없음")}</span></span>
+          <span class="welcome-pill"><strong>페이지 반영</strong><span>{format_display_datetime(page_updated_at)}</span></span>
         </div>
         <div class="welcome-grid">{welcome_panels_html}</div>
         <div class="welcome-note">
