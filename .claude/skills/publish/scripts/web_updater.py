@@ -1022,7 +1022,7 @@ PAGE_TEMPLATE = """<!doctype html>
         <div class="brand-mark"></div>
         <div>
           <span class="brand-title">청년 투게더</span>
-          <span class="brand-sub">청년 관련 뉴스와 정책 소식을 모아 봅니다</span>
+          <span class="brand-sub">오늘 기준 청년 정책과 이슈를 한곳에 모아 봅니다</span>
         </div>
       </div>
       <div class="topbar-side">
@@ -1174,9 +1174,9 @@ NAV_ITEMS = [
     ("index.html", "홈"),
     ("news.html", "뉴스"),
     ("policies.html", "정책"),
-    ("hub.html", "활동가 허브"),
-    ("tools.html", "도구"),
-    ("contact.html", "연락"),
+    ("hub.html", "참여·회의"),
+    ("tools.html", "자료도구"),
+    ("contact.html", "제보·문의"),
 ]
 
 
@@ -1184,9 +1184,9 @@ NAV_ICONS = {
     "index.html": "홈",
     "news.html": "뉴",
     "policies.html": "정",
-    "hub.html": "허",
-    "tools.html": "도",
-    "contact.html": "연",
+    "hub.html": "참",
+    "tools.html": "자",
+    "contact.html": "문",
 }
 
 
@@ -1257,7 +1257,7 @@ def render_status(status: dict) -> dict[str, str]:
 
 def render_article_actions(article: dict, include_link_button: bool = True) -> str:
     url = html.escape(article.get("url", ""))
-    title = article.get("title", "")
+    title = display_article_title(article, limit=140)
     title_attr = html.escape(title)
     parts: list[str] = ['<div class="article-actions">']
     if include_link_button:
@@ -1286,7 +1286,7 @@ def render_article_list_item(
     title: str | None = None,
 ) -> str:
     url = article.get("url")
-    display_title = title or article.get("title", "")
+    display_title = title or display_article_title(article)
     if not url:
         return (
             f'<div class="list-item"><strong>{html.escape(display_title)}</strong>'
@@ -1316,7 +1316,7 @@ def render_article_card(article: dict) -> str:
     badge_row = f'<div class="badge-row">{badges}</div>' if badges else ""
     summary_text = summarize_article_text(article, limit=112)
     escaped_url = html.escape(article.get("url", ""))
-    escaped_title = html.escape(article["title"])
+    escaped_title = html.escape(display_article_title(article))
     summary_html = (
         f'<p class="article-summary"><a class="article-summary-link" href="{escaped_url}" target="_blank" rel="noreferrer" '
         f'aria-label="{escaped_title} 링크 바로가기">{html.escape(summary_text)}</a></p>'
@@ -1341,7 +1341,7 @@ def render_hub_record_card(article: dict) -> str:
     activity_types = ", ".join(article.get("governance_activity_types", [])[:3]) or "활동 기록"
     summary_text = summarize_article_text(article, limit=112)
     escaped_url = html.escape(article.get("url", ""))
-    escaped_title = html.escape(article["title"])
+    escaped_title = html.escape(display_article_title(article))
     summary_html = (
         f'<p class="article-summary"><a class="article-summary-link" href="{escaped_url}" target="_blank" rel="noreferrer" '
         f'aria-label="{escaped_title} 링크 바로가기">{html.escape(summary_text)}</a></p>'
@@ -1420,6 +1420,30 @@ def normalize_inline_text(value: str | None) -> str:
     return " ".join((value or "").split()).strip()
 
 
+def clean_article_title(value: str | None) -> str:
+    title = normalize_inline_text(value)
+    if not title:
+        return "제목 없음"
+
+    for marker in [
+        " 부헤드라인 ",
+        " 본문 ",
+        " - 전체 | ",
+        " | 카드/한컷",
+        " - 카드/한컷",
+        " | 멀티미디어",
+        " - 멀티미디어",
+    ]:
+        if marker in title:
+            title = title.split(marker, 1)[0].strip(" -|:")
+
+    return normalize_inline_text(title) or "제목 없음"
+
+
+def display_article_title(article: dict, limit: int = 96) -> str:
+    return truncate_text(clean_article_title(article.get("title")), limit)
+
+
 def article_date_value(article: dict) -> str:
     return ((article.get("published_date", "") or "")[:10]).strip()
 
@@ -1459,6 +1483,8 @@ def format_source_label(value: str | None) -> str:
         return "출처 미상"
     aliases = {
         "v.daum.net": "다음 뉴스",
+        "정책브리핑 RSS": "정책브리핑",
+        "정책브리핑 청년정책 뉴스": "정책브리핑",
     }
     if source in aliases:
         return aliases[source]
@@ -1522,10 +1548,14 @@ def summarize_article_text(article: dict, limit: int = 118) -> str:
 
 
 def render_article_meta(article: dict, category_label: str | None = None) -> str:
-    category = category_label or ", ".join(article.get("categories", [])) or "미분류"
+    categories = article.get("categories", [])
+    category = category_label or (categories[0] if categories else "미분류")
     category_aliases = {
         "정책 오피셜": "공식 발표",
-        "허브 연관": "관련 소식",
+        "청년은 지금": "오늘 이슈",
+        "지역 이슈": "지역 움직임",
+        "논평·기고": "해설·의견",
+        "허브 연관": "참고 기록",
     }
     category = category_aliases.get(category, category)
     region = article.get("region", "전국") or "전국"
@@ -1649,7 +1679,7 @@ def summarize_menu_items(articles: list[dict], fallback_items: list[tuple[str, s
             meta_bits.append(article["published_date"][:10])
         if article.get("categories"):
             meta_bits.append(article["categories"][0])
-        items.append((article["title"], " · ".join(bit for bit in meta_bits if bit)))
+        items.append((display_article_title(article, limit=84), " · ".join(bit for bit in meta_bits if bit)))
     return items or fallback_items
 
 
@@ -1672,7 +1702,7 @@ def build_hub_menu_items(classified_articles: list[dict]) -> list[tuple[str, str
     if government_articles:
         items.append(
             (
-                f'정부 거버넌스: {government_articles[0]["title"]}',
+                f'정부 회의·위원회: {display_article_title(government_articles[0], limit=72)}',
                 " · ".join(
                     bit
                     for bit in [
@@ -1684,12 +1714,12 @@ def build_hub_menu_items(classified_articles: list[dict]) -> list[tuple[str, str
             )
         )
     else:
-        items.append(("정부 거버넌스", "현재 등록된 항목이 없습니다."))
+        items.append(("정부 회의·위원회", "현재 등록된 항목이 없습니다."))
 
     if regional_articles:
         items.append(
             (
-                f'지역 거버넌스: {regional_articles[0]["title"]}',
+                f'지역 참여·네트워크: {display_article_title(regional_articles[0], limit=72)}',
                 " · ".join(
                     bit
                     for bit in [
@@ -1701,9 +1731,9 @@ def build_hub_menu_items(classified_articles: list[dict]) -> list[tuple[str, str
             )
         )
     else:
-        items.append(("지역 거버넌스", "현재 등록된 항목이 없습니다."))
+        items.append(("지역 참여·네트워크", "현재 등록된 항목이 없습니다."))
 
-    items.append(("커뮤니티", "정책 주제별 의견을 남길 수 있는 공간을 준비하고 있습니다."))
+    items.append(("제보·문의", "사이트 개선 제안과 협업 문의는 제보·문의에서 이어집니다."))
     return items[:3]
 
 
@@ -1823,15 +1853,18 @@ def render_menu_update_card(menu: dict) -> str:
 
 def article_groups(articles: list[dict]) -> dict[str, list[dict]]:
     groups = {
-        "정책 오피셜": [],
         "청년은 지금": [],
         "논평·기고": [],
         "지역 이슈": [],
     }
     for article in articles:
-        for category in article.get("categories", []):
-            if category in groups:
-                groups[category].append(article)
+        categories = set(article.get("categories", []))
+        if "논평·기고" in categories:
+            groups["논평·기고"].append(article)
+        elif "지역 이슈" in categories:
+            groups["지역 이슈"].append(article)
+        else:
+            groups["청년은 지금"].append(article)
     for category in groups:
         groups[category] = sort_articles_by_recency(groups[category])
     return groups
@@ -1855,6 +1888,7 @@ def build_home_page(
         page_updated_at,
         24 * 90,
     )
+    official_policy_articles = [article for article in policy_articles if article.get("source_kind") == "official"]
     government_hub_articles = filter_recent_articles(
         filter_hub_articles(classified_articles, "정부"),
         page_updated_at,
@@ -1865,7 +1899,7 @@ def build_home_page(
         page_updated_at,
         24 * 90,
     )
-    news_stream_articles = latest_reference_articles(recent_news_articles, limit=5)
+    participation_count = len(government_hub_articles) + len(regional_hub_articles)
     highlights = recent_news_articles[:]
     highlight_urls = {article.get("url") for article in highlights}
     highlights.extend(article for article in recent_articles if article.get("url") not in highlight_urls)
@@ -1875,10 +1909,10 @@ def build_home_page(
     lead_highlight_target = ' target="_blank" rel="noreferrer"' if lead_highlight else ""
     welcome_panels_html = "".join(
         [
-            f'<article class="welcome-panel"><span class="welcome-panel-label">01 뉴스</span><strong>최근 {NEWS_WINDOW_DAYS}일 청년 뉴스</strong><span>최근 기사와 주요 소식을 날짜별로 나눠 볼 수 있습니다.</span></article>',
-            '<article class="welcome-panel"><span class="welcome-panel-label">02 정책</span><strong>정부 공식 발표</strong><span>국무조정실과 부처 발표를 중심으로 최근 정책과 지원 소식을 따로 확인할 수 있습니다.</span></article>',
-            '<article class="welcome-panel"><span class="welcome-panel-label">03 활동가 허브</span><strong>정부·지역 활동 소식</strong><span>청년위원회, 청년네트워크, 자문단, 협의체 관련 소식을 한눈에 볼 수 있습니다.</span></article>',
-            '<article class="welcome-panel"><span class="welcome-panel-label">04 도구 · 연락</span><strong>정책 준비와 문의</strong><span>자료 찾기, 제안서 준비, 문의와 제보까지 필요한 메뉴를 모아뒀습니다.</span></article>',
+            f'<article class="welcome-panel"><span class="welcome-panel-label">01 뉴스</span><strong>최근 {NEWS_WINDOW_DAYS}일 기사 {len(recent_news_articles)}건</strong><span>오늘 이슈와 지역 움직임을 날짜별로 빠르게 훑어볼 수 있습니다.</span></article>',
+            f'<article class="welcome-panel"><span class="welcome-panel-label">02 정책</span><strong>정부 공식 발표 {len(official_policy_articles)}건</strong><span>정책브리핑과 정부 발표를 참고 기사와 분리해 보여줍니다.</span></article>',
+            f'<article class="welcome-panel"><span class="welcome-panel-label">03 참여·회의</span><strong>회의·위원회·네트워크 {participation_count}건</strong><span>정부 회의와 지역 참여 소식을 한 화면에서 확인할 수 있습니다.</span></article>',
+            '<article class="welcome-panel"><span class="welcome-panel-label">04 자료·문의</span><strong>자료 찾기와 제보 동선</strong><span>정책 조사, 초안 정리, 제보·협업 문의까지 바로 이어집니다.</span></article>',
         ]
     )
     highlight_list_html = "".join(
@@ -1906,10 +1940,10 @@ def build_home_page(
                         if bit
                     )
                     or "날짜 미상",
-                    overline="정부 거버넌스",
+                    overline="정부 회의·위원회",
                 )
                 if government_hub_articles
-                else '<div class="list-item"><strong>정부 거버넌스</strong><span>현재 등록된 항목이 없습니다.</span></div>'
+                else '<div class="list-item"><strong>정부 회의·위원회</strong><span>현재 등록된 항목이 없습니다.</span></div>'
             ),
             (
                 render_article_list_item(
@@ -1920,10 +1954,10 @@ def build_home_page(
                         if bit
                     )
                     or "날짜 미상",
-                    overline="지역 거버넌스",
+                    overline="지역 참여·네트워크",
                 )
                 if regional_hub_articles
-                else '<div class="list-item"><strong>지역 거버넌스</strong><span>현재 등록된 항목이 없습니다.</span></div>'
+                else '<div class="list-item"><strong>지역 참여·네트워크</strong><span>현재 등록된 항목이 없습니다.</span></div>'
             ),
         ]
     )
@@ -1942,20 +1976,20 @@ def build_home_page(
         <div class="home-section-head">
           <div class="home-section-title">
             <span class="welcome-kicker">환영합니다</span>
-            <h1>청년 관련 소식을 한자리에서 편하게 살펴보세요.</h1>
-            <p class="welcome-copy">이 사이트는 청년 관련 뉴스, 정부 발표, 활동 소식을 무료로 볼 수 있는 곳입니다. 처음 오셨다면 아래 메뉴 안내를 먼저 읽어보시면 편합니다.</p>
+            <h1>오늘 기준 청년 정책과 이슈를 한눈에 확인하세요.</h1>
+            <p class="welcome-copy">뉴스, 정부 공식 발표, 참여 회의 소식을 한곳에 모았습니다. 빠르게 훑어보되 출처 구분이 보이도록 구조를 다시 정리했습니다.</p>
           </div>
         </div>
         <div class="welcome-meta">
-          <span class="welcome-pill"><strong>무료</strong><span>회원가입 없이 볼 수 있습니다.</span></span>
-          <span class="welcome-pill"><strong>5개 메뉴</strong><span>뉴스, 정책, 허브, 도구, 연락</span></span>
+          <span class="welcome-pill"><strong>반영 주기</strong><span>{status_meta["update_frequency"]}</span></span>
+          <span class="welcome-pill"><strong>최근 {NEWS_WINDOW_DAYS}일 뉴스</strong><span>{len(recent_news_articles)}건</span></span>
           <span class="welcome-pill"><strong>기사 기준</strong><span>{describe_article_basis(recent_news_articles, f"최근 {NEWS_WINDOW_DAYS}일 기사 없음")}</span></span>
           <span class="welcome-pill"><strong>페이지 반영</strong><span>{format_display_datetime(page_updated_at)}</span></span>
         </div>
         <div class="welcome-grid">{welcome_panels_html}</div>
         <div class="welcome-note">
-          <strong>처음이라면 이렇게 보시면 됩니다.</strong>
-          <p>먼저 뉴스와 정책 메뉴에서 최근 소식을 보고, 필요한 경우 활동가 허브와 도구 메뉴로 넘어가 보세요. 전달하고 싶은 소식이나 문의가 있으면 연락 메뉴를 이용하시면 됩니다.</p>
+          <strong>처음 오셨다면 이 순서가 가장 빠릅니다.</strong>
+          <p>오늘 이슈는 뉴스에서, 정부 원문은 정책에서, 회의와 네트워크 움직임은 참여·회의에서 확인하세요. 제보나 협업 문의는 제보·문의 메뉴로 바로 이어집니다.</p>
         </div>
         <div class="hero-actions home-actions">
           <a class="button primary" href="news.html">뉴스 둘러보기</a>
@@ -1966,8 +2000,8 @@ def build_home_page(
         <div class="home-section-head">
           <div class="home-section-title">
             <span class="eyebrow">오늘의 하이라이트</span>
-            <h2>현 시간 기준 꼭 알아야 할 소식</h2>
-            <p class="home-section-copy">최근 {NEWS_WINDOW_DAYS}일 기사 가운데 먼저 볼 만한 소식을 골랐습니다.</p>
+            <h2>오늘 가장 먼저 볼 소식</h2>
+            <p class="home-section-copy">최근 {NEWS_WINDOW_DAYS}일 기사 가운데 우선 확인할 만한 이슈를 골랐습니다.</p>
           </div>
         </div>
         <div class="home-meta-line">
@@ -1986,7 +2020,7 @@ def build_home_page(
       <div class="section-head">
         <div>
           <h2>정책</h2>
-          <p>정부 원문 중심으로 최근 발표를 빠르게 확인합니다.</p>
+          <p>정부 공식 발표를 참고 기사와 나눠서 확인합니다.</p>
         </div>
         <a class="mini-link" href="policies.html">정책 보기</a>
       </div>
@@ -2000,10 +2034,10 @@ def build_home_page(
     </section><div class="home-dual-grid"><section class="section">
       <div class="section-head">
         <div>
-          <h2>활동가 허브</h2>
-          <p>정부와 지역 활동 소식을 나눠서 볼 수 있습니다.</p>
+          <h2>참여·회의</h2>
+          <p>정부 회의와 지역 참여 소식을 나눠서 볼 수 있습니다.</p>
         </div>
-        <a class="mini-link" href="hub.html">허브 보기</a>
+        <a class="mini-link" href="hub.html">참여·회의 보기</a>
       </div>
       <article class="home-section-card">
         <div class="home-meta-line">
@@ -2016,10 +2050,10 @@ def build_home_page(
     <section class="section">
       <div class="section-head">
         <div>
-          <h2>도구</h2>
-          <p>정책 탐색과 제안서 준비에 필요한 기능만 간단히 묶었습니다.</p>
+          <h2>자료·작성 도구</h2>
+          <p>정책 조사와 초안 정리에 필요한 가이드를 짧게 묶었습니다.</p>
         </div>
-        <a class="mini-link" href="tools.html">도구 보기</a>
+        <a class="mini-link" href="tools.html">자료도구 보기</a>
       </div>
       <article class="home-section-card">
         <div class="home-meta-line">
@@ -2031,7 +2065,7 @@ def build_home_page(
     </section></div>
     <section class="section">
       <article class="home-footer">
-        <h3>연락</h3>
+        <h3>제보·문의</h3>
         <p>{contact_message}</p>
         <div class="home-footer-meta">
           <span>{html.escape(contact_settings.get("copyright_text", ""))}</span>
@@ -2039,7 +2073,7 @@ def build_home_page(
           <span>{html.escape(contact_settings.get("version_text", ""))}</span>
           <span>{contact_date}</span>
           <a href="mailto:{contact_email}">{contact_email}</a>
-          <a href="contact.html">상세 연락 보기</a>
+          <a href="contact.html">제보·문의 보기</a>
         </div>
       </article>
     </section>
@@ -2057,24 +2091,34 @@ def build_news_page(articles: list[dict], status: dict) -> str:
     top_day_count = sum(1 for article in recent_news_articles if article_date_value(article) == top_day) if top_day else 0
     date_filter_panel = render_date_filter_panel(collect_article_dates(recent_news_articles), len(recent_news_articles))
     section_html = []
-    for category, intro in [
-        ("청년은 지금", "청년 현실, 통계, 근황을 빠르게 읽는 섹션"),
-        ("지역 이슈", "지역 기사만 따로 볼 수 있는 목록"),
-        ("논평·기고", "칼럼과 해설 기사를 모아둔 목록"),
+    for category, heading, intro in [
+        ("청년은 지금", "오늘 이슈", "청년 생활, 일자리, 교육 흐름을 먼저 읽는 구역입니다."),
+        ("지역 이슈", "지역 움직임", "지자체와 지역 현장에서 나온 소식을 모았습니다."),
+        ("논평·기고", "해설·의견", "칼럼과 해설 기사만 따로 보고 싶을 때 보는 구역입니다."),
     ]:
         category_articles = groups.get(category, [])
+        if not category_articles:
+            continue
         cards = "".join(render_article_card(article) for article in category_articles)
-        section_attrs = ' data-date-filter-section="true"' if category_articles else ""
+        section_attrs = ' data-date-filter-section="true"'
         section_html.append(
             f"""
             <section class="section"{section_attrs}>
               <div class="section-head">
                 <div>
-                  <h2>{html.escape(category)}</h2>
+                  <h2>{html.escape(heading)}</h2>
                   <p>{html.escape(intro)}</p>
                 </div>
               </div>
-              <div class="article-grid">{cards or '<article class="info-card"><h3>표시할 기사 없음</h3><p>조건에 맞는 기사가 아직 없습니다.</p></article>'}</div>
+              <div class="article-grid">{cards}</div>
+            </section>
+            """
+        )
+    if not section_html:
+        section_html.append(
+            """
+            <section class="section">
+              <div class="article-grid"><article class="info-card"><h3>표시할 기사 없음</h3><p>조건에 맞는 기사가 아직 없습니다.</p></article></div>
             </section>
             """
         )
@@ -2082,21 +2126,22 @@ def build_news_page(articles: list[dict], status: dict) -> str:
     <section class="section">
       <article class="section-card news-intro-card">
         <span class="eyebrow">01 뉴스</span>
-        <p class="news-intro-copy">최근 {NEWS_WINDOW_DAYS}일 안에 들어온 청년 뉴스를 날짜와 카테고리 기준으로 빠르게 골라볼 수 있습니다.</p>
+        <p class="news-intro-copy">최근 {NEWS_WINDOW_DAYS}일 청년 이슈를 날짜와 주제별로 빠르게 훑어볼 수 있습니다.</p>
       </article>
     </section>
     <section class="hero">
       <article class="status-card">
-        <h3>이번 주 뉴스 현황</h3>
+        <h3>뉴스 브리핑 기준</h3>
         <div class="list">
-          <div class="list-item"><strong>최근 기사 기준</strong><span>{html.escape(latest_news_basis)}</span></div>
-          <div class="list-item"><strong>최근 {NEWS_WINDOW_DAYS}일 기사 수</strong><span>{len(recent_news_articles)}건</span></div>
+          <div class="list-item"><strong>기사 기준</strong><span>{html.escape(latest_news_basis)}</span></div>
+          <div class="list-item"><strong>페이지 반영</strong><span>{html.escape(format_display_datetime(page_updated_at))}</span></div>
+          <div class="list-item"><strong>최근 {NEWS_WINDOW_DAYS}일 기사</strong><span>{len(recent_news_articles)}건</span></div>
           <div class="list-item"><strong>선택 가능한 날짜</strong><span>{len(date_options)}일</span></div>
           <div class="list-item"><strong>가장 최근 날짜</strong><span>{html.escape(top_day) if top_day else '없음'}{f' · {top_day_count}건' if top_day else ''}</span></div>
         </div>
       </article>
       <aside class="status-card">
-        <h3>주간 하이라이트</h3>
+        <h3>오늘 바로 볼 기사</h3>
         <div class="list">
           {''.join(render_article_list_item(article, compact_article_meta(article)) for article in recent_news_articles[:4]) or f'<div class="list-item"><strong>최근 {NEWS_WINDOW_DAYS}일 뉴스가 없습니다.</strong><span>새 청년 뉴스가 수집되면 이 영역에 표시됩니다.</span></div>'}
         </div>
@@ -2116,31 +2161,43 @@ def build_policies_page(articles: list[dict], status: dict) -> str:
         page_updated_at,
         24 * 90,
     )
-    cards = "".join(render_article_card(article) for article in policies)
+    official_policies = [article for article in policies if article.get("source_kind") == "official"]
+    reference_policies = [article for article in policies if article.get("source_kind") != "official"]
+    official_cards = "".join(render_article_card(article) for article in official_policies)
+    reference_cards = "".join(render_article_card(article) for article in reference_policies[:8])
     return f"""
     <section class="hero">
       <article class="hero-card">
         <span class="eyebrow">02 정책</span>
-        <h1>정부 공식 발표를 중심으로 최근 정책을 살펴봅니다.</h1>
-        <p class="hero-copy">발표 기관과 날짜를 기준으로 최근 정책 소식을 볼 수 있습니다.</p>
+        <h1>정부 공식 발표와 참고 기사를 구분해 보여드립니다.</h1>
+        <p class="hero-copy">정책브리핑과 정부 발표는 위로, 지자체·언론 기사는 참고 영역으로 분리했습니다.</p>
       </article>
       <aside class="status-card">
         <h3>정책 보기 기준</h3>
         <div class="list">
-          <div class="list-item"><strong>정부 원문 우선</strong><span>공식 발표를 대표 카드로 노출합니다.</span></div>
-          <div class="list-item"><strong>최근 발표 중심</strong><span>최근 발표와 회의 소식을 먼저 보여줍니다.</span></div>
-          <div class="list-item"><strong>기관별로 보기</strong><span>국무조정실, 부처, 위원회 소식을 구분해 볼 수 있습니다.</span></div>
+          <div class="list-item"><strong>정부 공식 발표</strong><span>{len(official_policies)}건 · 정책브리핑과 정부 원문만 모았습니다.</span></div>
+          <div class="list-item"><strong>참고 기사</strong><span>{len(reference_policies)}건 · 지자체 보도와 언론 기사는 별도 구역으로 분리했습니다.</span></div>
+          <div class="list-item"><strong>페이지 반영</strong><span>{html.escape(format_display_datetime(page_updated_at))}</span></div>
         </div>
       </aside>
     </section>
     <section class="section">
       <div class="section-head">
         <div>
-          <h2>최근 발표된 정책</h2>
-          <p>최근 90일 안에 나온 공식 발표를 볼 수 있습니다.</p>
+          <h2>정부 공식 발표</h2>
+          <p>최근 90일 안에 나온 정부 원문과 공식 발표만 보여줍니다.</p>
         </div>
       </div>
-      <div class="article-grid">{cards or '<article class="info-card"><h3>최근 정책 없음</h3><p>최근 90일 안에 표시할 공식 발표가 아직 없습니다.</p></article>'}</div>
+      <div class="article-grid">{official_cards or '<article class="info-card"><h3>최근 공식 발표 없음</h3><p>최근 90일 안에 표시할 정부 원문이 아직 없습니다.</p></article>'}</div>
+    </section>
+    <section class="section">
+      <div class="section-head">
+        <div>
+          <h2>참고로 볼 지자체·언론 기사</h2>
+          <p>정책과 직접 연관된 기사이지만 정부 원문은 아닌 항목을 참고용으로 분리했습니다.</p>
+        </div>
+      </div>
+      <div class="article-grid">{reference_cards or '<article class="info-card"><h3>참고 기사 없음</h3><p>현재 분리해 보여줄 참고 기사가 없습니다.</p></article>'}</div>
     </section>
     """
 
@@ -2161,113 +2218,84 @@ def build_hub_page(classified_articles: list[dict]) -> str:
     return f"""
     <section class="hero">
       <article class="hero-card">
-        <span class="eyebrow">03 활동가 허브</span>
-        <h1>청년 관련 회의와 활동 소식을 모아 봅니다.</h1>
-        <p class="hero-copy">정부 활동과 지역 활동을 나눠서 볼 수 있습니다.</p>
+        <span class="eyebrow">03 참여·회의</span>
+        <h1>청년 참여 회의와 지역 네트워크 움직임을 모아 봅니다.</h1>
+        <p class="hero-copy">정부 회의와 지역 참여 소식을 나눠서 살펴볼 수 있습니다.</p>
       </article>
       <aside class="status-card">
-        <h3>허브 구성</h3>
+        <h3>참여·회의 구성</h3>
         <div class="list">
-          <div class="list-item"><strong>정부 거버넌스</strong><span>{len(government_records)}건 기록 · 정부가 주도한 회의와 위원회 소식</span></div>
-          <div class="list-item"><strong>지역 거버넌스</strong><span>{len(regional_records)}건 기록 · 지자체와 지역 네트워크 활동 소식</span></div>
-          <div class="list-item"><strong>커뮤니티</strong><span>주제별 의견을 남길 수 있는 기능을 준비하고 있습니다.</span></div>
+          <div class="list-item"><strong>정부 회의·위원회</strong><span>{len(government_records)}건 · 중앙정부 회의와 공식 협의체 소식</span></div>
+          <div class="list-item"><strong>지역 참여·네트워크</strong><span>{len(regional_records)}건 · 지자체와 지역 청년 참여 기록</span></div>
+          <div class="list-item"><strong>참고 기록</strong><span>{len(other_records)}건 · 위 두 구역 밖의 연관 기록</span></div>
         </div>
       </aside>
     </section>
     <section class="section">
       <div class="section-head">
         <div>
-          <h2>정부 거버넌스 피드</h2>
-          <p>정부 기관이 연 회의, 위원회, 자문단, 협약 소식을 볼 수 있습니다.</p>
+          <h2>정부 회의·위원회</h2>
+          <p>정부 기관이 연 회의, 위원회, 자문단, 협약 소식을 모았습니다.</p>
         </div>
       </div>
-      <div class="article-grid">{government_cards or render_empty_hub_state("등록된 정부 거버넌스 항목이 없습니다", "새 항목이 수집되면 이 영역에 표시됩니다.")}</div>
+      <div class="article-grid">{government_cards or render_empty_hub_state("등록된 정부 회의 기록이 없습니다", "새 항목이 수집되면 이 영역에 표시됩니다.")}</div>
     </section>
     <section class="section">
       <div class="section-head">
         <div>
-          <h2>지역 거버넌스 피드</h2>
+          <h2>지역 참여·네트워크</h2>
           <p>지방자치단체와 지역 네트워크 활동 소식을 따로 보여줍니다.</p>
         </div>
       </div>
-      <div class="article-grid">{regional_cards or render_empty_hub_state("등록된 지역 거버넌스 항목이 없습니다", "새 항목이 수집되면 이 영역에 표시됩니다.")}</div>
+      <div class="article-grid">{regional_cards or render_empty_hub_state("등록된 지역 참여 기록이 없습니다", "새 항목이 수집되면 이 영역에 표시됩니다.")}</div>
     </section>
     {f'''
     <section class="section" id="related">
       <div class="section-head">
         <div>
           <h2>관련 기록</h2>
-          <p>거버넌스와 연관된 청년 활동 소식입니다.</p>
+          <p>정부·지역 구역으로 바로 분류되지 않은 연관 기록입니다.</p>
         </div>
       </div>
       <div class="article-grid">{other_cards}</div>
     </section>
     ''' if other_cards else ''}
-    <section class="section" id="community">
-      <div class="section-head">
-        <div>
-          <h2>커뮤니티</h2>
-          <p>정책 주제별 의견을 남길 수 있는 기능을 준비하고 있습니다.</p>
-        </div>
-      </div>
-      <div class="article-grid">{render_empty_hub_state("커뮤니티 안내", "기능이 열리면 이 영역에서 주제별 의견을 받을 수 있습니다.")}</div>
-    </section>
     """
 
 
 def build_tools_page() -> str:
-    features = "".join(
-        [
-            render_feature_card("정책 찾기 사이트", "정책브리핑, 중앙부처, 지자체, 통계 사이트를 묶어 제공합니다.", "#search-sites", "탐색"),
-            render_feature_card("AI 도구 사용법", "정책 조사와 정리, 초안 점검에 AI를 어떻게 쓰면 좋은지 안내합니다.", "#ai-guide", "사용"),
-            render_feature_card("정책제안서 검토 요청", "초안을 검토받기 전에 무엇을 준비하면 좋은지 안내합니다.", "#review", "검토"),
-        ]
-    )
     return f"""
     <section class="hero">
       <article class="hero-card">
-        <span class="eyebrow">04 도구</span>
-        <h1>정책을 찾고 제안서를 준비할 때 필요한 정보를 모아뒀습니다.</h1>
-        <p class="hero-copy">자료 찾기, AI 사용, 검토 요청 준비를 차례대로 볼 수 있습니다.</p>
+        <span class="eyebrow">04 자료도구</span>
+        <h1>정책 조사와 제안서 초안을 준비할 때 필요한 자료를 모았습니다.</h1>
+        <p class="hero-copy">출처 확인, AI 정리, 검토 요청 준비를 짧은 순서로 따라갈 수 있습니다.</p>
       </article>
       <aside class="status-card">
-        <h3>도구 방향</h3>
+        <h3>이렇게 쓰면 좋습니다</h3>
         <div class="list">
-          <div class="list-item"><strong>자료부터 확인</strong><span>정책 검색과 참고 자료를 먼저 볼 수 있습니다.</span></div>
-          <div class="list-item"><strong>AI는 보조용</strong><span>질문 정리와 초안 점검에 가볍게 씁니다.</span></div>
-          <div class="list-item"><strong>검토 요청 준비</strong><span>초안 검토를 요청하기 전에 필요한 내용을 정리할 수 있습니다.</span></div>
+          <div class="list-item"><strong>1. 출처 먼저</strong><span>정부 원문과 통계 출처를 먼저 확인합니다.</span></div>
+          <div class="list-item"><strong>2. AI는 정리용</strong><span>질문 구조화와 초안 다듬기에만 가볍게 씁니다.</span></div>
+          <div class="list-item"><strong>3. 요청 포인트 정리</strong><span>검토받고 싶은 범위와 부족한 자료를 함께 적습니다.</span></div>
         </div>
       </aside>
     </section>
     <section class="section">
-      <div class="section-head">
-        <div>
-          <h2>도구 모음</h2>
-          <p>정책 검색, AI 사용법, 검토 요청 정보를 한 번에 볼 수 있습니다.</p>
-        </div>
-      </div>
-      <div class="feature-grid">{features}</div>
+      {render_list_block("빠른 시작", "처음이면 아래 세 단계부터 보면 가장 빠릅니다.", [("정부 원문 확인", "정책브리핑과 부처 자료로 기준점을 먼저 잡기"), ("AI로 질문 정리", "조사 범위와 논점을 짧게 정리하기"), ("검토 요청 준비", "문서 상태와 요청 포인트 적어두기")])}
     </section>
     <section class="section" id="search-sites">
-      {render_list_block("정책 찾기 사이트", "자주 보는 출처를 묶었습니다.", [("정책브리핑 / 국무조정실", "공식 정책 발표와 회의체 자료 확인"), ("중앙부처 / 광역지자체", "부처별·지역별 청년정책 발표 확인"), ("KOSIS / 공공데이터", "통계와 데이터 출처 확인")])}
+      {render_list_block("공식 자료 찾기", "정책 근거를 찾을 때 먼저 보는 출처입니다.", [("정책브리핑 / 국무조정실", "공식 정책 발표와 회의체 자료 확인"), ("중앙부처 / 광역지자체", "부처별·지역별 청년정책 발표 확인"), ("KOSIS / 공공데이터", "통계와 데이터 출처 확인")])}
     </section>
     <section class="section" id="ai-guide">
-      {render_list_block("AI 도구 사용법", "AI는 조사와 정리를 돕는 용도로 씁니다.", [("검색 질문 만들기", "정책 찾기를 위한 질문 정리"), ("논점 정리", "기사와 근거를 항목별로 정리"), ("목차 초안", "제안서 구조를 먼저 잡아보기")])}
+      {render_list_block("AI로 정리하기", "AI는 조사와 정리를 돕는 용도로만 쓰는 편이 안전합니다.", [("검색 질문 만들기", "정책 찾기를 위한 질문 정리"), ("논점 정리", "기사와 근거를 항목별로 정리"), ("목차 초안", "제안서 구조를 먼저 잡아보기")])}
     </section>
     <section class="section" id="review">
-      {render_list_block("검토 요청 준비", "초안을 정리하고 검토받을 내용을 미리 적어둘 수 있습니다.", [("초안 점검", "현재 문서 상태와 부족한 자료 확인"), ("요청 포인트 정리", "어떤 부분을 봐주면 좋은지 정리"), ("협업 제안", "함께 검토하거나 보완할 사람 찾기")])}
+      {render_list_block("검토 요청 가이드", "초안을 정리하고 검토받을 내용을 미리 적어두면 더 빠르게 이어집니다.", [("초안 점검", "현재 문서 상태와 부족한 자료 확인"), ("요청 포인트 정리", "어떤 부분을 봐주면 좋은지 정리"), ("협업 제안", "함께 검토하거나 보완할 사람 찾기")])}
     </section>
     """
 
 
 def build_contact_page(contact_settings: dict[str, str]) -> str:
-    cards = "".join(
-        [
-            render_feature_card("운영 문의", "사이트 운영 정책, 기능 문의, 사용성 피드백을 받습니다.", "#ops", "운영"),
-            render_feature_card("제보 / 협업 제안", "유용한 소스, 지역 활동, 정책 제안 협업을 제보받습니다.", "#collab", "협업"),
-            render_feature_card("검토 요청", "정책제안서 초안 검토 요청 내용을 정리해 둘 수 있습니다.", "#review", "검토"),
-        ]
-    )
     contact_email = html.escape(contact_settings.get("email", ""))
     contact_updated_at = format_display_datetime(contact_settings.get("updated_at"))
     contact_overview = "".join(
@@ -2302,48 +2330,37 @@ def build_contact_page(contact_settings: dict[str, str]) -> str:
     return f"""
     <section class="hero">
       <article class="hero-card">
-        <span class="eyebrow">05 연락</span>
-        <h1>문의와 제안, 협업 요청 방법을 안내합니다.</h1>
+        <span class="eyebrow">05 제보·문의</span>
+        <h1>제보, 문의, 협업 요청을 한곳에서 안내합니다.</h1>
         <p class="hero-copy">{html.escape(contact_settings.get("extra_line_1", ""))}</p>
       </article>
       <aside class="status-card">
-        <h3>현재 연락 정보</h3>
+        <h3>바로 연락 정보</h3>
         <div class="list">{contact_overview}</div>
       </aside>
     </section>
     <section class="section">
-      <div class="section-head">
-        <div>
-          <h2>기본 안내</h2>
-          <p>홈 화면과 같은 연락 정보가 이 페이지에도 함께 반영됩니다.</p>
-        </div>
-      </div>
-      <div class="feature-grid">
-        <article class="info-card">
-          <h3>연락 메일</h3>
-          <p><a href="mailto:{contact_email}">{contact_email}</a></p>
-        </article>
-        <article class="info-card">
-          <h3>표시 정보</h3>
-          <p>{html.escape(contact_settings.get("copyright_text", ""))} · {html.escape(contact_settings.get("version_text", ""))}</p>
-        </article>
-      </div>
+      {render_list_block("보내기 전에 함께 적어주면 좋은 내용", "문의 유형에 맞는 기본 정보를 함께 적어주면 답변과 검토가 더 빨라집니다.", [("문의·오류", "문제가 발생한 페이지, 상황, 기대한 동작"), ("제보·협업", "관련 링크, 왜 중요한지, 함께 하고 싶은 방식"), ("검토 요청", "문서 상태, 중점 검토 범위, 필요한 기한")])}
     </section>
     {notes_section}
     <section class="section">
       <div class="section-head">
         <div>
-          <h2>연락 유형</h2>
-          <p>문의 내용에 맞는 항목을 먼저 확인할 수 있습니다.</p>
+          <h2>바로가기</h2>
+          <p>목적에 따라 아래 구역으로 바로 이동할 수 있습니다.</p>
         </div>
       </div>
-      <div class="feature-grid">{cards}</div>
+      <div class="feature-grid">
+        {render_feature_card("운영 문의", "사이트 운영 정책, 기능 문의, 사용성 피드백을 받습니다.", "#ops", "운영")}
+        {render_feature_card("제보 · 협업", "유용한 소스, 지역 활동, 정책 제안 협업을 제보받습니다.", "#collab", "협업")}
+        {render_feature_card("검토 요청", "정책제안서 초안 검토 요청 내용을 정리해 둘 수 있습니다.", "#review", "검토")}
+      </div>
     </section>
     <section class="section" id="ops">
       {render_list_block("운영 문의", "서비스 이용 중 불편함이나 오류를 알려주세요.", [("오류 제보", "문제가 발생한 페이지와 상황"), ("사용성 제안", "화면 구성이나 정보 정렬 관련 제안"), ("운영 문의", "서비스 이용과 운영 기준 관련 문의")])}
     </section>
     <section class="section" id="collab">
-      {render_list_block("제보 / 협업", "유용한 소스와 활동 소식, 협업 제안을 받습니다.", [("소스 제보", "청년 관련 기사와 자료 출처"), ("활동 소식", "지역 활동, 거버넌스, 행사 소식"), ("협업 제안", "함께 만들거나 검토할 수 있는 제안")])}
+      {render_list_block("제보 · 협업", "유용한 소스와 활동 소식, 협업 제안을 받습니다.", [("소스 제보", "청년 관련 기사와 자료 출처"), ("활동 소식", "지역 활동, 거버넌스, 행사 소식"), ("협업 제안", "함께 만들거나 검토할 수 있는 제안")])}
     </section>
     <section class="section" id="review">
       {render_list_block("검토 요청", "정책제안서나 실무 문서의 검토 요청 내용을 정리할 수 있습니다.", [("문서 상태", "초안인지 수정본인지 표시"), ("검토 범위", "무엇을 중점적으로 봐야 하는지 정리"), ("기한 안내", "언제까지 검토가 필요한지 표시")])}
@@ -2382,10 +2399,10 @@ def main() -> int:
 
     write_page(web_root / "index.html", "청년 투게더", "index.html", build_home_page(articles, classified_articles, status, contact_settings), status)
     write_page(web_root / "news.html", "청년 뉴스", "news.html", build_news_page(classified_articles, status), status)
-    write_page(web_root / "policies.html", "최근 정책", "policies.html", build_policies_page(classified_articles, status), status)
-    write_page(web_root / "hub.html", "청년활동가 허브", "hub.html", build_hub_page(classified_articles), status)
-    write_page(web_root / "tools.html", "정책제안서 작성 도구", "tools.html", build_tools_page(), status)
-    write_page(web_root / "contact.html", "운영자 연락하기", "contact.html", build_contact_page(contact_settings), status)
+    write_page(web_root / "policies.html", "정부 공식 발표", "policies.html", build_policies_page(classified_articles, status), status)
+    write_page(web_root / "hub.html", "청년 참여·회의", "hub.html", build_hub_page(classified_articles), status)
+    write_page(web_root / "tools.html", "자료·작성 도구", "tools.html", build_tools_page(), status)
+    write_page(web_root / "contact.html", "제보·문의", "contact.html", build_contact_page(contact_settings), status)
 
     print(f"web_output={web_root / 'index.html'}")
     return 0
