@@ -684,6 +684,9 @@ BASE_CSS = """
     gap: 14px;
     margin-top: 18px;
   }
+  .hero.home-hero {
+    grid-template-columns: 1fr;
+  }
   .spotlight-main {
     display: grid;
     gap: 14px;
@@ -740,6 +743,12 @@ BASE_CSS = """
   .spotlight-panel .highlight-stats {
     margin-top: 0;
   }
+  .spotlight-panel-title.secondary {
+    margin-top: 16px;
+  }
+  .spotlight-panel .spotlight-routes {
+    margin-top: 12px;
+  }
   .spotlight-routes {
     display: grid;
     gap: 10px;
@@ -766,9 +775,6 @@ BASE_CSS = """
     color: var(--muted);
     font-size: 0.8rem;
     line-height: 1.5;
-  }
-  .home-briefing-card {
-    background: linear-gradient(180deg, rgba(31, 111, 95, 0.08) 0%, rgba(255, 255, 255, 0.96) 100%);
   }
   .spotlight-lead-title {
     margin: 2px 0 0;
@@ -808,13 +814,6 @@ BASE_CSS = """
     font-size: 1.32rem;
     font-weight: 800;
     letter-spacing: -0.04em;
-  }
-  .home-briefing-card h3 {
-    margin: 0;
-    font-size: 1.02rem;
-  }
-  .home-briefing-card .mini-link {
-    margin-top: 12px;
   }
   .welcome-kicker {
     display: inline-flex;
@@ -1134,7 +1133,7 @@ BASE_CSS = """
       gap: 12px;
     }
     .home-spotlight-layout {
-      grid-template-columns: minmax(0, 1.18fr) minmax(250px, 0.92fr);
+      grid-template-columns: minmax(0, 1.24fr) minmax(280px, 0.82fr);
       gap: 18px;
     }
     .spotlight-notes {
@@ -2241,36 +2240,6 @@ def build_home_page(
             '<a class="spotlight-route" href="tools.html"><strong>자료도구 열기</strong><span>조사, 초안 정리, 제보·문의 동선을 모았습니다.</span></a>',
         ]
     )
-    briefing_items = []
-    for article in highlights[1:4]:
-        briefing_items.append(
-            render_article_list_item(
-                article,
-                summarize_article_text(article, limit=92) or compact_article_meta(article),
-                overline="뉴스",
-            )
-        )
-    if policy_articles:
-        briefing_items.append(
-            render_article_list_item(
-                policy_articles[0],
-                compact_article_meta(policy_articles[0]),
-                overline="정책",
-            )
-        )
-    hub_reference = government_hub_articles[0] if government_hub_articles else (regional_hub_articles[0] if regional_hub_articles else None)
-    if hub_reference:
-        briefing_items.append(
-            render_article_list_item(
-                hub_reference,
-                compact_article_meta(hub_reference),
-                overline="참여·회의",
-            )
-        )
-    highlight_list_html = "".join(briefing_items[:4]) or (
-        f'<div class="list-item"><strong>오늘 함께 볼 소식이 아직 없습니다.</strong>'
-        f'<span>최근 {NEWS_WINDOW_DAYS}일 기사와 정책, 참여 기록이 모이면 이 영역에 함께 보여드립니다.</span></div>'
-    )
     policy_list_html = "".join(
         render_article_list_item(
             article,
@@ -2328,7 +2297,7 @@ def build_home_page(
     contact_message = html.escape(contact_settings.get("extra_line_1", ""))
     contact_email = html.escape(contact_settings.get("email", ""))
     return f"""
-    <section class="hero">
+    <section class="hero home-hero">
       <article class="home-section-card home-spotlight-card">
         <div class="home-meta-line">
           <span>기사 기준 {describe_article_basis(recent_news_articles, f"최근 {NEWS_WINDOW_DAYS}일 기사 없음")}</span>
@@ -2357,26 +2326,10 @@ def build_home_page(
             <section class="spotlight-panel">
               <span class="spotlight-panel-title">오늘 한눈에</span>
               <div class="highlight-stats">{highlight_stats_html}</div>
-            </section>
-            <section class="spotlight-panel">
-              <span class="spotlight-panel-title">바로 들어가기</span>
+              <span class="spotlight-panel-title secondary">바로 들어가기</span>
               <div class="spotlight-routes">{quick_routes_html}</div>
             </section>
           </aside>
-        </div>
-      </article>
-      <article class="hero-card home-section-card home-briefing-card">
-        <div class="home-section-head">
-          <div class="home-section-title">
-            <span class="eyebrow">바로 이어서 보기</span>
-            <h2>정책과 참여·회의까지 한 번에</h2>
-            <p class="home-section-copy">하이라이트를 본 뒤 함께 볼 기사와 정책, 참여·회의 흐름을 이어서 확인할 수 있습니다.</p>
-          </div>
-        </div>
-        <div class="list">{highlight_list_html}</div>
-        <div class="hero-actions home-actions">
-          <a class="button primary" href="policies.html">정책 보기</a>
-          <a class="button" href="hub.html">참여·회의 보기</a>
         </div>
       </article>
     </section>
