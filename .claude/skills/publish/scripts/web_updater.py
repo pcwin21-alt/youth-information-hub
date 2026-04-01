@@ -19,6 +19,44 @@ NEWS_WINDOW_DAYS = 7
 NEWS_WINDOW_HOURS = NEWS_WINDOW_DAYS * 24
 HOME_UPDATE_SNAPSHOT = ROOT / "output" / "home_update_snapshot.json"
 
+YOUTH_METRICS = [
+    {
+        "label": "청년 인구",
+        "value": "1,040.4만명",
+        "basis": "2024 · 19~34세",
+        "source": "청년 삶의 질 2025",
+        "url": "https://mods.go.kr/board.es?act=view&bid=246&list_no=442421&mainXml=Y&mid=a10301010000",
+    },
+    {
+        "label": "전체 인구 비중",
+        "value": "20.1%",
+        "basis": "2024 · 19~34세",
+        "source": "청년 삶의 질 2025",
+        "url": "https://mods.go.kr/board.es?act=view&bid=246&list_no=442421&mainXml=Y&mid=a10301010000",
+    },
+    {
+        "label": "청년 실업률",
+        "value": "7.7%",
+        "basis": "2026.02 · 15~29세",
+        "source": "2026년 2월 고용동향",
+        "url": "https://sri.kostat.go.kr/board.es?act=view&bid=210&list_no=444083&mid=a10301030200&ref_bid=&tag=",
+    },
+    {
+        "label": "쉬었음 청년",
+        "value": "40.2만명",
+        "basis": "2023.07 · 15~29세",
+        "source": "복지부 지원방안",
+        "url": "https://www.mohw.go.kr/board.es?act=view&bid=0027&list_no=1479278&mid=a10503000000&nPage=112&tag=",
+    },
+    {
+        "label": "고립·은둔 위기청년",
+        "value": "최대 54만명",
+        "basis": "2022 조사 기반 · 19~34세",
+        "source": "복지부·보사연 추정",
+        "url": "https://www.mohw.go.kr/board.es?act=view&bid=0027&list_no=1479278&mid=a10503000000&nPage=112&tag=",
+    },
+]
+
 
 BASE_CSS = """
   :root {
@@ -852,6 +890,75 @@ BASE_CSS = """
     text-decoration: underline;
     text-underline-offset: 3px;
   }
+  .youth-metrics-card {
+    padding: 22px;
+    border-radius: 28px;
+    border: 1px solid var(--line);
+    background:
+      radial-gradient(circle at top left, rgba(123, 184, 255, 0.14), transparent 34%),
+      linear-gradient(180deg, rgba(255, 255, 255, 0.99) 0%, rgba(244, 248, 252, 0.98) 100%);
+    box-shadow: var(--shadow-soft);
+  }
+  .youth-metrics-head {
+    display: grid;
+    gap: 8px;
+    margin-bottom: 16px;
+  }
+  .youth-metrics-head h2 {
+    margin: 0;
+    font-size: 1.22rem;
+    letter-spacing: -0.03em;
+  }
+  .youth-metrics-head p {
+    margin: 0;
+    color: var(--muted);
+    font-size: 0.9rem;
+    line-height: 1.62;
+  }
+  .youth-metrics-grid {
+    display: grid;
+    gap: 12px;
+  }
+  .youth-metric-item {
+    display: grid;
+    gap: 10px;
+    padding: 16px;
+    border-radius: 22px;
+    border: 1px solid rgba(23, 33, 49, 0.08);
+    background: rgba(255, 255, 255, 0.9);
+  }
+  .youth-metric-label {
+    color: var(--muted);
+    font-size: 0.78rem;
+    font-weight: 800;
+    line-height: 1.3;
+  }
+  .youth-metric-value {
+    font-size: 1.54rem;
+    font-weight: 800;
+    letter-spacing: -0.05em;
+    line-height: 1;
+  }
+  .youth-metric-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 10px;
+    color: var(--muted);
+    font-size: 0.76rem;
+    line-height: 1.5;
+  }
+  .youth-metric-source {
+    color: var(--accent-strong);
+    font-weight: 700;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+  .youth-metrics-note {
+    margin: 14px 0 0;
+    color: var(--muted);
+    font-size: 0.76rem;
+    line-height: 1.55;
+  }
   .home-welcome-card {
     background:
       radial-gradient(circle at top left, rgba(65, 145, 255, 0.16), transparent 34%),
@@ -1537,6 +1644,9 @@ BASE_CSS = """
       grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: 18px;
     }
+    .youth-metrics-grid {
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+    }
     .home-dual-grid {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -2166,6 +2276,35 @@ def render_list_block(title: str, intro: str, items: list[tuple[str, str]]) -> s
       <h3>{html.escape(title)}</h3>
       <p>{html.escape(intro)}</p>
       <div class="list">{''.join(list_items)}</div>
+    </section>
+    """
+
+
+def render_youth_metrics() -> str:
+    metric_items = []
+    for metric in YOUTH_METRICS:
+        metric_items.append(
+            f"""
+            <article class="youth-metric-item">
+              <span class="youth-metric-label">{html.escape(metric["label"])}</span>
+              <strong class="youth-metric-value">{html.escape(metric["value"])}</strong>
+              <div class="youth-metric-meta">
+                <span>{html.escape(metric["basis"])}</span>
+                <a class="youth-metric-source" href="{html.escape(metric["url"])}" target="_blank" rel="noreferrer">{html.escape(metric["source"])}</a>
+              </div>
+            </article>
+            """
+        )
+    return f"""
+    <section class="section" id="youth-metrics">
+      <article class="youth-metrics-card">
+        <div class="youth-metrics-head">
+          <h2>청년 주요 지표</h2>
+          <p>정책과 기사 흐름을 볼 때 함께 참고할 수 있도록, 최근 공식 통계와 공공 발표 기준 숫자를 함께 놓았습니다.</p>
+        </div>
+        <div class="youth-metrics-grid">{''.join(metric_items)}</div>
+        <p class="youth-metrics-note">지표마다 연령 기준과 기준 시점이 다르므로, 카드 아래 표기를 함께 확인해 주세요. 전국 청년 거버넌스 운영 수는 공식 단일 통계가 뚜렷하지 않아 이번 화면에서는 제외했습니다.</p>
+      </article>
     </section>
     """
 
@@ -2877,14 +3016,11 @@ def build_home_page(
     home_date_label = format_home_date_label(page_updated_at)
     latest_news_basis = describe_article_basis(recent_news_articles, f"최근 {NEWS_WINDOW_DAYS}일 기사 없음")
     policy_basis = describe_article_basis(official_policy_articles or policy_articles, "최근 정책 없음")
-    update_briefing = build_home_update_briefing(
-        status,
-        page_updated_at,
-        recent_news_articles,
-        official_policy_articles,
-        participation_count,
-    )
     version_text = contact_settings.get("version_text", "").strip() or "버전 정보 준비 중"
+    lead_message = (
+        "혼자 버티는 하루가 너무 길게 느껴질 때에도, 오늘의 기사와 정책이 조금은 또렷한 길잡이가 되었으면 합니다. "
+        "당신의 오늘이 작지 않다는 마음으로, 지금 필요한 흐름을 한자리에 모았습니다."
+    )
     glance_stats_html = "".join(
         [
             f'<article class="home-glance-item"><span class="home-glance-label">오늘의 기사</span><strong class="home-glance-value">{len(recent_news_articles)}건</strong></article>',
@@ -2972,10 +3108,11 @@ def build_home_page(
         <article class="home-briefing-card lead">
           <span class="home-briefing-date">{html.escape(home_date_label)}</span>
           <h1 class="home-briefing-title">청년은 오늘 -</h1>
-          <p class="home-briefing-copy">{html.escape(update_briefing["copy"])}</p>
+          <p class="home-briefing-copy">{html.escape(lead_message)}</p>
           <div class="home-briefing-meta">
-            <span>{html.escape(update_briefing["meta"])}</span>
             <span>기사 기준 {html.escape(latest_news_basis)}</span>
+            <span>페이지 반영 {format_display_datetime(page_updated_at)}</span>
+            <span>{status_meta["update_frequency"]}</span>
           </div>
         </article>
         <article class="home-briefing-card glance">
@@ -3004,6 +3141,7 @@ def build_home_page(
           <div class="home-support-meta">
             <span>페이지 반영 {format_display_datetime(page_updated_at)}</span>
             <span>정책 기준 {html.escape(policy_basis)}</span>
+            <span>기사 기준 {html.escape(latest_news_basis)}</span>
             <span>{status_meta["update_frequency"]}</span>
           </div>
           <div class="home-support-links">
@@ -3013,6 +3151,7 @@ def build_home_page(
         </article>
       </div>
     </section>
+    {render_youth_metrics()}
     <section class="section" id="menu-updates">
       <div class="section-head">
         <div>
