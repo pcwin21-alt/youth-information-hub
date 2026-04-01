@@ -399,6 +399,20 @@ BASE_CSS = """
     display: grid;
     gap: 12px;
   }
+  .filter-stack {
+    display: grid;
+    gap: 14px;
+  }
+  .filter-group {
+    display: grid;
+    gap: 8px;
+  }
+  .filter-group-label {
+    color: var(--accent-strong);
+    font-size: 0.78rem;
+    font-weight: 800;
+    letter-spacing: 0.01em;
+  }
   .filter-head {
     display: grid;
     gap: 6px;
@@ -1407,43 +1421,51 @@ BASE_SCRIPT = """
     fallbackCopy(text);
   }
 
-  function applyDateFilter(root, selectedDate) {
+  function applyNewsFilters(root, selectedDate, selectedRegion) {
+    const activeDate = selectedDate || root.dataset.selectedDate || root.getAttribute('data-default-date') || 'all';
+    const activeRegion = selectedRegion || root.dataset.selectedRegion || root.getAttribute('data-default-region') || 'all';
+    root.dataset.selectedDate = activeDate;
+    root.dataset.selectedRegion = activeRegion;
+
     const articleCards = Array.from(root.querySelectorAll('[data-article-date]'));
     let visibleCount = 0;
 
     articleCards.forEach((card) => {
       const articleDate = card.getAttribute('data-article-date') || '';
-      const isMatch = selectedDate === 'all' || articleDate === selectedDate;
+      const articleRegion = card.getAttribute('data-article-region') || '중앙';
+      const dateMatch = activeDate === 'all' || articleDate === activeDate;
+      const regionMatch = activeRegion === 'all' || articleRegion === activeRegion;
+      const isMatch = dateMatch && regionMatch;
       card.hidden = !isMatch;
       if (isMatch) {
         visibleCount += 1;
       }
     });
 
-    root.querySelectorAll('[data-date-filter]').forEach((button) => {
-      const isActive = (button.getAttribute('data-date-value') || 'all') === selectedDate;
+    root.querySelectorAll('[data-news-filter]').forEach((button) => {
+      const group = button.getAttribute('data-filter-group') || 'date';
+      const value = button.getAttribute('data-filter-value') || 'all';
+      const isActive = group === 'region' ? value === activeRegion : value === activeDate;
       button.classList.toggle('active', isActive);
       button.setAttribute('aria-pressed', isActive ? 'true' : 'false');
     });
 
-    root.querySelectorAll('[data-date-filter-section]').forEach((section) => {
-      const hasVisibleArticles = Array.from(section.querySelectorAll('[data-article-date]')).some((card) => !card.hidden);
-      section.hidden = !hasVisibleArticles;
-    });
-
-    const status = root.querySelector('[data-date-filter-status]');
+    const status = root.querySelector('[data-news-filter-status]');
     if (status) {
-      status.textContent = selectedDate === 'all'
-        ? `전체 ${visibleCount}건을 보고 있습니다.`
-        : `${selectedDate} 기사 ${visibleCount}건을 보고 있습니다.`;
+      if (activeDate === 'all' && activeRegion === 'all') {
+        status.textContent = `전체 ${visibleCount}건을 보고 있습니다.`;
+      } else if (activeDate === 'all') {
+        status.textContent = `${activeRegion} 기사 ${visibleCount}건을 보고 있습니다.`;
+      } else if (activeRegion === 'all') {
+        status.textContent = `${activeDate} 기사 ${visibleCount}건을 보고 있습니다.`;
+      } else {
+        status.textContent = `${activeRegion} · ${activeDate} 기사 ${visibleCount}건을 보고 있습니다.`;
+      }
     }
 
-    if (selectedDate !== 'all') {
-      const firstVisibleSection = Array.from(root.querySelectorAll('[data-date-filter-section]'))
-        .find((section) => !section.hidden);
-      if (firstVisibleSection) {
-        firstVisibleSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }
+    const emptyState = root.querySelector('[data-news-empty-state]');
+    if (emptyState) {
+      emptyState.hidden = visibleCount !== 0;
     }
   }
 
@@ -1485,11 +1507,17 @@ BASE_SCRIPT = """
       return;
     }
 
-    const filterButton = event.target.closest('[data-date-filter]');
+    const filterButton = event.target.closest('[data-news-filter]');
     if (filterButton) {
-      const root = filterButton.closest('[data-date-filter-root]');
+      const root = filterButton.closest('[data-news-filter-root]');
       if (root) {
-        applyDateFilter(root, filterButton.getAttribute('data-date-value') || 'all');
+        const group = filterButton.getAttribute('data-filter-group') || 'date';
+        const value = filterButton.getAttribute('data-filter-value') || 'all';
+        applyNewsFilters(
+          root,
+          group === 'date' ? value : (root.dataset.selectedDate || root.getAttribute('data-default-date') || 'all'),
+          group === 'region' ? value : (root.dataset.selectedRegion || root.getAttribute('data-default-region') || 'all'),
+        );
       }
       return;
     }
@@ -1527,8 +1555,12 @@ BASE_SCRIPT = """
     }
   });
 
-  document.querySelectorAll('[data-date-filter-root]').forEach((root) => {
-    applyDateFilter(root, root.getAttribute('data-default-date') || 'all');
+  document.querySelectorAll('[data-news-filter-root]').forEach((root) => {
+    applyNewsFilters(
+      root,
+      root.getAttribute('data-default-date') || 'all',
+      root.getAttribute('data-default-region') || 'all',
+    );
   });
 
   document.addEventListener('keydown', (event) => {
@@ -1617,9 +1649,9 @@ def render_guide_overlay(active_page: str) -> str:
     <div class="guide-dialog" role="dialog" aria-modal="true" aria-labelledby="guide-dialog-title">
       <span class="eyebrow">이용방법</span>
       <h2 id="guide-dialog-title">처음 오셨다면 이렇게 보시면 됩니다.</h2>
-      <p>홈 첫 화면은 오늘의 하이라이트부터 보는 구조입니다. 기사 수와 정책, 참여·회의 건수는 하이라이트 안에서 함께 확인할 수 있습니다.</p>
+      <p>홈 첫 화면은 오늘 바로 볼 기사부터 보는 구조입니다. 기사 수와 정책, 참여·회의 건수도 첫 화면에서 함께 확인할 수 있습니다.</p>
       <div class="list">
-        <div class="list-item"><strong>오늘의 하이라이트</strong><span>가장 먼저 볼 기사와 오늘 집계를 한 번에 봅니다.</span></div>
+        <div class="list-item"><strong>홈</strong><span>가장 먼저 볼 기사와 오늘 집계를 한 번에 봅니다.</span></div>
         <div class="list-item"><strong>정책</strong><span>정부 원문 중심의 공식 발표를 확인합니다.</span></div>
         <div class="list-item"><strong>참여·회의</strong><span>정부 회의와 지역 네트워크 움직임을 나눠서 봅니다.</span></div>
       </div>
@@ -1734,6 +1766,7 @@ def render_article_card(article: dict) -> str:
     summary_text = summarize_article_text(article, limit=112)
     escaped_url = html.escape(article.get("url", ""))
     escaped_title = html.escape(display_article_title(article))
+    article_region = html.escape(news_region_label(article))
     summary_html = (
         f'<p class="article-summary"><a class="article-summary-link" href="{escaped_url}" target="_blank" rel="noreferrer" '
         f'aria-label="{escaped_title} 링크 바로가기">{html.escape(summary_text)}</a></p>'
@@ -1742,7 +1775,7 @@ def render_article_card(article: dict) -> str:
     )
     article_date = html.escape(article_date_value(article))
     return f"""
-    <article class="article-card" data-article-card="true" data-article-url="{escaped_url}" data-article-title="{escaped_title}" data-article-date="{article_date}">
+    <article class="article-card" data-article-card="true" data-article-url="{escaped_url}" data-article-title="{escaped_title}" data-article-date="{article_date}" data-article-region="{article_region}">
       {render_article_meta(article)}
       <h3><a class="article-title-link" href="{escaped_url}" target="_blank" rel="noreferrer" aria-label="{escaped_title} 링크 바로가기">{escaped_title}</a></h3>
       {badge_row}
@@ -1869,26 +1902,67 @@ def collect_article_dates(articles: list[dict]) -> list[str]:
     return sorted({date for article in articles if (date := article_date_value(article))}, reverse=True)
 
 
-def render_date_filter_panel(dates: list[str], total_count: int) -> str:
-    buttons = [
-        '<button class="filter-button active" type="button" data-date-filter="true" '
-        'data-date-value="all" aria-pressed="true">전체</button>'
+def news_region_label(article: dict) -> str:
+    region = normalize_inline_text(article.get("region"))
+    if not region or region == "전국":
+        return "중앙"
+    return region
+
+
+def collect_news_regions(articles: list[dict]) -> list[str]:
+    counts: dict[str, int] = {}
+    for article in articles:
+        region = news_region_label(article)
+        counts[region] = counts.get(region, 0) + 1
+
+    others = sorted(
+        [region for region in counts if region != "중앙"],
+        key=lambda region: (-counts[region], region),
+    )
+    return ["중앙", *others]
+
+
+def render_news_filter_panel(regions: list[str], dates: list[str], total_count: int) -> str:
+    region_buttons = [
+        '<button class="filter-button active" type="button" data-news-filter="true" '
+        'data-filter-group="region" data-filter-value="all" aria-pressed="true">전체</button>'
+    ]
+    for region in regions:
+        region_buttons.append(
+            f'<button class="filter-button" type="button" data-news-filter="true" '
+            f'data-filter-group="region" data-filter-value="{html.escape(region)}" '
+            f'aria-pressed="false">{html.escape(region)}</button>'
+        )
+
+    date_buttons = [
+        '<button class="filter-button active" type="button" data-news-filter="true" '
+        'data-filter-group="date" data-filter-value="all" aria-pressed="true">전체</button>'
     ]
     for date in dates:
-        buttons.append(
-            f'<button class="filter-button" type="button" data-date-filter="true" '
-            f'data-date-value="{html.escape(date)}" aria-pressed="false">{html.escape(date)}</button>'
+        date_buttons.append(
+            f'<button class="filter-button" type="button" data-news-filter="true" '
+            f'data-filter-group="date" data-filter-value="{html.escape(date)}" '
+            f'aria-pressed="false">{html.escape(date)}</button>'
         )
 
     return f"""
     <section class="section">
       <article class="section-card filter-panel">
         <div class="filter-head">
-          <h3>날짜별로 보기</h3>
-          <p>날짜를 고르면 그날 올라온 기사만 볼 수 있습니다.</p>
+          <h3>지역별 · 날짜별로 보기</h3>
+          <p>필요한 지역과 날짜를 고르면 조건에 맞는 기사만 바로 볼 수 있습니다.</p>
         </div>
-        <div class="filter-controls">{''.join(buttons)}</div>
-        <div class="filter-status" data-date-filter-status>전체 {total_count}건을 보고 있습니다.</div>
+        <div class="filter-stack">
+          <div class="filter-group">
+            <span class="filter-group-label">지역</span>
+            <div class="filter-controls">{''.join(region_buttons)}</div>
+          </div>
+          <div class="filter-group">
+            <span class="filter-group-label">날짜</span>
+            <div class="filter-controls">{''.join(date_buttons)}</div>
+          </div>
+        </div>
+        <div class="filter-status" data-news-filter-status>전체 {total_count}건을 보고 있습니다.</div>
       </article>
     </section>
     """
@@ -2299,7 +2373,7 @@ def build_menu_updates(articles: list[dict], classified_articles: list[dict], st
             "eyebrow": "01 뉴스",
             "title": "청년 뉴스",
             "href": "news.html",
-            "description": "청년 뉴스와 하이라이트를 빠르게 확인할 수 있습니다.",
+            "description": "청년 뉴스와 오늘 바로 볼 기사를 빠르게 확인할 수 있습니다.",
             "article_basis_label": "최신 기사 기준",
             "article_basis_time": latest_article_timestamp(news_articles, page_updated_at),
             "page_basis_label": "페이지 반영",
@@ -2669,7 +2743,7 @@ def build_guide_page(status: dict) -> str:
     status_meta = render_status(status)
     menu_cards = "".join(
         [
-            render_feature_card("홈", "오늘의 하이라이트와 오늘 집계를 먼저 보는 첫 화면입니다.", "index.html", "첫 화면"),
+            render_feature_card("홈", "오늘 바로 볼 기사와 오늘 집계를 먼저 보는 첫 화면입니다.", "index.html", "첫 화면"),
             render_feature_card("뉴스", f"최근 {NEWS_WINDOW_DAYS}일 청년 뉴스를 날짜별로 빠르게 훑어봅니다.", "news.html", "최근 기사"),
             render_feature_card("정책", "정부 공식 발표와 참고 기사를 구분해 원문 흐름을 확인합니다.", "policies.html", "공식 발표"),
             render_feature_card("참여·회의", "정부 회의와 지역 참여·네트워크 움직임을 한데 모아 봅니다.", "hub.html", "참여 흐름"),
@@ -2689,7 +2763,7 @@ def build_guide_page(status: dict) -> str:
         "빠르게 보는 순서",
         "처음 들어왔을 때 가장 덜 헤매는 흐름을 짧게 정리했습니다.",
         [
-            ("1. 홈", "오늘의 하이라이트에서 핵심 기사와 집계를 먼저 확인합니다."),
+            ("1. 홈", "오늘 바로 볼 기사와 집계를 먼저 확인합니다."),
             ("2. 정책", "정부 공식 발표 원문과 정책브리핑을 바로 확인합니다."),
             ("3. 참여·회의", "위원회, 회의, 네트워크 소식이 이어지는지 살펴봅니다."),
             ("4. 자료도구·제보", "필요한 자료를 찾거나 운영팀에 제보·문의합니다."),
@@ -2737,72 +2811,22 @@ def build_news_page(articles: list[dict], status: dict) -> str:
     page_updated_at = status.get("finished_at") or status.get("updated_at") or ""
     news_articles = [article for article in sort_articles_by_recency(articles) if not article.get("is_official_source")]
     recent_news_articles = filter_recent_articles(news_articles, page_updated_at, NEWS_WINDOW_HOURS)
-    groups = article_groups(recent_news_articles)
-    latest_news_basis = describe_article_basis(recent_news_articles, f"최근 {NEWS_WINDOW_DAYS}일 뉴스 없음")
     date_options = collect_article_dates(recent_news_articles)
-    top_day = date_options[0] if date_options else ""
-    top_day_count = sum(1 for article in recent_news_articles if article_date_value(article) == top_day) if top_day else 0
-    date_filter_panel = render_date_filter_panel(collect_article_dates(recent_news_articles), len(recent_news_articles))
-    section_html = []
-    for category, heading, intro in [
-        ("청년은 지금", "오늘 이슈", "청년 생활, 일자리, 교육 흐름을 먼저 읽는 구역입니다."),
-        ("지역 이슈", "지역 움직임", "지자체와 지역 현장에서 나온 소식을 모았습니다."),
-        ("논평·기고", "해설·의견", "칼럼과 해설 기사만 따로 보고 싶을 때 보는 구역입니다."),
-    ]:
-        category_articles = groups.get(category, [])
-        if not category_articles:
-            continue
-        cards = "".join(render_article_card(article) for article in category_articles)
-        section_attrs = ' data-date-filter-section="true"'
-        section_html.append(
-            f"""
-            <section class="section"{section_attrs}>
-              <div class="section-head">
-                <div>
-                  <h2>{html.escape(heading)}</h2>
-                  <p>{html.escape(intro)}</p>
-                </div>
-              </div>
-              <div class="article-grid">{cards}</div>
-            </section>
-            """
-        )
-    if not section_html:
-        section_html.append(
-            """
-            <section class="section">
-              <div class="article-grid"><article class="info-card"><h3>표시할 기사 없음</h3><p>조건에 맞는 기사가 아직 없습니다.</p></article></div>
-            </section>
-            """
-        )
+    region_options = collect_news_regions(recent_news_articles)
+    news_filter_panel = render_news_filter_panel(region_options, date_options, len(recent_news_articles))
+    cards_html = "".join(render_article_card(article) for article in recent_news_articles)
     return f"""
-    <section class="section">
-      <article class="section-card news-intro-card">
-        <span class="eyebrow">01 뉴스</span>
-        <p class="news-intro-copy">최근 {NEWS_WINDOW_DAYS}일 청년 이슈를 날짜와 주제별로 빠르게 훑어볼 수 있습니다.</p>
-      </article>
-    </section>
-    <section class="hero">
-      <article class="status-card">
-        <h3>뉴스 브리핑 기준</h3>
-        <div class="list">
-          <div class="list-item"><strong>기사 기준</strong><span>{html.escape(latest_news_basis)}</span></div>
-          <div class="list-item"><strong>페이지 반영</strong><span>{html.escape(format_display_datetime(page_updated_at))}</span></div>
-          <div class="list-item"><strong>최근 {NEWS_WINDOW_DAYS}일 기사</strong><span>{len(recent_news_articles)}건</span></div>
-          <div class="list-item"><strong>선택 가능한 날짜</strong><span>{len(date_options)}일</span></div>
-          <div class="list-item"><strong>가장 최근 날짜</strong><span>{html.escape(top_day) if top_day else '없음'}{f' · {top_day_count}건' if top_day else ''}</span></div>
+    <div data-news-filter-root="news" data-default-date="all" data-default-region="all">
+      {news_filter_panel}
+      <section class="section">
+        <div class="article-grid">
+          {cards_html or '<article class="info-card" data-news-empty-state="true"><h3>최근 뉴스가 없습니다</h3><p>새 청년 뉴스가 수집되면 이 영역에 표시됩니다.</p></article>'}
         </div>
-      </article>
-      <aside class="status-card">
-        <h3>오늘 바로 볼 기사</h3>
-        <div class="list">
-          {''.join(render_article_list_item(article, compact_article_meta(article)) for article in recent_news_articles[:4]) or f'<div class="list-item"><strong>최근 {NEWS_WINDOW_DAYS}일 뉴스가 없습니다.</strong><span>새 청년 뉴스가 수집되면 이 영역에 표시됩니다.</span></div>'}
-        </div>
-      </aside>
-    </section>
-    <div data-date-filter-root="news" data-default-date="all">
-      {date_filter_panel}
-      {''.join(section_html)}
+        <article class="info-card" data-news-empty-state="true" hidden>
+          <h3>조건에 맞는 기사가 없습니다</h3>
+          <p>지역이나 날짜 조건을 바꾸면 다른 기사를 볼 수 있습니다.</p>
+        </article>
+      </section>
     </div>
     """
 
