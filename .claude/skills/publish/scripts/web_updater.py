@@ -665,6 +665,193 @@ BASE_CSS = """
   .home-section-card.featured {
     background: linear-gradient(180deg, rgba(37, 99, 235, 0.06) 0%, rgba(255, 255, 255, 1) 100%);
   }
+  .home-briefing-grid {
+    display: grid;
+    gap: 18px;
+    margin-top: 10px;
+  }
+  .home-briefing-card {
+    padding: 22px;
+    border-radius: 28px;
+    border: 1px solid var(--line);
+    background: var(--panel);
+    box-shadow: var(--shadow-soft);
+    display: grid;
+    align-content: start;
+    gap: 16px;
+  }
+  .home-briefing-card.lead {
+    background:
+      radial-gradient(circle at top left, rgba(123, 184, 255, 0.18), transparent 36%),
+      linear-gradient(180deg, rgba(255, 255, 255, 0.99) 0%, rgba(244, 248, 252, 0.98) 100%);
+  }
+  .home-briefing-card.support {
+    background: linear-gradient(180deg, rgba(28, 39, 54, 0.98) 0%, rgba(23, 33, 49, 1) 100%);
+    color: rgba(255, 255, 255, 0.94);
+  }
+  .home-briefing-date {
+    color: var(--accent-strong);
+    font-size: 0.82rem;
+    font-weight: 800;
+    letter-spacing: 0.01em;
+  }
+  .home-briefing-title {
+    margin: 0;
+    font-size: clamp(2.5rem, 8vw, 4.8rem);
+    line-height: 0.95;
+    letter-spacing: -0.07em;
+    max-width: 8ch;
+  }
+  .home-briefing-copy {
+    margin: 0;
+    color: var(--text);
+    font-size: 1rem;
+    line-height: 1.72;
+    max-width: 42ch;
+  }
+  .home-briefing-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 14px;
+    padding-top: 14px;
+    border-top: 1px solid rgba(23, 33, 49, 0.08);
+    color: var(--muted);
+    font-size: 0.78rem;
+    line-height: 1.5;
+  }
+  .home-briefing-head {
+    display: grid;
+    gap: 6px;
+  }
+  .home-briefing-head h2 {
+    margin: 0;
+    font-size: 1.16rem;
+    letter-spacing: -0.03em;
+  }
+  .home-briefing-head p {
+    margin: 0;
+    color: var(--muted);
+    font-size: 0.88rem;
+    line-height: 1.58;
+  }
+  .home-glance-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
+  }
+  .home-glance-item {
+    display: grid;
+    gap: 8px;
+    padding: 16px;
+    border-radius: 22px;
+    border: 1px solid rgba(23, 33, 49, 0.08);
+    background:
+      radial-gradient(circle at top left, rgba(123, 184, 255, 0.15), transparent 50%),
+      linear-gradient(180deg, rgba(255, 255, 255, 0.98) 0%, rgba(245, 248, 251, 0.96) 100%);
+  }
+  .home-glance-label {
+    color: var(--muted);
+    font-size: 0.78rem;
+    font-weight: 800;
+    line-height: 1.3;
+  }
+  .home-glance-value {
+    font-size: 1.72rem;
+    font-weight: 800;
+    letter-spacing: -0.05em;
+    line-height: 1;
+  }
+  .home-glance-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .home-urgent-list {
+    display: grid;
+    gap: 0;
+    border-top: 1px solid rgba(23, 33, 49, 0.08);
+  }
+  .home-urgent-item {
+    padding: 16px 0;
+    border-bottom: 1px solid rgba(23, 33, 49, 0.08);
+  }
+  .home-urgent-link {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 14px;
+    align-items: start;
+  }
+  .home-urgent-rank {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    border-radius: 999px;
+    background: rgba(31, 111, 95, 0.1);
+    color: var(--accent-strong);
+    font-size: 0.8rem;
+    font-weight: 800;
+    line-height: 1;
+  }
+  .home-urgent-text {
+    display: grid;
+    gap: 5px;
+  }
+  .home-urgent-text strong {
+    font-size: 1rem;
+    line-height: 1.48;
+    letter-spacing: -0.02em;
+  }
+  .home-urgent-meta {
+    color: var(--muted);
+    font-size: 0.82rem;
+    line-height: 1.5;
+  }
+  .home-support-version {
+    display: inline-flex;
+    align-items: center;
+    width: fit-content;
+    padding: 7px 12px;
+    border-radius: 999px;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    background: rgba(255, 255, 255, 0.08);
+    color: rgba(255, 255, 255, 0.88);
+    font-size: 0.78rem;
+    font-weight: 800;
+  }
+  .home-support-copy {
+    margin: 0;
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 0.95rem;
+    line-height: 1.78;
+  }
+  .home-support-copy.secondary {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.86rem;
+  }
+  .home-support-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 14px;
+    padding-top: 14px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.72);
+    font-size: 0.78rem;
+    line-height: 1.5;
+  }
+  .home-support-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .home-support-links a {
+    color: white;
+    font-size: 0.84rem;
+    font-weight: 700;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
   .home-welcome-card {
     background:
       radial-gradient(circle at top left, rgba(65, 145, 255, 0.16), transparent 34%),
@@ -1307,6 +1494,26 @@ BASE_CSS = """
     .highlight-stats {
       grid-template-columns: repeat(3, minmax(96px, 1fr));
       gap: 12px;
+    }
+    .home-briefing-grid {
+      grid-template-columns: minmax(0, 1.06fr) minmax(320px, 0.94fr);
+      grid-template-areas:
+        "lead urgent"
+        "glance support";
+      align-items: stretch;
+    }
+    .home-briefing-card.lead {
+      grid-area: lead;
+      min-height: 320px;
+    }
+    .home-briefing-card.glance {
+      grid-area: glance;
+    }
+    .home-briefing-card.urgent {
+      grid-area: urgent;
+    }
+    .home-briefing-card.support {
+      grid-area: support;
     }
     .home-spotlight-layout {
       grid-template-columns: minmax(0, 1.24fr) minmax(280px, 0.82fr);
@@ -1986,6 +2193,14 @@ def format_header_datetime(value: str | None) -> str:
     return parsed.strftime("%m.%d %H:%M")
 
 
+def format_home_date_label(value: str | None) -> str:
+    parsed = parse_iso_datetime(value)
+    if not parsed:
+        return "오늘"
+    weekday = ["월", "화", "수", "목", "금", "토", "일"][parsed.weekday()]
+    return parsed.strftime(f"%Y.%m.%d ({weekday})")
+
+
 def truncate_text(value: str | None, limit: int = 140) -> str:
     text = " ".join((value or "").split())
     if len(text) <= limit:
@@ -2659,13 +2874,8 @@ def build_home_page(
         24 * 90,
     )
     participation_count = len(government_hub_articles) + len(regional_hub_articles)
-    highlight_stats_html = "".join(
-        [
-            f'<article class="highlight-stat"><span class="highlight-stat-label">오늘의 기사</span><strong class="highlight-stat-value">{len(recent_news_articles)}건</strong></article>',
-            f'<article class="highlight-stat"><span class="highlight-stat-label">정책</span><strong class="highlight-stat-value">{len(official_policy_articles)}건</strong></article>',
-            f'<article class="highlight-stat"><span class="highlight-stat-label">참여·회의</span><strong class="highlight-stat-value">{participation_count}건</strong></article>',
-        ]
-    )
+    home_date_label = format_home_date_label(page_updated_at)
+    latest_news_basis = describe_article_basis(recent_news_articles, f"최근 {NEWS_WINDOW_DAYS}일 기사 없음")
     policy_basis = describe_article_basis(official_policy_articles or policy_articles, "최근 정책 없음")
     update_briefing = build_home_update_briefing(
         status,
@@ -2674,43 +2884,42 @@ def build_home_page(
         official_policy_articles,
         participation_count,
     )
-    lead_title_html = "<span>오늘 바로 볼 기사</span>"
+    version_text = contact_settings.get("version_text", "").strip() or "버전 정보 준비 중"
+    glance_stats_html = "".join(
+        [
+            f'<article class="home-glance-item"><span class="home-glance-label">오늘의 기사</span><strong class="home-glance-value">{len(recent_news_articles)}건</strong></article>',
+            f'<article class="home-glance-item"><span class="home-glance-label">정책</span><strong class="home-glance-value">{len(official_policy_articles)}건</strong></article>',
+            f'<article class="home-glance-item"><span class="home-glance-label">참여·회의</span><strong class="home-glance-value">{participation_count}건</strong></article>',
+        ]
+    )
 
-    def render_spotlight_story(article: dict) -> str:
-        title = html.escape(display_article_title(article))
+    def render_urgent_news_item(index: int, article: dict) -> str:
+        title = html.escape(display_article_title(article, limit=88))
         meta = html.escape(compact_article_meta(article))
-        badges = article.get("display_badges") or []
-        kicker = html.escape(article.get("primary_sector") or (badges[0] if badges else "뉴스"))
         url = article.get("url")
+        rank = f"{index:02d}"
         if not url:
             return (
-                f'<article class="spotlight-story"><div class="spotlight-story-link">'
-                f'<span class="spotlight-story-kicker">{kicker}</span>'
-                f"<strong>{title}</strong>"
-                f"<span>{meta}</span>"
-                f"</div></article>"
+                f'<article class="home-urgent-item"><div class="home-urgent-link">'
+                f'<span class="home-urgent-rank">{rank}</span>'
+                f'<div class="home-urgent-text"><strong>{title}</strong>'
+                f'<span class="home-urgent-meta">{meta}</span></div></div></article>'
             )
         escaped_url = html.escape(url)
         return (
-            f'<article class="spotlight-story"><a class="spotlight-story-link" href="{escaped_url}" '
+            f'<article class="home-urgent-item"><a class="home-urgent-link" href="{escaped_url}" '
             f'target="_blank" rel="noreferrer" aria-label="{title} 링크 바로가기">'
-            f'<span class="spotlight-story-kicker">{kicker}</span>'
-            f"<strong>{title}</strong>"
-            f"<span>{meta}</span>"
-            f"</a></article>"
+            f'<span class="home-urgent-rank">{rank}</span>'
+            f'<div class="home-urgent-text"><strong>{title}</strong>'
+            f'<span class="home-urgent-meta">{meta}</span></div></a></article>'
         )
 
-    spotlight_stories_html = "".join(render_spotlight_story(article) for article in recent_news_articles[:4]) or (
-        f'<article class="spotlight-story"><div class="spotlight-story-link"><span class="spotlight-story-kicker">뉴스</span>'
-        f'<strong>최근 {NEWS_WINDOW_DAYS}일 뉴스가 없습니다.</strong><span>새 청년 뉴스가 수집되면 이 영역에 표시됩니다.</span></div></article>'
-    )
-    quick_routes_html = "".join(
-        [
-            f'<a class="spotlight-route" href="news.html"><strong>뉴스 전체 보기</strong><span>최근 {NEWS_WINDOW_DAYS}일 기사 흐름을 날짜별로 훑어봅니다.</span></a>',
-            f'<a class="spotlight-route" href="policies.html"><strong>정책 원문 보기</strong><span>정부 공식 발표 {len(official_policy_articles)}건을 바로 확인합니다.</span></a>',
-            f'<a class="spotlight-route" href="hub.html"><strong>참여·회의 보기</strong><span>위원회와 네트워크 기록 {participation_count}건으로 이어집니다.</span></a>',
-            '<a class="spotlight-route" href="tools.html"><strong>자료도구 열기</strong><span>조사, 초안 정리, 제보·문의 동선을 모았습니다.</span></a>',
-        ]
+    urgent_news_html = "".join(
+        render_urgent_news_item(index, article) for index, article in enumerate(recent_news_articles[:5], start=1)
+    ) or (
+        '<article class="home-urgent-item"><div class="home-urgent-link"><span class="home-urgent-rank">00</span>'
+        f'<div class="home-urgent-text"><strong>최근 {NEWS_WINDOW_DAYS}일 뉴스가 없습니다.</strong>'
+        '<span class="home-urgent-meta">새 청년 뉴스가 수집되면 이 영역에 표시됩니다.</span></div></div></article>'
     )
     policy_list_html = "".join(
         render_article_list_item(
@@ -2757,55 +2966,52 @@ def build_home_page(
             '<div class="list-item"><strong>AI 도구 사용법</strong><span>질문 정리와 초안 점검 방법을 안내합니다.</span></div>',
         ]
     )
-    home_status_note = " · ".join(
-        [
-            f"현재 상태 {status_meta['state']}",
-            f"페이지 반영 {format_display_datetime(page_updated_at)}",
-            f"기사 기준 {describe_article_basis(recent_news_articles, f'최근 {NEWS_WINDOW_DAYS}일 기사 없음')}",
-            status_meta["update_frequency"],
-        ]
-    )
-    contact_date = format_display_datetime(contact_settings.get("updated_at"))
-    contact_message = html.escape(contact_settings.get("extra_line_1", ""))
-    contact_email = html.escape(contact_settings.get("email", ""))
     return f"""
     <section class="hero home-hero">
-      <article class="home-section-card home-spotlight-card">
-        <div class="home-spotlight-layout">
-          <div class="spotlight-main">
-            <div class="home-section-head">
-                <div class="home-section-title">
-                <h1 class="spotlight-lead-title">{lead_title_html}</h1>
-                <div class="spotlight-update-inline">
-                  <span class="spotlight-update-label">{html.escape(update_briefing["label"])}</span>
-                  <p class="spotlight-update-copy">{html.escape(update_briefing["copy"])}</p>
-                  <p class="spotlight-update-meta">{html.escape(update_briefing["meta"])}</p>
-                </div>
-              </div>
-            </div>
-            <div class="spotlight-focus">
-              <div class="spotlight-stories">{spotlight_stories_html}</div>
-            </div>
-            <div class="hero-actions home-actions">
-              <a class="button primary" href="news.html">뉴스 전체 보기</a>
-              <a class="button" href="policies.html">정책 원문 보기</a>
-            </div>
+      <div class="home-briefing-grid">
+        <article class="home-briefing-card lead">
+          <span class="home-briefing-date">{html.escape(home_date_label)}</span>
+          <h1 class="home-briefing-title">청년은 오늘 -</h1>
+          <p class="home-briefing-copy">{html.escape(update_briefing["copy"])}</p>
+          <div class="home-briefing-meta">
+            <span>{html.escape(update_briefing["meta"])}</span>
+            <span>기사 기준 {html.escape(latest_news_basis)}</span>
           </div>
-          <aside class="spotlight-side">
-            <section class="spotlight-panel">
-              <span class="spotlight-panel-title">오늘 한눈에</span>
-              <div class="highlight-stats">{highlight_stats_html}</div>
-              <span class="spotlight-panel-title secondary">바로 들어가기</span>
-              <div class="spotlight-routes">{quick_routes_html}</div>
-            </section>
-          </aside>
-        </div>
-        <div class="home-meta-line home-meta-footer">
-          <span>기사 기준 {describe_article_basis(recent_news_articles, f"최근 {NEWS_WINDOW_DAYS}일 기사 없음")}</span>
-          <span>정책 기준 {html.escape(policy_basis)}</span>
-          <span>페이지 반영 {format_display_datetime(page_updated_at)}</span>
-        </div>
-      </article>
+        </article>
+        <article class="home-briefing-card glance">
+          <div class="home-briefing-head">
+            <h2>오늘 한눈에 보기</h2>
+            <p>오늘의 기사와 정책, 참여·회의 흐름을 빠르게 가늠합니다.</p>
+          </div>
+          <div class="home-glance-grid">{glance_stats_html}</div>
+          <div class="home-glance-links">
+            <a class="mini-link" href="news.html">뉴스 보기</a>
+            <a class="mini-link" href="policies.html">정책 보기</a>
+            <a class="mini-link" href="hub.html">참여·회의 보기</a>
+          </div>
+        </article>
+        <article class="home-briefing-card urgent">
+          <div class="home-briefing-head">
+            <h2>오늘 놓치면 안되는 뉴스 5가지</h2>
+            <p>지금 가장 먼저 훑어볼 기사를 빠르게 묶었습니다.</p>
+          </div>
+          <div class="home-urgent-list">{urgent_news_html}</div>
+        </article>
+        <article class="home-briefing-card support">
+          <span class="home-support-version">{html.escape(version_text)}</span>
+          <p class="home-support-copy">이 사이트는 무료로 운영됩니다. 청년들을 응원하기 위해 만들어졌습니다.</p>
+          <p class="home-support-copy secondary">기사 한 줄과 정책 한 항목이 필요한 순간에 제때 닿기를 바라는 마음으로, 오늘의 흐름을 조용히 모아두고 있습니다.</p>
+          <div class="home-support-meta">
+            <span>페이지 반영 {format_display_datetime(page_updated_at)}</span>
+            <span>정책 기준 {html.escape(policy_basis)}</span>
+            <span>{status_meta["update_frequency"]}</span>
+          </div>
+          <div class="home-support-links">
+            <a href="guide.html">사이트 소개</a>
+            <a href="contact.html">제보·문의</a>
+          </div>
+        </article>
+      </div>
     </section>
     <section class="section" id="menu-updates">
       <div class="section-head">
@@ -2854,23 +3060,6 @@ def build_home_page(
         <div class="list">{tools_list_html}</div>
       </article>
     </section></div>
-    <section class="section">
-      <p class="home-status-note">{html.escape(home_status_note)}</p>
-    </section>
-    <section class="section">
-      <article class="home-footer">
-        <h3>제보·문의</h3>
-        <p>{contact_message}</p>
-        <div class="home-footer-meta">
-          <span>{html.escape(contact_settings.get("copyright_text", ""))}</span>
-          <span>{html.escape(contact_settings.get("organization_name", ""))}</span>
-          <span>{html.escape(contact_settings.get("version_text", ""))}</span>
-          <span>{contact_date}</span>
-          <a href="mailto:{contact_email}">{contact_email}</a>
-          <a href="contact.html">제보·문의 보기</a>
-        </div>
-      </article>
-    </section>
     """
 
 
