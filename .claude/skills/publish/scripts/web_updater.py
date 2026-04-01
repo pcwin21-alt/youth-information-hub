@@ -656,6 +656,11 @@ BASE_CSS = """
     align-items: center;
     gap: 4px;
   }
+  .home-meta-line.home-meta-footer {
+    margin-top: 18px;
+    padding-top: 12px;
+    border-top: 1px solid rgba(23, 33, 49, 0.08);
+  }
   .home-section-card .list {
     margin-top: 12px;
   }
@@ -2466,16 +2471,10 @@ def build_home_page(
     return f"""
     <section class="hero home-hero">
       <article class="home-section-card home-spotlight-card">
-        <div class="home-meta-line">
-          <span>기사 기준 {describe_article_basis(recent_news_articles, f"최근 {NEWS_WINDOW_DAYS}일 기사 없음")}</span>
-          <span>정책 기준 {html.escape(policy_basis)}</span>
-          <span>페이지 반영 {format_display_datetime(page_updated_at)}</span>
-        </div>
         <div class="home-spotlight-layout">
           <div class="spotlight-main">
             <div class="home-section-head">
               <div class="home-section-title">
-                <span class="eyebrow">오늘의 하이라이트</span>
                 <h1 class="spotlight-lead-title">{html.escape(lead_title)}</h1>
                 <p class="spotlight-lead-summary">{html.escape(lead_summary)}</p>
                 <div class="spotlight-update-inline">
@@ -2502,6 +2501,11 @@ def build_home_page(
               <div class="spotlight-routes">{quick_routes_html}</div>
             </section>
           </aside>
+        </div>
+        <div class="home-meta-line home-meta-footer">
+          <span>기사 기준 {describe_article_basis(recent_news_articles, f"최근 {NEWS_WINDOW_DAYS}일 기사 없음")}</span>
+          <span>정책 기준 {html.escape(policy_basis)}</span>
+          <span>페이지 반영 {format_display_datetime(page_updated_at)}</span>
         </div>
       </article>
     </section>
