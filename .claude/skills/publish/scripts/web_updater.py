@@ -2176,7 +2176,6 @@ def build_home_page(
     all_articles = sort_articles_by_recency(classified_articles or articles)
     news_articles = [article for article in all_articles if not article.get("is_official_source")]
     recent_news_articles = filter_recent_articles(news_articles, page_updated_at, NEWS_WINDOW_HOURS)
-    recent_articles = filter_recent_articles(all_articles, page_updated_at, NEWS_WINDOW_HOURS)
     policy_articles = filter_recent_articles(
         [article for article in all_articles if article.get("is_official_source")],
         page_updated_at,
@@ -2194,20 +2193,6 @@ def build_home_page(
         24 * 90,
     )
     participation_count = len(government_hub_articles) + len(regional_hub_articles)
-    highlights = recent_news_articles[:]
-    highlight_urls = {article.get("url") for article in highlights}
-    highlights.extend(article for article in recent_articles if article.get("url") not in highlight_urls)
-    highlights = highlights[:4]
-    lead_highlight = highlights[0] if highlights else None
-    lead_highlight_url = lead_highlight.get("url", "news.html") if lead_highlight else "news.html"
-    lead_highlight_target = ' target="_blank" rel="noreferrer"' if lead_highlight else ""
-    lead_title = display_article_title(lead_highlight, limit=88) if lead_highlight else "오늘 가장 먼저 볼 청년 이슈를 준비 중입니다."
-    lead_summary = (
-        summarize_article_text(lead_highlight, limit=220)
-        if lead_highlight
-        else f"최근 {NEWS_WINDOW_DAYS}일 안에 수집된 핵심 기사와 정책, 참여·회의 집계를 이 영역에 함께 보여드립니다."
-    )
-    lead_meta = compact_article_meta(lead_highlight) if lead_highlight else "대표 기사 정보 없음"
     highlight_stats_html = "".join(
         [
             f'<article class="highlight-stat"><span class="highlight-stat-label">오늘의 기사</span><strong class="highlight-stat-value">{len(recent_news_articles)}건</strong></article>',
@@ -2216,7 +2201,7 @@ def build_home_page(
         ]
     )
     recent_groups = article_groups(recent_news_articles)
-    focus_items = []
+    focus_counts: list[tuple[str, int]] = []
     for category_key, label in [
         ("청년은 지금", "오늘 이슈"),
         ("지역 이슈", "지역 움직임"),
@@ -2224,14 +2209,50 @@ def build_home_page(
     ]:
         count = len(recent_groups.get(category_key, []))
         if count:
-            focus_items.append(
-                f'<article class="spotlight-note"><strong>{html.escape(label)}</strong><span>{count}건 올라왔습니다.</span></article>'
-            )
-    if not focus_items:
-        focus_items.append(
-            '<article class="spotlight-note"><strong>오늘 흐름 집계 준비 중</strong><span>새 기사 묶음이 들어오면 이 영역에 먼저 보입니다.</span></article>'
-        )
-    focus_items_html = "".join(focus_items[:3])
+            focus_counts.append((label, count))
+    top_focus_label, top_focus_count = (
+        sorted(focus_counts, key=lambda item: (-item[1], item[0]))[0]
+        if focus_counts
+        else ("오늘 흐름", 0)
+    )
+    region_counts: dict[str, int] = {}
+    for article in recent_news_articles:
+        region = (article.get("region") or "").strip()
+        if not region or region == "전국":
+            continue
+        region_counts[region] = region_counts.get(region, 0) + 1
+    top_regions = sorted(region_counts.items(), key=lambda item: (-item[1], item[0]))[:2]
+    top_region_head = " · ".join(f"{region} {count}건" for region, count in top_regions) if top_regions else "전국 중심"
+    top_region_body = "지역 기사 비중이 큰 흐름입니다." if top_regions else "전국 단위 기사 비중이 높습니다."
+    policy_basis = describe_article_basis(official_policy_articles or policy_articles, "최근 정책 없음")
+    hub_basis = describe_article_basis(government_hub_articles or regional_hub_articles, "최근 참여 기록 없음")
+    lead_title = (
+        f"{top_focus_label} 흐름이 오늘 가장 많이 올라왔습니다."
+        if top_focus_count
+        else "오늘 올라온 청년 흐름을 먼저 확인하세요."
+    )
+    lead_summary = (
+        f"최근 {NEWS_WINDOW_DAYS}일 기사 {len(recent_news_articles)}건, 정부 공식 발표 {len(official_policy_articles)}건, "
+        f"참여·회의 기록 {participation_count}건을 반영했습니다. {top_region_body}"
+    )
+    focus_items = [
+        (
+            f"가장 많은 구역: {top_focus_label}",
+            f"{top_focus_count}건이 올라왔습니다." if top_focus_count else "새 기사 묶음이 들어오면 이 영역에 먼저 보입니다.",
+        ),
+        (
+            f"많이 나온 지역: {top_region_head}",
+            top_region_body,
+        ),
+        (
+            "정책·참여 기준",
+            f"정책 {policy_basis} · 참여 {hub_basis}",
+        ),
+    ]
+    focus_items_html = "".join(
+        f'<article class="spotlight-note"><strong>{html.escape(title)}</strong><span>{html.escape(body)}</span></article>'
+        for title, body in focus_items
+    )
     quick_routes_html = "".join(
         [
             f'<a class="spotlight-route" href="news.html"><strong>뉴스 전체 보기</strong><span>최근 {NEWS_WINDOW_DAYS}일 기사 흐름을 날짜별로 훑어봅니다.</span></a>',
@@ -2301,7 +2322,7 @@ def build_home_page(
       <article class="home-section-card home-spotlight-card">
         <div class="home-meta-line">
           <span>기사 기준 {describe_article_basis(recent_news_articles, f"최근 {NEWS_WINDOW_DAYS}일 기사 없음")}</span>
-          <span>대표 기사 {html.escape(lead_meta)}</span>
+          <span>정책 기준 {html.escape(policy_basis)}</span>
           <span>페이지 반영 {format_display_datetime(page_updated_at)}</span>
         </div>
         <div class="home-spotlight-layout">
@@ -2318,8 +2339,8 @@ def build_home_page(
               <div class="spotlight-notes">{focus_items_html}</div>
             </div>
             <div class="hero-actions home-actions">
-              <a class="button primary" href="{html.escape(lead_highlight_url)}"{lead_highlight_target}>대표 기사 보기</a>
-              <a class="button" href="news.html">뉴스 전체 보기</a>
+              <a class="button primary" href="news.html">뉴스 전체 보기</a>
+              <a class="button" href="policies.html">정책 원문 보기</a>
             </div>
           </div>
           <aside class="spotlight-side">
