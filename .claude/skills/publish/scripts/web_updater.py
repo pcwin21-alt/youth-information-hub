@@ -2378,27 +2378,22 @@ def build_home_page(
         official_policy_articles,
         participation_count,
     )
-    lead_title = (
-        f"{top_focus_label} 흐름이 오늘 가장 많이 올라왔습니다."
-        if top_focus_count
-        else "오늘 올라온 청년 흐름을 먼저 확인하세요."
-    )
+    lead_title = "오늘 기준 청년 이슈 흐름을 한눈에 정리했습니다."
     lead_summary = (
-        f"최근 {NEWS_WINDOW_DAYS}일 기사 {len(recent_news_articles)}건, 정부 공식 발표 {len(official_policy_articles)}건, "
-        f"참여·회의 기록 {participation_count}건을 반영했습니다. {top_region_body}"
+        f"최근 {NEWS_WINDOW_DAYS}일 기사와 정부 공식 발표, 참여·회의 기록을 한 화면에서 빠르게 비교할 수 있게 묶었습니다."
     )
     focus_items = [
         (
-            f"가장 많은 구역: {top_focus_label}",
-            f"{top_focus_count}건이 올라왔습니다." if top_focus_count else "새 기사 묶음이 들어오면 이 영역에 먼저 보입니다.",
+            "뉴스는 최근 7일 흐름 중심",
+            f"최근 {NEWS_WINDOW_DAYS}일 기사 변화를 날짜별로 빠르게 훑어볼 수 있습니다.",
         ),
         (
-            f"많이 나온 지역: {top_region_head}",
-            top_region_body,
+            "정책은 정부 발표 우선",
+            f"{policy_basis} 기준 공식 발표를 참고 기사와 분리해 확인할 수 있습니다.",
         ),
         (
-            "정책·참여 기준",
-            f"정책 {policy_basis} · 참여 {hub_basis}",
+            "참여·회의는 기록형으로 정리",
+            f"{hub_basis} 기준 회의·위원회·네트워크 움직임을 한곳에서 이어볼 수 있습니다.",
         ),
     ]
     focus_items_html = "".join(
@@ -2492,7 +2487,7 @@ def build_home_page(
               </div>
             </div>
             <div class="spotlight-focus">
-              <span class="spotlight-focus-title">오늘 많이 나온 흐름</span>
+              <span class="spotlight-focus-title">이 화면이 해주는 일</span>
               <div class="spotlight-notes">{focus_items_html}</div>
             </div>
             <div class="hero-actions home-actions">
