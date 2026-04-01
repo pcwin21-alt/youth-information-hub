@@ -711,7 +711,6 @@ BASE_CSS = """
     border: 0;
     background: none;
   }
-  .spotlight-focus-title,
   .spotlight-panel-title {
     display: block;
     margin-bottom: 0;
@@ -825,6 +824,9 @@ BASE_CSS = """
     line-height: 1.08;
     letter-spacing: -0.05em;
     max-width: 12ch;
+  }
+  .spotlight-lead-title span {
+    display: block;
   }
   .spotlight-lead-summary {
     margin: 0;
@@ -2429,9 +2431,9 @@ def build_home_page(
         official_policy_articles,
         participation_count,
     )
-    lead_title = "오늘 기준 청년 이슈 흐름을 한눈에 정리했습니다."
-    lead_summary = (
-        f"최근 {NEWS_WINDOW_DAYS}일 기사와 정부 공식 발표, 참여·회의 기록을 한 화면에서 빠르게 비교할 수 있게 묶었습니다."
+    lead_title_html = (
+        "<span>청년세대와 관련된 이슈들을</span>"
+        "<span>한 데 모았습니다.</span>"
     )
     focus_items = [
         (
@@ -2521,9 +2523,8 @@ def build_home_page(
         <div class="home-spotlight-layout">
           <div class="spotlight-main">
             <div class="home-section-head">
-              <div class="home-section-title">
-                <h1 class="spotlight-lead-title">{html.escape(lead_title)}</h1>
-                <p class="spotlight-lead-summary">{html.escape(lead_summary)}</p>
+                <div class="home-section-title">
+                <h1 class="spotlight-lead-title">{lead_title_html}</h1>
                 <div class="spotlight-update-inline">
                   <span class="spotlight-update-label">{html.escape(update_briefing["label"])}</span>
                   <p class="spotlight-update-copy">{html.escape(update_briefing["copy"])}</p>
@@ -2532,7 +2533,6 @@ def build_home_page(
               </div>
             </div>
             <div class="spotlight-focus">
-              <span class="spotlight-focus-title">이 화면이 해주는 일</span>
               <div class="spotlight-notes">{focus_items_html}</div>
             </div>
             <div class="hero-actions home-actions">
