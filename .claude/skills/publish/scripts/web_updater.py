@@ -688,119 +688,156 @@ BASE_CSS = """
   .home-spotlight-layout {
     display: grid;
     grid-template-columns: 1fr;
-    gap: 14px;
-    margin-top: 18px;
+    gap: 22px;
+    margin-top: 10px;
   }
   .hero.home-hero {
     grid-template-columns: 1fr;
   }
   .spotlight-main {
     display: grid;
-    gap: 14px;
+    gap: 20px;
     align-content: start;
   }
+  .spotlight-main .home-section-head {
+    margin: 0;
+    padding-bottom: 18px;
+    border-bottom: 1px solid rgba(23, 33, 49, 0.08);
+  }
   .spotlight-focus {
-    padding: 16px;
-    border-radius: 22px;
-    border: 1px solid rgba(23, 33, 49, 0.08);
-    background: rgba(255, 255, 255, 0.82);
+    display: grid;
+    gap: 14px;
+    padding: 0;
+    border: 0;
+    background: none;
   }
   .spotlight-focus-title,
   .spotlight-panel-title {
     display: block;
-    margin-bottom: 10px;
+    margin-bottom: 0;
     color: var(--accent-strong);
     font-size: 0.8rem;
     font-weight: 800;
-    letter-spacing: -0.01em;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
   }
   .spotlight-notes {
     display: grid;
-    gap: 10px;
+    gap: 16px;
+    position: relative;
+    padding-left: 22px;
+  }
+  .spotlight-notes::before {
+    content: "";
+    position: absolute;
+    left: 5px;
+    top: 6px;
+    bottom: 6px;
+    width: 1px;
+    background: linear-gradient(180deg, rgba(31, 111, 95, 0.32) 0%, rgba(23, 33, 49, 0.08) 100%);
   }
   .spotlight-note {
-    padding: 12px 14px;
-    border-radius: 18px;
-    background: rgba(28, 39, 54, 0.04);
-    border: 1px solid rgba(23, 33, 49, 0.06);
+    position: relative;
+    padding: 0 0 0 12px;
+    border: 0;
+    background: none;
+  }
+  .spotlight-note::before {
+    content: "";
+    position: absolute;
+    left: -22px;
+    top: 7px;
+    width: 12px;
+    height: 12px;
+    border-radius: 999px;
+    background: linear-gradient(180deg, rgba(61, 137, 255, 0.95) 0%, rgba(31, 111, 95, 0.95) 100%);
+    box-shadow: 0 0 0 5px rgba(61, 137, 255, 0.08);
   }
   .spotlight-note strong {
     display: block;
-    font-size: 0.92rem;
+    font-size: 1rem;
     line-height: 1.35;
+    letter-spacing: -0.02em;
   }
   .spotlight-note span {
     display: block;
-    margin-top: 4px;
+    margin-top: 5px;
     color: var(--muted);
-    font-size: 0.8rem;
-    line-height: 1.5;
+    font-size: 0.84rem;
+    line-height: 1.6;
   }
   .spotlight-side {
     display: grid;
-    gap: 12px;
+    gap: 18px;
     align-content: start;
   }
   .spotlight-panel {
-    padding: 16px;
-    border-radius: 22px;
-    border: 1px solid rgba(23, 33, 49, 0.08);
-    background: rgba(255, 255, 255, 0.88);
-  }
-  .spotlight-panel .highlight-stats {
-    margin-top: 0;
+    display: grid;
+    gap: 18px;
+    padding: 22px 0 0;
+    border: 0;
+    border-top: 1px solid rgba(23, 33, 49, 0.08);
+    background: none;
   }
   .spotlight-panel-title.secondary {
-    margin-top: 16px;
-  }
-  .spotlight-panel .spotlight-routes {
-    margin-top: 12px;
+    margin-top: 4px;
   }
   .spotlight-routes {
     display: grid;
-    gap: 10px;
+    gap: 0;
+    border-top: 1px solid rgba(23, 33, 49, 0.08);
   }
   .spotlight-route {
     display: grid;
     gap: 4px;
-    padding: 12px 14px;
-    border-radius: 18px;
-    border: 1px solid rgba(23, 33, 49, 0.08);
-    background: rgba(248, 250, 252, 0.94);
-    transition: transform 0.18s ease, border-color 0.18s ease, background 0.18s ease;
+    position: relative;
+    padding: 14px 0 14px 22px;
+    border: 0;
+    border-bottom: 1px solid rgba(23, 33, 49, 0.08);
+    background: none;
+    transition: transform 0.18s ease, color 0.18s ease;
+  }
+  .spotlight-route::before {
+    content: ">";
+    position: absolute;
+    left: 0;
+    top: 14px;
+    color: rgba(31, 111, 95, 0.8);
+    font-size: 0.88rem;
+    font-weight: 700;
   }
   .spotlight-route:hover {
-    transform: translateY(-1px);
-    border-color: rgba(31, 111, 95, 0.22);
-    background: white;
+    transform: translateX(3px);
   }
   .spotlight-route strong {
-    font-size: 0.93rem;
+    font-size: 0.98rem;
     line-height: 1.35;
+    letter-spacing: -0.02em;
   }
   .spotlight-route span {
     color: var(--muted);
-    font-size: 0.8rem;
+    font-size: 0.82rem;
     line-height: 1.5;
   }
   .spotlight-lead-title {
-    margin: 2px 0 0;
-    font-size: 2.1rem;
-    line-height: 1.18;
+    margin: 0;
+    font-size: 2.35rem;
+    line-height: 1.08;
     letter-spacing: -0.05em;
+    max-width: 12ch;
   }
   .spotlight-lead-summary {
     margin: 0;
     color: var(--muted);
     font-size: 1rem;
     line-height: 1.7;
-    max-width: 60ch;
+    max-width: 54ch;
   }
   .spotlight-update-inline {
     display: grid;
     gap: 4px;
-    margin-top: 12px;
-    padding-top: 12px;
+    margin-top: 16px;
+    padding: 14px 16px 0 0;
     border-top: 1px solid rgba(23, 33, 49, 0.08);
     max-width: 68ch;
   }
@@ -826,15 +863,25 @@ BASE_CSS = """
   }
   .highlight-stats {
     display: grid;
-    grid-template-columns: 1fr;
-    gap: 10px;
-    margin-top: 18px;
+    grid-template-columns: repeat(auto-fit, minmax(96px, 1fr));
+    gap: 12px;
+    margin-top: 0;
   }
   .highlight-stat {
-    padding: 14px 16px;
-    border-radius: 18px;
+    aspect-ratio: 1 / 1;
+    min-height: 112px;
+    padding: 14px;
+    border-radius: 999px;
     border: 1px solid rgba(23, 33, 49, 0.08);
-    background: rgba(255, 255, 255, 0.92);
+    background:
+      radial-gradient(circle at 30% 30%, rgba(123, 184, 255, 0.18), transparent 48%),
+      linear-gradient(180deg, rgba(255, 255, 255, 0.98) 0%, rgba(245, 248, 251, 0.96) 100%);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9);
   }
   .highlight-stat-label {
     display: block;
@@ -846,7 +893,7 @@ BASE_CSS = """
   .highlight-stat-value {
     display: block;
     margin-top: 6px;
-    font-size: 1.32rem;
+    font-size: 1.4rem;
     font-weight: 800;
     letter-spacing: -0.04em;
   }
@@ -1164,7 +1211,7 @@ BASE_CSS = """
       gap: 14px;
     }
     .highlight-stats {
-      grid-template-columns: repeat(3, minmax(0, 1fr));
+      grid-template-columns: repeat(3, minmax(96px, 1fr));
       gap: 12px;
     }
     .home-spotlight-layout {
@@ -1172,7 +1219,7 @@ BASE_CSS = """
       gap: 18px;
     }
     .spotlight-notes {
-      grid-template-columns: repeat(3, minmax(0, 1fr));
+      grid-template-columns: 1fr;
     }
     .list {
       gap: 14px;
