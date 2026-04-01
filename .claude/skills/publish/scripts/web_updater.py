@@ -455,6 +455,10 @@ BASE_CSS = """
     line-height: 1.5;
   }
   .date-picker-row {
+    display: grid;
+    gap: 10px;
+  }
+  .date-range-fields {
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
@@ -463,7 +467,8 @@ BASE_CSS = """
   .date-input-wrap {
     display: grid;
     gap: 6px;
-    min-width: min(100%, 260px);
+    min-width: min(100%, 220px);
+    flex: 1 1 220px;
     padding: 12px 14px;
     border: 1px solid var(--line);
     border-radius: 18px;
@@ -487,12 +492,6 @@ BASE_CSS = """
   }
   .date-input:focus {
     outline: none;
-  }
-  .filter-helper {
-    margin: 0;
-    color: var(--muted);
-    font-size: 0.76rem;
-    line-height: 1.5;
   }
   .news-intro-card {
     display: grid;
@@ -1461,10 +1460,41 @@ BASE_SCRIPT = """
     fallbackCopy(text);
   }
 
-  function applyNewsFilters(root, selectedDate, selectedRegion) {
-    const activeDate = selectedDate || root.dataset.selectedDate || root.getAttribute('data-default-date') || 'all';
+  function normalizeNewsDateRange(startValue, endValue) {
+    let startDate = startValue || '';
+    let endDate = endValue || '';
+    if (startDate && endDate && startDate > endDate) {
+      const swappedStart = endDate;
+      endDate = startDate;
+      startDate = swappedStart;
+    }
+    return { startDate, endDate };
+  }
+
+  function formatNewsDateRange(startDate, endDate) {
+    if (startDate && endDate) {
+      return `${startDate} - ${endDate}`;
+    }
+    if (startDate) {
+      return `${startDate}부터`;
+    }
+    if (endDate) {
+      return `${endDate}까지`;
+    }
+    return '전체';
+  }
+
+  function applyNewsFilters(root, selectedDateStart, selectedDateEnd, selectedRegion) {
+    const normalizedDates = normalizeNewsDateRange(
+      selectedDateStart ?? root.dataset.selectedDateStart ?? root.getAttribute('data-default-date-start') ?? '',
+      selectedDateEnd ?? root.dataset.selectedDateEnd ?? root.getAttribute('data-default-date-end') ?? '',
+    );
+    const activeDateStart = normalizedDates.startDate;
+    const activeDateEnd = normalizedDates.endDate;
+    const hasDateRange = Boolean(activeDateStart || activeDateEnd);
     const activeRegion = selectedRegion || root.dataset.selectedRegion || root.getAttribute('data-default-region') || 'all';
-    root.dataset.selectedDate = activeDate;
+    root.dataset.selectedDateStart = activeDateStart;
+    root.dataset.selectedDateEnd = activeDateEnd;
     root.dataset.selectedRegion = activeRegion;
 
     const articleCards = Array.from(root.querySelectorAll('[data-article-date]'));
@@ -1473,7 +1503,9 @@ BASE_SCRIPT = """
     articleCards.forEach((card) => {
       const articleDate = card.getAttribute('data-article-date') || '';
       const articleRegion = card.getAttribute('data-article-region') || '중앙';
-      const dateMatch = activeDate === 'all' || articleDate === activeDate;
+      const isAfterStart = !activeDateStart || (articleDate && articleDate >= activeDateStart);
+      const isBeforeEnd = !activeDateEnd || (articleDate && articleDate <= activeDateEnd);
+      const dateMatch = !hasDateRange || (isAfterStart && isBeforeEnd);
       const regionMatch = activeRegion === 'all' || articleRegion === activeRegion;
       const isMatch = dateMatch && regionMatch;
       card.hidden = !isMatch;
@@ -1485,29 +1517,30 @@ BASE_SCRIPT = """
     root.querySelectorAll('[data-news-filter]').forEach((button) => {
       const group = button.getAttribute('data-filter-group') || 'date';
       const value = button.getAttribute('data-filter-value') || 'all';
-      const isActive = group === 'region' ? value === activeRegion : value === activeDate;
+      const isActive = group === 'region' ? value === activeRegion : (value === 'all' && !hasDateRange);
       button.classList.toggle('active', isActive);
       button.setAttribute('aria-pressed', isActive ? 'true' : 'false');
     });
 
-    const dateInput = root.querySelector('[data-news-date-input]');
-    if (dateInput) {
-      const nextValue = activeDate === 'all' ? '' : activeDate;
+    root.querySelectorAll('[data-news-date-input]').forEach((dateInput) => {
+      const role = dateInput.getAttribute('data-date-role') || 'start';
+      const nextValue = role === 'end' ? activeDateEnd : activeDateStart;
       if (dateInput.value !== nextValue) {
         dateInput.value = nextValue;
       }
-    }
+    });
 
     const status = root.querySelector('[data-news-filter-status]');
     if (status) {
-      if (activeDate === 'all' && activeRegion === 'all') {
+      const dateLabel = formatNewsDateRange(activeDateStart, activeDateEnd);
+      if (!hasDateRange && activeRegion === 'all') {
         status.textContent = `전체 ${visibleCount}건을 보고 있습니다.`;
-      } else if (activeDate === 'all') {
+      } else if (!hasDateRange) {
         status.textContent = `${activeRegion} 기사 ${visibleCount}건을 보고 있습니다.`;
       } else if (activeRegion === 'all') {
-        status.textContent = `${activeDate} 기사 ${visibleCount}건을 보고 있습니다.`;
+        status.textContent = `${dateLabel} 기사 ${visibleCount}건을 보고 있습니다.`;
       } else {
-        status.textContent = `${activeRegion} · ${activeDate} 기사 ${visibleCount}건을 보고 있습니다.`;
+        status.textContent = `${activeRegion} · ${dateLabel} 기사 ${visibleCount}건을 보고 있습니다.`;
       }
     }
 
@@ -1563,7 +1596,8 @@ BASE_SCRIPT = """
         const value = filterButton.getAttribute('data-filter-value') || 'all';
         applyNewsFilters(
           root,
-          group === 'date' ? value : (root.dataset.selectedDate || root.getAttribute('data-default-date') || 'all'),
+          group === 'date' ? '' : (root.dataset.selectedDateStart || root.getAttribute('data-default-date-start') || ''),
+          group === 'date' ? '' : (root.dataset.selectedDateEnd || root.getAttribute('data-default-date-end') || ''),
           group === 'region' ? value : (root.dataset.selectedRegion || root.getAttribute('data-default-region') || 'all'),
         );
       }
@@ -1606,7 +1640,8 @@ BASE_SCRIPT = """
   document.querySelectorAll('[data-news-filter-root]').forEach((root) => {
     applyNewsFilters(
       root,
-      root.getAttribute('data-default-date') || 'all',
+      root.getAttribute('data-default-date-start') || '',
+      root.getAttribute('data-default-date-end') || '',
       root.getAttribute('data-default-region') || 'all',
     );
   });
@@ -1620,9 +1655,12 @@ BASE_SCRIPT = """
     if (!root) {
       return;
     }
+    const startInput = root.querySelector('[data-news-date-input][data-date-role="start"]');
+    const endInput = root.querySelector('[data-news-date-input][data-date-role="end"]');
     applyNewsFilters(
       root,
-      dateInput.value || 'all',
+      startInput ? startInput.value : '',
+      endInput ? endInput.value : '',
       root.dataset.selectedRegion || root.getAttribute('data-default-region') || 'all',
     );
   });
@@ -2011,7 +2049,7 @@ def render_news_filter_panel(regions: list[str], dates: list[str], total_count: 
       <article class="section-card filter-panel">
         <div class="filter-head">
           <h3>지역별 · 날짜별로 보기</h3>
-          <p>지역은 바로 누르고, 날짜는 달력에서 골라 원하는 기사만 빠르게 볼 수 있습니다.</p>
+          <p>지역은 바로 누르고, 날짜는 시작일과 종료일을 골라 필요한 구간만 빠르게 볼 수 있습니다.</p>
         </div>
         <div class="filter-stack">
           <div class="filter-group">
@@ -2019,15 +2057,20 @@ def render_news_filter_panel(regions: list[str], dates: list[str], total_count: 
             <div class="filter-controls">{''.join(region_buttons)}</div>
           </div>
           <div class="filter-group">
-            <span class="filter-group-label">날짜</span>
+            <span class="filter-group-label">기간</span>
             <div class="date-picker-row">
               <button class="filter-button active" type="button" data-news-filter="true" data-filter-group="date" data-filter-value="all" aria-pressed="true">전체</button>
-              <label class="date-input-wrap">
-                <span class="date-picker-label">달력에서 선택</span>
-                <input class="date-input" type="date" data-news-date-input="true" {date_input_attrs_text}>
-              </label>
+              <div class="date-range-fields">
+                <label class="date-input-wrap">
+                  <span class="date-picker-label">시작일</span>
+                  <input class="date-input" type="date" data-news-date-input="true" data-date-role="start" {date_input_attrs_text}>
+                </label>
+                <label class="date-input-wrap">
+                  <span class="date-picker-label">종료일</span>
+                  <input class="date-input" type="date" data-news-date-input="true" data-date-role="end" {date_input_attrs_text}>
+                </label>
+              </div>
             </div>
-            <p class="filter-helper">날짜가 쌓여도 길게 나열하지 않고, 필요한 날만 바로 선택할 수 있습니다.</p>
           </div>
         </div>
         <div class="filter-status" data-news-filter-status>전체 {total_count}건을 보고 있습니다.</div>
@@ -2884,7 +2927,7 @@ def build_news_page(articles: list[dict], status: dict) -> str:
     news_filter_panel = render_news_filter_panel(region_options, date_options, len(recent_news_articles))
     cards_html = "".join(render_article_card(article) for article in recent_news_articles)
     return f"""
-    <div data-news-filter-root="news" data-default-date="all" data-default-region="all">
+    <div data-news-filter-root="news" data-default-date-start="" data-default-date-end="" data-default-region="all">
       {news_filter_panel}
       <section class="section">
         <div class="article-grid">
