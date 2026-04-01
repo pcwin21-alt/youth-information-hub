@@ -399,10 +399,6 @@ BASE_CSS = """
     display: grid;
     gap: 12px;
   }
-  .filter-layout {
-    display: grid;
-    gap: 18px;
-  }
   .filter-stack {
     display: grid;
     gap: 14px;
@@ -458,77 +454,45 @@ BASE_CSS = """
     font-size: 0.78rem;
     line-height: 1.5;
   }
-  .region-map-panel {
-    display: grid;
-    gap: 10px;
-    align-content: start;
-  }
-  .region-map-topline {
+  .date-picker-row {
     display: flex;
-    align-items: center;
-    justify-content: space-between;
+    flex-wrap: wrap;
     gap: 10px;
+    align-items: stretch;
   }
-  .region-central-chip {
-    padding: 6px 10px;
-    font-size: 0.76rem;
+  .date-input-wrap {
+    display: grid;
+    gap: 6px;
+    min-width: min(100%, 260px);
+    padding: 12px 14px;
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    background: var(--panel-soft);
   }
-  .region-map-shell {
-    position: relative;
-    min-height: 420px;
-    padding: 16px 14px 20px;
-    border-radius: 28px;
-    border: 1px solid rgba(23, 33, 49, 0.08);
-    background:
-      radial-gradient(circle at top left, rgba(123, 184, 255, 0.16), transparent 40%),
-      linear-gradient(180deg, rgba(255, 255, 255, 0.98) 0%, rgba(244, 248, 252, 0.96) 100%);
-    overflow: hidden;
-  }
-  .region-map-illustration {
-    position: absolute;
-    inset: 18px 18px 18px 18px;
-    width: calc(100% - 36px);
-    height: calc(100% - 36px);
-    object-fit: contain;
-    object-position: center;
-    opacity: 0.94;
-    filter: drop-shadow(0 18px 26px rgba(23, 33, 49, 0.08));
-    pointer-events: none;
-  }
-  .region-map-buttons {
-    position: absolute;
-    inset: 18px;
-  }
-  .region-map-button {
-    position: absolute;
-    transform: translate(-50%, -50%);
-    padding: 5px 8px;
-    min-width: 42px;
-    border-radius: 999px;
-    border: 1px solid rgba(23, 33, 49, 0.1);
-    background: rgba(255, 255, 255, 0.96);
-    color: var(--text);
+  .date-picker-label {
+    color: var(--muted);
     font-size: 0.72rem;
-    font-weight: 800;
+    font-weight: 700;
     line-height: 1;
-    box-shadow: 0 8px 18px rgba(23, 33, 49, 0.08);
   }
-  .region-map-button.active {
-    border-color: transparent;
-    background: var(--accent-strong);
-    color: white;
-    box-shadow: 0 12px 22px rgba(31, 111, 95, 0.2);
+  .date-input {
+    width: 100%;
+    border: 0;
+    background: transparent;
+    color: var(--text);
+    font: inherit;
+    font-size: 0.92rem;
+    font-weight: 700;
+    padding: 0;
   }
-  .region-map-button:disabled {
-    opacity: 0.36;
-    cursor: default;
-    box-shadow: none;
+  .date-input:focus {
+    outline: none;
   }
-  .region-map-note {
+  .filter-helper {
     margin: 0;
     color: var(--muted);
-    font-size: 0.78rem;
-    line-height: 1.55;
+    font-size: 0.76rem;
+    line-height: 1.5;
   }
   .news-intro-card {
     display: grid;
@@ -1344,10 +1308,6 @@ BASE_CSS = """
       grid-template-columns: repeat(3, minmax(96px, 1fr));
       gap: 12px;
     }
-    .filter-layout {
-      grid-template-columns: minmax(0, 1.2fr) minmax(260px, 0.78fr);
-      align-items: start;
-    }
     .home-spotlight-layout {
       grid-template-columns: minmax(0, 1.24fr) minmax(280px, 0.82fr);
       gap: 18px;
@@ -1530,6 +1490,14 @@ BASE_SCRIPT = """
       button.setAttribute('aria-pressed', isActive ? 'true' : 'false');
     });
 
+    const dateInput = root.querySelector('[data-news-date-input]');
+    if (dateInput) {
+      const nextValue = activeDate === 'all' ? '' : activeDate;
+      if (dateInput.value !== nextValue) {
+        dateInput.value = nextValue;
+      }
+    }
+
     const status = root.querySelector('[data-news-filter-status]');
     if (status) {
       if (activeDate === 'all' && activeRegion === 'all') {
@@ -1643,6 +1611,22 @@ BASE_SCRIPT = """
     );
   });
 
+  document.addEventListener('change', (event) => {
+    const dateInput = event.target.closest('[data-news-date-input]');
+    if (!dateInput) {
+      return;
+    }
+    const root = dateInput.closest('[data-news-filter-root]');
+    if (!root) {
+      return;
+    }
+    applyNewsFilters(
+      root,
+      dateInput.value || 'all',
+      root.dataset.selectedRegion || root.getAttribute('data-default-region') || 'all',
+    );
+  });
+
   document.addEventListener('keydown', (event) => {
     if (event.key !== 'Escape') {
       return;
@@ -1677,26 +1661,6 @@ NAV_ITEMS = [
     ("hub.html", "참여·회의"),
     ("tools.html", "자료도구"),
     ("contact.html", "제보·문의"),
-]
-
-NEWS_REGION_MAP_LAYOUT = [
-    ("서울", 42, 18),
-    ("인천", 30, 22),
-    ("경기", 45, 29),
-    ("강원", 67, 22),
-    ("세종", 42, 43),
-    ("충남", 30, 47),
-    ("충북", 53, 45),
-    ("대전", 43, 52),
-    ("전북", 37, 61),
-    ("광주", 31, 73),
-    ("전남", 27, 84),
-    ("대구", 59, 62),
-    ("경북", 69, 54),
-    ("울산", 79, 73),
-    ("부산", 72, 81),
-    ("경남", 57, 79),
-    ("제주", 34, 95),
 ]
 
 
@@ -2020,7 +1984,6 @@ def collect_news_regions(articles: list[dict]) -> list[str]:
 
 
 def render_news_filter_panel(regions: list[str], dates: list[str], total_count: int) -> str:
-    region_set = set(regions)
     region_buttons = [
         '<button class="filter-button active" type="button" data-news-filter="true" '
         'data-filter-group="region" data-filter-value="all" aria-pressed="true">전체</button>'
@@ -2032,58 +1995,42 @@ def render_news_filter_panel(regions: list[str], dates: list[str], total_count: 
             f'aria-pressed="false">{html.escape(region)}</button>'
         )
 
-    date_buttons = [
-        '<button class="filter-button active" type="button" data-news-filter="true" '
-        'data-filter-group="date" data-filter-value="all" aria-pressed="true">전체</button>'
-    ]
-    for date in dates:
-        date_buttons.append(
-            f'<button class="filter-button" type="button" data-news-filter="true" '
-            f'data-filter-group="date" data-filter-value="{html.escape(date)}" '
-            f'aria-pressed="false">{html.escape(date)}</button>'
-        )
-
-    map_buttons = []
-    for region, left, top in NEWS_REGION_MAP_LAYOUT:
-        disabled = ' disabled="true"' if region not in region_set else ""
-        map_buttons.append(
-            f'<button class="region-map-button" type="button" data-news-filter="true" '
-            f'data-filter-group="region" data-filter-value="{html.escape(region)}" '
-            f'aria-pressed="false" style="left:{left}%; top:{top}%;"{disabled}>{html.escape(region)}</button>'
-        )
+    date_min = html.escape(dates[-1]) if dates else ""
+    date_max = html.escape(dates[0]) if dates else ""
+    date_input_attrs = []
+    if date_min:
+        date_input_attrs.append(f'min="{date_min}"')
+    if date_max:
+        date_input_attrs.append(f'max="{date_max}"')
+    if not dates:
+        date_input_attrs.append('disabled="true"')
+    date_input_attrs_text = " ".join(date_input_attrs)
 
     return f"""
     <section class="section">
       <article class="section-card filter-panel">
         <div class="filter-head">
           <h3>지역별 · 날짜별로 보기</h3>
-          <p>필요한 지역과 날짜를 고르면 조건에 맞는 기사만 바로 볼 수 있습니다.</p>
+          <p>지역은 바로 누르고, 날짜는 달력에서 골라 원하는 기사만 빠르게 볼 수 있습니다.</p>
         </div>
-        <div class="filter-layout">
-          <div class="filter-stack">
-            <div class="filter-group">
-              <span class="filter-group-label">지역</span>
-              <div class="filter-controls">{''.join(region_buttons)}</div>
-            </div>
-            <div class="filter-group">
-              <span class="filter-group-label">날짜</span>
-              <div class="filter-controls">{''.join(date_buttons)}</div>
-            </div>
+        <div class="filter-stack">
+          <div class="filter-group">
+            <span class="filter-group-label">지역</span>
+            <div class="filter-controls">{''.join(region_buttons)}</div>
           </div>
-          <aside class="region-map-panel">
-            <div class="region-map-topline">
-              <span class="filter-group-label">지도에서 선택</span>
-              <button class="filter-button region-central-chip" type="button" data-news-filter="true" data-filter-group="region" data-filter-value="중앙" aria-pressed="false">중앙</button>
+          <div class="filter-group">
+            <span class="filter-group-label">날짜</span>
+            <div class="date-picker-row">
+              <button class="filter-button active" type="button" data-news-filter="true" data-filter-group="date" data-filter-value="all" aria-pressed="true">전체</button>
+              <label class="date-input-wrap">
+                <span class="date-picker-label">달력에서 선택</span>
+                <input class="date-input" type="date" data-news-date-input="true" {date_input_attrs_text}>
+              </label>
             </div>
-            <div class="region-map-shell">
-              <img class="region-map-illustration" src="assets/korea-peninsula.svg" alt="" loading="lazy" decoding="async">
-              <div class="region-map-buttons">{''.join(map_buttons)}</div>
-            </div>
-            <p class="region-map-note">지도에서 지역을 누르면 왼쪽 필터와 같은 방식으로 바로 적용됩니다.</p>
-          </aside>
+            <p class="filter-helper">날짜가 쌓여도 길게 나열하지 않고, 필요한 날만 바로 선택할 수 있습니다.</p>
+          </div>
         </div>
         <div class="filter-status" data-news-filter-status>전체 {total_count}건을 보고 있습니다.</div>
-        </div>
       </article>
     </section>
     """
