@@ -678,28 +678,6 @@ BASE_CSS = """
     line-height: 1.72;
     max-width: 58ch;
   }
-  .welcome-meta {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin-top: 2px;
-  }
-  .welcome-pill {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    padding: 8px 12px;
-    border-radius: 999px;
-    background: rgba(255, 255, 255, 0.92);
-    border: 1px solid rgba(23, 33, 49, 0.08);
-    color: var(--muted);
-    font-size: 0.78rem;
-    font-weight: 700;
-  }
-  .welcome-pill strong {
-    color: var(--accent-strong);
-    font-size: 0.8rem;
-  }
   .welcome-grid {
     display: grid;
     grid-template-columns: 1fr;
@@ -758,6 +736,13 @@ BASE_CSS = """
     border-radius: 24px;
     color: rgba(255, 255, 255, 0.94);
     box-shadow: var(--shadow-soft);
+  }
+  .home-status-note {
+    margin: 8px 2px 0;
+    color: var(--muted);
+    font-size: 0.75rem;
+    line-height: 1.6;
+    text-align: center;
   }
   .home-footer h3 {
     margin: 0 0 6px;
@@ -1967,6 +1952,14 @@ def build_home_page(
             '<div class="list-item"><strong>AI 도구 사용법</strong><span>질문 정리와 초안 점검 방법을 안내합니다.</span></div>',
         ]
     )
+    home_status_note = " · ".join(
+        [
+            f"현재 상태 {status_meta['state']}",
+            f"페이지 반영 {format_display_datetime(page_updated_at)}",
+            f"기사 기준 {describe_article_basis(recent_news_articles, f'최근 {NEWS_WINDOW_DAYS}일 기사 없음')}",
+            status_meta["update_frequency"],
+        ]
+    )
     contact_date = format_display_datetime(contact_settings.get("updated_at"))
     contact_message = html.escape(contact_settings.get("extra_line_1", ""))
     contact_email = html.escape(contact_settings.get("email", ""))
@@ -1979,12 +1972,6 @@ def build_home_page(
             <h1>오늘 기준 청년 정책과 이슈를 한눈에 확인하세요.</h1>
             <p class="welcome-copy">뉴스, 정부 공식 발표, 참여 회의 소식을 한곳에 모았습니다. 빠르게 훑어보되 출처 구분이 보이도록 구조를 다시 정리했습니다.</p>
           </div>
-        </div>
-        <div class="welcome-meta">
-          <span class="welcome-pill"><strong>반영 주기</strong><span>{status_meta["update_frequency"]}</span></span>
-          <span class="welcome-pill"><strong>최근 {NEWS_WINDOW_DAYS}일 뉴스</strong><span>{len(recent_news_articles)}건</span></span>
-          <span class="welcome-pill"><strong>기사 기준</strong><span>{describe_article_basis(recent_news_articles, f"최근 {NEWS_WINDOW_DAYS}일 기사 없음")}</span></span>
-          <span class="welcome-pill"><strong>페이지 반영</strong><span>{format_display_datetime(page_updated_at)}</span></span>
         </div>
         <div class="welcome-grid">{welcome_panels_html}</div>
         <div class="welcome-note">
@@ -2003,11 +1990,6 @@ def build_home_page(
             <h2>오늘 가장 먼저 볼 소식</h2>
             <p class="home-section-copy">최근 {NEWS_WINDOW_DAYS}일 기사 가운데 우선 확인할 만한 이슈를 골랐습니다.</p>
           </div>
-        </div>
-        <div class="home-meta-line">
-          <span>현재 상태 {status_meta["state"]}</span>
-          <span>최근 반영 {status_meta["finished_at"]}</span>
-          <span>{status_meta["update_frequency"]}</span>
         </div>
         <div class="list">{highlight_list_html}</div>
         <div class="hero-actions home-actions">
@@ -2063,6 +2045,9 @@ def build_home_page(
         <div class="list">{tools_list_html}</div>
       </article>
     </section></div>
+    <section class="section">
+      <p class="home-status-note">{html.escape(home_status_note)}</p>
+    </section>
     <section class="section">
       <article class="home-footer">
         <h3>제보·문의</h3>
