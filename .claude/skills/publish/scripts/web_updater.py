@@ -656,35 +656,6 @@ BASE_CSS = """
     align-items: center;
     gap: 4px;
   }
-  .update-briefing {
-    display: grid;
-    gap: 8px;
-    margin-top: 14px;
-    padding: 16px 18px;
-    border-radius: 22px;
-    background: linear-gradient(180deg, rgba(28, 39, 54, 0.96) 0%, rgba(23, 33, 49, 1) 100%);
-    color: rgba(255, 255, 255, 0.96);
-    box-shadow: 0 16px 30px rgba(23, 33, 49, 0.12);
-  }
-  .update-briefing-label {
-    font-size: 0.76rem;
-    font-weight: 800;
-    letter-spacing: 0.01em;
-    color: rgba(255, 255, 255, 0.68);
-  }
-  .update-briefing-copy {
-    margin: 0;
-    font-size: 1rem;
-    font-weight: 700;
-    line-height: 1.6;
-    letter-spacing: -0.02em;
-  }
-  .update-briefing-meta {
-    margin: 0;
-    color: rgba(255, 255, 255, 0.72);
-    font-size: 0.82rem;
-    line-height: 1.55;
-  }
   .home-section-card .list {
     margin-top: 12px;
   }
@@ -819,6 +790,34 @@ BASE_CSS = """
     font-size: 1rem;
     line-height: 1.7;
     max-width: 60ch;
+  }
+  .spotlight-update-inline {
+    display: grid;
+    gap: 4px;
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid rgba(23, 33, 49, 0.08);
+    max-width: 68ch;
+  }
+  .spotlight-update-label {
+    color: var(--accent-strong);
+    font-size: 0.76rem;
+    font-weight: 800;
+    letter-spacing: 0.01em;
+  }
+  .spotlight-update-copy {
+    margin: 0;
+    color: var(--text);
+    font-size: 0.94rem;
+    font-weight: 700;
+    line-height: 1.55;
+    letter-spacing: -0.01em;
+  }
+  .spotlight-update-meta {
+    margin: 0;
+    color: var(--muted);
+    font-size: 0.8rem;
+    line-height: 1.5;
   }
   .highlight-stats {
     display: grid;
@@ -2472,11 +2471,6 @@ def build_home_page(
           <span>정책 기준 {html.escape(policy_basis)}</span>
           <span>페이지 반영 {format_display_datetime(page_updated_at)}</span>
         </div>
-        <div class="update-briefing">
-          <span class="update-briefing-label">{html.escape(update_briefing["label"])}</span>
-          <p class="update-briefing-copy">{html.escape(update_briefing["copy"])}</p>
-          <p class="update-briefing-meta">{html.escape(update_briefing["meta"])}</p>
-        </div>
         <div class="home-spotlight-layout">
           <div class="spotlight-main">
             <div class="home-section-head">
@@ -2484,6 +2478,11 @@ def build_home_page(
                 <span class="eyebrow">오늘의 하이라이트</span>
                 <h1 class="spotlight-lead-title">{html.escape(lead_title)}</h1>
                 <p class="spotlight-lead-summary">{html.escape(lead_summary)}</p>
+                <div class="spotlight-update-inline">
+                  <span class="spotlight-update-label">{html.escape(update_briefing["label"])}</span>
+                  <p class="spotlight-update-copy">{html.escape(update_briefing["copy"])}</p>
+                  <p class="spotlight-update-meta">{html.escape(update_briefing["meta"])}</p>
+                </div>
               </div>
             </div>
             <div class="spotlight-focus">
