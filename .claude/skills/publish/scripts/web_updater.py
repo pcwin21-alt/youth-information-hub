@@ -711,6 +711,44 @@ BASE_CSS = """
     border: 0;
     background: none;
   }
+  .spotlight-stories {
+    display: grid;
+    gap: 0;
+    border-top: 1px solid rgba(23, 33, 49, 0.08);
+  }
+  .spotlight-story {
+    padding: 16px 0;
+    border-bottom: 1px solid rgba(23, 33, 49, 0.08);
+  }
+  .spotlight-story-link {
+    display: grid;
+    gap: 5px;
+  }
+  .spotlight-story-kicker {
+    color: var(--accent-strong);
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+  }
+  .spotlight-story strong {
+    display: block;
+    font-size: 1.04rem;
+    line-height: 1.42;
+    letter-spacing: -0.03em;
+  }
+  .spotlight-story span {
+    color: var(--muted);
+    font-size: 0.84rem;
+    line-height: 1.55;
+  }
+  .spotlight-story:first-child strong {
+    font-size: 1.24rem;
+    line-height: 1.34;
+  }
+  .spotlight-story:hover strong {
+    color: var(--accent-strong);
+  }
   .spotlight-panel-title {
     display: block;
     margin-bottom: 0;
@@ -2418,12 +2456,7 @@ def build_home_page(
             f'<article class="highlight-stat"><span class="highlight-stat-label">참여·회의</span><strong class="highlight-stat-value">{participation_count}건</strong></article>',
         ]
     )
-    top_focus_label, top_focus_count = summarize_focus_counts(recent_news_articles)
-    top_regions = summarize_top_regions(recent_news_articles)
-    top_region_head = " · ".join(f"{region} {count}건" for region, count in top_regions) if top_regions else "전국 중심"
-    top_region_body = "지역 기사 비중이 큰 흐름입니다." if top_regions else "전국 단위 기사 비중이 높습니다."
     policy_basis = describe_article_basis(official_policy_articles or policy_articles, "최근 정책 없음")
-    hub_basis = describe_article_basis(government_hub_articles or regional_hub_articles, "최근 참여 기록 없음")
     update_briefing = build_home_update_briefing(
         status,
         page_updated_at,
@@ -2431,27 +2464,35 @@ def build_home_page(
         official_policy_articles,
         participation_count,
     )
-    lead_title_html = (
-        "<span>청년세대와 관련된 이슈들을</span>"
-        "<span>한 데 모았습니다.</span>"
-    )
-    focus_items = [
-        (
-            "뉴스는 최근 7일 흐름 중심",
-            f"최근 {NEWS_WINDOW_DAYS}일 기사 변화를 날짜별로 빠르게 훑어볼 수 있습니다.",
-        ),
-        (
-            "정책은 정부 발표 우선",
-            f"{policy_basis} 기준 공식 발표를 참고 기사와 분리해 확인할 수 있습니다.",
-        ),
-        (
-            "참여·회의는 기록형으로 정리",
-            f"{hub_basis} 기준 회의·위원회·네트워크 움직임을 한곳에서 이어볼 수 있습니다.",
-        ),
-    ]
-    focus_items_html = "".join(
-        f'<article class="spotlight-note"><strong>{html.escape(title)}</strong><span>{html.escape(body)}</span></article>'
-        for title, body in focus_items
+    lead_title_html = "<span>오늘 바로 볼 기사</span>"
+
+    def render_spotlight_story(article: dict) -> str:
+        title = html.escape(display_article_title(article))
+        meta = html.escape(compact_article_meta(article))
+        badges = article.get("display_badges") or []
+        kicker = html.escape(article.get("primary_sector") or (badges[0] if badges else "뉴스"))
+        url = article.get("url")
+        if not url:
+            return (
+                f'<article class="spotlight-story"><div class="spotlight-story-link">'
+                f'<span class="spotlight-story-kicker">{kicker}</span>'
+                f"<strong>{title}</strong>"
+                f"<span>{meta}</span>"
+                f"</div></article>"
+            )
+        escaped_url = html.escape(url)
+        return (
+            f'<article class="spotlight-story"><a class="spotlight-story-link" href="{escaped_url}" '
+            f'target="_blank" rel="noreferrer" aria-label="{title} 링크 바로가기">'
+            f'<span class="spotlight-story-kicker">{kicker}</span>'
+            f"<strong>{title}</strong>"
+            f"<span>{meta}</span>"
+            f"</a></article>"
+        )
+
+    spotlight_stories_html = "".join(render_spotlight_story(article) for article in recent_news_articles[:4]) or (
+        f'<article class="spotlight-story"><div class="spotlight-story-link"><span class="spotlight-story-kicker">뉴스</span>'
+        f'<strong>최근 {NEWS_WINDOW_DAYS}일 뉴스가 없습니다.</strong><span>새 청년 뉴스가 수집되면 이 영역에 표시됩니다.</span></div></article>'
     )
     quick_routes_html = "".join(
         [
@@ -2533,7 +2574,7 @@ def build_home_page(
               </div>
             </div>
             <div class="spotlight-focus">
-              <div class="spotlight-notes">{focus_items_html}</div>
+              <div class="spotlight-stories">{spotlight_stories_html}</div>
             </div>
             <div class="hero-actions home-actions">
               <a class="button primary" href="news.html">뉴스 전체 보기</a>
@@ -2657,19 +2698,19 @@ def build_guide_page(status: dict) -> str:
     return f"""
     <section class="hero">
       <article class="hero-card">
-        <span class="eyebrow">이용방법</span>
-        <h1>처음 오셨다면 이 순서가 가장 빠릅니다.</h1>
-        <p class="hero-copy">홈은 오늘의 하이라이트 중심으로, 뉴스는 최근 기사 흐름 중심으로, 정책은 정부 공식 발표 중심으로 구성했습니다. 필요한 메뉴를 다시 찾기 쉽도록 이 페이지를 상단 메뉴로 따로 두었습니다.</p>
+        <span class="eyebrow">사이트 소개</span>
+        <h1>청년세대와 관련된 이슈들을 한 데 모았습니다.</h1>
+        <p class="hero-copy">최근 7일 기사와 정부 공식 발표, 참여·회의 기록을 한 화면 흐름으로 비교할 수 있게 정리했습니다. 홈은 오늘 바로 볼 기사부터 시작하고, 이 페이지에서는 메뉴와 보는 순서를 설명합니다.</p>
         <div class="hero-feature-meta">페이지 반영 {html.escape(format_display_datetime(page_updated_at))} · {html.escape(status_meta["update_frequency"])}</div>
         <div class="hero-actions">
-          <a class="button primary" href="index.html">하이라이트 보기</a>
+          <a class="button primary" href="index.html">홈에서 기사 보기</a>
           <a class="button" href="news.html">뉴스부터 보기</a>
         </div>
       </article>
       <aside class="status-card">
         <h3>먼저 보면 좋은 메뉴</h3>
         <div class="list">
-          <div class="list-item"><strong>오늘의 하이라이트</strong><span>첫 화면에서 오늘의 기사 수와 정책, 참여·회의 건수를 함께 봅니다.</span></div>
+          <div class="list-item"><strong>홈</strong><span>첫 화면에서 오늘 바로 볼 기사와 업데이트 요약을 먼저 확인합니다.</span></div>
           <div class="list-item"><strong>정책</strong><span>정부 공식 발표와 참고 기사 구분이 가장 분명한 메뉴입니다.</span></div>
           <div class="list-item"><strong>참여·회의</strong><span>위원회, 회의, 지역 네트워크 움직임을 추적할 때 유용합니다.</span></div>
           <div class="list-item"><strong>제보·문의</strong><span>누락 기사, 협업 제안, 운영 문의를 바로 남길 수 있습니다.</span></div>
