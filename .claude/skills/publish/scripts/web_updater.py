@@ -3,6 +3,7 @@ from __future__ import annotations
 import argparse
 from datetime import datetime, timedelta
 import html
+import json
 import sys
 from pathlib import Path
 
@@ -16,6 +17,7 @@ from youth_info_platform.io_utils import read_json
 
 NEWS_WINDOW_DAYS = 7
 NEWS_WINDOW_HOURS = NEWS_WINDOW_DAYS * 24
+HOME_UPDATE_SNAPSHOT = ROOT / "output" / "home_update_snapshot.json"
 
 
 BASE_CSS = """
@@ -653,6 +655,35 @@ BASE_CSS = """
     display: inline-flex;
     align-items: center;
     gap: 4px;
+  }
+  .update-briefing {
+    display: grid;
+    gap: 8px;
+    margin-top: 14px;
+    padding: 16px 18px;
+    border-radius: 22px;
+    background: linear-gradient(180deg, rgba(28, 39, 54, 0.96) 0%, rgba(23, 33, 49, 1) 100%);
+    color: rgba(255, 255, 255, 0.96);
+    box-shadow: 0 16px 30px rgba(23, 33, 49, 0.12);
+  }
+  .update-briefing-label {
+    font-size: 0.76rem;
+    font-weight: 800;
+    letter-spacing: 0.01em;
+    color: rgba(255, 255, 255, 0.68);
+  }
+  .update-briefing-copy {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 700;
+    line-height: 1.6;
+    letter-spacing: -0.02em;
+  }
+  .update-briefing-meta {
+    margin: 0;
+    color: rgba(255, 255, 255, 0.72);
+    font-size: 0.82rem;
+    line-height: 1.55;
   }
   .home-section-card .list {
     margin-top: 12px;
@@ -1965,6 +1996,140 @@ def describe_article_basis(articles: list[dict], empty_message: str) -> str:
     return format_display_datetime(latest)
 
 
+def load_home_update_snapshot() -> dict:
+    return read_json(HOME_UPDATE_SNAPSHOT, default={})
+
+
+def save_home_update_snapshot(payload: dict) -> None:
+    HOME_UPDATE_SNAPSHOT.parent.mkdir(parents=True, exist_ok=True)
+    HOME_UPDATE_SNAPSHOT.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
+
+
+def previous_update_reference(status: dict, page_updated_at: str | None) -> datetime | None:
+    current_dt = parse_iso_datetime(page_updated_at)
+    if current_dt is None:
+        return None
+    raw_times = status.get("update_policy", {}).get("times", [])
+    schedule_minutes: list[int] = []
+    for raw_value in raw_times:
+        try:
+            hour_text, minute_text = str(raw_value).split(":", 1)
+            schedule_minutes.append(int(hour_text) * 60 + int(minute_text))
+        except (TypeError, ValueError):
+            continue
+    if not schedule_minutes:
+        return current_dt - timedelta(hours=6)
+
+    current_minutes = current_dt.hour * 60 + current_dt.minute
+    earlier_slots = [minutes for minutes in schedule_minutes if minutes < current_minutes]
+    if earlier_slots:
+        target_minutes = max(earlier_slots)
+        target_day = current_dt.date()
+    else:
+        target_minutes = max(schedule_minutes)
+        target_day = (current_dt - timedelta(days=1)).date()
+
+    target_hour, target_minute = divmod(target_minutes, 60)
+    return current_dt.replace(
+        year=target_day.year,
+        month=target_day.month,
+        day=target_day.day,
+        hour=target_hour,
+        minute=target_minute,
+        second=0,
+        microsecond=0,
+    )
+
+
+def summarize_focus_counts(articles: list[dict]) -> tuple[str, int]:
+    groups = article_groups(articles)
+    focus_counts: list[tuple[str, int]] = []
+    for category_key, label in [
+        ("청년은 지금", "오늘 이슈"),
+        ("지역 이슈", "지역 움직임"),
+        ("논평·기고", "해설·의견"),
+    ]:
+        count = len(groups.get(category_key, []))
+        if count:
+            focus_counts.append((label, count))
+    if not focus_counts:
+        return ("오늘 흐름", 0)
+    return sorted(focus_counts, key=lambda item: (-item[1], item[0]))[0]
+
+
+def summarize_top_regions(articles: list[dict], limit: int = 2) -> list[tuple[str, int]]:
+    region_counts: dict[str, int] = {}
+    for article in articles:
+        region = (article.get("region") or "").strip()
+        if not region or region == "전국":
+            continue
+        region_counts[region] = region_counts.get(region, 0) + 1
+    return sorted(region_counts.items(), key=lambda item: (-item[1], item[0]))[:limit]
+
+
+def build_home_update_briefing(
+    status: dict,
+    page_updated_at: str,
+    recent_news_articles: list[dict],
+    official_policy_articles: list[dict],
+    participation_count: int,
+) -> dict[str, str]:
+    snapshot = load_home_update_snapshot()
+    stored_briefing = snapshot.get("briefing")
+    if snapshot.get("page_updated_at") == page_updated_at and isinstance(stored_briefing, dict):
+        return stored_briefing
+
+    previous_urls = set(snapshot.get("recent_news_urls", [])) if snapshot.get("page_updated_at") else set()
+    current_urls = [article.get("url") for article in recent_news_articles if article.get("url")]
+    added_articles = [article for article in recent_news_articles if article.get("url") and article.get("url") not in previous_urls]
+    if previous_urls:
+        added_label = "추가 기사"
+    else:
+        reference_dt = previous_update_reference(status, page_updated_at)
+        if reference_dt is not None:
+            added_articles = [
+                article
+                for article in recent_news_articles
+                if (published_dt := parse_iso_datetime(article.get("published_date"))) is not None and published_dt > reference_dt
+            ]
+        else:
+            added_articles = []
+        added_label = "직전 반영 뒤 기사"
+
+    briefing_articles = added_articles or recent_news_articles
+    top_focus_label, _ = summarize_focus_counts(briefing_articles)
+    top_regions = summarize_top_regions(briefing_articles)
+    top_region_label = top_regions[0][0] if top_regions else "전국"
+    added_count = len(added_articles)
+    if added_count > 0:
+        copy = (
+            f"이번 업데이트에 {added_label} {added_count}건이 들어왔고, "
+            f"가장 많이 올라온 분야는 {top_focus_label}, 지역은 {top_region_label}입니다."
+        )
+    else:
+        copy = (
+            f"직전 반영 뒤 새로 잡힌 기사는 없고, "
+            f"현재 화면에서는 {top_focus_label} 흐름과 {top_region_label} 지역 비중이 가장 큽니다."
+        )
+    meta = (
+        f"뉴스 {len(recent_news_articles)}건 · 정책 {len(official_policy_articles)}건 · "
+        f"참여·회의 {participation_count}건을 이번 화면에 반영했습니다."
+    )
+    briefing = {
+        "label": "이번 업데이트 요약",
+        "copy": copy,
+        "meta": meta,
+    }
+    save_home_update_snapshot(
+        {
+            "page_updated_at": page_updated_at,
+            "recent_news_urls": current_urls,
+            "briefing": briefing,
+        }
+    )
+    return briefing
+
+
 def summarize_menu_items(articles: list[dict], fallback_items: list[tuple[str, str]], limit: int = 2) -> list[tuple[str, str]]:
     sorted_articles = sort_articles_by_recency(articles)
     items: list[tuple[str, str]] = []
@@ -2200,32 +2365,19 @@ def build_home_page(
             f'<article class="highlight-stat"><span class="highlight-stat-label">참여·회의</span><strong class="highlight-stat-value">{participation_count}건</strong></article>',
         ]
     )
-    recent_groups = article_groups(recent_news_articles)
-    focus_counts: list[tuple[str, int]] = []
-    for category_key, label in [
-        ("청년은 지금", "오늘 이슈"),
-        ("지역 이슈", "지역 움직임"),
-        ("논평·기고", "해설·의견"),
-    ]:
-        count = len(recent_groups.get(category_key, []))
-        if count:
-            focus_counts.append((label, count))
-    top_focus_label, top_focus_count = (
-        sorted(focus_counts, key=lambda item: (-item[1], item[0]))[0]
-        if focus_counts
-        else ("오늘 흐름", 0)
-    )
-    region_counts: dict[str, int] = {}
-    for article in recent_news_articles:
-        region = (article.get("region") or "").strip()
-        if not region or region == "전국":
-            continue
-        region_counts[region] = region_counts.get(region, 0) + 1
-    top_regions = sorted(region_counts.items(), key=lambda item: (-item[1], item[0]))[:2]
+    top_focus_label, top_focus_count = summarize_focus_counts(recent_news_articles)
+    top_regions = summarize_top_regions(recent_news_articles)
     top_region_head = " · ".join(f"{region} {count}건" for region, count in top_regions) if top_regions else "전국 중심"
     top_region_body = "지역 기사 비중이 큰 흐름입니다." if top_regions else "전국 단위 기사 비중이 높습니다."
     policy_basis = describe_article_basis(official_policy_articles or policy_articles, "최근 정책 없음")
     hub_basis = describe_article_basis(government_hub_articles or regional_hub_articles, "최근 참여 기록 없음")
+    update_briefing = build_home_update_briefing(
+        status,
+        page_updated_at,
+        recent_news_articles,
+        official_policy_articles,
+        participation_count,
+    )
     lead_title = (
         f"{top_focus_label} 흐름이 오늘 가장 많이 올라왔습니다."
         if top_focus_count
@@ -2324,6 +2476,11 @@ def build_home_page(
           <span>기사 기준 {describe_article_basis(recent_news_articles, f"최근 {NEWS_WINDOW_DAYS}일 기사 없음")}</span>
           <span>정책 기준 {html.escape(policy_basis)}</span>
           <span>페이지 반영 {format_display_datetime(page_updated_at)}</span>
+        </div>
+        <div class="update-briefing">
+          <span class="update-briefing-label">{html.escape(update_briefing["label"])}</span>
+          <p class="update-briefing-copy">{html.escape(update_briefing["copy"])}</p>
+          <p class="update-briefing-meta">{html.escape(update_briefing["meta"])}</p>
         </div>
         <div class="home-spotlight-layout">
           <div class="spotlight-main">
