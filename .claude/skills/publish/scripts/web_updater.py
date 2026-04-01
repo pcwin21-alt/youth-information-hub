@@ -678,6 +678,95 @@ BASE_CSS = """
       radial-gradient(circle at top left, rgba(123, 184, 255, 0.18), transparent 36%),
       linear-gradient(180deg, rgba(255, 255, 255, 0.99) 0%, rgba(244, 248, 252, 0.98) 100%);
   }
+  .home-spotlight-layout {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 14px;
+    margin-top: 18px;
+  }
+  .spotlight-main {
+    display: grid;
+    gap: 14px;
+    align-content: start;
+  }
+  .spotlight-focus {
+    padding: 16px;
+    border-radius: 22px;
+    border: 1px solid rgba(23, 33, 49, 0.08);
+    background: rgba(255, 255, 255, 0.82);
+  }
+  .spotlight-focus-title,
+  .spotlight-panel-title {
+    display: block;
+    margin-bottom: 10px;
+    color: var(--accent-strong);
+    font-size: 0.8rem;
+    font-weight: 800;
+    letter-spacing: -0.01em;
+  }
+  .spotlight-notes {
+    display: grid;
+    gap: 10px;
+  }
+  .spotlight-note {
+    padding: 12px 14px;
+    border-radius: 18px;
+    background: rgba(28, 39, 54, 0.04);
+    border: 1px solid rgba(23, 33, 49, 0.06);
+  }
+  .spotlight-note strong {
+    display: block;
+    font-size: 0.92rem;
+    line-height: 1.35;
+  }
+  .spotlight-note span {
+    display: block;
+    margin-top: 4px;
+    color: var(--muted);
+    font-size: 0.8rem;
+    line-height: 1.5;
+  }
+  .spotlight-side {
+    display: grid;
+    gap: 12px;
+    align-content: start;
+  }
+  .spotlight-panel {
+    padding: 16px;
+    border-radius: 22px;
+    border: 1px solid rgba(23, 33, 49, 0.08);
+    background: rgba(255, 255, 255, 0.88);
+  }
+  .spotlight-panel .highlight-stats {
+    margin-top: 0;
+  }
+  .spotlight-routes {
+    display: grid;
+    gap: 10px;
+  }
+  .spotlight-route {
+    display: grid;
+    gap: 4px;
+    padding: 12px 14px;
+    border-radius: 18px;
+    border: 1px solid rgba(23, 33, 49, 0.08);
+    background: rgba(248, 250, 252, 0.94);
+    transition: transform 0.18s ease, border-color 0.18s ease, background 0.18s ease;
+  }
+  .spotlight-route:hover {
+    transform: translateY(-1px);
+    border-color: rgba(31, 111, 95, 0.22);
+    background: white;
+  }
+  .spotlight-route strong {
+    font-size: 0.93rem;
+    line-height: 1.35;
+  }
+  .spotlight-route span {
+    color: var(--muted);
+    font-size: 0.8rem;
+    line-height: 1.5;
+  }
   .home-briefing-card {
     background: linear-gradient(180deg, rgba(31, 111, 95, 0.08) 0%, rgba(255, 255, 255, 0.96) 100%);
   }
@@ -1018,7 +1107,7 @@ BASE_CSS = """
     }
     .hero {
       grid-template-columns: 1.6fr 0.95fr;
-      align-items: stretch;
+      align-items: start;
       gap: 22px;
       margin-bottom: 32px;
     }
@@ -1043,6 +1132,13 @@ BASE_CSS = """
     .highlight-stats {
       grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: 12px;
+    }
+    .home-spotlight-layout {
+      grid-template-columns: minmax(0, 1.18fr) minmax(250px, 0.92fr);
+      gap: 18px;
+    }
+    .spotlight-notes {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
     }
     .list {
       gap: 14px;
@@ -2120,6 +2216,31 @@ def build_home_page(
             f'<article class="highlight-stat"><span class="highlight-stat-label">참여·회의</span><strong class="highlight-stat-value">{participation_count}건</strong></article>',
         ]
     )
+    recent_groups = article_groups(recent_news_articles)
+    focus_items = []
+    for category_key, label in [
+        ("청년은 지금", "오늘 이슈"),
+        ("지역 이슈", "지역 움직임"),
+        ("논평·기고", "해설·의견"),
+    ]:
+        count = len(recent_groups.get(category_key, []))
+        if count:
+            focus_items.append(
+                f'<article class="spotlight-note"><strong>{html.escape(label)}</strong><span>{count}건 올라왔습니다.</span></article>'
+            )
+    if not focus_items:
+        focus_items.append(
+            '<article class="spotlight-note"><strong>오늘 흐름 집계 준비 중</strong><span>새 기사 묶음이 들어오면 이 영역에 먼저 보입니다.</span></article>'
+        )
+    focus_items_html = "".join(focus_items[:3])
+    quick_routes_html = "".join(
+        [
+            f'<a class="spotlight-route" href="news.html"><strong>뉴스 전체 보기</strong><span>최근 {NEWS_WINDOW_DAYS}일 기사 흐름을 날짜별로 훑어봅니다.</span></a>',
+            f'<a class="spotlight-route" href="policies.html"><strong>정책 원문 보기</strong><span>정부 공식 발표 {len(official_policy_articles)}건을 바로 확인합니다.</span></a>',
+            f'<a class="spotlight-route" href="hub.html"><strong>참여·회의 보기</strong><span>위원회와 네트워크 기록 {participation_count}건으로 이어집니다.</span></a>',
+            '<a class="spotlight-route" href="tools.html"><strong>자료도구 열기</strong><span>조사, 초안 정리, 제보·문의 동선을 모았습니다.</span></a>',
+        ]
+    )
     briefing_items = []
     for article in highlights[1:4]:
         briefing_items.append(
@@ -2209,22 +2330,39 @@ def build_home_page(
     return f"""
     <section class="hero">
       <article class="home-section-card home-spotlight-card">
-        <div class="home-section-head">
-          <div class="home-section-title">
-            <span class="eyebrow">오늘의 하이라이트</span>
-            <h1 class="spotlight-lead-title">{html.escape(lead_title)}</h1>
-            <p class="spotlight-lead-summary">{html.escape(lead_summary)}</p>
-          </div>
-        </div>
         <div class="home-meta-line">
           <span>기사 기준 {describe_article_basis(recent_news_articles, f"최근 {NEWS_WINDOW_DAYS}일 기사 없음")}</span>
           <span>대표 기사 {html.escape(lead_meta)}</span>
           <span>페이지 반영 {format_display_datetime(page_updated_at)}</span>
         </div>
-        <div class="highlight-stats">{highlight_stats_html}</div>
-        <div class="hero-actions home-actions">
-          <a class="button primary" href="{html.escape(lead_highlight_url)}"{lead_highlight_target}>대표 기사 보기</a>
-          <a class="button" href="news.html">뉴스 전체 보기</a>
+        <div class="home-spotlight-layout">
+          <div class="spotlight-main">
+            <div class="home-section-head">
+              <div class="home-section-title">
+                <span class="eyebrow">오늘의 하이라이트</span>
+                <h1 class="spotlight-lead-title">{html.escape(lead_title)}</h1>
+                <p class="spotlight-lead-summary">{html.escape(lead_summary)}</p>
+              </div>
+            </div>
+            <div class="spotlight-focus">
+              <span class="spotlight-focus-title">오늘 많이 나온 흐름</span>
+              <div class="spotlight-notes">{focus_items_html}</div>
+            </div>
+            <div class="hero-actions home-actions">
+              <a class="button primary" href="{html.escape(lead_highlight_url)}"{lead_highlight_target}>대표 기사 보기</a>
+              <a class="button" href="news.html">뉴스 전체 보기</a>
+            </div>
+          </div>
+          <aside class="spotlight-side">
+            <section class="spotlight-panel">
+              <span class="spotlight-panel-title">오늘 한눈에</span>
+              <div class="highlight-stats">{highlight_stats_html}</div>
+            </section>
+            <section class="spotlight-panel">
+              <span class="spotlight-panel-title">바로 들어가기</span>
+              <div class="spotlight-routes">{quick_routes_html}</div>
+            </section>
+          </aside>
         </div>
       </article>
       <article class="hero-card home-section-card home-briefing-card">
