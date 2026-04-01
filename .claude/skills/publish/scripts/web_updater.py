@@ -136,6 +136,28 @@ BASE_CSS = """
     font-size: 0.72rem;
     color: var(--muted);
   }
+  .guide-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 12px;
+    border-radius: 999px;
+    border: 1px solid rgba(31, 111, 95, 0.16);
+    background: rgba(31, 111, 95, 0.08);
+    color: var(--accent-strong);
+    font-size: 0.78rem;
+    font-weight: 800;
+    white-space: nowrap;
+  }
+  .guide-link:hover {
+    border-color: rgba(31, 111, 95, 0.28);
+    background: rgba(31, 111, 95, 0.12);
+  }
+  .guide-link.active {
+    background: var(--accent-strong);
+    border-color: transparent;
+    color: white;
+  }
   .nav { display: none; }
   .hero {
     display: grid;
@@ -651,6 +673,60 @@ BASE_CSS = """
   .home-highlight-card .list-item {
     background: rgba(255, 255, 255, 0.9);
   }
+  .home-spotlight-card {
+    background:
+      radial-gradient(circle at top left, rgba(123, 184, 255, 0.18), transparent 36%),
+      linear-gradient(180deg, rgba(255, 255, 255, 0.99) 0%, rgba(244, 248, 252, 0.98) 100%);
+  }
+  .home-briefing-card {
+    background: linear-gradient(180deg, rgba(31, 111, 95, 0.08) 0%, rgba(255, 255, 255, 0.96) 100%);
+  }
+  .spotlight-lead-title {
+    margin: 2px 0 0;
+    font-size: 2.1rem;
+    line-height: 1.18;
+    letter-spacing: -0.05em;
+  }
+  .spotlight-lead-summary {
+    margin: 0;
+    color: var(--muted);
+    font-size: 1rem;
+    line-height: 1.7;
+    max-width: 60ch;
+  }
+  .highlight-stats {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+    margin-top: 18px;
+  }
+  .highlight-stat {
+    padding: 14px 16px;
+    border-radius: 18px;
+    border: 1px solid rgba(23, 33, 49, 0.08);
+    background: rgba(255, 255, 255, 0.92);
+  }
+  .highlight-stat-label {
+    display: block;
+    color: var(--muted);
+    font-size: 0.76rem;
+    font-weight: 800;
+    letter-spacing: 0.01em;
+  }
+  .highlight-stat-value {
+    display: block;
+    margin-top: 6px;
+    font-size: 1.32rem;
+    font-weight: 800;
+    letter-spacing: -0.04em;
+  }
+  .home-briefing-card h3 {
+    margin: 0;
+    font-size: 1.02rem;
+  }
+  .home-briefing-card .mini-link {
+    margin-top: 12px;
+  }
   .welcome-kicker {
     display: inline-flex;
     align-items: center;
@@ -744,6 +820,42 @@ BASE_CSS = """
     line-height: 1.6;
     text-align: center;
   }
+  .guide-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 80;
+    display: grid;
+    place-items: center;
+    padding: 20px;
+    background: rgba(23, 33, 49, 0.46);
+    backdrop-filter: blur(8px);
+  }
+  .guide-dialog {
+    width: min(100%, 560px);
+    padding: 22px;
+    border-radius: 26px;
+    border: 1px solid rgba(255, 255, 255, 0.32);
+    background:
+      radial-gradient(circle at top left, rgba(123, 184, 255, 0.16), transparent 34%),
+      linear-gradient(180deg, rgba(255, 255, 255, 0.99) 0%, rgba(244, 248, 252, 0.99) 100%);
+    box-shadow: 0 28px 60px rgba(23, 33, 49, 0.24);
+  }
+  .guide-dialog h2 {
+    margin-top: 14px;
+    font-size: 1.62rem;
+  }
+  .guide-dialog p {
+    margin: 12px 0 0;
+    color: var(--muted);
+    font-size: 0.95rem;
+    line-height: 1.7;
+  }
+  .guide-dialog .list {
+    margin-top: 16px;
+  }
+  .guide-dialog .hero-actions {
+    margin-top: 18px;
+  }
   .home-footer h3 {
     margin: 0 0 6px;
     font-size: 1rem;
@@ -815,6 +927,9 @@ BASE_CSS = """
   .bottom-nav a.active::before {
     background: #2563eb;
     color: white;
+  }
+  body.is-guide-open {
+    overflow: hidden;
   }
   @media (min-width: 560px) {
     body {
@@ -925,6 +1040,10 @@ BASE_CSS = """
       grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 14px;
     }
+    .highlight-stats {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+    }
     .list {
       gap: 14px;
       margin-top: 16px;
@@ -970,6 +1089,10 @@ BASE_CSS = """
     .header-side strong {
       font-size: 0.88rem;
     }
+    .guide-link {
+      padding: 7px 10px;
+      font-size: 0.72rem;
+    }
     .hero-actions .button {
       width: 100%;
     }
@@ -1000,7 +1123,7 @@ PAGE_TEMPLATE = """<!doctype html>
   <link href="https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@700;800&family=Noto+Sans+KR:wght@400;500;700;800&display=swap" rel="stylesheet">
   <style>{styles}</style>
 </head>
-<body>
+<body data-page="{active_page}">
   <div class="shell">
     <header class="topbar">
       <div class="brand">
@@ -1011,6 +1134,7 @@ PAGE_TEMPLATE = """<!doctype html>
         </div>
       </div>
       <div class="topbar-side">
+        {guide_link}
         {header_meta}
         <nav class="nav">{nav}</nav>
       </div>
@@ -1018,6 +1142,7 @@ PAGE_TEMPLATE = """<!doctype html>
     {content}
   </div>
   <nav class="bottom-nav">{bottom_nav}</nav>
+  {guide_overlay}
   <script>{script}</script>
 </body>
 </html>
@@ -1105,7 +1230,44 @@ BASE_SCRIPT = """
     }
   }
 
+  function markGuideSeen() {
+    try {
+      localStorage.setItem('youthTogetherGuideSeen-v1', '1');
+    } catch (error) {
+      // ignore storage errors
+    }
+  }
+
+  function closeGuideOverlay(overlay, shouldPersist) {
+    if (!overlay) {
+      return;
+    }
+    if (shouldPersist) {
+      markGuideSeen();
+    }
+    overlay.hidden = true;
+    document.body.classList.remove('is-guide-open');
+  }
+
   document.addEventListener('click', async (event) => {
+    const guideDismiss = event.target.closest('[data-guide-dismiss]');
+    if (guideDismiss) {
+      event.preventDefault();
+      closeGuideOverlay(document.querySelector('[data-guide-overlay]'), true);
+      return;
+    }
+
+    const guideOpenLink = event.target.closest('[data-guide-open-link]');
+    if (guideOpenLink) {
+      markGuideSeen();
+      return;
+    }
+
+    if (event.target.matches('[data-guide-overlay]')) {
+      closeGuideOverlay(event.target, true);
+      return;
+    }
+
     const filterButton = event.target.closest('[data-date-filter]');
     if (filterButton) {
       const root = filterButton.closest('[data-date-filter-root]');
@@ -1151,6 +1313,30 @@ BASE_SCRIPT = """
   document.querySelectorAll('[data-date-filter-root]').forEach((root) => {
     applyDateFilter(root, root.getAttribute('data-default-date') || 'all');
   });
+
+  document.addEventListener('keydown', (event) => {
+    if (event.key !== 'Escape') {
+      return;
+    }
+    const overlay = document.querySelector('[data-guide-overlay]');
+    if (overlay && !overlay.hidden) {
+      closeGuideOverlay(overlay, true);
+    }
+  });
+
+  const guideOverlay = document.querySelector('[data-guide-overlay]');
+  if (guideOverlay && document.body.dataset.page === 'index.html') {
+    let seenGuide = false;
+    try {
+      seenGuide = localStorage.getItem('youthTogetherGuideSeen-v1') === '1';
+    } catch (error) {
+      seenGuide = false;
+    }
+    if (!seenGuide) {
+      guideOverlay.hidden = false;
+      document.body.classList.add('is-guide-open');
+    }
+  }
 })();
 """
 
@@ -1182,6 +1368,12 @@ def nav_label(active_page: str) -> str:
     return "홈"
 
 
+def render_guide_link(active_page: str) -> str:
+    active = " active" if active_page == "guide.html" else ""
+    current = ' aria-current="page"' if active_page == "guide.html" else ""
+    return f'<a class="guide-link{active}" href="guide.html" data-guide-open-link="true"{current}>이용방법</a>'
+
+
 def render_nav(active_page: str) -> str:
     items = []
     for href, label in NAV_ITEMS:
@@ -1198,6 +1390,29 @@ def render_bottom_nav(active_page: str) -> str:
             f'<a class="{active}" href="{href}" data-icon="{html.escape(NAV_ICONS.get(href, label[:1]))}"><span>{html.escape(label)}</span></a>'
         )
     return "".join(items)
+
+
+def render_guide_overlay(active_page: str) -> str:
+    if active_page != "index.html":
+        return ""
+    return """
+  <div class="guide-overlay" data-guide-overlay hidden>
+    <div class="guide-dialog" role="dialog" aria-modal="true" aria-labelledby="guide-dialog-title">
+      <span class="eyebrow">이용방법</span>
+      <h2 id="guide-dialog-title">처음 오셨다면 이렇게 보시면 됩니다.</h2>
+      <p>홈 첫 화면은 오늘의 하이라이트부터 보는 구조입니다. 기사 수와 정책, 참여·회의 건수는 하이라이트 안에서 함께 확인할 수 있습니다.</p>
+      <div class="list">
+        <div class="list-item"><strong>오늘의 하이라이트</strong><span>가장 먼저 볼 기사와 오늘 집계를 한 번에 봅니다.</span></div>
+        <div class="list-item"><strong>정책</strong><span>정부 원문 중심의 공식 발표를 확인합니다.</span></div>
+        <div class="list-item"><strong>참여·회의</strong><span>정부 회의와 지역 네트워크 움직임을 나눠서 봅니다.</span></div>
+      </div>
+      <div class="hero-actions">
+        <button class="button primary" type="button" data-guide-dismiss="true">바로 보기</button>
+        <a class="button" href="guide.html" data-guide-open-link="true">이용방법 자세히</a>
+      </div>
+    </div>
+  </div>
+"""
 
 
 def render_status(status: dict) -> dict[str, str]:
@@ -1863,7 +2078,6 @@ def build_home_page(
 ) -> str:
     status_meta = render_status(status)
     page_updated_at = status.get("finished_at") or status.get("updated_at") or ""
-    freshness_hours = resolve_freshness_hours(status)
     all_articles = sort_articles_by_recency(classified_articles or articles)
     news_articles = [article for article in all_articles if not article.get("is_official_source")]
     recent_news_articles = filter_recent_articles(news_articles, page_updated_at, NEWS_WINDOW_HOURS)
@@ -1888,25 +2102,54 @@ def build_home_page(
     highlights = recent_news_articles[:]
     highlight_urls = {article.get("url") for article in highlights}
     highlights.extend(article for article in recent_articles if article.get("url") not in highlight_urls)
-    highlights = highlights[:3]
+    highlights = highlights[:4]
     lead_highlight = highlights[0] if highlights else None
     lead_highlight_url = lead_highlight.get("url", "news.html") if lead_highlight else "news.html"
     lead_highlight_target = ' target="_blank" rel="noreferrer"' if lead_highlight else ""
-    welcome_panels_html = "".join(
+    lead_title = display_article_title(lead_highlight, limit=88) if lead_highlight else "오늘 가장 먼저 볼 청년 이슈를 준비 중입니다."
+    lead_summary = (
+        summarize_article_text(lead_highlight, limit=220)
+        if lead_highlight
+        else f"최근 {NEWS_WINDOW_DAYS}일 안에 수집된 핵심 기사와 정책, 참여·회의 집계를 이 영역에 함께 보여드립니다."
+    )
+    lead_meta = compact_article_meta(lead_highlight) if lead_highlight else "대표 기사 정보 없음"
+    highlight_stats_html = "".join(
         [
-            f'<article class="welcome-panel"><span class="welcome-panel-label">01 뉴스</span><strong>최근 {NEWS_WINDOW_DAYS}일 기사 {len(recent_news_articles)}건</strong><span>오늘 이슈와 지역 움직임을 날짜별로 빠르게 훑어볼 수 있습니다.</span></article>',
-            f'<article class="welcome-panel"><span class="welcome-panel-label">02 정책</span><strong>정부 공식 발표 {len(official_policy_articles)}건</strong><span>정책브리핑과 정부 발표를 참고 기사와 분리해 보여줍니다.</span></article>',
-            f'<article class="welcome-panel"><span class="welcome-panel-label">03 참여·회의</span><strong>회의·위원회·네트워크 {participation_count}건</strong><span>정부 회의와 지역 참여 소식을 한 화면에서 확인할 수 있습니다.</span></article>',
-            '<article class="welcome-panel"><span class="welcome-panel-label">04 자료·문의</span><strong>자료 찾기와 제보 동선</strong><span>정책 조사, 초안 정리, 제보·협업 문의까지 바로 이어집니다.</span></article>',
+            f'<article class="highlight-stat"><span class="highlight-stat-label">오늘의 기사</span><strong class="highlight-stat-value">{len(recent_news_articles)}건</strong></article>',
+            f'<article class="highlight-stat"><span class="highlight-stat-label">정책</span><strong class="highlight-stat-value">{len(official_policy_articles)}건</strong></article>',
+            f'<article class="highlight-stat"><span class="highlight-stat-label">참여·회의</span><strong class="highlight-stat-value">{participation_count}건</strong></article>',
         ]
     )
-    highlight_list_html = "".join(
-        render_article_list_item(
-            article,
-            summarize_article_text(article, limit=96) or "기사 요약 없음",
+    briefing_items = []
+    for article in highlights[1:4]:
+        briefing_items.append(
+            render_article_list_item(
+                article,
+                summarize_article_text(article, limit=92) or compact_article_meta(article),
+                overline="뉴스",
+            )
         )
-        for article in highlights
-    ) or f'<div class="list-item"><strong>오늘의 하이라이트가 없습니다.</strong><span>최근 {NEWS_WINDOW_DAYS}일 안에 꼭 짚을 만한 소식이 아직 없습니다.</span></div>'
+    if policy_articles:
+        briefing_items.append(
+            render_article_list_item(
+                policy_articles[0],
+                compact_article_meta(policy_articles[0]),
+                overline="정책",
+            )
+        )
+    hub_reference = government_hub_articles[0] if government_hub_articles else (regional_hub_articles[0] if regional_hub_articles else None)
+    if hub_reference:
+        briefing_items.append(
+            render_article_list_item(
+                hub_reference,
+                compact_article_meta(hub_reference),
+                overline="참여·회의",
+            )
+        )
+    highlight_list_html = "".join(briefing_items[:4]) or (
+        f'<div class="list-item"><strong>오늘 함께 볼 소식이 아직 없습니다.</strong>'
+        f'<span>최근 {NEWS_WINDOW_DAYS}일 기사와 정책, 참여 기록이 모이면 이 영역에 함께 보여드립니다.</span></div>'
+    )
     policy_list_html = "".join(
         render_article_list_item(
             article,
@@ -1965,36 +2208,37 @@ def build_home_page(
     contact_email = html.escape(contact_settings.get("email", ""))
     return f"""
     <section class="hero">
-      <article class="home-section-card home-news-card home-welcome-card">
-        <div class="home-section-head">
-          <div class="home-section-title">
-            <span class="welcome-kicker">환영합니다</span>
-            <h1>오늘 기준 청년 정책과 이슈를 한눈에 확인하세요.</h1>
-            <p class="welcome-copy">뉴스, 정부 공식 발표, 참여 회의 소식을 한곳에 모았습니다. 빠르게 훑어보되 출처 구분이 보이도록 구조를 다시 정리했습니다.</p>
-          </div>
-        </div>
-        <div class="welcome-grid">{welcome_panels_html}</div>
-        <div class="welcome-note">
-          <strong>처음 오셨다면 이 순서가 가장 빠릅니다.</strong>
-          <p>오늘 이슈는 뉴스에서, 정부 원문은 정책에서, 회의와 네트워크 움직임은 참여·회의에서 확인하세요. 제보나 협업 문의는 제보·문의 메뉴로 바로 이어집니다.</p>
-        </div>
-        <div class="hero-actions home-actions">
-          <a class="button primary" href="news.html">뉴스 둘러보기</a>
-          <a class="button" href="policies.html">정책부터 보기</a>
-        </div>
-      </article>
-      <article class="hero-card home-section-card home-highlight-card">
+      <article class="home-section-card home-spotlight-card">
         <div class="home-section-head">
           <div class="home-section-title">
             <span class="eyebrow">오늘의 하이라이트</span>
-            <h2>오늘 가장 먼저 볼 소식</h2>
-            <p class="home-section-copy">최근 {NEWS_WINDOW_DAYS}일 기사 가운데 우선 확인할 만한 이슈를 골랐습니다.</p>
+            <h1 class="spotlight-lead-title">{html.escape(lead_title)}</h1>
+            <p class="spotlight-lead-summary">{html.escape(lead_summary)}</p>
+          </div>
+        </div>
+        <div class="home-meta-line">
+          <span>기사 기준 {describe_article_basis(recent_news_articles, f"최근 {NEWS_WINDOW_DAYS}일 기사 없음")}</span>
+          <span>대표 기사 {html.escape(lead_meta)}</span>
+          <span>페이지 반영 {format_display_datetime(page_updated_at)}</span>
+        </div>
+        <div class="highlight-stats">{highlight_stats_html}</div>
+        <div class="hero-actions home-actions">
+          <a class="button primary" href="{html.escape(lead_highlight_url)}"{lead_highlight_target}>대표 기사 보기</a>
+          <a class="button" href="news.html">뉴스 전체 보기</a>
+        </div>
+      </article>
+      <article class="hero-card home-section-card home-briefing-card">
+        <div class="home-section-head">
+          <div class="home-section-title">
+            <span class="eyebrow">바로 이어서 보기</span>
+            <h2>정책과 참여·회의까지 한 번에</h2>
+            <p class="home-section-copy">하이라이트를 본 뒤 함께 볼 기사와 정책, 참여·회의 흐름을 이어서 확인할 수 있습니다.</p>
           </div>
         </div>
         <div class="list">{highlight_list_html}</div>
         <div class="hero-actions home-actions">
-          <a class="button primary" href="{html.escape(lead_highlight_url)}"{lead_highlight_target}>링크 바로가기</a>
-          <a class="button" href="news.html">뉴스로 이동</a>
+          <a class="button primary" href="policies.html">정책 보기</a>
+          <a class="button" href="hub.html">참여·회의 보기</a>
         </div>
       </article>
     </section>
@@ -2062,6 +2306,75 @@ def build_home_page(
         </div>
       </article>
     </section>
+    """
+
+
+def build_guide_page(status: dict) -> str:
+    page_updated_at = status.get("finished_at") or status.get("updated_at") or ""
+    status_meta = render_status(status)
+    menu_cards = "".join(
+        [
+            render_feature_card("홈", "오늘의 하이라이트와 오늘 집계를 먼저 보는 첫 화면입니다.", "index.html", "첫 화면"),
+            render_feature_card("뉴스", f"최근 {NEWS_WINDOW_DAYS}일 청년 뉴스를 날짜별로 빠르게 훑어봅니다.", "news.html", "최근 기사"),
+            render_feature_card("정책", "정부 공식 발표와 참고 기사를 구분해 원문 흐름을 확인합니다.", "policies.html", "공식 발표"),
+            render_feature_card("참여·회의", "정부 회의와 지역 참여·네트워크 움직임을 한데 모아 봅니다.", "hub.html", "참여 흐름"),
+            render_feature_card("자료도구", "자료 찾기, 초안 정리, 제보·문의로 이어지는 실무 동선을 정리했습니다.", "tools.html", "실무 도구"),
+        ]
+    )
+    update_guide = render_list_block(
+        "업데이트 읽는 법",
+        "홈과 각 메뉴에서 보이는 기준 시각을 이렇게 읽으면 됩니다.",
+        [
+            ("기사 기준", "가장 최근 기사나 발표가 실제로 나온 시각입니다."),
+            ("페이지 반영", "수집과 정리를 마치고 사이트에 다시 올린 시각입니다."),
+            ("반영 주기", status_meta["update_frequency"] or "매일 정해진 시각에 반영됩니다."),
+        ],
+    )
+    usage_guide = render_list_block(
+        "빠르게 보는 순서",
+        "처음 들어왔을 때 가장 덜 헤매는 흐름을 짧게 정리했습니다.",
+        [
+            ("1. 홈", "오늘의 하이라이트에서 핵심 기사와 집계를 먼저 확인합니다."),
+            ("2. 정책", "정부 공식 발표 원문과 정책브리핑을 바로 확인합니다."),
+            ("3. 참여·회의", "위원회, 회의, 네트워크 소식이 이어지는지 살펴봅니다."),
+            ("4. 자료도구·제보", "필요한 자료를 찾거나 운영팀에 제보·문의합니다."),
+        ],
+    )
+    return f"""
+    <section class="hero">
+      <article class="hero-card">
+        <span class="eyebrow">이용방법</span>
+        <h1>처음 오셨다면 이 순서가 가장 빠릅니다.</h1>
+        <p class="hero-copy">홈은 오늘의 하이라이트 중심으로, 뉴스는 최근 기사 흐름 중심으로, 정책은 정부 공식 발표 중심으로 구성했습니다. 필요한 메뉴를 다시 찾기 쉽도록 이 페이지를 상단 메뉴로 따로 두었습니다.</p>
+        <div class="hero-feature-meta">페이지 반영 {html.escape(format_display_datetime(page_updated_at))} · {html.escape(status_meta["update_frequency"])}</div>
+        <div class="hero-actions">
+          <a class="button primary" href="index.html">하이라이트 보기</a>
+          <a class="button" href="news.html">뉴스부터 보기</a>
+        </div>
+      </article>
+      <aside class="status-card">
+        <h3>먼저 보면 좋은 메뉴</h3>
+        <div class="list">
+          <div class="list-item"><strong>오늘의 하이라이트</strong><span>첫 화면에서 오늘의 기사 수와 정책, 참여·회의 건수를 함께 봅니다.</span></div>
+          <div class="list-item"><strong>정책</strong><span>정부 공식 발표와 참고 기사 구분이 가장 분명한 메뉴입니다.</span></div>
+          <div class="list-item"><strong>참여·회의</strong><span>위원회, 회의, 지역 네트워크 움직임을 추적할 때 유용합니다.</span></div>
+          <div class="list-item"><strong>제보·문의</strong><span>누락 기사, 협업 제안, 운영 문의를 바로 남길 수 있습니다.</span></div>
+        </div>
+      </aside>
+    </section>
+    <section class="section">
+      <div class="section-head">
+        <div>
+          <h2>메뉴별 안내</h2>
+          <p>원하는 목적에 맞춰 바로 이동할 수 있도록 메뉴 역할을 나눴습니다.</p>
+        </div>
+      </div>
+      <div class="feature-grid">{menu_cards}</div>
+    </section>
+    <div class="home-dual-grid">
+      <section class="section">{update_guide}</section>
+      <section class="section">{usage_guide}</section>
+    </div>
     """
 
 
@@ -2357,11 +2670,14 @@ def write_page(path: Path, page_title: str, active_page: str, content: str, stat
     path.write_text(
         PAGE_TEMPLATE.format(
             page_title=html.escape(page_title),
+            active_page=html.escape(active_page),
             styles=BASE_CSS,
             script=BASE_SCRIPT,
+            guide_link=render_guide_link(active_page),
             header_meta=render_header_meta(active_page, status),
             nav=render_nav(active_page),
             bottom_nav=render_bottom_nav(active_page),
+            guide_overlay=render_guide_overlay(active_page),
             content=content,
         ),
         encoding="utf-8",
@@ -2383,6 +2699,7 @@ def main() -> int:
     contact_settings = load_contact_settings()
 
     write_page(web_root / "index.html", "청년 투게더", "index.html", build_home_page(articles, classified_articles, status, contact_settings), status)
+    write_page(web_root / "guide.html", "이용방법", "guide.html", build_guide_page(status), status)
     write_page(web_root / "news.html", "청년 뉴스", "news.html", build_news_page(classified_articles, status), status)
     write_page(web_root / "policies.html", "정부 공식 발표", "policies.html", build_policies_page(classified_articles, status), status)
     write_page(web_root / "hub.html", "청년 참여·회의", "hub.html", build_hub_page(classified_articles), status)
