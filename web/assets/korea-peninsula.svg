@@ -1,0 +1,99 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 420" role="img" aria-label="한반도 실루엣">
+  <defs>
+    <linearGradient id="peninsulaFill" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#edf7f4"/>
+      <stop offset="55%" stop-color="#dceaf3"/>
+      <stop offset="100%" stop-color="#d8e4ee"/>
+    </linearGradient>
+    <linearGradient id="coastLine" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#89a0a8"/>
+      <stop offset="100%" stop-color="#6d8189"/>
+    </linearGradient>
+  </defs>
+
+  <g fill="none" fill-rule="evenodd">
+    <path
+      d="M157 18
+         L172 22
+         L184 30
+         L194 41
+         L202 54
+         L207 70
+         L209 86
+         L207 101
+         L204 114
+         L207 126
+         L214 139
+         L215 153
+         L211 167
+         L208 181
+         L213 194
+         L219 208
+         L219 223
+         L213 236
+         L205 249
+         L199 262
+         L198 276
+         L195 289
+         L188 304
+         L180 317
+         L174 331
+         L168 345
+         L159 357
+         L151 367
+         L145 357
+         L142 343
+         L137 330
+         L127 318
+         L118 307
+         L108 297
+         L97 288
+         L91 277
+         L84 266
+         L78 254
+         L76 241
+         L78 228
+         L74 214
+         L67 200
+         L60 186
+         L55 172
+         L50 157
+         L49 143
+         L50 130
+         L57 118
+         L62 106
+         L61 92
+         L62 79
+         L67 66
+         L76 55
+         L85 44
+         L96 35
+         L108 27
+         L121 22
+         L135 19
+         L147 17
+         Z"
+      fill="url(#peninsulaFill)"
+      stroke="url(#coastLine)"
+      stroke-linejoin="round"
+      stroke-linecap="round"
+      stroke-width="4"
+    />
+
+    <path
+      d="M109 381
+         C121 381 132 385 133 391
+         C134 397 123 402 110 402
+         C97 402 86 397 87 391
+         C88 385 98 381 109 381
+         Z"
+      fill="url(#peninsulaFill)"
+      stroke="url(#coastLine)"
+      stroke-linejoin="round"
+      stroke-linecap="round"
+      stroke-width="4"
+    />
+
+    <circle cx="230" cy="231" r="4" fill="#dceaf3" stroke="#6d8189" stroke-width="2"/>
+  </g>
+</svg>

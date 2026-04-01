@@ -489,7 +489,11 @@ BASE_CSS = """
     inset: 18px 18px 18px 18px;
     width: calc(100% - 36px);
     height: calc(100% - 36px);
-    color: rgba(31, 111, 95, 0.18);
+    object-fit: contain;
+    object-position: center;
+    opacity: 0.94;
+    filter: drop-shadow(0 18px 26px rgba(23, 33, 49, 0.08));
+    pointer-events: none;
   }
   .region-map-buttons {
     position: absolute;
@@ -2072,10 +2076,7 @@ def render_news_filter_panel(regions: list[str], dates: list[str], total_count: 
               <button class="filter-button region-central-chip" type="button" data-news-filter="true" data-filter-group="region" data-filter-value="중앙" aria-pressed="false">중앙</button>
             </div>
             <div class="region-map-shell">
-              <svg class="region-map-illustration" viewBox="0 0 260 360" aria-hidden="true" focusable="false">
-                <path fill="currentColor" d="M148 12C174 18 194 32 208 53C220 72 220 95 214 114C208 132 212 151 208 170C203 193 211 217 201 241C192 262 194 285 181 309C170 329 154 345 138 358C124 346 114 329 102 313C90 296 71 281 64 258C56 232 61 210 55 187C49 164 40 141 46 116C52 92 67 72 81 52C95 30 118 12 148 12Z"></path>
-                <ellipse cx="94" cy="338" rx="24" ry="11" fill="currentColor"></ellipse>
-              </svg>
+              <img class="region-map-illustration" src="assets/korea-peninsula.svg" alt="" loading="lazy" decoding="async">
               <div class="region-map-buttons">{''.join(map_buttons)}</div>
             </div>
             <p class="region-map-note">지도에서 지역을 누르면 왼쪽 필터와 같은 방식으로 바로 적용됩니다.</p>
