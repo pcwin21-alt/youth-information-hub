@@ -473,6 +473,7 @@ BASE_CSS = """
     border: 1px solid var(--line);
     border-radius: 18px;
     background: var(--panel-soft);
+    cursor: pointer;
   }
   .date-picker-label {
     color: var(--muted);
@@ -1484,6 +1485,20 @@ BASE_SCRIPT = """
     return '전체';
   }
 
+  function openNewsDatePicker(input) {
+    if (!input) {
+      return;
+    }
+    input.focus({ preventScroll: true });
+    if (typeof input.showPicker === 'function') {
+      try {
+        input.showPicker();
+      } catch (error) {
+        // Some browsers limit showPicker; keep focus fallback.
+      }
+    }
+  }
+
   function applyNewsFilters(root, selectedDateStart, selectedDateEnd, selectedRegion) {
     const normalizedDates = normalizeNewsDateRange(
       selectedDateStart ?? root.dataset.selectedDateStart ?? root.getAttribute('data-default-date-start') ?? '',
@@ -1585,6 +1600,16 @@ BASE_SCRIPT = """
 
     if (event.target.matches('[data-guide-overlay]')) {
       closeGuideOverlay(event.target, true);
+      return;
+    }
+
+    const dateLaunch = event.target.closest('[data-news-date-launch]');
+    if (dateLaunch) {
+      const dateInput = dateLaunch.querySelector('[data-news-date-input]');
+      if (dateInput) {
+        event.preventDefault();
+        openNewsDatePicker(dateInput);
+      }
       return;
     }
 
@@ -2061,11 +2086,11 @@ def render_news_filter_panel(regions: list[str], dates: list[str], total_count: 
             <div class="date-picker-row">
               <button class="filter-button active" type="button" data-news-filter="true" data-filter-group="date" data-filter-value="all" aria-pressed="true">전체</button>
               <div class="date-range-fields">
-                <label class="date-input-wrap">
+                <label class="date-input-wrap" data-news-date-launch="true">
                   <span class="date-picker-label">시작일</span>
                   <input class="date-input" type="date" data-news-date-input="true" data-date-role="start" {date_input_attrs_text}>
                 </label>
-                <label class="date-input-wrap">
+                <label class="date-input-wrap" data-news-date-launch="true">
                   <span class="date-picker-label">종료일</span>
                   <input class="date-input" type="date" data-news-date-input="true" data-date-role="end" {date_input_attrs_text}>
                 </label>
