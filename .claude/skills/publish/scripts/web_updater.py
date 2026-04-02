@@ -106,6 +106,7 @@ BASE_CSS = """
     border-bottom: 1px solid var(--line);
     background: rgba(249, 250, 251, 0.96);
     backdrop-filter: blur(10px);
+    box-sizing: border-box;
   }
   .brand {
     display: flex;
@@ -161,12 +162,14 @@ BASE_CSS = """
     justify-items: end;
     text-align: right;
     flex-shrink: 0;
+    min-width: 0;
   }
   .topbar-side {
     display: flex;
     align-items: center;
     gap: 12px;
     margin-left: auto;
+    min-width: 0;
   }
   .header-side strong {
     font-size: 0.98rem;
@@ -1563,13 +1566,14 @@ BASE_CSS = """
     transform: translateX(-50%);
     z-index: 30;
     display: grid;
-    grid-template-columns: repeat(6, 1fr);
+    grid-template-columns: repeat(6, minmax(0, 1fr));
     gap: 4px;
     width: min(100%, 430px);
     padding: 10px 10px calc(10px + env(safe-area-inset-bottom));
     border-top: 1px solid var(--line);
     background: rgba(255, 255, 255, 0.98);
     box-shadow: 0 -12px 30px rgba(23, 33, 49, 0.1);
+    box-sizing: border-box;
   }
   .bottom-nav a {
     display: grid;
@@ -1580,6 +1584,7 @@ BASE_CSS = """
     font-size: 0.64rem;
     font-weight: 700;
     letter-spacing: -0.02em;
+    min-width: 0;
   }
   .bottom-nav a span {
     white-space: nowrap;
@@ -1789,6 +1794,29 @@ BASE_CSS = """
     }
   }
   @media (max-width: 559px) {
+    .topbar {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      align-items: start;
+      gap: 12px;
+    }
+    .topbar-side {
+      display: grid;
+      justify-items: end;
+      align-content: start;
+      gap: 8px;
+      margin-left: 0;
+    }
+    .header-side strong {
+      font-size: 0.9rem;
+      line-height: 1.15;
+      white-space: nowrap;
+    }
+    .header-side span {
+      font-size: 0.68rem;
+      line-height: 1.2;
+      white-space: nowrap;
+    }
     .home-briefing-grid,
     .home-briefing-card,
     .home-glance-grid,
@@ -1806,6 +1834,20 @@ BASE_CSS = """
     .home-briefing-copy {
       max-width: 100%;
       font-size: 0.98rem;
+    }
+    .bottom-nav {
+      width: calc(100% - 8px);
+      padding-left: 8px;
+      padding-right: 8px;
+      gap: 2px;
+    }
+    .bottom-nav a {
+      font-size: 0.58rem;
+    }
+    .bottom-nav a span {
+      white-space: normal;
+      text-align: center;
+      line-height: 1.1;
     }
   }
   @media (max-width: 380px) {
@@ -1826,6 +1868,7 @@ BASE_CSS = """
       width: 100%;
     }
     .bottom-nav {
+      width: calc(100% - 6px);
       padding-left: 6px;
       padding-right: 6px;
     }
