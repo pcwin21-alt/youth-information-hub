@@ -910,14 +910,64 @@ BASE_CSS = """
     text-decoration: underline;
     text-underline-offset: 3px;
   }
+  .home-support-metrics {
+    display: grid;
+    gap: 12px;
+  }
+  .home-support-metrics h3 {
+    margin: 0;
+    font-size: 1.04rem;
+    letter-spacing: -0.02em;
+  }
+  .home-support-metrics-grid {
+    display: grid;
+    gap: 10px;
+  }
+  .home-support-metric-item {
+    display: grid;
+    gap: 8px;
+    padding: 14px 16px;
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.05);
+  }
+  .home-support-metric-label {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.74rem;
+    font-weight: 800;
+    line-height: 1.3;
+  }
+  .home-support-metric-value {
+    font-size: 1.32rem;
+    font-weight: 800;
+    letter-spacing: -0.04em;
+    line-height: 1;
+  }
+  .home-support-metric-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 10px;
+    color: rgba(255, 255, 255, 0.68);
+    font-size: 0.74rem;
+    line-height: 1.5;
+  }
+  .home-support-metric-meta a {
+    color: rgba(255, 255, 255, 0.9);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+  .home-support-note {
+    margin: 0;
+    color: rgba(255, 255, 255, 0.66);
+    font-size: 0.74rem;
+    line-height: 1.55;
+  }
+  .home-support-divider {
+    height: 1px;
+    background: rgba(255, 255, 255, 0.1);
+  }
   .youth-metrics-card {
-    padding: 22px;
-    border-radius: 28px;
-    border: 1px solid var(--line);
-    background:
-      radial-gradient(circle at top left, rgba(123, 184, 255, 0.14), transparent 34%),
-      linear-gradient(180deg, rgba(255, 255, 255, 0.99) 0%, rgba(244, 248, 252, 0.98) 100%);
-    box-shadow: var(--shadow-soft);
+    display: none;
   }
   .youth-metrics-head {
     display: grid;
@@ -1664,6 +1714,9 @@ BASE_CSS = """
     .youth-metrics-grid {
       grid-template-columns: repeat(5, minmax(0, 1fr));
     }
+    .home-support-metrics-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
     .home-dual-grid {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -2323,6 +2376,30 @@ def render_youth_metrics() -> str:
         <p class="youth-metrics-note">지표마다 연령 기준과 기준 시점이 다르므로, 카드 아래 표기를 함께 확인해 주세요. 전국 청년 거버넌스 운영 수는 공식 단일 통계가 뚜렷하지 않아 이번 화면에서는 제외했습니다.</p>
       </article>
     </section>
+    """
+
+
+def render_support_metrics() -> str:
+    metric_items = []
+    for metric in YOUTH_METRICS:
+        metric_items.append(
+            f"""
+            <article class="home-support-metric-item">
+              <span class="home-support-metric-label">{html.escape(metric["label"])}</span>
+              <strong class="home-support-metric-value">{html.escape(metric["value"])}</strong>
+              <div class="home-support-metric-meta">
+                <span>{html.escape(metric["basis"])}</span>
+                <a href="{html.escape(metric["url"])}" target="_blank" rel="noreferrer">{html.escape(metric["source"])}</a>
+              </div>
+            </article>
+            """
+        )
+    return f"""
+    <div class="home-support-metrics">
+      <h3>청년 주요 지표</h3>
+      <div class="home-support-metrics-grid">{''.join(metric_items)}</div>
+      <p class="home-support-note">지표마다 연령 기준과 기준 시점이 다르므로, 카드 아래 표기를 함께 확인해 주세요. 전국 청년 거버넌스 운영 수는 공식 단일 통계가 뚜렷하지 않아 이번 화면에서는 제외했습니다.</p>
+    </div>
     """
 
 
@@ -3081,11 +3158,6 @@ def build_home_page(
           <span class="home-briefing-date">{html.escape(home_date_label)}</span>
           <h1 class="home-briefing-title">청년은 오늘 -</h1>
           <p class="home-briefing-copy">{html.escape(lead_message)}</p>
-          <div class="home-briefing-meta">
-            <span>기사 기준 {html.escape(latest_news_basis)}</span>
-            <span>페이지 반영 {format_display_datetime(page_updated_at)}</span>
-            <span>{status_meta["update_frequency"]}</span>
-          </div>
         </article>
         <article class="home-briefing-card digest">
           <div class="home-briefing-head">
@@ -3109,6 +3181,8 @@ def build_home_page(
           <span class="home-support-version">{html.escape(version_text)}</span>
           <p class="home-support-copy">이 사이트는 무료로 운영됩니다. 청년들을 응원하기 위해 만들어졌습니다.</p>
           <p class="home-support-copy secondary">기사 한 줄과 정책 한 항목이 필요한 순간에 제때 닿기를 바라는 마음으로, 오늘의 흐름을 조용히 모아두고 있습니다.</p>
+          <div class="home-support-divider"></div>
+          {render_support_metrics()}
           <div class="home-support-meta">
             <span>페이지 반영 {format_display_datetime(page_updated_at)}</span>
             <span>정책 기준 {html.escape(policy_basis)}</span>
@@ -3122,7 +3196,6 @@ def build_home_page(
         </article>
       </div>
     </section>
-    {render_youth_metrics()}
     """
 
 
