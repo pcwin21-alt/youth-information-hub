@@ -8,9 +8,10 @@ import shutil
 import subprocess
 import urllib.request
 import xml.etree.ElementTree as ET
+from datetime import datetime
 from email.utils import parsedate_to_datetime
 from typing import Any
-from urllib.parse import urljoin
+from urllib.parse import parse_qs, urljoin, urlparse
 
 from .constants import YOUTH_RELATED_KEYWORDS
 from .sample_data import SAMPLE_ARTICLES, SAMPLE_VIDEOS
@@ -133,10 +134,19 @@ def strip_html(value: str) -> str:
 def _parse_published(value: str | None) -> str | None:
     if not value:
         return None
+    normalized = value.strip()
+    if re.fullmatch(r"\d{4}-\d{2}-\d{2}", normalized):
+        return f"{normalized}T00:00:00+09:00"
+    if re.fullmatch(r"\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}", normalized):
+        return f'{normalized.replace(" ", "T")}+09:00'
     try:
-        return parsedate_to_datetime(value).isoformat()
+        return parsedate_to_datetime(normalized).isoformat()
     except (TypeError, ValueError, IndexError):
-        return value
+        pass
+    try:
+        return datetime.fromisoformat(normalized.replace("Z", "+00:00")).isoformat()
+    except ValueError:
+        return normalized
 
 
 def parse_feed(feed_text: str, source_name: str, source_kind: str) -> list[dict[str, Any]]:
@@ -166,7 +176,13 @@ def parse_feed(feed_text: str, source_name: str, source_kind: str) -> list[dict[
         )
         published = _find_text(
             item,
-            ["pubDate", "published", "updated", "{http://www.w3.org/2005/Atom}updated"],
+            [
+                "pubDate",
+                "published",
+                "updated",
+                "{http://www.w3.org/2005/Atom}updated",
+                "{http://purl.org/dc/elements/1.1/}date",
+            ],
         )
         if not title or not url:
             continue
@@ -185,6 +201,103 @@ def parse_feed(feed_text: str, source_name: str, source_kind: str) -> list[dict[
                 "source_kind": source_kind,
                 "published_date": _parse_published(published),
                 "lead_text": strip_html(description)[:200],
+            }
+        )
+    return articles
+
+
+def parse_fsc_press_release(page_text: str, base_url: str, source_name: str, source_kind: str) -> list[dict[str, Any]]:
+    item_pattern = re.compile(
+        r'<li>\s*<div class="inner">.*?<div class="subject">\s*<a href="(?P<href>/no010101/\d+[^"]*)" title="(?P<title>[^"]+)"[^>]*>.*?</a>\s*</div>.*?<div class="info">\s*<span>담당부서\s*:\s*(?P<department>.*?)</span>.*?</div>.*?<div class="day">(?P<date>\d{4}-\d{2}-\d{2})</div>',
+        re.DOTALL,
+    )
+    articles: list[dict[str, Any]] = []
+    for match in item_pattern.finditer(page_text):
+        articles.append(
+            {
+                "title": strip_html(match.group("title")),
+                "url": urljoin(base_url, html.unescape(match.group("href"))),
+                "source": source_name,
+                "source_name": source_name,
+                "source_kind": source_kind,
+                "published_date": f'{match.group("date")}T00:00:00+09:00',
+                "lead_text": strip_html(match.group("department")),
+            }
+        )
+    return articles
+
+
+def parse_mohw_press_release(page_text: str, base_url: str, source_name: str, source_kind: str) -> list[dict[str, Any]]:
+    row_pattern = re.compile(
+        r'<tr>\s*<td class="m_hidden" data-label="번호">.*?</td>\s*<td class="txt_left" data-label="제목">\s*<a href="(?P<href>/board\.es\?mid=a10503000000&amp;bid=0027&amp;act=view&amp;list_no=\d+[^"]*)" class="txt_title">\s*(?P<title>.*?)</a></td>\s*<td data-label="담당부서">(?P<department>.*?)</td>\s*<td data-label="등록일">(?P<date>\d{4}-\d{2}-\d{2})</td>',
+        re.DOTALL,
+    )
+    articles: list[dict[str, Any]] = []
+    for match in row_pattern.finditer(page_text):
+        title = re.sub(r"^새글\s*", "", strip_html(match.group("title"))).strip()
+        articles.append(
+            {
+                "title": title,
+                "url": urljoin(base_url, html.unescape(match.group("href"))),
+                "source": source_name,
+                "source_name": source_name,
+                "source_kind": source_kind,
+                "published_date": f'{match.group("date")}T00:00:00+09:00',
+                "lead_text": strip_html(match.group("department")),
+            }
+        )
+    return articles
+
+
+def parse_moe_press_release(page_text: str, base_url: str, source_name: str, source_kind: str) -> list[dict[str, Any]]:
+    parsed_url = urlparse(base_url)
+    menu_id = parse_qs(parsed_url.query).get("m", ["020402"])[0]
+    row_pattern = re.compile(
+        r"<tr>\s*<td class=\"no\">.*?</td>\s*<td class=\"title left\">\s*<a href=\"#\" onclick=\"javascript:goView\('(?P<board>\d+)', '(?P<seq>\d+)', '(?P<lev>\d+)', (?P<section>[^,]+), '(?P<status>[A-Z])', '(?P<page>\d+)', '(?P<writer>[A-Z])', '(?P<dept>[^']*)'\);\" title=\"(?P<title>[^\"]+)\">.*?</a>\s*</td>\s*<td>(?P<department>.*?)</td>\s*<td>(?P<date>\d{4}-\d{2}-\d{2})</td>",
+        re.DOTALL,
+    )
+    articles: list[dict[str, Any]] = []
+    for match in row_pattern.finditer(page_text):
+        detail_url = (
+            "/boardCnts/viewRenew.do"
+            f'?boardID={match.group("board")}'
+            f'&boardSeq={match.group("seq")}'
+            f'&lev={match.group("lev")}'
+            f'&searchType=null&statusYN={match.group("status")}'
+            f'&page={match.group("page")}'
+            f"&s=moe&m={menu_id}&opType=N"
+        )
+        articles.append(
+            {
+                "title": strip_html(match.group("title")),
+                "url": urljoin(base_url, detail_url),
+                "source": source_name,
+                "source_name": source_name,
+                "source_kind": source_kind,
+                "published_date": f'{match.group("date")}T00:00:00+09:00',
+                "lead_text": strip_html(match.group("department")),
+            }
+        )
+    return articles
+
+
+def parse_molit_board_list(page_text: str, base_url: str, source_name: str, source_kind: str) -> list[dict[str, Any]]:
+    row_pattern = re.compile(
+        r'<tr>\s*<td class="bd_num">.*?</td>\s*<td class="bd_title">\s*<a href="(?P<href>[^"]*dtl\.jsp[^"]*)" class="[^"]*">\s*(?P<title>.*?)\s*(?:<i>.*?</i>)?\s*</a>\s*</td>\s*<td class="bd_(?:field|category)">(?P<meta>.*?)</td>\s*<td class="bd_date">(?P<date>\d{4}-\d{2}-\d{2})</td>',
+        re.DOTALL,
+    )
+    articles: list[dict[str, Any]] = []
+    for match in row_pattern.finditer(page_text):
+        title = re.sub(r"^새글\s*", "", strip_html(match.group("title"))).strip()
+        articles.append(
+            {
+                "title": title,
+                "url": urljoin(base_url, html.unescape(match.group("href"))),
+                "source": source_name,
+                "source_name": source_name,
+                "source_kind": source_kind,
+                "published_date": f'{match.group("date")}T00:00:00+09:00',
+                "lead_text": strip_html(match.group("meta")),
             }
         )
     return articles
@@ -346,6 +459,34 @@ def collect_articles(
                 )
             elif parser == "korea_withyou_policy_news":
                 items = parse_korea_withyou_policy_news(
+                    payload,
+                    source["url"],
+                    source["name"],
+                    source.get("kind", "news"),
+                )
+            elif parser == "fsc_press_release":
+                items = parse_fsc_press_release(
+                    payload,
+                    source["url"],
+                    source["name"],
+                    source.get("kind", "news"),
+                )
+            elif parser == "mohw_press_release":
+                items = parse_mohw_press_release(
+                    payload,
+                    source["url"],
+                    source["name"],
+                    source.get("kind", "news"),
+                )
+            elif parser == "moe_press_release":
+                items = parse_moe_press_release(
+                    payload,
+                    source["url"],
+                    source["name"],
+                    source.get("kind", "news"),
+                )
+            elif parser == "molit_board_list":
+                items = parse_molit_board_list(
                     payload,
                     source["url"],
                     source["name"],

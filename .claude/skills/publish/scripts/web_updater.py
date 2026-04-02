@@ -2155,6 +2155,114 @@ BASE_SCRIPT = """
     }
   }
 
+  function formatPolicyGroup(value) {
+    if (value === 'official') {
+      return '정부 공식 발표';
+    }
+    if (value === 'local') {
+      return '지자체 발표 소식';
+    }
+    return '전체';
+  }
+
+  function applyPolicyFilters(root, selectedGroup, selectedRegion, selectedType, selectedDateStart, selectedDateEnd) {
+    const normalizedDates = normalizeNewsDateRange(
+      selectedDateStart ?? root.dataset.selectedDateStart ?? root.getAttribute('data-default-date-start') ?? '',
+      selectedDateEnd ?? root.dataset.selectedDateEnd ?? root.getAttribute('data-default-date-end') ?? '',
+    );
+    const activeGroup = selectedGroup || root.dataset.selectedPolicyGroup || root.getAttribute('data-default-policy-group') || 'all';
+    const activeRegion = selectedRegion || root.dataset.selectedPolicyRegion || root.getAttribute('data-default-policy-region') || 'all';
+    const activeType = selectedType || root.dataset.selectedPolicyType || root.getAttribute('data-default-policy-type') || 'all';
+    const activeDateStart = normalizedDates.startDate;
+    const activeDateEnd = normalizedDates.endDate;
+    const hasDateRange = Boolean(activeDateStart || activeDateEnd);
+    root.dataset.selectedPolicyGroup = activeGroup;
+    root.dataset.selectedPolicyRegion = activeRegion;
+    root.dataset.selectedPolicyType = activeType;
+    root.dataset.selectedDateStart = activeDateStart;
+    root.dataset.selectedDateEnd = activeDateEnd;
+
+    const articleCards = Array.from(root.querySelectorAll('[data-policy-card="true"]'));
+    const visibleByGroup = { official: 0, local: 0 };
+    let visibleCount = 0;
+
+    articleCards.forEach((card) => {
+      const articleGroup = card.getAttribute('data-policy-group') || 'official';
+      const articleRegion = card.getAttribute('data-article-region') || '중앙';
+      const articleType = card.getAttribute('data-policy-type') || '기타';
+      const articleDate = card.getAttribute('data-article-date') || '';
+      const groupMatch = activeGroup === 'all' || articleGroup === activeGroup;
+      const regionMatch = activeRegion === 'all' || articleRegion === activeRegion;
+      const typeMatch = activeType === 'all' || articleType === activeType;
+      const isAfterStart = !activeDateStart || (articleDate && articleDate >= activeDateStart);
+      const isBeforeEnd = !activeDateEnd || (articleDate && articleDate <= activeDateEnd);
+      const dateMatch = !hasDateRange || (isAfterStart && isBeforeEnd);
+      const isMatch = groupMatch && regionMatch && typeMatch && dateMatch;
+      card.hidden = !isMatch;
+      if (isMatch) {
+        visibleCount += 1;
+        visibleByGroup[articleGroup] = (visibleByGroup[articleGroup] || 0) + 1;
+      }
+    });
+
+    root.querySelectorAll('[data-policy-filter]').forEach((button) => {
+      const group = button.getAttribute('data-filter-group') || 'group';
+      const value = button.getAttribute('data-filter-value') || 'all';
+      const isActive =
+        group === 'group' ? value === activeGroup :
+        group === 'region' ? value === activeRegion :
+        group === 'type' ? value === activeType :
+        value === 'all' && !hasDateRange;
+      button.classList.toggle('active', isActive);
+      button.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+    });
+
+    root.querySelectorAll('[data-policy-date-input]').forEach((dateInput) => {
+      const role = dateInput.getAttribute('data-date-role') || 'start';
+      const nextValue = role === 'end' ? activeDateEnd : activeDateStart;
+      if (dateInput.value !== nextValue) {
+        dateInput.value = nextValue;
+      }
+    });
+
+    root.querySelectorAll('[data-policy-section]').forEach((section) => {
+      const sectionGroup = section.getAttribute('data-policy-section') || 'official';
+      const visibleInSection = visibleByGroup[sectionGroup] || 0;
+      section.hidden = visibleInSection === 0;
+      const count = section.querySelector('[data-policy-section-count]');
+      if (count) {
+        count.textContent = `${visibleInSection}건`;
+      }
+    });
+
+    const status = root.querySelector('[data-policy-filter-status]');
+    if (status) {
+      const parts = [];
+      if (activeGroup !== 'all') {
+        parts.push(formatPolicyGroup(activeGroup));
+      }
+      if (activeRegion !== 'all') {
+        parts.push(activeRegion);
+      }
+      if (activeType !== 'all') {
+        parts.push(activeType);
+      }
+      if (hasDateRange) {
+        parts.push(formatNewsDateRange(activeDateStart, activeDateEnd));
+      }
+      if (parts.length === 0) {
+        status.textContent = `전체 ${visibleCount}건을 보고 있습니다.`;
+      } else {
+        status.textContent = `${parts.join(' · ')} ${visibleCount}건을 보고 있습니다.`;
+      }
+    }
+
+    const emptyState = root.querySelector('[data-policy-empty-state]');
+    if (emptyState) {
+      emptyState.hidden = visibleCount !== 0;
+    }
+  }
+
   function markGuideSeen() {
     try {
       localStorage.setItem('youthTogetherGuideSeen-v1', '1');
@@ -2193,9 +2301,9 @@ BASE_SCRIPT = """
       return;
     }
 
-    const dateLaunch = event.target.closest('[data-news-date-launch]');
+    const dateLaunch = event.target.closest('[data-news-date-launch], [data-policy-date-launch]');
     if (dateLaunch) {
-      const dateInput = dateLaunch.querySelector('[data-news-date-input]');
+      const dateInput = dateLaunch.querySelector('[data-news-date-input], [data-policy-date-input]');
       if (dateInput) {
         event.preventDefault();
         openNewsDatePicker(dateInput);
@@ -2214,6 +2322,24 @@ BASE_SCRIPT = """
           group === 'date' ? '' : (root.dataset.selectedDateStart || root.getAttribute('data-default-date-start') || ''),
           group === 'date' ? '' : (root.dataset.selectedDateEnd || root.getAttribute('data-default-date-end') || ''),
           group === 'region' ? value : (root.dataset.selectedRegion || root.getAttribute('data-default-region') || 'all'),
+        );
+      }
+      return;
+    }
+
+    const policyFilterButton = event.target.closest('[data-policy-filter]');
+    if (policyFilterButton) {
+      const root = policyFilterButton.closest('[data-policy-filter-root]');
+      if (root) {
+        const filterGroup = policyFilterButton.getAttribute('data-filter-group') || 'group';
+        const filterValue = policyFilterButton.getAttribute('data-filter-value') || 'all';
+        applyPolicyFilters(
+          root,
+          filterGroup === 'group' ? filterValue : (root.dataset.selectedPolicyGroup || root.getAttribute('data-default-policy-group') || 'all'),
+          filterGroup === 'region' ? filterValue : (root.dataset.selectedPolicyRegion || root.getAttribute('data-default-policy-region') || 'all'),
+          filterGroup === 'type' ? filterValue : (root.dataset.selectedPolicyType || root.getAttribute('data-default-policy-type') || 'all'),
+          filterGroup === 'date' ? '' : (root.dataset.selectedDateStart || root.getAttribute('data-default-date-start') || ''),
+          filterGroup === 'date' ? '' : (root.dataset.selectedDateEnd || root.getAttribute('data-default-date-end') || ''),
         );
       }
       return;
@@ -2261,22 +2387,52 @@ BASE_SCRIPT = """
     );
   });
 
+  document.querySelectorAll('[data-policy-filter-root]').forEach((root) => {
+    applyPolicyFilters(
+      root,
+      root.getAttribute('data-default-policy-group') || 'all',
+      root.getAttribute('data-default-policy-region') || 'all',
+      root.getAttribute('data-default-policy-type') || 'all',
+      root.getAttribute('data-default-date-start') || '',
+      root.getAttribute('data-default-date-end') || '',
+    );
+  });
+
   document.addEventListener('change', (event) => {
     const dateInput = event.target.closest('[data-news-date-input]');
-    if (!dateInput) {
+    if (dateInput) {
+      const root = dateInput.closest('[data-news-filter-root]');
+      if (!root) {
+        return;
+      }
+      const startInput = root.querySelector('[data-news-date-input][data-date-role="start"]');
+      const endInput = root.querySelector('[data-news-date-input][data-date-role="end"]');
+      applyNewsFilters(
+        root,
+        startInput ? startInput.value : '',
+        endInput ? endInput.value : '',
+        root.dataset.selectedRegion || root.getAttribute('data-default-region') || 'all',
+      );
       return;
     }
-    const root = dateInput.closest('[data-news-filter-root]');
-    if (!root) {
+
+    const policyDateInput = event.target.closest('[data-policy-date-input]');
+    if (!policyDateInput) {
       return;
     }
-    const startInput = root.querySelector('[data-news-date-input][data-date-role="start"]');
-    const endInput = root.querySelector('[data-news-date-input][data-date-role="end"]');
-    applyNewsFilters(
-      root,
-      startInput ? startInput.value : '',
-      endInput ? endInput.value : '',
-      root.dataset.selectedRegion || root.getAttribute('data-default-region') || 'all',
+    const policyRoot = policyDateInput.closest('[data-policy-filter-root]');
+    if (!policyRoot) {
+      return;
+    }
+    const policyStartInput = policyRoot.querySelector('[data-policy-date-input][data-date-role="start"]');
+    const policyEndInput = policyRoot.querySelector('[data-policy-date-input][data-date-role="end"]');
+    applyPolicyFilters(
+      policyRoot,
+      policyRoot.dataset.selectedPolicyGroup || policyRoot.getAttribute('data-default-policy-group') || 'all',
+      policyRoot.dataset.selectedPolicyRegion || policyRoot.getAttribute('data-default-policy-region') || 'all',
+      policyRoot.dataset.selectedPolicyType || policyRoot.getAttribute('data-default-policy-type') || 'all',
+      policyStartInput ? policyStartInput.value : '',
+      policyEndInput ? policyEndInput.value : '',
     );
   });
 
@@ -2477,7 +2633,7 @@ def render_article_list_item(
     )
 
 
-def render_article_card(article: dict) -> str:
+def render_article_card(article: dict, extra_attrs: dict[str, str] | None = None) -> str:
     badges = "".join(f'<span class="badge">{html.escape(badge)}</span>' for badge in article.get("display_badges", [])[:2])
     badge_row = f'<div class="badge-row">{badges}</div>' if badges else ""
     summary_text = summarize_article_text(article, limit=112)
@@ -2491,8 +2647,22 @@ def render_article_card(article: dict) -> str:
         else ""
     )
     article_date = html.escape(article_date_value(article))
+    attr_parts = [
+        'class="article-card"',
+        'data-article-card="true"',
+        f'data-article-url="{escaped_url}"',
+        f'data-article-title="{escaped_title}"',
+        f'data-article-date="{article_date}"',
+        f'data-article-region="{article_region}"',
+    ]
+    if extra_attrs:
+        for key, value in extra_attrs.items():
+            if value is None:
+                continue
+            attr_parts.append(f'{key}="{html.escape(str(value), quote=True)}"')
+    attr_text = " ".join(attr_parts)
     return f"""
-    <article class="article-card" data-article-card="true" data-article-url="{escaped_url}" data-article-title="{escaped_title}" data-article-date="{article_date}" data-article-region="{article_region}">
+    <article {attr_text}>
       {render_article_meta(article)}
       <h3><a class="article-title-link" href="{escaped_url}" target="_blank" rel="noreferrer" aria-label="{escaped_title} 링크 바로가기">{escaped_title}</a></h3>
       {badge_row}
@@ -2697,6 +2867,117 @@ def collect_news_regions(articles: list[dict]) -> list[str]:
     return ["중앙", *others]
 
 
+def policy_type_label(article: dict) -> str:
+    text = normalize_inline_text(f'{article.get("title", "")} {article.get("lead_text", "")}')
+    if any(keyword in text for keyword in ("시행계획", "종합계획", "기본계획", "중장기계획", "마스터플랜")):
+        return "시행계획"
+    if "공약" in text:
+        return "공약"
+    if any(keyword in text for keyword in ("심의", "의결", "가결", "승인")):
+        return "심의·의결"
+    if any(keyword in text for keyword in ("모집", "선발", "공고", "접수")):
+        return "모집"
+    if any(keyword in text for keyword in ("지원사업", "지원 확대", "사업 추진", "사업 시행", "지원정책", "지원", "정주")):
+        return "지원사업"
+    if any(keyword in text for keyword in ("발표", "브리핑", "대책")):
+        return "정책 발표"
+    return "기타"
+
+
+def collect_policy_types(articles: list[dict]) -> list[str]:
+    preferred_order = ["시행계획", "공약", "지원사업", "심의·의결", "모집", "정책 발표", "기타"]
+    seen = {policy_type_label(article) for article in articles}
+    ordered = [label for label in preferred_order if label in seen]
+    return ordered
+
+
+def render_policy_filter_panel(official_policies: list[dict], reference_policies: list[dict]) -> str:
+    all_policies = [*official_policies, *reference_policies]
+    group_buttons = [
+        '<button class="filter-button active" type="button" data-policy-filter="true" '
+        'data-filter-group="group" data-filter-value="all" aria-pressed="true">전체</button>',
+        '<button class="filter-button" type="button" data-policy-filter="true" '
+        'data-filter-group="group" data-filter-value="official" aria-pressed="false">정부 공식 발표</button>',
+        '<button class="filter-button" type="button" data-policy-filter="true" '
+        'data-filter-group="group" data-filter-value="local" aria-pressed="false">지자체 발표 소식</button>',
+    ]
+
+    region_buttons = [
+        '<button class="filter-button active" type="button" data-policy-filter="true" '
+        'data-filter-group="region" data-filter-value="all" aria-pressed="true">전체</button>'
+    ]
+    for region in collect_news_regions(all_policies):
+        region_buttons.append(
+            f'<button class="filter-button" type="button" data-policy-filter="true" '
+            f'data-filter-group="region" data-filter-value="{html.escape(region)}" '
+            f'aria-pressed="false">{html.escape(region)}</button>'
+        )
+
+    type_buttons = [
+        '<button class="filter-button active" type="button" data-policy-filter="true" '
+        'data-filter-group="type" data-filter-value="all" aria-pressed="true">전체</button>'
+    ]
+    for label in collect_policy_types(all_policies):
+        type_buttons.append(
+            f'<button class="filter-button" type="button" data-policy-filter="true" '
+            f'data-filter-group="type" data-filter-value="{html.escape(label)}" '
+            f'aria-pressed="false">{html.escape(label)}</button>'
+        )
+
+    dates = collect_article_dates(all_policies)
+    date_min = html.escape(dates[-1]) if dates else ""
+    date_max = html.escape(dates[0]) if dates else ""
+    date_input_attrs = []
+    if date_min:
+        date_input_attrs.append(f'min="{date_min}"')
+    if date_max:
+        date_input_attrs.append(f'max="{date_max}"')
+    if not dates:
+        date_input_attrs.append('disabled="true"')
+    date_input_attrs_text = " ".join(date_input_attrs)
+
+    return f"""
+    <section class="section">
+      <article class="section-card filter-panel">
+        <div class="filter-head">
+          <h3>구분 · 지역 · 유형 · 기간</h3>
+        </div>
+        <div class="filter-stack">
+          <div class="filter-group">
+            <span class="filter-group-label">구분</span>
+            <div class="filter-controls">{''.join(group_buttons)}</div>
+          </div>
+          <div class="filter-group">
+            <span class="filter-group-label">지역</span>
+            <div class="filter-controls">{''.join(region_buttons)}</div>
+          </div>
+          <div class="filter-group">
+            <span class="filter-group-label">유형</span>
+            <div class="filter-controls">{''.join(type_buttons)}</div>
+          </div>
+          <div class="filter-group">
+            <span class="filter-group-label">기간</span>
+            <div class="date-picker-row">
+              <button class="filter-button active" type="button" data-policy-filter="true" data-filter-group="date" data-filter-value="all" aria-pressed="true">전체</button>
+              <div class="date-range-fields">
+                <label class="date-input-wrap" data-policy-date-launch="true">
+                  <span class="date-picker-label">시작일</span>
+                  <input class="date-input" type="date" data-policy-date-input="true" data-date-role="start" {date_input_attrs_text}>
+                </label>
+                <label class="date-input-wrap" data-policy-date-launch="true">
+                  <span class="date-picker-label">종료일</span>
+                  <input class="date-input" type="date" data-policy-date-input="true" data-date-role="end" {date_input_attrs_text}>
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="filter-status" data-policy-filter-status>전체 {len(all_policies)}건을 보고 있습니다.</div>
+      </article>
+    </section>
+    """
+
+
 def is_local_policy_update(article: dict) -> bool:
     if article.get("is_official_source"):
         return False
@@ -2860,7 +3141,7 @@ def render_article_meta(article: dict, category_label: str | None = None) -> str
         "허브 연관": "참고 기록",
     }
     category = category_aliases.get(category, category)
-    region = article.get("region", "전국") or "전국"
+    region = news_region_label(article)
     source = format_source_label(article.get("source") or article.get("source_name"))
     published = (article.get("published_date", "") or "")[:10] or "날짜 미상"
     return (
@@ -3576,13 +3857,34 @@ def build_policies_page_compact(articles: list[dict], status: dict) -> str:
     recent_articles = filter_recent_articles(sort_articles_by_recency(articles), page_updated_at, 24 * 90)
     official_policies = [article for article in recent_articles if article.get("is_official_source")]
     reference_policies = [article for article in recent_articles if is_local_policy_update(article)]
-    official_cards = "".join(render_article_card(article) for article in official_policies)
-    reference_cards = "".join(render_article_card(article) for article in reference_policies[:8])
+    official_cards = "".join(
+        render_article_card(
+            article,
+            {
+                "data-policy-card": "true",
+                "data-policy-group": "official",
+                "data-policy-type": policy_type_label(article),
+            },
+        )
+        for article in official_policies
+    )
+    reference_cards = "".join(
+        render_article_card(
+            article,
+            {
+                "data-policy-card": "true",
+                "data-policy-group": "local",
+                "data-policy-type": policy_type_label(article),
+            },
+        )
+        for article in reference_policies
+    )
+    policy_filter_panel = render_policy_filter_panel(official_policies, reference_policies)
     policy_index_cards = "".join(
         [
             render_feature_card(
                 "정부 공식 발표",
-                f"{len(official_policies)}건 · 정책브리핑과 국무조정실 원문부터 바로 확인합니다.",
+                f"{len(official_policies)}건 · 각 부처 공식 발표를 바로 훑어봅니다.",
                 "#official-policies",
                 "목차",
             ),
@@ -3595,29 +3897,36 @@ def build_policies_page_compact(articles: list[dict], status: dict) -> str:
         ]
     )
     return f"""
-    <section class="section">
-      <div class="feature-grid">{policy_index_cards}</div>
-    </section>
-    <section class="section" id="official-policies">
-      <div class="section-head">
-        <div>
-          <h2>정부 공식 발표</h2>
-          <p>정책브리핑과 국무조정실에서 직접 수집한 공식 발표입니다.</p>
+    <div data-policy-filter-root="policies" data-default-policy-group="all" data-default-policy-region="all" data-default-policy-type="all" data-default-date-start="" data-default-date-end="">
+      <section class="section">
+        <div class="feature-grid">{policy_index_cards}</div>
+      </section>
+      {policy_filter_panel}
+      <section class="section" id="official-policies" data-policy-section="official">
+        <div class="section-head">
+          <div>
+            <h2>정부 공식 발표</h2>
+            <p>정책브리핑, 국무조정실, 고용노동부, 보건복지부, 국토교통부, 교육부, 금융위원회 등에서 직접 수집한 공식 발표입니다.</p>
+          </div>
+          <span class="mini-link" aria-disabled="true" data-policy-section-count>{len(official_policies)}건</span>
         </div>
-        <span class="mini-link" aria-disabled="true">{len(official_policies)}건</span>
-      </div>
-      <div class="article-grid">{official_cards or '<article class="info-card"><h3>최근 공식 발표 없음</h3><p>최근 90일 안에 표시할 정부 원문이 아직 없습니다.</p></article>'}</div>
-    </section>
-    <section class="section" id="local-policy-updates">
-      <div class="section-head">
-        <div>
-          <h2>지자체 발표 소식</h2>
-          <p>청년 정책과 공약, 시행계획 발표 성격이 분명한 지역 기사만 따로 모았습니다.</p>
+        <div class="article-grid">{official_cards or '<article class="info-card"><h3>최근 공식 발표 없음</h3><p>최근 90일 안에 표시할 정부 원문이 아직 없습니다.</p></article>'}</div>
+      </section>
+      <section class="section" id="local-policy-updates" data-policy-section="local">
+        <div class="section-head">
+          <div>
+            <h2>지자체 발표 소식</h2>
+            <p>청년 정책과 공약, 시행계획 발표 성격이 분명한 지역 기사만 따로 모았습니다.</p>
+          </div>
+          <span class="mini-link" aria-disabled="true" data-policy-section-count>{len(reference_policies)}건</span>
         </div>
-        <span class="mini-link" aria-disabled="true">{len(reference_policies)}건</span>
-      </div>
-      <div class="article-grid">{reference_cards or '<article class="info-card"><h3>지자체 발표 소식 없음</h3><p>현재 기준으로 분리해 보여줄 지역 정책 발표 기사가 없습니다.</p></article>'}</div>
-    </section>
+        <div class="article-grid">{reference_cards or '<article class="info-card"><h3>지자체 발표 소식 없음</h3><p>현재 기준으로 분리해 보여줄 지역 정책 발표 기사가 없습니다.</p></article>'}</div>
+      </section>
+      <article class="info-card" data-policy-empty-state="true" hidden>
+        <h3>조건에 맞는 정책이 없습니다</h3>
+        <p>구분이나 지역, 유형, 기간을 바꾸면 다른 정책을 볼 수 있습니다.</p>
+      </article>
+    </div>
     """
 
 
@@ -3824,7 +4133,7 @@ def main() -> int:
     write_page(web_root / "news.html", "청년 뉴스", "news.html", build_news_page(classified_articles, status), status)
     write_page(
         web_root / "policies.html",
-        "정부 공식 발표",
+        "청년 정책",
         "policies.html",
         build_policies_page_compact(classified_articles, status),
         status,

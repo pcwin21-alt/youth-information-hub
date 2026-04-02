@@ -33,6 +33,96 @@
       "limit": 20
     },
     {
+      "name": "고용노동부 정책자료 RSS",
+      "kind": "official",
+      "enabled": true,
+      "parser": "rss",
+      "url": "https://www.moel.go.kr/rss/policy.do",
+      "include_youth_related": true,
+      "include_keywords": [
+        "청년고용",
+        "청년취업",
+        "청년 일경험",
+        "구직청년",
+        "국민취업지원제도",
+        "사회초년생"
+      ],
+      "limit": 20
+    },
+    {
+      "name": "보건복지부 보도자료",
+      "kind": "official",
+      "enabled": true,
+      "parser": "mohw_press_release",
+      "url": "https://www.mohw.go.kr/board.es?mid=a10503000000&bid=0027&tag=&act=list",
+      "include_youth_related": true,
+      "include_keywords": [
+        "청년 마음건강",
+        "고립·은둔",
+        "고립은둔"
+      ],
+      "limit": 20
+    },
+    {
+      "name": "국토교통부 보도자료",
+      "kind": "official",
+      "enabled": true,
+      "parser": "molit_board_list",
+      "url": "https://www.molit.go.kr/USR/NEWS/m_71/lst.jsp",
+      "include_youth_related": true,
+      "include_keywords": [
+        "청년주택",
+        "청년월세",
+        "청년안심주택",
+        "사회초년생"
+      ],
+      "limit": 20
+    },
+    {
+      "name": "국토교통부 정책자료",
+      "kind": "official",
+      "enabled": true,
+      "parser": "molit_board_list",
+      "url": "https://www.molit.go.kr/USR/policyData/m_34681/lst.jsp",
+      "include_youth_related": true,
+      "include_keywords": [
+        "청년주택",
+        "청년월세",
+        "청년안심주택",
+        "사회초년생"
+      ],
+      "limit": 20
+    },
+    {
+      "name": "교육부 보도자료",
+      "kind": "official",
+      "enabled": true,
+      "parser": "moe_press_release",
+      "url": "https://www.moe.go.kr/boardCnts/listRenew.do?boardID=294&lev=0&m=020402&searchType=null&statusYN=W&page=1&s=moe",
+      "include_youth_related": true,
+      "include_keywords": [
+        "지역대학",
+        "유학생",
+        "취업 지원",
+        "정주"
+      ],
+      "limit": 20
+    },
+    {
+      "name": "금융위원회 보도자료",
+      "kind": "official",
+      "enabled": true,
+      "parser": "fsc_press_release",
+      "url": "https://www.fsc.go.kr/no010101?srchCtgry=1",
+      "include_youth_related": true,
+      "include_keywords": [
+        "청년도약",
+        "청년희망",
+        "사회초년생"
+      ],
+      "limit": 20
+    },
+    {
       "name": "연합뉴스",
       "kind": "news",
       "enabled": true,
