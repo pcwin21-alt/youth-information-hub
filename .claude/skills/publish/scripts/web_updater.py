@@ -804,6 +804,25 @@ BASE_CSS = """
     flex-wrap: wrap;
     gap: 10px;
   }
+  .home-briefing-divider {
+    height: 1px;
+    background: rgba(23, 33, 49, 0.08);
+  }
+  .home-briefing-subhead {
+    display: grid;
+    gap: 6px;
+  }
+  .home-briefing-subhead h3 {
+    margin: 0;
+    font-size: 1.02rem;
+    letter-spacing: -0.02em;
+  }
+  .home-briefing-subhead p {
+    margin: 0;
+    color: var(--muted);
+    font-size: 0.84rem;
+    line-height: 1.58;
+  }
   .home-urgent-list {
     display: grid;
     gap: 0;
@@ -1605,19 +1624,16 @@ BASE_CSS = """
     .home-briefing-grid {
       grid-template-columns: minmax(0, 1.06fr) minmax(320px, 0.94fr);
       grid-template-areas:
-        "lead urgent"
-        "glance support";
+        "lead digest"
+        "support digest";
       align-items: stretch;
     }
     .home-briefing-card.lead {
       grid-area: lead;
       min-height: 320px;
     }
-    .home-briefing-card.glance {
-      grid-area: glance;
-    }
-    .home-briefing-card.urgent {
-      grid-area: urgent;
+    .home-briefing-card.digest {
+      grid-area: digest;
     }
     .home-briefing-card.support {
       grid-area: support;
@@ -3070,7 +3086,7 @@ def build_home_page(
             <span>{status_meta["update_frequency"]}</span>
           </div>
         </article>
-        <article class="home-briefing-card glance">
+        <article class="home-briefing-card digest">
           <div class="home-briefing-head">
             <h2>오늘 한눈에 보기</h2>
             <p>오늘의 기사와 정책, 참여·회의 흐름을 빠르게 가늠합니다.</p>
@@ -3081,11 +3097,10 @@ def build_home_page(
             <a class="mini-link" href="policies.html">정책 보기</a>
             <a class="mini-link" href="hub.html">참여·회의 보기</a>
           </div>
-        </article>
-        <article class="home-briefing-card urgent">
-          <div class="home-briefing-head">
-            <h2>오늘 놓치면 안되는 뉴스 5가지</h2>
-            <p>지금 가장 먼저 훑어볼 기사를 빠르게 묶었습니다.</p>
+          <div class="home-briefing-divider"></div>
+          <div class="home-briefing-subhead">
+            <h3>오늘 놓치면 안되는 뉴스 5가지</h3>
+            <p>요약된 흐름을 기준으로 지금 가장 먼저 훑어볼 기사를 빠르게 묶었습니다.</p>
           </div>
           <div class="home-urgent-list">{urgent_news_html}</div>
         </article>
