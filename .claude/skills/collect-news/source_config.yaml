@@ -132,6 +132,16 @@
         "청년",
         "청년층",
         "청년정책",
+        "사회초년생",
+        "쉬었음 청년",
+        "구직단념 청년",
+        "청년 고용",
+        "청년 취업",
+        "청년 일자리",
+        "청년 대출",
+        "청년 부채",
+        "청년 주거",
+        "청년센터",
         "청년보좌역",
         "2030자문단",
         "청년자문단",
@@ -177,6 +187,76 @@
       "limit": 100
     },
     {
+      "name": "구글뉴스 청년 고용·쉬었음(7일)",
+      "kind": "news",
+      "enabled": true,
+      "parser": "rss",
+      "url": "https://news.google.com/rss/search?q=%EC%B2%AD%EB%85%84%20%EC%B7%A8%EC%97%85%20OR%20%EC%B2%AD%EB%85%84%20%EA%B3%A0%EC%9A%A9%20OR%20%EC%B2%AD%EB%85%84%20%EC%9D%BC%EC%9E%90%EB%A6%AC%20OR%20%EC%89%AC%EC%97%88%EC%9D%8C%20%EC%B2%AD%EB%85%84%20OR%20%EA%B5%AC%EC%A7%81%EB%8B%A8%EB%85%90%20%EC%B2%AD%EB%85%84%20OR%20%EC%B2%AD%EB%85%84%20%ED%9B%88%EB%A0%A8%EC%88%98%EB%8B%B9%20when%3A7d&hl=ko&gl=KR&ceid=KR:ko",
+      "exclude_keywords": [
+        "청소년",
+        "초등",
+        "중학생",
+        "고등학생"
+      ],
+      "limit": 60
+    },
+    {
+      "name": "구글뉴스 청년 부채·금융(7일)",
+      "kind": "news",
+      "enabled": true,
+      "parser": "rss",
+      "url": "https://news.google.com/rss/search?q=%EC%B2%AD%EB%85%84%20%EB%8C%80%EC%B6%9C%20OR%20%EC%B2%AD%EB%85%84%20%EB%B6%80%EC%B1%84%20OR%20%EC%B2%AD%EB%85%84%20%EA%B8%88%EC%9C%B5%20OR%20%EC%82%AC%ED%9A%8C%EC%B4%88%EB%85%84%EC%83%9D%20%EB%8C%80%EC%B6%9C%20OR%20%EC%B2%AD%EB%85%84%20%EC%9E%90%EC%82%B0%ED%98%95%EC%84%B1%20when%3A7d&hl=ko&gl=KR&ceid=KR:ko",
+      "exclude_keywords": [
+        "청소년",
+        "초등",
+        "중학생",
+        "고등학생"
+      ],
+      "limit": 60
+    },
+    {
+      "name": "구글뉴스 청년 주거·생활(7일)",
+      "kind": "news",
+      "enabled": true,
+      "parser": "rss",
+      "url": "https://news.google.com/rss/search?q=%EC%B2%AD%EB%85%84%20%EC%A3%BC%EA%B1%B0%20OR%20%EC%B2%AD%EB%85%84%20%EC%9B%94%EC%84%B8%20OR%20%EC%B2%AD%EB%85%84%20%EC%A0%84%EC%84%B8%20OR%20%EC%B2%AD%EB%85%84%20%EC%A3%BC%ED%83%9D%20OR%20%EC%B2%AD%EB%85%84%20%EC%83%9D%ED%99%9C%EB%B9%84%20when%3A7d&hl=ko&gl=KR&ceid=KR:ko",
+      "exclude_keywords": [
+        "청소년",
+        "초등",
+        "중학생",
+        "고등학생"
+      ],
+      "limit": 60
+    },
+    {
+      "name": "구글뉴스 청년 노동·권리(7일)",
+      "kind": "news",
+      "enabled": true,
+      "parser": "rss",
+      "url": "https://news.google.com/rss/search?q=%EC%B2%AD%EB%85%84%20%EB%85%B8%EB%8F%99%20OR%20%EC%B2%AD%EB%85%84%20%EB%85%B8%EB%8F%99%EC%9D%B8%EA%B6%8C%20OR%20%EC%B2%AD%EB%85%84%20%EB%85%B8%EB%8F%99%EC%9E%90%20OR%20%EC%B2%AD%EB%85%84%20%EC%95%84%EB%A5%B4%EB%B0%94%EC%9D%B4%ED%8A%B8%20OR%20%EB%B0%94%EB%A5%B8%EC%9D%BC%ED%84%B0%20when%3A7d&hl=ko&gl=KR&ceid=KR:ko",
+      "exclude_keywords": [
+        "청소년",
+        "초등",
+        "중학생",
+        "고등학생"
+      ],
+      "limit": 60
+    },
+    {
+      "name": "구글뉴스 청년센터·활동(7일)",
+      "kind": "news",
+      "enabled": true,
+      "parser": "rss",
+      "url": "https://news.google.com/rss/search?q=%EC%B2%AD%EB%85%84%EC%84%BC%ED%84%B0%20OR%20%EC%B2%AD%EB%85%84%EA%B3%B5%EA%B0%84%20OR%20%EC%B2%AD%EB%85%84%ED%97%88%EB%B8%8C%20OR%20%EC%B2%AD%EB%85%84%EC%9D%BC%EC%9E%90%EB%A6%AC%EC%8A%A4%ED%85%8C%EC%9D%B4%EC%85%98%20OR%20%EC%B2%AD%EB%85%84%ED%99%9C%EB%8F%99%20when%3A7d&hl=ko&gl=KR&ceid=KR:ko",
+      "exclude_keywords": [
+        "청소년",
+        "초등",
+        "중학생",
+        "고등학생"
+      ],
+      "limit": 60
+    },
+    {
       "name": "구글뉴스 거버넌스(30일)",
       "kind": "news",
       "enabled": true,
@@ -187,13 +267,23 @@
     {
       "name": "YTN",
       "kind": "news",
-      "enabled": false,
+      "enabled": true,
       "parser": "rss",
       "url": "https://www.ytn.co.kr/_rss/news.xml",
       "include_keywords": [
         "청년",
         "청년층",
         "청년정책",
+        "사회초년생",
+        "쉬었음 청년",
+        "구직단념 청년",
+        "청년 고용",
+        "청년 취업",
+        "청년 일자리",
+        "청년 대출",
+        "청년 부채",
+        "청년 주거",
+        "청년센터",
         "청년보좌역",
         "2030자문단",
         "청년자문단",

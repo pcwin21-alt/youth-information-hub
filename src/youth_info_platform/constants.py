@@ -81,6 +81,37 @@ YOUTH_KEYWORDS = [
     "취준생",
 ]
 
+YOUTH_ISSUE_KEYWORDS = [
+    "쉬었음 청년",
+    "구직단념 청년",
+    "고립·은둔 청년",
+    "은둔 청년",
+    "청년 취업",
+    "청년고용",
+    "청년 고용",
+    "청년 일자리",
+    "청년 실업",
+    "청년 노동",
+    "청년 노동인권",
+    "청년 노동자",
+    "청년 아르바이트",
+    "청년 대출",
+    "청년 부채",
+    "청년 금융",
+    "청년 자산형성",
+    "청년 주거",
+    "청년 주택",
+    "청년 월세",
+    "청년 전세",
+    "청년 마음건강",
+    "청년센터",
+    "청년공간",
+    "청년허브",
+    "청년일자리스테이션",
+    "청년 지원사업",
+    "청년 공약",
+]
+
 HUB_KEYWORDS = [
     "청년보좌역",
     "2030자문단",
@@ -124,7 +155,9 @@ HUB_ROUTING_KEYWORDS = list(
     dict.fromkeys(HUB_KEYWORDS + ["청년정책책임관"] + REGIONAL_GOVERNANCE_KEYWORDS)
 )
 
-YOUTH_RELATED_KEYWORDS = list(dict.fromkeys(YOUTH_KEYWORDS + HUB_ROUTING_KEYWORDS))
+YOUTH_RELATED_KEYWORDS = list(
+    dict.fromkeys(YOUTH_KEYWORDS + YOUTH_ISSUE_KEYWORDS + HUB_ROUTING_KEYWORDS)
+)
 
 LOCAL_GOVERNMENT_CONTEXT_KEYWORDS = [
     "지방자치단체",
