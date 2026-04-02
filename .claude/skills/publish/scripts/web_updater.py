@@ -81,6 +81,7 @@ BASE_CSS = """
     color: var(--text);
     background: linear-gradient(180deg, #e8edf3 0%, var(--page-bg) 100%);
     font-family: "Noto Sans KR", sans-serif;
+    overflow-x: hidden;
   }
   a { color: inherit; text-decoration: none; }
   .shell {
@@ -1785,6 +1786,26 @@ BASE_CSS = """
     }
     .bottom-nav {
       display: none;
+    }
+  }
+  @media (max-width: 559px) {
+    .home-briefing-grid,
+    .home-briefing-card,
+    .home-glance-grid,
+    .home-urgent-link {
+      min-width: 0;
+    }
+    .home-briefing-card {
+      padding: 20px;
+      border-radius: 24px;
+    }
+    .home-briefing-title {
+      font-size: clamp(2.05rem, 9.8vw, 3.25rem);
+      letter-spacing: -0.05em;
+    }
+    .home-briefing-copy {
+      max-width: 100%;
+      font-size: 0.98rem;
     }
   }
   @media (max-width: 380px) {
