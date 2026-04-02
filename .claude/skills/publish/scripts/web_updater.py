@@ -738,7 +738,8 @@ BASE_CSS = """
     font-size: clamp(2.5rem, 8vw, 4.8rem);
     line-height: 0.95;
     letter-spacing: -0.07em;
-    max-width: 8ch;
+    max-width: none;
+    white-space: nowrap;
   }
   .home-briefing-copy {
     margin: 0;
