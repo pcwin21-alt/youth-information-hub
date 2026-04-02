@@ -64,6 +64,84 @@ YOUTH_METRICS = [
     },
 ]
 
+LOCAL_POLICY_CORE_KEYWORDS = (
+    "청년정책",
+    "정책 발표",
+    "정책 공약",
+    "공약 발표",
+    "시행계획",
+    "종합계획",
+    "기본계획",
+    "지원정책",
+    "지원사업",
+    "청년 공약",
+)
+
+LOCAL_POLICY_ACTION_KEYWORDS = (
+    "발표",
+    "추진",
+    "시행",
+    "출범",
+    "확대",
+    "확정",
+    "수립",
+    "제시",
+    "발의",
+    "공약",
+)
+
+LOCAL_POLICY_STRONG_KEYWORDS = (
+    "공약",
+    "시행계획",
+    "종합계획",
+    "기본계획",
+    "정책 발표",
+    "정책 공약",
+    "공약 발표",
+)
+
+LOCAL_POLICY_EXCLUDE_KEYWORDS = (
+    "청년정책 네트워크",
+    "청년정책네트워크",
+    "청년정책 참여단",
+    "청년정책참여단",
+    "청년참여단",
+    "청년위원회",
+    "청년정책위원회",
+    "청년정책조정위원회",
+    "청년정책 발굴단",
+    "청년정책발굴단",
+)
+
+LOCAL_GOVERNMENT_ACTOR_KEYWORDS = (
+    "지자체",
+    "시청",
+    "도청",
+    "군청",
+    "구청",
+    "시장",
+    "도지사",
+    "군수",
+    "구청장",
+    "서울시",
+    "부산시",
+    "대구시",
+    "인천시",
+    "광주시",
+    "대전시",
+    "울산시",
+    "세종시",
+    "경기도",
+    "강원도",
+    "충청북도",
+    "충청남도",
+    "전북특별자치도",
+    "전라남도",
+    "경상북도",
+    "경상남도",
+    "제주특별자치도",
+)
+
 
 BASE_CSS = """
   :root {
@@ -2619,6 +2697,30 @@ def collect_news_regions(articles: list[dict]) -> list[str]:
     return ["중앙", *others]
 
 
+def is_local_policy_update(article: dict) -> bool:
+    if article.get("is_official_source"):
+        return False
+
+    text = normalize_inline_text(f'{article.get("title", "")} {article.get("lead_text", "")}')
+    region = news_region_label(article)
+    has_local_actor = region != "중앙" or any(keyword in text for keyword in LOCAL_GOVERNMENT_ACTOR_KEYWORDS)
+    has_policy_core = any(keyword in text for keyword in LOCAL_POLICY_CORE_KEYWORDS)
+    has_policy_action = any(keyword in text for keyword in LOCAL_POLICY_ACTION_KEYWORDS)
+    has_strong_signal = any(keyword in text for keyword in LOCAL_POLICY_STRONG_KEYWORDS)
+
+    if not has_local_actor:
+        return False
+    if not has_policy_core:
+        return False
+    if not (has_policy_action or has_strong_signal):
+        return False
+    if any(keyword in text for keyword in LOCAL_POLICY_EXCLUDE_KEYWORDS) and not has_strong_signal:
+        return False
+    if article.get("is_hub_candidate") and not has_strong_signal:
+        return False
+    return True
+
+
 def render_news_filter_panel(regions: list[str], dates: list[str], total_count: int) -> str:
     region_buttons = [
         '<button class="filter-button active" type="button" data-news-filter="true" '
@@ -3469,6 +3571,56 @@ def build_policies_page(articles: list[dict], status: dict) -> str:
     """
 
 
+def build_policies_page_compact(articles: list[dict], status: dict) -> str:
+    page_updated_at = status.get("finished_at") or status.get("updated_at") or ""
+    recent_articles = filter_recent_articles(sort_articles_by_recency(articles), page_updated_at, 24 * 90)
+    official_policies = [article for article in recent_articles if article.get("is_official_source")]
+    reference_policies = [article for article in recent_articles if is_local_policy_update(article)]
+    official_cards = "".join(render_article_card(article) for article in official_policies)
+    reference_cards = "".join(render_article_card(article) for article in reference_policies[:8])
+    policy_index_cards = "".join(
+        [
+            render_feature_card(
+                "정부 공식 발표",
+                f"{len(official_policies)}건 · 정책브리핑과 국무조정실 원문부터 바로 확인합니다.",
+                "#official-policies",
+                "목차",
+            ),
+            render_feature_card(
+                "지자체 발표 소식",
+                f"{len(reference_policies)}건 · 청년 정책·공약·시행계획 발표 기사만 모았습니다.",
+                "#local-policy-updates",
+                "목차",
+            ),
+        ]
+    )
+    return f"""
+    <section class="section">
+      <div class="feature-grid">{policy_index_cards}</div>
+    </section>
+    <section class="section" id="official-policies">
+      <div class="section-head">
+        <div>
+          <h2>정부 공식 발표</h2>
+          <p>정책브리핑과 국무조정실에서 직접 수집한 공식 발표입니다.</p>
+        </div>
+        <span class="mini-link" aria-disabled="true">{len(official_policies)}건</span>
+      </div>
+      <div class="article-grid">{official_cards or '<article class="info-card"><h3>최근 공식 발표 없음</h3><p>최근 90일 안에 표시할 정부 원문이 아직 없습니다.</p></article>'}</div>
+    </section>
+    <section class="section" id="local-policy-updates">
+      <div class="section-head">
+        <div>
+          <h2>지자체 발표 소식</h2>
+          <p>청년 정책과 공약, 시행계획 발표 성격이 분명한 지역 기사만 따로 모았습니다.</p>
+        </div>
+        <span class="mini-link" aria-disabled="true">{len(reference_policies)}건</span>
+      </div>
+      <div class="article-grid">{reference_cards or '<article class="info-card"><h3>지자체 발표 소식 없음</h3><p>현재 기준으로 분리해 보여줄 지역 정책 발표 기사가 없습니다.</p></article>'}</div>
+    </section>
+    """
+
+
 def build_hub_page(classified_articles: list[dict]) -> str:
     hub_records = filter_hub_articles(classified_articles)
     government_records = filter_hub_articles(classified_articles, "정부")[:6]
@@ -3670,7 +3822,13 @@ def main() -> int:
     write_page(web_root / "index.html", "청년 투게더", "index.html", build_home_page(articles, classified_articles, status, contact_settings), status)
     write_page(web_root / "guide.html", "이용방법", "guide.html", build_guide_page(status), status)
     write_page(web_root / "news.html", "청년 뉴스", "news.html", build_news_page(classified_articles, status), status)
-    write_page(web_root / "policies.html", "정부 공식 발표", "policies.html", build_policies_page(classified_articles, status), status)
+    write_page(
+        web_root / "policies.html",
+        "정부 공식 발표",
+        "policies.html",
+        build_policies_page_compact(classified_articles, status),
+        status,
+    )
     write_page(web_root / "hub.html", "청년 참여·회의", "hub.html", build_hub_page(classified_articles), status)
     write_page(web_root / "tools.html", "자료·작성 도구", "tools.html", build_tools_page(), status)
     write_page(web_root / "contact.html", "제보·문의", "contact.html", build_contact_page(contact_settings), status)

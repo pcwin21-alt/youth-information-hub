@@ -96,9 +96,12 @@ def classify_articles(articles: list[dict]) -> list[dict]:
         hub_topics = extract_hub_topics(text)
         governance_scope = extract_governance_scope(article, text)
         governance_activity_types = extract_governance_activity_types(text)
-        is_official = article.get("source_kind") == "official" or any(keyword in text for keyword in OFFICIAL_KEYWORDS)
+        has_policy_signal = article.get("source_kind") == "official" or any(
+            keyword in text for keyword in OFFICIAL_KEYWORDS
+        )
+        is_official = article.get("source_kind") == "official"
 
-        if is_official:
+        if has_policy_signal:
             categories.append(CATEGORY_POLICY)
         if any(keyword in text for keyword in NOW_KEYWORDS):
             categories.append(CATEGORY_NOW)
