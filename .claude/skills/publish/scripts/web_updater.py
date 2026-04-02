@@ -724,8 +724,11 @@ BASE_CSS = """
       linear-gradient(180deg, rgba(255, 255, 255, 0.99) 0%, rgba(244, 248, 252, 0.98) 100%);
   }
   .home-briefing-card.support {
-    background: linear-gradient(180deg, rgba(28, 39, 54, 0.98) 0%, rgba(23, 33, 49, 1) 100%);
-    color: rgba(255, 255, 255, 0.94);
+    background:
+      radial-gradient(circle at top left, rgba(255, 196, 87, 0.18), transparent 28%),
+      radial-gradient(circle at top right, rgba(61, 137, 255, 0.16), transparent 32%),
+      linear-gradient(180deg, rgba(255, 255, 255, 0.99) 0%, rgba(244, 248, 252, 0.98) 100%);
+    overflow: hidden;
   }
   .home-briefing-date {
     color: var(--accent-strong);
@@ -878,6 +881,16 @@ BASE_CSS = """
     font-size: 0.78rem;
     font-weight: 800;
   }
+  .home-support-footer {
+    display: grid;
+    gap: 14px;
+    margin: 4px -22px -22px;
+    padding: 22px;
+    background:
+      radial-gradient(circle at top left, rgba(123, 184, 255, 0.14), transparent 30%),
+      linear-gradient(180deg, rgba(28, 39, 54, 0.98) 0%, rgba(23, 33, 49, 1) 100%);
+    color: rgba(255, 255, 255, 0.94);
+  }
   .home-support-copy {
     margin: 0;
     color: rgba(255, 255, 255, 0.9);
@@ -916,8 +929,9 @@ BASE_CSS = """
   }
   .home-support-metrics h3 {
     margin: 0;
-    font-size: 1.04rem;
+    font-size: 1.08rem;
     letter-spacing: -0.02em;
+    color: var(--accent-strong);
   }
   .home-support-metrics-grid {
     display: grid;
@@ -928,11 +942,12 @@ BASE_CSS = """
     gap: 8px;
     padding: 14px 16px;
     border-radius: 20px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(23, 33, 49, 0.08);
+    background: rgba(255, 255, 255, 0.86);
+    box-shadow: 0 12px 24px rgba(23, 33, 49, 0.06);
   }
   .home-support-metric-label {
-    color: rgba(255, 255, 255, 0.7);
+    color: var(--muted);
     font-size: 0.74rem;
     font-weight: 800;
     line-height: 1.3;
@@ -942,29 +957,46 @@ BASE_CSS = """
     font-weight: 800;
     letter-spacing: -0.04em;
     line-height: 1;
+    color: var(--accent-strong);
   }
   .home-support-metric-meta {
     display: flex;
     flex-wrap: wrap;
     gap: 6px 10px;
-    color: rgba(255, 255, 255, 0.68);
+    color: var(--muted);
     font-size: 0.74rem;
     line-height: 1.5;
   }
   .home-support-metric-meta a {
-    color: rgba(255, 255, 255, 0.9);
+    color: var(--accent-strong);
     text-decoration: underline;
     text-underline-offset: 2px;
   }
   .home-support-note {
     margin: 0;
-    color: rgba(255, 255, 255, 0.66);
+    color: var(--muted);
     font-size: 0.74rem;
     line-height: 1.55;
   }
-  .home-support-divider {
-    height: 1px;
-    background: rgba(255, 255, 255, 0.1);
+  .home-support-metric-item:nth-child(1) {
+    background:
+      linear-gradient(180deg, rgba(255, 240, 206, 0.92) 0%, rgba(255, 255, 255, 0.94) 100%);
+  }
+  .home-support-metric-item:nth-child(2) {
+    background:
+      linear-gradient(180deg, rgba(219, 240, 255, 0.92) 0%, rgba(255, 255, 255, 0.94) 100%);
+  }
+  .home-support-metric-item:nth-child(3) {
+    background:
+      linear-gradient(180deg, rgba(225, 245, 237, 0.92) 0%, rgba(255, 255, 255, 0.94) 100%);
+  }
+  .home-support-metric-item:nth-child(4) {
+    background:
+      linear-gradient(180deg, rgba(240, 234, 255, 0.92) 0%, rgba(255, 255, 255, 0.94) 100%);
+  }
+  .home-support-metric-item:nth-child(5) {
+    background:
+      linear-gradient(180deg, rgba(255, 230, 236, 0.92) 0%, rgba(255, 255, 255, 0.94) 100%);
   }
   .youth-metrics-card {
     display: none;
@@ -3178,20 +3210,21 @@ def build_home_page(
           <div class="home-urgent-list">{urgent_news_html}</div>
         </article>
         <article class="home-briefing-card support">
-          <span class="home-support-version">{html.escape(version_text)}</span>
-          <p class="home-support-copy">이 사이트는 무료로 운영됩니다. 청년들을 응원하기 위해 만들어졌습니다.</p>
-          <p class="home-support-copy secondary">기사 한 줄과 정책 한 항목이 필요한 순간에 제때 닿기를 바라는 마음으로, 오늘의 흐름을 조용히 모아두고 있습니다.</p>
-          <div class="home-support-divider"></div>
           {render_support_metrics()}
-          <div class="home-support-meta">
-            <span>페이지 반영 {format_display_datetime(page_updated_at)}</span>
-            <span>정책 기준 {html.escape(policy_basis)}</span>
-            <span>기사 기준 {html.escape(latest_news_basis)}</span>
-            <span>{status_meta["update_frequency"]}</span>
-          </div>
-          <div class="home-support-links">
-            <a href="guide.html">사이트 소개</a>
-            <a href="contact.html">제보·문의</a>
+          <div class="home-support-footer">
+            <span class="home-support-version">{html.escape(version_text)}</span>
+            <p class="home-support-copy">이 사이트는 무료로 운영됩니다. 청년들을 응원하기 위해 만들어졌습니다.</p>
+            <p class="home-support-copy secondary">기사 한 줄과 정책 한 항목이 필요한 순간에 제때 닿기를 바라는 마음으로, 오늘의 흐름을 조용히 모아두고 있습니다.</p>
+            <div class="home-support-meta">
+              <span>페이지 반영 {format_display_datetime(page_updated_at)}</span>
+              <span>정책 기준 {html.escape(policy_basis)}</span>
+              <span>기사 기준 {html.escape(latest_news_basis)}</span>
+              <span>{status_meta["update_frequency"]}</span>
+            </div>
+            <div class="home-support-links">
+              <a href="guide.html">사이트 소개</a>
+              <a href="contact.html">제보·문의</a>
+            </div>
           </div>
         </article>
       </div>
