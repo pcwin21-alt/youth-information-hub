@@ -730,6 +730,15 @@ BASE_CSS = """
       linear-gradient(180deg, rgba(255, 255, 255, 0.99) 0%, rgba(244, 248, 252, 0.98) 100%);
     overflow: hidden;
   }
+  .home-briefing-card.footer {
+    padding: 0;
+    gap: 0;
+    background:
+      radial-gradient(circle at top left, rgba(123, 184, 255, 0.14), transparent 24%),
+      linear-gradient(180deg, rgba(28, 39, 54, 0.98) 0%, rgba(23, 33, 49, 1) 100%);
+    color: rgba(255, 255, 255, 0.94);
+    overflow: hidden;
+  }
   .home-briefing-date {
     color: var(--accent-strong);
     font-size: 0.82rem;
@@ -884,11 +893,7 @@ BASE_CSS = """
   .home-support-footer {
     display: grid;
     gap: 14px;
-    margin: 4px -22px -22px;
     padding: 22px;
-    background:
-      radial-gradient(circle at top left, rgba(123, 184, 255, 0.14), transparent 30%),
-      linear-gradient(180deg, rgba(28, 39, 54, 0.98) 0%, rgba(23, 33, 49, 1) 100%);
     color: rgba(255, 255, 255, 0.94);
   }
   .home-support-copy {
@@ -1708,7 +1713,8 @@ BASE_CSS = """
       grid-template-columns: minmax(0, 1.06fr) minmax(320px, 0.94fr);
       grid-template-areas:
         "lead digest"
-        "support digest";
+        "support digest"
+        "footer footer";
       align-items: stretch;
     }
     .home-briefing-card.lead {
@@ -1720,6 +1726,9 @@ BASE_CSS = """
     }
     .home-briefing-card.support {
       grid-area: support;
+    }
+    .home-briefing-card.footer {
+      grid-area: footer;
     }
     .home-spotlight-layout {
       grid-template-columns: minmax(0, 1.24fr) minmax(280px, 0.82fr);
@@ -3211,6 +3220,8 @@ def build_home_page(
         </article>
         <article class="home-briefing-card support">
           {render_support_metrics()}
+        </article>
+        <article class="home-briefing-card footer">
           <div class="home-support-footer">
             <span class="home-support-version">{html.escape(version_text)}</span>
             <p class="home-support-copy">이 사이트는 무료로 운영됩니다. 청년들을 응원하기 위해 만들어졌습니다.</p>
