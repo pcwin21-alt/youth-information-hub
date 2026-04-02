@@ -759,6 +759,8 @@ BASE_CSS = """
     font-size: 1rem;
     line-height: 1.72;
     max-width: 42ch;
+    word-break: keep-all;
+    overflow-wrap: normal;
   }
   .home-briefing-meta {
     display: flex;
