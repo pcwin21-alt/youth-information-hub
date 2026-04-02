@@ -3880,27 +3880,8 @@ def build_policies_page_compact(articles: list[dict], status: dict) -> str:
         for article in reference_policies
     )
     policy_filter_panel = render_policy_filter_panel(official_policies, reference_policies)
-    policy_index_cards = "".join(
-        [
-            render_feature_card(
-                "정부 공식 발표",
-                f"{len(official_policies)}건 · 각 부처 공식 발표를 바로 훑어봅니다.",
-                "#official-policies",
-                "목차",
-            ),
-            render_feature_card(
-                "지자체 발표 소식",
-                f"{len(reference_policies)}건 · 청년 정책·공약·시행계획 발표 기사만 모았습니다.",
-                "#local-policy-updates",
-                "목차",
-            ),
-        ]
-    )
     return f"""
     <div data-policy-filter-root="policies" data-default-policy-group="all" data-default-policy-region="all" data-default-policy-type="all" data-default-date-start="" data-default-date-end="">
-      <section class="section">
-        <div class="feature-grid">{policy_index_cards}</div>
-      </section>
       {policy_filter_panel}
       <section class="section" id="official-policies" data-policy-section="official">
         <div class="section-head">
