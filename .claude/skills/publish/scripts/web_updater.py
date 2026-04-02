@@ -3057,51 +3057,6 @@ def build_home_page(
         f'<div class="home-urgent-text"><strong>최근 {NEWS_WINDOW_DAYS}일 뉴스가 없습니다.</strong>'
         '<span class="home-urgent-meta">새 청년 뉴스가 수집되면 이 영역에 표시됩니다.</span></div></div></article>'
     )
-    policy_list_html = "".join(
-        render_article_list_item(
-            article,
-            " · ".join(bit for bit in [article.get("source", ""), article.get("published_date", "")[:10]] if bit),
-        )
-        for article in policy_articles[:2]
-    ) or '<div class="list-item"><strong>최근 90일 정책이 없습니다.</strong><span>공식 발표가 수집되면 이 영역에 표시됩니다.</span></div>'
-    hub_list_html = "".join(
-        [
-            (
-                render_article_list_item(
-                    government_hub_articles[0],
-                    " · ".join(
-                        bit
-                        for bit in [government_hub_articles[0].get("source", ""), government_hub_articles[0].get("published_date", "")[:10]]
-                        if bit
-                    )
-                    or "날짜 미상",
-                    overline="정부 회의·위원회",
-                )
-                if government_hub_articles
-                else '<div class="list-item"><strong>정부 회의·위원회</strong><span>현재 등록된 항목이 없습니다.</span></div>'
-            ),
-            (
-                render_article_list_item(
-                    regional_hub_articles[0],
-                    " · ".join(
-                        bit
-                        for bit in [regional_hub_articles[0].get("source", ""), regional_hub_articles[0].get("published_date", "")[:10]]
-                        if bit
-                    )
-                    or "날짜 미상",
-                    overline="지역 참여·네트워크",
-                )
-                if regional_hub_articles
-                else '<div class="list-item"><strong>지역 참여·네트워크</strong><span>현재 등록된 항목이 없습니다.</span></div>'
-            ),
-        ]
-    )
-    tools_list_html = "".join(
-        [
-            '<div class="list-item"><strong>정책 찾기 사이트</strong><span>정책브리핑, 중앙부처, 통계 출처를 한 번에 확인할 수 있습니다.</span></div>',
-            '<div class="list-item"><strong>AI 도구 사용법</strong><span>질문 정리와 초안 점검 방법을 안내합니다.</span></div>',
-        ]
-    )
     return f"""
     <section class="hero home-hero">
       <div class="home-briefing-grid">
@@ -3152,53 +3107,6 @@ def build_home_page(
       </div>
     </section>
     {render_youth_metrics()}
-    <section class="section" id="menu-updates">
-      <div class="section-head">
-        <div>
-          <h2>정책</h2>
-          <p>정부 공식 발표를 참고 기사와 나눠서 확인합니다.</p>
-        </div>
-        <a class="mini-link" href="policies.html">정책 보기</a>
-      </div>
-      <article class="home-section-card">
-        <div class="home-meta-line">
-          <span>최신 정책 기준 {describe_article_basis(policy_articles, "최근 90일 정책 없음")}</span>
-          <span>페이지 반영 {format_display_datetime(page_updated_at)}</span>
-        </div>
-        <div class="list">{policy_list_html}</div>
-      </article>
-    </section><div class="home-dual-grid"><section class="section">
-      <div class="section-head">
-        <div>
-          <h2>참여·회의</h2>
-          <p>정부 회의와 지역 참여 소식을 나눠서 볼 수 있습니다.</p>
-        </div>
-        <a class="mini-link" href="hub.html">참여·회의 보기</a>
-      </div>
-      <article class="home-section-card">
-        <div class="home-meta-line">
-          <span>최신 허브 기준 {describe_article_basis(government_hub_articles or regional_hub_articles, "최근 90일 허브 기록 없음")}</span>
-          <span>페이지 반영 {format_display_datetime(page_updated_at)}</span>
-        </div>
-        <div class="list">{hub_list_html}</div>
-      </article>
-    </section>
-    <section class="section">
-      <div class="section-head">
-        <div>
-          <h2>자료·작성 도구</h2>
-          <p>정책 조사와 초안 정리에 필요한 가이드를 짧게 묶었습니다.</p>
-        </div>
-        <a class="mini-link" href="tools.html">자료도구 보기</a>
-      </div>
-      <article class="home-section-card">
-        <div class="home-meta-line">
-          <span>도구 업데이트 기준 {format_display_datetime(page_updated_at)}</span>
-          <span>기사 날짜 기준 {status_meta["date_basis"]}</span>
-        </div>
-        <div class="list">{tools_list_html}</div>
-      </article>
-    </section></div>
     """
 
 
