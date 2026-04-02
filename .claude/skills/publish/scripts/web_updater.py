@@ -928,6 +928,13 @@ BASE_CSS = """
     text-decoration: underline;
     text-underline-offset: 3px;
   }
+  .home-support-credit {
+    margin: 2px 0 0;
+    color: rgba(255, 255, 255, 0.62);
+    font-size: 0.77rem;
+    line-height: 1.55;
+    text-align: right;
+  }
   .home-support-metrics {
     display: grid;
     gap: 12px;
@@ -2414,7 +2421,7 @@ def render_youth_metrics() -> str:
           <p>정책과 기사 흐름을 볼 때 함께 참고할 수 있도록, 최근 공식 통계와 공공 발표 기준 숫자를 함께 놓았습니다.</p>
         </div>
         <div class="youth-metrics-grid">{''.join(metric_items)}</div>
-        <p class="youth-metrics-note">지표마다 연령 기준과 기준 시점이 다르므로, 카드 아래 표기를 함께 확인해 주세요. 전국 청년 거버넌스 운영 수는 공식 단일 통계가 뚜렷하지 않아 이번 화면에서는 제외했습니다.</p>
+        <p class="youth-metrics-note">지표마다 연령 기준과 기준 시점이 다르므로, 카드 아래 표기를 함께 확인해 주세요.</p>
       </article>
     </section>
     """
@@ -2439,7 +2446,7 @@ def render_support_metrics() -> str:
     <div class="home-support-metrics">
       <h3>청년 주요 지표</h3>
       <div class="home-support-metrics-grid">{''.join(metric_items)}</div>
-      <p class="home-support-note">지표마다 연령 기준과 기준 시점이 다르므로, 카드 아래 표기를 함께 확인해 주세요. 전국 청년 거버넌스 운영 수는 공식 단일 통계가 뚜렷하지 않아 이번 화면에서는 제외했습니다.</p>
+      <p class="home-support-note">지표마다 연령 기준과 기준 시점이 다르므로, 카드 아래 표기를 함께 확인해 주세요.</p>
     </div>
     """
 
@@ -3236,6 +3243,7 @@ def build_home_page(
               <a href="guide.html">사이트 소개</a>
               <a href="contact.html">제보·문의</a>
             </div>
+            <p class="home-support-credit">유쾌한 청년들, 박진감이 만들었습니다.</p>
           </div>
         </article>
       </div>
