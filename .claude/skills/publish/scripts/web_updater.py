@@ -35,6 +35,13 @@ YOUTH_METRICS = [
         "url": "https://mods.go.kr/board.es?act=view&bid=246&list_no=442421&mainXml=Y&mid=a10301010000",
     },
     {
+        "label": "삶의 만족도",
+        "value": "6.7점",
+        "basis": "2024 · 19~34세",
+        "source": "청년 삶의 질 2025",
+        "url": "https://mods.go.kr/board.es?act=view&bid=12316&list_no=442459&mid=a90106000000&nPage=1&ref_bid=&tag=",
+    },
+    {
         "label": "청년 실업률",
         "value": "7.7%",
         "basis": "2026.02 · 15~29세",
@@ -1015,6 +1022,10 @@ BASE_CSS = """
   .home-support-metric-item:nth-child(5) {
     background:
       linear-gradient(180deg, rgba(255, 230, 236, 0.92) 0%, rgba(255, 255, 255, 0.94) 100%);
+  }
+  .home-support-metric-item:nth-child(6) {
+    background:
+      linear-gradient(180deg, rgba(232, 240, 227, 0.92) 0%, rgba(255, 255, 255, 0.94) 100%);
   }
   .youth-metrics-card {
     display: none;
