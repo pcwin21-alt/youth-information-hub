@@ -348,43 +348,39 @@ BASE_CSS = """
   }
   .page-intro-card {
     display: grid;
-    gap: 10px;
-    padding: 14px 16px;
-    margin-bottom: 18px;
-    border: 1px solid var(--line);
-    border-radius: 20px;
+    gap: 12px;
+    padding: 18px 20px;
+    margin-bottom: 20px;
+    border: 1px solid rgba(31, 111, 95, 0.18);
+    border-radius: 22px;
     background:
-      linear-gradient(135deg, rgba(31, 111, 95, 0.1) 0%, rgba(255, 255, 255, 0.98) 52%, rgba(242, 245, 249, 0.92) 100%);
-    box-shadow: var(--shadow-soft);
+      linear-gradient(135deg, rgba(31, 111, 95, 0.14) 0%, rgba(255, 255, 255, 0.99) 46%, rgba(239, 244, 248, 0.96) 100%);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.82),
+      var(--shadow-soft);
   }
   .page-intro-top {
     display: flex;
-    flex-wrap: wrap;
     align-items: center;
     gap: 8px;
   }
   .page-intro-badge {
     display: inline-flex;
     align-items: center;
-    padding: 6px 10px;
+    padding: 7px 12px;
     border-radius: 999px;
-    background: rgba(31, 111, 95, 0.12);
+    background: rgba(31, 111, 95, 0.14);
     color: var(--accent);
-    font-size: 0.74rem;
+    font-size: 0.78rem;
     font-weight: 800;
     letter-spacing: -0.01em;
   }
-  .page-intro-title {
-    color: var(--accent-strong);
-    font-size: 0.86rem;
-    font-weight: 800;
-    letter-spacing: -0.02em;
-  }
   .page-intro-copy {
     margin: 0;
-    color: var(--muted);
-    font-size: 0.88rem;
-    line-height: 1.6;
+    color: var(--accent-strong);
+    font-size: 0.98rem;
+    line-height: 1.66;
+    letter-spacing: -0.01em;
   }
   .hero-actions {
     display: flex;
@@ -2795,12 +2791,11 @@ def render_feature_card(title: str, description: str, href: str, meta: str) -> s
     """
 
 
-def render_compact_intro(kicker: str, title: str, description: str) -> str:
+def render_compact_intro(kicker: str, description: str) -> str:
     return f"""
     <article class="page-intro-card">
       <div class="page-intro-top">
         <span class="page-intro-badge">{html.escape(kicker)}</span>
-        <span class="page-intro-title">{html.escape(title)}</span>
       </div>
       <p class="page-intro-copy">{html.escape(description)}</p>
     </article>
@@ -3999,7 +3994,6 @@ def build_news_page(articles: list[dict], status: dict) -> str:
     region_options = collect_news_regions(recent_news_articles)
     page_intro = render_compact_intro(
         "01 뉴스",
-        "이 메뉴는",
         "지역과 날짜 기준으로 최근 청년 뉴스를 빠르게 훑고, 필요한 기사만 골라볼 수 있습니다.",
     )
     news_filter_panel = render_news_filter_panel(region_options, date_options, len(recent_news_articles))
@@ -4076,7 +4070,6 @@ def build_policies_page_compact(articles: list[dict], status: dict) -> str:
     reference_policies = [article for article in recent_articles if is_local_policy_update(article)]
     page_intro = render_compact_intro(
         "02 정책",
-        "이 메뉴는",
         "정부 공식 발표와 지자체 발표 소식을 구분해 보고, 지역·유형·기간 기준으로 필요한 정책만 빠르게 확인할 수 있습니다.",
     )
     official_cards = "".join(
@@ -4145,7 +4138,6 @@ def build_hub_page(classified_articles: list[dict]) -> str:
     ][:6]
     page_intro = render_compact_intro(
         "03 참여·회의",
-        "이 메뉴는",
         "청년 참여 회의와 지역 네트워크 움직임을 구분해 보고, 필요한 기록만 빠르게 걸러볼 수 있습니다.",
     )
     hub_filter_panel = render_hub_filter_panel(government_records, regional_records, other_records)
@@ -4197,7 +4189,6 @@ def build_hub_page(classified_articles: list[dict]) -> str:
 def build_tools_page() -> str:
     page_intro = render_compact_intro(
         "04 자료도구",
-        "이 메뉴는",
         "정책 조사와 제안서 초안을 준비할 때 필요한 자료를 짧은 흐름으로 따라볼 수 있습니다.",
     )
     return f"""
@@ -4222,7 +4213,6 @@ def build_contact_page(contact_settings: dict[str, str]) -> str:
     contact_updated_at = format_display_datetime(contact_settings.get("updated_at"))
     page_intro = render_compact_intro(
         "05 제보·문의",
-        "이 메뉴는",
         "빠진 기사 제보, 운영 문의, 검토 요청을 한곳에서 남기고 바로 이어서 확인할 수 있습니다.",
     )
     contact_overview = "".join(
