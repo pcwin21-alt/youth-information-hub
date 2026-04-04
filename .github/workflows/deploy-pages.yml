@@ -3,6 +3,12 @@ name: Build And Deploy Pages
 on:
   push:
   workflow_dispatch:
+    inputs:
+      use_prebuilt_site:
+        description: "Deploy checked-in web/output artifacts without rerunning the pipeline"
+        required: false
+        type: boolean
+        default: false
   schedule:
     - cron: "7 0 * * *"
     - cron: "7 6 * * *"
@@ -42,11 +48,24 @@ jobs:
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
 
+      - name: Resolve deploy mode
+        id: deploy_mode
+        shell: bash
+        run: |
+          use_prebuilt_site=false
+          if [[ "${{ github.event_name }}" == "workflow_dispatch" && "${{ github.event.inputs.use_prebuilt_site }}" == "true" ]]; then
+            use_prebuilt_site=true
+          elif [[ "${{ github.event_name }}" == "push" && "${{ github.event.head_commit.message }}" == *"[deploy-prebuilt]"* ]]; then
+            use_prebuilt_site=true
+          fi
+          echo "use_prebuilt_site=$use_prebuilt_site" >> "$GITHUB_OUTPUT"
+
       - name: Run pipeline
+        if: ${{ steps.deploy_mode.outputs.use_prebuilt_site != 'true' }}
         run: python .claude/skills/scheduler/scripts/cron_runner.py
 
       - name: Verify generated artifacts
-        run: python scripts/verify_site_artifacts.py --min-articles 1
+        run: python scripts/verify_site_artifacts.py --min-articles 1 --min-news-cards 1
 
       - name: Prepare Pages artifact
         env:

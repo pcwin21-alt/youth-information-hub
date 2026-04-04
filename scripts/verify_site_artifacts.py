@@ -18,12 +18,17 @@ def require_file(path: Path) -> None:
         raise SystemExit(f"missing_required_file:{path}")
 
 
+def count_marker(path: Path, marker: str) -> int:
+    return path.read_text(encoding="utf-8-sig").count(marker)
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--status-file", default=str(ROOT / "output" / "pipeline_status.json"))
     parser.add_argument("--summarized-file", default=str(ROOT / "output" / "step5_summarized.json"))
     parser.add_argument("--web-root", default=str(ROOT / "web"))
     parser.add_argument("--min-articles", type=int, default=1)
+    parser.add_argument("--min-news-cards", type=int, default=1)
     args = parser.parse_args()
 
     status_file = Path(args.status_file)
@@ -55,8 +60,15 @@ def main() -> int:
             f"insufficient_articles:min_required={args.min_articles} actual={len(summarized)}"
         )
 
+    news_cards = count_marker(web_root / "news.html", 'data-article-card="true"')
+    if news_cards < args.min_news_cards:
+        raise SystemExit(
+            f"insufficient_news_cards:min_required={args.min_news_cards} actual={news_cards}"
+        )
+
     print(f"verified_pipeline_state={status.get('state')}")
     print(f"verified_article_count={len(summarized)}")
+    print(f"verified_news_cards={news_cards}")
     print(f"verified_web_root={web_root}")
     return 0
 

@@ -1,0 +1,2653 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>청년 정책</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@700;800&family=Noto+Sans+KR:wght@400;500;700;800&display=swap" rel="stylesheet">
+  <style>
+  :root {
+    --page-bg: #dfe5ed;
+    --app-bg: #f9fafb;
+    --panel: #ffffff;
+    --panel-soft: #f2f5f9;
+    --text: #172131;
+    --muted: #697586;
+    --line: rgba(23, 33, 49, 0.1);
+    --accent: #1f6f5f;
+    --accent-soft: rgba(31, 111, 95, 0.12);
+    --accent-strong: #1c2736;
+    --shadow: 0 22px 44px rgba(23, 33, 49, 0.14);
+    --shadow-soft: 0 10px 24px rgba(23, 33, 49, 0.08);
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  [hidden] { display: none !important; }
+  body {
+    margin: 0;
+    color: var(--text);
+    background: linear-gradient(180deg, #e8edf3 0%, var(--page-bg) 100%);
+    font-family: "Noto Sans KR", sans-serif;
+    overflow-x: hidden;
+  }
+  a { color: inherit; text-decoration: none; }
+  .shell {
+    position: relative;
+    max-width: 430px;
+    min-height: 100vh;
+    margin: 0 auto;
+    padding: 16px 16px 98px;
+    background: var(--app-bg);
+    box-shadow: var(--shadow);
+  }
+  .topbar {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    margin: -16px -16px 18px;
+    padding: 16px;
+    border-bottom: 1px solid var(--line);
+    background: rgba(249, 250, 251, 0.96);
+    backdrop-filter: blur(10px);
+    box-sizing: border-box;
+  }
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 0;
+  }
+  .brand-mark {
+    position: relative;
+    width: 42px;
+    height: 42px;
+    border-radius: 12px;
+    border: 1px solid rgba(23, 33, 49, 0.16);
+    background: linear-gradient(180deg, #ffffff 0%, #eef2f7 100%);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.8);
+  }
+  .brand-mark::before,
+  .brand-mark::after {
+    content: "";
+    position: absolute;
+    left: 8px;
+    right: 8px;
+    border-radius: 999px;
+    background: rgba(23, 33, 49, 0.18);
+  }
+  .brand-mark::before {
+    top: 10px;
+    height: 12px;
+    border-radius: 4px;
+    background: linear-gradient(180deg, #7bb8ff 0%, #4f8ddd 100%);
+  }
+  .brand-mark::after {
+    top: 26px;
+    height: 2px;
+    box-shadow: 0 -6px 0 rgba(23, 33, 49, 0.18), 0 6px 0 rgba(23, 33, 49, 0.12);
+  }
+  .brand-title {
+    display: block;
+    font-size: 1.52rem;
+    font-weight: 800;
+    letter-spacing: -0.04em;
+  }
+  .brand-sub {
+    display: block;
+    margin-top: 2px;
+    color: var(--muted);
+    font-size: 0.81rem;
+    line-height: 1.3;
+  }
+  .header-side {
+    display: grid;
+    gap: 4px;
+    justify-items: end;
+    text-align: right;
+    flex-shrink: 0;
+    min-width: 0;
+  }
+  .topbar-side {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-left: auto;
+    min-width: 0;
+  }
+  .header-side strong {
+    font-size: 0.98rem;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+  }
+  .header-side span {
+    font-size: 0.72rem;
+    color: var(--muted);
+  }
+  .guide-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 12px;
+    border-radius: 999px;
+    border: 1px solid rgba(31, 111, 95, 0.16);
+    background: rgba(31, 111, 95, 0.08);
+    color: var(--accent-strong);
+    font-size: 0.78rem;
+    font-weight: 800;
+    white-space: nowrap;
+  }
+  .guide-link:hover {
+    border-color: rgba(31, 111, 95, 0.28);
+    background: rgba(31, 111, 95, 0.12);
+  }
+  .guide-link.active {
+    background: var(--accent-strong);
+    border-color: transparent;
+    color: white;
+  }
+  .nav { display: none; }
+  .hero {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 14px;
+    margin-bottom: 24px;
+  }
+  .hero-card, .status-card, .section-card, .article-card, .info-card, .list-card, .menu-update-card {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 24px;
+    box-shadow: var(--shadow-soft);
+  }
+  .hero-card {
+    padding: 22px;
+    background: linear-gradient(180deg, rgba(31, 111, 95, 0.1) 0%, rgba(255, 255, 255, 0.96) 100%);
+  }
+  .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 11px;
+    border-radius: 999px;
+    background: var(--accent-soft);
+    color: var(--accent);
+    font-size: 0.76rem;
+    font-weight: 800;
+    letter-spacing: -0.01em;
+  }
+  h1, h2, h3 {
+    margin: 0;
+    line-height: 1.24;
+    letter-spacing: -0.04em;
+  }
+  h1 {
+    margin-top: 14px;
+    font-size: 1.9rem;
+    font-weight: 800;
+  }
+  h2 {
+    font-size: 1.4rem;
+    font-weight: 800;
+  }
+  h3 {
+    font-size: 1.08rem;
+    font-weight: 800;
+  }
+  .hero-feature-meta {
+    margin-top: 12px;
+    color: var(--muted);
+    font-size: 0.78rem;
+    line-height: 1.5;
+  }
+  .hero-copy {
+    margin-top: 12px;
+    color: var(--muted);
+    font-size: 0.96rem;
+    line-height: 1.68;
+  }
+  .hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 18px;
+  }
+  .button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 11px 14px;
+    border-radius: 16px;
+    border: 1px solid var(--line);
+    background: var(--panel);
+    font-size: 0.92rem;
+    font-weight: 800;
+  }
+  .button.primary {
+    background: var(--accent-strong);
+    color: white;
+    border-color: transparent;
+  }
+  .status-card {
+    padding: 18px 18px 16px;
+    display: grid;
+    gap: 12px;
+  }
+  .status-grid, .overview-grid, .feature-grid, .article-grid, .menu-update-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+  .stat {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 12px;
+    padding-top: 10px;
+    border-top: 1px solid var(--line);
+  }
+  .stat:first-child {
+    padding-top: 0;
+    border-top: 0;
+  }
+  .stat-label {
+    display: block;
+    color: var(--muted);
+    font-size: 0.76rem;
+    font-weight: 600;
+  }
+  .stat-value {
+    display: block;
+    text-align: right;
+    font-size: 0.9rem;
+    font-weight: 700;
+    line-height: 1.45;
+  }
+  .stat-value.meta {
+    color: var(--muted);
+    font-size: 0.8rem;
+    font-weight: 600;
+  }
+  .stat-value.state-pill {
+    padding: 6px 10px;
+    border-radius: 999px;
+    background: var(--accent-soft);
+    color: var(--accent);
+    font-size: 0.8rem;
+  }
+  .status-note {
+    margin: 0;
+    color: var(--muted);
+    font-size: 0.74rem;
+    line-height: 1.5;
+  }
+  .section {
+    margin-top: 26px;
+  }
+  .section-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: end;
+    gap: 12px;
+    margin-bottom: 14px;
+  }
+  .section-head p {
+    margin: 6px 0 0;
+    color: var(--muted);
+    font-size: 0.9rem;
+    line-height: 1.55;
+  }
+  .feature-grid, .article-grid, .menu-update-grid, .overview-grid {
+    grid-template-columns: 1fr;
+  }
+  .section-card, .article-card, .info-card, .list-card {
+    padding: 18px;
+  }
+  .section-card h3, .info-card h3, .list-card h3 {
+    margin-bottom: 8px;
+  }
+  .section-card p, .info-card p, .list-card p {
+    color: var(--muted);
+    line-height: 1.65;
+    font-size: 0.9rem;
+  }
+  .mini-link {
+    display: inline-flex;
+    margin-top: 2px;
+    color: var(--accent);
+    font-size: 0.88rem;
+    font-weight: 700;
+  }
+  .article-title-link,
+  .article-summary-link,
+  .article-list-link {
+    color: inherit;
+    text-decoration: none;
+  }
+  .article-title-link:hover,
+  .article-summary-link:hover,
+  .article-list-link:hover strong,
+  .article-list-link:hover span {
+    color: var(--accent);
+  }
+  .article-list-item {
+    display: grid;
+    gap: 10px;
+  }
+  .article-list-link {
+    display: grid;
+    gap: 6px;
+  }
+  .article-list-overline {
+    color: var(--accent);
+    font-size: 0.74rem;
+    font-style: normal;
+    font-weight: 800;
+    line-height: 1.35;
+  }
+  .article-actions,
+  .article-list-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+  }
+  .article-actions {
+    margin-top: 14px;
+  }
+  .action-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 12px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: var(--panel-soft);
+    color: var(--accent-strong);
+    font-size: 0.8rem;
+    font-weight: 700;
+    cursor: pointer;
+  }
+  .action-button:hover {
+    border-color: rgba(31, 111, 95, 0.25);
+    color: var(--accent);
+  }
+  .article-feedback {
+    min-height: 1.2em;
+    color: var(--muted);
+    font-size: 0.75rem;
+    line-height: 1.4;
+  }
+  .article-feedback.error {
+    color: #b45309;
+  }
+  .filter-panel {
+    display: grid;
+    gap: 12px;
+  }
+  .filter-stack {
+    display: grid;
+    gap: 14px;
+  }
+  .filter-group {
+    display: grid;
+    gap: 8px;
+  }
+  .filter-group-label {
+    color: var(--accent-strong);
+    font-size: 0.78rem;
+    font-weight: 800;
+    letter-spacing: 0.01em;
+  }
+  .filter-head {
+    display: grid;
+    gap: 6px;
+  }
+  .filter-head h3 {
+    font-size: 1rem;
+  }
+  .filter-head p {
+    margin: 0;
+    color: var(--muted);
+    font-size: 0.86rem;
+    line-height: 1.55;
+  }
+  .filter-controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .filter-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 12px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: var(--panel);
+    color: var(--muted);
+    font-size: 0.8rem;
+    font-weight: 700;
+    cursor: pointer;
+  }
+  .filter-button.active {
+    border-color: transparent;
+    background: var(--accent-strong);
+    color: white;
+  }
+  .filter-status {
+    color: var(--muted);
+    font-size: 0.78rem;
+    line-height: 1.5;
+  }
+  .date-picker-row {
+    display: grid;
+    gap: 10px;
+  }
+  .date-range-fields {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: stretch;
+  }
+  .date-input-wrap {
+    display: grid;
+    gap: 6px;
+    min-width: min(100%, 220px);
+    flex: 1 1 220px;
+    padding: 12px 14px;
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    background: var(--panel-soft);
+    cursor: pointer;
+  }
+  .date-picker-label {
+    color: var(--muted);
+    font-size: 0.72rem;
+    font-weight: 700;
+    line-height: 1;
+  }
+  .date-input {
+    width: 100%;
+    border: 0;
+    background: transparent;
+    color: var(--text);
+    font: inherit;
+    font-size: 0.92rem;
+    font-weight: 700;
+    padding: 0;
+  }
+  .date-input:focus {
+    outline: none;
+  }
+  .news-intro-card {
+    display: grid;
+    gap: 10px;
+    padding: 18px 20px;
+  }
+  .news-intro-copy {
+    margin: 0;
+    color: var(--muted);
+    font-size: 0.95rem;
+    line-height: 1.65;
+  }
+  .menu-update-card {
+    padding: 18px;
+    display: grid;
+    gap: 12px;
+  }
+  .menu-update-top {
+    display: grid;
+    gap: 8px;
+  }
+  .menu-update-head {
+    display: grid;
+    gap: 8px;
+  }
+  .menu-update-card h3 {
+    margin-top: 0;
+    font-size: 1.2rem;
+  }
+  .menu-update-copy {
+    margin: 0;
+    color: var(--muted);
+    font-size: 0.92rem;
+    line-height: 1.58;
+  }
+  .menu-meta-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 12px;
+  }
+  .menu-meta {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--muted);
+  }
+  .menu-meta strong {
+    margin-bottom: 0;
+    font-size: 0.74rem;
+    font-weight: 600;
+  }
+  .menu-meta span {
+    font-size: 0.78rem;
+    font-weight: 500;
+    line-height: 1.4;
+  }
+  .menu-links {
+    display: flex;
+  }
+  .menu-links .button {
+    width: 100%;
+  }
+  .article-card {
+    display: grid;
+    align-content: start;
+    gap: 12px;
+  }
+  .article-meta {
+    display: grid;
+    gap: 8px;
+  }
+  .article-meta-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .meta-pill {
+    display: inline-flex;
+    align-items: center;
+    padding: 6px 10px;
+    border-radius: 999px;
+    font-size: 0.74rem;
+    font-weight: 800;
+    line-height: 1;
+  }
+  .meta-pill.primary {
+    background: rgba(31, 111, 95, 0.12);
+    color: var(--accent);
+  }
+  .meta-pill.subtle {
+    background: var(--panel-soft);
+    color: var(--muted);
+  }
+  .article-byline {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    color: var(--muted);
+    font-size: 0.77rem;
+    line-height: 1.5;
+  }
+  .article-byline .meta-divider {
+    opacity: 0.45;
+  }
+  .article-byline .meta-item {
+    display: inline-flex;
+    align-items: center;
+  }
+  .badge-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin: 0;
+  }
+  .badge {
+    display: inline-flex;
+    padding: 5px 8px;
+    border-radius: 999px;
+    background: var(--panel-soft);
+    color: var(--accent);
+    font-size: 0.72rem;
+    font-weight: 700;
+  }
+  .article-summary {
+    margin: 0;
+    color: rgba(23, 33, 49, 0.78);
+    font-size: 0.94rem;
+    line-height: 1.72;
+    white-space: pre-wrap;
+  }
+  .list {
+    display: grid;
+    gap: 10px;
+    margin-top: 0;
+  }
+  .list-item {
+    padding: 14px 16px;
+    border-radius: 18px;
+    border: 1px solid var(--line);
+    background: var(--panel);
+  }
+  .list-item strong {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 0.98rem;
+    line-height: 1.38;
+  }
+  .list-item span {
+    display: block;
+    color: var(--muted);
+    font-size: 0.84rem;
+    line-height: 1.55;
+  }
+  .footer-note {
+    margin-top: 28px;
+    color: var(--muted);
+    font-size: 0.84rem;
+    text-align: center;
+  }
+  .home-section-card {
+    padding: 18px;
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 24px;
+    box-shadow: var(--shadow-soft);
+    display: grid;
+    align-content: start;
+  }
+  .home-section-card.featured {
+    background: linear-gradient(180deg, rgba(37, 99, 235, 0.06) 0%, rgba(255, 255, 255, 1) 100%);
+  }
+  .home-briefing-grid {
+    display: grid;
+    gap: 18px;
+    margin-top: 10px;
+  }
+  .home-briefing-card {
+    padding: 22px;
+    border-radius: 28px;
+    border: 1px solid var(--line);
+    background: var(--panel);
+    box-shadow: var(--shadow-soft);
+    display: grid;
+    align-content: start;
+    gap: 16px;
+  }
+  .home-briefing-card.lead {
+    background:
+      radial-gradient(circle at top left, rgba(123, 184, 255, 0.18), transparent 36%),
+      linear-gradient(180deg, rgba(255, 255, 255, 0.99) 0%, rgba(244, 248, 252, 0.98) 100%);
+  }
+  .home-briefing-card.support {
+    background:
+      radial-gradient(circle at top left, rgba(255, 196, 87, 0.18), transparent 28%),
+      radial-gradient(circle at top right, rgba(61, 137, 255, 0.16), transparent 32%),
+      linear-gradient(180deg, rgba(255, 255, 255, 0.99) 0%, rgba(244, 248, 252, 0.98) 100%);
+    overflow: hidden;
+  }
+  .home-briefing-card.footer {
+    padding: 0;
+    gap: 0;
+    background:
+      radial-gradient(circle at top left, rgba(123, 184, 255, 0.14), transparent 24%),
+      linear-gradient(180deg, rgba(28, 39, 54, 0.98) 0%, rgba(23, 33, 49, 1) 100%);
+    color: rgba(255, 255, 255, 0.94);
+    overflow: hidden;
+  }
+  .home-briefing-date {
+    color: var(--accent-strong);
+    font-size: 0.82rem;
+    font-weight: 800;
+    letter-spacing: 0.01em;
+  }
+  .home-briefing-title {
+    margin: 0;
+    font-size: clamp(2.5rem, 8vw, 4.8rem);
+    line-height: 0.95;
+    letter-spacing: -0.07em;
+    max-width: none;
+    white-space: nowrap;
+  }
+  .home-briefing-copy {
+    margin: 0;
+    color: var(--text);
+    font-size: 1rem;
+    line-height: 1.72;
+    max-width: 42ch;
+    word-break: keep-all;
+    overflow-wrap: normal;
+  }
+  .home-briefing-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 14px;
+    padding-top: 14px;
+    border-top: 1px solid rgba(23, 33, 49, 0.08);
+    color: var(--muted);
+    font-size: 0.78rem;
+    line-height: 1.5;
+  }
+  .home-briefing-head {
+    display: grid;
+    gap: 6px;
+  }
+  .home-briefing-head h2 {
+    margin: 0;
+    font-size: 1.16rem;
+    letter-spacing: -0.03em;
+  }
+  .home-briefing-head p {
+    margin: 0;
+    color: var(--muted);
+    font-size: 0.88rem;
+    line-height: 1.58;
+  }
+  .home-glance-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
+  }
+  .home-glance-item {
+    display: grid;
+    gap: 8px;
+    padding: 16px;
+    border-radius: 22px;
+    border: 1px solid rgba(23, 33, 49, 0.08);
+    background:
+      radial-gradient(circle at top left, rgba(123, 184, 255, 0.15), transparent 50%),
+      linear-gradient(180deg, rgba(255, 255, 255, 0.98) 0%, rgba(245, 248, 251, 0.96) 100%);
+  }
+  .home-glance-label {
+    color: var(--muted);
+    font-size: 0.78rem;
+    font-weight: 800;
+    line-height: 1.3;
+  }
+  .home-glance-value {
+    font-size: 1.72rem;
+    font-weight: 800;
+    letter-spacing: -0.05em;
+    line-height: 1;
+  }
+  .home-glance-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .home-briefing-divider {
+    height: 1px;
+    background: rgba(23, 33, 49, 0.08);
+  }
+  .home-briefing-subhead {
+    display: grid;
+    gap: 6px;
+  }
+  .home-briefing-subhead h3 {
+    margin: 0;
+    font-size: 1.02rem;
+    letter-spacing: -0.02em;
+  }
+  .home-briefing-subhead p {
+    margin: 0;
+    color: var(--muted);
+    font-size: 0.84rem;
+    line-height: 1.58;
+  }
+  .home-urgent-list {
+    display: grid;
+    gap: 0;
+    border-top: 1px solid rgba(23, 33, 49, 0.08);
+  }
+  .home-urgent-item {
+    padding: 16px 0;
+    border-bottom: 1px solid rgba(23, 33, 49, 0.08);
+  }
+  .home-urgent-link {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 14px;
+    align-items: start;
+  }
+  .home-urgent-rank {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    border-radius: 999px;
+    background: rgba(31, 111, 95, 0.1);
+    color: var(--accent-strong);
+    font-size: 0.8rem;
+    font-weight: 800;
+    line-height: 1;
+  }
+  .home-urgent-text {
+    display: grid;
+    gap: 5px;
+  }
+  .home-urgent-text strong {
+    font-size: 1rem;
+    line-height: 1.48;
+    letter-spacing: -0.02em;
+  }
+  .home-urgent-meta {
+    color: var(--muted);
+    font-size: 0.82rem;
+    line-height: 1.5;
+  }
+  .home-support-version {
+    display: inline-flex;
+    align-items: center;
+    width: fit-content;
+    padding: 7px 12px;
+    border-radius: 999px;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    background: rgba(255, 255, 255, 0.08);
+    color: rgba(255, 255, 255, 0.88);
+    font-size: 0.78rem;
+    font-weight: 800;
+  }
+  .home-support-footer {
+    display: grid;
+    gap: 14px;
+    padding: 22px;
+    color: rgba(255, 255, 255, 0.94);
+  }
+  .home-support-copy {
+    margin: 0;
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 0.95rem;
+    line-height: 1.78;
+  }
+  .home-support-copy.secondary {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.86rem;
+  }
+  .home-support-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 14px;
+    padding-top: 14px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.72);
+    font-size: 0.78rem;
+    line-height: 1.5;
+  }
+  .home-support-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .home-support-links a {
+    color: white;
+    font-size: 0.84rem;
+    font-weight: 700;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  .home-support-credit {
+    margin: 2px 0 0;
+    color: rgba(255, 255, 255, 0.62);
+    font-size: 0.77rem;
+    line-height: 1.55;
+    text-align: right;
+  }
+  .home-support-metrics {
+    display: grid;
+    gap: 12px;
+  }
+  .home-support-metrics h3 {
+    margin: 0;
+    font-size: 1.08rem;
+    letter-spacing: -0.02em;
+    color: var(--accent-strong);
+  }
+  .home-support-metrics-grid {
+    display: grid;
+    gap: 10px;
+  }
+  .home-support-metric-item {
+    display: grid;
+    gap: 8px;
+    padding: 14px 16px;
+    border-radius: 20px;
+    border: 1px solid rgba(23, 33, 49, 0.08);
+    background: rgba(255, 255, 255, 0.86);
+    box-shadow: 0 12px 24px rgba(23, 33, 49, 0.06);
+  }
+  .home-support-metric-label {
+    color: var(--muted);
+    font-size: 0.74rem;
+    font-weight: 800;
+    line-height: 1.3;
+  }
+  .home-support-metric-value {
+    font-size: 1.32rem;
+    font-weight: 800;
+    letter-spacing: -0.04em;
+    line-height: 1;
+    color: var(--accent-strong);
+  }
+  .home-support-metric-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 10px;
+    color: var(--muted);
+    font-size: 0.74rem;
+    line-height: 1.5;
+  }
+  .home-support-metric-meta a {
+    color: var(--accent-strong);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+  .home-support-note {
+    margin: 0;
+    color: var(--muted);
+    font-size: 0.74rem;
+    line-height: 1.55;
+  }
+  .home-support-metric-item:nth-child(1) {
+    background:
+      linear-gradient(180deg, rgba(255, 240, 206, 0.92) 0%, rgba(255, 255, 255, 0.94) 100%);
+  }
+  .home-support-metric-item:nth-child(2) {
+    background:
+      linear-gradient(180deg, rgba(219, 240, 255, 0.92) 0%, rgba(255, 255, 255, 0.94) 100%);
+  }
+  .home-support-metric-item:nth-child(3) {
+    background:
+      linear-gradient(180deg, rgba(225, 245, 237, 0.92) 0%, rgba(255, 255, 255, 0.94) 100%);
+  }
+  .home-support-metric-item:nth-child(4) {
+    background:
+      linear-gradient(180deg, rgba(240, 234, 255, 0.92) 0%, rgba(255, 255, 255, 0.94) 100%);
+  }
+  .home-support-metric-item:nth-child(5) {
+    background:
+      linear-gradient(180deg, rgba(255, 230, 236, 0.92) 0%, rgba(255, 255, 255, 0.94) 100%);
+  }
+  .home-support-metric-item:nth-child(6) {
+    background:
+      linear-gradient(180deg, rgba(232, 240, 227, 0.92) 0%, rgba(255, 255, 255, 0.94) 100%);
+  }
+  .youth-metrics-card {
+    display: none;
+  }
+  .youth-metrics-head {
+    display: grid;
+    gap: 8px;
+    margin-bottom: 16px;
+  }
+  .youth-metrics-head h2 {
+    margin: 0;
+    font-size: 1.22rem;
+    letter-spacing: -0.03em;
+  }
+  .youth-metrics-head p {
+    margin: 0;
+    color: var(--muted);
+    font-size: 0.9rem;
+    line-height: 1.62;
+  }
+  .youth-metrics-grid {
+    display: grid;
+    gap: 12px;
+  }
+  .youth-metric-item {
+    display: grid;
+    gap: 10px;
+    padding: 16px;
+    border-radius: 22px;
+    border: 1px solid rgba(23, 33, 49, 0.08);
+    background: rgba(255, 255, 255, 0.9);
+  }
+  .youth-metric-label {
+    color: var(--muted);
+    font-size: 0.78rem;
+    font-weight: 800;
+    line-height: 1.3;
+  }
+  .youth-metric-value {
+    font-size: 1.54rem;
+    font-weight: 800;
+    letter-spacing: -0.05em;
+    line-height: 1;
+  }
+  .youth-metric-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 10px;
+    color: var(--muted);
+    font-size: 0.76rem;
+    line-height: 1.5;
+  }
+  .youth-metric-source {
+    color: var(--accent-strong);
+    font-weight: 700;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+  .youth-metrics-note {
+    margin: 14px 0 0;
+    color: var(--muted);
+    font-size: 0.76rem;
+    line-height: 1.55;
+  }
+  .home-welcome-card {
+    background:
+      radial-gradient(circle at top left, rgba(65, 145, 255, 0.16), transparent 34%),
+      linear-gradient(180deg, rgba(255, 255, 255, 0.98) 0%, rgba(244, 248, 252, 0.98) 100%);
+    overflow: hidden;
+  }
+  .home-section-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 10px;
+  }
+  .home-news-card .home-section-head,
+  .home-highlight-card .home-section-head {
+    margin-bottom: 12px;
+  }
+  .home-section-title {
+    display: grid;
+    gap: 8px;
+  }
+  .home-section-title h2,
+  .home-section-title h3 {
+    margin: 0;
+  }
+  .home-section-copy {
+    margin: 0;
+    color: var(--muted);
+    font-size: 0.92rem;
+    line-height: 1.6;
+  }
+  .home-meta-line {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 12px;
+    margin: 10px 0 0;
+    color: var(--muted);
+    font-size: 0.76rem;
+    line-height: 1.45;
+  }
+  .home-meta-line span {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .home-meta-line.home-meta-footer {
+    margin-top: 18px;
+    padding-top: 12px;
+    border-top: 1px solid rgba(23, 33, 49, 0.08);
+  }
+  .home-section-card .list {
+    margin-top: 12px;
+  }
+  .home-actions {
+    margin-top: 14px;
+  }
+  .home-actions .button {
+    width: auto;
+  }
+  .home-news-card .list-item span,
+  .home-highlight-card .list-item span {
+    font-size: 0.82rem;
+  }
+  .home-highlight-card {
+    background: linear-gradient(180deg, rgba(31, 111, 95, 0.08) 0%, rgba(255, 255, 255, 0.98) 100%);
+  }
+  .home-highlight-card .list-item {
+    background: rgba(255, 255, 255, 0.9);
+  }
+  .home-spotlight-card {
+    background:
+      radial-gradient(circle at top left, rgba(123, 184, 255, 0.18), transparent 36%),
+      linear-gradient(180deg, rgba(255, 255, 255, 0.99) 0%, rgba(244, 248, 252, 0.98) 100%);
+  }
+  .home-spotlight-layout {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 22px;
+    margin-top: 10px;
+  }
+  .hero.home-hero {
+    grid-template-columns: 1fr;
+  }
+  .spotlight-main {
+    display: grid;
+    gap: 20px;
+    align-content: start;
+  }
+  .spotlight-main .home-section-head {
+    margin: 0;
+    padding-bottom: 18px;
+    border-bottom: 1px solid rgba(23, 33, 49, 0.08);
+  }
+  .spotlight-focus {
+    display: grid;
+    gap: 14px;
+    padding: 0;
+    border: 0;
+    background: none;
+  }
+  .spotlight-stories {
+    display: grid;
+    gap: 0;
+    border-top: 1px solid rgba(23, 33, 49, 0.08);
+  }
+  .spotlight-story {
+    padding: 16px 0;
+    border-bottom: 1px solid rgba(23, 33, 49, 0.08);
+  }
+  .spotlight-story-link {
+    display: grid;
+    gap: 5px;
+  }
+  .spotlight-story-kicker {
+    color: var(--accent-strong);
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+  }
+  .spotlight-story strong {
+    display: block;
+    font-size: 1.04rem;
+    line-height: 1.42;
+    letter-spacing: -0.03em;
+  }
+  .spotlight-story span {
+    color: var(--muted);
+    font-size: 0.84rem;
+    line-height: 1.55;
+  }
+  .spotlight-story:first-child strong {
+    font-size: 1.24rem;
+    line-height: 1.34;
+  }
+  .spotlight-story:hover strong {
+    color: var(--accent-strong);
+  }
+  .spotlight-panel-title {
+    display: block;
+    margin-bottom: 0;
+    color: var(--accent-strong);
+    font-size: 0.8rem;
+    font-weight: 800;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+  }
+  .spotlight-notes {
+    display: grid;
+    gap: 16px;
+    position: relative;
+    padding-left: 22px;
+  }
+  .spotlight-notes::before {
+    content: "";
+    position: absolute;
+    left: 5px;
+    top: 6px;
+    bottom: 6px;
+    width: 1px;
+    background: linear-gradient(180deg, rgba(31, 111, 95, 0.32) 0%, rgba(23, 33, 49, 0.08) 100%);
+  }
+  .spotlight-note {
+    position: relative;
+    padding: 0 0 0 12px;
+    border: 0;
+    background: none;
+  }
+  .spotlight-note::before {
+    content: "";
+    position: absolute;
+    left: -22px;
+    top: 7px;
+    width: 12px;
+    height: 12px;
+    border-radius: 999px;
+    background: linear-gradient(180deg, rgba(61, 137, 255, 0.95) 0%, rgba(31, 111, 95, 0.95) 100%);
+    box-shadow: 0 0 0 5px rgba(61, 137, 255, 0.08);
+  }
+  .spotlight-note strong {
+    display: block;
+    font-size: 1rem;
+    line-height: 1.35;
+    letter-spacing: -0.02em;
+  }
+  .spotlight-note span {
+    display: block;
+    margin-top: 5px;
+    color: var(--muted);
+    font-size: 0.84rem;
+    line-height: 1.6;
+  }
+  .spotlight-side {
+    display: grid;
+    gap: 18px;
+    align-content: start;
+  }
+  .spotlight-panel {
+    display: grid;
+    gap: 18px;
+    padding: 22px 0 0;
+    border: 0;
+    border-top: 1px solid rgba(23, 33, 49, 0.08);
+    background: none;
+  }
+  .spotlight-panel-title.secondary {
+    margin-top: 4px;
+  }
+  .spotlight-routes {
+    display: grid;
+    gap: 0;
+    border-top: 1px solid rgba(23, 33, 49, 0.08);
+  }
+  .spotlight-route {
+    display: grid;
+    gap: 4px;
+    position: relative;
+    padding: 14px 0 14px 22px;
+    border: 0;
+    border-bottom: 1px solid rgba(23, 33, 49, 0.08);
+    background: none;
+    transition: transform 0.18s ease, color 0.18s ease;
+  }
+  .spotlight-route::before {
+    content: ">";
+    position: absolute;
+    left: 0;
+    top: 14px;
+    color: rgba(31, 111, 95, 0.8);
+    font-size: 0.88rem;
+    font-weight: 700;
+  }
+  .spotlight-route:hover {
+    transform: translateX(3px);
+  }
+  .spotlight-route strong {
+    font-size: 0.98rem;
+    line-height: 1.35;
+    letter-spacing: -0.02em;
+  }
+  .spotlight-route span {
+    color: var(--muted);
+    font-size: 0.82rem;
+    line-height: 1.5;
+  }
+  .spotlight-lead-title {
+    margin: 0;
+    font-size: 2.35rem;
+    line-height: 1.08;
+    letter-spacing: -0.05em;
+    max-width: 12ch;
+  }
+  .spotlight-lead-title span {
+    display: block;
+  }
+  .spotlight-lead-summary {
+    margin: 0;
+    color: var(--muted);
+    font-size: 1rem;
+    line-height: 1.7;
+    max-width: 54ch;
+  }
+  .spotlight-update-inline {
+    display: grid;
+    gap: 4px;
+    margin-top: 16px;
+    padding: 14px 16px 0 0;
+    border-top: 1px solid rgba(23, 33, 49, 0.08);
+    max-width: 68ch;
+  }
+  .spotlight-update-label {
+    color: var(--accent-strong);
+    font-size: 0.76rem;
+    font-weight: 800;
+    letter-spacing: 0.01em;
+  }
+  .spotlight-update-copy {
+    margin: 0;
+    color: var(--text);
+    font-size: 0.94rem;
+    font-weight: 700;
+    line-height: 1.55;
+    letter-spacing: -0.01em;
+  }
+  .spotlight-update-meta {
+    margin: 0;
+    color: var(--muted);
+    font-size: 0.8rem;
+    line-height: 1.5;
+  }
+  .highlight-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(96px, 1fr));
+    gap: 12px;
+    margin-top: 0;
+  }
+  .highlight-stat {
+    aspect-ratio: 1 / 1;
+    min-height: 112px;
+    padding: 14px;
+    border-radius: 999px;
+    border: 1px solid rgba(23, 33, 49, 0.08);
+    background:
+      radial-gradient(circle at 30% 30%, rgba(123, 184, 255, 0.18), transparent 48%),
+      linear-gradient(180deg, rgba(255, 255, 255, 0.98) 0%, rgba(245, 248, 251, 0.96) 100%);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  }
+  .highlight-stat-label {
+    display: block;
+    color: var(--muted);
+    font-size: 0.76rem;
+    font-weight: 800;
+    letter-spacing: 0.01em;
+  }
+  .highlight-stat-value {
+    display: block;
+    margin-top: 6px;
+    font-size: 1.4rem;
+    font-weight: 800;
+    letter-spacing: -0.04em;
+  }
+  .welcome-kicker {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 12px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.9);
+    border: 1px solid rgba(23, 33, 49, 0.08);
+    color: var(--accent-strong);
+    font-size: 0.78rem;
+    font-weight: 800;
+  }
+  .welcome-kicker::before {
+    content: "";
+    width: 8px;
+    height: 8px;
+    border-radius: 999px;
+    background: linear-gradient(180deg, #3d89ff 0%, #1f6f5f 100%);
+    box-shadow: 0 0 0 4px rgba(61, 137, 255, 0.12);
+  }
+  .welcome-copy {
+    margin: 0;
+    color: var(--muted);
+    font-size: 0.95rem;
+    line-height: 1.72;
+    max-width: 58ch;
+  }
+  .welcome-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+    margin-top: 16px;
+  }
+  .welcome-panel {
+    display: grid;
+    gap: 6px;
+    padding: 16px 16px 15px;
+    border-radius: 20px;
+    border: 1px solid rgba(23, 33, 49, 0.08);
+    background: rgba(255, 255, 255, 0.84);
+    box-shadow: 0 10px 24px rgba(23, 33, 49, 0.06);
+  }
+  .welcome-panel-label {
+    color: var(--accent);
+    font-size: 0.73rem;
+    font-weight: 800;
+    letter-spacing: 0.01em;
+    text-transform: uppercase;
+  }
+  .welcome-panel strong {
+    display: block;
+    font-size: 1rem;
+    line-height: 1.38;
+    letter-spacing: -0.02em;
+  }
+  .welcome-panel span {
+    display: block;
+    color: var(--muted);
+    font-size: 0.84rem;
+    line-height: 1.58;
+  }
+  .welcome-note {
+    margin-top: 16px;
+    padding: 16px 18px;
+    border-radius: 20px;
+    background: linear-gradient(180deg, rgba(28, 39, 54, 0.96) 0%, rgba(23, 33, 49, 1) 100%);
+    color: rgba(255, 255, 255, 0.92);
+  }
+  .welcome-note strong {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 0.96rem;
+  }
+  .welcome-note p {
+    margin: 0;
+    color: rgba(255, 255, 255, 0.74);
+    font-size: 0.84rem;
+    line-height: 1.58;
+  }
+  .home-footer {
+    padding: 16px 18px;
+    background: linear-gradient(180deg, rgba(28, 39, 54, 0.98) 0%, rgba(23, 33, 49, 1) 100%);
+    border-radius: 24px;
+    color: rgba(255, 255, 255, 0.94);
+    box-shadow: var(--shadow-soft);
+  }
+  .home-status-note {
+    margin: 8px 2px 0;
+    color: var(--muted);
+    font-size: 0.75rem;
+    line-height: 1.6;
+    text-align: center;
+  }
+  .guide-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 80;
+    display: grid;
+    place-items: center;
+    padding: 20px;
+    background: rgba(23, 33, 49, 0.46);
+    backdrop-filter: blur(8px);
+  }
+  .guide-dialog {
+    width: min(100%, 560px);
+    padding: 22px;
+    border-radius: 26px;
+    border: 1px solid rgba(255, 255, 255, 0.32);
+    background:
+      radial-gradient(circle at top left, rgba(123, 184, 255, 0.16), transparent 34%),
+      linear-gradient(180deg, rgba(255, 255, 255, 0.99) 0%, rgba(244, 248, 252, 0.99) 100%);
+    box-shadow: 0 28px 60px rgba(23, 33, 49, 0.24);
+  }
+  .guide-dialog h2 {
+    margin-top: 14px;
+    font-size: 1.62rem;
+  }
+  .guide-dialog p {
+    margin: 12px 0 0;
+    color: var(--muted);
+    font-size: 0.95rem;
+    line-height: 1.7;
+  }
+  .guide-dialog .list {
+    margin-top: 16px;
+  }
+  .guide-dialog .hero-actions {
+    margin-top: 18px;
+  }
+  .home-footer h3 {
+    margin: 0 0 6px;
+    font-size: 1rem;
+    color: white;
+  }
+  .home-footer p {
+    margin: 0;
+    color: rgba(255, 255, 255, 0.72);
+    font-size: 0.84rem;
+    line-height: 1.55;
+  }
+  .home-footer-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 12px;
+    margin-top: 12px;
+    font-size: 0.78rem;
+    line-height: 1.5;
+    color: rgba(255, 255, 255, 0.82);
+  }
+  .home-footer a {
+    color: white;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+  .bottom-nav {
+    position: fixed;
+    left: 50%;
+    bottom: 0;
+    transform: translateX(-50%);
+    z-index: 30;
+    display: grid;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: 4px;
+    width: min(100%, 430px);
+    padding: 10px 10px calc(10px + env(safe-area-inset-bottom));
+    border-top: 1px solid var(--line);
+    background: rgba(255, 255, 255, 0.98);
+    box-shadow: 0 -12px 30px rgba(23, 33, 49, 0.1);
+    box-sizing: border-box;
+  }
+  .bottom-nav a {
+    display: grid;
+    justify-items: center;
+    gap: 5px;
+    padding: 4px 0;
+    color: var(--muted);
+    font-size: 0.64rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    min-width: 0;
+  }
+  .bottom-nav a span {
+    white-space: nowrap;
+  }
+  .bottom-nav a::before {
+    content: attr(data-icon);
+    display: grid;
+    place-items: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 999px;
+    background: var(--panel-soft);
+    color: var(--accent-strong);
+    font-size: 0.72rem;
+    font-weight: 800;
+  }
+  .bottom-nav a.active {
+    color: #2563eb;
+  }
+  .bottom-nav a.active::before {
+    background: #2563eb;
+    color: white;
+  }
+  body.is-guide-open {
+    overflow: hidden;
+  }
+  @media (min-width: 560px) {
+    body {
+      padding: 18px 0 112px;
+    }
+    .shell {
+      min-height: calc(100vh - 36px);
+      border-radius: 30px;
+    }
+    .bottom-nav {
+      bottom: 18px;
+      border: 1px solid var(--line);
+      border-radius: 24px;
+    }
+  }
+  @media (min-width: 980px) {
+    body {
+      padding: 0;
+      background: linear-gradient(180deg, #eff3f8 0%, #e8edf3 100%);
+    }
+    .shell {
+      max-width: min(100vw, 1440px);
+      min-height: 100vh;
+      padding: 28px 32px 56px;
+      border-radius: 0;
+      box-shadow: none;
+      background:
+        radial-gradient(circle at top left, rgba(123, 184, 255, 0.1), transparent 28%),
+        linear-gradient(180deg, #fafbfd 0%, #f5f7fa 100%);
+    }
+    .topbar {
+      margin: -28px -32px 24px;
+      padding: 18px 32px;
+    }
+    .section {
+      margin-top: 42px;
+    }
+    .section-head {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      align-items: center;
+      gap: 18px;
+      margin-bottom: 20px;
+      padding: 0 4px;
+    }
+    .section-head > div {
+      max-width: 72ch;
+    }
+    .section-head p {
+      margin-top: 10px;
+    }
+    .section-head .mini-link {
+      margin-top: 0;
+      padding: 10px 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(31, 111, 95, 0.16);
+      background: rgba(31, 111, 95, 0.08);
+      white-space: nowrap;
+    }
+    .topbar-side {
+      gap: 18px;
+    }
+    .nav {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .nav a {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px 14px;
+      border-radius: 999px;
+      color: var(--muted);
+      font-size: 0.88rem;
+      font-weight: 700;
+      border: 1px solid transparent;
+    }
+    .nav a:hover {
+      background: var(--panel-soft);
+      color: var(--text);
+    }
+    .nav a.active {
+      background: var(--accent-strong);
+      color: white;
+    }
+    .hero {
+      grid-template-columns: 1.6fr 0.95fr;
+      align-items: start;
+      gap: 22px;
+      margin-bottom: 32px;
+    }
+    .hero-card,
+    .status-card,
+    .home-section-card,
+    .section-card,
+    .article-card,
+    .info-card,
+    .list-card,
+    .menu-update-card {
+      padding: 24px 26px;
+    }
+    .home-meta-line {
+      margin: 14px 0 2px;
+      gap: 8px 18px;
+    }
+    .welcome-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+    .highlight-stats {
+      grid-template-columns: repeat(3, minmax(96px, 1fr));
+      gap: 12px;
+    }
+    .home-briefing-grid {
+      grid-template-columns: minmax(0, 1.06fr) minmax(320px, 0.94fr);
+      grid-template-areas:
+        "lead digest"
+        "support digest"
+        "footer footer";
+      align-items: stretch;
+    }
+    .home-briefing-card.lead {
+      grid-area: lead;
+      min-height: 320px;
+    }
+    .home-briefing-card.digest {
+      grid-area: digest;
+    }
+    .home-briefing-card.support {
+      grid-area: support;
+    }
+    .home-briefing-card.footer {
+      grid-area: footer;
+    }
+    .home-spotlight-layout {
+      grid-template-columns: minmax(0, 1.24fr) minmax(280px, 0.82fr);
+      gap: 18px;
+    }
+    .spotlight-notes {
+      grid-template-columns: 1fr;
+    }
+    .list {
+      gap: 14px;
+      margin-top: 16px;
+    }
+    .list-item {
+      padding: 18px 22px;
+    }
+    .article-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+    }
+    .feature-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+    }
+    .youth-metrics-grid {
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+    }
+    .home-support-metrics-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+    .home-dual-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 28px;
+      align-items: start;
+      margin-top: 28px;
+    }
+    .home-dual-grid .section {
+      margin-top: 0;
+      display: grid;
+      align-content: start;
+    }
+    .home-footer {
+      padding: 20px 24px;
+      margin-top: 6px;
+    }
+    .bottom-nav {
+      display: none;
+    }
+  }
+  @media (max-width: 559px) {
+    .topbar {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      align-items: start;
+      gap: 12px;
+    }
+    .topbar-side {
+      display: grid;
+      justify-items: end;
+      align-content: start;
+      gap: 8px;
+      margin-left: 0;
+    }
+    .header-side strong {
+      font-size: 0.9rem;
+      line-height: 1.15;
+      white-space: nowrap;
+    }
+    .header-side span {
+      font-size: 0.68rem;
+      line-height: 1.2;
+      white-space: nowrap;
+    }
+    .home-briefing-grid,
+    .home-briefing-card,
+    .home-glance-grid,
+    .home-urgent-link {
+      min-width: 0;
+    }
+    .home-briefing-card {
+      padding: 20px;
+      border-radius: 24px;
+    }
+    .home-briefing-title {
+      font-size: clamp(2.05rem, 9.8vw, 3.25rem);
+      letter-spacing: -0.05em;
+    }
+    .home-briefing-copy {
+      max-width: 100%;
+      font-size: 0.98rem;
+    }
+    .bottom-nav {
+      width: calc(100% - 8px);
+      padding-left: 8px;
+      padding-right: 8px;
+      gap: 2px;
+    }
+    .bottom-nav a {
+      font-size: 0.58rem;
+    }
+    .bottom-nav a span {
+      white-space: normal;
+      text-align: center;
+      line-height: 1.1;
+    }
+  }
+  @media (max-width: 380px) {
+    .brand-title {
+      font-size: 1.38rem;
+    }
+    .brand-sub {
+      font-size: 0.75rem;
+    }
+    .header-side strong {
+      font-size: 0.88rem;
+    }
+    .guide-link {
+      padding: 7px 10px;
+      font-size: 0.72rem;
+    }
+    .hero-actions .button {
+      width: 100%;
+    }
+    .bottom-nav {
+      width: calc(100% - 6px);
+      padding-left: 6px;
+      padding-right: 6px;
+    }
+    .bottom-nav a {
+      font-size: 0.58rem;
+    }
+    .bottom-nav a::before {
+      width: 24px;
+      height: 24px;
+      font-size: 0.64rem;
+    }
+  }
+</style>
+</head>
+<body data-page="policies.html">
+  <div class="shell">
+    <header class="topbar">
+      <div class="brand">
+        <div class="brand-mark"></div>
+        <div>
+          <span class="brand-title">청년 투게더</span>
+          <span class="brand-sub">오늘 기준 청년 정책과 이슈를 한곳에 모아 봅니다</span>
+        </div>
+      </div>
+      <div class="topbar-side">
+        <a class="guide-link" href="guide.html" data-guide-open-link="true">이용방법</a>
+        <div class="header-side"><strong>04.04 15:00</strong><span>최근 반영</span></div>
+        <nav class="nav"><a class="" href="index.html">홈</a><a class="" href="news.html">뉴스</a><a class="active" href="policies.html">정책</a><a class="" href="hub.html">참여·회의</a><a class="" href="tools.html">자료도구</a><a class="" href="contact.html">제보·문의</a></nav>
+      </div>
+    </header>
+    
+    <div data-policy-filter-root="policies" data-default-policy-group="all" data-default-policy-region="all" data-default-policy-type="all" data-default-date-start="" data-default-date-end="">
+      
+    <section class="section">
+      <article class="section-card filter-panel">
+        <div class="filter-head">
+          <h3>구분 · 지역 · 유형 · 기간</h3>
+        </div>
+        <div class="filter-stack">
+          <div class="filter-group">
+            <span class="filter-group-label">구분</span>
+            <div class="filter-controls"><button class="filter-button active" type="button" data-policy-filter="true" data-filter-group="group" data-filter-value="all" aria-pressed="true">전체</button><button class="filter-button" type="button" data-policy-filter="true" data-filter-group="group" data-filter-value="official" aria-pressed="false">정부 공식 발표</button><button class="filter-button" type="button" data-policy-filter="true" data-filter-group="group" data-filter-value="local" aria-pressed="false">지자체 발표 소식</button></div>
+          </div>
+          <div class="filter-group">
+            <span class="filter-group-label">지역</span>
+            <div class="filter-controls"><button class="filter-button active" type="button" data-policy-filter="true" data-filter-group="region" data-filter-value="all" aria-pressed="true">전체</button><button class="filter-button" type="button" data-policy-filter="true" data-filter-group="region" data-filter-value="중앙" aria-pressed="false">중앙</button><button class="filter-button" type="button" data-policy-filter="true" data-filter-group="region" data-filter-value="경기" aria-pressed="false">경기</button><button class="filter-button" type="button" data-policy-filter="true" data-filter-group="region" data-filter-value="경남" aria-pressed="false">경남</button><button class="filter-button" type="button" data-policy-filter="true" data-filter-group="region" data-filter-value="대구" aria-pressed="false">대구</button><button class="filter-button" type="button" data-policy-filter="true" data-filter-group="region" data-filter-value="대전" aria-pressed="false">대전</button><button class="filter-button" type="button" data-policy-filter="true" data-filter-group="region" data-filter-value="부산" aria-pressed="false">부산</button><button class="filter-button" type="button" data-policy-filter="true" data-filter-group="region" data-filter-value="서울" aria-pressed="false">서울</button><button class="filter-button" type="button" data-policy-filter="true" data-filter-group="region" data-filter-value="세종" aria-pressed="false">세종</button><button class="filter-button" type="button" data-policy-filter="true" data-filter-group="region" data-filter-value="인천" aria-pressed="false">인천</button><button class="filter-button" type="button" data-policy-filter="true" data-filter-group="region" data-filter-value="전북" aria-pressed="false">전북</button></div>
+          </div>
+          <div class="filter-group">
+            <span class="filter-group-label">유형</span>
+            <div class="filter-controls"><button class="filter-button active" type="button" data-policy-filter="true" data-filter-group="type" data-filter-value="all" aria-pressed="true">전체</button><button class="filter-button" type="button" data-policy-filter="true" data-filter-group="type" data-filter-value="시행계획" aria-pressed="false">시행계획</button><button class="filter-button" type="button" data-policy-filter="true" data-filter-group="type" data-filter-value="공약" aria-pressed="false">공약</button><button class="filter-button" type="button" data-policy-filter="true" data-filter-group="type" data-filter-value="지원사업" aria-pressed="false">지원사업</button><button class="filter-button" type="button" data-policy-filter="true" data-filter-group="type" data-filter-value="심의·의결" aria-pressed="false">심의·의결</button><button class="filter-button" type="button" data-policy-filter="true" data-filter-group="type" data-filter-value="모집" aria-pressed="false">모집</button><button class="filter-button" type="button" data-policy-filter="true" data-filter-group="type" data-filter-value="정책 발표" aria-pressed="false">정책 발표</button><button class="filter-button" type="button" data-policy-filter="true" data-filter-group="type" data-filter-value="기타" aria-pressed="false">기타</button></div>
+          </div>
+          <div class="filter-group">
+            <span class="filter-group-label">기간</span>
+            <div class="date-picker-row">
+              <button class="filter-button active" type="button" data-policy-filter="true" data-filter-group="date" data-filter-value="all" aria-pressed="true">전체</button>
+              <div class="date-range-fields">
+                <label class="date-input-wrap" data-policy-date-launch="true">
+                  <span class="date-picker-label">시작일</span>
+                  <input class="date-input" type="date" data-policy-date-input="true" data-date-role="start" min="2026-02-06" max="2026-04-03">
+                </label>
+                <label class="date-input-wrap" data-policy-date-launch="true">
+                  <span class="date-picker-label">종료일</span>
+                  <input class="date-input" type="date" data-policy-date-input="true" data-date-role="end" min="2026-02-06" max="2026-04-03">
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="filter-status" data-policy-filter-status>전체 29건을 보고 있습니다.</div>
+      </article>
+    </section>
+    
+      <section class="section" id="official-policies" data-policy-section="official">
+        <div class="section-head">
+          <div>
+            <h2>정부 공식 발표</h2>
+            <p>정책브리핑, 국무조정실, 고용노동부, 보건복지부, 국토교통부, 교육부, 금융위원회 등에서 직접 수집한 공식 발표입니다.</p>
+          </div>
+          <span class="mini-link" aria-disabled="true" data-policy-section-count>16건</span>
+        </div>
+        <div class="article-grid">
+    <article class="article-card" data-article-card="true" data-article-url="https://www.korea.kr/news/policyNewsView.do?newsId=148962075&amp;call_from=rsslink" data-article-title="기술사·기능장 &#x27;경력 응시자격&#x27; 2~4년 단축…&quot;청년층 기회 확대&quot;" data-article-date="2026-04-03" data-article-region="중앙" data-policy-card="true" data-policy-group="official" data-policy-type="기타">
+      <div class="article-meta"><div class="article-meta-tags"><span class="meta-pill primary">공식 발표</span><span class="meta-pill subtle">중앙</span></div><div class="article-byline"><span class="meta-item">정책브리핑</span><span class="meta-divider" aria-hidden="true">•</span><span class="meta-item">2026-04-03</span></div></div>
+      <h3><a class="article-title-link" href="https://www.korea.kr/news/policyNewsView.do?newsId=148962075&amp;call_from=rsslink" target="_blank" rel="noreferrer" aria-label="기술사·기능장 &#x27;경력 응시자격&#x27; 2~4년 단축…&quot;청년층 기회 확대&quot; 링크 바로가기">기술사·기능장 &#x27;경력 응시자격&#x27; 2~4년 단축…&quot;청년층 기회 확대&quot;</a></h3>
+      
+      <p class="article-summary"><a class="article-summary-link" href="https://www.korea.kr/news/policyNewsView.do?newsId=148962075&amp;call_from=rsslink" target="_blank" rel="noreferrer" aria-label="기술사·기능장 &#x27;경력 응시자격&#x27; 2~4년 단축…&quot;청년층 기회 확대&quot; 링크 바로가기">고용노동부가 올해부터 국가기술자격 응시자격 등 제도 개선을 추진해 청년층 기회를 확대한다. 이에 더 많은 청년층이 신속히 기술사·기능장 등급에 진입할 수 있도록 기술사·기능장 등급 시험 응시를 위한 경...</a></p>
+      <div class="article-actions"><a class="mini-link article-link-action" href="https://www.korea.kr/news/policyNewsView.do?newsId=148962075&amp;call_from=rsslink" target="_blank" rel="noreferrer" aria-label="기술사·기능장 &#x27;경력 응시자격&#x27; 2~4년 단축…&quot;청년층 기회 확대&quot; 링크 바로가기">링크 바로가기</a><button class="action-button" type="button" data-article-action="share" data-article-url="https://www.korea.kr/news/policyNewsView.do?newsId=148962075&amp;call_from=rsslink" data-share-title="기술사·기능장 &#x27;경력 응시자격&#x27; 2~4년 단축…&quot;청년층 기회 확대&quot;" aria-label="기술사·기능장 &#x27;경력 응시자격&#x27; 2~4년 단축…&quot;청년층 기회 확대&quot; 공유하기">공유하기</button><button class="action-button" type="button" data-article-action="copy" data-article-url="https://www.korea.kr/news/policyNewsView.do?newsId=148962075&amp;call_from=rsslink" data-share-title="기술사·기능장 &#x27;경력 응시자격&#x27; 2~4년 단축…&quot;청년층 기회 확대&quot;" aria-label="기술사·기능장 &#x27;경력 응시자격&#x27; 2~4년 단축…&quot;청년층 기회 확대&quot; 링크 복사">링크 복사</button></div><div class="article-feedback" data-article-feedback aria-live="polite"></div>
+    </article>
+    
+    <article class="article-card" data-article-card="true" data-article-url="https://www.mohw.go.kr/board.es?mid=a10503000000&amp;bid=0027&amp;act=view&amp;list_no=1489977&amp;tag=&amp;nPage=1" data-article-title="청년이 만드는 사회서비스… 2026년 사업단 출범" data-article-date="2026-04-03" data-article-region="중앙" data-policy-card="true" data-policy-group="official" data-policy-type="기타">
+      <div class="article-meta"><div class="article-meta-tags"><span class="meta-pill primary">공식 발표</span><span class="meta-pill subtle">중앙</span></div><div class="article-byline"><span class="meta-item">보건복지부 보도자료</span><span class="meta-divider" aria-hidden="true">•</span><span class="meta-item">2026-04-03</span></div></div>
+      <h3><a class="article-title-link" href="https://www.mohw.go.kr/board.es?mid=a10503000000&amp;bid=0027&amp;act=view&amp;list_no=1489977&amp;tag=&amp;nPage=1" target="_blank" rel="noreferrer" aria-label="청년이 만드는 사회서비스… 2026년 사업단 출범 링크 바로가기">청년이 만드는 사회서비스… 2026년 사업단 출범</a></h3>
+      
+      <p class="article-summary"><a class="article-summary-link" href="https://www.mohw.go.kr/board.es?mid=a10503000000&amp;bid=0027&amp;act=view&amp;list_no=1489977&amp;tag=&amp;nPage=1" target="_blank" rel="noreferrer" aria-label="청년이 만드는 사회서비스… 2026년 사업단 출범 링크 바로가기">사회서비스사업과</a></p>
+      <div class="article-actions"><a class="mini-link article-link-action" href="https://www.mohw.go.kr/board.es?mid=a10503000000&amp;bid=0027&amp;act=view&amp;list_no=1489977&amp;tag=&amp;nPage=1" target="_blank" rel="noreferrer" aria-label="청년이 만드는 사회서비스… 2026년 사업단 출범 링크 바로가기">링크 바로가기</a><button class="action-button" type="button" data-article-action="share" data-article-url="https://www.mohw.go.kr/board.es?mid=a10503000000&amp;bid=0027&amp;act=view&amp;list_no=1489977&amp;tag=&amp;nPage=1" data-share-title="청년이 만드는 사회서비스… 2026년 사업단 출범" aria-label="청년이 만드는 사회서비스… 2026년 사업단 출범 공유하기">공유하기</button><button class="action-button" type="button" data-article-action="copy" data-article-url="https://www.mohw.go.kr/board.es?mid=a10503000000&amp;bid=0027&amp;act=view&amp;list_no=1489977&amp;tag=&amp;nPage=1" data-share-title="청년이 만드는 사회서비스… 2026년 사업단 출범" aria-label="청년이 만드는 사회서비스… 2026년 사업단 출범 링크 복사">링크 복사</button></div><div class="article-feedback" data-article-feedback aria-live="polite"></div>
+    </article>
+    
+    <article class="article-card" data-article-card="true" data-article-url="https://www.molit.go.kr/USR/NEWS/m_71/dtl.jsp?lcmspage=1&amp;id=95091858" data-article-title="도심 속 빈 상가·오피스가 청년·신혼부부의 따뜻한 보금자리로 다시 태어납니다." data-article-date="2026-04-02" data-article-region="중앙" data-policy-card="true" data-policy-group="official" data-policy-type="기타">
+      <div class="article-meta"><div class="article-meta-tags"><span class="meta-pill primary">공식 발표</span><span class="meta-pill subtle">중앙</span></div><div class="article-byline"><span class="meta-item">국토교통부 보도자료</span><span class="meta-divider" aria-hidden="true">•</span><span class="meta-item">2026-04-02</span></div></div>
+      <h3><a class="article-title-link" href="https://www.molit.go.kr/USR/NEWS/m_71/dtl.jsp?lcmspage=1&amp;id=95091858" target="_blank" rel="noreferrer" aria-label="도심 속 빈 상가·오피스가 청년·신혼부부의 따뜻한 보금자리로 다시 태어납니다. 링크 바로가기">도심 속 빈 상가·오피스가 청년·신혼부부의 따뜻한 보금자리로 다시 태어납니다.</a></h3>
+      
+      <p class="article-summary"><a class="article-summary-link" href="https://www.molit.go.kr/USR/NEWS/m_71/dtl.jsp?lcmspage=1&amp;id=95091858" target="_blank" rel="noreferrer" aria-label="도심 속 빈 상가·오피스가 청년·신혼부부의 따뜻한 보금자리로 다시 태어납니다. 링크 바로가기">주택토지</a></p>
+      <div class="article-actions"><a class="mini-link article-link-action" href="https://www.molit.go.kr/USR/NEWS/m_71/dtl.jsp?lcmspage=1&amp;id=95091858" target="_blank" rel="noreferrer" aria-label="도심 속 빈 상가·오피스가 청년·신혼부부의 따뜻한 보금자리로 다시 태어납니다. 링크 바로가기">링크 바로가기</a><button class="action-button" type="button" data-article-action="share" data-article-url="https://www.molit.go.kr/USR/NEWS/m_71/dtl.jsp?lcmspage=1&amp;id=95091858" data-share-title="도심 속 빈 상가·오피스가 청년·신혼부부의 따뜻한 보금자리로 다시 태어납니다." aria-label="도심 속 빈 상가·오피스가 청년·신혼부부의 따뜻한 보금자리로 다시 태어납니다. 공유하기">공유하기</button><button class="action-button" type="button" data-article-action="copy" data-article-url="https://www.molit.go.kr/USR/NEWS/m_71/dtl.jsp?lcmspage=1&amp;id=95091858" data-share-title="도심 속 빈 상가·오피스가 청년·신혼부부의 따뜻한 보금자리로 다시 태어납니다." aria-label="도심 속 빈 상가·오피스가 청년·신혼부부의 따뜻한 보금자리로 다시 태어납니다. 링크 복사">링크 복사</button></div><div class="article-feedback" data-article-feedback aria-live="polite"></div>
+    </article>
+    
+    <article class="article-card" data-article-card="true" data-article-url="https://www.moe.go.kr/boardCnts/viewRenew.do?boardID=294&amp;boardSeq=105790&amp;lev=0&amp;searchType=null&amp;statusYN=W&amp;page=1&amp;s=moe&amp;m=020402&amp;opType=N" data-article-title="교육부, 지역 맞춤형 교육·취업 지원으로 지역에서 배우고 정주하는 생태계 조성" data-article-date="2026-04-02" data-article-region="중앙" data-policy-card="true" data-policy-group="official" data-policy-type="지원사업">
+      <div class="article-meta"><div class="article-meta-tags"><span class="meta-pill primary">공식 발표</span><span class="meta-pill subtle">중앙</span></div><div class="article-byline"><span class="meta-item">교육부 보도자료</span><span class="meta-divider" aria-hidden="true">•</span><span class="meta-item">2026-04-02</span></div></div>
+      <h3><a class="article-title-link" href="https://www.moe.go.kr/boardCnts/viewRenew.do?boardID=294&amp;boardSeq=105790&amp;lev=0&amp;searchType=null&amp;statusYN=W&amp;page=1&amp;s=moe&amp;m=020402&amp;opType=N" target="_blank" rel="noreferrer" aria-label="교육부, 지역 맞춤형 교육·취업 지원으로 지역에서 배우고 정주하는 생태계 조성 링크 바로가기">교육부, 지역 맞춤형 교육·취업 지원으로 지역에서 배우고 정주하는 생태계 조성</a></h3>
+      
+      <p class="article-summary"><a class="article-summary-link" href="https://www.moe.go.kr/boardCnts/viewRenew.do?boardID=294&amp;boardSeq=105790&amp;lev=0&amp;searchType=null&amp;statusYN=W&amp;page=1&amp;s=moe&amp;m=020402&amp;opType=N" target="_blank" rel="noreferrer" aria-label="교육부, 지역 맞춤형 교육·취업 지원으로 지역에서 배우고 정주하는 생태계 조성 링크 바로가기">홍보담당관</a></p>
+      <div class="article-actions"><a class="mini-link article-link-action" href="https://www.moe.go.kr/boardCnts/viewRenew.do?boardID=294&amp;boardSeq=105790&amp;lev=0&amp;searchType=null&amp;statusYN=W&amp;page=1&amp;s=moe&amp;m=020402&amp;opType=N" target="_blank" rel="noreferrer" aria-label="교육부, 지역 맞춤형 교육·취업 지원으로 지역에서 배우고 정주하는 생태계 조성 링크 바로가기">링크 바로가기</a><button class="action-button" type="button" data-article-action="share" data-article-url="https://www.moe.go.kr/boardCnts/viewRenew.do?boardID=294&amp;boardSeq=105790&amp;lev=0&amp;searchType=null&amp;statusYN=W&amp;page=1&amp;s=moe&amp;m=020402&amp;opType=N" data-share-title="교육부, 지역 맞춤형 교육·취업 지원으로 지역에서 배우고 정주하는 생태계 조성" aria-label="교육부, 지역 맞춤형 교육·취업 지원으로 지역에서 배우고 정주하는 생태계 조성 공유하기">공유하기</button><button class="action-button" type="button" data-article-action="copy" data-article-url="https://www.moe.go.kr/boardCnts/viewRenew.do?boardID=294&amp;boardSeq=105790&amp;lev=0&amp;searchType=null&amp;statusYN=W&amp;page=1&amp;s=moe&amp;m=020402&amp;opType=N" data-share-title="교육부, 지역 맞춤형 교육·취업 지원으로 지역에서 배우고 정주하는 생태계 조성" aria-label="교육부, 지역 맞춤형 교육·취업 지원으로 지역에서 배우고 정주하는 생태계 조성 링크 복사">링크 복사</button></div><div class="article-feedback" data-article-feedback aria-live="polite"></div>
+    </article>
+    
+    <article class="article-card" data-article-card="true" data-article-url="https://www.mohw.go.kr/board.es?mid=a10503000000&amp;bid=0027&amp;act=view&amp;list_no=1489961&amp;tag=&amp;nPage=1" data-article-title="대한민국 청년, 세계보건기구 진출의 꿈에 한 걸음 더 다가서다" data-article-date="2026-04-01" data-article-region="중앙" data-policy-card="true" data-policy-group="official" data-policy-type="기타">
+      <div class="article-meta"><div class="article-meta-tags"><span class="meta-pill primary">공식 발표</span><span class="meta-pill subtle">중앙</span></div><div class="article-byline"><span class="meta-item">보건복지부 보도자료</span><span class="meta-divider" aria-hidden="true">•</span><span class="meta-item">2026-04-01</span></div></div>
+      <h3><a class="article-title-link" href="https://www.mohw.go.kr/board.es?mid=a10503000000&amp;bid=0027&amp;act=view&amp;list_no=1489961&amp;tag=&amp;nPage=1" target="_blank" rel="noreferrer" aria-label="대한민국 청년, 세계보건기구 진출의 꿈에 한 걸음 더 다가서다 링크 바로가기">대한민국 청년, 세계보건기구 진출의 꿈에 한 걸음 더 다가서다</a></h3>
+      
+      <p class="article-summary"><a class="article-summary-link" href="https://www.mohw.go.kr/board.es?mid=a10503000000&amp;bid=0027&amp;act=view&amp;list_no=1489961&amp;tag=&amp;nPage=1" target="_blank" rel="noreferrer" aria-label="대한민국 청년, 세계보건기구 진출의 꿈에 한 걸음 더 다가서다 링크 바로가기">국제협력담당관</a></p>
+      <div class="article-actions"><a class="mini-link article-link-action" href="https://www.mohw.go.kr/board.es?mid=a10503000000&amp;bid=0027&amp;act=view&amp;list_no=1489961&amp;tag=&amp;nPage=1" target="_blank" rel="noreferrer" aria-label="대한민국 청년, 세계보건기구 진출의 꿈에 한 걸음 더 다가서다 링크 바로가기">링크 바로가기</a><button class="action-button" type="button" data-article-action="share" data-article-url="https://www.mohw.go.kr/board.es?mid=a10503000000&amp;bid=0027&amp;act=view&amp;list_no=1489961&amp;tag=&amp;nPage=1" data-share-title="대한민국 청년, 세계보건기구 진출의 꿈에 한 걸음 더 다가서다" aria-label="대한민국 청년, 세계보건기구 진출의 꿈에 한 걸음 더 다가서다 공유하기">공유하기</button><button class="action-button" type="button" data-article-action="copy" data-article-url="https://www.mohw.go.kr/board.es?mid=a10503000000&amp;bid=0027&amp;act=view&amp;list_no=1489961&amp;tag=&amp;nPage=1" data-share-title="대한민국 청년, 세계보건기구 진출의 꿈에 한 걸음 더 다가서다" aria-label="대한민국 청년, 세계보건기구 진출의 꿈에 한 걸음 더 다가서다 링크 복사">링크 복사</button></div><div class="article-feedback" data-article-feedback aria-live="polite"></div>
+    </article>
+    
+    <article class="article-card" data-article-card="true" data-article-url="https://www.moe.go.kr/boardCnts/viewRenew.do?boardID=294&amp;boardSeq=105773&amp;lev=0&amp;searchType=null&amp;statusYN=W&amp;page=1&amp;s=moe&amp;m=020402&amp;opType=N" data-article-title="외국인 유학생을 위한 「성희롱·성폭력 에스오에스(SOS) 가이드」 개발, 7개 언어로 언어 장벽 없이 피해 예방·대응" data-article-date="2026-04-01" data-article-region="중앙" data-policy-card="true" data-policy-group="official" data-policy-type="기타">
+      <div class="article-meta"><div class="article-meta-tags"><span class="meta-pill primary">공식 발표</span><span class="meta-pill subtle">중앙</span></div><div class="article-byline"><span class="meta-item">교육부 보도자료</span><span class="meta-divider" aria-hidden="true">•</span><span class="meta-item">2026-04-01</span></div></div>
+      <h3><a class="article-title-link" href="https://www.moe.go.kr/boardCnts/viewRenew.do?boardID=294&amp;boardSeq=105773&amp;lev=0&amp;searchType=null&amp;statusYN=W&amp;page=1&amp;s=moe&amp;m=020402&amp;opType=N" target="_blank" rel="noreferrer" aria-label="외국인 유학생을 위한 「성희롱·성폭력 에스오에스(SOS) 가이드」 개발, 7개 언어로 언어 장벽 없이 피해 예방·대응 링크 바로가기">외국인 유학생을 위한 「성희롱·성폭력 에스오에스(SOS) 가이드」 개발, 7개 언어로 언어 장벽 없이 피해 예방·대응</a></h3>
+      
+      <p class="article-summary"><a class="article-summary-link" href="https://www.moe.go.kr/boardCnts/viewRenew.do?boardID=294&amp;boardSeq=105773&amp;lev=0&amp;searchType=null&amp;statusYN=W&amp;page=1&amp;s=moe&amp;m=020402&amp;opType=N" target="_blank" rel="noreferrer" aria-label="외국인 유학생을 위한 「성희롱·성폭력 에스오에스(SOS) 가이드」 개발, 7개 언어로 언어 장벽 없이 피해 예방·대응 링크 바로가기">홍보담당관</a></p>
+      <div class="article-actions"><a class="mini-link article-link-action" href="https://www.moe.go.kr/boardCnts/viewRenew.do?boardID=294&amp;boardSeq=105773&amp;lev=0&amp;searchType=null&amp;statusYN=W&amp;page=1&amp;s=moe&amp;m=020402&amp;opType=N" target="_blank" rel="noreferrer" aria-label="외국인 유학생을 위한 「성희롱·성폭력 에스오에스(SOS) 가이드」 개발, 7개 언어로 언어 장벽 없이 피해 예방·대응 링크 바로가기">링크 바로가기</a><button class="action-button" type="button" data-article-action="share" data-article-url="https://www.moe.go.kr/boardCnts/viewRenew.do?boardID=294&amp;boardSeq=105773&amp;lev=0&amp;searchType=null&amp;statusYN=W&amp;page=1&amp;s=moe&amp;m=020402&amp;opType=N" data-share-title="외국인 유학생을 위한 「성희롱·성폭력 에스오에스(SOS) 가이드」 개발, 7개 언어로 언어 장벽 없이 피해 예방·대응" aria-label="외국인 유학생을 위한 「성희롱·성폭력 에스오에스(SOS) 가이드」 개발, 7개 언어로 언어 장벽 없이 피해 예방·대응 공유하기">공유하기</button><button class="action-button" type="button" data-article-action="copy" data-article-url="https://www.moe.go.kr/boardCnts/viewRenew.do?boardID=294&amp;boardSeq=105773&amp;lev=0&amp;searchType=null&amp;statusYN=W&amp;page=1&amp;s=moe&amp;m=020402&amp;opType=N" data-share-title="외국인 유학생을 위한 「성희롱·성폭력 에스오에스(SOS) 가이드」 개발, 7개 언어로 언어 장벽 없이 피해 예방·대응" aria-label="외국인 유학생을 위한 「성희롱·성폭력 에스오에스(SOS) 가이드」 개발, 7개 언어로 언어 장벽 없이 피해 예방·대응 링크 복사">링크 복사</button></div><div class="article-feedback" data-article-feedback aria-live="polite"></div>
+    </article>
+    
+    <article class="article-card" data-article-card="true" data-article-url="https://www.korea.kr/news/policyNewsView.do?newsId=148961789&amp;call_from=rsslink" data-article-title="청년 아이디어로 농촌관광 활성화…체험프로그램 개발 참여 모집" data-article-date="2026-03-31" data-article-region="중앙" data-policy-card="true" data-policy-group="official" data-policy-type="모집">
+      <div class="article-meta"><div class="article-meta-tags"><span class="meta-pill primary">공식 발표</span><span class="meta-pill subtle">중앙</span></div><div class="article-byline"><span class="meta-item">정책브리핑</span><span class="meta-divider" aria-hidden="true">•</span><span class="meta-item">2026-03-31</span></div></div>
+      <h3><a class="article-title-link" href="https://www.korea.kr/news/policyNewsView.do?newsId=148961789&amp;call_from=rsslink" target="_blank" rel="noreferrer" aria-label="청년 아이디어로 농촌관광 활성화…체험프로그램 개발 참여 모집 링크 바로가기">청년 아이디어로 농촌관광 활성화…체험프로그램 개발 참여 모집</a></h3>
+      
+      <p class="article-summary"><a class="article-summary-link" href="https://www.korea.kr/news/policyNewsView.do?newsId=148961789&amp;call_from=rsslink" target="_blank" rel="noreferrer" aria-label="청년 아이디어로 농촌관광 활성화…체험프로그램 개발 참여 모집 링크 바로가기">톡톡 튀는 아이디어로 농촌관광 체험프로그램 기획·개발에 참여할 청년을 모집한다. 농림축산식품부는 &#x27;2026년 청년참여형 소규모 농촌체험프로그램 개발사업&#x27;에 참여를 희망하는 청년을 공모한다고 31일 밝혔...</a></p>
+      <div class="article-actions"><a class="mini-link article-link-action" href="https://www.korea.kr/news/policyNewsView.do?newsId=148961789&amp;call_from=rsslink" target="_blank" rel="noreferrer" aria-label="청년 아이디어로 농촌관광 활성화…체험프로그램 개발 참여 모집 링크 바로가기">링크 바로가기</a><button class="action-button" type="button" data-article-action="share" data-article-url="https://www.korea.kr/news/policyNewsView.do?newsId=148961789&amp;call_from=rsslink" data-share-title="청년 아이디어로 농촌관광 활성화…체험프로그램 개발 참여 모집" aria-label="청년 아이디어로 농촌관광 활성화…체험프로그램 개발 참여 모집 공유하기">공유하기</button><button class="action-button" type="button" data-article-action="copy" data-article-url="https://www.korea.kr/news/policyNewsView.do?newsId=148961789&amp;call_from=rsslink" data-share-title="청년 아이디어로 농촌관광 활성화…체험프로그램 개발 참여 모집" aria-label="청년 아이디어로 농촌관광 활성화…체험프로그램 개발 참여 모집 링크 복사">링크 복사</button></div><div class="article-feedback" data-article-feedback aria-live="polite"></div>
+    </article>
+    
+    <article class="article-card" data-article-card="true" data-article-url="https://www.opm.go.kr/opm/news/press-release.do?mode=view&amp;articleNo=161692&amp;srSearchVal=%EC%B2%AD%EB%85%84&amp;article.offset=0&amp;articleLimit=20" data-article-title="[보도자료] 김민석 국무총리, 범정부 마약류 특별단속 강화 및 마약류 관계장관회의 개최 지시" data-article-date="2026-03-31" data-article-region="중앙" data-policy-card="true" data-policy-group="official" data-policy-type="기타">
+      <div class="article-meta"><div class="article-meta-tags"><span class="meta-pill primary">공식 발표</span><span class="meta-pill subtle">중앙</span></div><div class="article-byline"><span class="meta-item">국무조정실 보도자료</span><span class="meta-divider" aria-hidden="true">•</span><span class="meta-item">2026-03-31</span></div></div>
+      <h3><a class="article-title-link" href="https://www.opm.go.kr/opm/news/press-release.do?mode=view&amp;articleNo=161692&amp;srSearchVal=%EC%B2%AD%EB%85%84&amp;article.offset=0&amp;articleLimit=20" target="_blank" rel="noreferrer" aria-label="[보도자료] 김민석 국무총리, 범정부 마약류 특별단속 강화 및 마약류 관계장관회의 개최 지시 링크 바로가기">[보도자료] 김민석 국무총리, 범정부 마약류 특별단속 강화 및 마약류 관계장관회의 개최 지시</a></h3>
+      
+      <p class="article-summary"><a class="article-summary-link" href="https://www.opm.go.kr/opm/news/press-release.do?mode=view&amp;articleNo=161692&amp;srSearchVal=%EC%B2%AD%EB%85%84&amp;article.offset=0&amp;articleLimit=20" target="_blank" rel="noreferrer" aria-label="[보도자료] 김민석 국무총리, 범정부 마약류 특별단속 강화 및 마약류 관계장관회의 개최 지시 링크 바로가기">김민석 총리, 범정부 마약류 특별단속 강화 및 마약류 관계장관회의 개최 지시 □ 김민석 국무총리는 4.1(수) 법무부 국정집중점검회의를 앞두고, 마약류 범죄의 심각성을 전 내각이 다시 한번 엄중히 인식...</a></p>
+      <div class="article-actions"><a class="mini-link article-link-action" href="https://www.opm.go.kr/opm/news/press-release.do?mode=view&amp;articleNo=161692&amp;srSearchVal=%EC%B2%AD%EB%85%84&amp;article.offset=0&amp;articleLimit=20" target="_blank" rel="noreferrer" aria-label="[보도자료] 김민석 국무총리, 범정부 마약류 특별단속 강화 및 마약류 관계장관회의 개최 지시 링크 바로가기">링크 바로가기</a><button class="action-button" type="button" data-article-action="share" data-article-url="https://www.opm.go.kr/opm/news/press-release.do?mode=view&amp;articleNo=161692&amp;srSearchVal=%EC%B2%AD%EB%85%84&amp;article.offset=0&amp;articleLimit=20" data-share-title="[보도자료] 김민석 국무총리, 범정부 마약류 특별단속 강화 및 마약류 관계장관회의 개최 지시" aria-label="[보도자료] 김민석 국무총리, 범정부 마약류 특별단속 강화 및 마약류 관계장관회의 개최 지시 공유하기">공유하기</button><button class="action-button" type="button" data-article-action="copy" data-article-url="https://www.opm.go.kr/opm/news/press-release.do?mode=view&amp;articleNo=161692&amp;srSearchVal=%EC%B2%AD%EB%85%84&amp;article.offset=0&amp;articleLimit=20" data-share-title="[보도자료] 김민석 국무총리, 범정부 마약류 특별단속 강화 및 마약류 관계장관회의 개최 지시" aria-label="[보도자료] 김민석 국무총리, 범정부 마약류 특별단속 강화 및 마약류 관계장관회의 개최 지시 링크 복사">링크 복사</button></div><div class="article-feedback" data-article-feedback aria-live="polite"></div>
+    </article>
+    
+    <article class="article-card" data-article-card="true" data-article-url="https://www.fsc.go.kr/no010101/86583?srchCtgry=1&amp;curPage=&amp;srchKey=&amp;srchText=&amp;srchBeginDt=&amp;srchEndDt=" data-article-title="청년의 첫 금융문턱은 낮아지고, 내일을 향한 금융은 이어집니다. - 청년 미래이음 대출 등 3개 미소금융 대출상품 3.31일 출시" data-article-date="2026-03-30" data-article-region="중앙" data-policy-card="true" data-policy-group="official" data-policy-type="기타">
+      <div class="article-meta"><div class="article-meta-tags"><span class="meta-pill primary">공식 발표</span><span class="meta-pill subtle">중앙</span></div><div class="article-byline"><span class="meta-item">금융위원회 보도자료</span><span class="meta-divider" aria-hidden="true">•</span><span class="meta-item">2026-03-30</span></div></div>
+      <h3><a class="article-title-link" href="https://www.fsc.go.kr/no010101/86583?srchCtgry=1&amp;curPage=&amp;srchKey=&amp;srchText=&amp;srchBeginDt=&amp;srchEndDt=" target="_blank" rel="noreferrer" aria-label="청년의 첫 금융문턱은 낮아지고, 내일을 향한 금융은 이어집니다. - 청년 미래이음 대출 등 3개 미소금융 대출상품 3.31일 출시 링크 바로가기">청년의 첫 금융문턱은 낮아지고, 내일을 향한 금융은 이어집니다. - 청년 미래이음 대출 등 3개 미소금융 대출상품 3.31일 출시</a></h3>
+      
+      <p class="article-summary"><a class="article-summary-link" href="https://www.fsc.go.kr/no010101/86583?srchCtgry=1&amp;curPage=&amp;srchKey=&amp;srchText=&amp;srchBeginDt=&amp;srchEndDt=" target="_blank" rel="noreferrer" aria-label="청년의 첫 금융문턱은 낮아지고, 내일을 향한 금융은 이어집니다. - 청년 미래이음 대출 등 3개 미소금융 대출상품 3.31일 출시 링크 바로가기">서민금융과</a></p>
+      <div class="article-actions"><a class="mini-link article-link-action" href="https://www.fsc.go.kr/no010101/86583?srchCtgry=1&amp;curPage=&amp;srchKey=&amp;srchText=&amp;srchBeginDt=&amp;srchEndDt=" target="_blank" rel="noreferrer" aria-label="청년의 첫 금융문턱은 낮아지고, 내일을 향한 금융은 이어집니다. - 청년 미래이음 대출 등 3개 미소금융 대출상품 3.31일 출시 링크 바로가기">링크 바로가기</a><button class="action-button" type="button" data-article-action="share" data-article-url="https://www.fsc.go.kr/no010101/86583?srchCtgry=1&amp;curPage=&amp;srchKey=&amp;srchText=&amp;srchBeginDt=&amp;srchEndDt=" data-share-title="청년의 첫 금융문턱은 낮아지고, 내일을 향한 금융은 이어집니다. - 청년 미래이음 대출 등 3개 미소금융 대출상품 3.31일 출시" aria-label="청년의 첫 금융문턱은 낮아지고, 내일을 향한 금융은 이어집니다. - 청년 미래이음 대출 등 3개 미소금융 대출상품 3.31일 출시 공유하기">공유하기</button><button class="action-button" type="button" data-article-action="copy" data-article-url="https://www.fsc.go.kr/no010101/86583?srchCtgry=1&amp;curPage=&amp;srchKey=&amp;srchText=&amp;srchBeginDt=&amp;srchEndDt=" data-share-title="청년의 첫 금융문턱은 낮아지고, 내일을 향한 금융은 이어집니다. - 청년 미래이음 대출 등 3개 미소금융 대출상품 3.31일 출시" aria-label="청년의 첫 금융문턱은 낮아지고, 내일을 향한 금융은 이어집니다. - 청년 미래이음 대출 등 3개 미소금융 대출상품 3.31일 출시 링크 복사">링크 복사</button></div><div class="article-feedback" data-article-feedback aria-live="polite"></div>
+    </article>
+    
+    <article class="article-card" data-article-card="true" data-article-url="https://www.moel.go.kr/policy/policydata/view.do?bbs_seq=20260301325" data-article-title="2026년 국민취업지원제도 참여자 수첩" data-article-date="2026-03-26" data-article-region="중앙" data-policy-card="true" data-policy-group="official" data-policy-type="지원사업">
+      <div class="article-meta"><div class="article-meta-tags"><span class="meta-pill primary">공식 발표</span><span class="meta-pill subtle">중앙</span></div><div class="article-byline"><span class="meta-item">고용노동부 정책자료 RSS</span><span class="meta-divider" aria-hidden="true">•</span><span class="meta-item">2026-03-26</span></div></div>
+      <h3><a class="article-title-link" href="https://www.moel.go.kr/policy/policydata/view.do?bbs_seq=20260301325" target="_blank" rel="noreferrer" aria-label="2026년 국민취업지원제도 참여자 수첩 링크 바로가기">2026년 국민취업지원제도 참여자 수첩</a></h3>
+      
+      
+      <div class="article-actions"><a class="mini-link article-link-action" href="https://www.moel.go.kr/policy/policydata/view.do?bbs_seq=20260301325" target="_blank" rel="noreferrer" aria-label="2026년 국민취업지원제도 참여자 수첩 링크 바로가기">링크 바로가기</a><button class="action-button" type="button" data-article-action="share" data-article-url="https://www.moel.go.kr/policy/policydata/view.do?bbs_seq=20260301325" data-share-title="2026년 국민취업지원제도 참여자 수첩" aria-label="2026년 국민취업지원제도 참여자 수첩 공유하기">공유하기</button><button class="action-button" type="button" data-article-action="copy" data-article-url="https://www.moel.go.kr/policy/policydata/view.do?bbs_seq=20260301325" data-share-title="2026년 국민취업지원제도 참여자 수첩" aria-label="2026년 국민취업지원제도 참여자 수첩 링크 복사">링크 복사</button></div><div class="article-feedback" data-article-feedback aria-live="polite"></div>
+    </article>
+    
+    <article class="article-card" data-article-card="true" data-article-url="https://www.opm.go.kr/opm/news/press-release.do?mode=view&amp;articleNo=161600&amp;srSearchVal=%EC%B2%AD%EB%85%84&amp;article.offset=0&amp;articleLimit=20" data-article-title="[보도자료] 김민석 국무총리, K-국정설명회 총정리" data-article-date="2026-03-23" data-article-region="서울" data-policy-card="true" data-policy-group="official" data-policy-type="기타">
+      <div class="article-meta"><div class="article-meta-tags"><span class="meta-pill primary">공식 발표</span><span class="meta-pill subtle">서울</span></div><div class="article-byline"><span class="meta-item">국무조정실 보도자료</span><span class="meta-divider" aria-hidden="true">•</span><span class="meta-item">2026-03-23</span></div></div>
+      <h3><a class="article-title-link" href="https://www.opm.go.kr/opm/news/press-release.do?mode=view&amp;articleNo=161600&amp;srSearchVal=%EC%B2%AD%EB%85%84&amp;article.offset=0&amp;articleLimit=20" target="_blank" rel="noreferrer" aria-label="[보도자료] 김민석 국무총리, K-국정설명회 총정리 링크 바로가기">[보도자료] 김민석 국무총리, K-국정설명회 총정리</a></h3>
+      
+      <p class="article-summary"><a class="article-summary-link" href="https://www.opm.go.kr/opm/news/press-release.do?mode=view&amp;articleNo=161600&amp;srSearchVal=%EC%B2%AD%EB%85%84&amp;article.offset=0&amp;articleLimit=20" target="_blank" rel="noreferrer" aria-label="[보도자료] 김민석 국무총리, K-국정설명회 총정리 링크 바로가기">김민석 총리, ｢K-국정설명회｣ 전국일정을 총정리하는 서울설명회 개최 - 4개월간 전국 순회 대국민소통 진행(10여개 지역, 15회 개최) - 향후 「K-온라인 국정문답」을 통해 비대면 소통 이어갈 예...</a></p>
+      <div class="article-actions"><a class="mini-link article-link-action" href="https://www.opm.go.kr/opm/news/press-release.do?mode=view&amp;articleNo=161600&amp;srSearchVal=%EC%B2%AD%EB%85%84&amp;article.offset=0&amp;articleLimit=20" target="_blank" rel="noreferrer" aria-label="[보도자료] 김민석 국무총리, K-국정설명회 총정리 링크 바로가기">링크 바로가기</a><button class="action-button" type="button" data-article-action="share" data-article-url="https://www.opm.go.kr/opm/news/press-release.do?mode=view&amp;articleNo=161600&amp;srSearchVal=%EC%B2%AD%EB%85%84&amp;article.offset=0&amp;articleLimit=20" data-share-title="[보도자료] 김민석 국무총리, K-국정설명회 총정리" aria-label="[보도자료] 김민석 국무총리, K-국정설명회 총정리 공유하기">공유하기</button><button class="action-button" type="button" data-article-action="copy" data-article-url="https://www.opm.go.kr/opm/news/press-release.do?mode=view&amp;articleNo=161600&amp;srSearchVal=%EC%B2%AD%EB%85%84&amp;article.offset=0&amp;articleLimit=20" data-share-title="[보도자료] 김민석 국무총리, K-국정설명회 총정리" aria-label="[보도자료] 김민석 국무총리, K-국정설명회 총정리 링크 복사">링크 복사</button></div><div class="article-feedback" data-article-feedback aria-live="polite"></div>
+    </article>
+    
+    <article class="article-card" data-article-card="true" data-article-url="https://www.opm.go.kr/opm/news/press-release.do?mode=view&amp;articleNo=161456&amp;srSearchVal=%EC%B2%AD%EB%85%84&amp;article.offset=0&amp;articleLimit=20" data-article-title="[보도자료] 국가기후위기대응위원회, 민간위원 국민추천제 실시 보도자료" data-article-date="2026-03-13" data-article-region="중앙" data-policy-card="true" data-policy-group="official" data-policy-type="심의·의결">
+      <div class="article-meta"><div class="article-meta-tags"><span class="meta-pill primary">공식 발표</span><span class="meta-pill subtle">중앙</span></div><div class="article-byline"><span class="meta-item">국무조정실 보도자료</span><span class="meta-divider" aria-hidden="true">•</span><span class="meta-item">2026-03-13</span></div></div>
+      <h3><a class="article-title-link" href="https://www.opm.go.kr/opm/news/press-release.do?mode=view&amp;articleNo=161456&amp;srSearchVal=%EC%B2%AD%EB%85%84&amp;article.offset=0&amp;articleLimit=20" target="_blank" rel="noreferrer" aria-label="[보도자료] 국가기후위기대응위원회, 민간위원 국민추천제 실시 보도자료 링크 바로가기">[보도자료] 국가기후위기대응위원회, 민간위원 국민추천제 실시 보도자료</a></h3>
+      
+      <p class="article-summary"><a class="article-summary-link" href="https://www.opm.go.kr/opm/news/press-release.do?mode=view&amp;articleNo=161456&amp;srSearchVal=%EC%B2%AD%EB%85%84&amp;article.offset=0&amp;articleLimit=20" target="_blank" rel="noreferrer" aria-label="[보도자료] 국가기후위기대응위원회, 민간위원 국민추천제 실시 보도자료 링크 바로가기">국가기후위기대응위원회, 민간위원 국민추천제 실시 - 국민추천제 홈페이지에서 3월 17일부터 3월 23일까지 추천·접수 - 학계·산업계·시민사회·청년 등 다양한 계층·분야의 현장 전문가 발굴 기대 - 탄...</a></p>
+      <div class="article-actions"><a class="mini-link article-link-action" href="https://www.opm.go.kr/opm/news/press-release.do?mode=view&amp;articleNo=161456&amp;srSearchVal=%EC%B2%AD%EB%85%84&amp;article.offset=0&amp;articleLimit=20" target="_blank" rel="noreferrer" aria-label="[보도자료] 국가기후위기대응위원회, 민간위원 국민추천제 실시 보도자료 링크 바로가기">링크 바로가기</a><button class="action-button" type="button" data-article-action="share" data-article-url="https://www.opm.go.kr/opm/news/press-release.do?mode=view&amp;articleNo=161456&amp;srSearchVal=%EC%B2%AD%EB%85%84&amp;article.offset=0&amp;articleLimit=20" data-share-title="[보도자료] 국가기후위기대응위원회, 민간위원 국민추천제 실시 보도자료" aria-label="[보도자료] 국가기후위기대응위원회, 민간위원 국민추천제 실시 보도자료 공유하기">공유하기</button><button class="action-button" type="button" data-article-action="copy" data-article-url="https://www.opm.go.kr/opm/news/press-release.do?mode=view&amp;articleNo=161456&amp;srSearchVal=%EC%B2%AD%EB%85%84&amp;article.offset=0&amp;articleLimit=20" data-share-title="[보도자료] 국가기후위기대응위원회, 민간위원 국민추천제 실시 보도자료" aria-label="[보도자료] 국가기후위기대응위원회, 민간위원 국민추천제 실시 보도자료 링크 복사">링크 복사</button></div><div class="article-feedback" data-article-feedback aria-live="polite"></div>
+    </article>
+    
+    <article class="article-card" data-article-card="true" data-article-url="https://www.opm.go.kr/opm/news/press-release.do?mode=view&amp;articleNo=161397&amp;srSearchVal=%EC%B2%AD%EB%85%84&amp;article.offset=0&amp;articleLimit=20" data-article-title="[보도자료] 김민석 국무총리, 젊은한국투어-청년주거 현장방문" data-article-date="2026-03-06" data-article-region="서울" data-policy-card="true" data-policy-group="official" data-policy-type="모집">
+      <div class="article-meta"><div class="article-meta-tags"><span class="meta-pill primary">공식 발표</span><span class="meta-pill subtle">서울</span></div><div class="article-byline"><span class="meta-item">국무조정실 보도자료</span><span class="meta-divider" aria-hidden="true">•</span><span class="meta-item">2026-03-06</span></div></div>
+      <h3><a class="article-title-link" href="https://www.opm.go.kr/opm/news/press-release.do?mode=view&amp;articleNo=161397&amp;srSearchVal=%EC%B2%AD%EB%85%84&amp;article.offset=0&amp;articleLimit=20" target="_blank" rel="noreferrer" aria-label="[보도자료] 김민석 국무총리, 젊은한국투어-청년주거 현장방문 링크 바로가기">[보도자료] 김민석 국무총리, 젊은한국투어-청년주거 현장방문</a></h3>
+      
+      <p class="article-summary"><a class="article-summary-link" href="https://www.opm.go.kr/opm/news/press-release.do?mode=view&amp;articleNo=161397&amp;srSearchVal=%EC%B2%AD%EB%85%84&amp;article.offset=0&amp;articleLimit=20" target="_blank" rel="noreferrer" aria-label="[보도자료] 김민석 국무총리, 젊은한국투어-청년주거 현장방문 링크 바로가기">김민석 국무총리, 두 번째 ‘젊은 한국 투어’ 청년 공공임대주택 현장 방문 - 서울 관악봉천 청년 행복주택 방문 및 입주청년과 간담회 개최 □ 김민석 국무총리는 두 번째 ‘젊은 한국 투어’로 대학생,...</a></p>
+      <div class="article-actions"><a class="mini-link article-link-action" href="https://www.opm.go.kr/opm/news/press-release.do?mode=view&amp;articleNo=161397&amp;srSearchVal=%EC%B2%AD%EB%85%84&amp;article.offset=0&amp;articleLimit=20" target="_blank" rel="noreferrer" aria-label="[보도자료] 김민석 국무총리, 젊은한국투어-청년주거 현장방문 링크 바로가기">링크 바로가기</a><button class="action-button" type="button" data-article-action="share" data-article-url="https://www.opm.go.kr/opm/news/press-release.do?mode=view&amp;articleNo=161397&amp;srSearchVal=%EC%B2%AD%EB%85%84&amp;article.offset=0&amp;articleLimit=20" data-share-title="[보도자료] 김민석 국무총리, 젊은한국투어-청년주거 현장방문" aria-label="[보도자료] 김민석 국무총리, 젊은한국투어-청년주거 현장방문 공유하기">공유하기</button><button class="action-button" type="button" data-article-action="copy" data-article-url="https://www.opm.go.kr/opm/news/press-release.do?mode=view&amp;articleNo=161397&amp;srSearchVal=%EC%B2%AD%EB%85%84&amp;article.offset=0&amp;articleLimit=20" data-share-title="[보도자료] 김민석 국무총리, 젊은한국투어-청년주거 현장방문" aria-label="[보도자료] 김민석 국무총리, 젊은한국투어-청년주거 현장방문 링크 복사">링크 복사</button></div><div class="article-feedback" data-article-feedback aria-live="polite"></div>
+    </article>
+    
+    <article class="article-card" data-article-card="true" data-article-url="https://www.opm.go.kr/opm/news/press-release.do?mode=view&amp;articleNo=161380&amp;srSearchVal=%EC%B2%AD%EB%85%84&amp;article.offset=0&amp;articleLimit=20" data-article-title="[보도자료] 범정부생명지킴추진본부 17개 시·도 광역자살예방센터 간담회" data-article-date="2026-03-05" data-article-region="경기" data-policy-card="true" data-policy-group="official" data-policy-type="지원사업">
+      <div class="article-meta"><div class="article-meta-tags"><span class="meta-pill primary">공식 발표</span><span class="meta-pill subtle">경기</span></div><div class="article-byline"><span class="meta-item">국무조정실 보도자료</span><span class="meta-divider" aria-hidden="true">•</span><span class="meta-item">2026-03-05</span></div></div>
+      <h3><a class="article-title-link" href="https://www.opm.go.kr/opm/news/press-release.do?mode=view&amp;articleNo=161380&amp;srSearchVal=%EC%B2%AD%EB%85%84&amp;article.offset=0&amp;articleLimit=20" target="_blank" rel="noreferrer" aria-label="[보도자료] 범정부생명지킴추진본부 17개 시·도 광역자살예방센터 간담회 링크 바로가기">[보도자료] 범정부생명지킴추진본부 17개 시·도 광역자살예방센터 간담회</a></h3>
+      
+      <p class="article-summary"><a class="article-summary-link" href="https://www.opm.go.kr/opm/news/press-release.do?mode=view&amp;articleNo=161380&amp;srSearchVal=%EC%B2%AD%EB%85%84&amp;article.offset=0&amp;articleLimit=20" target="_blank" rel="noreferrer" aria-label="[보도자료] 범정부생명지킴추진본부 17개 시·도 광역자살예방센터 간담회 링크 바로가기">범정부 생명지킴추진본부, 17개 광역 자살예방센터와 자살예방 총력 대응을 위한 핫라인 가동, 첫 영상회의 개최 - 핵심 타겟(50대 남성, 미취업 청년, 농촌 노인, 위기청소년, 북향민, 연예인, 군인...</a></p>
+      <div class="article-actions"><a class="mini-link article-link-action" href="https://www.opm.go.kr/opm/news/press-release.do?mode=view&amp;articleNo=161380&amp;srSearchVal=%EC%B2%AD%EB%85%84&amp;article.offset=0&amp;articleLimit=20" target="_blank" rel="noreferrer" aria-label="[보도자료] 범정부생명지킴추진본부 17개 시·도 광역자살예방센터 간담회 링크 바로가기">링크 바로가기</a><button class="action-button" type="button" data-article-action="share" data-article-url="https://www.opm.go.kr/opm/news/press-release.do?mode=view&amp;articleNo=161380&amp;srSearchVal=%EC%B2%AD%EB%85%84&amp;article.offset=0&amp;articleLimit=20" data-share-title="[보도자료] 범정부생명지킴추진본부 17개 시·도 광역자살예방센터 간담회" aria-label="[보도자료] 범정부생명지킴추진본부 17개 시·도 광역자살예방센터 간담회 공유하기">공유하기</button><button class="action-button" type="button" data-article-action="copy" data-article-url="https://www.opm.go.kr/opm/news/press-release.do?mode=view&amp;articleNo=161380&amp;srSearchVal=%EC%B2%AD%EB%85%84&amp;article.offset=0&amp;articleLimit=20" data-share-title="[보도자료] 범정부생명지킴추진본부 17개 시·도 광역자살예방센터 간담회" aria-label="[보도자료] 범정부생명지킴추진본부 17개 시·도 광역자살예방센터 간담회 링크 복사">링크 복사</button></div><div class="article-feedback" data-article-feedback aria-live="polite"></div>
+    </article>
+    
+    <article class="article-card" data-article-card="true" data-article-url="https://www.opm.go.kr/opm/news/press-release.do?mode=view&amp;articleNo=161208&amp;srSearchVal=%EC%B2%AD%EB%85%84&amp;article.offset=0&amp;articleLimit=20" data-article-title="[보도자료] 김민석 국무총리, 청년재단-지방은행 협약식 참석" data-article-date="2026-02-12" data-article-region="중앙" data-policy-card="true" data-policy-group="official" data-policy-type="기타">
+      <div class="article-meta"><div class="article-meta-tags"><span class="meta-pill primary">공식 발표</span><span class="meta-pill subtle">중앙</span></div><div class="article-byline"><span class="meta-item">국무조정실 보도자료</span><span class="meta-divider" aria-hidden="true">•</span><span class="meta-item">2026-02-12</span></div></div>
+      <h3><a class="article-title-link" href="https://www.opm.go.kr/opm/news/press-release.do?mode=view&amp;articleNo=161208&amp;srSearchVal=%EC%B2%AD%EB%85%84&amp;article.offset=0&amp;articleLimit=20" target="_blank" rel="noreferrer" aria-label="[보도자료] 김민석 국무총리, 청년재단-지방은행 협약식 참석 링크 바로가기">[보도자료] 김민석 국무총리, 청년재단-지방은행 협약식 참석</a></h3>
+      
+      <p class="article-summary"><a class="article-summary-link" href="https://www.opm.go.kr/opm/news/press-release.do?mode=view&amp;articleNo=161208&amp;srSearchVal=%EC%B2%AD%EB%85%84&amp;article.offset=0&amp;articleLimit=20" target="_blank" rel="noreferrer" aria-label="[보도자료] 김민석 국무총리, 청년재단-지방은행 협약식 참석 링크 바로가기">청년정책협력관실</a></p>
+      <div class="article-actions"><a class="mini-link article-link-action" href="https://www.opm.go.kr/opm/news/press-release.do?mode=view&amp;articleNo=161208&amp;srSearchVal=%EC%B2%AD%EB%85%84&amp;article.offset=0&amp;articleLimit=20" target="_blank" rel="noreferrer" aria-label="[보도자료] 김민석 국무총리, 청년재단-지방은행 협약식 참석 링크 바로가기">링크 바로가기</a><button class="action-button" type="button" data-article-action="share" data-article-url="https://www.opm.go.kr/opm/news/press-release.do?mode=view&amp;articleNo=161208&amp;srSearchVal=%EC%B2%AD%EB%85%84&amp;article.offset=0&amp;articleLimit=20" data-share-title="[보도자료] 김민석 국무총리, 청년재단-지방은행 협약식 참석" aria-label="[보도자료] 김민석 국무총리, 청년재단-지방은행 협약식 참석 공유하기">공유하기</button><button class="action-button" type="button" data-article-action="copy" data-article-url="https://www.opm.go.kr/opm/news/press-release.do?mode=view&amp;articleNo=161208&amp;srSearchVal=%EC%B2%AD%EB%85%84&amp;article.offset=0&amp;articleLimit=20" data-share-title="[보도자료] 김민석 국무총리, 청년재단-지방은행 협약식 참석" aria-label="[보도자료] 김민석 국무총리, 청년재단-지방은행 협약식 참석 링크 복사">링크 복사</button></div><div class="article-feedback" data-article-feedback aria-live="polite"></div>
+    </article>
+    
+    <article class="article-card" data-article-card="true" data-article-url="https://www.opm.go.kr/opm/news/press-release.do?mode=view&amp;articleNo=161172&amp;srSearchVal=%EC%B2%AD%EB%85%84&amp;article.offset=0&amp;articleLimit=20" data-article-title="[보도자료] 김민석 국무총리 주재 제1차 청년정책 관계장관회의" data-article-date="2026-02-06" data-article-region="중앙" data-policy-card="true" data-policy-group="official" data-policy-type="기타">
+      <div class="article-meta"><div class="article-meta-tags"><span class="meta-pill primary">공식 발표</span><span class="meta-pill subtle">중앙</span></div><div class="article-byline"><span class="meta-item">국무조정실 보도자료</span><span class="meta-divider" aria-hidden="true">•</span><span class="meta-item">2026-02-06</span></div></div>
+      <h3><a class="article-title-link" href="https://www.opm.go.kr/opm/news/press-release.do?mode=view&amp;articleNo=161172&amp;srSearchVal=%EC%B2%AD%EB%85%84&amp;article.offset=0&amp;articleLimit=20" target="_blank" rel="noreferrer" aria-label="[보도자료] 김민석 국무총리 주재 제1차 청년정책 관계장관회의 링크 바로가기">[보도자료] 김민석 국무총리 주재 제1차 청년정책 관계장관회의</a></h3>
+      
+      <p class="article-summary"><a class="article-summary-link" href="https://www.opm.go.kr/opm/news/press-release.do?mode=view&amp;articleNo=161172&amp;srSearchVal=%EC%B2%AD%EB%85%84&amp;article.offset=0&amp;articleLimit=20" target="_blank" rel="noreferrer" aria-label="[보도자료] 김민석 국무총리 주재 제1차 청년정책 관계장관회의 링크 바로가기">청년정책기획관실</a></p>
+      <div class="article-actions"><a class="mini-link article-link-action" href="https://www.opm.go.kr/opm/news/press-release.do?mode=view&amp;articleNo=161172&amp;srSearchVal=%EC%B2%AD%EB%85%84&amp;article.offset=0&amp;articleLimit=20" target="_blank" rel="noreferrer" aria-label="[보도자료] 김민석 국무총리 주재 제1차 청년정책 관계장관회의 링크 바로가기">링크 바로가기</a><button class="action-button" type="button" data-article-action="share" data-article-url="https://www.opm.go.kr/opm/news/press-release.do?mode=view&amp;articleNo=161172&amp;srSearchVal=%EC%B2%AD%EB%85%84&amp;article.offset=0&amp;articleLimit=20" data-share-title="[보도자료] 김민석 국무총리 주재 제1차 청년정책 관계장관회의" aria-label="[보도자료] 김민석 국무총리 주재 제1차 청년정책 관계장관회의 공유하기">공유하기</button><button class="action-button" type="button" data-article-action="copy" data-article-url="https://www.opm.go.kr/opm/news/press-release.do?mode=view&amp;articleNo=161172&amp;srSearchVal=%EC%B2%AD%EB%85%84&amp;article.offset=0&amp;articleLimit=20" data-share-title="[보도자료] 김민석 국무총리 주재 제1차 청년정책 관계장관회의" aria-label="[보도자료] 김민석 국무총리 주재 제1차 청년정책 관계장관회의 링크 복사">링크 복사</button></div><div class="article-feedback" data-article-feedback aria-live="polite"></div>
+    </article>
+    </div>
+      </section>
+      <section class="section" id="local-policy-updates" data-policy-section="local">
+        <div class="section-head">
+          <div>
+            <h2>지자체 발표 소식</h2>
+            <p>청년 정책과 공약, 시행계획 발표 성격이 분명한 지역 기사만 따로 모았습니다.</p>
+          </div>
+          <span class="mini-link" aria-disabled="true" data-policy-section-count>13건</span>
+        </div>
+        <div class="article-grid">
+    <article class="article-card" data-article-card="true" data-article-url="https://news.google.com/rss/articles/CBMibkFVX3lxTE5FUGZxZ3l4TEh0N1lQaGozNk0tNDMySHRSMG9rcUhxQ3htYmhUTzQwUkF1SFVBUzZhejhNMFVWams4bXZFV1FIdk90Z1JUMHJFSFgzZXRKdXNHcDRiUkFvdUF3Rl93c1ptcnlyb0ZR0gFuQVVfeXFMTkVQZnFneXhMSHQ3WVBoajM2TS00MzJIdFIwb2txSHFDeG1iaFRPNDBSQXVIVUFTNmF6OE0wVVZqazhtdkVXUUh2T3RnUlQwckVIWDNldEp1c0dwNGJSQW91QXdGX3dzWm1yeXJvRlE?oc=5" data-article-title="군산시, 2026년 청년정책 본격 추진… 생애주기별 맞춤 지원 강화" data-article-date="2026-04-03" data-article-region="전북" data-policy-card="true" data-policy-group="local" data-policy-type="지원사업">
+      <div class="article-meta"><div class="article-meta-tags"><span class="meta-pill primary">지역 움직임</span><span class="meta-pill subtle">전북</span></div><div class="article-byline"><span class="meta-item">아시아뉴스전북</span><span class="meta-divider" aria-hidden="true">•</span><span class="meta-item">2026-04-03</span></div></div>
+      <h3><a class="article-title-link" href="https://news.google.com/rss/articles/CBMibkFVX3lxTE5FUGZxZ3l4TEh0N1lQaGozNk0tNDMySHRSMG9rcUhxQ3htYmhUTzQwUkF1SFVBUzZhejhNMFVWams4bXZFV1FIdk90Z1JUMHJFSFgzZXRKdXNHcDRiUkFvdUF3Rl93c1ptcnlyb0ZR0gFuQVVfeXFMTkVQZnFneXhMSHQ3WVBoajM2TS00MzJIdFIwb2txSHFDeG1iaFRPNDBSQXVIVUFTNmF6OE0wVVZqazhtdkVXUUh2T3RnUlQwckVIWDNldEp1c0dwNGJSQW91QXdGX3dzWm1yeXJvRlE?oc=5" target="_blank" rel="noreferrer" aria-label="군산시, 2026년 청년정책 본격 추진… 생애주기별 맞춤 지원 강화 링크 바로가기">군산시, 2026년 청년정책 본격 추진… 생애주기별 맞춤 지원 강화</a></h3>
+      
+      
+      <div class="article-actions"><a class="mini-link article-link-action" href="https://news.google.com/rss/articles/CBMibkFVX3lxTE5FUGZxZ3l4TEh0N1lQaGozNk0tNDMySHRSMG9rcUhxQ3htYmhUTzQwUkF1SFVBUzZhejhNMFVWams4bXZFV1FIdk90Z1JUMHJFSFgzZXRKdXNHcDRiUkFvdUF3Rl93c1ptcnlyb0ZR0gFuQVVfeXFMTkVQZnFneXhMSHQ3WVBoajM2TS00MzJIdFIwb2txSHFDeG1iaFRPNDBSQXVIVUFTNmF6OE0wVVZqazhtdkVXUUh2T3RnUlQwckVIWDNldEp1c0dwNGJSQW91QXdGX3dzWm1yeXJvRlE?oc=5" target="_blank" rel="noreferrer" aria-label="군산시, 2026년 청년정책 본격 추진… 생애주기별 맞춤 지원 강화 링크 바로가기">링크 바로가기</a><button class="action-button" type="button" data-article-action="share" data-article-url="https://news.google.com/rss/articles/CBMibkFVX3lxTE5FUGZxZ3l4TEh0N1lQaGozNk0tNDMySHRSMG9rcUhxQ3htYmhUTzQwUkF1SFVBUzZhejhNMFVWams4bXZFV1FIdk90Z1JUMHJFSFgzZXRKdXNHcDRiUkFvdUF3Rl93c1ptcnlyb0ZR0gFuQVVfeXFMTkVQZnFneXhMSHQ3WVBoajM2TS00MzJIdFIwb2txSHFDeG1iaFRPNDBSQXVIVUFTNmF6OE0wVVZqazhtdkVXUUh2T3RnUlQwckVIWDNldEp1c0dwNGJSQW91QXdGX3dzWm1yeXJvRlE?oc=5" data-share-title="군산시, 2026년 청년정책 본격 추진… 생애주기별 맞춤 지원 강화" aria-label="군산시, 2026년 청년정책 본격 추진… 생애주기별 맞춤 지원 강화 공유하기">공유하기</button><button class="action-button" type="button" data-article-action="copy" data-article-url="https://news.google.com/rss/articles/CBMibkFVX3lxTE5FUGZxZ3l4TEh0N1lQaGozNk0tNDMySHRSMG9rcUhxQ3htYmhUTzQwUkF1SFVBUzZhejhNMFVWams4bXZFV1FIdk90Z1JUMHJFSFgzZXRKdXNHcDRiUkFvdUF3Rl93c1ptcnlyb0ZR0gFuQVVfeXFMTkVQZnFneXhMSHQ3WVBoajM2TS00MzJIdFIwb2txSHFDeG1iaFRPNDBSQXVIVUFTNmF6OE0wVVZqazhtdkVXUUh2T3RnUlQwckVIWDNldEp1c0dwNGJSQW91QXdGX3dzWm1yeXJvRlE?oc=5" data-share-title="군산시, 2026년 청년정책 본격 추진… 생애주기별 맞춤 지원 강화" aria-label="군산시, 2026년 청년정책 본격 추진… 생애주기별 맞춤 지원 강화 링크 복사">링크 복사</button></div><div class="article-feedback" data-article-feedback aria-live="polite"></div>
+    </article>
+    
+    <article class="article-card" data-article-card="true" data-article-url="https://news.google.com/rss/articles/CBMia0FVX3lxTE9JMWxxa0NfOU9LdFc3WDVVYzFXN2EydUoyMXpoblk3QXhWS19VNXZIMHVvb0k0S003NVZGNThkM2wwbUJlS0dzWWM4SkhHSGRkVzVoR1JaR2xiUG9PeGNKamxfNkJGdnZSbExV?oc=5" data-article-title="대구시, ‘대구청년 부동산 중개수수료 지원사업’ 시행, 6일부터 접수" data-article-date="2026-04-02" data-article-region="대구" data-policy-card="true" data-policy-group="local" data-policy-type="모집">
+      <div class="article-meta"><div class="article-meta-tags"><span class="meta-pill primary">공식 발표</span><span class="meta-pill subtle">대구</span></div><div class="article-byline"><span class="meta-item">프레시안</span><span class="meta-divider" aria-hidden="true">•</span><span class="meta-item">2026-04-02</span></div></div>
+      <h3><a class="article-title-link" href="https://news.google.com/rss/articles/CBMia0FVX3lxTE9JMWxxa0NfOU9LdFc3WDVVYzFXN2EydUoyMXpoblk3QXhWS19VNXZIMHVvb0k0S003NVZGNThkM2wwbUJlS0dzWWM4SkhHSGRkVzVoR1JaR2xiUG9PeGNKamxfNkJGdnZSbExV?oc=5" target="_blank" rel="noreferrer" aria-label="대구시, ‘대구청년 부동산 중개수수료 지원사업’ 시행, 6일부터 접수 링크 바로가기">대구시, ‘대구청년 부동산 중개수수료 지원사업’ 시행, 6일부터 접수</a></h3>
+      
+      
+      <div class="article-actions"><a class="mini-link article-link-action" href="https://news.google.com/rss/articles/CBMia0FVX3lxTE9JMWxxa0NfOU9LdFc3WDVVYzFXN2EydUoyMXpoblk3QXhWS19VNXZIMHVvb0k0S003NVZGNThkM2wwbUJlS0dzWWM4SkhHSGRkVzVoR1JaR2xiUG9PeGNKamxfNkJGdnZSbExV?oc=5" target="_blank" rel="noreferrer" aria-label="대구시, ‘대구청년 부동산 중개수수료 지원사업’ 시행, 6일부터 접수 링크 바로가기">링크 바로가기</a><button class="action-button" type="button" data-article-action="share" data-article-url="https://news.google.com/rss/articles/CBMia0FVX3lxTE9JMWxxa0NfOU9LdFc3WDVVYzFXN2EydUoyMXpoblk3QXhWS19VNXZIMHVvb0k0S003NVZGNThkM2wwbUJlS0dzWWM4SkhHSGRkVzVoR1JaR2xiUG9PeGNKamxfNkJGdnZSbExV?oc=5" data-share-title="대구시, ‘대구청년 부동산 중개수수료 지원사업’ 시행, 6일부터 접수" aria-label="대구시, ‘대구청년 부동산 중개수수료 지원사업’ 시행, 6일부터 접수 공유하기">공유하기</button><button class="action-button" type="button" data-article-action="copy" data-article-url="https://news.google.com/rss/articles/CBMia0FVX3lxTE9JMWxxa0NfOU9LdFc3WDVVYzFXN2EydUoyMXpoblk3QXhWS19VNXZIMHVvb0k0S003NVZGNThkM2wwbUJlS0dzWWM4SkhHSGRkVzVoR1JaR2xiUG9PeGNKamxfNkJGdnZSbExV?oc=5" data-share-title="대구시, ‘대구청년 부동산 중개수수료 지원사업’ 시행, 6일부터 접수" aria-label="대구시, ‘대구청년 부동산 중개수수료 지원사업’ 시행, 6일부터 접수 링크 복사">링크 복사</button></div><div class="article-feedback" data-article-feedback aria-live="polite"></div>
+    </article>
+    
+    <article class="article-card" data-article-card="true" data-article-url="https://news.google.com/rss/articles/CBMiVEFVX3lxTE9jYS1fRnVyRXpFc3hzZ0ZOeUlNa1BVT21GMHQ5d2gyR0pneV9sQzdZQWJ6M210LUMxNXFpdjhTZmN0dC03VkFyQWF2TGFVOG95QWYteg?oc=5" data-article-title="대구 달서구, 청년정책 5개년 로드맵 수립⋯청년친화도시 조성 본격화" data-article-date="2026-04-02" data-article-region="대구" data-policy-card="true" data-policy-group="local" data-policy-type="기타">
+      <div class="article-meta"><div class="article-meta-tags"><span class="meta-pill primary">지역 움직임</span><span class="meta-pill subtle">대구</span></div><div class="article-byline"><span class="meta-item">다음 뉴스</span><span class="meta-divider" aria-hidden="true">•</span><span class="meta-item">2026-04-02</span></div></div>
+      <h3><a class="article-title-link" href="https://news.google.com/rss/articles/CBMiVEFVX3lxTE9jYS1fRnVyRXpFc3hzZ0ZOeUlNa1BVT21GMHQ5d2gyR0pneV9sQzdZQWJ6M210LUMxNXFpdjhTZmN0dC03VkFyQWF2TGFVOG95QWYteg?oc=5" target="_blank" rel="noreferrer" aria-label="대구 달서구, 청년정책 5개년 로드맵 수립⋯청년친화도시 조성 본격화 링크 바로가기">대구 달서구, 청년정책 5개년 로드맵 수립⋯청년친화도시 조성 본격화</a></h3>
+      
+      
+      <div class="article-actions"><a class="mini-link article-link-action" href="https://news.google.com/rss/articles/CBMiVEFVX3lxTE9jYS1fRnVyRXpFc3hzZ0ZOeUlNa1BVT21GMHQ5d2gyR0pneV9sQzdZQWJ6M210LUMxNXFpdjhTZmN0dC03VkFyQWF2TGFVOG95QWYteg?oc=5" target="_blank" rel="noreferrer" aria-label="대구 달서구, 청년정책 5개년 로드맵 수립⋯청년친화도시 조성 본격화 링크 바로가기">링크 바로가기</a><button class="action-button" type="button" data-article-action="share" data-article-url="https://news.google.com/rss/articles/CBMiVEFVX3lxTE9jYS1fRnVyRXpFc3hzZ0ZOeUlNa1BVT21GMHQ5d2gyR0pneV9sQzdZQWJ6M210LUMxNXFpdjhTZmN0dC03VkFyQWF2TGFVOG95QWYteg?oc=5" data-share-title="대구 달서구, 청년정책 5개년 로드맵 수립⋯청년친화도시 조성 본격화" aria-label="대구 달서구, 청년정책 5개년 로드맵 수립⋯청년친화도시 조성 본격화 공유하기">공유하기</button><button class="action-button" type="button" data-article-action="copy" data-article-url="https://news.google.com/rss/articles/CBMiVEFVX3lxTE9jYS1fRnVyRXpFc3hzZ0ZOeUlNa1BVT21GMHQ5d2gyR0pneV9sQzdZQWJ6M210LUMxNXFpdjhTZmN0dC03VkFyQWF2TGFVOG95QWYteg?oc=5" data-share-title="대구 달서구, 청년정책 5개년 로드맵 수립⋯청년친화도시 조성 본격화" aria-label="대구 달서구, 청년정책 5개년 로드맵 수립⋯청년친화도시 조성 본격화 링크 복사">링크 복사</button></div><div class="article-feedback" data-article-feedback aria-live="polite"></div>
+    </article>
+    
+    <article class="article-card" data-article-card="true" data-article-url="https://news.google.com/rss/articles/CBMia0FVX3lxTE5QY0NKWWFESk02Zk5yNGkyTTl4TzlHbVVWUThBV1dENG81UXdUOS1PdzNNTjlNM3VKMS12TVEwRWt5Nk9BZ25mZmV0Rk4xS1Zoc0pBSnlGdVhPMTJhQW5hckZFN3ZXX1QxMnZZ0gFrQVVfeXFMTlBjQ0pZYURKTTZmTnI0aTJNOXhPOUdtVVZROEFXV0Q0bzVRd1Q5LU93M01OOU0zdUoxLXZNUTBFa3k2T0FnbmZmZXRGTjFLVmhzSkFKeUZ1WE8xMmFBbmFyRkU3dldfVDEydlk?oc=5" data-article-title="이회수 김포시장 예비후보, 청년 5대 채움 정책 발표" data-article-date="2026-04-01" data-article-region="중앙" data-policy-card="true" data-policy-group="local" data-policy-type="정책 발표">
+      <div class="article-meta"><div class="article-meta-tags"><span class="meta-pill primary">공식 발표</span><span class="meta-pill subtle">중앙</span></div><div class="article-byline"><span class="meta-item">김포신문</span><span class="meta-divider" aria-hidden="true">•</span><span class="meta-item">2026-04-01</span></div></div>
+      <h3><a class="article-title-link" href="https://news.google.com/rss/articles/CBMia0FVX3lxTE5QY0NKWWFESk02Zk5yNGkyTTl4TzlHbVVWUThBV1dENG81UXdUOS1PdzNNTjlNM3VKMS12TVEwRWt5Nk9BZ25mZmV0Rk4xS1Zoc0pBSnlGdVhPMTJhQW5hckZFN3ZXX1QxMnZZ0gFrQVVfeXFMTlBjQ0pZYURKTTZmTnI0aTJNOXhPOUdtVVZROEFXV0Q0bzVRd1Q5LU93M01OOU0zdUoxLXZNUTBFa3k2T0FnbmZmZXRGTjFLVmhzSkFKeUZ1WE8xMmFBbmFyRkU3dldfVDEydlk?oc=5" target="_blank" rel="noreferrer" aria-label="이회수 김포시장 예비후보, 청년 5대 채움 정책 발표 링크 바로가기">이회수 김포시장 예비후보, 청년 5대 채움 정책 발표</a></h3>
+      
+      
+      <div class="article-actions"><a class="mini-link article-link-action" href="https://news.google.com/rss/articles/CBMia0FVX3lxTE5QY0NKWWFESk02Zk5yNGkyTTl4TzlHbVVWUThBV1dENG81UXdUOS1PdzNNTjlNM3VKMS12TVEwRWt5Nk9BZ25mZmV0Rk4xS1Zoc0pBSnlGdVhPMTJhQW5hckZFN3ZXX1QxMnZZ0gFrQVVfeXFMTlBjQ0pZYURKTTZmTnI0aTJNOXhPOUdtVVZROEFXV0Q0bzVRd1Q5LU93M01OOU0zdUoxLXZNUTBFa3k2T0FnbmZmZXRGTjFLVmhzSkFKeUZ1WE8xMmFBbmFyRkU3dldfVDEydlk?oc=5" target="_blank" rel="noreferrer" aria-label="이회수 김포시장 예비후보, 청년 5대 채움 정책 발표 링크 바로가기">링크 바로가기</a><button class="action-button" type="button" data-article-action="share" data-article-url="https://news.google.com/rss/articles/CBMia0FVX3lxTE5QY0NKWWFESk02Zk5yNGkyTTl4TzlHbVVWUThBV1dENG81UXdUOS1PdzNNTjlNM3VKMS12TVEwRWt5Nk9BZ25mZmV0Rk4xS1Zoc0pBSnlGdVhPMTJhQW5hckZFN3ZXX1QxMnZZ0gFrQVVfeXFMTlBjQ0pZYURKTTZmTnI0aTJNOXhPOUdtVVZROEFXV0Q0bzVRd1Q5LU93M01OOU0zdUoxLXZNUTBFa3k2T0FnbmZmZXRGTjFLVmhzSkFKeUZ1WE8xMmFBbmFyRkU3dldfVDEydlk?oc=5" data-share-title="이회수 김포시장 예비후보, 청년 5대 채움 정책 발표" aria-label="이회수 김포시장 예비후보, 청년 5대 채움 정책 발표 공유하기">공유하기</button><button class="action-button" type="button" data-article-action="copy" data-article-url="https://news.google.com/rss/articles/CBMia0FVX3lxTE5QY0NKWWFESk02Zk5yNGkyTTl4TzlHbVVWUThBV1dENG81UXdUOS1PdzNNTjlNM3VKMS12TVEwRWt5Nk9BZ25mZmV0Rk4xS1Zoc0pBSnlGdVhPMTJhQW5hckZFN3ZXX1QxMnZZ0gFrQVVfeXFMTlBjQ0pZYURKTTZmTnI0aTJNOXhPOUdtVVZROEFXV0Q0bzVRd1Q5LU93M01OOU0zdUoxLXZNUTBFa3k2T0FnbmZmZXRGTjFLVmhzSkFKeUZ1WE8xMmFBbmFyRkU3dldfVDEydlk?oc=5" data-share-title="이회수 김포시장 예비후보, 청년 5대 채움 정책 발표" aria-label="이회수 김포시장 예비후보, 청년 5대 채움 정책 발표 링크 복사">링크 복사</button></div><div class="article-feedback" data-article-feedback aria-live="polite"></div>
+    </article>
+    
+    <article class="article-card" data-article-card="true" data-article-url="https://news.google.com/rss/articles/CBMiZkFVX3lxTE5EV1VrVHVMcWttNWk2QnV3S1ctZzRWR2NtZVgwNEstYk4xSDBMVHVQQVdqbTBtMmQyOWhtNmVCMUN1QmhGRVlPVHc5X21xWmxxSVJPUV9Tc0NybFpTV0tpeXFsYkdHZw?oc=5" data-article-title="대구 달서구. ‘제3차 청년정책 기본계획’ 수립" data-article-date="2026-04-01" data-article-region="대구" data-policy-card="true" data-policy-group="local" data-policy-type="시행계획">
+      <div class="article-meta"><div class="article-meta-tags"><span class="meta-pill primary">공식 발표</span><span class="meta-pill subtle">대구</span></div><div class="article-byline"><span class="meta-item">데일리대구경북뉴스</span><span class="meta-divider" aria-hidden="true">•</span><span class="meta-item">2026-04-01</span></div></div>
+      <h3><a class="article-title-link" href="https://news.google.com/rss/articles/CBMiZkFVX3lxTE5EV1VrVHVMcWttNWk2QnV3S1ctZzRWR2NtZVgwNEstYk4xSDBMVHVQQVdqbTBtMmQyOWhtNmVCMUN1QmhGRVlPVHc5X21xWmxxSVJPUV9Tc0NybFpTV0tpeXFsYkdHZw?oc=5" target="_blank" rel="noreferrer" aria-label="대구 달서구. ‘제3차 청년정책 기본계획’ 수립 링크 바로가기">대구 달서구. ‘제3차 청년정책 기본계획’ 수립</a></h3>
+      
+      
+      <div class="article-actions"><a class="mini-link article-link-action" href="https://news.google.com/rss/articles/CBMiZkFVX3lxTE5EV1VrVHVMcWttNWk2QnV3S1ctZzRWR2NtZVgwNEstYk4xSDBMVHVQQVdqbTBtMmQyOWhtNmVCMUN1QmhGRVlPVHc5X21xWmxxSVJPUV9Tc0NybFpTV0tpeXFsYkdHZw?oc=5" target="_blank" rel="noreferrer" aria-label="대구 달서구. ‘제3차 청년정책 기본계획’ 수립 링크 바로가기">링크 바로가기</a><button class="action-button" type="button" data-article-action="share" data-article-url="https://news.google.com/rss/articles/CBMiZkFVX3lxTE5EV1VrVHVMcWttNWk2QnV3S1ctZzRWR2NtZVgwNEstYk4xSDBMVHVQQVdqbTBtMmQyOWhtNmVCMUN1QmhGRVlPVHc5X21xWmxxSVJPUV9Tc0NybFpTV0tpeXFsYkdHZw?oc=5" data-share-title="대구 달서구. ‘제3차 청년정책 기본계획’ 수립" aria-label="대구 달서구. ‘제3차 청년정책 기본계획’ 수립 공유하기">공유하기</button><button class="action-button" type="button" data-article-action="copy" data-article-url="https://news.google.com/rss/articles/CBMiZkFVX3lxTE5EV1VrVHVMcWttNWk2QnV3S1ctZzRWR2NtZVgwNEstYk4xSDBMVHVQQVdqbTBtMmQyOWhtNmVCMUN1QmhGRVlPVHc5X21xWmxxSVJPUV9Tc0NybFpTV0tpeXFsYkdHZw?oc=5" data-share-title="대구 달서구. ‘제3차 청년정책 기본계획’ 수립" aria-label="대구 달서구. ‘제3차 청년정책 기본계획’ 수립 링크 복사">링크 복사</button></div><div class="article-feedback" data-article-feedback aria-live="polite"></div>
+    </article>
+    
+    <article class="article-card" data-article-card="true" data-article-url="https://news.google.com/rss/articles/CBMib0FVX3lxTE1heEpRN2tWMXYtSnNPanBfSFpDSlRxRUdGLUFscC1Ga0QzSTFDc09EZUlMbGxxOEh5Xy1qSDdyVmJERlFDS1pPck96WU12N0psc3ZkWldKZFl1OENnRmFLZGdsamI0d3ZQbll2Y0tJd9IBc0FVX3lxTE5ZNDRrSERhU0daWkZEVDNNS3BsZTFXbUJlcWtXdjhqSkhkQ1lCclRXdUYyMEdiRURyWDZqcndLa19kbHYwZzhHbmEzZHRJVFA2SFFpcW1Mc015ZXJXcnBBYkUxUVlXQ3FnTUExanpSR3BILTg?oc=5" data-article-title="청년정책 &#x27;SNS 플랫폼&#x27; 구축…세종시, 청년 참여 확대" data-article-date="2026-04-01" data-article-region="대전" data-policy-card="true" data-policy-group="local" data-policy-type="기타">
+      <div class="article-meta"><div class="article-meta-tags"><span class="meta-pill primary">지역 움직임</span><span class="meta-pill subtle">대전</span></div><div class="article-byline"><span class="meta-item">대전일보</span><span class="meta-divider" aria-hidden="true">•</span><span class="meta-item">2026-04-01</span></div></div>
+      <h3><a class="article-title-link" href="https://news.google.com/rss/articles/CBMib0FVX3lxTE1heEpRN2tWMXYtSnNPanBfSFpDSlRxRUdGLUFscC1Ga0QzSTFDc09EZUlMbGxxOEh5Xy1qSDdyVmJERlFDS1pPck96WU12N0psc3ZkWldKZFl1OENnRmFLZGdsamI0d3ZQbll2Y0tJd9IBc0FVX3lxTE5ZNDRrSERhU0daWkZEVDNNS3BsZTFXbUJlcWtXdjhqSkhkQ1lCclRXdUYyMEdiRURyWDZqcndLa19kbHYwZzhHbmEzZHRJVFA2SFFpcW1Mc015ZXJXcnBBYkUxUVlXQ3FnTUExanpSR3BILTg?oc=5" target="_blank" rel="noreferrer" aria-label="청년정책 &#x27;SNS 플랫폼&#x27; 구축…세종시, 청년 참여 확대 링크 바로가기">청년정책 &#x27;SNS 플랫폼&#x27; 구축…세종시, 청년 참여 확대</a></h3>
+      
+      
+      <div class="article-actions"><a class="mini-link article-link-action" href="https://news.google.com/rss/articles/CBMib0FVX3lxTE1heEpRN2tWMXYtSnNPanBfSFpDSlRxRUdGLUFscC1Ga0QzSTFDc09EZUlMbGxxOEh5Xy1qSDdyVmJERlFDS1pPck96WU12N0psc3ZkWldKZFl1OENnRmFLZGdsamI0d3ZQbll2Y0tJd9IBc0FVX3lxTE5ZNDRrSERhU0daWkZEVDNNS3BsZTFXbUJlcWtXdjhqSkhkQ1lCclRXdUYyMEdiRURyWDZqcndLa19kbHYwZzhHbmEzZHRJVFA2SFFpcW1Mc015ZXJXcnBBYkUxUVlXQ3FnTUExanpSR3BILTg?oc=5" target="_blank" rel="noreferrer" aria-label="청년정책 &#x27;SNS 플랫폼&#x27; 구축…세종시, 청년 참여 확대 링크 바로가기">링크 바로가기</a><button class="action-button" type="button" data-article-action="share" data-article-url="https://news.google.com/rss/articles/CBMib0FVX3lxTE1heEpRN2tWMXYtSnNPanBfSFpDSlRxRUdGLUFscC1Ga0QzSTFDc09EZUlMbGxxOEh5Xy1qSDdyVmJERlFDS1pPck96WU12N0psc3ZkWldKZFl1OENnRmFLZGdsamI0d3ZQbll2Y0tJd9IBc0FVX3lxTE5ZNDRrSERhU0daWkZEVDNNS3BsZTFXbUJlcWtXdjhqSkhkQ1lCclRXdUYyMEdiRURyWDZqcndLa19kbHYwZzhHbmEzZHRJVFA2SFFpcW1Mc015ZXJXcnBBYkUxUVlXQ3FnTUExanpSR3BILTg?oc=5" data-share-title="청년정책 &#x27;SNS 플랫폼&#x27; 구축…세종시, 청년 참여 확대" aria-label="청년정책 &#x27;SNS 플랫폼&#x27; 구축…세종시, 청년 참여 확대 공유하기">공유하기</button><button class="action-button" type="button" data-article-action="copy" data-article-url="https://news.google.com/rss/articles/CBMib0FVX3lxTE1heEpRN2tWMXYtSnNPanBfSFpDSlRxRUdGLUFscC1Ga0QzSTFDc09EZUlMbGxxOEh5Xy1qSDdyVmJERlFDS1pPck96WU12N0psc3ZkWldKZFl1OENnRmFLZGdsamI0d3ZQbll2Y0tJd9IBc0FVX3lxTE5ZNDRrSERhU0daWkZEVDNNS3BsZTFXbUJlcWtXdjhqSkhkQ1lCclRXdUYyMEdiRURyWDZqcndLa19kbHYwZzhHbmEzZHRJVFA2SFFpcW1Mc015ZXJXcnBBYkUxUVlXQ3FnTUExanpSR3BILTg?oc=5" data-share-title="청년정책 &#x27;SNS 플랫폼&#x27; 구축…세종시, 청년 참여 확대" aria-label="청년정책 &#x27;SNS 플랫폼&#x27; 구축…세종시, 청년 참여 확대 링크 복사">링크 복사</button></div><div class="article-feedback" data-article-feedback aria-live="polite"></div>
+    </article>
+    
+    <article class="article-card" data-article-card="true" data-article-url="https://news.google.com/rss/articles/CBMiT0FVX3lxTE1VQTB0YXVOVDlDaGFLdy1hUXJUSjNYelVXTlhnNXFfelpoaFBhWHBDWWN5TmVUWmRQeE1oQ0gxWkFsQ0lNU3NFSzZ6TlRvTXM?oc=5" data-article-title="배강민 김포시장 예비후보, 청년 정책 ‘Y-STEP’ 공약 발표" data-article-date="2026-04-01" data-article-region="중앙" data-policy-card="true" data-policy-group="local" data-policy-type="공약">
+      <div class="article-meta"><div class="article-meta-tags"><span class="meta-pill primary">공식 발표</span><span class="meta-pill subtle">중앙</span></div><div class="article-byline"><span class="meta-item">다음 뉴스</span><span class="meta-divider" aria-hidden="true">•</span><span class="meta-item">2026-04-01</span></div></div>
+      <h3><a class="article-title-link" href="https://news.google.com/rss/articles/CBMiT0FVX3lxTE1VQTB0YXVOVDlDaGFLdy1hUXJUSjNYelVXTlhnNXFfelpoaFBhWHBDWWN5TmVUWmRQeE1oQ0gxWkFsQ0lNU3NFSzZ6TlRvTXM?oc=5" target="_blank" rel="noreferrer" aria-label="배강민 김포시장 예비후보, 청년 정책 ‘Y-STEP’ 공약 발표 링크 바로가기">배강민 김포시장 예비후보, 청년 정책 ‘Y-STEP’ 공약 발표</a></h3>
+      
+      
+      <div class="article-actions"><a class="mini-link article-link-action" href="https://news.google.com/rss/articles/CBMiT0FVX3lxTE1VQTB0YXVOVDlDaGFLdy1hUXJUSjNYelVXTlhnNXFfelpoaFBhWHBDWWN5TmVUWmRQeE1oQ0gxWkFsQ0lNU3NFSzZ6TlRvTXM?oc=5" target="_blank" rel="noreferrer" aria-label="배강민 김포시장 예비후보, 청년 정책 ‘Y-STEP’ 공약 발표 링크 바로가기">링크 바로가기</a><button class="action-button" type="button" data-article-action="share" data-article-url="https://news.google.com/rss/articles/CBMiT0FVX3lxTE1VQTB0YXVOVDlDaGFLdy1hUXJUSjNYelVXTlhnNXFfelpoaFBhWHBDWWN5TmVUWmRQeE1oQ0gxWkFsQ0lNU3NFSzZ6TlRvTXM?oc=5" data-share-title="배강민 김포시장 예비후보, 청년 정책 ‘Y-STEP’ 공약 발표" aria-label="배강민 김포시장 예비후보, 청년 정책 ‘Y-STEP’ 공약 발표 공유하기">공유하기</button><button class="action-button" type="button" data-article-action="copy" data-article-url="https://news.google.com/rss/articles/CBMiT0FVX3lxTE1VQTB0YXVOVDlDaGFLdy1hUXJUSjNYelVXTlhnNXFfelpoaFBhWHBDWWN5TmVUWmRQeE1oQ0gxWkFsQ0lNU3NFSzZ6TlRvTXM?oc=5" data-share-title="배강민 김포시장 예비후보, 청년 정책 ‘Y-STEP’ 공약 발표" aria-label="배강민 김포시장 예비후보, 청년 정책 ‘Y-STEP’ 공약 발표 링크 복사">링크 복사</button></div><div class="article-feedback" data-article-feedback aria-live="polite"></div>
+    </article>
+    
+    <article class="article-card" data-article-card="true" data-article-url="https://news.google.com/rss/articles/CBMia0FVX3lxTFB1cEIzQ3JVTnlDVW9neFlwbzhNT3Rfc29JeWpTLS1yVU1RblJGQVd6dEM0RTZvNW0yWkFGekVlS2ktRk1BcTg2Z1BDeDZVbUdIZjdxSzFLVDVEWnowbGtjalg5WUxBR3otRm1z0gFrQVVfeXFMUHVwQjNDclVOeUNVb2d4WXBvOE1PdF9zb0l5alMtLXJVTVFuUkZBV3p0QzRFNm81bTJaQUZ6RWVLaS1GTUFxODZnUEN4NlVtR0hmN3FLMUtUNURaejBsa2NqWDlZTEFHei1GbXM?oc=5" data-article-title="‘청년을 정책 설계자로’…배강민 김포시장 예비후보, 청년 정책 발표" data-article-date="2026-04-01" data-article-region="중앙" data-policy-card="true" data-policy-group="local" data-policy-type="정책 발표">
+      <div class="article-meta"><div class="article-meta-tags"><span class="meta-pill primary">공식 발표</span><span class="meta-pill subtle">중앙</span></div><div class="article-byline"><span class="meta-item">김포신문</span><span class="meta-divider" aria-hidden="true">•</span><span class="meta-item">2026-04-01</span></div></div>
+      <h3><a class="article-title-link" href="https://news.google.com/rss/articles/CBMia0FVX3lxTFB1cEIzQ3JVTnlDVW9neFlwbzhNT3Rfc29JeWpTLS1yVU1RblJGQVd6dEM0RTZvNW0yWkFGekVlS2ktRk1BcTg2Z1BDeDZVbUdIZjdxSzFLVDVEWnowbGtjalg5WUxBR3otRm1z0gFrQVVfeXFMUHVwQjNDclVOeUNVb2d4WXBvOE1PdF9zb0l5alMtLXJVTVFuUkZBV3p0QzRFNm81bTJaQUZ6RWVLaS1GTUFxODZnUEN4NlVtR0hmN3FLMUtUNURaejBsa2NqWDlZTEFHei1GbXM?oc=5" target="_blank" rel="noreferrer" aria-label="‘청년을 정책 설계자로’…배강민 김포시장 예비후보, 청년 정책 발표 링크 바로가기">‘청년을 정책 설계자로’…배강민 김포시장 예비후보, 청년 정책 발표</a></h3>
+      
+      
+      <div class="article-actions"><a class="mini-link article-link-action" href="https://news.google.com/rss/articles/CBMia0FVX3lxTFB1cEIzQ3JVTnlDVW9neFlwbzhNT3Rfc29JeWpTLS1yVU1RblJGQVd6dEM0RTZvNW0yWkFGekVlS2ktRk1BcTg2Z1BDeDZVbUdIZjdxSzFLVDVEWnowbGtjalg5WUxBR3otRm1z0gFrQVVfeXFMUHVwQjNDclVOeUNVb2d4WXBvOE1PdF9zb0l5alMtLXJVTVFuUkZBV3p0QzRFNm81bTJaQUZ6RWVLaS1GTUFxODZnUEN4NlVtR0hmN3FLMUtUNURaejBsa2NqWDlZTEFHei1GbXM?oc=5" target="_blank" rel="noreferrer" aria-label="‘청년을 정책 설계자로’…배강민 김포시장 예비후보, 청년 정책 발표 링크 바로가기">링크 바로가기</a><button class="action-button" type="button" data-article-action="share" data-article-url="https://news.google.com/rss/articles/CBMia0FVX3lxTFB1cEIzQ3JVTnlDVW9neFlwbzhNT3Rfc29JeWpTLS1yVU1RblJGQVd6dEM0RTZvNW0yWkFGekVlS2ktRk1BcTg2Z1BDeDZVbUdIZjdxSzFLVDVEWnowbGtjalg5WUxBR3otRm1z0gFrQVVfeXFMUHVwQjNDclVOeUNVb2d4WXBvOE1PdF9zb0l5alMtLXJVTVFuUkZBV3p0QzRFNm81bTJaQUZ6RWVLaS1GTUFxODZnUEN4NlVtR0hmN3FLMUtUNURaejBsa2NqWDlZTEFHei1GbXM?oc=5" data-share-title="‘청년을 정책 설계자로’…배강민 김포시장 예비후보, 청년 정책 발표" aria-label="‘청년을 정책 설계자로’…배강민 김포시장 예비후보, 청년 정책 발표 공유하기">공유하기</button><button class="action-button" type="button" data-article-action="copy" data-article-url="https://news.google.com/rss/articles/CBMia0FVX3lxTFB1cEIzQ3JVTnlDVW9neFlwbzhNT3Rfc29JeWpTLS1yVU1RblJGQVd6dEM0RTZvNW0yWkFGekVlS2ktRk1BcTg2Z1BDeDZVbUdIZjdxSzFLVDVEWnowbGtjalg5WUxBR3otRm1z0gFrQVVfeXFMUHVwQjNDclVOeUNVb2d4WXBvOE1PdF9zb0l5alMtLXJVTVFuUkZBV3p0QzRFNm81bTJaQUZ6RWVLaS1GTUFxODZnUEN4NlVtR0hmN3FLMUtUNURaejBsa2NqWDlZTEFHei1GbXM?oc=5" data-share-title="‘청년을 정책 설계자로’…배강민 김포시장 예비후보, 청년 정책 발표" aria-label="‘청년을 정책 설계자로’…배강민 김포시장 예비후보, 청년 정책 발표 링크 복사">링크 복사</button></div><div class="article-feedback" data-article-feedback aria-live="polite"></div>
+    </article>
+    
+    <article class="article-card" data-article-card="true" data-article-url="https://news.google.com/rss/articles/CBMiVEFVX3lxTE5uSXVRVFJ3U0gyaF9kWTZKU2I3WkVVVjQtX3dLX1RvVWxJX0Z5QUU3dG5ibm5PVUg2RTdHMi11R0dsa1ZZOUJ5Skc3QktyWWs1UTNhbg?oc=5" data-article-title="인천 중구, 올해 청년 일자리·복지 등 청년정책 23개 사업 추진" data-article-date="2026-04-01" data-article-region="인천" data-policy-card="true" data-policy-group="local" data-policy-type="지원사업">
+      <div class="article-meta"><div class="article-meta-tags"><span class="meta-pill primary">지역 움직임</span><span class="meta-pill subtle">인천</span></div><div class="article-byline"><span class="meta-item">다음 뉴스</span><span class="meta-divider" aria-hidden="true">•</span><span class="meta-item">2026-04-01</span></div></div>
+      <h3><a class="article-title-link" href="https://news.google.com/rss/articles/CBMiVEFVX3lxTE5uSXVRVFJ3U0gyaF9kWTZKU2I3WkVVVjQtX3dLX1RvVWxJX0Z5QUU3dG5ibm5PVUg2RTdHMi11R0dsa1ZZOUJ5Skc3QktyWWs1UTNhbg?oc=5" target="_blank" rel="noreferrer" aria-label="인천 중구, 올해 청년 일자리·복지 등 청년정책 23개 사업 추진 링크 바로가기">인천 중구, 올해 청년 일자리·복지 등 청년정책 23개 사업 추진</a></h3>
+      
+      
+      <div class="article-actions"><a class="mini-link article-link-action" href="https://news.google.com/rss/articles/CBMiVEFVX3lxTE5uSXVRVFJ3U0gyaF9kWTZKU2I3WkVVVjQtX3dLX1RvVWxJX0Z5QUU3dG5ibm5PVUg2RTdHMi11R0dsa1ZZOUJ5Skc3QktyWWs1UTNhbg?oc=5" target="_blank" rel="noreferrer" aria-label="인천 중구, 올해 청년 일자리·복지 등 청년정책 23개 사업 추진 링크 바로가기">링크 바로가기</a><button class="action-button" type="button" data-article-action="share" data-article-url="https://news.google.com/rss/articles/CBMiVEFVX3lxTE5uSXVRVFJ3U0gyaF9kWTZKU2I3WkVVVjQtX3dLX1RvVWxJX0Z5QUU3dG5ibm5PVUg2RTdHMi11R0dsa1ZZOUJ5Skc3QktyWWs1UTNhbg?oc=5" data-share-title="인천 중구, 올해 청년 일자리·복지 등 청년정책 23개 사업 추진" aria-label="인천 중구, 올해 청년 일자리·복지 등 청년정책 23개 사업 추진 공유하기">공유하기</button><button class="action-button" type="button" data-article-action="copy" data-article-url="https://news.google.com/rss/articles/CBMiVEFVX3lxTE5uSXVRVFJ3U0gyaF9kWTZKU2I3WkVVVjQtX3dLX1RvVWxJX0Z5QUU3dG5ibm5PVUg2RTdHMi11R0dsa1ZZOUJ5Skc3QktyWWs1UTNhbg?oc=5" data-share-title="인천 중구, 올해 청년 일자리·복지 등 청년정책 23개 사업 추진" aria-label="인천 중구, 올해 청년 일자리·복지 등 청년정책 23개 사업 추진 링크 복사">링크 복사</button></div><div class="article-feedback" data-article-feedback aria-live="polite"></div>
+    </article>
+    
+    <article class="article-card" data-article-card="true" data-article-url="https://news.google.com/rss/articles/CBMidEFVX3lxTE1faC1KczlNLWZDOHRfUk8yMzhsMTJjclF0SU0xOU41T1NVVkhIT0JXRzZnWDVZNXBrVDhpNmpaZ01EZTdwTThlaEpYa1NOVDE1LUI5UGJuRWxOQnhQQnM2ZFVyQ0YyY1lGMDZOaDBTVjRIYXhH?oc=5" data-article-title="부산 사상구, ‘청년도전 지원사업’ 본격 시행" data-article-date="2026-03-31" data-article-region="부산" data-policy-card="true" data-policy-group="local" data-policy-type="지원사업">
+      <div class="article-meta"><div class="article-meta-tags"><span class="meta-pill primary">공식 발표</span><span class="meta-pill subtle">부산</span></div><div class="article-byline"><span class="meta-item">글로벌뉴스통신GNA</span><span class="meta-divider" aria-hidden="true">•</span><span class="meta-item">2026-03-31</span></div></div>
+      <h3><a class="article-title-link" href="https://news.google.com/rss/articles/CBMidEFVX3lxTE1faC1KczlNLWZDOHRfUk8yMzhsMTJjclF0SU0xOU41T1NVVkhIT0JXRzZnWDVZNXBrVDhpNmpaZ01EZTdwTThlaEpYa1NOVDE1LUI5UGJuRWxOQnhQQnM2ZFVyQ0YyY1lGMDZOaDBTVjRIYXhH?oc=5" target="_blank" rel="noreferrer" aria-label="부산 사상구, ‘청년도전 지원사업’ 본격 시행 링크 바로가기">부산 사상구, ‘청년도전 지원사업’ 본격 시행</a></h3>
+      
+      
+      <div class="article-actions"><a class="mini-link article-link-action" href="https://news.google.com/rss/articles/CBMidEFVX3lxTE1faC1KczlNLWZDOHRfUk8yMzhsMTJjclF0SU0xOU41T1NVVkhIT0JXRzZnWDVZNXBrVDhpNmpaZ01EZTdwTThlaEpYa1NOVDE1LUI5UGJuRWxOQnhQQnM2ZFVyQ0YyY1lGMDZOaDBTVjRIYXhH?oc=5" target="_blank" rel="noreferrer" aria-label="부산 사상구, ‘청년도전 지원사업’ 본격 시행 링크 바로가기">링크 바로가기</a><button class="action-button" type="button" data-article-action="share" data-article-url="https://news.google.com/rss/articles/CBMidEFVX3lxTE1faC1KczlNLWZDOHRfUk8yMzhsMTJjclF0SU0xOU41T1NVVkhIT0JXRzZnWDVZNXBrVDhpNmpaZ01EZTdwTThlaEpYa1NOVDE1LUI5UGJuRWxOQnhQQnM2ZFVyQ0YyY1lGMDZOaDBTVjRIYXhH?oc=5" data-share-title="부산 사상구, ‘청년도전 지원사업’ 본격 시행" aria-label="부산 사상구, ‘청년도전 지원사업’ 본격 시행 공유하기">공유하기</button><button class="action-button" type="button" data-article-action="copy" data-article-url="https://news.google.com/rss/articles/CBMidEFVX3lxTE1faC1KczlNLWZDOHRfUk8yMzhsMTJjclF0SU0xOU41T1NVVkhIT0JXRzZnWDVZNXBrVDhpNmpaZ01EZTdwTThlaEpYa1NOVDE1LUI5UGJuRWxOQnhQQnM2ZFVyQ0YyY1lGMDZOaDBTVjRIYXhH?oc=5" data-share-title="부산 사상구, ‘청년도전 지원사업’ 본격 시행" aria-label="부산 사상구, ‘청년도전 지원사업’ 본격 시행 링크 복사">링크 복사</button></div><div class="article-feedback" data-article-feedback aria-live="polite"></div>
+    </article>
+    
+    <article class="article-card" data-article-card="true" data-article-url="https://news.google.com/rss/articles/CBMiT0FVX3lxTE1FcWtJLVhQUDhueUV5eU1yblViNUhLTTBUX2hnTW5ETUhQa3R2OXA5Y2p3WDZWVDZpclFWbXpHdXVLV1JuOF83eFI1dXJ2LWM?oc=5" data-article-title="세종시, 올해 청년정책 시행계획 수립… 73개 사업 550억원 투입" data-article-date="2026-03-30" data-article-region="세종" data-policy-card="true" data-policy-group="local" data-policy-type="시행계획">
+      <div class="article-meta"><div class="article-meta-tags"><span class="meta-pill primary">공식 발표</span><span class="meta-pill subtle">세종</span></div><div class="article-byline"><span class="meta-item">다음 뉴스</span><span class="meta-divider" aria-hidden="true">•</span><span class="meta-item">2026-03-30</span></div></div>
+      <h3><a class="article-title-link" href="https://news.google.com/rss/articles/CBMiT0FVX3lxTE1FcWtJLVhQUDhueUV5eU1yblViNUhLTTBUX2hnTW5ETUhQa3R2OXA5Y2p3WDZWVDZpclFWbXpHdXVLV1JuOF83eFI1dXJ2LWM?oc=5" target="_blank" rel="noreferrer" aria-label="세종시, 올해 청년정책 시행계획 수립… 73개 사업 550억원 투입 링크 바로가기">세종시, 올해 청년정책 시행계획 수립… 73개 사업 550억원 투입</a></h3>
+      
+      
+      <div class="article-actions"><a class="mini-link article-link-action" href="https://news.google.com/rss/articles/CBMiT0FVX3lxTE1FcWtJLVhQUDhueUV5eU1yblViNUhLTTBUX2hnTW5ETUhQa3R2OXA5Y2p3WDZWVDZpclFWbXpHdXVLV1JuOF83eFI1dXJ2LWM?oc=5" target="_blank" rel="noreferrer" aria-label="세종시, 올해 청년정책 시행계획 수립… 73개 사업 550억원 투입 링크 바로가기">링크 바로가기</a><button class="action-button" type="button" data-article-action="share" data-article-url="https://news.google.com/rss/articles/CBMiT0FVX3lxTE1FcWtJLVhQUDhueUV5eU1yblViNUhLTTBUX2hnTW5ETUhQa3R2OXA5Y2p3WDZWVDZpclFWbXpHdXVLV1JuOF83eFI1dXJ2LWM?oc=5" data-share-title="세종시, 올해 청년정책 시행계획 수립… 73개 사업 550억원 투입" aria-label="세종시, 올해 청년정책 시행계획 수립… 73개 사업 550억원 투입 공유하기">공유하기</button><button class="action-button" type="button" data-article-action="copy" data-article-url="https://news.google.com/rss/articles/CBMiT0FVX3lxTE1FcWtJLVhQUDhueUV5eU1yblViNUhLTTBUX2hnTW5ETUhQa3R2OXA5Y2p3WDZWVDZpclFWbXpHdXVLV1JuOF83eFI1dXJ2LWM?oc=5" data-share-title="세종시, 올해 청년정책 시행계획 수립… 73개 사업 550억원 투입" aria-label="세종시, 올해 청년정책 시행계획 수립… 73개 사업 550억원 투입 링크 복사">링크 복사</button></div><div class="article-feedback" data-article-feedback aria-live="polite"></div>
+    </article>
+    
+    <article class="article-card" data-article-card="true" data-article-url="https://news.google.com/rss/articles/CBMia0FVX3lxTE5sWjRFdUtxcFhYM2xtZVJJYzNUVzZlNTRPYnRURTY0WUloNEpmc2tZTUdWcDNpVC1HYlVYa1dPdFk3RkVzS1ROTHZvdmtFY19DSW5jOFhmQU11b1lhOWdPSGFUWWtRempoRnJV?oc=5" data-article-title="전희영 진보당 도지사 후보 청년정책 공약 발표" data-article-date="2026-03-29" data-article-region="경남" data-policy-card="true" data-policy-group="local" data-policy-type="공약">
+      <div class="article-meta"><div class="article-meta-tags"><span class="meta-pill primary">공식 발표</span><span class="meta-pill subtle">경남</span></div><div class="article-byline"><span class="meta-item">경남일보</span><span class="meta-divider" aria-hidden="true">•</span><span class="meta-item">2026-03-29</span></div></div>
+      <h3><a class="article-title-link" href="https://news.google.com/rss/articles/CBMia0FVX3lxTE5sWjRFdUtxcFhYM2xtZVJJYzNUVzZlNTRPYnRURTY0WUloNEpmc2tZTUdWcDNpVC1HYlVYa1dPdFk3RkVzS1ROTHZvdmtFY19DSW5jOFhmQU11b1lhOWdPSGFUWWtRempoRnJV?oc=5" target="_blank" rel="noreferrer" aria-label="전희영 진보당 도지사 후보 청년정책 공약 발표 링크 바로가기">전희영 진보당 도지사 후보 청년정책 공약 발표</a></h3>
+      
+      
+      <div class="article-actions"><a class="mini-link article-link-action" href="https://news.google.com/rss/articles/CBMia0FVX3lxTE5sWjRFdUtxcFhYM2xtZVJJYzNUVzZlNTRPYnRURTY0WUloNEpmc2tZTUdWcDNpVC1HYlVYa1dPdFk3RkVzS1ROTHZvdmtFY19DSW5jOFhmQU11b1lhOWdPSGFUWWtRempoRnJV?oc=5" target="_blank" rel="noreferrer" aria-label="전희영 진보당 도지사 후보 청년정책 공약 발표 링크 바로가기">링크 바로가기</a><button class="action-button" type="button" data-article-action="share" data-article-url="https://news.google.com/rss/articles/CBMia0FVX3lxTE5sWjRFdUtxcFhYM2xtZVJJYzNUVzZlNTRPYnRURTY0WUloNEpmc2tZTUdWcDNpVC1HYlVYa1dPdFk3RkVzS1ROTHZvdmtFY19DSW5jOFhmQU11b1lhOWdPSGFUWWtRempoRnJV?oc=5" data-share-title="전희영 진보당 도지사 후보 청년정책 공약 발표" aria-label="전희영 진보당 도지사 후보 청년정책 공약 발표 공유하기">공유하기</button><button class="action-button" type="button" data-article-action="copy" data-article-url="https://news.google.com/rss/articles/CBMia0FVX3lxTE5sWjRFdUtxcFhYM2xtZVJJYzNUVzZlNTRPYnRURTY0WUloNEpmc2tZTUdWcDNpVC1HYlVYa1dPdFk3RkVzS1ROTHZvdmtFY19DSW5jOFhmQU11b1lhOWdPSGFUWWtRempoRnJV?oc=5" data-share-title="전희영 진보당 도지사 후보 청년정책 공약 발표" aria-label="전희영 진보당 도지사 후보 청년정책 공약 발표 링크 복사">링크 복사</button></div><div class="article-feedback" data-article-feedback aria-live="polite"></div>
+    </article>
+    
+    <article class="article-card" data-article-card="true" data-article-url="https://news.google.com/rss/articles/CBMiT0FVX3lxTE5qQVAxVmJaeXdtcVhBVmQ2LVgwVkk2VU1iTThpREhIRzJUSzF5dzdmNXZQcEhvbnhmYmhJSFl3bDdLbDZGM2pVNmNZWV80S1k?oc=5" data-article-title="대구 서구, 청년정책 34억 투입⋯일자리·주거 등 맞춤 지원 확대" data-article-date="2026-03-29" data-article-region="대구" data-policy-card="true" data-policy-group="local" data-policy-type="지원사업">
+      <div class="article-meta"><div class="article-meta-tags"><span class="meta-pill primary">오늘 이슈</span><span class="meta-pill subtle">대구</span></div><div class="article-byline"><span class="meta-item">다음 뉴스</span><span class="meta-divider" aria-hidden="true">•</span><span class="meta-item">2026-03-29</span></div></div>
+      <h3><a class="article-title-link" href="https://news.google.com/rss/articles/CBMiT0FVX3lxTE5qQVAxVmJaeXdtcVhBVmQ2LVgwVkk2VU1iTThpREhIRzJUSzF5dzdmNXZQcEhvbnhmYmhJSFl3bDdLbDZGM2pVNmNZWV80S1k?oc=5" target="_blank" rel="noreferrer" aria-label="대구 서구, 청년정책 34억 투입⋯일자리·주거 등 맞춤 지원 확대 링크 바로가기">대구 서구, 청년정책 34억 투입⋯일자리·주거 등 맞춤 지원 확대</a></h3>
+      
+      
+      <div class="article-actions"><a class="mini-link article-link-action" href="https://news.google.com/rss/articles/CBMiT0FVX3lxTE5qQVAxVmJaeXdtcVhBVmQ2LVgwVkk2VU1iTThpREhIRzJUSzF5dzdmNXZQcEhvbnhmYmhJSFl3bDdLbDZGM2pVNmNZWV80S1k?oc=5" target="_blank" rel="noreferrer" aria-label="대구 서구, 청년정책 34억 투입⋯일자리·주거 등 맞춤 지원 확대 링크 바로가기">링크 바로가기</a><button class="action-button" type="button" data-article-action="share" data-article-url="https://news.google.com/rss/articles/CBMiT0FVX3lxTE5qQVAxVmJaeXdtcVhBVmQ2LVgwVkk2VU1iTThpREhIRzJUSzF5dzdmNXZQcEhvbnhmYmhJSFl3bDdLbDZGM2pVNmNZWV80S1k?oc=5" data-share-title="대구 서구, 청년정책 34억 투입⋯일자리·주거 등 맞춤 지원 확대" aria-label="대구 서구, 청년정책 34억 투입⋯일자리·주거 등 맞춤 지원 확대 공유하기">공유하기</button><button class="action-button" type="button" data-article-action="copy" data-article-url="https://news.google.com/rss/articles/CBMiT0FVX3lxTE5qQVAxVmJaeXdtcVhBVmQ2LVgwVkk2VU1iTThpREhIRzJUSzF5dzdmNXZQcEhvbnhmYmhJSFl3bDdLbDZGM2pVNmNZWV80S1k?oc=5" data-share-title="대구 서구, 청년정책 34억 투입⋯일자리·주거 등 맞춤 지원 확대" aria-label="대구 서구, 청년정책 34억 투입⋯일자리·주거 등 맞춤 지원 확대 링크 복사">링크 복사</button></div><div class="article-feedback" data-article-feedback aria-live="polite"></div>
+    </article>
+    </div>
+      </section>
+      <article class="info-card" data-policy-empty-state="true" hidden>
+        <h3>조건에 맞는 정책이 없습니다</h3>
+        <p>구분이나 지역, 유형, 기간을 바꾸면 다른 정책을 볼 수 있습니다.</p>
+      </article>
+    </div>
+    
+  </div>
+  <nav class="bottom-nav"><a class="" href="index.html" data-icon="홈"><span>홈</span></a><a class="" href="news.html" data-icon="뉴"><span>뉴스</span></a><a class="active" href="policies.html" data-icon="정"><span>정책</span></a><a class="" href="hub.html" data-icon="참"><span>참여·회의</span></a><a class="" href="tools.html" data-icon="자"><span>자료도구</span></a><a class="" href="contact.html" data-icon="문"><span>제보·문의</span></a></nav>
+  
+  <script>
+(() => {
+  function setFeedback(card, message, isError) {
+    const feedback = card && card.querySelector('[data-article-feedback]');
+    if (!feedback) {
+      return;
+    }
+    if (feedback._timer) {
+      clearTimeout(feedback._timer);
+    }
+    feedback.textContent = message;
+    feedback.classList.toggle('error', Boolean(isError));
+    feedback._timer = window.setTimeout(() => {
+      feedback.textContent = '';
+      feedback.classList.remove('error');
+    }, 2200);
+  }
+
+  function fallbackCopy(text) {
+    const area = document.createElement('textarea');
+    area.value = text;
+    area.setAttribute('readonly', '');
+    area.style.position = 'absolute';
+    area.style.left = '-9999px';
+    document.body.appendChild(area);
+    area.select();
+    const copied = document.execCommand('copy');
+    document.body.removeChild(area);
+    if (!copied) {
+      throw new Error('copy_failed');
+    }
+  }
+
+  async function copyText(text) {
+    if (navigator.clipboard && window.isSecureContext) {
+      await navigator.clipboard.writeText(text);
+      return;
+    }
+    fallbackCopy(text);
+  }
+
+  function normalizeNewsDateRange(startValue, endValue) {
+    let startDate = startValue || '';
+    let endDate = endValue || '';
+    if (startDate && endDate && startDate > endDate) {
+      const swappedStart = endDate;
+      endDate = startDate;
+      startDate = swappedStart;
+    }
+    return { startDate, endDate };
+  }
+
+  function formatNewsDateRange(startDate, endDate) {
+    if (startDate && endDate) {
+      return `${startDate} - ${endDate}`;
+    }
+    if (startDate) {
+      return `${startDate}부터`;
+    }
+    if (endDate) {
+      return `${endDate}까지`;
+    }
+    return '전체';
+  }
+
+  function openNewsDatePicker(input) {
+    if (!input) {
+      return;
+    }
+    input.focus({ preventScroll: true });
+    if (typeof input.showPicker === 'function') {
+      try {
+        input.showPicker();
+      } catch (error) {
+        // Some browsers limit showPicker; keep focus fallback.
+      }
+    }
+  }
+
+  function applyNewsFilters(root, selectedDateStart, selectedDateEnd, selectedRegion) {
+    const normalizedDates = normalizeNewsDateRange(
+      selectedDateStart ?? root.dataset.selectedDateStart ?? root.getAttribute('data-default-date-start') ?? '',
+      selectedDateEnd ?? root.dataset.selectedDateEnd ?? root.getAttribute('data-default-date-end') ?? '',
+    );
+    const activeDateStart = normalizedDates.startDate;
+    const activeDateEnd = normalizedDates.endDate;
+    const hasDateRange = Boolean(activeDateStart || activeDateEnd);
+    const activeRegion = selectedRegion || root.dataset.selectedRegion || root.getAttribute('data-default-region') || 'all';
+    root.dataset.selectedDateStart = activeDateStart;
+    root.dataset.selectedDateEnd = activeDateEnd;
+    root.dataset.selectedRegion = activeRegion;
+
+    const articleCards = Array.from(root.querySelectorAll('[data-article-date]'));
+    let visibleCount = 0;
+
+    articleCards.forEach((card) => {
+      const articleDate = card.getAttribute('data-article-date') || '';
+      const articleRegion = card.getAttribute('data-article-region') || '중앙';
+      const isAfterStart = !activeDateStart || (articleDate && articleDate >= activeDateStart);
+      const isBeforeEnd = !activeDateEnd || (articleDate && articleDate <= activeDateEnd);
+      const dateMatch = !hasDateRange || (isAfterStart && isBeforeEnd);
+      const regionMatch = activeRegion === 'all' || articleRegion === activeRegion;
+      const isMatch = dateMatch && regionMatch;
+      card.hidden = !isMatch;
+      if (isMatch) {
+        visibleCount += 1;
+      }
+    });
+
+    root.querySelectorAll('[data-news-filter]').forEach((button) => {
+      const group = button.getAttribute('data-filter-group') || 'date';
+      const value = button.getAttribute('data-filter-value') || 'all';
+      const isActive = group === 'region' ? value === activeRegion : (value === 'all' && !hasDateRange);
+      button.classList.toggle('active', isActive);
+      button.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+    });
+
+    root.querySelectorAll('[data-news-date-input]').forEach((dateInput) => {
+      const role = dateInput.getAttribute('data-date-role') || 'start';
+      const nextValue = role === 'end' ? activeDateEnd : activeDateStart;
+      if (dateInput.value !== nextValue) {
+        dateInput.value = nextValue;
+      }
+    });
+
+    const status = root.querySelector('[data-news-filter-status]');
+    if (status) {
+      const dateLabel = formatNewsDateRange(activeDateStart, activeDateEnd);
+      if (!hasDateRange && activeRegion === 'all') {
+        status.textContent = `전체 ${visibleCount}건을 보고 있습니다.`;
+      } else if (!hasDateRange) {
+        status.textContent = `${activeRegion} 기사 ${visibleCount}건을 보고 있습니다.`;
+      } else if (activeRegion === 'all') {
+        status.textContent = `${dateLabel} 기사 ${visibleCount}건을 보고 있습니다.`;
+      } else {
+        status.textContent = `${activeRegion} · ${dateLabel} 기사 ${visibleCount}건을 보고 있습니다.`;
+      }
+    }
+
+    const emptyState = root.querySelector('[data-news-empty-state]');
+    if (emptyState) {
+      emptyState.hidden = visibleCount !== 0;
+    }
+  }
+
+  function formatPolicyGroup(value) {
+    if (value === 'official') {
+      return '정부 공식 발표';
+    }
+    if (value === 'local') {
+      return '지자체 발표 소식';
+    }
+    return '전체';
+  }
+
+  function getPolicyRegionAvailability(articleCards, activeGroup, activeType, activeDateStart, activeDateEnd, hasDateRange) {
+    const availability = {};
+
+    articleCards.forEach((card) => {
+      const articleGroup = card.getAttribute('data-policy-group') || 'official';
+      const articleRegion = card.getAttribute('data-article-region') || '중앙';
+      const articleType = card.getAttribute('data-policy-type') || '기타';
+      const articleDate = card.getAttribute('data-article-date') || '';
+      const groupMatch = activeGroup === 'all' || articleGroup === activeGroup;
+      const typeMatch = activeType === 'all' || articleType === activeType;
+      const isAfterStart = !activeDateStart || (articleDate && articleDate >= activeDateStart);
+      const isBeforeEnd = !activeDateEnd || (articleDate && articleDate <= activeDateEnd);
+      const dateMatch = !hasDateRange || (isAfterStart && isBeforeEnd);
+
+      if (groupMatch && typeMatch && dateMatch) {
+        availability[articleRegion] = (availability[articleRegion] || 0) + 1;
+      }
+    });
+
+    return availability;
+  }
+
+  function applyPolicyFilters(root, selectedGroup, selectedRegion, selectedType, selectedDateStart, selectedDateEnd) {
+    const normalizedDates = normalizeNewsDateRange(
+      selectedDateStart ?? root.dataset.selectedDateStart ?? root.getAttribute('data-default-date-start') ?? '',
+      selectedDateEnd ?? root.dataset.selectedDateEnd ?? root.getAttribute('data-default-date-end') ?? '',
+    );
+    const activeGroup = selectedGroup || root.dataset.selectedPolicyGroup || root.getAttribute('data-default-policy-group') || 'all';
+    const activeType = selectedType || root.dataset.selectedPolicyType || root.getAttribute('data-default-policy-type') || 'all';
+    const activeDateStart = normalizedDates.startDate;
+    const activeDateEnd = normalizedDates.endDate;
+    const hasDateRange = Boolean(activeDateStart || activeDateEnd);
+    const articleCards = Array.from(root.querySelectorAll('[data-policy-card="true"]'));
+    const regionAvailability = getPolicyRegionAvailability(
+      articleCards,
+      activeGroup,
+      activeType,
+      activeDateStart,
+      activeDateEnd,
+      hasDateRange,
+    );
+    let activeRegion = selectedRegion || root.dataset.selectedPolicyRegion || root.getAttribute('data-default-policy-region') || 'all';
+    if (activeRegion !== 'all' && !regionAvailability[activeRegion]) {
+      activeRegion = 'all';
+    }
+
+    root.dataset.selectedPolicyGroup = activeGroup;
+    root.dataset.selectedPolicyRegion = activeRegion;
+    root.dataset.selectedPolicyType = activeType;
+    root.dataset.selectedDateStart = activeDateStart;
+    root.dataset.selectedDateEnd = activeDateEnd;
+
+    const visibleByGroup = { official: 0, local: 0 };
+    let visibleCount = 0;
+
+    articleCards.forEach((card) => {
+      const articleGroup = card.getAttribute('data-policy-group') || 'official';
+      const articleRegion = card.getAttribute('data-article-region') || '중앙';
+      const articleType = card.getAttribute('data-policy-type') || '기타';
+      const articleDate = card.getAttribute('data-article-date') || '';
+      const groupMatch = activeGroup === 'all' || articleGroup === activeGroup;
+      const regionMatch = activeRegion === 'all' || articleRegion === activeRegion;
+      const typeMatch = activeType === 'all' || articleType === activeType;
+      const isAfterStart = !activeDateStart || (articleDate && articleDate >= activeDateStart);
+      const isBeforeEnd = !activeDateEnd || (articleDate && articleDate <= activeDateEnd);
+      const dateMatch = !hasDateRange || (isAfterStart && isBeforeEnd);
+      const isMatch = groupMatch && regionMatch && typeMatch && dateMatch;
+      card.hidden = !isMatch;
+      if (isMatch) {
+        visibleCount += 1;
+        visibleByGroup[articleGroup] = (visibleByGroup[articleGroup] || 0) + 1;
+      }
+    });
+
+    root.querySelectorAll('[data-policy-filter]').forEach((button) => {
+      const group = button.getAttribute('data-filter-group') || 'group';
+      const value = button.getAttribute('data-filter-value') || 'all';
+      if (group === 'region') {
+        const shouldShow = value === 'all' || Boolean(regionAvailability[value]);
+        button.hidden = !shouldShow;
+        if (!shouldShow) {
+          button.classList.remove('active');
+          button.setAttribute('aria-pressed', 'false');
+          return;
+        }
+      }
+      const isActive =
+        group === 'group' ? value === activeGroup :
+        group === 'region' ? value === activeRegion :
+        group === 'type' ? value === activeType :
+        value === 'all' && !hasDateRange;
+      button.classList.toggle('active', isActive);
+      button.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+    });
+
+    root.querySelectorAll('[data-policy-date-input]').forEach((dateInput) => {
+      const role = dateInput.getAttribute('data-date-role') || 'start';
+      const nextValue = role === 'end' ? activeDateEnd : activeDateStart;
+      if (dateInput.value !== nextValue) {
+        dateInput.value = nextValue;
+      }
+    });
+
+    root.querySelectorAll('[data-policy-section]').forEach((section) => {
+      const sectionGroup = section.getAttribute('data-policy-section') || 'official';
+      const visibleInSection = visibleByGroup[sectionGroup] || 0;
+      section.hidden = visibleInSection === 0;
+      const count = section.querySelector('[data-policy-section-count]');
+      if (count) {
+        count.textContent = `${visibleInSection}건`;
+      }
+    });
+
+    const status = root.querySelector('[data-policy-filter-status]');
+    if (status) {
+      const parts = [];
+      if (activeGroup !== 'all') {
+        parts.push(formatPolicyGroup(activeGroup));
+      }
+      if (activeRegion !== 'all') {
+        parts.push(activeRegion);
+      }
+      if (activeType !== 'all') {
+        parts.push(activeType);
+      }
+      if (hasDateRange) {
+        parts.push(formatNewsDateRange(activeDateStart, activeDateEnd));
+      }
+      if (parts.length === 0) {
+        status.textContent = `전체 ${visibleCount}건을 보고 있습니다.`;
+      } else {
+        status.textContent = `${parts.join(' · ')} ${visibleCount}건을 보고 있습니다.`;
+      }
+    }
+
+    const emptyState = root.querySelector('[data-policy-empty-state]');
+    if (emptyState) {
+      emptyState.hidden = visibleCount !== 0;
+    }
+  }
+
+  function markGuideSeen() {
+    try {
+      localStorage.setItem('youthTogetherGuideSeen-v1', '1');
+    } catch (error) {
+      // ignore storage errors
+    }
+  }
+
+  function closeGuideOverlay(overlay, shouldPersist) {
+    if (!overlay) {
+      return;
+    }
+    if (shouldPersist) {
+      markGuideSeen();
+    }
+    overlay.hidden = true;
+    document.body.classList.remove('is-guide-open');
+  }
+
+  document.addEventListener('click', async (event) => {
+    const guideDismiss = event.target.closest('[data-guide-dismiss]');
+    if (guideDismiss) {
+      event.preventDefault();
+      closeGuideOverlay(document.querySelector('[data-guide-overlay]'), true);
+      return;
+    }
+
+    const guideOpenLink = event.target.closest('[data-guide-open-link]');
+    if (guideOpenLink) {
+      markGuideSeen();
+      return;
+    }
+
+    if (event.target.matches('[data-guide-overlay]')) {
+      closeGuideOverlay(event.target, true);
+      return;
+    }
+
+    const dateLaunch = event.target.closest('[data-news-date-launch], [data-policy-date-launch]');
+    if (dateLaunch) {
+      const dateInput = dateLaunch.querySelector('[data-news-date-input], [data-policy-date-input]');
+      if (dateInput) {
+        event.preventDefault();
+        openNewsDatePicker(dateInput);
+      }
+      return;
+    }
+
+    const filterButton = event.target.closest('[data-news-filter]');
+    if (filterButton) {
+      const root = filterButton.closest('[data-news-filter-root]');
+      if (root) {
+        const group = filterButton.getAttribute('data-filter-group') || 'date';
+        const value = filterButton.getAttribute('data-filter-value') || 'all';
+        applyNewsFilters(
+          root,
+          group === 'date' ? '' : (root.dataset.selectedDateStart || root.getAttribute('data-default-date-start') || ''),
+          group === 'date' ? '' : (root.dataset.selectedDateEnd || root.getAttribute('data-default-date-end') || ''),
+          group === 'region' ? value : (root.dataset.selectedRegion || root.getAttribute('data-default-region') || 'all'),
+        );
+      }
+      return;
+    }
+
+    const policyFilterButton = event.target.closest('[data-policy-filter]');
+    if (policyFilterButton) {
+      const root = policyFilterButton.closest('[data-policy-filter-root]');
+      if (root) {
+        const filterGroup = policyFilterButton.getAttribute('data-filter-group') || 'group';
+        const filterValue = policyFilterButton.getAttribute('data-filter-value') || 'all';
+        applyPolicyFilters(
+          root,
+          filterGroup === 'group' ? filterValue : (root.dataset.selectedPolicyGroup || root.getAttribute('data-default-policy-group') || 'all'),
+          filterGroup === 'region' ? filterValue : (root.dataset.selectedPolicyRegion || root.getAttribute('data-default-policy-region') || 'all'),
+          filterGroup === 'type' ? filterValue : (root.dataset.selectedPolicyType || root.getAttribute('data-default-policy-type') || 'all'),
+          filterGroup === 'date' ? '' : (root.dataset.selectedDateStart || root.getAttribute('data-default-date-start') || ''),
+          filterGroup === 'date' ? '' : (root.dataset.selectedDateEnd || root.getAttribute('data-default-date-end') || ''),
+        );
+      }
+      return;
+    }
+
+    const button = event.target.closest('[data-article-action]');
+    if (!button) {
+      return;
+    }
+
+    event.preventDefault();
+    const card = button.closest('[data-article-card]');
+    const url = button.getAttribute('data-article-url') || (card && card.getAttribute('data-article-url')) || '';
+    const title = button.getAttribute('data-share-title') || (card && card.getAttribute('data-article-title')) || document.title;
+    const action = button.getAttribute('data-article-action');
+
+    if (!url) {
+      setFeedback(card, '링크 정보를 찾지 못했습니다.', true);
+      return;
+    }
+
+    try {
+      if (action === 'share' && typeof navigator.share === 'function') {
+        await navigator.share({ title, url });
+        setFeedback(card, '공유 창을 열었습니다.', false);
+        return;
+      }
+
+      await copyText(url);
+      setFeedback(card, action === 'share' ? '공유 링크를 복사했습니다.' : '링크를 복사했습니다.', false);
+    } catch (error) {
+      if (error && error.name === 'AbortError') {
+        return;
+      }
+      setFeedback(card, '링크 복사에 실패했습니다.', true);
+    }
+  });
+
+  document.querySelectorAll('[data-news-filter-root]').forEach((root) => {
+    applyNewsFilters(
+      root,
+      root.getAttribute('data-default-date-start') || '',
+      root.getAttribute('data-default-date-end') || '',
+      root.getAttribute('data-default-region') || 'all',
+    );
+  });
+
+  document.querySelectorAll('[data-policy-filter-root]').forEach((root) => {
+    applyPolicyFilters(
+      root,
+      root.getAttribute('data-default-policy-group') || 'all',
+      root.getAttribute('data-default-policy-region') || 'all',
+      root.getAttribute('data-default-policy-type') || 'all',
+      root.getAttribute('data-default-date-start') || '',
+      root.getAttribute('data-default-date-end') || '',
+    );
+  });
+
+  document.addEventListener('change', (event) => {
+    const dateInput = event.target.closest('[data-news-date-input]');
+    if (dateInput) {
+      const root = dateInput.closest('[data-news-filter-root]');
+      if (!root) {
+        return;
+      }
+      const startInput = root.querySelector('[data-news-date-input][data-date-role="start"]');
+      const endInput = root.querySelector('[data-news-date-input][data-date-role="end"]');
+      applyNewsFilters(
+        root,
+        startInput ? startInput.value : '',
+        endInput ? endInput.value : '',
+        root.dataset.selectedRegion || root.getAttribute('data-default-region') || 'all',
+      );
+      return;
+    }
+
+    const policyDateInput = event.target.closest('[data-policy-date-input]');
+    if (!policyDateInput) {
+      return;
+    }
+    const policyRoot = policyDateInput.closest('[data-policy-filter-root]');
+    if (!policyRoot) {
+      return;
+    }
+    const policyStartInput = policyRoot.querySelector('[data-policy-date-input][data-date-role="start"]');
+    const policyEndInput = policyRoot.querySelector('[data-policy-date-input][data-date-role="end"]');
+    applyPolicyFilters(
+      policyRoot,
+      policyRoot.dataset.selectedPolicyGroup || policyRoot.getAttribute('data-default-policy-group') || 'all',
+      policyRoot.dataset.selectedPolicyRegion || policyRoot.getAttribute('data-default-policy-region') || 'all',
+      policyRoot.dataset.selectedPolicyType || policyRoot.getAttribute('data-default-policy-type') || 'all',
+      policyStartInput ? policyStartInput.value : '',
+      policyEndInput ? policyEndInput.value : '',
+    );
+  });
+
+  document.addEventListener('keydown', (event) => {
+    if (event.key !== 'Escape') {
+      return;
+    }
+    const overlay = document.querySelector('[data-guide-overlay]');
+    if (overlay && !overlay.hidden) {
+      closeGuideOverlay(overlay, true);
+    }
+  });
+
+  const guideOverlay = document.querySelector('[data-guide-overlay]');
+  if (guideOverlay && document.body.dataset.page === 'index.html') {
+    let seenGuide = false;
+    try {
+      seenGuide = localStorage.getItem('youthTogetherGuideSeen-v1') === '1';
+    } catch (error) {
+      seenGuide = false;
+    }
+    if (!seenGuide) {
+      guideOverlay.hidden = false;
+      document.body.classList.add('is-guide-open');
+    }
+  }
+})();
+</script>
+</body>
+</html>
