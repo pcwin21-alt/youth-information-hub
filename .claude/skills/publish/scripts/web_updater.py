@@ -346,6 +346,46 @@ BASE_CSS = """
     font-size: 0.96rem;
     line-height: 1.68;
   }
+  .page-intro-card {
+    display: grid;
+    gap: 10px;
+    padding: 14px 16px;
+    margin-bottom: 18px;
+    border: 1px solid var(--line);
+    border-radius: 20px;
+    background:
+      linear-gradient(135deg, rgba(31, 111, 95, 0.1) 0%, rgba(255, 255, 255, 0.98) 52%, rgba(242, 245, 249, 0.92) 100%);
+    box-shadow: var(--shadow-soft);
+  }
+  .page-intro-top {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+  }
+  .page-intro-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 6px 10px;
+    border-radius: 999px;
+    background: rgba(31, 111, 95, 0.12);
+    color: var(--accent);
+    font-size: 0.74rem;
+    font-weight: 800;
+    letter-spacing: -0.01em;
+  }
+  .page-intro-title {
+    color: var(--accent-strong);
+    font-size: 0.86rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+  }
+  .page-intro-copy {
+    margin: 0;
+    color: var(--muted);
+    font-size: 0.88rem;
+    line-height: 1.6;
+  }
   .hero-actions {
     display: flex;
     flex-wrap: wrap;
@@ -2155,12 +2195,37 @@ BASE_SCRIPT = """
     }
   }
 
+  function getPolicyRegionAvailability(articleCards, activeGroup, activeType, activeDateStart, activeDateEnd, hasDateRange) {
+    const availableRegions = new Set();
+
+    articleCards.forEach((card) => {
+      const articleGroup = card.getAttribute('data-policy-group') || 'official';
+      const articleRegion = card.getAttribute('data-article-region') || '중앙';
+      const articleType = card.getAttribute('data-policy-type') || '기타';
+      const articleDate = card.getAttribute('data-article-date') || '';
+      const groupMatch = activeGroup === 'all' || articleGroup === activeGroup;
+      const typeMatch = activeType === 'all' || articleType === activeType;
+      const isAfterStart = !activeDateStart || (articleDate && articleDate >= activeDateStart);
+      const isBeforeEnd = !activeDateEnd || (articleDate && articleDate <= activeDateEnd);
+      const dateMatch = !hasDateRange || (isAfterStart && isBeforeEnd);
+
+      if (groupMatch && typeMatch && dateMatch) {
+        availableRegions.add(articleRegion);
+      }
+    });
+
+    return availableRegions;
+  }
+
   function formatPolicyGroup(value) {
     if (value === 'official') {
       return '정부 공식 발표';
     }
     if (value === 'local') {
       return '지자체 발표 소식';
+    }
+    if (value === 'related') {
+      return '참고 기록';
     }
     return '전체';
   }
@@ -2171,7 +2236,7 @@ BASE_SCRIPT = """
       selectedDateEnd ?? root.dataset.selectedDateEnd ?? root.getAttribute('data-default-date-end') ?? '',
     );
     const activeGroup = selectedGroup || root.dataset.selectedPolicyGroup || root.getAttribute('data-default-policy-group') || 'all';
-    const activeRegion = selectedRegion || root.dataset.selectedPolicyRegion || root.getAttribute('data-default-policy-region') || 'all';
+    let activeRegion = selectedRegion || root.dataset.selectedPolicyRegion || root.getAttribute('data-default-policy-region') || 'all';
     const activeType = selectedType || root.dataset.selectedPolicyType || root.getAttribute('data-default-policy-type') || 'all';
     const activeDateStart = normalizedDates.startDate;
     const activeDateEnd = normalizedDates.endDate;
@@ -2183,7 +2248,20 @@ BASE_SCRIPT = """
     root.dataset.selectedDateEnd = activeDateEnd;
 
     const articleCards = Array.from(root.querySelectorAll('[data-policy-card="true"]'));
-    const visibleByGroup = { official: 0, local: 0 };
+    const availableRegions = getPolicyRegionAvailability(
+      articleCards,
+      activeGroup,
+      activeType,
+      activeDateStart,
+      activeDateEnd,
+      hasDateRange,
+    );
+    if (activeRegion !== 'all' && !availableRegions.has(activeRegion)) {
+      activeRegion = 'all';
+    }
+    root.dataset.selectedPolicyRegion = activeRegion;
+
+    const visibleByGroup = { official: 0, local: 0, related: 0 };
     let visibleCount = 0;
 
     articleCards.forEach((card) => {
@@ -2213,6 +2291,9 @@ BASE_SCRIPT = """
         group === 'region' ? value === activeRegion :
         group === 'type' ? value === activeType :
         value === 'all' && !hasDateRange;
+      if (group === 'region' && value !== 'all') {
+        button.hidden = !availableRegions.has(value);
+      }
       button.classList.toggle('active', isActive);
       button.setAttribute('aria-pressed', isActive ? 'true' : 'false');
     });
@@ -2640,6 +2721,9 @@ def render_article_card(article: dict, extra_attrs: dict[str, str] | None = None
     escaped_url = html.escape(article.get("url", ""))
     escaped_title = html.escape(display_article_title(article))
     article_region = html.escape(news_region_label(article))
+    article_group = hub_group_label(article)
+    article_type = html.escape(hub_activity_label(article))
+    article_region = html.escape(news_region_label(article))
     summary_html = (
         f'<p class="article-summary"><a class="article-summary-link" href="{escaped_url}" target="_blank" rel="noreferrer" '
         f'aria-label="{escaped_title} 링크 바로가기">{html.escape(summary_text)}</a></p>'
@@ -2673,12 +2757,15 @@ def render_article_card(article: dict, extra_attrs: dict[str, str] | None = None
 
 
 def render_hub_record_card(article: dict) -> str:
-    hub_topics = ", ".join(article.get("hub_topics", [])[:3]) or "허브 연관 항목"
-    governance_scope = article.get("governance_scope") or "허브 연관"
+    hub_topics = ", ".join(article.get("hub_topics", [])[:3]) or "참여 의제"
+    governance_scope = article.get("governance_scope") or "참여 기록"
     activity_types = ", ".join(article.get("governance_activity_types", [])[:3]) or "활동 기록"
     summary_text = summarize_article_text(article, limit=112)
     escaped_url = html.escape(article.get("url", ""))
     escaped_title = html.escape(display_article_title(article))
+    article_region = html.escape(news_region_label(article))
+    article_group = hub_group_label(article)
+    article_type = html.escape(hub_activity_label(article))
     summary_html = (
         f'<p class="article-summary"><a class="article-summary-link" href="{escaped_url}" target="_blank" rel="noreferrer" '
         f'aria-label="{escaped_title} 링크 바로가기">{html.escape(summary_text)}</a></p>'
@@ -2687,7 +2774,7 @@ def render_hub_record_card(article: dict) -> str:
     )
     article_date = html.escape(article_date_value(article))
     return f"""
-    <article class="article-card" data-article-card="true" data-article-url="{escaped_url}" data-article-title="{escaped_title}" data-article-date="{article_date}">
+    <article class="article-card" data-article-card="true" data-policy-card="true" data-policy-group="{article_group}" data-policy-type="{article_type}" data-article-url="{escaped_url}" data-article-title="{escaped_title}" data-article-date="{article_date}" data-article-region="{article_region}">
       {render_article_meta(article, category_label=governance_scope)}
       <h3><a class="article-title-link" href="{escaped_url}" target="_blank" rel="noreferrer" aria-label="{escaped_title} 링크 바로가기">{escaped_title}</a></h3>
       <div class="badge-row"><span class="badge">{html.escape(activity_types)}</span><span class="badge">{html.escape(hub_topics)}</span></div>
@@ -2704,6 +2791,18 @@ def render_feature_card(title: str, description: str, href: str, meta: str) -> s
       <h3>{html.escape(title)}</h3>
       <p>{html.escape(description)}</p>
       <a class="mini-link" href="{href}">바로 가기</a>
+    </article>
+    """
+
+
+def render_compact_intro(kicker: str, title: str, description: str) -> str:
+    return f"""
+    <article class="page-intro-card">
+      <div class="page-intro-top">
+        <span class="page-intro-badge">{html.escape(kicker)}</span>
+        <span class="page-intro-title">{html.escape(title)}</span>
+      </div>
+      <p class="page-intro-copy">{html.escape(description)}</p>
     </article>
     """
 
@@ -2884,9 +2983,31 @@ def policy_type_label(article: dict) -> str:
     return "기타"
 
 
+def hub_group_label(article: dict) -> str:
+    scope = normalize_inline_text(article.get("governance_scope"))
+    if scope == "정부":
+        return "official"
+    if scope == "지역":
+        return "local"
+    return "related"
+
+
+def hub_activity_label(article: dict) -> str:
+    activity_types = [normalize_inline_text(value) for value in article.get("governance_activity_types", [])]
+    activity_types = [value for value in activity_types if value]
+    return activity_types[0] if activity_types else "기타"
+
+
 def collect_policy_types(articles: list[dict]) -> list[str]:
     preferred_order = ["시행계획", "공약", "지원사업", "심의·의결", "모집", "정책 발표", "기타"]
     seen = {policy_type_label(article) for article in articles}
+    ordered = [label for label in preferred_order if label in seen]
+    return ordered
+
+
+def collect_hub_activity_types(articles: list[dict]) -> list[str]:
+    preferred_order = ["회의", "위원회", "출범", "발표회", "협약", "간담회", "포럼", "워크숍", "모집", "기타"]
+    seen = {hub_activity_label(article) for article in articles}
     ordered = [label for label in preferred_order if label in seen]
     return ordered
 
@@ -2973,6 +3094,96 @@ def render_policy_filter_panel(official_policies: list[dict], reference_policies
           </div>
         </div>
         <div class="filter-status" data-policy-filter-status>전체 {len(all_policies)}건을 보고 있습니다.</div>
+      </article>
+    </section>
+    """
+
+
+def render_hub_filter_panel(government_records: list[dict], regional_records: list[dict], other_records: list[dict]) -> str:
+    all_records = [*government_records, *regional_records, *other_records]
+    group_buttons = [
+        '<button class="filter-button active" type="button" data-policy-filter="true" '
+        'data-filter-group="group" data-filter-value="all" aria-pressed="true">전체</button>',
+        '<button class="filter-button" type="button" data-policy-filter="true" '
+        'data-filter-group="group" data-filter-value="official" aria-pressed="false">정부 회의·위원회</button>',
+        '<button class="filter-button" type="button" data-policy-filter="true" '
+        'data-filter-group="group" data-filter-value="local" aria-pressed="false">지역 참여·네트워크</button>',
+        '<button class="filter-button" type="button" data-policy-filter="true" '
+        'data-filter-group="group" data-filter-value="related" aria-pressed="false">참고 기록</button>',
+    ]
+
+    region_buttons = [
+        '<button class="filter-button active" type="button" data-policy-filter="true" '
+        'data-filter-group="region" data-filter-value="all" aria-pressed="true">전체</button>'
+    ]
+    for region in collect_news_regions(all_records):
+        region_buttons.append(
+            f'<button class="filter-button" type="button" data-policy-filter="true" '
+            f'data-filter-group="region" data-filter-value="{html.escape(region)}" '
+            f'aria-pressed="false">{html.escape(region)}</button>'
+        )
+
+    type_buttons = [
+        '<button class="filter-button active" type="button" data-policy-filter="true" '
+        'data-filter-group="type" data-filter-value="all" aria-pressed="true">전체</button>'
+    ]
+    for label in collect_hub_activity_types(all_records):
+        type_buttons.append(
+            f'<button class="filter-button" type="button" data-policy-filter="true" '
+            f'data-filter-group="type" data-filter-value="{html.escape(label)}" '
+            f'aria-pressed="false">{html.escape(label)}</button>'
+        )
+
+    dates = collect_article_dates(all_records)
+    date_min = html.escape(dates[-1]) if dates else ""
+    date_max = html.escape(dates[0]) if dates else ""
+    date_input_attrs = []
+    if date_min:
+        date_input_attrs.append(f'min="{date_min}"')
+    if date_max:
+        date_input_attrs.append(f'max="{date_max}"')
+    if not dates:
+        date_input_attrs.append('disabled="true"')
+    date_input_attrs_text = " ".join(date_input_attrs)
+
+    return f"""
+    <section class="section">
+      <article class="section-card filter-panel">
+        <div class="filter-head">
+          <h3>구분 · 지역 · 활동 · 기간</h3>
+          <p>정부 회의·위원회, 지역 참여·네트워크, 참고 기록을 같은 기준으로 빠르게 살펴볼 수 있습니다.</p>
+        </div>
+        <div class="filter-stack">
+          <div class="filter-group">
+            <span class="filter-group-label">구분</span>
+            <div class="filter-controls">{''.join(group_buttons)}</div>
+          </div>
+          <div class="filter-group">
+            <span class="filter-group-label">지역</span>
+            <div class="filter-controls">{''.join(region_buttons)}</div>
+          </div>
+          <div class="filter-group">
+            <span class="filter-group-label">활동</span>
+            <div class="filter-controls">{''.join(type_buttons)}</div>
+          </div>
+          <div class="filter-group">
+            <span class="filter-group-label">기간</span>
+            <div class="date-picker-row">
+              <button class="filter-button active" type="button" data-policy-filter="true" data-filter-group="date" data-filter-value="all" aria-pressed="true">전체</button>
+              <div class="date-range-fields">
+                <label class="date-input-wrap" data-policy-date-launch="true">
+                  <span class="date-picker-label">시작일</span>
+                  <input class="date-input" type="date" data-policy-date-input="true" data-date-role="start" {date_input_attrs_text}>
+                </label>
+                <label class="date-input-wrap" data-policy-date-launch="true">
+                  <span class="date-picker-label">종료일</span>
+                  <input class="date-input" type="date" data-policy-date-input="true" data-date-role="end" {date_input_attrs_text}>
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="filter-status" data-policy-filter-status>전체 {len(all_records)}건을 보고 있습니다.</div>
       </article>
     </section>
     """
@@ -3786,10 +3997,16 @@ def build_news_page(articles: list[dict], status: dict) -> str:
     recent_news_articles = filter_recent_articles(news_articles, page_updated_at, NEWS_WINDOW_HOURS)
     date_options = collect_article_dates(recent_news_articles)
     region_options = collect_news_regions(recent_news_articles)
+    page_intro = render_compact_intro(
+        "01 뉴스",
+        "이 메뉴는",
+        "지역과 날짜 기준으로 최근 청년 뉴스를 빠르게 훑고, 필요한 기사만 골라볼 수 있습니다.",
+    )
     news_filter_panel = render_news_filter_panel(region_options, date_options, len(recent_news_articles))
     cards_html = "".join(render_article_card(article) for article in recent_news_articles)
     return f"""
     <div data-news-filter-root="news" data-default-date-start="" data-default-date-end="" data-default-region="all">
+      {page_intro}
       {news_filter_panel}
       <section class="section">
         <div class="article-grid">
@@ -3857,6 +4074,11 @@ def build_policies_page_compact(articles: list[dict], status: dict) -> str:
     recent_articles = filter_recent_articles(sort_articles_by_recency(articles), page_updated_at, 24 * 90)
     official_policies = [article for article in recent_articles if article.get("is_official_source")]
     reference_policies = [article for article in recent_articles if is_local_policy_update(article)]
+    page_intro = render_compact_intro(
+        "02 정책",
+        "이 메뉴는",
+        "정부 공식 발표와 지자체 발표 소식을 구분해 보고, 지역·유형·기간 기준으로 필요한 정책만 빠르게 확인할 수 있습니다.",
+    )
     official_cards = "".join(
         render_article_card(
             article,
@@ -3882,6 +4104,7 @@ def build_policies_page_compact(articles: list[dict], status: dict) -> str:
     policy_filter_panel = render_policy_filter_panel(official_policies, reference_policies)
     return f"""
     <div data-policy-filter-root="policies" data-default-policy-group="all" data-default-policy-region="all" data-default-policy-type="all" data-default-date-start="" data-default-date-end="">
+      {page_intro}
       {policy_filter_panel}
       <section class="section" id="official-policies" data-policy-section="official">
         <div class="section-head">
@@ -3920,75 +4143,65 @@ def build_hub_page(classified_articles: list[dict]) -> str:
         for article in hub_records
         if article.get("governance_scope") not in {"정부", "지역"}
     ][:6]
-
+    page_intro = render_compact_intro(
+        "03 참여·회의",
+        "이 메뉴는",
+        "청년 참여 회의와 지역 네트워크 움직임을 구분해 보고, 필요한 기록만 빠르게 걸러볼 수 있습니다.",
+    )
+    hub_filter_panel = render_hub_filter_panel(government_records, regional_records, other_records)
     government_cards = "".join(render_hub_record_card(article) for article in government_records)
     regional_cards = "".join(render_hub_record_card(article) for article in regional_records)
     other_cards = "".join(render_hub_record_card(article) for article in other_records)
     return f"""
-    <section class="hero">
-      <article class="hero-card">
-        <span class="eyebrow">03 참여·회의</span>
-        <h1>청년 참여 회의와 지역 네트워크 움직임을 모아 봅니다.</h1>
-        <p class="hero-copy">정부 회의와 지역 참여 소식을 나눠서 살펴볼 수 있습니다.</p>
+    <div data-policy-filter-root="hub" data-default-policy-group="all" data-default-policy-region="all" data-default-policy-type="all" data-default-date-start="" data-default-date-end="">
+      {page_intro}
+      {hub_filter_panel}
+      <section class="section" data-policy-section="official">
+        <div class="section-head">
+          <div>
+            <h2>정부 회의·위원회</h2>
+            <p>정부 기관이 연 회의, 위원회, 자문단, 협약 소식을 모았습니다.</p>
+          </div>
+          <span class="mini-link" aria-disabled="true" data-policy-section-count>{len(government_records)}건</span>
+        </div>
+        <div class="article-grid">{government_cards or render_empty_hub_state("등록된 정부 회의 기록이 없습니다", "새 항목이 수집되면 이 영역에 표시됩니다.")}</div>
+      </section>
+      <section class="section" data-policy-section="local">
+        <div class="section-head">
+          <div>
+            <h2>지역 참여·네트워크</h2>
+            <p>지방자치단체와 지역 네트워크 활동 소식을 따로 보여줍니다.</p>
+          </div>
+          <span class="mini-link" aria-disabled="true" data-policy-section-count>{len(regional_records)}건</span>
+        </div>
+        <div class="article-grid">{regional_cards or render_empty_hub_state("등록된 지역 참여 기록이 없습니다", "새 항목이 수집되면 이 영역에 표시됩니다.")}</div>
+      </section>
+      <section class="section" id="related" data-policy-section="related">
+        <div class="section-head">
+          <div>
+            <h2>참고 기록</h2>
+            <p>정부·지역 구역으로 바로 분류되지 않은 연관 기록입니다.</p>
+          </div>
+          <span class="mini-link" aria-disabled="true" data-policy-section-count>{len(other_records)}건</span>
+        </div>
+        <div class="article-grid">{other_cards or render_empty_hub_state("등록된 참고 기록이 없습니다", "연관 기록이 수집되면 이 영역에 표시됩니다.")}</div>
+      </section>
+      <article class="info-card" data-policy-empty-state="true" hidden>
+        <h3>조건에 맞는 참여·회의 기록이 없습니다</h3>
+        <p>구분이나 지역, 활동, 기간을 바꾸면 다른 기록을 확인할 수 있습니다.</p>
       </article>
-      <aside class="status-card">
-        <h3>참여·회의 구성</h3>
-        <div class="list">
-          <div class="list-item"><strong>정부 회의·위원회</strong><span>{len(government_records)}건 · 중앙정부 회의와 공식 협의체 소식</span></div>
-          <div class="list-item"><strong>지역 참여·네트워크</strong><span>{len(regional_records)}건 · 지자체와 지역 청년 참여 기록</span></div>
-          <div class="list-item"><strong>참고 기록</strong><span>{len(other_records)}건 · 위 두 구역 밖의 연관 기록</span></div>
-        </div>
-      </aside>
-    </section>
-    <section class="section">
-      <div class="section-head">
-        <div>
-          <h2>정부 회의·위원회</h2>
-          <p>정부 기관이 연 회의, 위원회, 자문단, 협약 소식을 모았습니다.</p>
-        </div>
-      </div>
-      <div class="article-grid">{government_cards or render_empty_hub_state("등록된 정부 회의 기록이 없습니다", "새 항목이 수집되면 이 영역에 표시됩니다.")}</div>
-    </section>
-    <section class="section">
-      <div class="section-head">
-        <div>
-          <h2>지역 참여·네트워크</h2>
-          <p>지방자치단체와 지역 네트워크 활동 소식을 따로 보여줍니다.</p>
-        </div>
-      </div>
-      <div class="article-grid">{regional_cards or render_empty_hub_state("등록된 지역 참여 기록이 없습니다", "새 항목이 수집되면 이 영역에 표시됩니다.")}</div>
-    </section>
-    {f'''
-    <section class="section" id="related">
-      <div class="section-head">
-        <div>
-          <h2>관련 기록</h2>
-          <p>정부·지역 구역으로 바로 분류되지 않은 연관 기록입니다.</p>
-        </div>
-      </div>
-      <div class="article-grid">{other_cards}</div>
-    </section>
-    ''' if other_cards else ''}
+    </div>
     """
 
 
 def build_tools_page() -> str:
+    page_intro = render_compact_intro(
+        "04 자료도구",
+        "이 메뉴는",
+        "정책 조사와 제안서 초안을 준비할 때 필요한 자료를 짧은 흐름으로 따라볼 수 있습니다.",
+    )
     return f"""
-    <section class="hero">
-      <article class="hero-card">
-        <span class="eyebrow">04 자료도구</span>
-        <h1>정책 조사와 제안서 초안을 준비할 때 필요한 자료를 모았습니다.</h1>
-        <p class="hero-copy">출처 확인, AI 정리, 검토 요청 준비를 짧은 순서로 따라갈 수 있습니다.</p>
-      </article>
-      <aside class="status-card">
-        <h3>이렇게 쓰면 좋습니다</h3>
-        <div class="list">
-          <div class="list-item"><strong>1. 출처 먼저</strong><span>정부 원문과 통계 출처를 먼저 확인합니다.</span></div>
-          <div class="list-item"><strong>2. AI는 정리용</strong><span>질문 구조화와 초안 다듬기에만 가볍게 씁니다.</span></div>
-          <div class="list-item"><strong>3. 요청 포인트 정리</strong><span>검토받고 싶은 범위와 부족한 자료를 함께 적습니다.</span></div>
-        </div>
-      </aside>
-    </section>
+    {page_intro}
     <section class="section">
       {render_list_block("빠른 시작", "처음이면 아래 세 단계부터 보면 가장 빠릅니다.", [("정부 원문 확인", "정책브리핑과 부처 자료로 기준점을 먼저 잡기"), ("AI로 질문 정리", "조사 범위와 논점을 짧게 정리하기"), ("검토 요청 준비", "문서 상태와 요청 포인트 적어두기")])}
     </section>
@@ -4007,6 +4220,11 @@ def build_tools_page() -> str:
 def build_contact_page(contact_settings: dict[str, str]) -> str:
     contact_email = html.escape(contact_settings.get("email", ""))
     contact_updated_at = format_display_datetime(contact_settings.get("updated_at"))
+    page_intro = render_compact_intro(
+        "05 제보·문의",
+        "이 메뉴는",
+        "빠진 기사 제보, 운영 문의, 검토 요청을 한곳에서 남기고 바로 이어서 확인할 수 있습니다.",
+    )
     contact_overview = "".join(
         [
             f'<div class="list-item"><strong>단체</strong><span>{html.escape(contact_settings.get("organization_name", ""))}</span></div>',
@@ -4037,16 +4255,13 @@ def build_contact_page(contact_settings: dict[str, str]) -> str:
     </section>
     """
     return f"""
-    <section class="hero">
-      <article class="hero-card">
-        <span class="eyebrow">05 제보·문의</span>
-        <h1>제보, 문의, 협업 요청을 한곳에서 안내합니다.</h1>
-        <p class="hero-copy">{html.escape(contact_settings.get("extra_line_1", ""))}</p>
-      </article>
-      <aside class="status-card">
-        <h3>바로 연락 정보</h3>
+    {page_intro}
+    <section class="section">
+      <article class="list-card">
+        <h3>기본 연락 정보</h3>
+        <p>문의 전에 확인해두면 연결이 조금 더 빠릅니다.</p>
         <div class="list">{contact_overview}</div>
-      </aside>
+      </article>
     </section>
     <section class="section">
       {render_list_block("보내기 전에 함께 적어주면 좋은 내용", "문의 유형에 맞는 기본 정보를 함께 적어주면 답변과 검토가 더 빨라집니다.", [("문의·오류", "문제가 발생한 페이지, 상황, 기대한 동작"), ("제보·협업", "관련 링크, 왜 중요한지, 함께 하고 싶은 방식"), ("검토 요청", "문서 상태, 중점 검토 범위, 필요한 기한")])}

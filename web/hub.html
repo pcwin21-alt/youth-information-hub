@@ -210,6 +210,46 @@
     font-size: 0.96rem;
     line-height: 1.68;
   }
+  .page-intro-card {
+    display: grid;
+    gap: 10px;
+    padding: 14px 16px;
+    margin-bottom: 18px;
+    border: 1px solid var(--line);
+    border-radius: 20px;
+    background:
+      linear-gradient(135deg, rgba(31, 111, 95, 0.1) 0%, rgba(255, 255, 255, 0.98) 52%, rgba(242, 245, 249, 0.92) 100%);
+    box-shadow: var(--shadow-soft);
+  }
+  .page-intro-top {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+  }
+  .page-intro-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 6px 10px;
+    border-radius: 999px;
+    background: rgba(31, 111, 95, 0.12);
+    color: var(--accent);
+    font-size: 0.74rem;
+    font-weight: 800;
+    letter-spacing: -0.01em;
+  }
+  .page-intro-title {
+    color: var(--accent-strong);
+    font-size: 0.86rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+  }
+  .page-intro-copy {
+    margin: 0;
+    color: var(--muted);
+    font-size: 0.88rem;
+    line-height: 1.6;
+  }
   .hero-actions {
     display: flex;
     flex-wrap: wrap;
@@ -1854,11 +1894,21 @@
     </header>
     
     <div data-policy-filter-root="hub" data-default-policy-group="all" data-default-policy-region="all" data-default-policy-type="all" data-default-date-start="" data-default-date-end="">
+      
+    <article class="page-intro-card">
+      <div class="page-intro-top">
+        <span class="page-intro-badge">03 참여·회의</span>
+        <span class="page-intro-title">이 메뉴는</span>
+      </div>
+      <p class="page-intro-copy">청년 참여 회의와 지역 네트워크 움직임을 구분해 보고, 필요한 기록만 빠르게 걸러볼 수 있습니다.</p>
+    </article>
+    
+      
     <section class="section">
       <article class="section-card filter-panel">
         <div class="filter-head">
           <h3>구분 · 지역 · 활동 · 기간</h3>
-          <p>정부 회의·위원회, 지역 참여·네트워크, 참고 기록을 같은 기준으로 나눠서 볼 수 있습니다.</p>
+          <p>정부 회의·위원회, 지역 참여·네트워크, 참고 기록을 같은 기준으로 빠르게 살펴볼 수 있습니다.</p>
         </div>
         <div class="filter-stack">
           <div class="filter-group">
@@ -1871,7 +1921,7 @@
           </div>
           <div class="filter-group">
             <span class="filter-group-label">활동</span>
-            <div class="filter-controls"><button class="filter-button active" type="button" data-policy-filter="true" data-filter-group="type" data-filter-value="all" aria-pressed="true">전체</button><button class="filter-button" type="button" data-policy-filter="true" data-filter-group="type" data-filter-value="회의" aria-pressed="false">회의</button><button class="filter-button" type="button" data-policy-filter="true" data-filter-group="type" data-filter-value="위원회" aria-pressed="false">위원회</button><button class="filter-button" type="button" data-policy-filter="true" data-filter-group="type" data-filter-value="출범" aria-pressed="false">출범</button><button class="filter-button" type="button" data-policy-filter="true" data-filter-group="type" data-filter-value="발표회" aria-pressed="false">발표회</button><button class="filter-button" type="button" data-policy-filter="true" data-filter-group="type" data-filter-value="협약" aria-pressed="false">협약</button></div>
+            <div class="filter-controls"><button class="filter-button active" type="button" data-policy-filter="true" data-filter-group="type" data-filter-value="all" aria-pressed="true">전체</button><button class="filter-button" type="button" data-policy-filter="true" data-filter-group="type" data-filter-value="회의" aria-pressed="false">회의</button><button class="filter-button" type="button" data-policy-filter="true" data-filter-group="type" data-filter-value="위원회" aria-pressed="false">위원회</button><button class="filter-button" type="button" data-policy-filter="true" data-filter-group="type" data-filter-value="출범" aria-pressed="false">출범</button></div>
           </div>
           <div class="filter-group">
             <span class="filter-group-label">기간</span>
@@ -1893,17 +1943,17 @@
         <div class="filter-status" data-policy-filter-status>전체 13건을 보고 있습니다.</div>
       </article>
     </section>
-
-    <section class="section" data-policy-section="official">
-      <div class="section-head">
-        <div>
-          <h2>정부 회의·위원회</h2>
-          <p>정부 기관이 연 회의, 위원회, 자문단, 협약 소식을 모았습니다.</p>
+    
+      <section class="section" data-policy-section="official">
+        <div class="section-head">
+          <div>
+            <h2>정부 회의·위원회</h2>
+            <p>정부 기관이 연 회의, 위원회, 자문단, 협약 소식을 모았습니다.</p>
+          </div>
+          <span class="mini-link" aria-disabled="true" data-policy-section-count>1건</span>
         </div>
-        <span class="mini-link" aria-disabled="true" data-policy-section-count>1건</span>
-      </div>
-      <div class="article-grid">
-    <article class="article-card" data-article-card="true" data-article-url="https://www.opm.go.kr/opm/news/press-release.do?mode=view&amp;articleNo=161172&amp;srSearchVal=%EC%B2%AD%EB%85%84&amp;article.offset=0&amp;articleLimit=20" data-article-title="[보도자료] 김민석 국무총리 주재 제1차 청년정책 관계장관회의" data-article-date="2026-02-06">
+        <div class="article-grid">
+    <article class="article-card" data-article-card="true" data-policy-card="true" data-policy-group="official" data-policy-type="회의" data-article-url="https://www.opm.go.kr/opm/news/press-release.do?mode=view&amp;articleNo=161172&amp;srSearchVal=%EC%B2%AD%EB%85%84&amp;article.offset=0&amp;articleLimit=20" data-article-title="[보도자료] 김민석 국무총리 주재 제1차 청년정책 관계장관회의" data-article-date="2026-02-06" data-article-region="중앙">
       <div class="article-meta"><div class="article-meta-tags"><span class="meta-pill primary">정부</span><span class="meta-pill subtle">중앙</span></div><div class="article-byline"><span class="meta-item">국무조정실 보도자료</span><span class="meta-divider" aria-hidden="true">•</span><span class="meta-item">2026-02-06</span></div></div>
       <h3><a class="article-title-link" href="https://www.opm.go.kr/opm/news/press-release.do?mode=view&amp;articleNo=161172&amp;srSearchVal=%EC%B2%AD%EB%85%84&amp;article.offset=0&amp;articleLimit=20" target="_blank" rel="noreferrer" aria-label="[보도자료] 김민석 국무총리 주재 제1차 청년정책 관계장관회의 링크 바로가기">[보도자료] 김민석 국무총리 주재 제1차 청년정책 관계장관회의</a></h3>
       <div class="badge-row"><span class="badge">회의</span><span class="badge">청년정책 관계장관회의</span></div>
@@ -1911,17 +1961,17 @@
       <div class="article-actions"><a class="mini-link article-link-action" href="https://www.opm.go.kr/opm/news/press-release.do?mode=view&amp;articleNo=161172&amp;srSearchVal=%EC%B2%AD%EB%85%84&amp;article.offset=0&amp;articleLimit=20" target="_blank" rel="noreferrer" aria-label="[보도자료] 김민석 국무총리 주재 제1차 청년정책 관계장관회의 링크 바로가기">링크 바로가기</a><button class="action-button" type="button" data-article-action="share" data-article-url="https://www.opm.go.kr/opm/news/press-release.do?mode=view&amp;articleNo=161172&amp;srSearchVal=%EC%B2%AD%EB%85%84&amp;article.offset=0&amp;articleLimit=20" data-share-title="[보도자료] 김민석 국무총리 주재 제1차 청년정책 관계장관회의" aria-label="[보도자료] 김민석 국무총리 주재 제1차 청년정책 관계장관회의 공유하기">공유하기</button><button class="action-button" type="button" data-article-action="copy" data-article-url="https://www.opm.go.kr/opm/news/press-release.do?mode=view&amp;articleNo=161172&amp;srSearchVal=%EC%B2%AD%EB%85%84&amp;article.offset=0&amp;articleLimit=20" data-share-title="[보도자료] 김민석 국무총리 주재 제1차 청년정책 관계장관회의" aria-label="[보도자료] 김민석 국무총리 주재 제1차 청년정책 관계장관회의 링크 복사">링크 복사</button></div><div class="article-feedback" data-article-feedback aria-live="polite"></div>
     </article>
     </div>
-    </section>
-    <section class="section" data-policy-section="local">
-      <div class="section-head">
-        <div>
-          <h2>지역 참여·네트워크</h2>
-          <p>지방자치단체와 지역 네트워크 활동 소식을 따로 보여줍니다.</p>
+      </section>
+      <section class="section" data-policy-section="local">
+        <div class="section-head">
+          <div>
+            <h2>지역 참여·네트워크</h2>
+            <p>지방자치단체와 지역 네트워크 활동 소식을 따로 보여줍니다.</p>
+          </div>
+          <span class="mini-link" aria-disabled="true" data-policy-section-count>6건</span>
         </div>
-        <span class="mini-link" aria-disabled="true" data-policy-section-count>6건</span>
-      </div>
-      <div class="article-grid">
-    <article class="article-card" data-article-card="true" data-article-url="https://news.google.com/rss/articles/CBMiakFVX3lxTFBhUWJseVRoazAzSVJMeDN5YWtnNmZGUGVEZ2NfdlRCVzdfa1JaUUFLdUFFOElQaTE2NXd5RFBYRjdNRzZPVDAxeU9rZHlsSVBybEFuTTRNSEoyZnkzb3ZhUUpyMGpGR2Nxa0E?oc=5" data-article-title="오세현 아산시장, 결국 아산 청년위원회 ‘관권선거’ 개입 의혹" data-article-date="2026-03-31">
+        <div class="article-grid">
+    <article class="article-card" data-article-card="true" data-policy-card="true" data-policy-group="local" data-policy-type="위원회" data-article-url="https://news.google.com/rss/articles/CBMiakFVX3lxTFBhUWJseVRoazAzSVJMeDN5YWtnNmZGUGVEZ2NfdlRCVzdfa1JaUUFLdUFFOElQaTE2NXd5RFBYRjdNRzZPVDAxeU9rZHlsSVBybEFuTTRNSEoyZnkzb3ZhUUpyMGpGR2Nxa0E?oc=5" data-article-title="오세현 아산시장, 결국 아산 청년위원회 ‘관권선거’ 개입 의혹" data-article-date="2026-03-31" data-article-region="중앙">
       <div class="article-meta"><div class="article-meta-tags"><span class="meta-pill primary">지역</span><span class="meta-pill subtle">중앙</span></div><div class="article-byline"><span class="meta-item">충청매일</span><span class="meta-divider" aria-hidden="true">•</span><span class="meta-item">2026-03-31</span></div></div>
       <h3><a class="article-title-link" href="https://news.google.com/rss/articles/CBMiakFVX3lxTFBhUWJseVRoazAzSVJMeDN5YWtnNmZGUGVEZ2NfdlRCVzdfa1JaUUFLdUFFOElQaTE2NXd5RFBYRjdNRzZPVDAxeU9rZHlsSVBybEFuTTRNSEoyZnkzb3ZhUUpyMGpGR2Nxa0E?oc=5" target="_blank" rel="noreferrer" aria-label="오세현 아산시장, 결국 아산 청년위원회 ‘관권선거’ 개입 의혹 링크 바로가기">오세현 아산시장, 결국 아산 청년위원회 ‘관권선거’ 개입 의혹</a></h3>
       <div class="badge-row"><span class="badge">위원회</span><span class="badge">청년위원회</span></div>
@@ -1929,7 +1979,7 @@
       <div class="article-actions"><a class="mini-link article-link-action" href="https://news.google.com/rss/articles/CBMiakFVX3lxTFBhUWJseVRoazAzSVJMeDN5YWtnNmZGUGVEZ2NfdlRCVzdfa1JaUUFLdUFFOElQaTE2NXd5RFBYRjdNRzZPVDAxeU9rZHlsSVBybEFuTTRNSEoyZnkzb3ZhUUpyMGpGR2Nxa0E?oc=5" target="_blank" rel="noreferrer" aria-label="오세현 아산시장, 결국 아산 청년위원회 ‘관권선거’ 개입 의혹 링크 바로가기">링크 바로가기</a><button class="action-button" type="button" data-article-action="share" data-article-url="https://news.google.com/rss/articles/CBMiakFVX3lxTFBhUWJseVRoazAzSVJMeDN5YWtnNmZGUGVEZ2NfdlRCVzdfa1JaUUFLdUFFOElQaTE2NXd5RFBYRjdNRzZPVDAxeU9rZHlsSVBybEFuTTRNSEoyZnkzb3ZhUUpyMGpGR2Nxa0E?oc=5" data-share-title="오세현 아산시장, 결국 아산 청년위원회 ‘관권선거’ 개입 의혹" aria-label="오세현 아산시장, 결국 아산 청년위원회 ‘관권선거’ 개입 의혹 공유하기">공유하기</button><button class="action-button" type="button" data-article-action="copy" data-article-url="https://news.google.com/rss/articles/CBMiakFVX3lxTFBhUWJseVRoazAzSVJMeDN5YWtnNmZGUGVEZ2NfdlRCVzdfa1JaUUFLdUFFOElQaTE2NXd5RFBYRjdNRzZPVDAxeU9rZHlsSVBybEFuTTRNSEoyZnkzb3ZhUUpyMGpGR2Nxa0E?oc=5" data-share-title="오세현 아산시장, 결국 아산 청년위원회 ‘관권선거’ 개입 의혹" aria-label="오세현 아산시장, 결국 아산 청년위원회 ‘관권선거’ 개입 의혹 링크 복사">링크 복사</button></div><div class="article-feedback" data-article-feedback aria-live="polite"></div>
     </article>
     
-    <article class="article-card" data-article-card="true" data-article-url="https://news.google.com/rss/articles/CBMic0FVX3lxTFBXcGExN3dwLWpsMUlaZ0s3LWg2M0lMeDZGZ1BZNjNZNndZQThqRDZSZGZMZ3pJZHVrWGJMMExJd2tCTjJaTVo3aE8xbVhRdUhpb24xbzFsNkJ4SWtIc2xQYi1iRE9GYjBydGlPbUdnZng2VlE?oc=5" data-article-title="세종민주화운동계승사업회 민주청년위원회, 호르무즈 파병 반대 성명 발표" data-article-date="2026-03-30">
+    <article class="article-card" data-article-card="true" data-policy-card="true" data-policy-group="local" data-policy-type="위원회" data-article-url="https://news.google.com/rss/articles/CBMic0FVX3lxTFBXcGExN3dwLWpsMUlaZ0s3LWg2M0lMeDZGZ1BZNjNZNndZQThqRDZSZGZMZ3pJZHVrWGJMMExJd2tCTjJaTVo3aE8xbVhRdUhpb24xbzFsNkJ4SWtIc2xQYi1iRE9GYjBydGlPbUdnZng2VlE?oc=5" data-article-title="세종민주화운동계승사업회 민주청년위원회, 호르무즈 파병 반대 성명 발표" data-article-date="2026-03-30" data-article-region="세종">
       <div class="article-meta"><div class="article-meta-tags"><span class="meta-pill primary">지역</span><span class="meta-pill subtle">세종</span></div><div class="article-byline"><span class="meta-item">세종시민일보</span><span class="meta-divider" aria-hidden="true">•</span><span class="meta-item">2026-03-30</span></div></div>
       <h3><a class="article-title-link" href="https://news.google.com/rss/articles/CBMic0FVX3lxTFBXcGExN3dwLWpsMUlaZ0s3LWg2M0lMeDZGZ1BZNjNZNndZQThqRDZSZGZMZ3pJZHVrWGJMMExJd2tCTjJaTVo3aE8xbVhRdUhpb24xbzFsNkJ4SWtIc2xQYi1iRE9GYjBydGlPbUdnZng2VlE?oc=5" target="_blank" rel="noreferrer" aria-label="세종민주화운동계승사업회 민주청년위원회, 호르무즈 파병 반대 성명 발표 링크 바로가기">세종민주화운동계승사업회 민주청년위원회, 호르무즈 파병 반대 성명 발표</a></h3>
       <div class="badge-row"><span class="badge">위원회, 발표회</span><span class="badge">청년위원회</span></div>
@@ -1937,7 +1987,7 @@
       <div class="article-actions"><a class="mini-link article-link-action" href="https://news.google.com/rss/articles/CBMic0FVX3lxTFBXcGExN3dwLWpsMUlaZ0s3LWg2M0lMeDZGZ1BZNjNZNndZQThqRDZSZGZMZ3pJZHVrWGJMMExJd2tCTjJaTVo3aE8xbVhRdUhpb24xbzFsNkJ4SWtIc2xQYi1iRE9GYjBydGlPbUdnZng2VlE?oc=5" target="_blank" rel="noreferrer" aria-label="세종민주화운동계승사업회 민주청년위원회, 호르무즈 파병 반대 성명 발표 링크 바로가기">링크 바로가기</a><button class="action-button" type="button" data-article-action="share" data-article-url="https://news.google.com/rss/articles/CBMic0FVX3lxTFBXcGExN3dwLWpsMUlaZ0s3LWg2M0lMeDZGZ1BZNjNZNndZQThqRDZSZGZMZ3pJZHVrWGJMMExJd2tCTjJaTVo3aE8xbVhRdUhpb24xbzFsNkJ4SWtIc2xQYi1iRE9GYjBydGlPbUdnZng2VlE?oc=5" data-share-title="세종민주화운동계승사업회 민주청년위원회, 호르무즈 파병 반대 성명 발표" aria-label="세종민주화운동계승사업회 민주청년위원회, 호르무즈 파병 반대 성명 발표 공유하기">공유하기</button><button class="action-button" type="button" data-article-action="copy" data-article-url="https://news.google.com/rss/articles/CBMic0FVX3lxTFBXcGExN3dwLWpsMUlaZ0s3LWg2M0lMeDZGZ1BZNjNZNndZQThqRDZSZGZMZ3pJZHVrWGJMMExJd2tCTjJaTVo3aE8xbVhRdUhpb24xbzFsNkJ4SWtIc2xQYi1iRE9GYjBydGlPbUdnZng2VlE?oc=5" data-share-title="세종민주화운동계승사업회 민주청년위원회, 호르무즈 파병 반대 성명 발표" aria-label="세종민주화운동계승사업회 민주청년위원회, 호르무즈 파병 반대 성명 발표 링크 복사">링크 복사</button></div><div class="article-feedback" data-article-feedback aria-live="polite"></div>
     </article>
     
-    <article class="article-card" data-article-card="true" data-article-url="https://news.google.com/rss/articles/CBMickFVX3lxTE1ZZ0hNV2FzYzVxX3dTenVCaXVIRVAwSFBlcFdvWTVDb0Z3Q0R6VXBrX1RBcXpKMFY3X0JLMURVendGQVZlcUVmZF80SC1aM05RTlc5TUsxZWhiUldwQmxPTXkyWmMzWnI4aVdPLW9NaEo4UQ?oc=5" data-article-title="인천시, 2026 청년정책네트워크 출범…청년 정책 설계 본격화" data-article-date="2026-03-29">
+    <article class="article-card" data-article-card="true" data-policy-card="true" data-policy-group="local" data-policy-type="출범" data-article-url="https://news.google.com/rss/articles/CBMickFVX3lxTE1ZZ0hNV2FzYzVxX3dTenVCaXVIRVAwSFBlcFdvWTVDb0Z3Q0R6VXBrX1RBcXpKMFY3X0JLMURVendGQVZlcUVmZF80SC1aM05RTlc5TUsxZWhiUldwQmxPTXkyWmMzWnI4aVdPLW9NaEo4UQ?oc=5" data-article-title="인천시, 2026 청년정책네트워크 출범…청년 정책 설계 본격화" data-article-date="2026-03-29" data-article-region="인천">
       <div class="article-meta"><div class="article-meta-tags"><span class="meta-pill primary">지역</span><span class="meta-pill subtle">인천</span></div><div class="article-byline"><span class="meta-item">웹이코노미</span><span class="meta-divider" aria-hidden="true">•</span><span class="meta-item">2026-03-29</span></div></div>
       <h3><a class="article-title-link" href="https://news.google.com/rss/articles/CBMickFVX3lxTE1ZZ0hNV2FzYzVxX3dTenVCaXVIRVAwSFBlcFdvWTVDb0Z3Q0R6VXBrX1RBcXpKMFY3X0JLMURVendGQVZlcUVmZF80SC1aM05RTlc5TUsxZWhiUldwQmxPTXkyWmMzWnI4aVdPLW9NaEo4UQ?oc=5" target="_blank" rel="noreferrer" aria-label="인천시, 2026 청년정책네트워크 출범…청년 정책 설계 본격화 링크 바로가기">인천시, 2026 청년정책네트워크 출범…청년 정책 설계 본격화</a></h3>
       <div class="badge-row"><span class="badge">출범</span><span class="badge">청년정책네트워크</span></div>
@@ -1945,7 +1995,7 @@
       <div class="article-actions"><a class="mini-link article-link-action" href="https://news.google.com/rss/articles/CBMickFVX3lxTE1ZZ0hNV2FzYzVxX3dTenVCaXVIRVAwSFBlcFdvWTVDb0Z3Q0R6VXBrX1RBcXpKMFY3X0JLMURVendGQVZlcUVmZF80SC1aM05RTlc5TUsxZWhiUldwQmxPTXkyWmMzWnI4aVdPLW9NaEo4UQ?oc=5" target="_blank" rel="noreferrer" aria-label="인천시, 2026 청년정책네트워크 출범…청년 정책 설계 본격화 링크 바로가기">링크 바로가기</a><button class="action-button" type="button" data-article-action="share" data-article-url="https://news.google.com/rss/articles/CBMickFVX3lxTE1ZZ0hNV2FzYzVxX3dTenVCaXVIRVAwSFBlcFdvWTVDb0Z3Q0R6VXBrX1RBcXpKMFY3X0JLMURVendGQVZlcUVmZF80SC1aM05RTlc5TUsxZWhiUldwQmxPTXkyWmMzWnI4aVdPLW9NaEo4UQ?oc=5" data-share-title="인천시, 2026 청년정책네트워크 출범…청년 정책 설계 본격화" aria-label="인천시, 2026 청년정책네트워크 출범…청년 정책 설계 본격화 공유하기">공유하기</button><button class="action-button" type="button" data-article-action="copy" data-article-url="https://news.google.com/rss/articles/CBMickFVX3lxTE1ZZ0hNV2FzYzVxX3dTenVCaXVIRVAwSFBlcFdvWTVDb0Z3Q0R6VXBrX1RBcXpKMFY3X0JLMURVendGQVZlcUVmZF80SC1aM05RTlc5TUsxZWhiUldwQmxPTXkyWmMzWnI4aVdPLW9NaEo4UQ?oc=5" data-share-title="인천시, 2026 청년정책네트워크 출범…청년 정책 설계 본격화" aria-label="인천시, 2026 청년정책네트워크 출범…청년 정책 설계 본격화 링크 복사">링크 복사</button></div><div class="article-feedback" data-article-feedback aria-live="polite"></div>
     </article>
     
-    <article class="article-card" data-article-card="true" data-article-url="https://news.google.com/rss/articles/CBMiY0FVX3lxTE1FckpJYy1DQXBUQnJwNDRwbnJ6M3NPQi04N2FLZWZjQjYxbEpDZzRoU2lTRndTNFctcThYaXMwaWtUeVU3LWhMQXlQU2xqYTJ4OWNEdnp6bXF6Y2NNMXVsZ2dEdw?oc=5" data-article-title="“청년이 정책을 만든다”… 인천시, 청년정책네트워크 본격 출범" data-article-date="2026-03-29">
+    <article class="article-card" data-article-card="true" data-policy-card="true" data-policy-group="local" data-policy-type="출범" data-article-url="https://news.google.com/rss/articles/CBMiY0FVX3lxTE1FckpJYy1DQXBUQnJwNDRwbnJ6M3NPQi04N2FLZWZjQjYxbEpDZzRoU2lTRndTNFctcThYaXMwaWtUeVU3LWhMQXlQU2xqYTJ4OWNEdnp6bXF6Y2NNMXVsZ2dEdw?oc=5" data-article-title="“청년이 정책을 만든다”… 인천시, 청년정책네트워크 본격 출범" data-article-date="2026-03-29" data-article-region="인천">
       <div class="article-meta"><div class="article-meta-tags"><span class="meta-pill primary">지역</span><span class="meta-pill subtle">인천</span></div><div class="article-byline"><span class="meta-item">인천게릴라뉴스</span><span class="meta-divider" aria-hidden="true">•</span><span class="meta-item">2026-03-29</span></div></div>
       <h3><a class="article-title-link" href="https://news.google.com/rss/articles/CBMiY0FVX3lxTE1FckpJYy1DQXBUQnJwNDRwbnJ6M3NPQi04N2FLZWZjQjYxbEpDZzRoU2lTRndTNFctcThYaXMwaWtUeVU3LWhMQXlQU2xqYTJ4OWNEdnp6bXF6Y2NNMXVsZ2dEdw?oc=5" target="_blank" rel="noreferrer" aria-label="“청년이 정책을 만든다”… 인천시, 청년정책네트워크 본격 출범 링크 바로가기">“청년이 정책을 만든다”… 인천시, 청년정책네트워크 본격 출범</a></h3>
       <div class="badge-row"><span class="badge">출범</span><span class="badge">청년정책네트워크</span></div>
@@ -1953,7 +2003,7 @@
       <div class="article-actions"><a class="mini-link article-link-action" href="https://news.google.com/rss/articles/CBMiY0FVX3lxTE1FckpJYy1DQXBUQnJwNDRwbnJ6M3NPQi04N2FLZWZjQjYxbEpDZzRoU2lTRndTNFctcThYaXMwaWtUeVU3LWhMQXlQU2xqYTJ4OWNEdnp6bXF6Y2NNMXVsZ2dEdw?oc=5" target="_blank" rel="noreferrer" aria-label="“청년이 정책을 만든다”… 인천시, 청년정책네트워크 본격 출범 링크 바로가기">링크 바로가기</a><button class="action-button" type="button" data-article-action="share" data-article-url="https://news.google.com/rss/articles/CBMiY0FVX3lxTE1FckpJYy1DQXBUQnJwNDRwbnJ6M3NPQi04N2FLZWZjQjYxbEpDZzRoU2lTRndTNFctcThYaXMwaWtUeVU3LWhMQXlQU2xqYTJ4OWNEdnp6bXF6Y2NNMXVsZ2dEdw?oc=5" data-share-title="“청년이 정책을 만든다”… 인천시, 청년정책네트워크 본격 출범" aria-label="“청년이 정책을 만든다”… 인천시, 청년정책네트워크 본격 출범 공유하기">공유하기</button><button class="action-button" type="button" data-article-action="copy" data-article-url="https://news.google.com/rss/articles/CBMiY0FVX3lxTE1FckpJYy1DQXBUQnJwNDRwbnJ6M3NPQi04N2FLZWZjQjYxbEpDZzRoU2lTRndTNFctcThYaXMwaWtUeVU3LWhMQXlQU2xqYTJ4OWNEdnp6bXF6Y2NNMXVsZ2dEdw?oc=5" data-share-title="“청년이 정책을 만든다”… 인천시, 청년정책네트워크 본격 출범" aria-label="“청년이 정책을 만든다”… 인천시, 청년정책네트워크 본격 출범 링크 복사">링크 복사</button></div><div class="article-feedback" data-article-feedback aria-live="polite"></div>
     </article>
     
-    <article class="article-card" data-article-card="true" data-article-url="https://news.google.com/rss/articles/CBMiWkFVX3lxTFBxQXZ3UGVlVDdCbk5LUXVEYTdYSFRjOEQxWXB4QlF3WjMwc2ZUUDBWOEVLdF9mLV9GeUdlbVl2TXFoTHQySDdpVFdsMnNnVnJvZDg5ZWNpTk9WQQ?oc=5" data-article-title="인천시, 청년정책네트워크 118명 출범…사관학교 연계 정책참여 강화" data-article-date="2026-03-29">
+    <article class="article-card" data-article-card="true" data-policy-card="true" data-policy-group="local" data-policy-type="출범" data-article-url="https://news.google.com/rss/articles/CBMiWkFVX3lxTFBxQXZ3UGVlVDdCbk5LUXVEYTdYSFRjOEQxWXB4QlF3WjMwc2ZUUDBWOEVLdF9mLV9GeUdlbVl2TXFoTHQySDdpVFdsMnNnVnJvZDg5ZWNpTk9WQQ?oc=5" data-article-title="인천시, 청년정책네트워크 118명 출범…사관학교 연계 정책참여 강화" data-article-date="2026-03-29" data-article-region="인천">
       <div class="article-meta"><div class="article-meta-tags"><span class="meta-pill primary">지역</span><span class="meta-pill subtle">인천</span></div><div class="article-byline"><span class="meta-item">여성종합뉴스</span><span class="meta-divider" aria-hidden="true">•</span><span class="meta-item">2026-03-29</span></div></div>
       <h3><a class="article-title-link" href="https://news.google.com/rss/articles/CBMiWkFVX3lxTFBxQXZ3UGVlVDdCbk5LUXVEYTdYSFRjOEQxWXB4QlF3WjMwc2ZUUDBWOEVLdF9mLV9GeUdlbVl2TXFoTHQySDdpVFdsMnNnVnJvZDg5ZWNpTk9WQQ?oc=5" target="_blank" rel="noreferrer" aria-label="인천시, 청년정책네트워크 118명 출범…사관학교 연계 정책참여 강화 링크 바로가기">인천시, 청년정책네트워크 118명 출범…사관학교 연계 정책참여 강화</a></h3>
       <div class="badge-row"><span class="badge">출범</span><span class="badge">청년정책네트워크</span></div>
@@ -1961,7 +2011,7 @@
       <div class="article-actions"><a class="mini-link article-link-action" href="https://news.google.com/rss/articles/CBMiWkFVX3lxTFBxQXZ3UGVlVDdCbk5LUXVEYTdYSFRjOEQxWXB4QlF3WjMwc2ZUUDBWOEVLdF9mLV9GeUdlbVl2TXFoTHQySDdpVFdsMnNnVnJvZDg5ZWNpTk9WQQ?oc=5" target="_blank" rel="noreferrer" aria-label="인천시, 청년정책네트워크 118명 출범…사관학교 연계 정책참여 강화 링크 바로가기">링크 바로가기</a><button class="action-button" type="button" data-article-action="share" data-article-url="https://news.google.com/rss/articles/CBMiWkFVX3lxTFBxQXZ3UGVlVDdCbk5LUXVEYTdYSFRjOEQxWXB4QlF3WjMwc2ZUUDBWOEVLdF9mLV9GeUdlbVl2TXFoTHQySDdpVFdsMnNnVnJvZDg5ZWNpTk9WQQ?oc=5" data-share-title="인천시, 청년정책네트워크 118명 출범…사관학교 연계 정책참여 강화" aria-label="인천시, 청년정책네트워크 118명 출범…사관학교 연계 정책참여 강화 공유하기">공유하기</button><button class="action-button" type="button" data-article-action="copy" data-article-url="https://news.google.com/rss/articles/CBMiWkFVX3lxTFBxQXZ3UGVlVDdCbk5LUXVEYTdYSFRjOEQxWXB4QlF3WjMwc2ZUUDBWOEVLdF9mLV9GeUdlbVl2TXFoTHQySDdpVFdsMnNnVnJvZDg5ZWNpTk9WQQ?oc=5" data-share-title="인천시, 청년정책네트워크 118명 출범…사관학교 연계 정책참여 강화" aria-label="인천시, 청년정책네트워크 118명 출범…사관학교 연계 정책참여 강화 링크 복사">링크 복사</button></div><div class="article-feedback" data-article-feedback aria-live="polite"></div>
     </article>
     
-    <article class="article-card" data-article-card="true" data-article-url="https://news.google.com/rss/articles/CBMia0FVX3lxTE43Z0VfYmJYZ196UGp5TlM0cWxlbmJUWWJiT1k3cTFndDFObzBTWUhyck10bkE0d0FtMmZNbnRqbVBKOTJVSmdVdDZENWhIR1hLM1UwUGo3UkFwOFNtZGtyVmQ3Z1R6NVhZVTJZ?oc=5" data-article-title="인천시, 청년정책네트워크 118명 출범…정책 설계 참여 확대" data-article-date="2026-03-29">
+    <article class="article-card" data-article-card="true" data-policy-card="true" data-policy-group="local" data-policy-type="출범" data-article-url="https://news.google.com/rss/articles/CBMia0FVX3lxTE43Z0VfYmJYZ196UGp5TlM0cWxlbmJUWWJiT1k3cTFndDFObzBTWUhyck10bkE0d0FtMmZNbnRqbVBKOTJVSmdVdDZENWhIR1hLM1UwUGo3UkFwOFNtZGtyVmQ3Z1R6NVhZVTJZ?oc=5" data-article-title="인천시, 청년정책네트워크 118명 출범…정책 설계 참여 확대" data-article-date="2026-03-29" data-article-region="인천">
       <div class="article-meta"><div class="article-meta-tags"><span class="meta-pill primary">지역</span><span class="meta-pill subtle">인천</span></div><div class="article-byline"><span class="meta-item">연합시민의소리</span><span class="meta-divider" aria-hidden="true">•</span><span class="meta-item">2026-03-29</span></div></div>
       <h3><a class="article-title-link" href="https://news.google.com/rss/articles/CBMia0FVX3lxTE43Z0VfYmJYZ196UGp5TlM0cWxlbmJUWWJiT1k3cTFndDFObzBTWUhyck10bkE0d0FtMmZNbnRqbVBKOTJVSmdVdDZENWhIR1hLM1UwUGo3UkFwOFNtZGtyVmQ3Z1R6NVhZVTJZ?oc=5" target="_blank" rel="noreferrer" aria-label="인천시, 청년정책네트워크 118명 출범…정책 설계 참여 확대 링크 바로가기">인천시, 청년정책네트워크 118명 출범…정책 설계 참여 확대</a></h3>
       <div class="badge-row"><span class="badge">출범</span><span class="badge">청년정책네트워크</span></div>
@@ -1969,73 +2019,71 @@
       <div class="article-actions"><a class="mini-link article-link-action" href="https://news.google.com/rss/articles/CBMia0FVX3lxTE43Z0VfYmJYZ196UGp5TlM0cWxlbmJUWWJiT1k3cTFndDFObzBTWUhyck10bkE0d0FtMmZNbnRqbVBKOTJVSmdVdDZENWhIR1hLM1UwUGo3UkFwOFNtZGtyVmQ3Z1R6NVhZVTJZ?oc=5" target="_blank" rel="noreferrer" aria-label="인천시, 청년정책네트워크 118명 출범…정책 설계 참여 확대 링크 바로가기">링크 바로가기</a><button class="action-button" type="button" data-article-action="share" data-article-url="https://news.google.com/rss/articles/CBMia0FVX3lxTE43Z0VfYmJYZ196UGp5TlM0cWxlbmJUWWJiT1k3cTFndDFObzBTWUhyck10bkE0d0FtMmZNbnRqbVBKOTJVSmdVdDZENWhIR1hLM1UwUGo3UkFwOFNtZGtyVmQ3Z1R6NVhZVTJZ?oc=5" data-share-title="인천시, 청년정책네트워크 118명 출범…정책 설계 참여 확대" aria-label="인천시, 청년정책네트워크 118명 출범…정책 설계 참여 확대 공유하기">공유하기</button><button class="action-button" type="button" data-article-action="copy" data-article-url="https://news.google.com/rss/articles/CBMia0FVX3lxTE43Z0VfYmJYZ196UGp5TlM0cWxlbmJUWWJiT1k3cTFndDFObzBTWUhyck10bkE0d0FtMmZNbnRqbVBKOTJVSmdVdDZENWhIR1hLM1UwUGo3UkFwOFNtZGtyVmQ3Z1R6NVhZVTJZ?oc=5" data-share-title="인천시, 청년정책네트워크 118명 출범…정책 설계 참여 확대" aria-label="인천시, 청년정책네트워크 118명 출범…정책 설계 참여 확대 링크 복사">링크 복사</button></div><div class="article-feedback" data-article-feedback aria-live="polite"></div>
     </article>
     </div>
-    </section>
-    
-    <section class="section" id="related" data-policy-section="related">
-      <div class="section-head">
-        <div>
-          <h2>참고 기록</h2>
-          <p>정부·지역 구역으로 바로 분류되지 않은 연관 기록입니다.</p>
+      </section>
+      <section class="section" id="related" data-policy-section="related">
+        <div class="section-head">
+          <div>
+            <h2>참고 기록</h2>
+            <p>정부·지역 구역으로 바로 분류되지 않은 연관 기록입니다.</p>
+          </div>
+          <span class="mini-link" aria-disabled="true" data-policy-section-count>6건</span>
         </div>
-        <span class="mini-link" aria-disabled="true" data-policy-section-count>6건</span>
-      </div>
-      <div class="article-grid">
-    <article class="article-card" data-article-card="true" data-article-url="https://news.google.com/rss/articles/CBMiaEFVX3lxTE5VVUg3REdXOUhzSFdyaUE1TlZOM0dSYlEzbEppOHA4bW5aU05xcWRKZy1ZVmFqbG0zLVg2SjU2Nnc1alpRYXo0SEJzSDRwWExDUUpfakxuNnBhV3J3WlNIUWVvQ1VtaXh2?oc=5" data-article-title="더불어민주당 고성청년위원회 발족...초대 위원장 김태현" data-article-date="2026-04-02">
-      <div class="article-meta"><div class="article-meta-tags"><span class="meta-pill primary">참고 기록</span><span class="meta-pill subtle">중앙</span></div><div class="article-byline"><span class="meta-item">gofnews.com</span><span class="meta-divider" aria-hidden="true">•</span><span class="meta-item">2026-04-02</span></div></div>
+        <div class="article-grid">
+    <article class="article-card" data-article-card="true" data-policy-card="true" data-policy-group="related" data-policy-type="위원회" data-article-url="https://news.google.com/rss/articles/CBMiaEFVX3lxTE5VVUg3REdXOUhzSFdyaUE1TlZOM0dSYlEzbEppOHA4bW5aU05xcWRKZy1ZVmFqbG0zLVg2SjU2Nnc1alpRYXo0SEJzSDRwWExDUUpfakxuNnBhV3J3WlNIUWVvQ1VtaXh2?oc=5" data-article-title="더불어민주당 고성청년위원회 발족...초대 위원장 김태현" data-article-date="2026-04-02" data-article-region="중앙">
+      <div class="article-meta"><div class="article-meta-tags"><span class="meta-pill primary">참여 기록</span><span class="meta-pill subtle">중앙</span></div><div class="article-byline"><span class="meta-item">gofnews.com</span><span class="meta-divider" aria-hidden="true">•</span><span class="meta-item">2026-04-02</span></div></div>
       <h3><a class="article-title-link" href="https://news.google.com/rss/articles/CBMiaEFVX3lxTE5VVUg3REdXOUhzSFdyaUE1TlZOM0dSYlEzbEppOHA4bW5aU05xcWRKZy1ZVmFqbG0zLVg2SjU2Nnc1alpRYXo0SEJzSDRwWExDUUpfakxuNnBhV3J3WlNIUWVvQ1VtaXh2?oc=5" target="_blank" rel="noreferrer" aria-label="더불어민주당 고성청년위원회 발족...초대 위원장 김태현 링크 바로가기">더불어민주당 고성청년위원회 발족...초대 위원장 김태현</a></h3>
       <div class="badge-row"><span class="badge">위원회, 출범</span><span class="badge">청년위원회</span></div>
       
       <div class="article-actions"><a class="mini-link article-link-action" href="https://news.google.com/rss/articles/CBMiaEFVX3lxTE5VVUg3REdXOUhzSFdyaUE1TlZOM0dSYlEzbEppOHA4bW5aU05xcWRKZy1ZVmFqbG0zLVg2SjU2Nnc1alpRYXo0SEJzSDRwWExDUUpfakxuNnBhV3J3WlNIUWVvQ1VtaXh2?oc=5" target="_blank" rel="noreferrer" aria-label="더불어민주당 고성청년위원회 발족...초대 위원장 김태현 링크 바로가기">링크 바로가기</a><button class="action-button" type="button" data-article-action="share" data-article-url="https://news.google.com/rss/articles/CBMiaEFVX3lxTE5VVUg3REdXOUhzSFdyaUE1TlZOM0dSYlEzbEppOHA4bW5aU05xcWRKZy1ZVmFqbG0zLVg2SjU2Nnc1alpRYXo0SEJzSDRwWExDUUpfakxuNnBhV3J3WlNIUWVvQ1VtaXh2?oc=5" data-share-title="더불어민주당 고성청년위원회 발족...초대 위원장 김태현" aria-label="더불어민주당 고성청년위원회 발족...초대 위원장 김태현 공유하기">공유하기</button><button class="action-button" type="button" data-article-action="copy" data-article-url="https://news.google.com/rss/articles/CBMiaEFVX3lxTE5VVUg3REdXOUhzSFdyaUE1TlZOM0dSYlEzbEppOHA4bW5aU05xcWRKZy1ZVmFqbG0zLVg2SjU2Nnc1alpRYXo0SEJzSDRwWExDUUpfakxuNnBhV3J3WlNIUWVvQ1VtaXh2?oc=5" data-share-title="더불어민주당 고성청년위원회 발족...초대 위원장 김태현" aria-label="더불어민주당 고성청년위원회 발족...초대 위원장 김태현 링크 복사">링크 복사</button></div><div class="article-feedback" data-article-feedback aria-live="polite"></div>
     </article>
     
-    <article class="article-card" data-article-card="true" data-article-url="https://news.google.com/rss/articles/CBMiR0FVX3lxTE9BWC1ZQTc2NmhvSnBiaTJPdE1pejd3aHVWR2RvTnozRU5QVGdCNlpBdXhkejZRY2ExR21OaklodFNZSlpTenVF?oc=5" data-article-title="아산 청년위원회 둘러싼 ‘관권 선거·이권 유착’ 공방" data-article-date="2026-04-02">
-      <div class="article-meta"><div class="article-meta-tags"><span class="meta-pill primary">참고 기록</span><span class="meta-pill subtle">중앙</span></div><div class="article-byline"><span class="meta-item">아산뉴스</span><span class="meta-divider" aria-hidden="true">•</span><span class="meta-item">2026-04-02</span></div></div>
+    <article class="article-card" data-article-card="true" data-policy-card="true" data-policy-group="related" data-policy-type="위원회" data-article-url="https://news.google.com/rss/articles/CBMiR0FVX3lxTE9BWC1ZQTc2NmhvSnBiaTJPdE1pejd3aHVWR2RvTnozRU5QVGdCNlpBdXhkejZRY2ExR21OaklodFNZSlpTenVF?oc=5" data-article-title="아산 청년위원회 둘러싼 ‘관권 선거·이권 유착’ 공방" data-article-date="2026-04-02" data-article-region="중앙">
+      <div class="article-meta"><div class="article-meta-tags"><span class="meta-pill primary">참여 기록</span><span class="meta-pill subtle">중앙</span></div><div class="article-byline"><span class="meta-item">아산뉴스</span><span class="meta-divider" aria-hidden="true">•</span><span class="meta-item">2026-04-02</span></div></div>
       <h3><a class="article-title-link" href="https://news.google.com/rss/articles/CBMiR0FVX3lxTE9BWC1ZQTc2NmhvSnBiaTJPdE1pejd3aHVWR2RvTnozRU5QVGdCNlpBdXhkejZRY2ExR21OaklodFNZSlpTenVF?oc=5" target="_blank" rel="noreferrer" aria-label="아산 청년위원회 둘러싼 ‘관권 선거·이권 유착’ 공방 링크 바로가기">아산 청년위원회 둘러싼 ‘관권 선거·이권 유착’ 공방</a></h3>
       <div class="badge-row"><span class="badge">위원회</span><span class="badge">청년위원회</span></div>
       
       <div class="article-actions"><a class="mini-link article-link-action" href="https://news.google.com/rss/articles/CBMiR0FVX3lxTE9BWC1ZQTc2NmhvSnBiaTJPdE1pejd3aHVWR2RvTnozRU5QVGdCNlpBdXhkejZRY2ExR21OaklodFNZSlpTenVF?oc=5" target="_blank" rel="noreferrer" aria-label="아산 청년위원회 둘러싼 ‘관권 선거·이권 유착’ 공방 링크 바로가기">링크 바로가기</a><button class="action-button" type="button" data-article-action="share" data-article-url="https://news.google.com/rss/articles/CBMiR0FVX3lxTE9BWC1ZQTc2NmhvSnBiaTJPdE1pejd3aHVWR2RvTnozRU5QVGdCNlpBdXhkejZRY2ExR21OaklodFNZSlpTenVF?oc=5" data-share-title="아산 청년위원회 둘러싼 ‘관권 선거·이권 유착’ 공방" aria-label="아산 청년위원회 둘러싼 ‘관권 선거·이권 유착’ 공방 공유하기">공유하기</button><button class="action-button" type="button" data-article-action="copy" data-article-url="https://news.google.com/rss/articles/CBMiR0FVX3lxTE9BWC1ZQTc2NmhvSnBiaTJPdE1pejd3aHVWR2RvTnozRU5QVGdCNlpBdXhkejZRY2ExR21OaklodFNZSlpTenVF?oc=5" data-share-title="아산 청년위원회 둘러싼 ‘관권 선거·이권 유착’ 공방" aria-label="아산 청년위원회 둘러싼 ‘관권 선거·이권 유착’ 공방 링크 복사">링크 복사</button></div><div class="article-feedback" data-article-feedback aria-live="polite"></div>
     </article>
     
-    <article class="article-card" data-article-card="true" data-article-url="https://news.google.com/rss/articles/CBMiY0FVX3lxTE5JSEFIdF9UNlY0YUZ2dTBnNUdaQjlTTDFycVNEaVgza2s3Nm50RU96elpTcEFhRWVnQkZJRkJmM1p4WmxOcklVWTVPRWxyNkVuMmtLU1g3TWN0X2owTWlzelIyMA?oc=5" data-article-title="고신대학교, 국제보건미용전문가연합회·아시아한인회총연합회 청년위원회와 업무협약 체결" data-article-date="2026-04-01">
-      <div class="article-meta"><div class="article-meta-tags"><span class="meta-pill primary">참고 기록</span><span class="meta-pill subtle">중앙</span></div><div class="article-byline"><span class="meta-item">대한민국교육신문</span><span class="meta-divider" aria-hidden="true">•</span><span class="meta-item">2026-04-01</span></div></div>
+    <article class="article-card" data-article-card="true" data-policy-card="true" data-policy-group="related" data-policy-type="위원회" data-article-url="https://news.google.com/rss/articles/CBMiY0FVX3lxTE5JSEFIdF9UNlY0YUZ2dTBnNUdaQjlTTDFycVNEaVgza2s3Nm50RU96elpTcEFhRWVnQkZJRkJmM1p4WmxOcklVWTVPRWxyNkVuMmtLU1g3TWN0X2owTWlzelIyMA?oc=5" data-article-title="고신대학교, 국제보건미용전문가연합회·아시아한인회총연합회 청년위원회와 업무협약 체결" data-article-date="2026-04-01" data-article-region="중앙">
+      <div class="article-meta"><div class="article-meta-tags"><span class="meta-pill primary">참여 기록</span><span class="meta-pill subtle">중앙</span></div><div class="article-byline"><span class="meta-item">대한민국교육신문</span><span class="meta-divider" aria-hidden="true">•</span><span class="meta-item">2026-04-01</span></div></div>
       <h3><a class="article-title-link" href="https://news.google.com/rss/articles/CBMiY0FVX3lxTE5JSEFIdF9UNlY0YUZ2dTBnNUdaQjlTTDFycVNEaVgza2s3Nm50RU96elpTcEFhRWVnQkZJRkJmM1p4WmxOcklVWTVPRWxyNkVuMmtLU1g3TWN0X2owTWlzelIyMA?oc=5" target="_blank" rel="noreferrer" aria-label="고신대학교, 국제보건미용전문가연합회·아시아한인회총연합회 청년위원회와 업무협약 체결 링크 바로가기">고신대학교, 국제보건미용전문가연합회·아시아한인회총연합회 청년위원회와 업무협약 체결</a></h3>
       <div class="badge-row"><span class="badge">위원회, 협약</span><span class="badge">청년위원회</span></div>
       
       <div class="article-actions"><a class="mini-link article-link-action" href="https://news.google.com/rss/articles/CBMiY0FVX3lxTE5JSEFIdF9UNlY0YUZ2dTBnNUdaQjlTTDFycVNEaVgza2s3Nm50RU96elpTcEFhRWVnQkZJRkJmM1p4WmxOcklVWTVPRWxyNkVuMmtLU1g3TWN0X2owTWlzelIyMA?oc=5" target="_blank" rel="noreferrer" aria-label="고신대학교, 국제보건미용전문가연합회·아시아한인회총연합회 청년위원회와 업무협약 체결 링크 바로가기">링크 바로가기</a><button class="action-button" type="button" data-article-action="share" data-article-url="https://news.google.com/rss/articles/CBMiY0FVX3lxTE5JSEFIdF9UNlY0YUZ2dTBnNUdaQjlTTDFycVNEaVgza2s3Nm50RU96elpTcEFhRWVnQkZJRkJmM1p4WmxOcklVWTVPRWxyNkVuMmtLU1g3TWN0X2owTWlzelIyMA?oc=5" data-share-title="고신대학교, 국제보건미용전문가연합회·아시아한인회총연합회 청년위원회와 업무협약 체결" aria-label="고신대학교, 국제보건미용전문가연합회·아시아한인회총연합회 청년위원회와 업무협약 체결 공유하기">공유하기</button><button class="action-button" type="button" data-article-action="copy" data-article-url="https://news.google.com/rss/articles/CBMiY0FVX3lxTE5JSEFIdF9UNlY0YUZ2dTBnNUdaQjlTTDFycVNEaVgza2s3Nm50RU96elpTcEFhRWVnQkZJRkJmM1p4WmxOcklVWTVPRWxyNkVuMmtLU1g3TWN0X2owTWlzelIyMA?oc=5" data-share-title="고신대학교, 국제보건미용전문가연합회·아시아한인회총연합회 청년위원회와 업무협약 체결" aria-label="고신대학교, 국제보건미용전문가연합회·아시아한인회총연합회 청년위원회와 업무협약 체결 링크 복사">링크 복사</button></div><div class="article-feedback" data-article-feedback aria-live="polite"></div>
     </article>
     
-    <article class="article-card" data-article-card="true" data-article-url="https://news.google.com/rss/articles/CBMiakFVX3lxTFBrckZoc1FCa2p2NlNFbThkT2ptTk5HVVh3VGFFU041d3ExNHR4dF84azZMNUZCRlctYmlNcHJRRl9CNEVGdGdmbW5zXzNiOFB0c3FRTUREMW4yRkxtM1lrZTJfdUhZN1NSX3c?oc=5" data-article-title="아산시 ‘청년위원회 위원장 선거’ 파장 확산… “청년 자치에 정치 개입”" data-article-date="2026-03-31">
-      <div class="article-meta"><div class="article-meta-tags"><span class="meta-pill primary">참고 기록</span><span class="meta-pill subtle">중앙</span></div><div class="article-byline"><span class="meta-item">천지일보</span><span class="meta-divider" aria-hidden="true">•</span><span class="meta-item">2026-03-31</span></div></div>
+    <article class="article-card" data-article-card="true" data-policy-card="true" data-policy-group="related" data-policy-type="위원회" data-article-url="https://news.google.com/rss/articles/CBMiakFVX3lxTFBrckZoc1FCa2p2NlNFbThkT2ptTk5HVVh3VGFFU041d3ExNHR4dF84azZMNUZCRlctYmlNcHJRRl9CNEVGdGdmbW5zXzNiOFB0c3FRTUREMW4yRkxtM1lrZTJfdUhZN1NSX3c?oc=5" data-article-title="아산시 ‘청년위원회 위원장 선거’ 파장 확산… “청년 자치에 정치 개입”" data-article-date="2026-03-31" data-article-region="중앙">
+      <div class="article-meta"><div class="article-meta-tags"><span class="meta-pill primary">참여 기록</span><span class="meta-pill subtle">중앙</span></div><div class="article-byline"><span class="meta-item">천지일보</span><span class="meta-divider" aria-hidden="true">•</span><span class="meta-item">2026-03-31</span></div></div>
       <h3><a class="article-title-link" href="https://news.google.com/rss/articles/CBMiakFVX3lxTFBrckZoc1FCa2p2NlNFbThkT2ptTk5HVVh3VGFFU041d3ExNHR4dF84azZMNUZCRlctYmlNcHJRRl9CNEVGdGdmbW5zXzNiOFB0c3FRTUREMW4yRkxtM1lrZTJfdUhZN1NSX3c?oc=5" target="_blank" rel="noreferrer" aria-label="아산시 ‘청년위원회 위원장 선거’ 파장 확산… “청년 자치에 정치 개입” 링크 바로가기">아산시 ‘청년위원회 위원장 선거’ 파장 확산… “청년 자치에 정치 개입”</a></h3>
       <div class="badge-row"><span class="badge">위원회</span><span class="badge">청년위원회</span></div>
       
       <div class="article-actions"><a class="mini-link article-link-action" href="https://news.google.com/rss/articles/CBMiakFVX3lxTFBrckZoc1FCa2p2NlNFbThkT2ptTk5HVVh3VGFFU041d3ExNHR4dF84azZMNUZCRlctYmlNcHJRRl9CNEVGdGdmbW5zXzNiOFB0c3FRTUREMW4yRkxtM1lrZTJfdUhZN1NSX3c?oc=5" target="_blank" rel="noreferrer" aria-label="아산시 ‘청년위원회 위원장 선거’ 파장 확산… “청년 자치에 정치 개입” 링크 바로가기">링크 바로가기</a><button class="action-button" type="button" data-article-action="share" data-article-url="https://news.google.com/rss/articles/CBMiakFVX3lxTFBrckZoc1FCa2p2NlNFbThkT2ptTk5HVVh3VGFFU041d3ExNHR4dF84azZMNUZCRlctYmlNcHJRRl9CNEVGdGdmbW5zXzNiOFB0c3FRTUREMW4yRkxtM1lrZTJfdUhZN1NSX3c?oc=5" data-share-title="아산시 ‘청년위원회 위원장 선거’ 파장 확산… “청년 자치에 정치 개입”" aria-label="아산시 ‘청년위원회 위원장 선거’ 파장 확산… “청년 자치에 정치 개입” 공유하기">공유하기</button><button class="action-button" type="button" data-article-action="copy" data-article-url="https://news.google.com/rss/articles/CBMiakFVX3lxTFBrckZoc1FCa2p2NlNFbThkT2ptTk5HVVh3VGFFU041d3ExNHR4dF84azZMNUZCRlctYmlNcHJRRl9CNEVGdGdmbW5zXzNiOFB0c3FRTUREMW4yRkxtM1lrZTJfdUhZN1NSX3c?oc=5" data-share-title="아산시 ‘청년위원회 위원장 선거’ 파장 확산… “청년 자치에 정치 개입”" aria-label="아산시 ‘청년위원회 위원장 선거’ 파장 확산… “청년 자치에 정치 개입” 링크 복사">링크 복사</button></div><div class="article-feedback" data-article-feedback aria-live="polite"></div>
     </article>
     
-    <article class="article-card" data-article-card="true" data-article-url="https://news.google.com/rss/articles/CBMib0FVX3lxTE1UX3F3c1Y0dTRzbXJsY0trYjdOVTF2LV9ndXFBR3ZxTjhrM2ZTTnZ3RnVjQVlwdFJxbnRkY3pIMVFjWHlpblVuUk5nT0JVS2k4SE83bERSX3hNWVRYVWJWbzNCQVM3Zm0xbGxuZnlhWdIBb0FVX3lxTE1UX3F3c1Y0dTRzbXJsY0trYjdOVTF2LV9ndXFBR3ZxTjhrM2ZTTnZ3RnVjQVlwdFJxbnRkY3pIMVFjWHlpblVuUk5nT0JVS2k4SE83bERSX3hNWVRYVWJWbzNCQVM3Zm0xbGxuZnlhWQ?oc=5" data-article-title="봉화군, 청년정책협의체 정기회의 개최 청년정책 참여 확대" data-article-date="2026-03-31">
-      <div class="article-meta"><div class="article-meta-tags"><span class="meta-pill primary">참고 기록</span><span class="meta-pill subtle">중앙</span></div><div class="article-byline"><span class="meta-item">한스경제</span><span class="meta-divider" aria-hidden="true">•</span><span class="meta-item">2026-03-31</span></div></div>
+    <article class="article-card" data-article-card="true" data-policy-card="true" data-policy-group="related" data-policy-type="회의" data-article-url="https://news.google.com/rss/articles/CBMib0FVX3lxTE1UX3F3c1Y0dTRzbXJsY0trYjdOVTF2LV9ndXFBR3ZxTjhrM2ZTTnZ3RnVjQVlwdFJxbnRkY3pIMVFjWHlpblVuUk5nT0JVS2k4SE83bERSX3hNWVRYVWJWbzNCQVM3Zm0xbGxuZnlhWdIBb0FVX3lxTE1UX3F3c1Y0dTRzbXJsY0trYjdOVTF2LV9ndXFBR3ZxTjhrM2ZTTnZ3RnVjQVlwdFJxbnRkY3pIMVFjWHlpblVuUk5nT0JVS2k4SE83bERSX3hNWVRYVWJWbzNCQVM3Zm0xbGxuZnlhWQ?oc=5" data-article-title="봉화군, 청년정책협의체 정기회의 개최 청년정책 참여 확대" data-article-date="2026-03-31" data-article-region="중앙">
+      <div class="article-meta"><div class="article-meta-tags"><span class="meta-pill primary">참여 기록</span><span class="meta-pill subtle">중앙</span></div><div class="article-byline"><span class="meta-item">한스경제</span><span class="meta-divider" aria-hidden="true">•</span><span class="meta-item">2026-03-31</span></div></div>
       <h3><a class="article-title-link" href="https://news.google.com/rss/articles/CBMib0FVX3lxTE1UX3F3c1Y0dTRzbXJsY0trYjdOVTF2LV9ndXFBR3ZxTjhrM2ZTTnZ3RnVjQVlwdFJxbnRkY3pIMVFjWHlpblVuUk5nT0JVS2k4SE83bERSX3hNWVRYVWJWbzNCQVM3Zm0xbGxuZnlhWdIBb0FVX3lxTE1UX3F3c1Y0dTRzbXJsY0trYjdOVTF2LV9ndXFBR3ZxTjhrM2ZTTnZ3RnVjQVlwdFJxbnRkY3pIMVFjWHlpblVuUk5nT0JVS2k4SE83bERSX3hNWVRYVWJWbzNCQVM3Zm0xbGxuZnlhWQ?oc=5" target="_blank" rel="noreferrer" aria-label="봉화군, 청년정책협의체 정기회의 개최 청년정책 참여 확대 링크 바로가기">봉화군, 청년정책협의체 정기회의 개최 청년정책 참여 확대</a></h3>
       <div class="badge-row"><span class="badge">회의</span><span class="badge">청년정책협의체</span></div>
       
       <div class="article-actions"><a class="mini-link article-link-action" href="https://news.google.com/rss/articles/CBMib0FVX3lxTE1UX3F3c1Y0dTRzbXJsY0trYjdOVTF2LV9ndXFBR3ZxTjhrM2ZTTnZ3RnVjQVlwdFJxbnRkY3pIMVFjWHlpblVuUk5nT0JVS2k4SE83bERSX3hNWVRYVWJWbzNCQVM3Zm0xbGxuZnlhWdIBb0FVX3lxTE1UX3F3c1Y0dTRzbXJsY0trYjdOVTF2LV9ndXFBR3ZxTjhrM2ZTTnZ3RnVjQVlwdFJxbnRkY3pIMVFjWHlpblVuUk5nT0JVS2k4SE83bERSX3hNWVRYVWJWbzNCQVM3Zm0xbGxuZnlhWQ?oc=5" target="_blank" rel="noreferrer" aria-label="봉화군, 청년정책협의체 정기회의 개최 청년정책 참여 확대 링크 바로가기">링크 바로가기</a><button class="action-button" type="button" data-article-action="share" data-article-url="https://news.google.com/rss/articles/CBMib0FVX3lxTE1UX3F3c1Y0dTRzbXJsY0trYjdOVTF2LV9ndXFBR3ZxTjhrM2ZTTnZ3RnVjQVlwdFJxbnRkY3pIMVFjWHlpblVuUk5nT0JVS2k4SE83bERSX3hNWVRYVWJWbzNCQVM3Zm0xbGxuZnlhWdIBb0FVX3lxTE1UX3F3c1Y0dTRzbXJsY0trYjdOVTF2LV9ndXFBR3ZxTjhrM2ZTTnZ3RnVjQVlwdFJxbnRkY3pIMVFjWHlpblVuUk5nT0JVS2k4SE83bERSX3hNWVRYVWJWbzNCQVM3Zm0xbGxuZnlhWQ?oc=5" data-share-title="봉화군, 청년정책협의체 정기회의 개최 청년정책 참여 확대" aria-label="봉화군, 청년정책협의체 정기회의 개최 청년정책 참여 확대 공유하기">공유하기</button><button class="action-button" type="button" data-article-action="copy" data-article-url="https://news.google.com/rss/articles/CBMib0FVX3lxTE1UX3F3c1Y0dTRzbXJsY0trYjdOVTF2LV9ndXFBR3ZxTjhrM2ZTTnZ3RnVjQVlwdFJxbnRkY3pIMVFjWHlpblVuUk5nT0JVS2k4SE83bERSX3hNWVRYVWJWbzNCQVM3Zm0xbGxuZnlhWdIBb0FVX3lxTE1UX3F3c1Y0dTRzbXJsY0trYjdOVTF2LV9ndXFBR3ZxTjhrM2ZTTnZ3RnVjQVlwdFJxbnRkY3pIMVFjWHlpblVuUk5nT0JVS2k4SE83bERSX3hNWVRYVWJWbzNCQVM3Zm0xbGxuZnlhWQ?oc=5" data-share-title="봉화군, 청년정책협의체 정기회의 개최 청년정책 참여 확대" aria-label="봉화군, 청년정책협의체 정기회의 개최 청년정책 참여 확대 링크 복사">링크 복사</button></div><div class="article-feedback" data-article-feedback aria-live="polite"></div>
     </article>
     
-    <article class="article-card" data-article-card="true" data-article-url="https://news.google.com/rss/articles/CBMib0FVX3lxTE1lb2o1WjZPbWZ6ekt3aGpMeFBqUjhZVl9Kc0dIMTFrNXR6TmdNR2tkaFNXUi1PRU9pMERBdDYwTUFvVnhMSXBaZzMzVHdNZnl6WGlaOG9saFdFUGJjallfRFB0eUpDekNkbWU5MGlYRQ?oc=5" data-article-title="아산 청년위원회, &#x27;비서실 개입·개인정보 유출&#x27; 의혹…공정성 논란 &#x27;일파만파&#x27;!" data-article-date="2026-03-31">
-      <div class="article-meta"><div class="article-meta-tags"><span class="meta-pill primary">참고 기록</span><span class="meta-pill subtle">중앙</span></div><div class="article-byline"><span class="meta-item">내외일보</span><span class="meta-divider" aria-hidden="true">•</span><span class="meta-item">2026-03-31</span></div></div>
+    <article class="article-card" data-article-card="true" data-policy-card="true" data-policy-group="related" data-policy-type="위원회" data-article-url="https://news.google.com/rss/articles/CBMib0FVX3lxTE1lb2o1WjZPbWZ6ekt3aGpMeFBqUjhZVl9Kc0dIMTFrNXR6TmdNR2tkaFNXUi1PRU9pMERBdDYwTUFvVnhMSXBaZzMzVHdNZnl6WGlaOG9saFdFUGJjallfRFB0eUpDekNkbWU5MGlYRQ?oc=5" data-article-title="아산 청년위원회, &#x27;비서실 개입·개인정보 유출&#x27; 의혹…공정성 논란 &#x27;일파만파&#x27;!" data-article-date="2026-03-31" data-article-region="중앙">
+      <div class="article-meta"><div class="article-meta-tags"><span class="meta-pill primary">참여 기록</span><span class="meta-pill subtle">중앙</span></div><div class="article-byline"><span class="meta-item">내외일보</span><span class="meta-divider" aria-hidden="true">•</span><span class="meta-item">2026-03-31</span></div></div>
       <h3><a class="article-title-link" href="https://news.google.com/rss/articles/CBMib0FVX3lxTE1lb2o1WjZPbWZ6ekt3aGpMeFBqUjhZVl9Kc0dIMTFrNXR6TmdNR2tkaFNXUi1PRU9pMERBdDYwTUFvVnhMSXBaZzMzVHdNZnl6WGlaOG9saFdFUGJjallfRFB0eUpDekNkbWU5MGlYRQ?oc=5" target="_blank" rel="noreferrer" aria-label="아산 청년위원회, &#x27;비서실 개입·개인정보 유출&#x27; 의혹…공정성 논란 &#x27;일파만파&#x27;! 링크 바로가기">아산 청년위원회, &#x27;비서실 개입·개인정보 유출&#x27; 의혹…공정성 논란 &#x27;일파만파&#x27;!</a></h3>
       <div class="badge-row"><span class="badge">위원회</span><span class="badge">청년위원회</span></div>
       
       <div class="article-actions"><a class="mini-link article-link-action" href="https://news.google.com/rss/articles/CBMib0FVX3lxTE1lb2o1WjZPbWZ6ekt3aGpMeFBqUjhZVl9Kc0dIMTFrNXR6TmdNR2tkaFNXUi1PRU9pMERBdDYwTUFvVnhMSXBaZzMzVHdNZnl6WGlaOG9saFdFUGJjallfRFB0eUpDekNkbWU5MGlYRQ?oc=5" target="_blank" rel="noreferrer" aria-label="아산 청년위원회, &#x27;비서실 개입·개인정보 유출&#x27; 의혹…공정성 논란 &#x27;일파만파&#x27;! 링크 바로가기">링크 바로가기</a><button class="action-button" type="button" data-article-action="share" data-article-url="https://news.google.com/rss/articles/CBMib0FVX3lxTE1lb2o1WjZPbWZ6ekt3aGpMeFBqUjhZVl9Kc0dIMTFrNXR6TmdNR2tkaFNXUi1PRU9pMERBdDYwTUFvVnhMSXBaZzMzVHdNZnl6WGlaOG9saFdFUGJjallfRFB0eUpDekNkbWU5MGlYRQ?oc=5" data-share-title="아산 청년위원회, &#x27;비서실 개입·개인정보 유출&#x27; 의혹…공정성 논란 &#x27;일파만파&#x27;!" aria-label="아산 청년위원회, &#x27;비서실 개입·개인정보 유출&#x27; 의혹…공정성 논란 &#x27;일파만파&#x27;! 공유하기">공유하기</button><button class="action-button" type="button" data-article-action="copy" data-article-url="https://news.google.com/rss/articles/CBMib0FVX3lxTE1lb2o1WjZPbWZ6ekt3aGpMeFBqUjhZVl9Kc0dIMTFrNXR6TmdNR2tkaFNXUi1PRU9pMERBdDYwTUFvVnhMSXBaZzMzVHdNZnl6WGlaOG9saFdFUGJjallfRFB0eUpDekNkbWU5MGlYRQ?oc=5" data-share-title="아산 청년위원회, &#x27;비서실 개입·개인정보 유출&#x27; 의혹…공정성 논란 &#x27;일파만파&#x27;!" aria-label="아산 청년위원회, &#x27;비서실 개입·개인정보 유출&#x27; 의혹…공정성 논란 &#x27;일파만파&#x27;! 링크 복사">링크 복사</button></div><div class="article-feedback" data-article-feedback aria-live="polite"></div>
     </article>
     </div>
-    </section>
-
+      </section>
       <article class="info-card" data-policy-empty-state="true" hidden>
         <h3>조건에 맞는 참여·회의 기록이 없습니다</h3>
-        <p>구분이나 지역, 활동, 기간을 바꾸면 다른 참여·회의 기록을 볼 수 있습니다.</p>
+        <p>구분이나 지역, 활동, 기간을 바꾸면 다른 기록을 확인할 수 있습니다.</p>
       </article>
     </div>
-
+    
   </div>
   <nav class="bottom-nav"><a class="" href="index.html" data-icon="홈"><span>홈</span></a><a class="" href="news.html" data-icon="뉴"><span>뉴스</span></a><a class="" href="policies.html" data-icon="정"><span>정책</span></a><a class="active" href="hub.html" data-icon="참"><span>참여·회의</span></a><a class="" href="tools.html" data-icon="자"><span>자료도구</span></a><a class="" href="contact.html" data-icon="문"><span>제보·문의</span></a></nav>
   
@@ -2184,49 +2232,39 @@
     }
   }
 
-  function formatPolicyGroup(value) {
-    if (value === 'official') {
-      return '정부 회의·위원회';
-    }
-    if (value === 'local') {
-      return '지역 참여·네트워크';
-    }
-    if (value === 'related') {
-      return '참고 기록';
-    }
-    return '전체';
-  }
-
-  function getHubPolicyRegionAvailability(articleCards, activeGroup, activeType, activeDateStart, activeDateEnd, hasDateRange) {
-    const availability = {};
+  function getPolicyRegionAvailability(articleCards, activeGroup, activeType, activeDateStart, activeDateEnd, hasDateRange) {
+    const availableRegions = new Set();
 
     articleCards.forEach((card) => {
-      const section = card.closest('[data-policy-section]');
-      const articleGroup = card.getAttribute('data-policy-group') || (section ? section.getAttribute('data-policy-section') : 'official') || 'official';
-      const regionPill = card.querySelector('.meta-pill.subtle');
-      const articleRegion = card.getAttribute('data-article-region') || (regionPill ? regionPill.textContent.trim() : '중앙');
-      const activityValue = card.getAttribute('data-policy-type') || Array.from(card.querySelectorAll('.badge-row .badge'))
-        .slice(0, 1)
-        .map((badge) => badge.textContent.trim())
-        .join('|');
-      const articleTypes = activityValue
-        .split('|')
-        .flatMap((value) => value.split(','))
-        .map((value) => value.trim())
-        .filter(Boolean);
+      const articleGroup = card.getAttribute('data-policy-group') || 'official';
+      const articleRegion = card.getAttribute('data-article-region') || '중앙';
+      const articleType = card.getAttribute('data-policy-type') || '기타';
       const articleDate = card.getAttribute('data-article-date') || '';
       const groupMatch = activeGroup === 'all' || articleGroup === activeGroup;
-      const typeMatch = activeType === 'all' || articleTypes.includes(activeType);
+      const typeMatch = activeType === 'all' || articleType === activeType;
       const isAfterStart = !activeDateStart || (articleDate && articleDate >= activeDateStart);
       const isBeforeEnd = !activeDateEnd || (articleDate && articleDate <= activeDateEnd);
       const dateMatch = !hasDateRange || (isAfterStart && isBeforeEnd);
 
       if (groupMatch && typeMatch && dateMatch) {
-        availability[articleRegion] = (availability[articleRegion] || 0) + 1;
+        availableRegions.add(articleRegion);
       }
     });
 
-    return availability;
+    return availableRegions;
+  }
+
+  function formatPolicyGroup(value) {
+    if (value === 'official') {
+      return '정부 공식 발표';
+    }
+    if (value === 'local') {
+      return '지자체 발표 소식';
+    }
+    if (value === 'related') {
+      return '참고 기록';
+    }
+    return '전체';
   }
 
   function applyPolicyFilters(root, selectedGroup, selectedRegion, selectedType, selectedDateStart, selectedDateEnd) {
@@ -2235,12 +2273,19 @@
       selectedDateEnd ?? root.dataset.selectedDateEnd ?? root.getAttribute('data-default-date-end') ?? '',
     );
     const activeGroup = selectedGroup || root.dataset.selectedPolicyGroup || root.getAttribute('data-default-policy-group') || 'all';
+    let activeRegion = selectedRegion || root.dataset.selectedPolicyRegion || root.getAttribute('data-default-policy-region') || 'all';
     const activeType = selectedType || root.dataset.selectedPolicyType || root.getAttribute('data-default-policy-type') || 'all';
     const activeDateStart = normalizedDates.startDate;
     const activeDateEnd = normalizedDates.endDate;
     const hasDateRange = Boolean(activeDateStart || activeDateEnd);
-    const articleCards = Array.from(root.querySelectorAll('[data-article-card="true"]'));
-    const regionAvailability = getHubPolicyRegionAvailability(
+    root.dataset.selectedPolicyGroup = activeGroup;
+    root.dataset.selectedPolicyRegion = activeRegion;
+    root.dataset.selectedPolicyType = activeType;
+    root.dataset.selectedDateStart = activeDateStart;
+    root.dataset.selectedDateEnd = activeDateEnd;
+
+    const articleCards = Array.from(root.querySelectorAll('[data-policy-card="true"]'));
+    const availableRegions = getPolicyRegionAvailability(
       articleCards,
       activeGroup,
       activeType,
@@ -2248,38 +2293,22 @@
       activeDateEnd,
       hasDateRange,
     );
-    let activeRegion = selectedRegion || root.dataset.selectedPolicyRegion || root.getAttribute('data-default-policy-region') || 'all';
-    if (activeRegion !== 'all' && !regionAvailability[activeRegion]) {
+    if (activeRegion !== 'all' && !availableRegions.has(activeRegion)) {
       activeRegion = 'all';
     }
-
-    root.dataset.selectedPolicyGroup = activeGroup;
     root.dataset.selectedPolicyRegion = activeRegion;
-    root.dataset.selectedPolicyType = activeType;
-    root.dataset.selectedDateStart = activeDateStart;
-    root.dataset.selectedDateEnd = activeDateEnd;
 
     const visibleByGroup = { official: 0, local: 0, related: 0 };
     let visibleCount = 0;
 
     articleCards.forEach((card) => {
-      const section = card.closest('[data-policy-section]');
-      const articleGroup = card.getAttribute('data-policy-group') || (section ? section.getAttribute('data-policy-section') : 'official') || 'official';
-      const regionPill = card.querySelector('.meta-pill.subtle');
-      const articleRegion = card.getAttribute('data-article-region') || (regionPill ? regionPill.textContent.trim() : '중앙');
-      const activityValue = card.getAttribute('data-policy-type') || Array.from(card.querySelectorAll('.badge-row .badge'))
-        .slice(0, 1)
-        .map((badge) => badge.textContent.trim())
-        .join('|');
-      const articleTypes = activityValue
-        .split('|')
-        .flatMap((value) => value.split(','))
-        .map((value) => value.trim())
-        .filter(Boolean);
+      const articleGroup = card.getAttribute('data-policy-group') || 'official';
+      const articleRegion = card.getAttribute('data-article-region') || '중앙';
+      const articleType = card.getAttribute('data-policy-type') || '기타';
       const articleDate = card.getAttribute('data-article-date') || '';
       const groupMatch = activeGroup === 'all' || articleGroup === activeGroup;
       const regionMatch = activeRegion === 'all' || articleRegion === activeRegion;
-      const typeMatch = activeType === 'all' || articleTypes.includes(activeType);
+      const typeMatch = activeType === 'all' || articleType === activeType;
       const isAfterStart = !activeDateStart || (articleDate && articleDate >= activeDateStart);
       const isBeforeEnd = !activeDateEnd || (articleDate && articleDate <= activeDateEnd);
       const dateMatch = !hasDateRange || (isAfterStart && isBeforeEnd);
@@ -2294,20 +2323,14 @@
     root.querySelectorAll('[data-policy-filter]').forEach((button) => {
       const group = button.getAttribute('data-filter-group') || 'group';
       const value = button.getAttribute('data-filter-value') || 'all';
-      if (group === 'region') {
-        const shouldShow = value === 'all' || Boolean(regionAvailability[value]);
-        button.hidden = !shouldShow;
-        if (!shouldShow) {
-          button.classList.remove('active');
-          button.setAttribute('aria-pressed', 'false');
-          return;
-        }
-      }
       const isActive =
         group === 'group' ? value === activeGroup :
         group === 'region' ? value === activeRegion :
         group === 'type' ? value === activeType :
         value === 'all' && !hasDateRange;
+      if (group === 'region' && value !== 'all') {
+        button.hidden = !availableRegions.has(value);
+      }
       button.classList.toggle('active', isActive);
       button.setAttribute('aria-pressed', isActive ? 'true' : 'false');
     });
