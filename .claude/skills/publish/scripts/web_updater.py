@@ -3921,7 +3921,7 @@ def build_menu_updates(articles: list[dict], classified_articles: list[dict], st
             "page_basis_label": "페이지 반영",
             "page_basis_time": page_updated_at,
             "items": [
-                ("통계·연구자료 바로가기", "무료 공식 사이트에서 통계와 연구자료를 바로 찾습니다."),
+                ("청년 정책·조사 바로가기", "정책브리핑, 청년기본법, 청년 조사자료를 한곳에서 봅니다."),
                 ("AI 도구 사용법", "질문 만들기와 내용 정리 방법을 안내합니다."),
             ],
             "link_label": "도구 보기",
@@ -4394,6 +4394,50 @@ def build_tools_page() -> str:
         "04 자료도구",
         "정책 조사와 제안서 초안을 준비할 때 필요한 자료를 짧은 흐름으로 따라볼 수 있습니다.",
     )
+    priority_cards = "".join(
+        [
+            render_external_feature_card(
+                "정책브리핑 청년정책 특집",
+                "정부가 모아둔 청년정책 기사, 해설, 제도 소개를 한 화면에서 훑을 수 있는 공식 특집 페이지입니다.",
+                "https://m.korea.kr/news/policyFocusList.do?pkgId=49500808",
+                "공식 특집",
+            ),
+            render_external_feature_card(
+                "청년기본법",
+                "청년의 범위, 국가와 지자체의 책무, 실태조사와 기본계획 근거를 법령 원문으로 바로 확인할 수 있습니다.",
+                "https://www.law.go.kr/LSW/LsiJoLinkP.do?docType=JO&joNo=001700000&languageType=KO&lsNm=%EC%B2%AD%EB%85%84%EA%B8%B0%EB%B3%B8%EB%B2%95&paras=1",
+                "법령 원문",
+            ),
+        ]
+    )
+    youth_stats_cards = "".join(
+        [
+            render_external_feature_card(
+                "2024년 청년의 삶 실태조사",
+                "국무조정실이 청년기본법에 따라 2년마다 발표하는 대표 실태조사로, 노동·주거·건강·관계까지 폭넓게 담고 있습니다.",
+                "https://www.opm.go.kr/opm/news/press1.do?articleNo=158583&attachNo=146521&mode=download",
+                "정부 조사",
+            ),
+            render_external_feature_card(
+                "청년통계지도",
+                "통계청 SGIS에서 청년 인구, 부모동거, 주택소유, 취업활동 같은 지표를 지역별로 바로 볼 수 있습니다.",
+                "https://sgis.kostat.go.kr/view/syrStats/main",
+                "통계청 서비스",
+            ),
+            render_external_feature_card(
+                "2025년 5월 청년층 부가조사 결과",
+                "통계청 경제활동인구조사 기반 자료로 고용률, 첫 일자리 소요기간, 직장 체험, 취업시험 준비를 확인할 수 있습니다.",
+                "https://www.kostat.go.kr/boardDownload.es?bid=210&list_no=437676&seq=9",
+                "고용 통계",
+            ),
+            render_external_feature_card(
+                "사회조사로 살펴본 청년의 의식변화",
+                "통계청 사회조사로 청년의 결혼, 출산, 노동, 가치관 변화를 묶어 보여주는 기획 보도자료입니다.",
+                "https://kostat.go.kr/board.es?act=view&bid=219&list_no=426708&mid=a10301060300&ref_bid=&tag=",
+                "인식 조사",
+            ),
+        ]
+    )
     reference_cards = "".join(
         [
             render_external_feature_card(
@@ -4403,16 +4447,22 @@ def build_tools_page() -> str:
                 "무료 통계",
             ),
             render_external_feature_card(
+                "공공데이터포털",
+                "CSV, XLS, API 형태의 원자료를 내려받아 지역별·대상별 근거를 직접 가공할 때 유용합니다.",
+                "https://www.data.go.kr/",
+                "무료 데이터",
+            ),
+            render_external_feature_card(
                 "지표누리",
                 "e-나라지표, 국민 삶의 질 지표, 저출생 통계지표처럼 정책 설명이 붙은 핵심 지표를 한 번에 볼 수 있습니다.",
                 "https://www.index.go.kr/",
                 "무료 지표",
             ),
             render_external_feature_card(
-                "공공데이터포털",
-                "CSV, XLS, API 형태의 원자료를 내려받아 지역별·대상별 근거를 직접 가공할 때 유용합니다.",
-                "https://www.data.go.kr/",
-                "무료 데이터",
+                "한국청소년정책연구원",
+                "청년·청소년 정책 연구보고서와 데이터아카이브를 확인할 때 가장 먼저 보기 좋은 전문 연구기관입니다.",
+                "https://www.nypi.re.kr/",
+                "무료 청년연구",
             ),
             render_external_feature_card(
                 "NKIS 국가정책연구포털",
@@ -4421,22 +4471,16 @@ def build_tools_page() -> str:
                 "무료 국책연구",
             ),
             render_external_feature_card(
-                "KDI 경제교육·정보센터",
-                "국내연구자료와 경제정책정보를 기관별로 모아 볼 수 있어 배경 설명과 선행연구를 함께 잡기 좋습니다.",
-                "https://eiec.kdi.re.kr/",
-                "무료 정책자료",
-            ),
-            render_external_feature_card(
                 "국회입법조사처",
                 "이슈와논점, NARS 현안분석처럼 쟁점을 빠르게 훑을 수 있는 입법·정책 자료를 볼 수 있습니다.",
                 "https://www.nars.go.kr/",
                 "무료 입법자료",
             ),
             render_external_feature_card(
-                "한국청소년정책연구원",
-                "청년·청소년 정책 연구보고서와 데이터아카이브를 확인할 때 가장 먼저 보기 좋은 전문 연구기관입니다.",
-                "https://www.nypi.re.kr/",
-                "무료 청년연구",
+                "KDI 경제교육·정보센터",
+                "국내연구자료와 경제정책정보를 기관별로 모아 볼 수 있어 배경 설명과 선행연구를 함께 잡기 좋습니다.",
+                "https://eiec.kdi.re.kr/",
+                "무료 정책자료",
             ),
         ]
     )
@@ -4445,11 +4489,29 @@ def build_tools_page() -> str:
     <section class="section">
       {render_list_block("빠른 시작", "처음이면 아래 세 단계부터 보면 가장 빠릅니다.", [("정부 원문 확인", "정책브리핑과 부처 자료로 기준점을 먼저 잡기"), ("AI로 질문 정리", "조사 범위와 논점을 짧게 정리하기"), ("검토 요청 준비", "문서 상태와 요청 포인트 적어두기")])}
     </section>
+    <section class="section" id="youth-policy-basics">
+      <div class="section-head">
+        <div>
+          <h2>청년 정책 기본 바로가기</h2>
+          <p>처음엔 특집 페이지와 법령 원문부터 보면 전체 맥락을 가장 빠르게 잡을 수 있습니다.</p>
+        </div>
+      </div>
+      <div class="feature-grid">{priority_cards}</div>
+    </section>
+    <section class="section" id="youth-stat-releases">
+      <div class="section-head">
+        <div>
+          <h2>청년 조사·발표 모음</h2>
+          <p>청년을 직접 대상으로 조사하거나, 청년만 따로 떼어 발표한 공식 통계를 건별로 모았습니다.</p>
+        </div>
+      </div>
+      <div class="feature-grid">{youth_stats_cards}</div>
+    </section>
     <section class="section" id="stats-research-links">
       <div class="section-head">
         <div>
           <h2>무료 통계·연구자료 바로가기</h2>
-          <p>정책제안서를 쓸 때 자주 참조하는 공식 무료 사이트만 먼저 묶었습니다.</p>
+          <p>청년 조사자료 외에, 제안서 근거를 보강할 때 자주 쓰는 공식 무료 사이트를 우선순위대로 묶었습니다.</p>
         </div>
       </div>
       <div class="feature-grid">{reference_cards}</div>
