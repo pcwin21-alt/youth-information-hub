@@ -4445,9 +4445,6 @@ def build_tools_page() -> str:
     <section class="section">
       {render_list_block("빠른 시작", "처음이면 아래 세 단계부터 보면 가장 빠릅니다.", [("정부 원문 확인", "정책브리핑과 부처 자료로 기준점을 먼저 잡기"), ("AI로 질문 정리", "조사 범위와 논점을 짧게 정리하기"), ("검토 요청 준비", "문서 상태와 요청 포인트 적어두기")])}
     </section>
-    <section class="section" id="search-sites">
-      {render_list_block("자료 찾는 순서", "정책제안서에 근거를 붙일 때는 아래 순서로 찾으면 덜 헤맵니다.", [("숫자·시계열 확인", "KOSIS와 지표누리에서 공식 통계와 핵심 지표를 먼저 확인"), ("원자료 내려받기", "공공데이터포털에서 CSV·XLS·API 형태 데이터를 직접 확보"), ("선행연구·쟁점 정리", "NKIS, KDI, 국회입법조사처, 청소년정책연구원 자료로 배경과 시사점 정리")])}
-    </section>
     <section class="section" id="stats-research-links">
       <div class="section-head">
         <div>
