@@ -156,9 +156,9 @@ BASE_CSS = """
     --accent-soft: rgba(57, 86, 119, 0.12);
     --accent-strong: #172536;
     --home-apricot: #dd9367;
-    --home-apricot-soft: rgba(221, 147, 103, 0.18);
-    --home-teal: #5f9188;
-    --home-teal-soft: rgba(95, 145, 136, 0.18);
+    --home-apricot-soft: rgba(221, 147, 103, 0.14);
+    --home-teal: #7d8e98;
+    --home-teal-soft: rgba(125, 142, 152, 0.12);
     --shadow: 0 18px 42px rgba(31, 42, 51, 0.08);
     --shadow-soft: 0 8px 20px rgba(31, 42, 51, 0.05);
   }
@@ -871,8 +871,8 @@ BASE_CSS = """
     border-color: rgba(23, 37, 54, 0.18);
     border-radius: 40px 108px 40px 50px;
     background:
-      radial-gradient(circle at top left, rgba(95, 145, 136, 0.18), transparent 30%),
-      radial-gradient(circle at top right, rgba(221, 147, 103, 0.18), transparent 28%),
+      radial-gradient(circle at top left, rgba(57, 86, 119, 0.14), transparent 30%),
+      radial-gradient(circle at top right, rgba(221, 147, 103, 0.16), transparent 28%),
       linear-gradient(180deg, rgba(28, 40, 58, 0.98) 0%, rgba(23, 37, 54, 1) 100%);
     box-shadow: 0 22px 42px rgba(23, 37, 54, 0.18);
   }
@@ -890,14 +890,14 @@ BASE_CSS = """
     width: 180px;
     height: 180px;
     border-radius: 999px;
-    background: radial-gradient(circle, rgba(95, 145, 136, 0.18) 0%, rgba(95, 145, 136, 0) 74%);
+    background: radial-gradient(circle, rgba(57, 86, 119, 0.16) 0%, rgba(57, 86, 119, 0) 74%);
   }
   .home-briefing-card.digest-organic {
     border-color: var(--home-apricot-soft);
     border-radius: 34px 30px 88px 34px;
     background:
-      radial-gradient(circle at top right, rgba(221, 147, 103, 0.2), transparent 30%),
-      radial-gradient(circle at bottom left, rgba(95, 145, 136, 0.12), transparent 28%),
+      radial-gradient(circle at top right, rgba(221, 147, 103, 0.18), transparent 30%),
+      radial-gradient(circle at bottom left, rgba(57, 86, 119, 0.08), transparent 28%),
       linear-gradient(180deg, rgba(252, 245, 239, 0.99) 0%, rgba(255, 255, 255, 0.99) 100%);
   }
   .home-briefing-card.digest-organic::before {
@@ -909,11 +909,11 @@ BASE_CSS = """
     background: rgba(255, 255, 255, 0.72);
   }
   .home-briefing-card.support-pill {
-    border-color: var(--home-teal-soft);
+    border-color: rgba(57, 86, 119, 0.12);
     border-radius: 86px 30px 42px 86px;
     background:
-      radial-gradient(circle at top left, rgba(95, 145, 136, 0.22), transparent 26%),
-      radial-gradient(circle at bottom right, rgba(221, 147, 103, 0.12), transparent 30%),
+      radial-gradient(circle at top left, rgba(57, 86, 119, 0.1), transparent 26%),
+      radial-gradient(circle at bottom right, rgba(221, 147, 103, 0.1), transparent 30%),
       linear-gradient(180deg, rgba(250, 247, 241, 0.99) 0%, rgba(255, 255, 255, 0.99) 100%);
   }
   .home-briefing-card.support-pill::after {
@@ -928,20 +928,20 @@ BASE_CSS = """
     padding: 0;
     gap: 0;
     border-color: var(--home-apricot-soft);
-    border-radius: 36px 36px 110px 44px;
+    border-radius: 36px 36px 84px 44px;
     background:
-      radial-gradient(circle at top right, rgba(221, 147, 103, 0.22), transparent 28%),
-      radial-gradient(circle at bottom left, rgba(95, 145, 136, 0.1), transparent 30%),
+      radial-gradient(circle at top right, rgba(221, 147, 103, 0.18), transparent 28%),
+      radial-gradient(circle at bottom left, rgba(57, 86, 119, 0.06), transparent 30%),
       linear-gradient(180deg, rgba(249, 240, 233, 0.99) 0%, rgba(255, 255, 255, 0.99) 100%);
     color: var(--text);
   }
   .home-briefing-card.footer-warm::after {
-    right: -44px;
-    bottom: -70px;
-    width: 150px;
-    height: 150px;
+    right: -62px;
+    bottom: -88px;
+    width: 124px;
+    height: 124px;
     border-radius: 999px;
-    background: rgba(221, 147, 103, 0.16);
+    background: rgba(221, 147, 103, 0.1);
   }
   .home-briefing-date {
     color: var(--accent-strong);
@@ -954,8 +954,9 @@ BASE_CSS = """
     font-size: clamp(2.5rem, 8vw, 4.8rem);
     line-height: 0.95;
     letter-spacing: -0.07em;
-    max-width: none;
-    white-space: nowrap;
+    max-width: 8ch;
+    white-space: normal;
+    text-wrap: balance;
   }
   .home-briefing-copy {
     margin: 0;
@@ -1033,10 +1034,10 @@ BASE_CSS = """
       linear-gradient(180deg, rgba(247, 243, 239, 0.98) 0%, rgba(255, 255, 255, 0.99) 100%);
   }
   .home-glance-item.teal {
-    border-color: var(--home-teal-soft);
+    border-color: rgba(57, 86, 119, 0.12);
     background:
-      radial-gradient(circle at top, rgba(95, 145, 136, 0.2), transparent 44%),
-      linear-gradient(180deg, rgba(238, 247, 244, 0.98) 0%, rgba(255, 255, 255, 0.99) 100%);
+      radial-gradient(circle at top, rgba(57, 86, 119, 0.1), transparent 44%),
+      linear-gradient(180deg, rgba(244, 246, 249, 0.98) 0%, rgba(255, 255, 255, 0.99) 100%);
   }
   .home-glance-label {
     color: var(--muted);
@@ -1073,8 +1074,8 @@ BASE_CSS = """
     background: rgba(241, 245, 250, 0.96);
   }
   .home-glance-links .mini-link:nth-child(3) {
-    border-color: var(--home-teal-soft);
-    background: rgba(233, 244, 240, 0.96);
+    border-color: rgba(57, 86, 119, 0.12);
+    background: rgba(244, 246, 249, 0.96);
   }
   .home-briefing-divider {
     height: 1px;
@@ -1159,7 +1160,7 @@ BASE_CSS = """
   .home-support-footer {
     display: grid;
     gap: 14px;
-    padding: 22px;
+    padding: 24px 28px 30px 26px;
     color: var(--text);
   }
   .home-support-copy {
@@ -1186,6 +1187,7 @@ BASE_CSS = """
     display: flex;
     flex-wrap: wrap;
     gap: 12px;
+    align-items: flex-start;
   }
   .home-support-links a {
     display: inline-flex;
@@ -1213,7 +1215,9 @@ BASE_CSS = """
     color: rgba(102, 113, 123, 0.9);
     font-size: 0.77rem;
     line-height: 1.55;
-    text-align: right;
+    text-align: left;
+    max-width: 100%;
+    overflow-wrap: anywhere;
   }
   .home-support-metrics {
     display: grid;
@@ -1276,7 +1280,7 @@ BASE_CSS = """
   }
   .home-support-metric-item:nth-child(2) {
     background:
-      linear-gradient(180deg, rgba(236, 246, 242, 0.98) 0%, rgba(255, 255, 255, 0.99) 100%);
+      linear-gradient(180deg, rgba(243, 246, 249, 0.98) 0%, rgba(255, 255, 255, 0.99) 100%);
   }
   .home-support-metric-item:nth-child(3) {
     background:
@@ -1288,7 +1292,7 @@ BASE_CSS = """
   }
   .home-support-metric-item:nth-child(5) {
     background:
-      linear-gradient(180deg, rgba(236, 246, 242, 0.98) 0%, rgba(255, 255, 255, 0.99) 100%);
+      linear-gradient(180deg, rgba(243, 246, 249, 0.98) 0%, rgba(255, 255, 255, 0.99) 100%);
   }
   .home-support-metric-item:nth-child(6) {
     background:
@@ -2033,7 +2037,10 @@ BASE_CSS = """
       border-radius: 96px 34px 46px 96px;
     }
     .home-briefing-card.footer-warm {
-      border-radius: 38px 38px 128px 48px;
+      border-radius: 38px 38px 96px 48px;
+    }
+    .home-support-footer {
+      padding: 28px 34px 34px 30px;
     }
     .home-spotlight-layout {
       grid-template-columns: minmax(0, 1.24fr) minmax(280px, 0.82fr);
@@ -2127,7 +2134,10 @@ BASE_CSS = """
       border-radius: 58px 24px 32px 58px;
     }
     .home-briefing-card.footer-warm {
-      border-radius: 28px 28px 72px 34px;
+      border-radius: 28px 28px 56px 34px;
+    }
+    .home-support-footer {
+      padding: 22px 22px 26px 22px;
     }
     .home-briefing-title {
       font-size: clamp(2.05rem, 9.8vw, 3.25rem);
