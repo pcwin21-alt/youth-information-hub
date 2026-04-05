@@ -4,7 +4,9 @@ import argparse
 from datetime import datetime, timedelta
 import html
 import json
+import re
 import sys
+import urllib.request
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[4]
@@ -18,6 +20,7 @@ from youth_info_platform.io_utils import read_json
 NEWS_WINDOW_DAYS = 7
 NEWS_WINDOW_HOURS = NEWS_WINDOW_DAYS * 24
 HOME_UPDATE_SNAPSHOT = ROOT / "output" / "home_update_snapshot.json"
+REMOTE_TEXT_CACHE: dict[str, str] = {}
 
 YOUTH_METRICS = [
     {
@@ -501,6 +504,114 @@ BASE_CSS = """
     color: var(--accent-strong);
     font-size: 0.88rem;
     font-weight: 800;
+  }
+  .tools-resource-grid,
+  .tools-survey-grid {
+    grid-template-columns: 1fr;
+  }
+  .resource-card {
+    position: relative;
+    overflow: hidden;
+    display: grid;
+    gap: 12px;
+    align-content: start;
+    min-height: 100%;
+    border-radius: 30px;
+    border: 1px solid rgba(31, 42, 51, 0.08);
+    background: linear-gradient(180deg, var(--resource-wash, rgba(255, 255, 255, 0.98)) 0%, rgba(255, 255, 255, 0.98) 100%);
+    box-shadow: var(--shadow-soft);
+  }
+  .resource-card::after {
+    content: "";
+    position: absolute;
+    right: -22px;
+    bottom: -28px;
+    width: 116px;
+    height: 116px;
+    border-radius: 36px;
+    background: var(--resource-glow, rgba(57, 86, 119, 0.08));
+    opacity: 0.9;
+    pointer-events: none;
+  }
+  .resource-card > * {
+    position: relative;
+    z-index: 1;
+  }
+  .resource-card .article-meta {
+    display: inline-flex;
+    width: max-content;
+    padding: 6px 11px;
+    border-radius: 999px;
+    border: 1px solid rgba(31, 42, 51, 0.08);
+    background: rgba(255, 255, 255, 0.76);
+  }
+  .resource-card h3 {
+    margin: 0;
+    font-size: 1.08rem;
+    line-height: 1.38;
+    letter-spacing: -0.03em;
+  }
+  .resource-card p {
+    margin: 0;
+  }
+  .resource-status-list {
+    display: grid;
+    gap: 8px;
+    margin-top: auto;
+    padding-top: 14px;
+    border-top: 1px solid rgba(31, 42, 51, 0.08);
+  }
+  .resource-status-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  .resource-status-item strong {
+    color: var(--muted);
+    font-size: 0.76rem;
+    font-weight: 700;
+    line-height: 1.45;
+  }
+  .resource-status-item span {
+    color: var(--accent-strong);
+    font-size: 0.79rem;
+    font-weight: 700;
+    line-height: 1.45;
+    text-align: right;
+  }
+  .resource-link {
+    align-items: center;
+    gap: 6px;
+    width: max-content;
+    margin-top: 4px;
+    padding: 10px 14px;
+    border-radius: 999px;
+    border: 1px solid rgba(31, 42, 51, 0.08);
+    background: rgba(255, 255, 255, 0.78);
+  }
+  .resource-link::after {
+    content: "↗";
+    font-size: 0.82rem;
+  }
+  .resource-card--navy {
+    --resource-wash: rgba(57, 86, 119, 0.12);
+    --resource-glow: rgba(57, 86, 119, 0.16);
+  }
+  .resource-card--warm {
+    --resource-wash: rgba(221, 147, 103, 0.12);
+    --resource-glow: rgba(221, 147, 103, 0.16);
+  }
+  .resource-card--teal {
+    --resource-wash: rgba(125, 142, 152, 0.12);
+    --resource-glow: rgba(125, 142, 152, 0.16);
+  }
+  .resource-card--sand {
+    --resource-wash: rgba(227, 218, 204, 0.62);
+    --resource-glow: rgba(214, 198, 178, 0.32);
+  }
+  .resource-card--survey {
+    border-radius: 32px;
   }
   .article-title-link,
   .article-summary-link,
@@ -2064,6 +2175,11 @@ BASE_CSS = """
       grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: 18px;
     }
+    .tools-resource-grid,
+    .tools-survey-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+    }
     .youth-metrics-grid {
       grid-template-columns: repeat(5, minmax(0, 1fr));
     }
@@ -2989,6 +3105,110 @@ def render_external_feature_card(title: str, description: str, href: str, meta: 
       <h3>{html.escape(title)}</h3>
       <p>{html.escape(description)}</p>
       <a class="mini-link" href="{html.escape(href)}" target="_blank" rel="noreferrer">사이트 열기</a>
+    </article>
+    """
+
+
+def fetch_remote_text(url: str) -> str:
+    cached = REMOTE_TEXT_CACHE.get(url)
+    if cached is not None:
+        return cached
+
+    try:
+        request = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
+        with urllib.request.urlopen(request, timeout=20) as response:
+            payload = response.read()
+    except Exception:
+        REMOTE_TEXT_CACHE[url] = ""
+        return ""
+
+    text = payload.decode("utf-8", "ignore")
+    REMOTE_TEXT_CACHE[url] = text
+    return text
+
+
+def extract_remote_value(url: str, patterns: list[str], fallback: str = "") -> tuple[str, bool]:
+    text = fetch_remote_text(url)
+    if not text:
+        return fallback, False
+
+    for pattern in patterns:
+        match = re.search(pattern, text, re.IGNORECASE | re.DOTALL)
+        if not match:
+            continue
+        captured = match.group(1) if match.groups() else match.group(0)
+        value = normalize_inline_text(html.unescape(captured))
+        if value:
+            return value, True
+
+    return fallback, True
+
+
+def find_related_resource_articles(articles: list[dict], keywords: list[str]) -> list[dict]:
+    normalized_keywords = [normalize_inline_text(keyword) for keyword in keywords if normalize_inline_text(keyword)]
+    if not normalized_keywords:
+        return []
+
+    matched: list[dict] = []
+    for article in sort_articles_by_recency(articles):
+        haystack = normalize_inline_text(
+            " ".join(
+                str(article.get(field, ""))
+                for field in ("title", "lead_text", "summary", "classification_reason", "source", "source_name")
+            )
+        )
+        if any(keyword in haystack for keyword in normalized_keywords):
+            matched.append(article)
+    return matched
+
+
+def build_resource_status_rows(resource: dict, articles: list[dict]) -> list[tuple[str, str]]:
+    basis_value, is_reachable = extract_remote_value(
+        resource.get("href", ""),
+        resource.get("basis_patterns", []),
+        resource.get("basis_fallback", ""),
+    )
+    is_available = bool(basis_value) or is_reachable
+    rows = [
+        (resource.get("basis_label", "공식 기준"), basis_value or "기준 정보 확인 중"),
+        ("자료 상태", "자료 확인됨" if is_available else "자동 확인 필요"),
+    ]
+
+    related_articles = find_related_resource_articles(articles, resource.get("keywords", []))
+    if related_articles:
+        latest = related_articles[0]
+        latest_date = article_date_value(latest) or "날짜 미상"
+        rows.append(("최근 기사 추적", f"{latest_date} · {len(related_articles)}건"))
+    else:
+        rows.append(("최근 기사 추적", "최근 수집 기사 없음"))
+
+    return rows
+
+
+def render_resource_card(
+    title: str,
+    description: str,
+    href: str,
+    meta: str,
+    *,
+    tone: str = "sand",
+    status_rows: list[tuple[str, str]] | None = None,
+) -> str:
+    status_html = ""
+    if status_rows:
+        rendered_rows = "".join(
+            f'<div class="resource-status-item"><strong>{html.escape(label)}</strong><span>{html.escape(value)}</span></div>'
+            for label, value in status_rows
+        )
+        status_html = f'<div class="resource-status-list">{rendered_rows}</div>'
+
+    return f"""
+    <article class="section-card resource-card resource-card--{html.escape(tone)}">
+      <div class="article-meta">{html.escape(meta)}</div>
+      <h3>{html.escape(title)}</h3>
+      <p>{html.escape(description)}</p>
+      {status_html}
+      <a class="mini-link resource-link" href="{html.escape(href)}" target="_blank" rel="noreferrer">사이트 열기</a>
     </article>
     """
 
@@ -4389,96 +4609,166 @@ def build_hub_page(classified_articles: list[dict]) -> str:
     """
 
 
-def build_tools_page() -> str:
+def build_tools_page(articles: list[dict], status: dict) -> str:
     page_intro = render_compact_intro(
         "04 자료도구",
         "정책 조사와 제안서 초안을 준비할 때 필요한 자료를 짧은 흐름으로 따라볼 수 있습니다.",
     )
+    page_updated_at = status.get("updated_at") or status.get("finished_at")
+    tools_check_badge = f'<span class="mini-link" aria-disabled="true">자동 확인 {html.escape(format_display_datetime(page_updated_at))}</span>'
+
+    youth_stat_resources = [
+        {
+            "title": "2024년 청년의 삶 실태조사",
+            "description": "국무조정실이 청년기본법에 따라 2년마다 발표하는 대표 실태조사로, 노동·주거·건강·관계까지 폭넓게 담고 있습니다.",
+            "href": "https://www.opm.go.kr/opm/news/press1.do?articleNo=158583&attachNo=146521&mode=download",
+            "meta": "정부 조사",
+            "tone": "navy",
+            "basis_label": "공식 발표",
+            "basis_patterns": [
+                r"게시일[^0-9]{0,80}(20\d{2}-\d{2}-\d{2})",
+                r"(20\d{2}-\d{2}-\d{2})",
+            ],
+            "basis_fallback": "2025-03-11",
+            "keywords": ["청년의 삶 실태조사", "청년 삶 실태조사", "청년 삶 실태"],
+        },
+        {
+            "title": "청년통계지도",
+            "description": "통계청 SGIS에서 청년 인구, 부모동거, 주택소유, 취업활동 같은 지표를 지역별로 바로 볼 수 있습니다.",
+            "href": "https://sgis.kostat.go.kr/view/syrStats/main",
+            "meta": "통계청 서비스",
+            "tone": "teal",
+            "basis_label": "서비스 기준",
+            "basis_patterns": [
+                r"(20\d{2}년\s*\d{1,2}월 기준)",
+            ],
+            "basis_fallback": "2025년 8월 기준",
+            "keywords": ["청년통계지도", "청년통계등록부", "청년통계"],
+        },
+        {
+            "title": "2025년 5월 청년층 부가조사 결과",
+            "description": "통계청 경제활동인구조사 기반 자료로 고용률, 첫 일자리 소요기간, 직장 체험, 취업시험 준비를 확인할 수 있습니다.",
+            "href": "https://www.kostat.go.kr/boardDownload.es?bid=210&list_no=437676&seq=9",
+            "meta": "고용 통계",
+            "tone": "warm",
+            "basis_label": "공식 발표",
+            "basis_patterns": [
+                r"(20\d{2}-\d{2}-\d{2})",
+            ],
+            "basis_fallback": "2025-07-23",
+            "keywords": ["청년층 부가조사", "경제활동인구조사 청년층", "청년층 고용"],
+        },
+        {
+            "title": "사회조사로 살펴본 청년의 의식변화",
+            "description": "통계청 사회조사로 청년의 결혼, 출산, 노동, 가치관 변화를 묶어 보여주는 기획 보도자료입니다.",
+            "href": "https://kostat.go.kr/board.es?act=view&bid=219&list_no=426708&mid=a10301060300&ref_bid=&tag=",
+            "meta": "인식 조사",
+            "tone": "sand",
+            "basis_label": "공식 발표",
+            "basis_patterns": [
+                r"게시일[^0-9]{0,80}(20\d{2}-\d{2}-\d{2})",
+                r"(20\d{2}-\d{2}-\d{2})",
+            ],
+            "basis_fallback": "2023-08-28",
+            "keywords": ["사회조사로 살펴본 청년의 의식변화", "청년의 의식변화", "사회조사 청년"],
+        },
+    ]
     youth_stats_cards = "".join(
-        [
-            render_external_feature_card(
-                "2024년 청년의 삶 실태조사",
-                "국무조정실이 청년기본법에 따라 2년마다 발표하는 대표 실태조사로, 노동·주거·건강·관계까지 폭넓게 담고 있습니다.",
-                "https://www.opm.go.kr/opm/news/press1.do?articleNo=158583&attachNo=146521&mode=download",
-                "정부 조사",
-            ),
-            render_external_feature_card(
-                "청년통계지도",
-                "통계청 SGIS에서 청년 인구, 부모동거, 주택소유, 취업활동 같은 지표를 지역별로 바로 볼 수 있습니다.",
-                "https://sgis.kostat.go.kr/view/syrStats/main",
-                "통계청 서비스",
-            ),
-            render_external_feature_card(
-                "2025년 5월 청년층 부가조사 결과",
-                "통계청 경제활동인구조사 기반 자료로 고용률, 첫 일자리 소요기간, 직장 체험, 취업시험 준비를 확인할 수 있습니다.",
-                "https://www.kostat.go.kr/boardDownload.es?bid=210&list_no=437676&seq=9",
-                "고용 통계",
-            ),
-            render_external_feature_card(
-                "사회조사로 살펴본 청년의 의식변화",
-                "통계청 사회조사로 청년의 결혼, 출산, 노동, 가치관 변화를 묶어 보여주는 기획 보도자료입니다.",
-                "https://kostat.go.kr/board.es?act=view&bid=219&list_no=426708&mid=a10301060300&ref_bid=&tag=",
-                "인식 조사",
-            ),
-        ]
+        render_resource_card(
+            resource["title"],
+            resource["description"],
+            resource["href"],
+            resource["meta"],
+            tone=resource["tone"],
+            status_rows=build_resource_status_rows(resource, articles),
+        )
+        for resource in youth_stat_resources
     )
+
+    reference_resources = [
+        {
+            "title": "정책브리핑 청년정책 특집",
+            "description": "정부가 모아둔 청년정책 기사, 해설, 제도 소개를 한 화면에서 훑을 수 있는 공식 특집 페이지입니다.",
+            "href": "https://m.korea.kr/news/policyFocusList.do?pkgId=49500808",
+            "meta": "공식 특집",
+            "tone": "warm",
+            "note": ("추천 활용", "정부 정책 흐름 확인"),
+        },
+        {
+            "title": "청년기본법",
+            "description": "청년의 범위, 국가와 지자체의 책무, 실태조사와 기본계획 근거를 법령 원문으로 바로 확인할 수 있습니다.",
+            "href": "https://www.law.go.kr/LSW/LsiJoLinkP.do?docType=JO&joNo=001700000&languageType=KO&lsNm=%EC%B2%AD%EB%85%84%EA%B8%B0%EB%B3%B8%EB%B2%95&paras=1",
+            "meta": "법령 원문",
+            "tone": "navy",
+            "note": ("추천 활용", "법적 근거 문구 확인"),
+        },
+        {
+            "title": "KOSIS 국가통계포털",
+            "description": "인구, 고용, 주거, 복지 같은 국가승인통계를 표와 시계열로 바로 확인할 수 있습니다.",
+            "href": "https://kosis.kr/index/index.do",
+            "meta": "공식 통계",
+            "tone": "sand",
+            "note": ("추천 활용", "수치 인용·시계열 비교"),
+        },
+        {
+            "title": "공공데이터포털",
+            "description": "CSV, XLS, API 형태의 원자료를 내려받아 지역별·대상별 근거를 직접 가공할 때 유용합니다.",
+            "href": "https://www.data.go.kr/",
+            "meta": "공공 데이터",
+            "tone": "teal",
+            "note": ("추천 활용", "원자료 내려받기"),
+        },
+        {
+            "title": "지표누리",
+            "description": "e-나라지표, 국민 삶의 질 지표, 저출생 통계지표처럼 정책 설명이 붙은 핵심 지표를 한 번에 볼 수 있습니다.",
+            "href": "https://www.index.go.kr/",
+            "meta": "공식 지표",
+            "tone": "warm",
+            "note": ("추천 활용", "설명 붙은 핵심 지표"),
+        },
+        {
+            "title": "한국청소년정책연구원",
+            "description": "청년·청소년 정책 연구보고서와 데이터아카이브를 확인할 때 가장 먼저 보기 좋은 전문 연구기관입니다.",
+            "href": "https://www.nypi.re.kr/",
+            "meta": "청년 연구",
+            "tone": "sand",
+            "note": ("추천 활용", "청년 연구보고서 확인"),
+        },
+        {
+            "title": "NKIS 국가정책연구포털",
+            "description": "국책연구기관 연구보고서와 정책·연구자료를 통합검색으로 찾을 수 있습니다.",
+            "href": "https://www.nkis.re.kr/",
+            "meta": "국책연구",
+            "tone": "navy",
+            "note": ("추천 활용", "국책연구 통합검색"),
+        },
+        {
+            "title": "국회입법조사처",
+            "description": "이슈와논점, NARS 현안분석처럼 쟁점을 빠르게 훑을 수 있는 입법·정책 자료를 볼 수 있습니다.",
+            "href": "https://www.nars.go.kr/",
+            "meta": "입법자료",
+            "tone": "teal",
+            "note": ("추천 활용", "쟁점 정리·입법 검토"),
+        },
+        {
+            "title": "KDI 경제교육·정보센터",
+            "description": "국내연구자료와 경제정책정보를 기관별로 모아 볼 수 있어 배경 설명과 선행연구를 함께 잡기 좋습니다.",
+            "href": "https://eiec.kdi.re.kr/",
+            "meta": "정책자료",
+            "tone": "warm",
+            "note": ("추천 활용", "배경 설명·선행연구"),
+        },
+    ]
     reference_cards = "".join(
-        [
-            render_external_feature_card(
-                "정책브리핑 청년정책 특집",
-                "정부가 모아둔 청년정책 기사, 해설, 제도 소개를 한 화면에서 훑을 수 있는 공식 특집 페이지입니다.",
-                "https://m.korea.kr/news/policyFocusList.do?pkgId=49500808",
-                "공식 특집",
-            ),
-            render_external_feature_card(
-                "청년기본법",
-                "청년의 범위, 국가와 지자체의 책무, 실태조사와 기본계획 근거를 법령 원문으로 바로 확인할 수 있습니다.",
-                "https://www.law.go.kr/LSW/LsiJoLinkP.do?docType=JO&joNo=001700000&languageType=KO&lsNm=%EC%B2%AD%EB%85%84%EA%B8%B0%EB%B3%B8%EB%B2%95&paras=1",
-                "법령 원문",
-            ),
-            render_external_feature_card(
-                "KOSIS 국가통계포털",
-                "인구, 고용, 주거, 복지 같은 국가승인통계를 표와 시계열로 바로 확인할 수 있습니다.",
-                "https://kosis.kr/index/index.do",
-                "공식 통계",
-            ),
-            render_external_feature_card(
-                "공공데이터포털",
-                "CSV, XLS, API 형태의 원자료를 내려받아 지역별·대상별 근거를 직접 가공할 때 유용합니다.",
-                "https://www.data.go.kr/",
-                "공공 데이터",
-            ),
-            render_external_feature_card(
-                "지표누리",
-                "e-나라지표, 국민 삶의 질 지표, 저출생 통계지표처럼 정책 설명이 붙은 핵심 지표를 한 번에 볼 수 있습니다.",
-                "https://www.index.go.kr/",
-                "공식 지표",
-            ),
-            render_external_feature_card(
-                "한국청소년정책연구원",
-                "청년·청소년 정책 연구보고서와 데이터아카이브를 확인할 때 가장 먼저 보기 좋은 전문 연구기관입니다.",
-                "https://www.nypi.re.kr/",
-                "청년 연구",
-            ),
-            render_external_feature_card(
-                "NKIS 국가정책연구포털",
-                "국책연구기관 연구보고서와 정책·연구자료를 통합검색으로 찾을 수 있습니다.",
-                "https://www.nkis.re.kr/",
-                "국책연구",
-            ),
-            render_external_feature_card(
-                "국회입법조사처",
-                "이슈와논점, NARS 현안분석처럼 쟁점을 빠르게 훑을 수 있는 입법·정책 자료를 볼 수 있습니다.",
-                "https://www.nars.go.kr/",
-                "입법자료",
-            ),
-            render_external_feature_card(
-                "KDI 경제교육·정보센터",
-                "국내연구자료와 경제정책정보를 기관별로 모아 볼 수 있어 배경 설명과 선행연구를 함께 잡기 좋습니다.",
-                "https://eiec.kdi.re.kr/",
-                "정책자료",
-            ),
-        ]
+        render_resource_card(
+            resource["title"],
+            resource["description"],
+            resource["href"],
+            resource["meta"],
+            tone=resource["tone"],
+            status_rows=[resource["note"]],
+        )
+        for resource in reference_resources
     )
     return f"""
     {page_intro}
@@ -4491,8 +4781,9 @@ def build_tools_page() -> str:
           <h2>청년 조사·통계 발표 모음</h2>
           <p>청년을 직접 대상으로 조사하거나, 청년만 따로 떼어 발표한 공식 통계를 건별로 모았습니다.</p>
         </div>
+        {tools_check_badge}
       </div>
-      <div class="article-grid">{youth_stats_cards}</div>
+      <div class="article-grid tools-survey-grid">{youth_stats_cards}</div>
     </section>
     <section class="section" id="stats-research-links">
       <div class="section-head">
@@ -4501,7 +4792,7 @@ def build_tools_page() -> str:
           <p>정책브리핑과 법령, 통계, 연구자료까지 제안서 근거를 보강할 때 자주 쓰는 공식 사이트를 우선순위대로 묶었습니다.</p>
         </div>
       </div>
-      <div class="feature-grid">{reference_cards}</div>
+      <div class="feature-grid tools-resource-grid">{reference_cards}</div>
     </section>
     <section class="section" id="ai-guide">
       {render_list_block("AI로 정리하기", "AI는 조사와 정리를 돕는 용도로만 쓰는 편이 안전합니다.", [("검색 질문 만들기", "정책 찾기를 위한 질문 정리"), ("논점 정리", "기사와 근거를 항목별로 정리"), ("목차 초안", "제안서 구조를 먼저 잡아보기")])}
@@ -4629,7 +4920,7 @@ def main() -> int:
         status,
     )
     write_page(web_root / "hub.html", "청년 참여·회의", "hub.html", build_hub_page(classified_articles), status)
-    write_page(web_root / "tools.html", "자료·작성 도구", "tools.html", build_tools_page(), status)
+    write_page(web_root / "tools.html", "자료·작성 도구", "tools.html", build_tools_page(classified_articles, status), status)
     write_page(web_root / "contact.html", "제보·문의", "contact.html", build_contact_page(contact_settings), status)
 
     print(f"web_output={web_root / 'index.html'}")

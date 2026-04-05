@@ -366,6 +366,114 @@
     font-size: 0.88rem;
     font-weight: 800;
   }
+  .tools-resource-grid,
+  .tools-survey-grid {
+    grid-template-columns: 1fr;
+  }
+  .resource-card {
+    position: relative;
+    overflow: hidden;
+    display: grid;
+    gap: 12px;
+    align-content: start;
+    min-height: 100%;
+    border-radius: 30px;
+    border: 1px solid rgba(31, 42, 51, 0.08);
+    background: linear-gradient(180deg, var(--resource-wash, rgba(255, 255, 255, 0.98)) 0%, rgba(255, 255, 255, 0.98) 100%);
+    box-shadow: var(--shadow-soft);
+  }
+  .resource-card::after {
+    content: "";
+    position: absolute;
+    right: -22px;
+    bottom: -28px;
+    width: 116px;
+    height: 116px;
+    border-radius: 36px;
+    background: var(--resource-glow, rgba(57, 86, 119, 0.08));
+    opacity: 0.9;
+    pointer-events: none;
+  }
+  .resource-card > * {
+    position: relative;
+    z-index: 1;
+  }
+  .resource-card .article-meta {
+    display: inline-flex;
+    width: max-content;
+    padding: 6px 11px;
+    border-radius: 999px;
+    border: 1px solid rgba(31, 42, 51, 0.08);
+    background: rgba(255, 255, 255, 0.76);
+  }
+  .resource-card h3 {
+    margin: 0;
+    font-size: 1.08rem;
+    line-height: 1.38;
+    letter-spacing: -0.03em;
+  }
+  .resource-card p {
+    margin: 0;
+  }
+  .resource-status-list {
+    display: grid;
+    gap: 8px;
+    margin-top: auto;
+    padding-top: 14px;
+    border-top: 1px solid rgba(31, 42, 51, 0.08);
+  }
+  .resource-status-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  .resource-status-item strong {
+    color: var(--muted);
+    font-size: 0.76rem;
+    font-weight: 700;
+    line-height: 1.45;
+  }
+  .resource-status-item span {
+    color: var(--accent-strong);
+    font-size: 0.79rem;
+    font-weight: 700;
+    line-height: 1.45;
+    text-align: right;
+  }
+  .resource-link {
+    align-items: center;
+    gap: 6px;
+    width: max-content;
+    margin-top: 4px;
+    padding: 10px 14px;
+    border-radius: 999px;
+    border: 1px solid rgba(31, 42, 51, 0.08);
+    background: rgba(255, 255, 255, 0.78);
+  }
+  .resource-link::after {
+    content: "↗";
+    font-size: 0.82rem;
+  }
+  .resource-card--navy {
+    --resource-wash: rgba(57, 86, 119, 0.12);
+    --resource-glow: rgba(57, 86, 119, 0.16);
+  }
+  .resource-card--warm {
+    --resource-wash: rgba(221, 147, 103, 0.12);
+    --resource-glow: rgba(221, 147, 103, 0.16);
+  }
+  .resource-card--teal {
+    --resource-wash: rgba(125, 142, 152, 0.12);
+    --resource-glow: rgba(125, 142, 152, 0.16);
+  }
+  .resource-card--sand {
+    --resource-wash: rgba(227, 218, 204, 0.62);
+    --resource-glow: rgba(214, 198, 178, 0.32);
+  }
+  .resource-card--survey {
+    border-radius: 32px;
+  }
   .article-title-link,
   .article-summary-link,
   .article-list-link {
@@ -1928,6 +2036,11 @@
       grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: 18px;
     }
+    .tools-resource-grid,
+    .tools-survey-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+    }
     .youth-metrics-grid {
       grid-template-columns: repeat(5, minmax(0, 1fr));
     }
@@ -2075,7 +2188,7 @@
       </div>
       <div class="topbar-side">
         <a class="guide-link" href="guide.html" data-guide-open-link="true">이용방법</a>
-        <div class="header-side"><strong>04.05 17:19</strong><span>최근 반영</span></div>
+        <div class="header-side"><strong>04.05 22:23</strong><span>최근 반영</span></div>
         <nav class="nav"><a class="" href="index.html">홈</a><a class="" href="news.html">뉴스</a><a class="" href="policies.html">정책</a><a class="" href="hub.html">참여·회의</a><a class="active" href="tools.html">자료도구</a><a class="" href="contact.html">제보·문의</a></nav>
       </div>
     </header>
@@ -2103,34 +2216,39 @@
           <h2>청년 조사·통계 발표 모음</h2>
           <p>청년을 직접 대상으로 조사하거나, 청년만 따로 떼어 발표한 공식 통계를 건별로 모았습니다.</p>
         </div>
+        <span class="mini-link" aria-disabled="true">자동 확인 2026-04-05 22:23</span>
       </div>
-      <div class="article-grid">
-    <article class="section-card">
+      <div class="article-grid tools-survey-grid">
+    <article class="section-card resource-card resource-card--navy">
       <div class="article-meta">정부 조사</div>
       <h3>2024년 청년의 삶 실태조사</h3>
       <p>국무조정실이 청년기본법에 따라 2년마다 발표하는 대표 실태조사로, 노동·주거·건강·관계까지 폭넓게 담고 있습니다.</p>
-      <a class="mini-link" href="https://www.opm.go.kr/opm/news/press1.do?articleNo=158583&amp;attachNo=146521&amp;mode=download" target="_blank" rel="noreferrer">사이트 열기</a>
+      <div class="resource-status-list"><div class="resource-status-item"><strong>공식 발표</strong><span>2025-03-11</span></div><div class="resource-status-item"><strong>자료 상태</strong><span>자료 확인됨</span></div><div class="resource-status-item"><strong>최근 기사 추적</strong><span>최근 수집 기사 없음</span></div></div>
+      <a class="mini-link resource-link" href="https://www.opm.go.kr/opm/news/press1.do?articleNo=158583&amp;attachNo=146521&amp;mode=download" target="_blank" rel="noreferrer">사이트 열기</a>
     </article>
     
-    <article class="section-card">
+    <article class="section-card resource-card resource-card--teal">
       <div class="article-meta">통계청 서비스</div>
       <h3>청년통계지도</h3>
       <p>통계청 SGIS에서 청년 인구, 부모동거, 주택소유, 취업활동 같은 지표를 지역별로 바로 볼 수 있습니다.</p>
-      <a class="mini-link" href="https://sgis.kostat.go.kr/view/syrStats/main" target="_blank" rel="noreferrer">사이트 열기</a>
+      <div class="resource-status-list"><div class="resource-status-item"><strong>서비스 기준</strong><span>2025년 8월 기준</span></div><div class="resource-status-item"><strong>자료 상태</strong><span>자료 확인됨</span></div><div class="resource-status-item"><strong>최근 기사 추적</strong><span>최근 수집 기사 없음</span></div></div>
+      <a class="mini-link resource-link" href="https://sgis.kostat.go.kr/view/syrStats/main" target="_blank" rel="noreferrer">사이트 열기</a>
     </article>
     
-    <article class="section-card">
+    <article class="section-card resource-card resource-card--warm">
       <div class="article-meta">고용 통계</div>
       <h3>2025년 5월 청년층 부가조사 결과</h3>
       <p>통계청 경제활동인구조사 기반 자료로 고용률, 첫 일자리 소요기간, 직장 체험, 취업시험 준비를 확인할 수 있습니다.</p>
-      <a class="mini-link" href="https://www.kostat.go.kr/boardDownload.es?bid=210&amp;list_no=437676&amp;seq=9" target="_blank" rel="noreferrer">사이트 열기</a>
+      <div class="resource-status-list"><div class="resource-status-item"><strong>공식 발표</strong><span>2025-07-23</span></div><div class="resource-status-item"><strong>자료 상태</strong><span>자료 확인됨</span></div><div class="resource-status-item"><strong>최근 기사 추적</strong><span>최근 수집 기사 없음</span></div></div>
+      <a class="mini-link resource-link" href="https://www.kostat.go.kr/boardDownload.es?bid=210&amp;list_no=437676&amp;seq=9" target="_blank" rel="noreferrer">사이트 열기</a>
     </article>
     
-    <article class="section-card">
+    <article class="section-card resource-card resource-card--sand">
       <div class="article-meta">인식 조사</div>
       <h3>사회조사로 살펴본 청년의 의식변화</h3>
       <p>통계청 사회조사로 청년의 결혼, 출산, 노동, 가치관 변화를 묶어 보여주는 기획 보도자료입니다.</p>
-      <a class="mini-link" href="https://kostat.go.kr/board.es?act=view&amp;bid=219&amp;list_no=426708&amp;mid=a10301060300&amp;ref_bid=&amp;tag=" target="_blank" rel="noreferrer">사이트 열기</a>
+      <div class="resource-status-list"><div class="resource-status-item"><strong>공식 발표</strong><span>2023-08-28</span></div><div class="resource-status-item"><strong>자료 상태</strong><span>자료 확인됨</span></div><div class="resource-status-item"><strong>최근 기사 추적</strong><span>최근 수집 기사 없음</span></div></div>
+      <a class="mini-link resource-link" href="https://kostat.go.kr/board.es?act=view&amp;bid=219&amp;list_no=426708&amp;mid=a10301060300&amp;ref_bid=&amp;tag=" target="_blank" rel="noreferrer">사이트 열기</a>
     </article>
     </div>
     </section>
@@ -2141,68 +2259,77 @@
           <p>정책브리핑과 법령, 통계, 연구자료까지 제안서 근거를 보강할 때 자주 쓰는 공식 사이트를 우선순위대로 묶었습니다.</p>
         </div>
       </div>
-      <div class="feature-grid">
-    <article class="section-card">
+      <div class="feature-grid tools-resource-grid">
+    <article class="section-card resource-card resource-card--warm">
       <div class="article-meta">공식 특집</div>
       <h3>정책브리핑 청년정책 특집</h3>
       <p>정부가 모아둔 청년정책 기사, 해설, 제도 소개를 한 화면에서 훑을 수 있는 공식 특집 페이지입니다.</p>
-      <a class="mini-link" href="https://m.korea.kr/news/policyFocusList.do?pkgId=49500808" target="_blank" rel="noreferrer">사이트 열기</a>
+      <div class="resource-status-list"><div class="resource-status-item"><strong>추천 활용</strong><span>정부 정책 흐름 확인</span></div></div>
+      <a class="mini-link resource-link" href="https://m.korea.kr/news/policyFocusList.do?pkgId=49500808" target="_blank" rel="noreferrer">사이트 열기</a>
     </article>
     
-    <article class="section-card">
+    <article class="section-card resource-card resource-card--navy">
       <div class="article-meta">법령 원문</div>
       <h3>청년기본법</h3>
       <p>청년의 범위, 국가와 지자체의 책무, 실태조사와 기본계획 근거를 법령 원문으로 바로 확인할 수 있습니다.</p>
-      <a class="mini-link" href="https://www.law.go.kr/LSW/LsiJoLinkP.do?docType=JO&amp;joNo=001700000&amp;languageType=KO&amp;lsNm=%EC%B2%AD%EB%85%84%EA%B8%B0%EB%B3%B8%EB%B2%95&amp;paras=1" target="_blank" rel="noreferrer">사이트 열기</a>
+      <div class="resource-status-list"><div class="resource-status-item"><strong>추천 활용</strong><span>법적 근거 문구 확인</span></div></div>
+      <a class="mini-link resource-link" href="https://www.law.go.kr/LSW/LsiJoLinkP.do?docType=JO&amp;joNo=001700000&amp;languageType=KO&amp;lsNm=%EC%B2%AD%EB%85%84%EA%B8%B0%EB%B3%B8%EB%B2%95&amp;paras=1" target="_blank" rel="noreferrer">사이트 열기</a>
     </article>
     
-    <article class="section-card">
+    <article class="section-card resource-card resource-card--sand">
       <div class="article-meta">공식 통계</div>
       <h3>KOSIS 국가통계포털</h3>
       <p>인구, 고용, 주거, 복지 같은 국가승인통계를 표와 시계열로 바로 확인할 수 있습니다.</p>
-      <a class="mini-link" href="https://kosis.kr/index/index.do" target="_blank" rel="noreferrer">사이트 열기</a>
+      <div class="resource-status-list"><div class="resource-status-item"><strong>추천 활용</strong><span>수치 인용·시계열 비교</span></div></div>
+      <a class="mini-link resource-link" href="https://kosis.kr/index/index.do" target="_blank" rel="noreferrer">사이트 열기</a>
     </article>
     
-    <article class="section-card">
+    <article class="section-card resource-card resource-card--teal">
       <div class="article-meta">공공 데이터</div>
       <h3>공공데이터포털</h3>
       <p>CSV, XLS, API 형태의 원자료를 내려받아 지역별·대상별 근거를 직접 가공할 때 유용합니다.</p>
-      <a class="mini-link" href="https://www.data.go.kr/" target="_blank" rel="noreferrer">사이트 열기</a>
+      <div class="resource-status-list"><div class="resource-status-item"><strong>추천 활용</strong><span>원자료 내려받기</span></div></div>
+      <a class="mini-link resource-link" href="https://www.data.go.kr/" target="_blank" rel="noreferrer">사이트 열기</a>
     </article>
     
-    <article class="section-card">
+    <article class="section-card resource-card resource-card--warm">
       <div class="article-meta">공식 지표</div>
       <h3>지표누리</h3>
       <p>e-나라지표, 국민 삶의 질 지표, 저출생 통계지표처럼 정책 설명이 붙은 핵심 지표를 한 번에 볼 수 있습니다.</p>
-      <a class="mini-link" href="https://www.index.go.kr/" target="_blank" rel="noreferrer">사이트 열기</a>
+      <div class="resource-status-list"><div class="resource-status-item"><strong>추천 활용</strong><span>설명 붙은 핵심 지표</span></div></div>
+      <a class="mini-link resource-link" href="https://www.index.go.kr/" target="_blank" rel="noreferrer">사이트 열기</a>
     </article>
     
-    <article class="section-card">
+    <article class="section-card resource-card resource-card--sand">
       <div class="article-meta">청년 연구</div>
       <h3>한국청소년정책연구원</h3>
       <p>청년·청소년 정책 연구보고서와 데이터아카이브를 확인할 때 가장 먼저 보기 좋은 전문 연구기관입니다.</p>
-      <a class="mini-link" href="https://www.nypi.re.kr/" target="_blank" rel="noreferrer">사이트 열기</a>
+      <div class="resource-status-list"><div class="resource-status-item"><strong>추천 활용</strong><span>청년 연구보고서 확인</span></div></div>
+      <a class="mini-link resource-link" href="https://www.nypi.re.kr/" target="_blank" rel="noreferrer">사이트 열기</a>
     </article>
     
-    <article class="section-card">
+    <article class="section-card resource-card resource-card--navy">
       <div class="article-meta">국책연구</div>
       <h3>NKIS 국가정책연구포털</h3>
       <p>국책연구기관 연구보고서와 정책·연구자료를 통합검색으로 찾을 수 있습니다.</p>
-      <a class="mini-link" href="https://www.nkis.re.kr/" target="_blank" rel="noreferrer">사이트 열기</a>
+      <div class="resource-status-list"><div class="resource-status-item"><strong>추천 활용</strong><span>국책연구 통합검색</span></div></div>
+      <a class="mini-link resource-link" href="https://www.nkis.re.kr/" target="_blank" rel="noreferrer">사이트 열기</a>
     </article>
     
-    <article class="section-card">
+    <article class="section-card resource-card resource-card--teal">
       <div class="article-meta">입법자료</div>
       <h3>국회입법조사처</h3>
       <p>이슈와논점, NARS 현안분석처럼 쟁점을 빠르게 훑을 수 있는 입법·정책 자료를 볼 수 있습니다.</p>
-      <a class="mini-link" href="https://www.nars.go.kr/" target="_blank" rel="noreferrer">사이트 열기</a>
+      <div class="resource-status-list"><div class="resource-status-item"><strong>추천 활용</strong><span>쟁점 정리·입법 검토</span></div></div>
+      <a class="mini-link resource-link" href="https://www.nars.go.kr/" target="_blank" rel="noreferrer">사이트 열기</a>
     </article>
     
-    <article class="section-card">
+    <article class="section-card resource-card resource-card--warm">
       <div class="article-meta">정책자료</div>
       <h3>KDI 경제교육·정보센터</h3>
       <p>국내연구자료와 경제정책정보를 기관별로 모아 볼 수 있어 배경 설명과 선행연구를 함께 잡기 좋습니다.</p>
-      <a class="mini-link" href="https://eiec.kdi.re.kr/" target="_blank" rel="noreferrer">사이트 열기</a>
+      <div class="resource-status-list"><div class="resource-status-item"><strong>추천 활용</strong><span>배경 설명·선행연구</span></div></div>
+      <a class="mini-link resource-link" href="https://eiec.kdi.re.kr/" target="_blank" rel="noreferrer">사이트 열기</a>
     </article>
     </div>
     </section>

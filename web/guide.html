@@ -366,6 +366,114 @@
     font-size: 0.88rem;
     font-weight: 800;
   }
+  .tools-resource-grid,
+  .tools-survey-grid {
+    grid-template-columns: 1fr;
+  }
+  .resource-card {
+    position: relative;
+    overflow: hidden;
+    display: grid;
+    gap: 12px;
+    align-content: start;
+    min-height: 100%;
+    border-radius: 30px;
+    border: 1px solid rgba(31, 42, 51, 0.08);
+    background: linear-gradient(180deg, var(--resource-wash, rgba(255, 255, 255, 0.98)) 0%, rgba(255, 255, 255, 0.98) 100%);
+    box-shadow: var(--shadow-soft);
+  }
+  .resource-card::after {
+    content: "";
+    position: absolute;
+    right: -22px;
+    bottom: -28px;
+    width: 116px;
+    height: 116px;
+    border-radius: 36px;
+    background: var(--resource-glow, rgba(57, 86, 119, 0.08));
+    opacity: 0.9;
+    pointer-events: none;
+  }
+  .resource-card > * {
+    position: relative;
+    z-index: 1;
+  }
+  .resource-card .article-meta {
+    display: inline-flex;
+    width: max-content;
+    padding: 6px 11px;
+    border-radius: 999px;
+    border: 1px solid rgba(31, 42, 51, 0.08);
+    background: rgba(255, 255, 255, 0.76);
+  }
+  .resource-card h3 {
+    margin: 0;
+    font-size: 1.08rem;
+    line-height: 1.38;
+    letter-spacing: -0.03em;
+  }
+  .resource-card p {
+    margin: 0;
+  }
+  .resource-status-list {
+    display: grid;
+    gap: 8px;
+    margin-top: auto;
+    padding-top: 14px;
+    border-top: 1px solid rgba(31, 42, 51, 0.08);
+  }
+  .resource-status-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  .resource-status-item strong {
+    color: var(--muted);
+    font-size: 0.76rem;
+    font-weight: 700;
+    line-height: 1.45;
+  }
+  .resource-status-item span {
+    color: var(--accent-strong);
+    font-size: 0.79rem;
+    font-weight: 700;
+    line-height: 1.45;
+    text-align: right;
+  }
+  .resource-link {
+    align-items: center;
+    gap: 6px;
+    width: max-content;
+    margin-top: 4px;
+    padding: 10px 14px;
+    border-radius: 999px;
+    border: 1px solid rgba(31, 42, 51, 0.08);
+    background: rgba(255, 255, 255, 0.78);
+  }
+  .resource-link::after {
+    content: "↗";
+    font-size: 0.82rem;
+  }
+  .resource-card--navy {
+    --resource-wash: rgba(57, 86, 119, 0.12);
+    --resource-glow: rgba(57, 86, 119, 0.16);
+  }
+  .resource-card--warm {
+    --resource-wash: rgba(221, 147, 103, 0.12);
+    --resource-glow: rgba(221, 147, 103, 0.16);
+  }
+  .resource-card--teal {
+    --resource-wash: rgba(125, 142, 152, 0.12);
+    --resource-glow: rgba(125, 142, 152, 0.16);
+  }
+  .resource-card--sand {
+    --resource-wash: rgba(227, 218, 204, 0.62);
+    --resource-glow: rgba(214, 198, 178, 0.32);
+  }
+  .resource-card--survey {
+    border-radius: 32px;
+  }
   .article-title-link,
   .article-summary-link,
   .article-list-link {
@@ -1928,6 +2036,11 @@
       grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: 18px;
     }
+    .tools-resource-grid,
+    .tools-survey-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+    }
     .youth-metrics-grid {
       grid-template-columns: repeat(5, minmax(0, 1fr));
     }
@@ -2075,7 +2188,7 @@
       </div>
       <div class="topbar-side">
         <a class="guide-link active" href="guide.html" data-guide-open-link="true" aria-current="page">이용방법</a>
-        <div class="header-side"><strong>04.05 17:19</strong><span>최근 반영</span></div>
+        <div class="header-side"><strong>04.05 22:23</strong><span>최근 반영</span></div>
         <nav class="nav"><a class="" href="index.html">홈</a><a class="" href="news.html">뉴스</a><a class="" href="policies.html">정책</a><a class="" href="hub.html">참여·회의</a><a class="" href="tools.html">자료도구</a><a class="" href="contact.html">제보·문의</a></nav>
       </div>
     </header>
@@ -2085,7 +2198,7 @@
         <span class="eyebrow">사이트 소개</span>
         <h1>청년세대와 관련된 이슈들을 한 데 모았습니다.</h1>
         <p class="hero-copy">최근 7일 기사와 정부 공식 발표, 참여·회의 기록을 한 화면 흐름으로 비교할 수 있게 정리했습니다. 홈은 오늘 바로 볼 기사부터 시작하고, 이 페이지에서는 메뉴와 보는 순서를 설명합니다.</p>
-        <div class="hero-feature-meta">페이지 반영 2026-04-05 17:19 · 매일 09:00, 15:00, 21:00 (Asia/Seoul)</div>
+        <div class="hero-feature-meta">페이지 반영 2026-04-05 22:23 · 매일 09:00, 15:00, 21:00 (Asia/Seoul)</div>
         <div class="hero-actions">
           <a class="button primary" href="index.html">홈에서 기사 보기</a>
           <a class="button" href="news.html">뉴스부터 보기</a>

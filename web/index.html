@@ -366,6 +366,114 @@
     font-size: 0.88rem;
     font-weight: 800;
   }
+  .tools-resource-grid,
+  .tools-survey-grid {
+    grid-template-columns: 1fr;
+  }
+  .resource-card {
+    position: relative;
+    overflow: hidden;
+    display: grid;
+    gap: 12px;
+    align-content: start;
+    min-height: 100%;
+    border-radius: 30px;
+    border: 1px solid rgba(31, 42, 51, 0.08);
+    background: linear-gradient(180deg, var(--resource-wash, rgba(255, 255, 255, 0.98)) 0%, rgba(255, 255, 255, 0.98) 100%);
+    box-shadow: var(--shadow-soft);
+  }
+  .resource-card::after {
+    content: "";
+    position: absolute;
+    right: -22px;
+    bottom: -28px;
+    width: 116px;
+    height: 116px;
+    border-radius: 36px;
+    background: var(--resource-glow, rgba(57, 86, 119, 0.08));
+    opacity: 0.9;
+    pointer-events: none;
+  }
+  .resource-card > * {
+    position: relative;
+    z-index: 1;
+  }
+  .resource-card .article-meta {
+    display: inline-flex;
+    width: max-content;
+    padding: 6px 11px;
+    border-radius: 999px;
+    border: 1px solid rgba(31, 42, 51, 0.08);
+    background: rgba(255, 255, 255, 0.76);
+  }
+  .resource-card h3 {
+    margin: 0;
+    font-size: 1.08rem;
+    line-height: 1.38;
+    letter-spacing: -0.03em;
+  }
+  .resource-card p {
+    margin: 0;
+  }
+  .resource-status-list {
+    display: grid;
+    gap: 8px;
+    margin-top: auto;
+    padding-top: 14px;
+    border-top: 1px solid rgba(31, 42, 51, 0.08);
+  }
+  .resource-status-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  .resource-status-item strong {
+    color: var(--muted);
+    font-size: 0.76rem;
+    font-weight: 700;
+    line-height: 1.45;
+  }
+  .resource-status-item span {
+    color: var(--accent-strong);
+    font-size: 0.79rem;
+    font-weight: 700;
+    line-height: 1.45;
+    text-align: right;
+  }
+  .resource-link {
+    align-items: center;
+    gap: 6px;
+    width: max-content;
+    margin-top: 4px;
+    padding: 10px 14px;
+    border-radius: 999px;
+    border: 1px solid rgba(31, 42, 51, 0.08);
+    background: rgba(255, 255, 255, 0.78);
+  }
+  .resource-link::after {
+    content: "↗";
+    font-size: 0.82rem;
+  }
+  .resource-card--navy {
+    --resource-wash: rgba(57, 86, 119, 0.12);
+    --resource-glow: rgba(57, 86, 119, 0.16);
+  }
+  .resource-card--warm {
+    --resource-wash: rgba(221, 147, 103, 0.12);
+    --resource-glow: rgba(221, 147, 103, 0.16);
+  }
+  .resource-card--teal {
+    --resource-wash: rgba(125, 142, 152, 0.12);
+    --resource-glow: rgba(125, 142, 152, 0.16);
+  }
+  .resource-card--sand {
+    --resource-wash: rgba(227, 218, 204, 0.62);
+    --resource-glow: rgba(214, 198, 178, 0.32);
+  }
+  .resource-card--survey {
+    border-radius: 32px;
+  }
   .article-title-link,
   .article-summary-link,
   .article-list-link {
@@ -1928,6 +2036,11 @@
       grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: 18px;
     }
+    .tools-resource-grid,
+    .tools-survey-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+    }
     .youth-metrics-grid {
       grid-template-columns: repeat(5, minmax(0, 1fr));
     }
@@ -2075,7 +2188,7 @@
       </div>
       <div class="topbar-side">
         <a class="guide-link" href="guide.html" data-guide-open-link="true">이용방법</a>
-        <div class="header-side"><strong>04.05 17:19</strong><span>최근 반영</span></div>
+        <div class="header-side"><strong>04.05 22:23</strong><span>최근 반영</span></div>
         <nav class="nav"><a class="active" href="index.html">홈</a><a class="" href="news.html">뉴스</a><a class="" href="policies.html">정책</a><a class="" href="hub.html">참여·회의</a><a class="" href="tools.html">자료도구</a><a class="" href="contact.html">제보·문의</a></nav>
       </div>
     </header>
@@ -2092,7 +2205,7 @@
             <h2>오늘 한눈에 보기</h2>
             <p>오늘의 기사와 정책, 참여·회의 흐름을 빠르게 가늠합니다.</p>
           </div>
-          <div class="home-glance-grid"><article class="home-glance-item warm"><span class="home-glance-label">오늘의 기사</span><strong class="home-glance-value">300건</strong></article><article class="home-glance-item neutral"><span class="home-glance-label">정책</span><strong class="home-glance-value">17건</strong></article><article class="home-glance-item teal"><span class="home-glance-label">참여·회의</span><strong class="home-glance-value">16건</strong></article></div>
+          <div class="home-glance-grid"><article class="home-glance-item warm"><span class="home-glance-label">오늘의 기사</span><strong class="home-glance-value">301건</strong></article><article class="home-glance-item neutral"><span class="home-glance-label">정책</span><strong class="home-glance-value">17건</strong></article><article class="home-glance-item teal"><span class="home-glance-label">참여·회의</span><strong class="home-glance-value">14건</strong></article></div>
           <div class="home-glance-links">
             <a class="mini-link" href="news.html">뉴스 보기</a>
             <a class="mini-link" href="policies.html">정책 보기</a>
@@ -2103,7 +2216,7 @@
             <h3>오늘 놓치면 안되는 뉴스 5가지</h3>
             <p>요약된 흐름을 기준으로 지금 가장 먼저 훑어볼 기사를 빠르게 묶었습니다.</p>
           </div>
-          <div class="home-urgent-list"><article class="home-urgent-item"><a class="home-urgent-link" href="https://news.google.com/rss/articles/CBMibEFVX3lxTE92QWd6MDRXVnZJZE1JYXRvOEtkbWotd2NGdGg1VDUzdWgxWjQ1cEs1SzVWQ3lhNm02QkdTei1LaF8tdGJFR3k2ZjUyRlVFeHpqQ0dYYm85eUZfNVF5RlR0d0MwZEI0RTFsN0tuWtIBcEFVX3lxTE02cHdjS1pCc1VtTjFucTlRa1VHR19jR2dvR2tTNXh2UWpuRXE1aXBCc2VQOXB3ZjhydjR2VTNXQVFCb01DQl82bDRsd1BRMGVxTXlablNLYkU5OEJKcGVhczg5OHgweG5SNFM2UHd4RzQ?oc=5" target="_blank" rel="noreferrer" aria-label="광주청년일자리스테이션 동명, 2026 진로탐색데이 성료 링크 바로가기"><span class="home-urgent-rank">01</span><div class="home-urgent-text"><strong>광주청년일자리스테이션 동명, 2026 진로탐색데이 성료</strong><span class="home-urgent-meta">남도일보 · 2026-04-05 · 광주</span></div></a></article><article class="home-urgent-item"><a class="home-urgent-link" href="https://news.google.com/rss/articles/CBMiT0FVX3lxTE9mUHQ4blZRalVBcjZ5amNORERCNS1KbWlrTHZaanp2N2RvY0hZWGE0aGdYWWJPQThjQkcxMFduNTBNc05NdFMwSEx3YkJzbEE?oc=5" target="_blank" rel="noreferrer" aria-label="조용진 경북도의원 “경북형 청년 정주정책 강화해야” 링크 바로가기"><span class="home-urgent-rank">02</span><div class="home-urgent-text"><strong>조용진 경북도의원 “경북형 청년 정주정책 강화해야”</strong><span class="home-urgent-meta">다음 뉴스 · 2026-04-05 · 경북</span></div></a></article><article class="home-urgent-item"><a class="home-urgent-link" href="https://news.google.com/rss/articles/CBMinwFBVV95cUxQN25DdW5Ic2hta2QxNlFoWnBIYVltYVAzaVcwNEdYczF3cFZzYUtKSHJuTFZ6WE56OTNSLWNvWk5VZGdaZ2FOcDhxMXNEM2c4ZWwyTFNnSS1lYmZzSXNyNko5R015T2ZPQ2lSVkw1a2F5VTFuSEx1RmVnSmpjN1ZOS3RhcmlxbUdBWmloX3VnZHN1eThEb2ozSmNCRG1LbjQ?oc=5" target="_blank" rel="noreferrer" aria-label="룽하이 코뮌 청년 연합 대회: 사회 공헌을 향한 청년들의 열망에 불을 지피다. 링크 바로가기"><span class="home-urgent-rank">03</span><div class="home-urgent-text"><strong>룽하이 코뮌 청년 연합 대회: 사회 공헌을 향한 청년들의 열망에 불을 지피다.</strong><span class="home-urgent-meta">Vietnam.vn · 2026-04-05</span></div></a></article><article class="home-urgent-item"><a class="home-urgent-link" href="https://news.google.com/rss/articles/CBMiXkFVX3lxTE1hWVZrbDliQnV5VmsxdjJTZkVEUzZUUG5GaTNSb2JGQnhFaDZ4RFVpd21BOW1qYlh0NjVvNV9HT2lOUlZNaE9ZZnB5Q3lqenI2S3Z3MkdzM2s4Z3o0eEE?oc=5" target="_blank" rel="noreferrer" aria-label="영천시, 청년 창업지원사업 참여자 모집 링크 바로가기"><span class="home-urgent-rank">04</span><div class="home-urgent-text"><strong>영천시, 청년 창업지원사업 참여자 모집</strong><span class="home-urgent-meta">한국방송뉴스 · 2026-04-05</span></div></a></article><article class="home-urgent-item"><a class="home-urgent-link" href="https://news.google.com/rss/articles/CBMiW0FVX3lxTFBQWnVWVk5VNlNfb3NwSXZtOW13SDZ4M2lLZkp6aEtVc1VaOExfUjRTZjd4YWN6X0dnUDRIeEZXdk42UUNDOHFNaGxkZzJ3T2hoSXlEakpINHlBbm8?oc=5" target="_blank" rel="noreferrer" aria-label="인천 청년공간 유유기지 부평, ‘한 걸음 플로깅’ 참여 청년 모집 링크 바로가기"><span class="home-urgent-rank">05</span><div class="home-urgent-text"><strong>인천 청년공간 유유기지 부평, ‘한 걸음 플로깅’ 참여 청년 모집</strong><span class="home-urgent-meta">경기일보 · 2026-04-05 · 인천</span></div></a></article></div>
+          <div class="home-urgent-list"><article class="home-urgent-item"><a class="home-urgent-link" href="https://news.google.com/rss/articles/CBMiWkFVX3lxTE5tNnp1TFA2WGNpbjhjQXhNWEdlY2lDZS14VkhBUDktX1lVWFEtTnRfNmtVSGlsa2diMUhoTTlKRXFjTTV0alZwa3ZGOUdNQkVZY3Y3RG00YThQQdIBX0FVX3lxTE5pVWJWN1dQVk1HZHVrR3JCeDVfeWdpSUxGeWc1ODFUMHNKdzR1bWNMYWlUaUtEaUJuRjh2TzdFNDJkZFo1a2hkNURtOV9mbkpCN3lHY3pJUEQzTy12bXNr?oc=5" target="_blank" rel="noreferrer" aria-label="[시선]‘청년’ 정치인의 존재 이유 링크 바로가기"><span class="home-urgent-rank">01</span><div class="home-urgent-text"><strong>[시선]‘청년’ 정치인의 존재 이유</strong><span class="home-urgent-meta">경향신문 · 2026-04-05</span></div></a></article><article class="home-urgent-item"><a class="home-urgent-link" href="https://news.google.com/rss/articles/CBMijAFBVV95cUxPTHZaZE52ZHdTMUdOdUNjaW44WXhzcS1pbHFkelphUEFRVnFVemRFUnNDeFRLRDBJT0lBWm01TFN0MU5OQXI3YXpnbzdsT2pmMlE1VWhiVUpKdTRsRU1CdE1vY3FOQ29RNEoxZjZ1OEtZUG1Hamt5dWd5blRmWlhQVUtGWU9HOUZyVTlVMg?oc=5" target="_blank" rel="noreferrer" aria-label="부산서 또 청년 울린 전세사기…피해 ‘눈덩이’ 우려 링크 바로가기"><span class="home-urgent-rank">02</span><div class="home-urgent-text"><strong>부산서 또 청년 울린 전세사기…피해 ‘눈덩이’ 우려</strong><span class="home-urgent-meta">국제신문 · 2026-04-05 · 부산</span></div></a></article><article class="home-urgent-item"><a class="home-urgent-link" href="https://news.google.com/rss/articles/CBMikwFBVV95cUxNOXBWaW9xN0c3bHJKcXBQeGktVHlKWkpXNGVHcXlsektSVjd4bVJFLUZFcWQyUTV6N251bm9mZWhQLTRHZGNWMjV4QXZudjc0c0dZNnE4VE1saUNlbl9qMkJLa3lhVm5CUWF0TFpOYmVmOEJQbHZwdWhjcC1rTnMzTjZEbmREX1BPRnRwcVp5VjJsaUk?oc=5" target="_blank" rel="noreferrer" aria-label="[청년의 소리] 부산 청년들은 진정성 있는 귀가 필요하다 링크 바로가기"><span class="home-urgent-rank">03</span><div class="home-urgent-text"><strong>[청년의 소리] 부산 청년들은 진정성 있는 귀가 필요하다</strong><span class="home-urgent-meta">국제신문 · 2026-04-05 · 부산</span></div></a></article><article class="home-urgent-item"><a class="home-urgent-link" href="https://news.google.com/rss/articles/CBMiSkFVX3lxTFAyQzNtTUpoMzZJd3dRaUhEQWViUkhidEp0Z1JySUtNeXRUMFdLYlgtbzhvdURDZFdNUVVFTlZWbFVTRnZRS3pkUVF3?oc=5" target="_blank" rel="noreferrer" aria-label="AI 인프라, 청년 자산 증식의 &#x27;숨겨진 비밀&#x27;은? : 라이프 링크 바로가기"><span class="home-urgent-rank">04</span><div class="home-urgent-text"><strong>AI 인프라, 청년 자산 증식의 &#x27;숨겨진 비밀&#x27;은? : 라이프</strong><span class="home-urgent-meta">재경일보 · 2026-04-05</span></div></a></article><article class="home-urgent-item"><a class="home-urgent-link" href="https://news.google.com/rss/articles/CBMibEFVX3lxTE92QWd6MDRXVnZJZE1JYXRvOEtkbWotd2NGdGg1VDUzdWgxWjQ1cEs1SzVWQ3lhNm02QkdTei1LaF8tdGJFR3k2ZjUyRlVFeHpqQ0dYYm85eUZfNVF5RlR0d0MwZEI0RTFsN0tuWtIBcEFVX3lxTE02cHdjS1pCc1VtTjFucTlRa1VHR19jR2dvR2tTNXh2UWpuRXE1aXBCc2VQOXB3ZjhydjR2VTNXQVFCb01DQl82bDRsd1BRMGVxTXlablNLYkU5OEJKcGVhczg5OHgweG5SNFM2UHd4RzQ?oc=5" target="_blank" rel="noreferrer" aria-label="광주청년일자리스테이션 동명, 2026 진로탐색데이 성료 링크 바로가기"><span class="home-urgent-rank">05</span><div class="home-urgent-text"><strong>광주청년일자리스테이션 동명, 2026 진로탐색데이 성료</strong><span class="home-urgent-meta">남도일보 · 2026-04-05 · 광주</span></div></a></article></div>
         </article>
         <article class="home-briefing-card support support-pill">
           
@@ -2174,9 +2287,9 @@
             <p class="home-support-copy">이 사이트는 무료로 운영됩니다. 청년들을 응원하기 위해 만들어졌습니다.</p>
             <p class="home-support-copy secondary">기사 한 줄과 정책 한 항목이 필요한 순간에 제때 닿기를 바라는 마음으로, 오늘의 흐름을 조용히 모아두고 있습니다.</p>
             <div class="home-support-meta">
-              <span>페이지 반영 2026-04-05 17:19</span>
+              <span>페이지 반영 2026-04-05 22:23</span>
               <span>정책 기준 2026-04-05 00:00</span>
-              <span>기사 기준 2026-04-05 07:56</span>
+              <span>기사 기준 2026-04-05 10:56</span>
               <span>매일 09:00, 15:00, 21:00 (Asia/Seoul)</span>
             </div>
             <div class="home-support-links">
