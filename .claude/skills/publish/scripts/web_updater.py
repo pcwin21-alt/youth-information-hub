@@ -2982,6 +2982,17 @@ def render_feature_card(title: str, description: str, href: str, meta: str) -> s
     """
 
 
+def render_external_feature_card(title: str, description: str, href: str, meta: str) -> str:
+    return f"""
+    <article class="section-card">
+      <div class="article-meta">{html.escape(meta)}</div>
+      <h3>{html.escape(title)}</h3>
+      <p>{html.escape(description)}</p>
+      <a class="mini-link" href="{html.escape(href)}" target="_blank" rel="noreferrer">사이트 열기</a>
+    </article>
+    """
+
+
 def render_compact_intro(kicker: str, description: str) -> str:
     return f"""
     <article class="page-intro-card">
@@ -3910,7 +3921,7 @@ def build_menu_updates(articles: list[dict], classified_articles: list[dict], st
             "page_basis_label": "페이지 반영",
             "page_basis_time": page_updated_at,
             "items": [
-                ("정책 찾기 사이트", "정책브리핑, 부처, 통계 사이트를 확인할 수 있습니다."),
+                ("통계·연구자료 바로가기", "무료 공식 사이트에서 통계와 연구자료를 바로 찾습니다."),
                 ("AI 도구 사용법", "질문 만들기와 내용 정리 방법을 안내합니다."),
             ],
             "link_label": "도구 보기",
@@ -4383,13 +4394,68 @@ def build_tools_page() -> str:
         "04 자료도구",
         "정책 조사와 제안서 초안을 준비할 때 필요한 자료를 짧은 흐름으로 따라볼 수 있습니다.",
     )
+    reference_cards = "".join(
+        [
+            render_external_feature_card(
+                "KOSIS 국가통계포털",
+                "인구, 고용, 주거, 복지 같은 국가승인통계를 표와 시계열로 바로 확인할 수 있습니다.",
+                "https://kosis.kr/index/index.do",
+                "무료 통계",
+            ),
+            render_external_feature_card(
+                "지표누리",
+                "e-나라지표, 국민 삶의 질 지표, 저출생 통계지표처럼 정책 설명이 붙은 핵심 지표를 한 번에 볼 수 있습니다.",
+                "https://www.index.go.kr/",
+                "무료 지표",
+            ),
+            render_external_feature_card(
+                "공공데이터포털",
+                "CSV, XLS, API 형태의 원자료를 내려받아 지역별·대상별 근거를 직접 가공할 때 유용합니다.",
+                "https://www.data.go.kr/",
+                "무료 데이터",
+            ),
+            render_external_feature_card(
+                "NKIS 국가정책연구포털",
+                "국책연구기관 연구보고서와 정책·연구자료를 통합검색으로 찾을 수 있습니다.",
+                "https://www.nkis.re.kr/",
+                "무료 국책연구",
+            ),
+            render_external_feature_card(
+                "KDI 경제교육·정보센터",
+                "국내연구자료와 경제정책정보를 기관별로 모아 볼 수 있어 배경 설명과 선행연구를 함께 잡기 좋습니다.",
+                "https://eiec.kdi.re.kr/",
+                "무료 정책자료",
+            ),
+            render_external_feature_card(
+                "국회입법조사처",
+                "이슈와논점, NARS 현안분석처럼 쟁점을 빠르게 훑을 수 있는 입법·정책 자료를 볼 수 있습니다.",
+                "https://www.nars.go.kr/",
+                "무료 입법자료",
+            ),
+            render_external_feature_card(
+                "한국청소년정책연구원",
+                "청년·청소년 정책 연구보고서와 데이터아카이브를 확인할 때 가장 먼저 보기 좋은 전문 연구기관입니다.",
+                "https://www.nypi.re.kr/",
+                "무료 청년연구",
+            ),
+        ]
+    )
     return f"""
     {page_intro}
     <section class="section">
       {render_list_block("빠른 시작", "처음이면 아래 세 단계부터 보면 가장 빠릅니다.", [("정부 원문 확인", "정책브리핑과 부처 자료로 기준점을 먼저 잡기"), ("AI로 질문 정리", "조사 범위와 논점을 짧게 정리하기"), ("검토 요청 준비", "문서 상태와 요청 포인트 적어두기")])}
     </section>
     <section class="section" id="search-sites">
-      {render_list_block("공식 자료 찾기", "정책 근거를 찾을 때 먼저 보는 출처입니다.", [("정책브리핑 / 국무조정실", "공식 정책 발표와 회의체 자료 확인"), ("중앙부처 / 광역지자체", "부처별·지역별 청년정책 발표 확인"), ("KOSIS / 공공데이터", "통계와 데이터 출처 확인")])}
+      {render_list_block("자료 찾는 순서", "정책제안서에 근거를 붙일 때는 아래 순서로 찾으면 덜 헤맵니다.", [("숫자·시계열 확인", "KOSIS와 지표누리에서 공식 통계와 핵심 지표를 먼저 확인"), ("원자료 내려받기", "공공데이터포털에서 CSV·XLS·API 형태 데이터를 직접 확보"), ("선행연구·쟁점 정리", "NKIS, KDI, 국회입법조사처, 청소년정책연구원 자료로 배경과 시사점 정리")])}
+    </section>
+    <section class="section" id="stats-research-links">
+      <div class="section-head">
+        <div>
+          <h2>무료 통계·연구자료 바로가기</h2>
+          <p>정책제안서를 쓸 때 자주 참조하는 공식 무료 사이트만 먼저 묶었습니다.</p>
+        </div>
+      </div>
+      <div class="feature-grid">{reference_cards}</div>
     </section>
     <section class="section" id="ai-guide">
       {render_list_block("AI로 정리하기", "AI는 조사와 정리를 돕는 용도로만 쓰는 편이 안전합니다.", [("검색 질문 만들기", "정책 찾기를 위한 질문 정리"), ("논점 정리", "기사와 근거를 항목별로 정리"), ("목차 초안", "제안서 구조를 먼저 잡아보기")])}
