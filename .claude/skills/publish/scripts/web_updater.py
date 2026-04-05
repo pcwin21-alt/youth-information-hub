@@ -155,6 +155,10 @@ BASE_CSS = """
     --accent: #395677;
     --accent-soft: rgba(57, 86, 119, 0.12);
     --accent-strong: #172536;
+    --home-apricot: #dd9367;
+    --home-apricot-soft: rgba(221, 147, 103, 0.18);
+    --home-teal: #5f9188;
+    --home-teal-soft: rgba(95, 145, 136, 0.18);
     --shadow: 0 18px 42px rgba(31, 42, 51, 0.08);
     --shadow-soft: 0 8px 20px rgba(31, 42, 51, 0.05);
   }
@@ -832,7 +836,7 @@ BASE_CSS = """
     align-content: start;
   }
   .home-section-card.featured {
-    background: linear-gradient(180deg, rgba(37, 99, 235, 0.06) 0%, rgba(255, 255, 255, 1) 100%);
+    background: linear-gradient(180deg, rgba(221, 147, 103, 0.08) 0%, rgba(255, 255, 255, 1) 100%);
   }
   .home-briefing-grid {
     display: grid;
@@ -848,29 +852,96 @@ BASE_CSS = """
     display: grid;
     align-content: start;
     gap: 18px;
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
   }
-  .home-briefing-card.lead {
+  .home-briefing-card > * {
+    position: relative;
+    z-index: 1;
+  }
+  .home-briefing-card::before,
+  .home-briefing-card::after {
+    content: "";
+    position: absolute;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .home-briefing-card.lead-arch {
     border-color: rgba(23, 37, 54, 0.18);
+    border-radius: 40px 108px 40px 50px;
     background:
-      radial-gradient(circle at top left, rgba(143, 166, 194, 0.16), transparent 34%),
+      radial-gradient(circle at top left, rgba(95, 145, 136, 0.18), transparent 30%),
+      radial-gradient(circle at top right, rgba(221, 147, 103, 0.18), transparent 28%),
       linear-gradient(180deg, rgba(28, 40, 58, 0.98) 0%, rgba(23, 37, 54, 1) 100%);
     box-shadow: 0 22px 42px rgba(23, 37, 54, 0.18);
   }
-  .home-briefing-card.support {
-    background:
-      radial-gradient(circle at top left, rgba(205, 190, 161, 0.16), transparent 26%),
-      radial-gradient(circle at top right, rgba(57, 86, 119, 0.08), transparent 30%),
-      linear-gradient(180deg, rgba(250, 247, 241, 0.99) 0%, rgba(255, 255, 255, 0.99) 100%);
-    overflow: hidden;
+  .home-briefing-card.lead-arch::before {
+    top: -62px;
+    right: -28px;
+    width: 190px;
+    height: 190px;
+    border-radius: 0 0 0 170px;
+    background: radial-gradient(circle, rgba(221, 147, 103, 0.28) 0%, rgba(221, 147, 103, 0) 72%);
   }
-  .home-briefing-card.footer {
+  .home-briefing-card.lead-arch::after {
+    left: -64px;
+    bottom: -88px;
+    width: 180px;
+    height: 180px;
+    border-radius: 999px;
+    background: radial-gradient(circle, rgba(95, 145, 136, 0.18) 0%, rgba(95, 145, 136, 0) 74%);
+  }
+  .home-briefing-card.digest-organic {
+    border-color: var(--home-apricot-soft);
+    border-radius: 34px 30px 88px 34px;
+    background:
+      radial-gradient(circle at top right, rgba(221, 147, 103, 0.2), transparent 30%),
+      radial-gradient(circle at bottom left, rgba(95, 145, 136, 0.12), transparent 28%),
+      linear-gradient(180deg, rgba(252, 245, 239, 0.99) 0%, rgba(255, 255, 255, 0.99) 100%);
+  }
+  .home-briefing-card.digest-organic::before {
+    top: -38px;
+    right: -26px;
+    width: 132px;
+    height: 132px;
+    border-radius: 58% 42% 54% 46% / 42% 60% 40% 58%;
+    background: rgba(255, 255, 255, 0.72);
+  }
+  .home-briefing-card.support-pill {
+    border-color: var(--home-teal-soft);
+    border-radius: 86px 30px 42px 86px;
+    background:
+      radial-gradient(circle at top left, rgba(95, 145, 136, 0.22), transparent 26%),
+      radial-gradient(circle at bottom right, rgba(221, 147, 103, 0.12), transparent 30%),
+      linear-gradient(180deg, rgba(250, 247, 241, 0.99) 0%, rgba(255, 255, 255, 0.99) 100%);
+  }
+  .home-briefing-card.support-pill::after {
+    left: -58px;
+    bottom: -82px;
+    width: 210px;
+    height: 210px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.42);
+  }
+  .home-briefing-card.footer-warm {
     padding: 0;
     gap: 0;
+    border-color: var(--home-apricot-soft);
+    border-radius: 36px 36px 110px 44px;
     background:
-      radial-gradient(circle at top left, rgba(212, 200, 182, 0.18), transparent 24%),
-      linear-gradient(180deg, rgba(246, 242, 236, 0.98) 0%, rgba(255, 255, 255, 0.99) 100%);
+      radial-gradient(circle at top right, rgba(221, 147, 103, 0.22), transparent 28%),
+      radial-gradient(circle at bottom left, rgba(95, 145, 136, 0.1), transparent 30%),
+      linear-gradient(180deg, rgba(249, 240, 233, 0.99) 0%, rgba(255, 255, 255, 0.99) 100%);
     color: var(--text);
-    overflow: hidden;
+  }
+  .home-briefing-card.footer-warm::after {
+    right: -44px;
+    bottom: -70px;
+    width: 150px;
+    height: 150px;
+    border-radius: 999px;
+    background: rgba(221, 147, 103, 0.16);
   }
   .home-briefing-date {
     color: var(--accent-strong);
@@ -895,13 +966,13 @@ BASE_CSS = """
     word-break: keep-all;
     overflow-wrap: normal;
   }
-  .home-briefing-card.lead .home-briefing-date {
+  .home-briefing-card.lead-arch .home-briefing-date {
     color: rgba(255, 255, 255, 0.74);
   }
-  .home-briefing-card.lead .home-briefing-title {
+  .home-briefing-card.lead-arch .home-briefing-title {
     color: white;
   }
-  .home-briefing-card.lead .home-briefing-copy {
+  .home-briefing-card.lead-arch .home-briefing-copy {
     color: rgba(240, 245, 251, 0.9);
   }
   .home-briefing-meta {
@@ -935,17 +1006,41 @@ BASE_CSS = """
     gap: 12px;
   }
   .home-glance-item {
-    display: grid;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     gap: 8px;
-    padding: 16px;
-    border-radius: 22px;
+    min-height: 110px;
+    aspect-ratio: 1 / 1;
+    padding: 16px 12px;
+    border-radius: 999px;
     border: 1px solid rgba(23, 33, 49, 0.08);
     background:
       linear-gradient(180deg, rgba(250, 248, 243, 0.96) 0%, rgba(255, 255, 255, 0.99) 100%);
+    text-align: center;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.88);
+  }
+  .home-glance-item.warm {
+    border-color: var(--home-apricot-soft);
+    background:
+      radial-gradient(circle at top, rgba(221, 147, 103, 0.2), transparent 44%),
+      linear-gradient(180deg, rgba(251, 241, 233, 0.98) 0%, rgba(255, 255, 255, 0.99) 100%);
+  }
+  .home-glance-item.neutral {
+    background:
+      radial-gradient(circle at top, rgba(57, 86, 119, 0.12), transparent 44%),
+      linear-gradient(180deg, rgba(247, 243, 239, 0.98) 0%, rgba(255, 255, 255, 0.99) 100%);
+  }
+  .home-glance-item.teal {
+    border-color: var(--home-teal-soft);
+    background:
+      radial-gradient(circle at top, rgba(95, 145, 136, 0.2), transparent 44%),
+      linear-gradient(180deg, rgba(238, 247, 244, 0.98) 0%, rgba(255, 255, 255, 0.99) 100%);
   }
   .home-glance-label {
     color: var(--muted);
-    font-size: 0.78rem;
+    font-size: 0.75rem;
     font-weight: 800;
     line-height: 1.3;
   }
@@ -961,9 +1056,36 @@ BASE_CSS = """
     flex-wrap: wrap;
     gap: 10px;
   }
+  .home-glance-links .mini-link {
+    margin-top: 0;
+    padding: 10px 14px;
+    border-radius: 999px;
+    border: 1px solid rgba(23, 33, 49, 0.08);
+    background: rgba(255, 255, 255, 0.88);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.82);
+  }
+  .home-glance-links .mini-link:nth-child(1) {
+    border-color: var(--home-apricot-soft);
+    background: rgba(251, 235, 224, 0.96);
+  }
+  .home-glance-links .mini-link:nth-child(2) {
+    border-color: rgba(57, 86, 119, 0.14);
+    background: rgba(241, 245, 250, 0.96);
+  }
+  .home-glance-links .mini-link:nth-child(3) {
+    border-color: var(--home-teal-soft);
+    background: rgba(233, 244, 240, 0.96);
+  }
   .home-briefing-divider {
     height: 1px;
     background: rgba(23, 33, 49, 0.08);
+  }
+  .home-briefing-card.digest-organic .home-briefing-divider {
+    background: rgba(221, 147, 103, 0.16);
+  }
+  .home-briefing-card.digest-organic .home-urgent-list,
+  .home-briefing-card.digest-organic .home-urgent-item {
+    border-color: rgba(221, 147, 103, 0.16);
   }
   .home-briefing-subhead {
     display: grid;
@@ -1002,7 +1124,7 @@ BASE_CSS = """
     width: 34px;
     height: 34px;
     border-radius: 999px;
-    background: rgba(23, 37, 54, 0.08);
+    background: rgba(221, 147, 103, 0.16);
     color: var(--accent-strong);
     font-size: 0.8rem;
     font-weight: 800;
@@ -1029,8 +1151,8 @@ BASE_CSS = """
     padding: 7px 12px;
     border-radius: 999px;
     border: 1px solid transparent;
-    background: var(--accent-strong);
-    color: rgba(255, 255, 255, 0.94);
+    background: rgba(23, 37, 54, 0.94);
+    color: rgba(255, 255, 255, 0.96);
     font-size: 0.78rem;
     font-weight: 800;
   }
@@ -1066,11 +1188,25 @@ BASE_CSS = """
     gap: 12px;
   }
   .home-support-links a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 14px;
+    border-radius: 999px;
+    border: 1px solid rgba(23, 33, 49, 0.08);
+    background: rgba(255, 255, 255, 0.74);
     color: var(--accent-strong);
     font-size: 0.84rem;
     font-weight: 700;
-    text-decoration: underline;
-    text-underline-offset: 3px;
+    text-decoration: none;
+  }
+  .home-support-links a:first-child {
+    background: rgba(241, 245, 250, 0.92);
+    border-color: rgba(57, 86, 119, 0.14);
+  }
+  .home-support-links a:last-child {
+    background: rgba(251, 235, 224, 0.94);
+    border-color: var(--home-apricot-soft);
   }
   .home-support-credit {
     margin: 2px 0 0;
@@ -1136,27 +1272,27 @@ BASE_CSS = """
   }
   .home-support-metric-item:nth-child(1) {
     background:
-      linear-gradient(180deg, rgba(247, 243, 234, 0.98) 0%, rgba(255, 255, 255, 0.99) 100%);
+      linear-gradient(180deg, rgba(250, 238, 229, 0.98) 0%, rgba(255, 255, 255, 0.99) 100%);
   }
   .home-support-metric-item:nth-child(2) {
     background:
-      linear-gradient(180deg, rgba(241, 245, 243, 0.98) 0%, rgba(255, 255, 255, 0.99) 100%);
+      linear-gradient(180deg, rgba(236, 246, 242, 0.98) 0%, rgba(255, 255, 255, 0.99) 100%);
   }
   .home-support-metric-item:nth-child(3) {
     background:
-      linear-gradient(180deg, rgba(243, 246, 241, 0.98) 0%, rgba(255, 255, 255, 0.99) 100%);
+      linear-gradient(180deg, rgba(244, 243, 239, 0.98) 0%, rgba(255, 255, 255, 0.99) 100%);
   }
   .home-support-metric-item:nth-child(4) {
     background:
-      linear-gradient(180deg, rgba(245, 243, 240, 0.98) 0%, rgba(255, 255, 255, 0.99) 100%);
+      linear-gradient(180deg, rgba(251, 239, 231, 0.98) 0%, rgba(255, 255, 255, 0.99) 100%);
   }
   .home-support-metric-item:nth-child(5) {
     background:
-      linear-gradient(180deg, rgba(247, 242, 240, 0.98) 0%, rgba(255, 255, 255, 0.99) 100%);
+      linear-gradient(180deg, rgba(236, 246, 242, 0.98) 0%, rgba(255, 255, 255, 0.99) 100%);
   }
   .home-support-metric-item:nth-child(6) {
     background:
-      linear-gradient(180deg, rgba(242, 243, 239, 0.98) 0%, rgba(255, 255, 255, 0.99) 100%);
+      linear-gradient(180deg, rgba(245, 243, 239, 0.98) 0%, rgba(255, 255, 255, 0.99) 100%);
   }
   .youth-metrics-card {
     display: none;
@@ -1887,6 +2023,18 @@ BASE_CSS = """
     .home-briefing-card.footer {
       grid-area: footer;
     }
+    .home-briefing-card.lead-arch {
+      border-radius: 46px 132px 44px 58px;
+    }
+    .home-briefing-card.digest-organic {
+      border-radius: 40px 34px 104px 40px;
+    }
+    .home-briefing-card.support-pill {
+      border-radius: 96px 34px 46px 96px;
+    }
+    .home-briefing-card.footer-warm {
+      border-radius: 38px 38px 128px 48px;
+    }
     .home-spotlight-layout {
       grid-template-columns: minmax(0, 1.24fr) minmax(280px, 0.82fr);
       gap: 18px;
@@ -1969,6 +2117,18 @@ BASE_CSS = """
       padding: 20px;
       border-radius: 24px;
     }
+    .home-briefing-card.lead-arch {
+      border-radius: 32px 78px 32px 38px;
+    }
+    .home-briefing-card.digest-organic {
+      border-radius: 28px 24px 64px 28px;
+    }
+    .home-briefing-card.support-pill {
+      border-radius: 58px 24px 32px 58px;
+    }
+    .home-briefing-card.footer-warm {
+      border-radius: 28px 28px 72px 34px;
+    }
     .home-briefing-title {
       font-size: clamp(2.05rem, 9.8vw, 3.25rem);
       letter-spacing: -0.05em;
@@ -1976,6 +2136,10 @@ BASE_CSS = """
     .home-briefing-copy {
       max-width: 100%;
       font-size: 0.98rem;
+    }
+    .home-glance-item {
+      min-height: 96px;
+      padding: 14px 10px;
     }
     .bottom-nav {
       width: calc(100% - 8px);
@@ -3847,10 +4011,11 @@ def build_home_page(
         "당신의 오늘이 작지 않다는 마음으로, 지금 필요한 흐름을 한자리에 모았습니다."
     )
     glance_stats_html = "".join(
-        [
-            f'<article class="home-glance-item"><span class="home-glance-label">오늘의 기사</span><strong class="home-glance-value">{len(recent_news_articles)}건</strong></article>',
-            f'<article class="home-glance-item"><span class="home-glance-label">정책</span><strong class="home-glance-value">{len(official_policy_articles)}건</strong></article>',
-            f'<article class="home-glance-item"><span class="home-glance-label">참여·회의</span><strong class="home-glance-value">{participation_count}건</strong></article>',
+        f'<article class="{card_class}"><span class="home-glance-label">{label}</span><strong class="home-glance-value">{value}</strong></article>'
+        for card_class, label, value in [
+            ("home-glance-item warm", "오늘의 기사", f"{len(recent_news_articles)}건"),
+            ("home-glance-item neutral", "정책", f"{len(official_policy_articles)}건"),
+            ("home-glance-item teal", "참여·회의", f"{participation_count}건"),
         ]
     )
 
@@ -3885,12 +4050,12 @@ def build_home_page(
     return f"""
     <section class="hero home-hero">
       <div class="home-briefing-grid">
-        <article class="home-briefing-card lead">
+        <article class="home-briefing-card lead lead-arch">
           <span class="home-briefing-date">{html.escape(home_date_label)}</span>
           <h1 class="home-briefing-title">청년은 오늘 -</h1>
           <p class="home-briefing-copy">{html.escape(lead_message)}</p>
         </article>
-        <article class="home-briefing-card digest">
+        <article class="home-briefing-card digest digest-organic">
           <div class="home-briefing-head">
             <h2>오늘 한눈에 보기</h2>
             <p>오늘의 기사와 정책, 참여·회의 흐름을 빠르게 가늠합니다.</p>
@@ -3908,10 +4073,10 @@ def build_home_page(
           </div>
           <div class="home-urgent-list">{urgent_news_html}</div>
         </article>
-        <article class="home-briefing-card support">
+        <article class="home-briefing-card support support-pill">
           {render_support_metrics()}
         </article>
-        <article class="home-briefing-card footer">
+        <article class="home-briefing-card footer footer-warm">
           <div class="home-support-footer">
             <span class="home-support-version">{html.escape(version_text)}</span>
             <p class="home-support-copy">이 사이트는 무료로 운영됩니다. 청년들을 응원하기 위해 만들어졌습니다.</p>

@@ -19,6 +19,10 @@
     --accent: #395677;
     --accent-soft: rgba(57, 86, 119, 0.12);
     --accent-strong: #172536;
+    --home-apricot: #dd9367;
+    --home-apricot-soft: rgba(221, 147, 103, 0.18);
+    --home-teal: #5f9188;
+    --home-teal-soft: rgba(95, 145, 136, 0.18);
     --shadow: 0 18px 42px rgba(31, 42, 51, 0.08);
     --shadow-soft: 0 8px 20px rgba(31, 42, 51, 0.05);
   }
@@ -696,7 +700,7 @@
     align-content: start;
   }
   .home-section-card.featured {
-    background: linear-gradient(180deg, rgba(37, 99, 235, 0.06) 0%, rgba(255, 255, 255, 1) 100%);
+    background: linear-gradient(180deg, rgba(221, 147, 103, 0.08) 0%, rgba(255, 255, 255, 1) 100%);
   }
   .home-briefing-grid {
     display: grid;
@@ -712,29 +716,96 @@
     display: grid;
     align-content: start;
     gap: 18px;
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
   }
-  .home-briefing-card.lead {
+  .home-briefing-card > * {
+    position: relative;
+    z-index: 1;
+  }
+  .home-briefing-card::before,
+  .home-briefing-card::after {
+    content: "";
+    position: absolute;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .home-briefing-card.lead-arch {
     border-color: rgba(23, 37, 54, 0.18);
+    border-radius: 40px 108px 40px 50px;
     background:
-      radial-gradient(circle at top left, rgba(143, 166, 194, 0.16), transparent 34%),
+      radial-gradient(circle at top left, rgba(95, 145, 136, 0.18), transparent 30%),
+      radial-gradient(circle at top right, rgba(221, 147, 103, 0.18), transparent 28%),
       linear-gradient(180deg, rgba(28, 40, 58, 0.98) 0%, rgba(23, 37, 54, 1) 100%);
     box-shadow: 0 22px 42px rgba(23, 37, 54, 0.18);
   }
-  .home-briefing-card.support {
-    background:
-      radial-gradient(circle at top left, rgba(205, 190, 161, 0.16), transparent 26%),
-      radial-gradient(circle at top right, rgba(57, 86, 119, 0.08), transparent 30%),
-      linear-gradient(180deg, rgba(250, 247, 241, 0.99) 0%, rgba(255, 255, 255, 0.99) 100%);
-    overflow: hidden;
+  .home-briefing-card.lead-arch::before {
+    top: -62px;
+    right: -28px;
+    width: 190px;
+    height: 190px;
+    border-radius: 0 0 0 170px;
+    background: radial-gradient(circle, rgba(221, 147, 103, 0.28) 0%, rgba(221, 147, 103, 0) 72%);
   }
-  .home-briefing-card.footer {
+  .home-briefing-card.lead-arch::after {
+    left: -64px;
+    bottom: -88px;
+    width: 180px;
+    height: 180px;
+    border-radius: 999px;
+    background: radial-gradient(circle, rgba(95, 145, 136, 0.18) 0%, rgba(95, 145, 136, 0) 74%);
+  }
+  .home-briefing-card.digest-organic {
+    border-color: var(--home-apricot-soft);
+    border-radius: 34px 30px 88px 34px;
+    background:
+      radial-gradient(circle at top right, rgba(221, 147, 103, 0.2), transparent 30%),
+      radial-gradient(circle at bottom left, rgba(95, 145, 136, 0.12), transparent 28%),
+      linear-gradient(180deg, rgba(252, 245, 239, 0.99) 0%, rgba(255, 255, 255, 0.99) 100%);
+  }
+  .home-briefing-card.digest-organic::before {
+    top: -38px;
+    right: -26px;
+    width: 132px;
+    height: 132px;
+    border-radius: 58% 42% 54% 46% / 42% 60% 40% 58%;
+    background: rgba(255, 255, 255, 0.72);
+  }
+  .home-briefing-card.support-pill {
+    border-color: var(--home-teal-soft);
+    border-radius: 86px 30px 42px 86px;
+    background:
+      radial-gradient(circle at top left, rgba(95, 145, 136, 0.22), transparent 26%),
+      radial-gradient(circle at bottom right, rgba(221, 147, 103, 0.12), transparent 30%),
+      linear-gradient(180deg, rgba(250, 247, 241, 0.99) 0%, rgba(255, 255, 255, 0.99) 100%);
+  }
+  .home-briefing-card.support-pill::after {
+    left: -58px;
+    bottom: -82px;
+    width: 210px;
+    height: 210px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.42);
+  }
+  .home-briefing-card.footer-warm {
     padding: 0;
     gap: 0;
+    border-color: var(--home-apricot-soft);
+    border-radius: 36px 36px 110px 44px;
     background:
-      radial-gradient(circle at top left, rgba(212, 200, 182, 0.18), transparent 24%),
-      linear-gradient(180deg, rgba(246, 242, 236, 0.98) 0%, rgba(255, 255, 255, 0.99) 100%);
+      radial-gradient(circle at top right, rgba(221, 147, 103, 0.22), transparent 28%),
+      radial-gradient(circle at bottom left, rgba(95, 145, 136, 0.1), transparent 30%),
+      linear-gradient(180deg, rgba(249, 240, 233, 0.99) 0%, rgba(255, 255, 255, 0.99) 100%);
     color: var(--text);
-    overflow: hidden;
+  }
+  .home-briefing-card.footer-warm::after {
+    right: -44px;
+    bottom: -70px;
+    width: 150px;
+    height: 150px;
+    border-radius: 999px;
+    background: rgba(221, 147, 103, 0.16);
   }
   .home-briefing-date {
     color: var(--accent-strong);
@@ -759,13 +830,13 @@
     word-break: keep-all;
     overflow-wrap: normal;
   }
-  .home-briefing-card.lead .home-briefing-date {
+  .home-briefing-card.lead-arch .home-briefing-date {
     color: rgba(255, 255, 255, 0.74);
   }
-  .home-briefing-card.lead .home-briefing-title {
+  .home-briefing-card.lead-arch .home-briefing-title {
     color: white;
   }
-  .home-briefing-card.lead .home-briefing-copy {
+  .home-briefing-card.lead-arch .home-briefing-copy {
     color: rgba(240, 245, 251, 0.9);
   }
   .home-briefing-meta {
@@ -799,17 +870,41 @@
     gap: 12px;
   }
   .home-glance-item {
-    display: grid;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     gap: 8px;
-    padding: 16px;
-    border-radius: 22px;
+    min-height: 110px;
+    aspect-ratio: 1 / 1;
+    padding: 16px 12px;
+    border-radius: 999px;
     border: 1px solid rgba(23, 33, 49, 0.08);
     background:
       linear-gradient(180deg, rgba(250, 248, 243, 0.96) 0%, rgba(255, 255, 255, 0.99) 100%);
+    text-align: center;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.88);
+  }
+  .home-glance-item.warm {
+    border-color: var(--home-apricot-soft);
+    background:
+      radial-gradient(circle at top, rgba(221, 147, 103, 0.2), transparent 44%),
+      linear-gradient(180deg, rgba(251, 241, 233, 0.98) 0%, rgba(255, 255, 255, 0.99) 100%);
+  }
+  .home-glance-item.neutral {
+    background:
+      radial-gradient(circle at top, rgba(57, 86, 119, 0.12), transparent 44%),
+      linear-gradient(180deg, rgba(247, 243, 239, 0.98) 0%, rgba(255, 255, 255, 0.99) 100%);
+  }
+  .home-glance-item.teal {
+    border-color: var(--home-teal-soft);
+    background:
+      radial-gradient(circle at top, rgba(95, 145, 136, 0.2), transparent 44%),
+      linear-gradient(180deg, rgba(238, 247, 244, 0.98) 0%, rgba(255, 255, 255, 0.99) 100%);
   }
   .home-glance-label {
     color: var(--muted);
-    font-size: 0.78rem;
+    font-size: 0.75rem;
     font-weight: 800;
     line-height: 1.3;
   }
@@ -825,9 +920,36 @@
     flex-wrap: wrap;
     gap: 10px;
   }
+  .home-glance-links .mini-link {
+    margin-top: 0;
+    padding: 10px 14px;
+    border-radius: 999px;
+    border: 1px solid rgba(23, 33, 49, 0.08);
+    background: rgba(255, 255, 255, 0.88);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.82);
+  }
+  .home-glance-links .mini-link:nth-child(1) {
+    border-color: var(--home-apricot-soft);
+    background: rgba(251, 235, 224, 0.96);
+  }
+  .home-glance-links .mini-link:nth-child(2) {
+    border-color: rgba(57, 86, 119, 0.14);
+    background: rgba(241, 245, 250, 0.96);
+  }
+  .home-glance-links .mini-link:nth-child(3) {
+    border-color: var(--home-teal-soft);
+    background: rgba(233, 244, 240, 0.96);
+  }
   .home-briefing-divider {
     height: 1px;
     background: rgba(23, 33, 49, 0.08);
+  }
+  .home-briefing-card.digest-organic .home-briefing-divider {
+    background: rgba(221, 147, 103, 0.16);
+  }
+  .home-briefing-card.digest-organic .home-urgent-list,
+  .home-briefing-card.digest-organic .home-urgent-item {
+    border-color: rgba(221, 147, 103, 0.16);
   }
   .home-briefing-subhead {
     display: grid;
@@ -866,7 +988,7 @@
     width: 34px;
     height: 34px;
     border-radius: 999px;
-    background: rgba(23, 37, 54, 0.08);
+    background: rgba(221, 147, 103, 0.16);
     color: var(--accent-strong);
     font-size: 0.8rem;
     font-weight: 800;
@@ -893,8 +1015,8 @@
     padding: 7px 12px;
     border-radius: 999px;
     border: 1px solid transparent;
-    background: var(--accent-strong);
-    color: rgba(255, 255, 255, 0.94);
+    background: rgba(23, 37, 54, 0.94);
+    color: rgba(255, 255, 255, 0.96);
     font-size: 0.78rem;
     font-weight: 800;
   }
@@ -930,11 +1052,25 @@
     gap: 12px;
   }
   .home-support-links a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 14px;
+    border-radius: 999px;
+    border: 1px solid rgba(23, 33, 49, 0.08);
+    background: rgba(255, 255, 255, 0.74);
     color: var(--accent-strong);
     font-size: 0.84rem;
     font-weight: 700;
-    text-decoration: underline;
-    text-underline-offset: 3px;
+    text-decoration: none;
+  }
+  .home-support-links a:first-child {
+    background: rgba(241, 245, 250, 0.92);
+    border-color: rgba(57, 86, 119, 0.14);
+  }
+  .home-support-links a:last-child {
+    background: rgba(251, 235, 224, 0.94);
+    border-color: var(--home-apricot-soft);
   }
   .home-support-credit {
     margin: 2px 0 0;
@@ -1000,27 +1136,27 @@
   }
   .home-support-metric-item:nth-child(1) {
     background:
-      linear-gradient(180deg, rgba(247, 243, 234, 0.98) 0%, rgba(255, 255, 255, 0.99) 100%);
+      linear-gradient(180deg, rgba(250, 238, 229, 0.98) 0%, rgba(255, 255, 255, 0.99) 100%);
   }
   .home-support-metric-item:nth-child(2) {
     background:
-      linear-gradient(180deg, rgba(241, 245, 243, 0.98) 0%, rgba(255, 255, 255, 0.99) 100%);
+      linear-gradient(180deg, rgba(236, 246, 242, 0.98) 0%, rgba(255, 255, 255, 0.99) 100%);
   }
   .home-support-metric-item:nth-child(3) {
     background:
-      linear-gradient(180deg, rgba(243, 246, 241, 0.98) 0%, rgba(255, 255, 255, 0.99) 100%);
+      linear-gradient(180deg, rgba(244, 243, 239, 0.98) 0%, rgba(255, 255, 255, 0.99) 100%);
   }
   .home-support-metric-item:nth-child(4) {
     background:
-      linear-gradient(180deg, rgba(245, 243, 240, 0.98) 0%, rgba(255, 255, 255, 0.99) 100%);
+      linear-gradient(180deg, rgba(251, 239, 231, 0.98) 0%, rgba(255, 255, 255, 0.99) 100%);
   }
   .home-support-metric-item:nth-child(5) {
     background:
-      linear-gradient(180deg, rgba(247, 242, 240, 0.98) 0%, rgba(255, 255, 255, 0.99) 100%);
+      linear-gradient(180deg, rgba(236, 246, 242, 0.98) 0%, rgba(255, 255, 255, 0.99) 100%);
   }
   .home-support-metric-item:nth-child(6) {
     background:
-      linear-gradient(180deg, rgba(242, 243, 239, 0.98) 0%, rgba(255, 255, 255, 0.99) 100%);
+      linear-gradient(180deg, rgba(245, 243, 239, 0.98) 0%, rgba(255, 255, 255, 0.99) 100%);
   }
   .youth-metrics-card {
     display: none;
@@ -1751,6 +1887,18 @@
     .home-briefing-card.footer {
       grid-area: footer;
     }
+    .home-briefing-card.lead-arch {
+      border-radius: 46px 132px 44px 58px;
+    }
+    .home-briefing-card.digest-organic {
+      border-radius: 40px 34px 104px 40px;
+    }
+    .home-briefing-card.support-pill {
+      border-radius: 96px 34px 46px 96px;
+    }
+    .home-briefing-card.footer-warm {
+      border-radius: 38px 38px 128px 48px;
+    }
     .home-spotlight-layout {
       grid-template-columns: minmax(0, 1.24fr) minmax(280px, 0.82fr);
       gap: 18px;
@@ -1833,6 +1981,18 @@
       padding: 20px;
       border-radius: 24px;
     }
+    .home-briefing-card.lead-arch {
+      border-radius: 32px 78px 32px 38px;
+    }
+    .home-briefing-card.digest-organic {
+      border-radius: 28px 24px 64px 28px;
+    }
+    .home-briefing-card.support-pill {
+      border-radius: 58px 24px 32px 58px;
+    }
+    .home-briefing-card.footer-warm {
+      border-radius: 28px 28px 72px 34px;
+    }
     .home-briefing-title {
       font-size: clamp(2.05rem, 9.8vw, 3.25rem);
       letter-spacing: -0.05em;
@@ -1840,6 +2000,10 @@
     .home-briefing-copy {
       max-width: 100%;
       font-size: 0.98rem;
+    }
+    .home-glance-item {
+      min-height: 96px;
+      padding: 14px 10px;
     }
     .bottom-nav {
       width: calc(100% - 8px);
@@ -1901,7 +2065,7 @@
       </div>
       <div class="topbar-side">
         <a class="guide-link" href="guide.html" data-guide-open-link="true">이용방법</a>
-        <div class="header-side"><strong>04.04 15:00</strong><span>최근 반영</span></div>
+        <div class="header-side"><strong>04.05 17:19</strong><span>최근 반영</span></div>
         <nav class="nav"><a class="" href="index.html">홈</a><a class="" href="news.html">뉴스</a><a class="" href="policies.html">정책</a><a class="active" href="hub.html">참여·회의</a><a class="" href="tools.html">자료도구</a><a class="" href="contact.html">제보·문의</a></nav>
       </div>
     </header>
@@ -1929,7 +2093,7 @@
           </div>
           <div class="filter-group">
             <span class="filter-group-label">지역</span>
-            <div class="filter-controls"><button class="filter-button active" type="button" data-policy-filter="true" data-filter-group="region" data-filter-value="all" aria-pressed="true">전체</button><button class="filter-button" type="button" data-policy-filter="true" data-filter-group="region" data-filter-value="중앙" aria-pressed="false">중앙</button><button class="filter-button" type="button" data-policy-filter="true" data-filter-group="region" data-filter-value="세종" aria-pressed="false">세종</button><button class="filter-button" type="button" data-policy-filter="true" data-filter-group="region" data-filter-value="인천" aria-pressed="false">인천</button></div>
+            <div class="filter-controls"><button class="filter-button active" type="button" data-policy-filter="true" data-filter-group="region" data-filter-value="all" aria-pressed="true">전체</button><button class="filter-button" type="button" data-policy-filter="true" data-filter-group="region" data-filter-value="중앙" aria-pressed="false">중앙</button><button class="filter-button" type="button" data-policy-filter="true" data-filter-group="region" data-filter-value="경북" aria-pressed="false">경북</button><button class="filter-button" type="button" data-policy-filter="true" data-filter-group="region" data-filter-value="세종" aria-pressed="false">세종</button><button class="filter-button" type="button" data-policy-filter="true" data-filter-group="region" data-filter-value="인천" aria-pressed="false">인천</button></div>
           </div>
           <div class="filter-group">
             <span class="filter-group-label">활동</span>
@@ -1984,11 +2148,19 @@
         </div>
         <div class="article-grid">
     <article class="article-card" data-article-card="true" data-policy-card="true" data-policy-group="local" data-policy-type="위원회" data-article-url="https://news.google.com/rss/articles/CBMiakFVX3lxTFBhUWJseVRoazAzSVJMeDN5YWtnNmZGUGVEZ2NfdlRCVzdfa1JaUUFLdUFFOElQaTE2NXd5RFBYRjdNRzZPVDAxeU9rZHlsSVBybEFuTTRNSEoyZnkzb3ZhUUpyMGpGR2Nxa0E?oc=5" data-article-title="오세현 아산시장, 결국 아산 청년위원회 ‘관권선거’ 개입 의혹" data-article-date="2026-03-31" data-article-region="중앙">
-      <div class="article-meta"><div class="article-meta-tags"><span class="meta-pill primary">지역</span><span class="meta-pill subtle">중앙</span></div><div class="article-byline"><span class="meta-item">충청매일</span><span class="meta-divider" aria-hidden="true">•</span><span class="meta-item">2026-03-31</span></div></div>
+      <div class="article-meta"><div class="article-meta-tags"><span class="meta-pill primary">지역</span><span class="meta-pill subtle">중앙</span></div><div class="article-byline"><span class="meta-item">ccdn.co.kr</span><span class="meta-divider" aria-hidden="true">•</span><span class="meta-item">2026-03-31</span></div></div>
       <h3><a class="article-title-link" href="https://news.google.com/rss/articles/CBMiakFVX3lxTFBhUWJseVRoazAzSVJMeDN5YWtnNmZGUGVEZ2NfdlRCVzdfa1JaUUFLdUFFOElQaTE2NXd5RFBYRjdNRzZPVDAxeU9rZHlsSVBybEFuTTRNSEoyZnkzb3ZhUUpyMGpGR2Nxa0E?oc=5" target="_blank" rel="noreferrer" aria-label="오세현 아산시장, 결국 아산 청년위원회 ‘관권선거’ 개입 의혹 링크 바로가기">오세현 아산시장, 결국 아산 청년위원회 ‘관권선거’ 개입 의혹</a></h3>
       <div class="badge-row"><span class="badge">위원회</span><span class="badge">청년위원회</span></div>
       
       <div class="article-actions"><a class="mini-link article-link-action" href="https://news.google.com/rss/articles/CBMiakFVX3lxTFBhUWJseVRoazAzSVJMeDN5YWtnNmZGUGVEZ2NfdlRCVzdfa1JaUUFLdUFFOElQaTE2NXd5RFBYRjdNRzZPVDAxeU9rZHlsSVBybEFuTTRNSEoyZnkzb3ZhUUpyMGpGR2Nxa0E?oc=5" target="_blank" rel="noreferrer" aria-label="오세현 아산시장, 결국 아산 청년위원회 ‘관권선거’ 개입 의혹 링크 바로가기">링크 바로가기</a><button class="action-button" type="button" data-article-action="share" data-article-url="https://news.google.com/rss/articles/CBMiakFVX3lxTFBhUWJseVRoazAzSVJMeDN5YWtnNmZGUGVEZ2NfdlRCVzdfa1JaUUFLdUFFOElQaTE2NXd5RFBYRjdNRzZPVDAxeU9rZHlsSVBybEFuTTRNSEoyZnkzb3ZhUUpyMGpGR2Nxa0E?oc=5" data-share-title="오세현 아산시장, 결국 아산 청년위원회 ‘관권선거’ 개입 의혹" aria-label="오세현 아산시장, 결국 아산 청년위원회 ‘관권선거’ 개입 의혹 공유하기">공유하기</button><button class="action-button" type="button" data-article-action="copy" data-article-url="https://news.google.com/rss/articles/CBMiakFVX3lxTFBhUWJseVRoazAzSVJMeDN5YWtnNmZGUGVEZ2NfdlRCVzdfa1JaUUFLdUFFOElQaTE2NXd5RFBYRjdNRzZPVDAxeU9rZHlsSVBybEFuTTRNSEoyZnkzb3ZhUUpyMGpGR2Nxa0E?oc=5" data-share-title="오세현 아산시장, 결국 아산 청년위원회 ‘관권선거’ 개입 의혹" aria-label="오세현 아산시장, 결국 아산 청년위원회 ‘관권선거’ 개입 의혹 링크 복사">링크 복사</button></div><div class="article-feedback" data-article-feedback aria-live="polite"></div>
+    </article>
+    
+    <article class="article-card" data-article-card="true" data-policy-card="true" data-policy-group="local" data-policy-type="회의" data-article-url="https://news.google.com/rss/articles/CBMiWkFVX3lxTE0yUDNXMHRYSjNaem9yMU5md1owSzJ6eF9JbmVZREhsVDJYcDRjYkNKTEVabVJRUGR5ckI2ZEVVdk9LMS1rZEVjM3E1b0NrSV9qLWpIWm85MGQ3Zw?oc=5" data-article-title="봉화군, 2026년 1분기 청년정책협의체 정기회의 개최" data-article-date="2026-03-31" data-article-region="경북">
+      <div class="article-meta"><div class="article-meta-tags"><span class="meta-pill primary">지역</span><span class="meta-pill subtle">경북</span></div><div class="article-byline"><span class="meta-item">경북매일</span><span class="meta-divider" aria-hidden="true">•</span><span class="meta-item">2026-03-31</span></div></div>
+      <h3><a class="article-title-link" href="https://news.google.com/rss/articles/CBMiWkFVX3lxTE0yUDNXMHRYSjNaem9yMU5md1owSzJ6eF9JbmVZREhsVDJYcDRjYkNKTEVabVJRUGR5ckI2ZEVVdk9LMS1rZEVjM3E1b0NrSV9qLWpIWm85MGQ3Zw?oc=5" target="_blank" rel="noreferrer" aria-label="봉화군, 2026년 1분기 청년정책협의체 정기회의 개최 링크 바로가기">봉화군, 2026년 1분기 청년정책협의체 정기회의 개최</a></h3>
+      <div class="badge-row"><span class="badge">회의</span><span class="badge">청년정책협의체</span></div>
+      
+      <div class="article-actions"><a class="mini-link article-link-action" href="https://news.google.com/rss/articles/CBMiWkFVX3lxTE0yUDNXMHRYSjNaem9yMU5md1owSzJ6eF9JbmVZREhsVDJYcDRjYkNKTEVabVJRUGR5ckI2ZEVVdk9LMS1rZEVjM3E1b0NrSV9qLWpIWm85MGQ3Zw?oc=5" target="_blank" rel="noreferrer" aria-label="봉화군, 2026년 1분기 청년정책협의체 정기회의 개최 링크 바로가기">링크 바로가기</a><button class="action-button" type="button" data-article-action="share" data-article-url="https://news.google.com/rss/articles/CBMiWkFVX3lxTE0yUDNXMHRYSjNaem9yMU5md1owSzJ6eF9JbmVZREhsVDJYcDRjYkNKTEVabVJRUGR5ckI2ZEVVdk9LMS1rZEVjM3E1b0NrSV9qLWpIWm85MGQ3Zw?oc=5" data-share-title="봉화군, 2026년 1분기 청년정책협의체 정기회의 개최" aria-label="봉화군, 2026년 1분기 청년정책협의체 정기회의 개최 공유하기">공유하기</button><button class="action-button" type="button" data-article-action="copy" data-article-url="https://news.google.com/rss/articles/CBMiWkFVX3lxTE0yUDNXMHRYSjNaem9yMU5md1owSzJ6eF9JbmVZREhsVDJYcDRjYkNKTEVabVJRUGR5ckI2ZEVVdk9LMS1rZEVjM3E1b0NrSV9qLWpIWm85MGQ3Zw?oc=5" data-share-title="봉화군, 2026년 1분기 청년정책협의체 정기회의 개최" aria-label="봉화군, 2026년 1분기 청년정책협의체 정기회의 개최 링크 복사">링크 복사</button></div><div class="article-feedback" data-article-feedback aria-live="polite"></div>
     </article>
     
     <article class="article-card" data-article-card="true" data-policy-card="true" data-policy-group="local" data-policy-type="위원회" data-article-url="https://news.google.com/rss/articles/CBMic0FVX3lxTFBXcGExN3dwLWpsMUlaZ0s3LWg2M0lMeDZGZ1BZNjNZNndZQThqRDZSZGZMZ3pJZHVrWGJMMExJd2tCTjJaTVo3aE8xbVhRdUhpb24xbzFsNkJ4SWtIc2xQYi1iRE9GYjBydGlPbUdnZng2VlE?oc=5" data-article-title="세종민주화운동계승사업회 민주청년위원회, 호르무즈 파병 반대 성명 발표" data-article-date="2026-03-30" data-article-region="세종">
@@ -2015,14 +2187,6 @@
       <div class="article-actions"><a class="mini-link article-link-action" href="https://news.google.com/rss/articles/CBMiY0FVX3lxTE1FckpJYy1DQXBUQnJwNDRwbnJ6M3NPQi04N2FLZWZjQjYxbEpDZzRoU2lTRndTNFctcThYaXMwaWtUeVU3LWhMQXlQU2xqYTJ4OWNEdnp6bXF6Y2NNMXVsZ2dEdw?oc=5" target="_blank" rel="noreferrer" aria-label="“청년이 정책을 만든다”… 인천시, 청년정책네트워크 본격 출범 링크 바로가기">링크 바로가기</a><button class="action-button" type="button" data-article-action="share" data-article-url="https://news.google.com/rss/articles/CBMiY0FVX3lxTE1FckpJYy1DQXBUQnJwNDRwbnJ6M3NPQi04N2FLZWZjQjYxbEpDZzRoU2lTRndTNFctcThYaXMwaWtUeVU3LWhMQXlQU2xqYTJ4OWNEdnp6bXF6Y2NNMXVsZ2dEdw?oc=5" data-share-title="“청년이 정책을 만든다”… 인천시, 청년정책네트워크 본격 출범" aria-label="“청년이 정책을 만든다”… 인천시, 청년정책네트워크 본격 출범 공유하기">공유하기</button><button class="action-button" type="button" data-article-action="copy" data-article-url="https://news.google.com/rss/articles/CBMiY0FVX3lxTE1FckpJYy1DQXBUQnJwNDRwbnJ6M3NPQi04N2FLZWZjQjYxbEpDZzRoU2lTRndTNFctcThYaXMwaWtUeVU3LWhMQXlQU2xqYTJ4OWNEdnp6bXF6Y2NNMXVsZ2dEdw?oc=5" data-share-title="“청년이 정책을 만든다”… 인천시, 청년정책네트워크 본격 출범" aria-label="“청년이 정책을 만든다”… 인천시, 청년정책네트워크 본격 출범 링크 복사">링크 복사</button></div><div class="article-feedback" data-article-feedback aria-live="polite"></div>
     </article>
     
-    <article class="article-card" data-article-card="true" data-policy-card="true" data-policy-group="local" data-policy-type="출범" data-article-url="https://news.google.com/rss/articles/CBMiWkFVX3lxTFBxQXZ3UGVlVDdCbk5LUXVEYTdYSFRjOEQxWXB4QlF3WjMwc2ZUUDBWOEVLdF9mLV9GeUdlbVl2TXFoTHQySDdpVFdsMnNnVnJvZDg5ZWNpTk9WQQ?oc=5" data-article-title="인천시, 청년정책네트워크 118명 출범…사관학교 연계 정책참여 강화" data-article-date="2026-03-29" data-article-region="인천">
-      <div class="article-meta"><div class="article-meta-tags"><span class="meta-pill primary">지역</span><span class="meta-pill subtle">인천</span></div><div class="article-byline"><span class="meta-item">여성종합뉴스</span><span class="meta-divider" aria-hidden="true">•</span><span class="meta-item">2026-03-29</span></div></div>
-      <h3><a class="article-title-link" href="https://news.google.com/rss/articles/CBMiWkFVX3lxTFBxQXZ3UGVlVDdCbk5LUXVEYTdYSFRjOEQxWXB4QlF3WjMwc2ZUUDBWOEVLdF9mLV9GeUdlbVl2TXFoTHQySDdpVFdsMnNnVnJvZDg5ZWNpTk9WQQ?oc=5" target="_blank" rel="noreferrer" aria-label="인천시, 청년정책네트워크 118명 출범…사관학교 연계 정책참여 강화 링크 바로가기">인천시, 청년정책네트워크 118명 출범…사관학교 연계 정책참여 강화</a></h3>
-      <div class="badge-row"><span class="badge">출범</span><span class="badge">청년정책네트워크</span></div>
-      
-      <div class="article-actions"><a class="mini-link article-link-action" href="https://news.google.com/rss/articles/CBMiWkFVX3lxTFBxQXZ3UGVlVDdCbk5LUXVEYTdYSFRjOEQxWXB4QlF3WjMwc2ZUUDBWOEVLdF9mLV9GeUdlbVl2TXFoTHQySDdpVFdsMnNnVnJvZDg5ZWNpTk9WQQ?oc=5" target="_blank" rel="noreferrer" aria-label="인천시, 청년정책네트워크 118명 출범…사관학교 연계 정책참여 강화 링크 바로가기">링크 바로가기</a><button class="action-button" type="button" data-article-action="share" data-article-url="https://news.google.com/rss/articles/CBMiWkFVX3lxTFBxQXZ3UGVlVDdCbk5LUXVEYTdYSFRjOEQxWXB4QlF3WjMwc2ZUUDBWOEVLdF9mLV9GeUdlbVl2TXFoTHQySDdpVFdsMnNnVnJvZDg5ZWNpTk9WQQ?oc=5" data-share-title="인천시, 청년정책네트워크 118명 출범…사관학교 연계 정책참여 강화" aria-label="인천시, 청년정책네트워크 118명 출범…사관학교 연계 정책참여 강화 공유하기">공유하기</button><button class="action-button" type="button" data-article-action="copy" data-article-url="https://news.google.com/rss/articles/CBMiWkFVX3lxTFBxQXZ3UGVlVDdCbk5LUXVEYTdYSFRjOEQxWXB4QlF3WjMwc2ZUUDBWOEVLdF9mLV9GeUdlbVl2TXFoTHQySDdpVFdsMnNnVnJvZDg5ZWNpTk9WQQ?oc=5" data-share-title="인천시, 청년정책네트워크 118명 출범…사관학교 연계 정책참여 강화" aria-label="인천시, 청년정책네트워크 118명 출범…사관학교 연계 정책참여 강화 링크 복사">링크 복사</button></div><div class="article-feedback" data-article-feedback aria-live="polite"></div>
-    </article>
-    
     <article class="article-card" data-article-card="true" data-policy-card="true" data-policy-group="local" data-policy-type="출범" data-article-url="https://news.google.com/rss/articles/CBMia0FVX3lxTE43Z0VfYmJYZ196UGp5TlM0cWxlbmJUWWJiT1k3cTFndDFObzBTWUhyck10bkE0d0FtMmZNbnRqbVBKOTJVSmdVdDZENWhIR1hLM1UwUGo3UkFwOFNtZGtyVmQ3Z1R6NVhZVTJZ?oc=5" data-article-title="인천시, 청년정책네트워크 118명 출범…정책 설계 참여 확대" data-article-date="2026-03-29" data-article-region="인천">
       <div class="article-meta"><div class="article-meta-tags"><span class="meta-pill primary">지역</span><span class="meta-pill subtle">인천</span></div><div class="article-byline"><span class="meta-item">연합시민의소리</span><span class="meta-divider" aria-hidden="true">•</span><span class="meta-item">2026-03-29</span></div></div>
       <h3><a class="article-title-link" href="https://news.google.com/rss/articles/CBMia0FVX3lxTE43Z0VfYmJYZ196UGp5TlM0cWxlbmJUWWJiT1k3cTFndDFObzBTWUhyck10bkE0d0FtMmZNbnRqbVBKOTJVSmdVdDZENWhIR1hLM1UwUGo3UkFwOFNtZGtyVmQ3Z1R6NVhZVTJZ?oc=5" target="_blank" rel="noreferrer" aria-label="인천시, 청년정책네트워크 118명 출범…정책 설계 참여 확대 링크 바로가기">인천시, 청년정책네트워크 118명 출범…정책 설계 참여 확대</a></h3>
@@ -2042,7 +2206,7 @@
         </div>
         <div class="article-grid">
     <article class="article-card" data-article-card="true" data-policy-card="true" data-policy-group="related" data-policy-type="위원회" data-article-url="https://news.google.com/rss/articles/CBMiaEFVX3lxTE5VVUg3REdXOUhzSFdyaUE1TlZOM0dSYlEzbEppOHA4bW5aU05xcWRKZy1ZVmFqbG0zLVg2SjU2Nnc1alpRYXo0SEJzSDRwWExDUUpfakxuNnBhV3J3WlNIUWVvQ1VtaXh2?oc=5" data-article-title="더불어민주당 고성청년위원회 발족...초대 위원장 김태현" data-article-date="2026-04-02" data-article-region="중앙">
-      <div class="article-meta"><div class="article-meta-tags"><span class="meta-pill primary">참여 기록</span><span class="meta-pill subtle">중앙</span></div><div class="article-byline"><span class="meta-item">gofnews.com</span><span class="meta-divider" aria-hidden="true">•</span><span class="meta-item">2026-04-02</span></div></div>
+      <div class="article-meta"><div class="article-meta-tags"><span class="meta-pill primary">참여 기록</span><span class="meta-pill subtle">중앙</span></div><div class="article-byline"><span class="meta-item">고성미래신문</span><span class="meta-divider" aria-hidden="true">•</span><span class="meta-item">2026-04-02</span></div></div>
       <h3><a class="article-title-link" href="https://news.google.com/rss/articles/CBMiaEFVX3lxTE5VVUg3REdXOUhzSFdyaUE1TlZOM0dSYlEzbEppOHA4bW5aU05xcWRKZy1ZVmFqbG0zLVg2SjU2Nnc1alpRYXo0SEJzSDRwWExDUUpfakxuNnBhV3J3WlNIUWVvQ1VtaXh2?oc=5" target="_blank" rel="noreferrer" aria-label="더불어민주당 고성청년위원회 발족...초대 위원장 김태현 링크 바로가기">더불어민주당 고성청년위원회 발족...초대 위원장 김태현</a></h3>
       <div class="badge-row"><span class="badge">위원회, 출범</span><span class="badge">청년위원회</span></div>
       
@@ -2057,14 +2221,6 @@
       <div class="article-actions"><a class="mini-link article-link-action" href="https://news.google.com/rss/articles/CBMiR0FVX3lxTE9BWC1ZQTc2NmhvSnBiaTJPdE1pejd3aHVWR2RvTnozRU5QVGdCNlpBdXhkejZRY2ExR21OaklodFNZSlpTenVF?oc=5" target="_blank" rel="noreferrer" aria-label="아산 청년위원회 둘러싼 ‘관권 선거·이권 유착’ 공방 링크 바로가기">링크 바로가기</a><button class="action-button" type="button" data-article-action="share" data-article-url="https://news.google.com/rss/articles/CBMiR0FVX3lxTE9BWC1ZQTc2NmhvSnBiaTJPdE1pejd3aHVWR2RvTnozRU5QVGdCNlpBdXhkejZRY2ExR21OaklodFNZSlpTenVF?oc=5" data-share-title="아산 청년위원회 둘러싼 ‘관권 선거·이권 유착’ 공방" aria-label="아산 청년위원회 둘러싼 ‘관권 선거·이권 유착’ 공방 공유하기">공유하기</button><button class="action-button" type="button" data-article-action="copy" data-article-url="https://news.google.com/rss/articles/CBMiR0FVX3lxTE9BWC1ZQTc2NmhvSnBiaTJPdE1pejd3aHVWR2RvTnozRU5QVGdCNlpBdXhkejZRY2ExR21OaklodFNZSlpTenVF?oc=5" data-share-title="아산 청년위원회 둘러싼 ‘관권 선거·이권 유착’ 공방" aria-label="아산 청년위원회 둘러싼 ‘관권 선거·이권 유착’ 공방 링크 복사">링크 복사</button></div><div class="article-feedback" data-article-feedback aria-live="polite"></div>
     </article>
     
-    <article class="article-card" data-article-card="true" data-policy-card="true" data-policy-group="related" data-policy-type="위원회" data-article-url="https://news.google.com/rss/articles/CBMiY0FVX3lxTE5JSEFIdF9UNlY0YUZ2dTBnNUdaQjlTTDFycVNEaVgza2s3Nm50RU96elpTcEFhRWVnQkZJRkJmM1p4WmxOcklVWTVPRWxyNkVuMmtLU1g3TWN0X2owTWlzelIyMA?oc=5" data-article-title="고신대학교, 국제보건미용전문가연합회·아시아한인회총연합회 청년위원회와 업무협약 체결" data-article-date="2026-04-01" data-article-region="중앙">
-      <div class="article-meta"><div class="article-meta-tags"><span class="meta-pill primary">참여 기록</span><span class="meta-pill subtle">중앙</span></div><div class="article-byline"><span class="meta-item">대한민국교육신문</span><span class="meta-divider" aria-hidden="true">•</span><span class="meta-item">2026-04-01</span></div></div>
-      <h3><a class="article-title-link" href="https://news.google.com/rss/articles/CBMiY0FVX3lxTE5JSEFIdF9UNlY0YUZ2dTBnNUdaQjlTTDFycVNEaVgza2s3Nm50RU96elpTcEFhRWVnQkZJRkJmM1p4WmxOcklVWTVPRWxyNkVuMmtLU1g3TWN0X2owTWlzelIyMA?oc=5" target="_blank" rel="noreferrer" aria-label="고신대학교, 국제보건미용전문가연합회·아시아한인회총연합회 청년위원회와 업무협약 체결 링크 바로가기">고신대학교, 국제보건미용전문가연합회·아시아한인회총연합회 청년위원회와 업무협약 체결</a></h3>
-      <div class="badge-row"><span class="badge">위원회, 협약</span><span class="badge">청년위원회</span></div>
-      
-      <div class="article-actions"><a class="mini-link article-link-action" href="https://news.google.com/rss/articles/CBMiY0FVX3lxTE5JSEFIdF9UNlY0YUZ2dTBnNUdaQjlTTDFycVNEaVgza2s3Nm50RU96elpTcEFhRWVnQkZJRkJmM1p4WmxOcklVWTVPRWxyNkVuMmtLU1g3TWN0X2owTWlzelIyMA?oc=5" target="_blank" rel="noreferrer" aria-label="고신대학교, 국제보건미용전문가연합회·아시아한인회총연합회 청년위원회와 업무협약 체결 링크 바로가기">링크 바로가기</a><button class="action-button" type="button" data-article-action="share" data-article-url="https://news.google.com/rss/articles/CBMiY0FVX3lxTE5JSEFIdF9UNlY0YUZ2dTBnNUdaQjlTTDFycVNEaVgza2s3Nm50RU96elpTcEFhRWVnQkZJRkJmM1p4WmxOcklVWTVPRWxyNkVuMmtLU1g3TWN0X2owTWlzelIyMA?oc=5" data-share-title="고신대학교, 국제보건미용전문가연합회·아시아한인회총연합회 청년위원회와 업무협약 체결" aria-label="고신대학교, 국제보건미용전문가연합회·아시아한인회총연합회 청년위원회와 업무협약 체결 공유하기">공유하기</button><button class="action-button" type="button" data-article-action="copy" data-article-url="https://news.google.com/rss/articles/CBMiY0FVX3lxTE5JSEFIdF9UNlY0YUZ2dTBnNUdaQjlTTDFycVNEaVgza2s3Nm50RU96elpTcEFhRWVnQkZJRkJmM1p4WmxOcklVWTVPRWxyNkVuMmtLU1g3TWN0X2owTWlzelIyMA?oc=5" data-share-title="고신대학교, 국제보건미용전문가연합회·아시아한인회총연합회 청년위원회와 업무협약 체결" aria-label="고신대학교, 국제보건미용전문가연합회·아시아한인회총연합회 청년위원회와 업무협약 체결 링크 복사">링크 복사</button></div><div class="article-feedback" data-article-feedback aria-live="polite"></div>
-    </article>
-    
     <article class="article-card" data-article-card="true" data-policy-card="true" data-policy-group="related" data-policy-type="위원회" data-article-url="https://news.google.com/rss/articles/CBMiakFVX3lxTFBrckZoc1FCa2p2NlNFbThkT2ptTk5HVVh3VGFFU041d3ExNHR4dF84azZMNUZCRlctYmlNcHJRRl9CNEVGdGdmbW5zXzNiOFB0c3FRTUREMW4yRkxtM1lrZTJfdUhZN1NSX3c?oc=5" data-article-title="아산시 ‘청년위원회 위원장 선거’ 파장 확산… “청년 자치에 정치 개입”" data-article-date="2026-03-31" data-article-region="중앙">
       <div class="article-meta"><div class="article-meta-tags"><span class="meta-pill primary">참여 기록</span><span class="meta-pill subtle">중앙</span></div><div class="article-byline"><span class="meta-item">천지일보</span><span class="meta-divider" aria-hidden="true">•</span><span class="meta-item">2026-03-31</span></div></div>
       <h3><a class="article-title-link" href="https://news.google.com/rss/articles/CBMiakFVX3lxTFBrckZoc1FCa2p2NlNFbThkT2ptTk5HVVh3VGFFU041d3ExNHR4dF84azZMNUZCRlctYmlNcHJRRl9CNEVGdGdmbW5zXzNiOFB0c3FRTUREMW4yRkxtM1lrZTJfdUhZN1NSX3c?oc=5" target="_blank" rel="noreferrer" aria-label="아산시 ‘청년위원회 위원장 선거’ 파장 확산… “청년 자치에 정치 개입” 링크 바로가기">아산시 ‘청년위원회 위원장 선거’ 파장 확산… “청년 자치에 정치 개입”</a></h3>
@@ -2073,20 +2229,28 @@
       <div class="article-actions"><a class="mini-link article-link-action" href="https://news.google.com/rss/articles/CBMiakFVX3lxTFBrckZoc1FCa2p2NlNFbThkT2ptTk5HVVh3VGFFU041d3ExNHR4dF84azZMNUZCRlctYmlNcHJRRl9CNEVGdGdmbW5zXzNiOFB0c3FRTUREMW4yRkxtM1lrZTJfdUhZN1NSX3c?oc=5" target="_blank" rel="noreferrer" aria-label="아산시 ‘청년위원회 위원장 선거’ 파장 확산… “청년 자치에 정치 개입” 링크 바로가기">링크 바로가기</a><button class="action-button" type="button" data-article-action="share" data-article-url="https://news.google.com/rss/articles/CBMiakFVX3lxTFBrckZoc1FCa2p2NlNFbThkT2ptTk5HVVh3VGFFU041d3ExNHR4dF84azZMNUZCRlctYmlNcHJRRl9CNEVGdGdmbW5zXzNiOFB0c3FRTUREMW4yRkxtM1lrZTJfdUhZN1NSX3c?oc=5" data-share-title="아산시 ‘청년위원회 위원장 선거’ 파장 확산… “청년 자치에 정치 개입”" aria-label="아산시 ‘청년위원회 위원장 선거’ 파장 확산… “청년 자치에 정치 개입” 공유하기">공유하기</button><button class="action-button" type="button" data-article-action="copy" data-article-url="https://news.google.com/rss/articles/CBMiakFVX3lxTFBrckZoc1FCa2p2NlNFbThkT2ptTk5HVVh3VGFFU041d3ExNHR4dF84azZMNUZCRlctYmlNcHJRRl9CNEVGdGdmbW5zXzNiOFB0c3FRTUREMW4yRkxtM1lrZTJfdUhZN1NSX3c?oc=5" data-share-title="아산시 ‘청년위원회 위원장 선거’ 파장 확산… “청년 자치에 정치 개입”" aria-label="아산시 ‘청년위원회 위원장 선거’ 파장 확산… “청년 자치에 정치 개입” 링크 복사">링크 복사</button></div><div class="article-feedback" data-article-feedback aria-live="polite"></div>
     </article>
     
-    <article class="article-card" data-article-card="true" data-policy-card="true" data-policy-group="related" data-policy-type="회의" data-article-url="https://news.google.com/rss/articles/CBMib0FVX3lxTE1UX3F3c1Y0dTRzbXJsY0trYjdOVTF2LV9ndXFBR3ZxTjhrM2ZTTnZ3RnVjQVlwdFJxbnRkY3pIMVFjWHlpblVuUk5nT0JVS2k4SE83bERSX3hNWVRYVWJWbzNCQVM3Zm0xbGxuZnlhWdIBb0FVX3lxTE1UX3F3c1Y0dTRzbXJsY0trYjdOVTF2LV9ndXFBR3ZxTjhrM2ZTTnZ3RnVjQVlwdFJxbnRkY3pIMVFjWHlpblVuUk5nT0JVS2k4SE83bERSX3hNWVRYVWJWbzNCQVM3Zm0xbGxuZnlhWQ?oc=5" data-article-title="봉화군, 청년정책협의체 정기회의 개최 청년정책 참여 확대" data-article-date="2026-03-31" data-article-region="중앙">
+    <article class="article-card" data-article-card="true" data-policy-card="true" data-policy-group="related" data-policy-type="회의" data-article-url="https://news.google.com/rss/articles/CBMia0FVX3lxTFBRN1VheVhITEVTSEg5dVhvQ3BoSkZHbDVmQmhkMkNPNzlLQ250NExIRVhZX1FiWDFxRUMzRGIzTkkwTVRHaDJjalZMSTEtTl9RTVJkcXMzUVQybl9PLXVDVlVmV0Q0VEtOLUdZ0gFvQVVfeXFMTVRfcXdzVjR1NHNtcmxjS2tiN05VMXYtX2d1cUFHdnFOOGszZlNOdndGdWNBWXB0UnFudGRjekgxUWNYeWluVW5STmdPQlVLaThITzdsRFJfeE1ZVFhVYlZvM0JBUzdmbTFsbG5meWFZ?oc=5" data-article-title="봉화군, 청년정책협의체 정기회의 개최 청년정책 참여 확대" data-article-date="2026-03-31" data-article-region="중앙">
       <div class="article-meta"><div class="article-meta-tags"><span class="meta-pill primary">참여 기록</span><span class="meta-pill subtle">중앙</span></div><div class="article-byline"><span class="meta-item">한스경제</span><span class="meta-divider" aria-hidden="true">•</span><span class="meta-item">2026-03-31</span></div></div>
-      <h3><a class="article-title-link" href="https://news.google.com/rss/articles/CBMib0FVX3lxTE1UX3F3c1Y0dTRzbXJsY0trYjdOVTF2LV9ndXFBR3ZxTjhrM2ZTTnZ3RnVjQVlwdFJxbnRkY3pIMVFjWHlpblVuUk5nT0JVS2k4SE83bERSX3hNWVRYVWJWbzNCQVM3Zm0xbGxuZnlhWdIBb0FVX3lxTE1UX3F3c1Y0dTRzbXJsY0trYjdOVTF2LV9ndXFBR3ZxTjhrM2ZTTnZ3RnVjQVlwdFJxbnRkY3pIMVFjWHlpblVuUk5nT0JVS2k4SE83bERSX3hNWVRYVWJWbzNCQVM3Zm0xbGxuZnlhWQ?oc=5" target="_blank" rel="noreferrer" aria-label="봉화군, 청년정책협의체 정기회의 개최 청년정책 참여 확대 링크 바로가기">봉화군, 청년정책협의체 정기회의 개최 청년정책 참여 확대</a></h3>
+      <h3><a class="article-title-link" href="https://news.google.com/rss/articles/CBMia0FVX3lxTFBRN1VheVhITEVTSEg5dVhvQ3BoSkZHbDVmQmhkMkNPNzlLQ250NExIRVhZX1FiWDFxRUMzRGIzTkkwTVRHaDJjalZMSTEtTl9RTVJkcXMzUVQybl9PLXVDVlVmV0Q0VEtOLUdZ0gFvQVVfeXFMTVRfcXdzVjR1NHNtcmxjS2tiN05VMXYtX2d1cUFHdnFOOGszZlNOdndGdWNBWXB0UnFudGRjekgxUWNYeWluVW5STmdPQlVLaThITzdsRFJfeE1ZVFhVYlZvM0JBUzdmbTFsbG5meWFZ?oc=5" target="_blank" rel="noreferrer" aria-label="봉화군, 청년정책협의체 정기회의 개최 청년정책 참여 확대 링크 바로가기">봉화군, 청년정책협의체 정기회의 개최 청년정책 참여 확대</a></h3>
       <div class="badge-row"><span class="badge">회의</span><span class="badge">청년정책협의체</span></div>
       
-      <div class="article-actions"><a class="mini-link article-link-action" href="https://news.google.com/rss/articles/CBMib0FVX3lxTE1UX3F3c1Y0dTRzbXJsY0trYjdOVTF2LV9ndXFBR3ZxTjhrM2ZTTnZ3RnVjQVlwdFJxbnRkY3pIMVFjWHlpblVuUk5nT0JVS2k4SE83bERSX3hNWVRYVWJWbzNCQVM3Zm0xbGxuZnlhWdIBb0FVX3lxTE1UX3F3c1Y0dTRzbXJsY0trYjdOVTF2LV9ndXFBR3ZxTjhrM2ZTTnZ3RnVjQVlwdFJxbnRkY3pIMVFjWHlpblVuUk5nT0JVS2k4SE83bERSX3hNWVRYVWJWbzNCQVM3Zm0xbGxuZnlhWQ?oc=5" target="_blank" rel="noreferrer" aria-label="봉화군, 청년정책협의체 정기회의 개최 청년정책 참여 확대 링크 바로가기">링크 바로가기</a><button class="action-button" type="button" data-article-action="share" data-article-url="https://news.google.com/rss/articles/CBMib0FVX3lxTE1UX3F3c1Y0dTRzbXJsY0trYjdOVTF2LV9ndXFBR3ZxTjhrM2ZTTnZ3RnVjQVlwdFJxbnRkY3pIMVFjWHlpblVuUk5nT0JVS2k4SE83bERSX3hNWVRYVWJWbzNCQVM3Zm0xbGxuZnlhWdIBb0FVX3lxTE1UX3F3c1Y0dTRzbXJsY0trYjdOVTF2LV9ndXFBR3ZxTjhrM2ZTTnZ3RnVjQVlwdFJxbnRkY3pIMVFjWHlpblVuUk5nT0JVS2k4SE83bERSX3hNWVRYVWJWbzNCQVM3Zm0xbGxuZnlhWQ?oc=5" data-share-title="봉화군, 청년정책협의체 정기회의 개최 청년정책 참여 확대" aria-label="봉화군, 청년정책협의체 정기회의 개최 청년정책 참여 확대 공유하기">공유하기</button><button class="action-button" type="button" data-article-action="copy" data-article-url="https://news.google.com/rss/articles/CBMib0FVX3lxTE1UX3F3c1Y0dTRzbXJsY0trYjdOVTF2LV9ndXFBR3ZxTjhrM2ZTTnZ3RnVjQVlwdFJxbnRkY3pIMVFjWHlpblVuUk5nT0JVS2k4SE83bERSX3hNWVRYVWJWbzNCQVM3Zm0xbGxuZnlhWdIBb0FVX3lxTE1UX3F3c1Y0dTRzbXJsY0trYjdOVTF2LV9ndXFBR3ZxTjhrM2ZTTnZ3RnVjQVlwdFJxbnRkY3pIMVFjWHlpblVuUk5nT0JVS2k4SE83bERSX3hNWVRYVWJWbzNCQVM3Zm0xbGxuZnlhWQ?oc=5" data-share-title="봉화군, 청년정책협의체 정기회의 개최 청년정책 참여 확대" aria-label="봉화군, 청년정책협의체 정기회의 개최 청년정책 참여 확대 링크 복사">링크 복사</button></div><div class="article-feedback" data-article-feedback aria-live="polite"></div>
+      <div class="article-actions"><a class="mini-link article-link-action" href="https://news.google.com/rss/articles/CBMia0FVX3lxTFBRN1VheVhITEVTSEg5dVhvQ3BoSkZHbDVmQmhkMkNPNzlLQ250NExIRVhZX1FiWDFxRUMzRGIzTkkwTVRHaDJjalZMSTEtTl9RTVJkcXMzUVQybl9PLXVDVlVmV0Q0VEtOLUdZ0gFvQVVfeXFMTVRfcXdzVjR1NHNtcmxjS2tiN05VMXYtX2d1cUFHdnFOOGszZlNOdndGdWNBWXB0UnFudGRjekgxUWNYeWluVW5STmdPQlVLaThITzdsRFJfeE1ZVFhVYlZvM0JBUzdmbTFsbG5meWFZ?oc=5" target="_blank" rel="noreferrer" aria-label="봉화군, 청년정책협의체 정기회의 개최 청년정책 참여 확대 링크 바로가기">링크 바로가기</a><button class="action-button" type="button" data-article-action="share" data-article-url="https://news.google.com/rss/articles/CBMia0FVX3lxTFBRN1VheVhITEVTSEg5dVhvQ3BoSkZHbDVmQmhkMkNPNzlLQ250NExIRVhZX1FiWDFxRUMzRGIzTkkwTVRHaDJjalZMSTEtTl9RTVJkcXMzUVQybl9PLXVDVlVmV0Q0VEtOLUdZ0gFvQVVfeXFMTVRfcXdzVjR1NHNtcmxjS2tiN05VMXYtX2d1cUFHdnFOOGszZlNOdndGdWNBWXB0UnFudGRjekgxUWNYeWluVW5STmdPQlVLaThITzdsRFJfeE1ZVFhVYlZvM0JBUzdmbTFsbG5meWFZ?oc=5" data-share-title="봉화군, 청년정책협의체 정기회의 개최 청년정책 참여 확대" aria-label="봉화군, 청년정책협의체 정기회의 개최 청년정책 참여 확대 공유하기">공유하기</button><button class="action-button" type="button" data-article-action="copy" data-article-url="https://news.google.com/rss/articles/CBMia0FVX3lxTFBRN1VheVhITEVTSEg5dVhvQ3BoSkZHbDVmQmhkMkNPNzlLQ250NExIRVhZX1FiWDFxRUMzRGIzTkkwTVRHaDJjalZMSTEtTl9RTVJkcXMzUVQybl9PLXVDVlVmV0Q0VEtOLUdZ0gFvQVVfeXFMTVRfcXdzVjR1NHNtcmxjS2tiN05VMXYtX2d1cUFHdnFOOGszZlNOdndGdWNBWXB0UnFudGRjekgxUWNYeWluVW5STmdPQlVLaThITzdsRFJfeE1ZVFhVYlZvM0JBUzdmbTFsbG5meWFZ?oc=5" data-share-title="봉화군, 청년정책협의체 정기회의 개최 청년정책 참여 확대" aria-label="봉화군, 청년정책협의체 정기회의 개최 청년정책 참여 확대 링크 복사">링크 복사</button></div><div class="article-feedback" data-article-feedback aria-live="polite"></div>
     </article>
     
     <article class="article-card" data-article-card="true" data-policy-card="true" data-policy-group="related" data-policy-type="위원회" data-article-url="https://news.google.com/rss/articles/CBMib0FVX3lxTE1lb2o1WjZPbWZ6ekt3aGpMeFBqUjhZVl9Kc0dIMTFrNXR6TmdNR2tkaFNXUi1PRU9pMERBdDYwTUFvVnhMSXBaZzMzVHdNZnl6WGlaOG9saFdFUGJjallfRFB0eUpDekNkbWU5MGlYRQ?oc=5" data-article-title="아산 청년위원회, &#x27;비서실 개입·개인정보 유출&#x27; 의혹…공정성 논란 &#x27;일파만파&#x27;!" data-article-date="2026-03-31" data-article-region="중앙">
-      <div class="article-meta"><div class="article-meta-tags"><span class="meta-pill primary">참여 기록</span><span class="meta-pill subtle">중앙</span></div><div class="article-byline"><span class="meta-item">내외일보</span><span class="meta-divider" aria-hidden="true">•</span><span class="meta-item">2026-03-31</span></div></div>
+      <div class="article-meta"><div class="article-meta-tags"><span class="meta-pill primary">참여 기록</span><span class="meta-pill subtle">중앙</span></div><div class="article-byline"><span class="meta-item">naewoeilbo.com</span><span class="meta-divider" aria-hidden="true">•</span><span class="meta-item">2026-03-31</span></div></div>
       <h3><a class="article-title-link" href="https://news.google.com/rss/articles/CBMib0FVX3lxTE1lb2o1WjZPbWZ6ekt3aGpMeFBqUjhZVl9Kc0dIMTFrNXR6TmdNR2tkaFNXUi1PRU9pMERBdDYwTUFvVnhMSXBaZzMzVHdNZnl6WGlaOG9saFdFUGJjallfRFB0eUpDekNkbWU5MGlYRQ?oc=5" target="_blank" rel="noreferrer" aria-label="아산 청년위원회, &#x27;비서실 개입·개인정보 유출&#x27; 의혹…공정성 논란 &#x27;일파만파&#x27;! 링크 바로가기">아산 청년위원회, &#x27;비서실 개입·개인정보 유출&#x27; 의혹…공정성 논란 &#x27;일파만파&#x27;!</a></h3>
       <div class="badge-row"><span class="badge">위원회</span><span class="badge">청년위원회</span></div>
       
       <div class="article-actions"><a class="mini-link article-link-action" href="https://news.google.com/rss/articles/CBMib0FVX3lxTE1lb2o1WjZPbWZ6ekt3aGpMeFBqUjhZVl9Kc0dIMTFrNXR6TmdNR2tkaFNXUi1PRU9pMERBdDYwTUFvVnhMSXBaZzMzVHdNZnl6WGlaOG9saFdFUGJjallfRFB0eUpDekNkbWU5MGlYRQ?oc=5" target="_blank" rel="noreferrer" aria-label="아산 청년위원회, &#x27;비서실 개입·개인정보 유출&#x27; 의혹…공정성 논란 &#x27;일파만파&#x27;! 링크 바로가기">링크 바로가기</a><button class="action-button" type="button" data-article-action="share" data-article-url="https://news.google.com/rss/articles/CBMib0FVX3lxTE1lb2o1WjZPbWZ6ekt3aGpMeFBqUjhZVl9Kc0dIMTFrNXR6TmdNR2tkaFNXUi1PRU9pMERBdDYwTUFvVnhMSXBaZzMzVHdNZnl6WGlaOG9saFdFUGJjallfRFB0eUpDekNkbWU5MGlYRQ?oc=5" data-share-title="아산 청년위원회, &#x27;비서실 개입·개인정보 유출&#x27; 의혹…공정성 논란 &#x27;일파만파&#x27;!" aria-label="아산 청년위원회, &#x27;비서실 개입·개인정보 유출&#x27; 의혹…공정성 논란 &#x27;일파만파&#x27;! 공유하기">공유하기</button><button class="action-button" type="button" data-article-action="copy" data-article-url="https://news.google.com/rss/articles/CBMib0FVX3lxTE1lb2o1WjZPbWZ6ekt3aGpMeFBqUjhZVl9Kc0dIMTFrNXR6TmdNR2tkaFNXUi1PRU9pMERBdDYwTUFvVnhMSXBaZzMzVHdNZnl6WGlaOG9saFdFUGJjallfRFB0eUpDekNkbWU5MGlYRQ?oc=5" data-share-title="아산 청년위원회, &#x27;비서실 개입·개인정보 유출&#x27; 의혹…공정성 논란 &#x27;일파만파&#x27;!" aria-label="아산 청년위원회, &#x27;비서실 개입·개인정보 유출&#x27; 의혹…공정성 논란 &#x27;일파만파&#x27;! 링크 복사">링크 복사</button></div><div class="article-feedback" data-article-feedback aria-live="polite"></div>
+    </article>
+    
+    <article class="article-card" data-article-card="true" data-policy-card="true" data-policy-group="related" data-policy-type="위원회" data-article-url="https://news.google.com/rss/articles/CBMicEFVX3lxTFBEb3ltQW5VeDRQSm45N0xORHltdUVwNlZPZWtyZGVRWWdEdjQyWWtIbnBHNzFTSnk5Qm9TUlhPVXVBLU05TEQ4clFQd0dpOWpnYmtXRkluM1psYlROT2IyNUViS3J3TnZzUkVDd2g2bm8?oc=5" data-article-title="인천 계양구 2026년 청년정책조정위원회 개최하며 청년 삶 전반 지원" data-article-date="2026-03-29" data-article-region="인천">
+      <div class="article-meta"><div class="article-meta-tags"><span class="meta-pill primary">참여 기록</span><span class="meta-pill subtle">인천</span></div><div class="article-byline"><span class="meta-item">더코리아</span><span class="meta-divider" aria-hidden="true">•</span><span class="meta-item">2026-03-29</span></div></div>
+      <h3><a class="article-title-link" href="https://news.google.com/rss/articles/CBMicEFVX3lxTFBEb3ltQW5VeDRQSm45N0xORHltdUVwNlZPZWtyZGVRWWdEdjQyWWtIbnBHNzFTSnk5Qm9TUlhPVXVBLU05TEQ4clFQd0dpOWpnYmtXRkluM1psYlROT2IyNUViS3J3TnZzUkVDd2g2bm8?oc=5" target="_blank" rel="noreferrer" aria-label="인천 계양구 2026년 청년정책조정위원회 개최하며 청년 삶 전반 지원 링크 바로가기">인천 계양구 2026년 청년정책조정위원회 개최하며 청년 삶 전반 지원</a></h3>
+      <div class="badge-row"><span class="badge">위원회</span><span class="badge">청년정책조정위원회</span></div>
+      <p class="article-summary"><a class="article-summary-link" href="https://news.google.com/rss/articles/CBMicEFVX3lxTFBEb3ltQW5VeDRQSm45N0xORHltdUVwNlZPZWtyZGVRWWdEdjQyWWtIbnBHNzFTSnk5Qm9TUlhPVXVBLU05TEQ4clFQd0dpOWpnYmtXRkluM1psYlROT2IyNUViS3J3TnZzUkVDd2g2bm8?oc=5" target="_blank" rel="noreferrer" aria-label="인천 계양구 2026년 청년정책조정위원회 개최하며 청년 삶 전반 지원 링크 바로가기">&gt; 뉴스</a></p>
+      <div class="article-actions"><a class="mini-link article-link-action" href="https://news.google.com/rss/articles/CBMicEFVX3lxTFBEb3ltQW5VeDRQSm45N0xORHltdUVwNlZPZWtyZGVRWWdEdjQyWWtIbnBHNzFTSnk5Qm9TUlhPVXVBLU05TEQ4clFQd0dpOWpnYmtXRkluM1psYlROT2IyNUViS3J3TnZzUkVDd2g2bm8?oc=5" target="_blank" rel="noreferrer" aria-label="인천 계양구 2026년 청년정책조정위원회 개최하며 청년 삶 전반 지원 링크 바로가기">링크 바로가기</a><button class="action-button" type="button" data-article-action="share" data-article-url="https://news.google.com/rss/articles/CBMicEFVX3lxTFBEb3ltQW5VeDRQSm45N0xORHltdUVwNlZPZWtyZGVRWWdEdjQyWWtIbnBHNzFTSnk5Qm9TUlhPVXVBLU05TEQ4clFQd0dpOWpnYmtXRkluM1psYlROT2IyNUViS3J3TnZzUkVDd2g2bm8?oc=5" data-share-title="인천 계양구 2026년 청년정책조정위원회 개최하며 청년 삶 전반 지원" aria-label="인천 계양구 2026년 청년정책조정위원회 개최하며 청년 삶 전반 지원 공유하기">공유하기</button><button class="action-button" type="button" data-article-action="copy" data-article-url="https://news.google.com/rss/articles/CBMicEFVX3lxTFBEb3ltQW5VeDRQSm45N0xORHltdUVwNlZPZWtyZGVRWWdEdjQyWWtIbnBHNzFTSnk5Qm9TUlhPVXVBLU05TEQ4clFQd0dpOWpnYmtXRkluM1psYlROT2IyNUViS3J3TnZzUkVDd2g2bm8?oc=5" data-share-title="인천 계양구 2026년 청년정책조정위원회 개최하며 청년 삶 전반 지원" aria-label="인천 계양구 2026년 청년정책조정위원회 개최하며 청년 삶 전반 지원 링크 복사">링크 복사</button></div><div class="article-feedback" data-article-feedback aria-live="polite"></div>
     </article>
     </div>
       </section>

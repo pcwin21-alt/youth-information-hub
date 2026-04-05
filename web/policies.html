@@ -19,6 +19,10 @@
     --accent: #395677;
     --accent-soft: rgba(57, 86, 119, 0.12);
     --accent-strong: #172536;
+    --home-apricot: #dd9367;
+    --home-apricot-soft: rgba(221, 147, 103, 0.18);
+    --home-teal: #5f9188;
+    --home-teal-soft: rgba(95, 145, 136, 0.18);
     --shadow: 0 18px 42px rgba(31, 42, 51, 0.08);
     --shadow-soft: 0 8px 20px rgba(31, 42, 51, 0.05);
   }
@@ -696,7 +700,7 @@
     align-content: start;
   }
   .home-section-card.featured {
-    background: linear-gradient(180deg, rgba(37, 99, 235, 0.06) 0%, rgba(255, 255, 255, 1) 100%);
+    background: linear-gradient(180deg, rgba(221, 147, 103, 0.08) 0%, rgba(255, 255, 255, 1) 100%);
   }
   .home-briefing-grid {
     display: grid;
@@ -712,29 +716,96 @@
     display: grid;
     align-content: start;
     gap: 18px;
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
   }
-  .home-briefing-card.lead {
+  .home-briefing-card > * {
+    position: relative;
+    z-index: 1;
+  }
+  .home-briefing-card::before,
+  .home-briefing-card::after {
+    content: "";
+    position: absolute;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .home-briefing-card.lead-arch {
     border-color: rgba(23, 37, 54, 0.18);
+    border-radius: 40px 108px 40px 50px;
     background:
-      radial-gradient(circle at top left, rgba(143, 166, 194, 0.16), transparent 34%),
+      radial-gradient(circle at top left, rgba(95, 145, 136, 0.18), transparent 30%),
+      radial-gradient(circle at top right, rgba(221, 147, 103, 0.18), transparent 28%),
       linear-gradient(180deg, rgba(28, 40, 58, 0.98) 0%, rgba(23, 37, 54, 1) 100%);
     box-shadow: 0 22px 42px rgba(23, 37, 54, 0.18);
   }
-  .home-briefing-card.support {
-    background:
-      radial-gradient(circle at top left, rgba(205, 190, 161, 0.16), transparent 26%),
-      radial-gradient(circle at top right, rgba(57, 86, 119, 0.08), transparent 30%),
-      linear-gradient(180deg, rgba(250, 247, 241, 0.99) 0%, rgba(255, 255, 255, 0.99) 100%);
-    overflow: hidden;
+  .home-briefing-card.lead-arch::before {
+    top: -62px;
+    right: -28px;
+    width: 190px;
+    height: 190px;
+    border-radius: 0 0 0 170px;
+    background: radial-gradient(circle, rgba(221, 147, 103, 0.28) 0%, rgba(221, 147, 103, 0) 72%);
   }
-  .home-briefing-card.footer {
+  .home-briefing-card.lead-arch::after {
+    left: -64px;
+    bottom: -88px;
+    width: 180px;
+    height: 180px;
+    border-radius: 999px;
+    background: radial-gradient(circle, rgba(95, 145, 136, 0.18) 0%, rgba(95, 145, 136, 0) 74%);
+  }
+  .home-briefing-card.digest-organic {
+    border-color: var(--home-apricot-soft);
+    border-radius: 34px 30px 88px 34px;
+    background:
+      radial-gradient(circle at top right, rgba(221, 147, 103, 0.2), transparent 30%),
+      radial-gradient(circle at bottom left, rgba(95, 145, 136, 0.12), transparent 28%),
+      linear-gradient(180deg, rgba(252, 245, 239, 0.99) 0%, rgba(255, 255, 255, 0.99) 100%);
+  }
+  .home-briefing-card.digest-organic::before {
+    top: -38px;
+    right: -26px;
+    width: 132px;
+    height: 132px;
+    border-radius: 58% 42% 54% 46% / 42% 60% 40% 58%;
+    background: rgba(255, 255, 255, 0.72);
+  }
+  .home-briefing-card.support-pill {
+    border-color: var(--home-teal-soft);
+    border-radius: 86px 30px 42px 86px;
+    background:
+      radial-gradient(circle at top left, rgba(95, 145, 136, 0.22), transparent 26%),
+      radial-gradient(circle at bottom right, rgba(221, 147, 103, 0.12), transparent 30%),
+      linear-gradient(180deg, rgba(250, 247, 241, 0.99) 0%, rgba(255, 255, 255, 0.99) 100%);
+  }
+  .home-briefing-card.support-pill::after {
+    left: -58px;
+    bottom: -82px;
+    width: 210px;
+    height: 210px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.42);
+  }
+  .home-briefing-card.footer-warm {
     padding: 0;
     gap: 0;
+    border-color: var(--home-apricot-soft);
+    border-radius: 36px 36px 110px 44px;
     background:
-      radial-gradient(circle at top left, rgba(212, 200, 182, 0.18), transparent 24%),
-      linear-gradient(180deg, rgba(246, 242, 236, 0.98) 0%, rgba(255, 255, 255, 0.99) 100%);
+      radial-gradient(circle at top right, rgba(221, 147, 103, 0.22), transparent 28%),
+      radial-gradient(circle at bottom left, rgba(95, 145, 136, 0.1), transparent 30%),
+      linear-gradient(180deg, rgba(249, 240, 233, 0.99) 0%, rgba(255, 255, 255, 0.99) 100%);
     color: var(--text);
-    overflow: hidden;
+  }
+  .home-briefing-card.footer-warm::after {
+    right: -44px;
+    bottom: -70px;
+    width: 150px;
+    height: 150px;
+    border-radius: 999px;
+    background: rgba(221, 147, 103, 0.16);
   }
   .home-briefing-date {
     color: var(--accent-strong);
@@ -759,13 +830,13 @@
     word-break: keep-all;
     overflow-wrap: normal;
   }
-  .home-briefing-card.lead .home-briefing-date {
+  .home-briefing-card.lead-arch .home-briefing-date {
     color: rgba(255, 255, 255, 0.74);
   }
-  .home-briefing-card.lead .home-briefing-title {
+  .home-briefing-card.lead-arch .home-briefing-title {
     color: white;
   }
-  .home-briefing-card.lead .home-briefing-copy {
+  .home-briefing-card.lead-arch .home-briefing-copy {
     color: rgba(240, 245, 251, 0.9);
   }
   .home-briefing-meta {
@@ -799,17 +870,41 @@
     gap: 12px;
   }
   .home-glance-item {
-    display: grid;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     gap: 8px;
-    padding: 16px;
-    border-radius: 22px;
+    min-height: 110px;
+    aspect-ratio: 1 / 1;
+    padding: 16px 12px;
+    border-radius: 999px;
     border: 1px solid rgba(23, 33, 49, 0.08);
     background:
       linear-gradient(180deg, rgba(250, 248, 243, 0.96) 0%, rgba(255, 255, 255, 0.99) 100%);
+    text-align: center;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.88);
+  }
+  .home-glance-item.warm {
+    border-color: var(--home-apricot-soft);
+    background:
+      radial-gradient(circle at top, rgba(221, 147, 103, 0.2), transparent 44%),
+      linear-gradient(180deg, rgba(251, 241, 233, 0.98) 0%, rgba(255, 255, 255, 0.99) 100%);
+  }
+  .home-glance-item.neutral {
+    background:
+      radial-gradient(circle at top, rgba(57, 86, 119, 0.12), transparent 44%),
+      linear-gradient(180deg, rgba(247, 243, 239, 0.98) 0%, rgba(255, 255, 255, 0.99) 100%);
+  }
+  .home-glance-item.teal {
+    border-color: var(--home-teal-soft);
+    background:
+      radial-gradient(circle at top, rgba(95, 145, 136, 0.2), transparent 44%),
+      linear-gradient(180deg, rgba(238, 247, 244, 0.98) 0%, rgba(255, 255, 255, 0.99) 100%);
   }
   .home-glance-label {
     color: var(--muted);
-    font-size: 0.78rem;
+    font-size: 0.75rem;
     font-weight: 800;
     line-height: 1.3;
   }
@@ -825,9 +920,36 @@
     flex-wrap: wrap;
     gap: 10px;
   }
+  .home-glance-links .mini-link {
+    margin-top: 0;
+    padding: 10px 14px;
+    border-radius: 999px;
+    border: 1px solid rgba(23, 33, 49, 0.08);
+    background: rgba(255, 255, 255, 0.88);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.82);
+  }
+  .home-glance-links .mini-link:nth-child(1) {
+    border-color: var(--home-apricot-soft);
+    background: rgba(251, 235, 224, 0.96);
+  }
+  .home-glance-links .mini-link:nth-child(2) {
+    border-color: rgba(57, 86, 119, 0.14);
+    background: rgba(241, 245, 250, 0.96);
+  }
+  .home-glance-links .mini-link:nth-child(3) {
+    border-color: var(--home-teal-soft);
+    background: rgba(233, 244, 240, 0.96);
+  }
   .home-briefing-divider {
     height: 1px;
     background: rgba(23, 33, 49, 0.08);
+  }
+  .home-briefing-card.digest-organic .home-briefing-divider {
+    background: rgba(221, 147, 103, 0.16);
+  }
+  .home-briefing-card.digest-organic .home-urgent-list,
+  .home-briefing-card.digest-organic .home-urgent-item {
+    border-color: rgba(221, 147, 103, 0.16);
   }
   .home-briefing-subhead {
     display: grid;
@@ -866,7 +988,7 @@
     width: 34px;
     height: 34px;
     border-radius: 999px;
-    background: rgba(23, 37, 54, 0.08);
+    background: rgba(221, 147, 103, 0.16);
     color: var(--accent-strong);
     font-size: 0.8rem;
     font-weight: 800;
@@ -893,8 +1015,8 @@
     padding: 7px 12px;
     border-radius: 999px;
     border: 1px solid transparent;
-    background: var(--accent-strong);
-    color: rgba(255, 255, 255, 0.94);
+    background: rgba(23, 37, 54, 0.94);
+    color: rgba(255, 255, 255, 0.96);
     font-size: 0.78rem;
     font-weight: 800;
   }
@@ -930,11 +1052,25 @@
     gap: 12px;
   }
   .home-support-links a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 14px;
+    border-radius: 999px;
+    border: 1px solid rgba(23, 33, 49, 0.08);
+    background: rgba(255, 255, 255, 0.74);
     color: var(--accent-strong);
     font-size: 0.84rem;
     font-weight: 700;
-    text-decoration: underline;
-    text-underline-offset: 3px;
+    text-decoration: none;
+  }
+  .home-support-links a:first-child {
+    background: rgba(241, 245, 250, 0.92);
+    border-color: rgba(57, 86, 119, 0.14);
+  }
+  .home-support-links a:last-child {
+    background: rgba(251, 235, 224, 0.94);
+    border-color: var(--home-apricot-soft);
   }
   .home-support-credit {
     margin: 2px 0 0;
@@ -1000,27 +1136,27 @@
   }
   .home-support-metric-item:nth-child(1) {
     background:
-      linear-gradient(180deg, rgba(247, 243, 234, 0.98) 0%, rgba(255, 255, 255, 0.99) 100%);
+      linear-gradient(180deg, rgba(250, 238, 229, 0.98) 0%, rgba(255, 255, 255, 0.99) 100%);
   }
   .home-support-metric-item:nth-child(2) {
     background:
-      linear-gradient(180deg, rgba(241, 245, 243, 0.98) 0%, rgba(255, 255, 255, 0.99) 100%);
+      linear-gradient(180deg, rgba(236, 246, 242, 0.98) 0%, rgba(255, 255, 255, 0.99) 100%);
   }
   .home-support-metric-item:nth-child(3) {
     background:
-      linear-gradient(180deg, rgba(243, 246, 241, 0.98) 0%, rgba(255, 255, 255, 0.99) 100%);
+      linear-gradient(180deg, rgba(244, 243, 239, 0.98) 0%, rgba(255, 255, 255, 0.99) 100%);
   }
   .home-support-metric-item:nth-child(4) {
     background:
-      linear-gradient(180deg, rgba(245, 243, 240, 0.98) 0%, rgba(255, 255, 255, 0.99) 100%);
+      linear-gradient(180deg, rgba(251, 239, 231, 0.98) 0%, rgba(255, 255, 255, 0.99) 100%);
   }
   .home-support-metric-item:nth-child(5) {
     background:
-      linear-gradient(180deg, rgba(247, 242, 240, 0.98) 0%, rgba(255, 255, 255, 0.99) 100%);
+      linear-gradient(180deg, rgba(236, 246, 242, 0.98) 0%, rgba(255, 255, 255, 0.99) 100%);
   }
   .home-support-metric-item:nth-child(6) {
     background:
-      linear-gradient(180deg, rgba(242, 243, 239, 0.98) 0%, rgba(255, 255, 255, 0.99) 100%);
+      linear-gradient(180deg, rgba(245, 243, 239, 0.98) 0%, rgba(255, 255, 255, 0.99) 100%);
   }
   .youth-metrics-card {
     display: none;
@@ -1751,6 +1887,18 @@
     .home-briefing-card.footer {
       grid-area: footer;
     }
+    .home-briefing-card.lead-arch {
+      border-radius: 46px 132px 44px 58px;
+    }
+    .home-briefing-card.digest-organic {
+      border-radius: 40px 34px 104px 40px;
+    }
+    .home-briefing-card.support-pill {
+      border-radius: 96px 34px 46px 96px;
+    }
+    .home-briefing-card.footer-warm {
+      border-radius: 38px 38px 128px 48px;
+    }
     .home-spotlight-layout {
       grid-template-columns: minmax(0, 1.24fr) minmax(280px, 0.82fr);
       gap: 18px;
@@ -1833,6 +1981,18 @@
       padding: 20px;
       border-radius: 24px;
     }
+    .home-briefing-card.lead-arch {
+      border-radius: 32px 78px 32px 38px;
+    }
+    .home-briefing-card.digest-organic {
+      border-radius: 28px 24px 64px 28px;
+    }
+    .home-briefing-card.support-pill {
+      border-radius: 58px 24px 32px 58px;
+    }
+    .home-briefing-card.footer-warm {
+      border-radius: 28px 28px 72px 34px;
+    }
     .home-briefing-title {
       font-size: clamp(2.05rem, 9.8vw, 3.25rem);
       letter-spacing: -0.05em;
@@ -1840,6 +2000,10 @@
     .home-briefing-copy {
       max-width: 100%;
       font-size: 0.98rem;
+    }
+    .home-glance-item {
+      min-height: 96px;
+      padding: 14px 10px;
     }
     .bottom-nav {
       width: calc(100% - 8px);
@@ -1901,7 +2065,7 @@
       </div>
       <div class="topbar-side">
         <a class="guide-link" href="guide.html" data-guide-open-link="true">이용방법</a>
-        <div class="header-side"><strong>04.04 15:00</strong><span>최근 반영</span></div>
+        <div class="header-side"><strong>04.05 17:19</strong><span>최근 반영</span></div>
         <nav class="nav"><a class="" href="index.html">홈</a><a class="" href="news.html">뉴스</a><a class="active" href="policies.html">정책</a><a class="" href="hub.html">참여·회의</a><a class="" href="tools.html">자료도구</a><a class="" href="contact.html">제보·문의</a></nav>
       </div>
     </header>
@@ -1928,7 +2092,7 @@
           </div>
           <div class="filter-group">
             <span class="filter-group-label">지역</span>
-            <div class="filter-controls"><button class="filter-button active" type="button" data-policy-filter="true" data-filter-group="region" data-filter-value="all" aria-pressed="true">전체</button><button class="filter-button" type="button" data-policy-filter="true" data-filter-group="region" data-filter-value="중앙" aria-pressed="false">중앙</button><button class="filter-button" type="button" data-policy-filter="true" data-filter-group="region" data-filter-value="경기" aria-pressed="false">경기</button><button class="filter-button" type="button" data-policy-filter="true" data-filter-group="region" data-filter-value="경남" aria-pressed="false">경남</button><button class="filter-button" type="button" data-policy-filter="true" data-filter-group="region" data-filter-value="대구" aria-pressed="false">대구</button><button class="filter-button" type="button" data-policy-filter="true" data-filter-group="region" data-filter-value="대전" aria-pressed="false">대전</button><button class="filter-button" type="button" data-policy-filter="true" data-filter-group="region" data-filter-value="부산" aria-pressed="false">부산</button><button class="filter-button" type="button" data-policy-filter="true" data-filter-group="region" data-filter-value="서울" aria-pressed="false">서울</button><button class="filter-button" type="button" data-policy-filter="true" data-filter-group="region" data-filter-value="세종" aria-pressed="false">세종</button><button class="filter-button" type="button" data-policy-filter="true" data-filter-group="region" data-filter-value="인천" aria-pressed="false">인천</button><button class="filter-button" type="button" data-policy-filter="true" data-filter-group="region" data-filter-value="전북" aria-pressed="false">전북</button></div>
+            <div class="filter-controls"><button class="filter-button active" type="button" data-policy-filter="true" data-filter-group="region" data-filter-value="all" aria-pressed="true">전체</button><button class="filter-button" type="button" data-policy-filter="true" data-filter-group="region" data-filter-value="중앙" aria-pressed="false">중앙</button><button class="filter-button" type="button" data-policy-filter="true" data-filter-group="region" data-filter-value="경기" aria-pressed="false">경기</button><button class="filter-button" type="button" data-policy-filter="true" data-filter-group="region" data-filter-value="대구" aria-pressed="false">대구</button><button class="filter-button" type="button" data-policy-filter="true" data-filter-group="region" data-filter-value="부산" aria-pressed="false">부산</button><button class="filter-button" type="button" data-policy-filter="true" data-filter-group="region" data-filter-value="서울" aria-pressed="false">서울</button><button class="filter-button" type="button" data-policy-filter="true" data-filter-group="region" data-filter-value="세종" aria-pressed="false">세종</button><button class="filter-button" type="button" data-policy-filter="true" data-filter-group="region" data-filter-value="울산" aria-pressed="false">울산</button><button class="filter-button" type="button" data-policy-filter="true" data-filter-group="region" data-filter-value="인천" aria-pressed="false">인천</button><button class="filter-button" type="button" data-policy-filter="true" data-filter-group="region" data-filter-value="전북" aria-pressed="false">전북</button></div>
           </div>
           <div class="filter-group">
             <span class="filter-group-label">유형</span>
@@ -1941,11 +2105,11 @@
               <div class="date-range-fields">
                 <label class="date-input-wrap" data-policy-date-launch="true">
                   <span class="date-picker-label">시작일</span>
-                  <input class="date-input" type="date" data-policy-date-input="true" data-date-role="start" min="2026-02-06" max="2026-04-03">
+                  <input class="date-input" type="date" data-policy-date-input="true" data-date-role="start" min="2026-02-06" max="2026-04-05">
                 </label>
                 <label class="date-input-wrap" data-policy-date-launch="true">
                   <span class="date-picker-label">종료일</span>
-                  <input class="date-input" type="date" data-policy-date-input="true" data-date-role="end" min="2026-02-06" max="2026-04-03">
+                  <input class="date-input" type="date" data-policy-date-input="true" data-date-role="end" min="2026-02-06" max="2026-04-05">
                 </label>
               </div>
             </div>
@@ -1961,9 +2125,17 @@
             <h2>정부 공식 발표</h2>
             <p>정책브리핑, 국무조정실, 고용노동부, 보건복지부, 국토교통부, 교육부, 금융위원회 등에서 직접 수집한 공식 발표입니다.</p>
           </div>
-          <span class="mini-link" aria-disabled="true" data-policy-section-count>16건</span>
+          <span class="mini-link" aria-disabled="true" data-policy-section-count>17건</span>
         </div>
         <div class="article-grid">
+    <article class="article-card" data-article-card="true" data-article-url="https://www.moe.go.kr/boardCnts/viewRenew.do?boardID=294&amp;boardSeq=105797&amp;lev=0&amp;searchType=null&amp;statusYN=W&amp;page=1&amp;s=moe&amp;m=020402&amp;opType=N" data-article-title="한-불 수교 140주년 기념 청년 한국어·프랑스어 보조교사 교류 추진" data-article-date="2026-04-05" data-article-region="중앙" data-policy-card="true" data-policy-group="official" data-policy-type="기타">
+      <div class="article-meta"><div class="article-meta-tags"><span class="meta-pill primary">공식 발표</span><span class="meta-pill subtle">중앙</span></div><div class="article-byline"><span class="meta-item">교육부 보도자료</span><span class="meta-divider" aria-hidden="true">•</span><span class="meta-item">2026-04-05</span></div></div>
+      <h3><a class="article-title-link" href="https://www.moe.go.kr/boardCnts/viewRenew.do?boardID=294&amp;boardSeq=105797&amp;lev=0&amp;searchType=null&amp;statusYN=W&amp;page=1&amp;s=moe&amp;m=020402&amp;opType=N" target="_blank" rel="noreferrer" aria-label="한-불 수교 140주년 기념 청년 한국어·프랑스어 보조교사 교류 추진 링크 바로가기">한-불 수교 140주년 기념 청년 한국어·프랑스어 보조교사 교류 추진</a></h3>
+      
+      <p class="article-summary"><a class="article-summary-link" href="https://www.moe.go.kr/boardCnts/viewRenew.do?boardID=294&amp;boardSeq=105797&amp;lev=0&amp;searchType=null&amp;statusYN=W&amp;page=1&amp;s=moe&amp;m=020402&amp;opType=N" target="_blank" rel="noreferrer" aria-label="한-불 수교 140주년 기념 청년 한국어·프랑스어 보조교사 교류 추진 링크 바로가기">홍보담당관</a></p>
+      <div class="article-actions"><a class="mini-link article-link-action" href="https://www.moe.go.kr/boardCnts/viewRenew.do?boardID=294&amp;boardSeq=105797&amp;lev=0&amp;searchType=null&amp;statusYN=W&amp;page=1&amp;s=moe&amp;m=020402&amp;opType=N" target="_blank" rel="noreferrer" aria-label="한-불 수교 140주년 기념 청년 한국어·프랑스어 보조교사 교류 추진 링크 바로가기">링크 바로가기</a><button class="action-button" type="button" data-article-action="share" data-article-url="https://www.moe.go.kr/boardCnts/viewRenew.do?boardID=294&amp;boardSeq=105797&amp;lev=0&amp;searchType=null&amp;statusYN=W&amp;page=1&amp;s=moe&amp;m=020402&amp;opType=N" data-share-title="한-불 수교 140주년 기념 청년 한국어·프랑스어 보조교사 교류 추진" aria-label="한-불 수교 140주년 기념 청년 한국어·프랑스어 보조교사 교류 추진 공유하기">공유하기</button><button class="action-button" type="button" data-article-action="copy" data-article-url="https://www.moe.go.kr/boardCnts/viewRenew.do?boardID=294&amp;boardSeq=105797&amp;lev=0&amp;searchType=null&amp;statusYN=W&amp;page=1&amp;s=moe&amp;m=020402&amp;opType=N" data-share-title="한-불 수교 140주년 기념 청년 한국어·프랑스어 보조교사 교류 추진" aria-label="한-불 수교 140주년 기념 청년 한국어·프랑스어 보조교사 교류 추진 링크 복사">링크 복사</button></div><div class="article-feedback" data-article-feedback aria-live="polite"></div>
+    </article>
+    
     <article class="article-card" data-article-card="true" data-article-url="https://www.korea.kr/news/policyNewsView.do?newsId=148962075&amp;call_from=rsslink" data-article-title="기술사·기능장 &#x27;경력 응시자격&#x27; 2~4년 단축…&quot;청년층 기회 확대&quot;" data-article-date="2026-04-03" data-article-region="중앙" data-policy-card="true" data-policy-group="official" data-policy-type="기타">
       <div class="article-meta"><div class="article-meta-tags"><span class="meta-pill primary">공식 발표</span><span class="meta-pill subtle">중앙</span></div><div class="article-byline"><span class="meta-item">정책브리핑</span><span class="meta-divider" aria-hidden="true">•</span><span class="meta-item">2026-04-03</span></div></div>
       <h3><a class="article-title-link" href="https://www.korea.kr/news/policyNewsView.do?newsId=148962075&amp;call_from=rsslink" target="_blank" rel="noreferrer" aria-label="기술사·기능장 &#x27;경력 응시자격&#x27; 2~4년 단축…&quot;청년층 기회 확대&quot; 링크 바로가기">기술사·기능장 &#x27;경력 응시자격&#x27; 2~4년 단축…&quot;청년층 기회 확대&quot;</a></h3>
@@ -2099,7 +2271,7 @@
             <h2>지자체 발표 소식</h2>
             <p>청년 정책과 공약, 시행계획 발표 성격이 분명한 지역 기사만 따로 모았습니다.</p>
           </div>
-          <span class="mini-link" aria-disabled="true" data-policy-section-count>13건</span>
+          <span class="mini-link" aria-disabled="true" data-policy-section-count>12건</span>
         </div>
         <div class="article-grid">
     <article class="article-card" data-article-card="true" data-article-url="https://news.google.com/rss/articles/CBMibkFVX3lxTE5FUGZxZ3l4TEh0N1lQaGozNk0tNDMySHRSMG9rcUhxQ3htYmhUTzQwUkF1SFVBUzZhejhNMFVWams4bXZFV1FIdk90Z1JUMHJFSFgzZXRKdXNHcDRiUkFvdUF3Rl93c1ptcnlyb0ZR0gFuQVVfeXFMTkVQZnFneXhMSHQ3WVBoajM2TS00MzJIdFIwb2txSHFDeG1iaFRPNDBSQXVIVUFTNmF6OE0wVVZqazhtdkVXUUh2T3RnUlQwckVIWDNldEp1c0dwNGJSQW91QXdGX3dzWm1yeXJvRlE?oc=5" data-article-title="군산시, 2026년 청년정책 본격 추진… 생애주기별 맞춤 지원 강화" data-article-date="2026-04-03" data-article-region="전북" data-policy-card="true" data-policy-group="local" data-policy-type="지원사업">
@@ -2110,20 +2282,12 @@
       <div class="article-actions"><a class="mini-link article-link-action" href="https://news.google.com/rss/articles/CBMibkFVX3lxTE5FUGZxZ3l4TEh0N1lQaGozNk0tNDMySHRSMG9rcUhxQ3htYmhUTzQwUkF1SFVBUzZhejhNMFVWams4bXZFV1FIdk90Z1JUMHJFSFgzZXRKdXNHcDRiUkFvdUF3Rl93c1ptcnlyb0ZR0gFuQVVfeXFMTkVQZnFneXhMSHQ3WVBoajM2TS00MzJIdFIwb2txSHFDeG1iaFRPNDBSQXVIVUFTNmF6OE0wVVZqazhtdkVXUUh2T3RnUlQwckVIWDNldEp1c0dwNGJSQW91QXdGX3dzWm1yeXJvRlE?oc=5" target="_blank" rel="noreferrer" aria-label="군산시, 2026년 청년정책 본격 추진… 생애주기별 맞춤 지원 강화 링크 바로가기">링크 바로가기</a><button class="action-button" type="button" data-article-action="share" data-article-url="https://news.google.com/rss/articles/CBMibkFVX3lxTE5FUGZxZ3l4TEh0N1lQaGozNk0tNDMySHRSMG9rcUhxQ3htYmhUTzQwUkF1SFVBUzZhejhNMFVWams4bXZFV1FIdk90Z1JUMHJFSFgzZXRKdXNHcDRiUkFvdUF3Rl93c1ptcnlyb0ZR0gFuQVVfeXFMTkVQZnFneXhMSHQ3WVBoajM2TS00MzJIdFIwb2txSHFDeG1iaFRPNDBSQXVIVUFTNmF6OE0wVVZqazhtdkVXUUh2T3RnUlQwckVIWDNldEp1c0dwNGJSQW91QXdGX3dzWm1yeXJvRlE?oc=5" data-share-title="군산시, 2026년 청년정책 본격 추진… 생애주기별 맞춤 지원 강화" aria-label="군산시, 2026년 청년정책 본격 추진… 생애주기별 맞춤 지원 강화 공유하기">공유하기</button><button class="action-button" type="button" data-article-action="copy" data-article-url="https://news.google.com/rss/articles/CBMibkFVX3lxTE5FUGZxZ3l4TEh0N1lQaGozNk0tNDMySHRSMG9rcUhxQ3htYmhUTzQwUkF1SFVBUzZhejhNMFVWams4bXZFV1FIdk90Z1JUMHJFSFgzZXRKdXNHcDRiUkFvdUF3Rl93c1ptcnlyb0ZR0gFuQVVfeXFMTkVQZnFneXhMSHQ3WVBoajM2TS00MzJIdFIwb2txSHFDeG1iaFRPNDBSQXVIVUFTNmF6OE0wVVZqazhtdkVXUUh2T3RnUlQwckVIWDNldEp1c0dwNGJSQW91QXdGX3dzWm1yeXJvRlE?oc=5" data-share-title="군산시, 2026년 청년정책 본격 추진… 생애주기별 맞춤 지원 강화" aria-label="군산시, 2026년 청년정책 본격 추진… 생애주기별 맞춤 지원 강화 링크 복사">링크 복사</button></div><div class="article-feedback" data-article-feedback aria-live="polite"></div>
     </article>
     
-    <article class="article-card" data-article-card="true" data-article-url="https://news.google.com/rss/articles/CBMia0FVX3lxTE9JMWxxa0NfOU9LdFc3WDVVYzFXN2EydUoyMXpoblk3QXhWS19VNXZIMHVvb0k0S003NVZGNThkM2wwbUJlS0dzWWM4SkhHSGRkVzVoR1JaR2xiUG9PeGNKamxfNkJGdnZSbExV?oc=5" data-article-title="대구시, ‘대구청년 부동산 중개수수료 지원사업’ 시행, 6일부터 접수" data-article-date="2026-04-02" data-article-region="대구" data-policy-card="true" data-policy-group="local" data-policy-type="모집">
-      <div class="article-meta"><div class="article-meta-tags"><span class="meta-pill primary">공식 발표</span><span class="meta-pill subtle">대구</span></div><div class="article-byline"><span class="meta-item">프레시안</span><span class="meta-divider" aria-hidden="true">•</span><span class="meta-item">2026-04-02</span></div></div>
-      <h3><a class="article-title-link" href="https://news.google.com/rss/articles/CBMia0FVX3lxTE9JMWxxa0NfOU9LdFc3WDVVYzFXN2EydUoyMXpoblk3QXhWS19VNXZIMHVvb0k0S003NVZGNThkM2wwbUJlS0dzWWM4SkhHSGRkVzVoR1JaR2xiUG9PeGNKamxfNkJGdnZSbExV?oc=5" target="_blank" rel="noreferrer" aria-label="대구시, ‘대구청년 부동산 중개수수료 지원사업’ 시행, 6일부터 접수 링크 바로가기">대구시, ‘대구청년 부동산 중개수수료 지원사업’ 시행, 6일부터 접수</a></h3>
-      
-      
-      <div class="article-actions"><a class="mini-link article-link-action" href="https://news.google.com/rss/articles/CBMia0FVX3lxTE9JMWxxa0NfOU9LdFc3WDVVYzFXN2EydUoyMXpoblk3QXhWS19VNXZIMHVvb0k0S003NVZGNThkM2wwbUJlS0dzWWM4SkhHSGRkVzVoR1JaR2xiUG9PeGNKamxfNkJGdnZSbExV?oc=5" target="_blank" rel="noreferrer" aria-label="대구시, ‘대구청년 부동산 중개수수료 지원사업’ 시행, 6일부터 접수 링크 바로가기">링크 바로가기</a><button class="action-button" type="button" data-article-action="share" data-article-url="https://news.google.com/rss/articles/CBMia0FVX3lxTE9JMWxxa0NfOU9LdFc3WDVVYzFXN2EydUoyMXpoblk3QXhWS19VNXZIMHVvb0k0S003NVZGNThkM2wwbUJlS0dzWWM4SkhHSGRkVzVoR1JaR2xiUG9PeGNKamxfNkJGdnZSbExV?oc=5" data-share-title="대구시, ‘대구청년 부동산 중개수수료 지원사업’ 시행, 6일부터 접수" aria-label="대구시, ‘대구청년 부동산 중개수수료 지원사업’ 시행, 6일부터 접수 공유하기">공유하기</button><button class="action-button" type="button" data-article-action="copy" data-article-url="https://news.google.com/rss/articles/CBMia0FVX3lxTE9JMWxxa0NfOU9LdFc3WDVVYzFXN2EydUoyMXpoblk3QXhWS19VNXZIMHVvb0k0S003NVZGNThkM2wwbUJlS0dzWWM4SkhHSGRkVzVoR1JaR2xiUG9PeGNKamxfNkJGdnZSbExV?oc=5" data-share-title="대구시, ‘대구청년 부동산 중개수수료 지원사업’ 시행, 6일부터 접수" aria-label="대구시, ‘대구청년 부동산 중개수수료 지원사업’ 시행, 6일부터 접수 링크 복사">링크 복사</button></div><div class="article-feedback" data-article-feedback aria-live="polite"></div>
-    </article>
-    
-    <article class="article-card" data-article-card="true" data-article-url="https://news.google.com/rss/articles/CBMiVEFVX3lxTE9jYS1fRnVyRXpFc3hzZ0ZOeUlNa1BVT21GMHQ5d2gyR0pneV9sQzdZQWJ6M210LUMxNXFpdjhTZmN0dC03VkFyQWF2TGFVOG95QWYteg?oc=5" data-article-title="대구 달서구, 청년정책 5개년 로드맵 수립⋯청년친화도시 조성 본격화" data-article-date="2026-04-02" data-article-region="대구" data-policy-card="true" data-policy-group="local" data-policy-type="기타">
+    <article class="article-card" data-article-card="true" data-article-url="https://news.google.com/rss/articles/CBMiT0FVX3lxTE1VT1V3YWUtWmdHaEQ4QjgwUGc3djNpcFZZZk84dk5UMUlTZGVsQXhfMUtncVNRem83LUFrY00zQzRkaGIwYTJ3anJfVDFkcFk?oc=5" data-article-title="대구 달서구, 청년정책 5개년 로드맵 수립⋯청년친화도시 조성 본격화" data-article-date="2026-04-02" data-article-region="대구" data-policy-card="true" data-policy-group="local" data-policy-type="기타">
       <div class="article-meta"><div class="article-meta-tags"><span class="meta-pill primary">지역 움직임</span><span class="meta-pill subtle">대구</span></div><div class="article-byline"><span class="meta-item">다음 뉴스</span><span class="meta-divider" aria-hidden="true">•</span><span class="meta-item">2026-04-02</span></div></div>
-      <h3><a class="article-title-link" href="https://news.google.com/rss/articles/CBMiVEFVX3lxTE9jYS1fRnVyRXpFc3hzZ0ZOeUlNa1BVT21GMHQ5d2gyR0pneV9sQzdZQWJ6M210LUMxNXFpdjhTZmN0dC03VkFyQWF2TGFVOG95QWYteg?oc=5" target="_blank" rel="noreferrer" aria-label="대구 달서구, 청년정책 5개년 로드맵 수립⋯청년친화도시 조성 본격화 링크 바로가기">대구 달서구, 청년정책 5개년 로드맵 수립⋯청년친화도시 조성 본격화</a></h3>
+      <h3><a class="article-title-link" href="https://news.google.com/rss/articles/CBMiT0FVX3lxTE1VT1V3YWUtWmdHaEQ4QjgwUGc3djNpcFZZZk84dk5UMUlTZGVsQXhfMUtncVNRem83LUFrY00zQzRkaGIwYTJ3anJfVDFkcFk?oc=5" target="_blank" rel="noreferrer" aria-label="대구 달서구, 청년정책 5개년 로드맵 수립⋯청년친화도시 조성 본격화 링크 바로가기">대구 달서구, 청년정책 5개년 로드맵 수립⋯청년친화도시 조성 본격화</a></h3>
       
       
-      <div class="article-actions"><a class="mini-link article-link-action" href="https://news.google.com/rss/articles/CBMiVEFVX3lxTE9jYS1fRnVyRXpFc3hzZ0ZOeUlNa1BVT21GMHQ5d2gyR0pneV9sQzdZQWJ6M210LUMxNXFpdjhTZmN0dC03VkFyQWF2TGFVOG95QWYteg?oc=5" target="_blank" rel="noreferrer" aria-label="대구 달서구, 청년정책 5개년 로드맵 수립⋯청년친화도시 조성 본격화 링크 바로가기">링크 바로가기</a><button class="action-button" type="button" data-article-action="share" data-article-url="https://news.google.com/rss/articles/CBMiVEFVX3lxTE9jYS1fRnVyRXpFc3hzZ0ZOeUlNa1BVT21GMHQ5d2gyR0pneV9sQzdZQWJ6M210LUMxNXFpdjhTZmN0dC03VkFyQWF2TGFVOG95QWYteg?oc=5" data-share-title="대구 달서구, 청년정책 5개년 로드맵 수립⋯청년친화도시 조성 본격화" aria-label="대구 달서구, 청년정책 5개년 로드맵 수립⋯청년친화도시 조성 본격화 공유하기">공유하기</button><button class="action-button" type="button" data-article-action="copy" data-article-url="https://news.google.com/rss/articles/CBMiVEFVX3lxTE9jYS1fRnVyRXpFc3hzZ0ZOeUlNa1BVT21GMHQ5d2gyR0pneV9sQzdZQWJ6M210LUMxNXFpdjhTZmN0dC03VkFyQWF2TGFVOG95QWYteg?oc=5" data-share-title="대구 달서구, 청년정책 5개년 로드맵 수립⋯청년친화도시 조성 본격화" aria-label="대구 달서구, 청년정책 5개년 로드맵 수립⋯청년친화도시 조성 본격화 링크 복사">링크 복사</button></div><div class="article-feedback" data-article-feedback aria-live="polite"></div>
+      <div class="article-actions"><a class="mini-link article-link-action" href="https://news.google.com/rss/articles/CBMiT0FVX3lxTE1VT1V3YWUtWmdHaEQ4QjgwUGc3djNpcFZZZk84dk5UMUlTZGVsQXhfMUtncVNRem83LUFrY00zQzRkaGIwYTJ3anJfVDFkcFk?oc=5" target="_blank" rel="noreferrer" aria-label="대구 달서구, 청년정책 5개년 로드맵 수립⋯청년친화도시 조성 본격화 링크 바로가기">링크 바로가기</a><button class="action-button" type="button" data-article-action="share" data-article-url="https://news.google.com/rss/articles/CBMiT0FVX3lxTE1VT1V3YWUtWmdHaEQ4QjgwUGc3djNpcFZZZk84dk5UMUlTZGVsQXhfMUtncVNRem83LUFrY00zQzRkaGIwYTJ3anJfVDFkcFk?oc=5" data-share-title="대구 달서구, 청년정책 5개년 로드맵 수립⋯청년친화도시 조성 본격화" aria-label="대구 달서구, 청년정책 5개년 로드맵 수립⋯청년친화도시 조성 본격화 공유하기">공유하기</button><button class="action-button" type="button" data-article-action="copy" data-article-url="https://news.google.com/rss/articles/CBMiT0FVX3lxTE1VT1V3YWUtWmdHaEQ4QjgwUGc3djNpcFZZZk84dk5UMUlTZGVsQXhfMUtncVNRem83LUFrY00zQzRkaGIwYTJ3anJfVDFkcFk?oc=5" data-share-title="대구 달서구, 청년정책 5개년 로드맵 수립⋯청년친화도시 조성 본격화" aria-label="대구 달서구, 청년정책 5개년 로드맵 수립⋯청년친화도시 조성 본격화 링크 복사">링크 복사</button></div><div class="article-feedback" data-article-feedback aria-live="polite"></div>
     </article>
     
     <article class="article-card" data-article-card="true" data-article-url="https://news.google.com/rss/articles/CBMia0FVX3lxTE5QY0NKWWFESk02Zk5yNGkyTTl4TzlHbVVWUThBV1dENG81UXdUOS1PdzNNTjlNM3VKMS12TVEwRWt5Nk9BZ25mZmV0Rk4xS1Zoc0pBSnlGdVhPMTJhQW5hckZFN3ZXX1QxMnZZ0gFrQVVfeXFMTlBjQ0pZYURKTTZmTnI0aTJNOXhPOUdtVVZROEFXV0Q0bzVRd1Q5LU93M01OOU0zdUoxLXZNUTBFa3k2T0FnbmZmZXRGTjFLVmhzSkFKeUZ1WE8xMmFBbmFyRkU3dldfVDEydlk?oc=5" data-article-title="이회수 김포시장 예비후보, 청년 5대 채움 정책 발표" data-article-date="2026-04-01" data-article-region="중앙" data-policy-card="true" data-policy-group="local" data-policy-type="정책 발표">
@@ -2142,12 +2306,12 @@
       <div class="article-actions"><a class="mini-link article-link-action" href="https://news.google.com/rss/articles/CBMiZkFVX3lxTE5EV1VrVHVMcWttNWk2QnV3S1ctZzRWR2NtZVgwNEstYk4xSDBMVHVQQVdqbTBtMmQyOWhtNmVCMUN1QmhGRVlPVHc5X21xWmxxSVJPUV9Tc0NybFpTV0tpeXFsYkdHZw?oc=5" target="_blank" rel="noreferrer" aria-label="대구 달서구. ‘제3차 청년정책 기본계획’ 수립 링크 바로가기">링크 바로가기</a><button class="action-button" type="button" data-article-action="share" data-article-url="https://news.google.com/rss/articles/CBMiZkFVX3lxTE5EV1VrVHVMcWttNWk2QnV3S1ctZzRWR2NtZVgwNEstYk4xSDBMVHVQQVdqbTBtMmQyOWhtNmVCMUN1QmhGRVlPVHc5X21xWmxxSVJPUV9Tc0NybFpTV0tpeXFsYkdHZw?oc=5" data-share-title="대구 달서구. ‘제3차 청년정책 기본계획’ 수립" aria-label="대구 달서구. ‘제3차 청년정책 기본계획’ 수립 공유하기">공유하기</button><button class="action-button" type="button" data-article-action="copy" data-article-url="https://news.google.com/rss/articles/CBMiZkFVX3lxTE5EV1VrVHVMcWttNWk2QnV3S1ctZzRWR2NtZVgwNEstYk4xSDBMVHVQQVdqbTBtMmQyOWhtNmVCMUN1QmhGRVlPVHc5X21xWmxxSVJPUV9Tc0NybFpTV0tpeXFsYkdHZw?oc=5" data-share-title="대구 달서구. ‘제3차 청년정책 기본계획’ 수립" aria-label="대구 달서구. ‘제3차 청년정책 기본계획’ 수립 링크 복사">링크 복사</button></div><div class="article-feedback" data-article-feedback aria-live="polite"></div>
     </article>
     
-    <article class="article-card" data-article-card="true" data-article-url="https://news.google.com/rss/articles/CBMib0FVX3lxTE1heEpRN2tWMXYtSnNPanBfSFpDSlRxRUdGLUFscC1Ga0QzSTFDc09EZUlMbGxxOEh5Xy1qSDdyVmJERlFDS1pPck96WU12N0psc3ZkWldKZFl1OENnRmFLZGdsamI0d3ZQbll2Y0tJd9IBc0FVX3lxTE5ZNDRrSERhU0daWkZEVDNNS3BsZTFXbUJlcWtXdjhqSkhkQ1lCclRXdUYyMEdiRURyWDZqcndLa19kbHYwZzhHbmEzZHRJVFA2SFFpcW1Mc015ZXJXcnBBYkUxUVlXQ3FnTUExanpSR3BILTg?oc=5" data-article-title="청년정책 &#x27;SNS 플랫폼&#x27; 구축…세종시, 청년 참여 확대" data-article-date="2026-04-01" data-article-region="대전" data-policy-card="true" data-policy-group="local" data-policy-type="기타">
-      <div class="article-meta"><div class="article-meta-tags"><span class="meta-pill primary">지역 움직임</span><span class="meta-pill subtle">대전</span></div><div class="article-byline"><span class="meta-item">대전일보</span><span class="meta-divider" aria-hidden="true">•</span><span class="meta-item">2026-04-01</span></div></div>
-      <h3><a class="article-title-link" href="https://news.google.com/rss/articles/CBMib0FVX3lxTE1heEpRN2tWMXYtSnNPanBfSFpDSlRxRUdGLUFscC1Ga0QzSTFDc09EZUlMbGxxOEh5Xy1qSDdyVmJERlFDS1pPck96WU12N0psc3ZkWldKZFl1OENnRmFLZGdsamI0d3ZQbll2Y0tJd9IBc0FVX3lxTE5ZNDRrSERhU0daWkZEVDNNS3BsZTFXbUJlcWtXdjhqSkhkQ1lCclRXdUYyMEdiRURyWDZqcndLa19kbHYwZzhHbmEzZHRJVFA2SFFpcW1Mc015ZXJXcnBBYkUxUVlXQ3FnTUExanpSR3BILTg?oc=5" target="_blank" rel="noreferrer" aria-label="청년정책 &#x27;SNS 플랫폼&#x27; 구축…세종시, 청년 참여 확대 링크 바로가기">청년정책 &#x27;SNS 플랫폼&#x27; 구축…세종시, 청년 참여 확대</a></h3>
+    <article class="article-card" data-article-card="true" data-article-url="https://news.google.com/rss/articles/CBMic0FVX3lxTE1pdnhnWmQ1NnZ5QjNVVDk0QlVrZjN4eTVFUG05NzQyVWJOS0w5X2ZYMnkwLWtJbDFBcUNZZmhkQk1YMUwzN2hjNEpXSGRxRmY0NUkzd2dHLVlRNEx0MmtpR21RNFdXeGhQUkN0MDZYLVlJWjQ?oc=5" data-article-title="인천 중구, 청년정책 23개 사업 추진…70억 투입" data-article-date="2026-04-01" data-article-region="인천" data-policy-card="true" data-policy-group="local" data-policy-type="지원사업">
+      <div class="article-meta"><div class="article-meta-tags"><span class="meta-pill primary">지역 움직임</span><span class="meta-pill subtle">인천</span></div><div class="article-byline"><span class="meta-item">오늘경제</span><span class="meta-divider" aria-hidden="true">•</span><span class="meta-item">2026-04-01</span></div></div>
+      <h3><a class="article-title-link" href="https://news.google.com/rss/articles/CBMic0FVX3lxTE1pdnhnWmQ1NnZ5QjNVVDk0QlVrZjN4eTVFUG05NzQyVWJOS0w5X2ZYMnkwLWtJbDFBcUNZZmhkQk1YMUwzN2hjNEpXSGRxRmY0NUkzd2dHLVlRNEx0MmtpR21RNFdXeGhQUkN0MDZYLVlJWjQ?oc=5" target="_blank" rel="noreferrer" aria-label="인천 중구, 청년정책 23개 사업 추진…70억 투입 링크 바로가기">인천 중구, 청년정책 23개 사업 추진…70억 투입</a></h3>
       
       
-      <div class="article-actions"><a class="mini-link article-link-action" href="https://news.google.com/rss/articles/CBMib0FVX3lxTE1heEpRN2tWMXYtSnNPanBfSFpDSlRxRUdGLUFscC1Ga0QzSTFDc09EZUlMbGxxOEh5Xy1qSDdyVmJERlFDS1pPck96WU12N0psc3ZkWldKZFl1OENnRmFLZGdsamI0d3ZQbll2Y0tJd9IBc0FVX3lxTE5ZNDRrSERhU0daWkZEVDNNS3BsZTFXbUJlcWtXdjhqSkhkQ1lCclRXdUYyMEdiRURyWDZqcndLa19kbHYwZzhHbmEzZHRJVFA2SFFpcW1Mc015ZXJXcnBBYkUxUVlXQ3FnTUExanpSR3BILTg?oc=5" target="_blank" rel="noreferrer" aria-label="청년정책 &#x27;SNS 플랫폼&#x27; 구축…세종시, 청년 참여 확대 링크 바로가기">링크 바로가기</a><button class="action-button" type="button" data-article-action="share" data-article-url="https://news.google.com/rss/articles/CBMib0FVX3lxTE1heEpRN2tWMXYtSnNPanBfSFpDSlRxRUdGLUFscC1Ga0QzSTFDc09EZUlMbGxxOEh5Xy1qSDdyVmJERlFDS1pPck96WU12N0psc3ZkWldKZFl1OENnRmFLZGdsamI0d3ZQbll2Y0tJd9IBc0FVX3lxTE5ZNDRrSERhU0daWkZEVDNNS3BsZTFXbUJlcWtXdjhqSkhkQ1lCclRXdUYyMEdiRURyWDZqcndLa19kbHYwZzhHbmEzZHRJVFA2SFFpcW1Mc015ZXJXcnBBYkUxUVlXQ3FnTUExanpSR3BILTg?oc=5" data-share-title="청년정책 &#x27;SNS 플랫폼&#x27; 구축…세종시, 청년 참여 확대" aria-label="청년정책 &#x27;SNS 플랫폼&#x27; 구축…세종시, 청년 참여 확대 공유하기">공유하기</button><button class="action-button" type="button" data-article-action="copy" data-article-url="https://news.google.com/rss/articles/CBMib0FVX3lxTE1heEpRN2tWMXYtSnNPanBfSFpDSlRxRUdGLUFscC1Ga0QzSTFDc09EZUlMbGxxOEh5Xy1qSDdyVmJERlFDS1pPck96WU12N0psc3ZkWldKZFl1OENnRmFLZGdsamI0d3ZQbll2Y0tJd9IBc0FVX3lxTE5ZNDRrSERhU0daWkZEVDNNS3BsZTFXbUJlcWtXdjhqSkhkQ1lCclRXdUYyMEdiRURyWDZqcndLa19kbHYwZzhHbmEzZHRJVFA2SFFpcW1Mc015ZXJXcnBBYkUxUVlXQ3FnTUExanpSR3BILTg?oc=5" data-share-title="청년정책 &#x27;SNS 플랫폼&#x27; 구축…세종시, 청년 참여 확대" aria-label="청년정책 &#x27;SNS 플랫폼&#x27; 구축…세종시, 청년 참여 확대 링크 복사">링크 복사</button></div><div class="article-feedback" data-article-feedback aria-live="polite"></div>
+      <div class="article-actions"><a class="mini-link article-link-action" href="https://news.google.com/rss/articles/CBMic0FVX3lxTE1pdnhnWmQ1NnZ5QjNVVDk0QlVrZjN4eTVFUG05NzQyVWJOS0w5X2ZYMnkwLWtJbDFBcUNZZmhkQk1YMUwzN2hjNEpXSGRxRmY0NUkzd2dHLVlRNEx0MmtpR21RNFdXeGhQUkN0MDZYLVlJWjQ?oc=5" target="_blank" rel="noreferrer" aria-label="인천 중구, 청년정책 23개 사업 추진…70억 투입 링크 바로가기">링크 바로가기</a><button class="action-button" type="button" data-article-action="share" data-article-url="https://news.google.com/rss/articles/CBMic0FVX3lxTE1pdnhnWmQ1NnZ5QjNVVDk0QlVrZjN4eTVFUG05NzQyVWJOS0w5X2ZYMnkwLWtJbDFBcUNZZmhkQk1YMUwzN2hjNEpXSGRxRmY0NUkzd2dHLVlRNEx0MmtpR21RNFdXeGhQUkN0MDZYLVlJWjQ?oc=5" data-share-title="인천 중구, 청년정책 23개 사업 추진…70억 투입" aria-label="인천 중구, 청년정책 23개 사업 추진…70억 투입 공유하기">공유하기</button><button class="action-button" type="button" data-article-action="copy" data-article-url="https://news.google.com/rss/articles/CBMic0FVX3lxTE1pdnhnWmQ1NnZ5QjNVVDk0QlVrZjN4eTVFUG05NzQyVWJOS0w5X2ZYMnkwLWtJbDFBcUNZZmhkQk1YMUwzN2hjNEpXSGRxRmY0NUkzd2dHLVlRNEx0MmtpR21RNFdXeGhQUkN0MDZYLVlJWjQ?oc=5" data-share-title="인천 중구, 청년정책 23개 사업 추진…70억 투입" aria-label="인천 중구, 청년정책 23개 사업 추진…70억 투입 링크 복사">링크 복사</button></div><div class="article-feedback" data-article-feedback aria-live="polite"></div>
     </article>
     
     <article class="article-card" data-article-card="true" data-article-url="https://news.google.com/rss/articles/CBMiT0FVX3lxTE1VQTB0YXVOVDlDaGFLdy1hUXJUSjNYelVXTlhnNXFfelpoaFBhWHBDWWN5TmVUWmRQeE1oQ0gxWkFsQ0lNU3NFSzZ6TlRvTXM?oc=5" data-article-title="배강민 김포시장 예비후보, 청년 정책 ‘Y-STEP’ 공약 발표" data-article-date="2026-04-01" data-article-region="중앙" data-policy-card="true" data-policy-group="local" data-policy-type="공약">
@@ -2182,6 +2346,14 @@
       <div class="article-actions"><a class="mini-link article-link-action" href="https://news.google.com/rss/articles/CBMidEFVX3lxTE1faC1KczlNLWZDOHRfUk8yMzhsMTJjclF0SU0xOU41T1NVVkhIT0JXRzZnWDVZNXBrVDhpNmpaZ01EZTdwTThlaEpYa1NOVDE1LUI5UGJuRWxOQnhQQnM2ZFVyQ0YyY1lGMDZOaDBTVjRIYXhH?oc=5" target="_blank" rel="noreferrer" aria-label="부산 사상구, ‘청년도전 지원사업’ 본격 시행 링크 바로가기">링크 바로가기</a><button class="action-button" type="button" data-article-action="share" data-article-url="https://news.google.com/rss/articles/CBMidEFVX3lxTE1faC1KczlNLWZDOHRfUk8yMzhsMTJjclF0SU0xOU41T1NVVkhIT0JXRzZnWDVZNXBrVDhpNmpaZ01EZTdwTThlaEpYa1NOVDE1LUI5UGJuRWxOQnhQQnM2ZFVyQ0YyY1lGMDZOaDBTVjRIYXhH?oc=5" data-share-title="부산 사상구, ‘청년도전 지원사업’ 본격 시행" aria-label="부산 사상구, ‘청년도전 지원사업’ 본격 시행 공유하기">공유하기</button><button class="action-button" type="button" data-article-action="copy" data-article-url="https://news.google.com/rss/articles/CBMidEFVX3lxTE1faC1KczlNLWZDOHRfUk8yMzhsMTJjclF0SU0xOU41T1NVVkhIT0JXRzZnWDVZNXBrVDhpNmpaZ01EZTdwTThlaEpYa1NOVDE1LUI5UGJuRWxOQnhQQnM2ZFVyQ0YyY1lGMDZOaDBTVjRIYXhH?oc=5" data-share-title="부산 사상구, ‘청년도전 지원사업’ 본격 시행" aria-label="부산 사상구, ‘청년도전 지원사업’ 본격 시행 링크 복사">링크 복사</button></div><div class="article-feedback" data-article-feedback aria-live="polite"></div>
     </article>
     
+    <article class="article-card" data-article-card="true" data-article-url="https://news.google.com/rss/articles/CBMiYEFVX3lxTE9RM2ZSN2Z2QzRNaklLNVhhcF9yOV9OQXRzT1JuTE0yN3pzZW04aktpOTRNWnlpV01BTVVxc3NTUW1MYmlCUTFGMklyNXlXa3lxYkc0eW5ibnd6YXFNbVpoYtIBeEFVX3lxTE9Vb0R4UjdSbzVlTERLejZhLWVSd0JsbUJYQklZdjZzbFVHX0tQNGcwYktWQ0o3S1BWV19uVjJTRUdGdWs3eG8yTjVmMVdSLWtJNnZENUJHLXhIWllVbUV3cEdvY1dGM2hEQlJhRm90MzFwTTVUZ0V2cQ?oc=5" data-article-title="울산 중구, 올해 청년정책 확정…4개 분야 31개 사업 추진" data-article-date="2026-03-30" data-article-region="울산" data-policy-card="true" data-policy-group="local" data-policy-type="지원사업">
+      <div class="article-meta"><div class="article-meta-tags"><span class="meta-pill primary">지역 움직임</span><span class="meta-pill subtle">울산</span></div><div class="article-byline"><span class="meta-item">뉴시스</span><span class="meta-divider" aria-hidden="true">•</span><span class="meta-item">2026-03-30</span></div></div>
+      <h3><a class="article-title-link" href="https://news.google.com/rss/articles/CBMiYEFVX3lxTE9RM2ZSN2Z2QzRNaklLNVhhcF9yOV9OQXRzT1JuTE0yN3pzZW04aktpOTRNWnlpV01BTVVxc3NTUW1MYmlCUTFGMklyNXlXa3lxYkc0eW5ibnd6YXFNbVpoYtIBeEFVX3lxTE9Vb0R4UjdSbzVlTERLejZhLWVSd0JsbUJYQklZdjZzbFVHX0tQNGcwYktWQ0o3S1BWV19uVjJTRUdGdWs3eG8yTjVmMVdSLWtJNnZENUJHLXhIWllVbUV3cEdvY1dGM2hEQlJhRm90MzFwTTVUZ0V2cQ?oc=5" target="_blank" rel="noreferrer" aria-label="울산 중구, 올해 청년정책 확정…4개 분야 31개 사업 추진 링크 바로가기">울산 중구, 올해 청년정책 확정…4개 분야 31개 사업 추진</a></h3>
+      
+      
+      <div class="article-actions"><a class="mini-link article-link-action" href="https://news.google.com/rss/articles/CBMiYEFVX3lxTE9RM2ZSN2Z2QzRNaklLNVhhcF9yOV9OQXRzT1JuTE0yN3pzZW04aktpOTRNWnlpV01BTVVxc3NTUW1MYmlCUTFGMklyNXlXa3lxYkc0eW5ibnd6YXFNbVpoYtIBeEFVX3lxTE9Vb0R4UjdSbzVlTERLejZhLWVSd0JsbUJYQklZdjZzbFVHX0tQNGcwYktWQ0o3S1BWV19uVjJTRUdGdWs3eG8yTjVmMVdSLWtJNnZENUJHLXhIWllVbUV3cEdvY1dGM2hEQlJhRm90MzFwTTVUZ0V2cQ?oc=5" target="_blank" rel="noreferrer" aria-label="울산 중구, 올해 청년정책 확정…4개 분야 31개 사업 추진 링크 바로가기">링크 바로가기</a><button class="action-button" type="button" data-article-action="share" data-article-url="https://news.google.com/rss/articles/CBMiYEFVX3lxTE9RM2ZSN2Z2QzRNaklLNVhhcF9yOV9OQXRzT1JuTE0yN3pzZW04aktpOTRNWnlpV01BTVVxc3NTUW1MYmlCUTFGMklyNXlXa3lxYkc0eW5ibnd6YXFNbVpoYtIBeEFVX3lxTE9Vb0R4UjdSbzVlTERLejZhLWVSd0JsbUJYQklZdjZzbFVHX0tQNGcwYktWQ0o3S1BWV19uVjJTRUdGdWs3eG8yTjVmMVdSLWtJNnZENUJHLXhIWllVbUV3cEdvY1dGM2hEQlJhRm90MzFwTTVUZ0V2cQ?oc=5" data-share-title="울산 중구, 올해 청년정책 확정…4개 분야 31개 사업 추진" aria-label="울산 중구, 올해 청년정책 확정…4개 분야 31개 사업 추진 공유하기">공유하기</button><button class="action-button" type="button" data-article-action="copy" data-article-url="https://news.google.com/rss/articles/CBMiYEFVX3lxTE9RM2ZSN2Z2QzRNaklLNVhhcF9yOV9OQXRzT1JuTE0yN3pzZW04aktpOTRNWnlpV01BTVVxc3NTUW1MYmlCUTFGMklyNXlXa3lxYkc0eW5ibnd6YXFNbVpoYtIBeEFVX3lxTE9Vb0R4UjdSbzVlTERLejZhLWVSd0JsbUJYQklZdjZzbFVHX0tQNGcwYktWQ0o3S1BWV19uVjJTRUdGdWs3eG8yTjVmMVdSLWtJNnZENUJHLXhIWllVbUV3cEdvY1dGM2hEQlJhRm90MzFwTTVUZ0V2cQ?oc=5" data-share-title="울산 중구, 올해 청년정책 확정…4개 분야 31개 사업 추진" aria-label="울산 중구, 올해 청년정책 확정…4개 분야 31개 사업 추진 링크 복사">링크 복사</button></div><div class="article-feedback" data-article-feedback aria-live="polite"></div>
+    </article>
+    
     <article class="article-card" data-article-card="true" data-article-url="https://news.google.com/rss/articles/CBMiT0FVX3lxTE1FcWtJLVhQUDhueUV5eU1yblViNUhLTTBUX2hnTW5ETUhQa3R2OXA5Y2p3WDZWVDZpclFWbXpHdXVLV1JuOF83eFI1dXJ2LWM?oc=5" data-article-title="세종시, 올해 청년정책 시행계획 수립… 73개 사업 550억원 투입" data-article-date="2026-03-30" data-article-region="세종" data-policy-card="true" data-policy-group="local" data-policy-type="시행계획">
       <div class="article-meta"><div class="article-meta-tags"><span class="meta-pill primary">공식 발표</span><span class="meta-pill subtle">세종</span></div><div class="article-byline"><span class="meta-item">다음 뉴스</span><span class="meta-divider" aria-hidden="true">•</span><span class="meta-item">2026-03-30</span></div></div>
       <h3><a class="article-title-link" href="https://news.google.com/rss/articles/CBMiT0FVX3lxTE1FcWtJLVhQUDhueUV5eU1yblViNUhLTTBUX2hnTW5ETUhQa3R2OXA5Y2p3WDZWVDZpclFWbXpHdXVLV1JuOF83eFI1dXJ2LWM?oc=5" target="_blank" rel="noreferrer" aria-label="세종시, 올해 청년정책 시행계획 수립… 73개 사업 550억원 투입 링크 바로가기">세종시, 올해 청년정책 시행계획 수립… 73개 사업 550억원 투입</a></h3>
@@ -2190,20 +2362,12 @@
       <div class="article-actions"><a class="mini-link article-link-action" href="https://news.google.com/rss/articles/CBMiT0FVX3lxTE1FcWtJLVhQUDhueUV5eU1yblViNUhLTTBUX2hnTW5ETUhQa3R2OXA5Y2p3WDZWVDZpclFWbXpHdXVLV1JuOF83eFI1dXJ2LWM?oc=5" target="_blank" rel="noreferrer" aria-label="세종시, 올해 청년정책 시행계획 수립… 73개 사업 550억원 투입 링크 바로가기">링크 바로가기</a><button class="action-button" type="button" data-article-action="share" data-article-url="https://news.google.com/rss/articles/CBMiT0FVX3lxTE1FcWtJLVhQUDhueUV5eU1yblViNUhLTTBUX2hnTW5ETUhQa3R2OXA5Y2p3WDZWVDZpclFWbXpHdXVLV1JuOF83eFI1dXJ2LWM?oc=5" data-share-title="세종시, 올해 청년정책 시행계획 수립… 73개 사업 550억원 투입" aria-label="세종시, 올해 청년정책 시행계획 수립… 73개 사업 550억원 투입 공유하기">공유하기</button><button class="action-button" type="button" data-article-action="copy" data-article-url="https://news.google.com/rss/articles/CBMiT0FVX3lxTE1FcWtJLVhQUDhueUV5eU1yblViNUhLTTBUX2hnTW5ETUhQa3R2OXA5Y2p3WDZWVDZpclFWbXpHdXVLV1JuOF83eFI1dXJ2LWM?oc=5" data-share-title="세종시, 올해 청년정책 시행계획 수립… 73개 사업 550억원 투입" aria-label="세종시, 올해 청년정책 시행계획 수립… 73개 사업 550억원 투입 링크 복사">링크 복사</button></div><div class="article-feedback" data-article-feedback aria-live="polite"></div>
     </article>
     
-    <article class="article-card" data-article-card="true" data-article-url="https://news.google.com/rss/articles/CBMia0FVX3lxTE5sWjRFdUtxcFhYM2xtZVJJYzNUVzZlNTRPYnRURTY0WUloNEpmc2tZTUdWcDNpVC1HYlVYa1dPdFk3RkVzS1ROTHZvdmtFY19DSW5jOFhmQU11b1lhOWdPSGFUWWtRempoRnJV?oc=5" data-article-title="전희영 진보당 도지사 후보 청년정책 공약 발표" data-article-date="2026-03-29" data-article-region="경남" data-policy-card="true" data-policy-group="local" data-policy-type="공약">
-      <div class="article-meta"><div class="article-meta-tags"><span class="meta-pill primary">공식 발표</span><span class="meta-pill subtle">경남</span></div><div class="article-byline"><span class="meta-item">경남일보</span><span class="meta-divider" aria-hidden="true">•</span><span class="meta-item">2026-03-29</span></div></div>
-      <h3><a class="article-title-link" href="https://news.google.com/rss/articles/CBMia0FVX3lxTE5sWjRFdUtxcFhYM2xtZVJJYzNUVzZlNTRPYnRURTY0WUloNEpmc2tZTUdWcDNpVC1HYlVYa1dPdFk3RkVzS1ROTHZvdmtFY19DSW5jOFhmQU11b1lhOWdPSGFUWWtRempoRnJV?oc=5" target="_blank" rel="noreferrer" aria-label="전희영 진보당 도지사 후보 청년정책 공약 발표 링크 바로가기">전희영 진보당 도지사 후보 청년정책 공약 발표</a></h3>
+    <article class="article-card" data-article-card="true" data-article-url="https://news.google.com/rss/articles/CBMibEFVX3lxTFB5SU5IazBqYlVWdlJ0cmRJNlVmYVE2anZBMVpQVkxyMV82X2NiQlFkVXlIT283VWxNWVNlcTBxdGJQYUc1OFh2R0NVejdWYWZhaU5yLWxZYXRjQjdSWWh2ZC10THNjR0g1VWpTMQ?oc=5" data-article-title="세종시, 2026 청년정책 시행계획 수립" data-article-date="2026-03-30" data-article-region="세종" data-policy-card="true" data-policy-group="local" data-policy-type="시행계획">
+      <div class="article-meta"><div class="article-meta-tags"><span class="meta-pill primary">공식 발표</span><span class="meta-pill subtle">세종</span></div><div class="article-byline"><span class="meta-item">충청뉴스</span><span class="meta-divider" aria-hidden="true">•</span><span class="meta-item">2026-03-30</span></div></div>
+      <h3><a class="article-title-link" href="https://news.google.com/rss/articles/CBMibEFVX3lxTFB5SU5IazBqYlVWdlJ0cmRJNlVmYVE2anZBMVpQVkxyMV82X2NiQlFkVXlIT283VWxNWVNlcTBxdGJQYUc1OFh2R0NVejdWYWZhaU5yLWxZYXRjQjdSWWh2ZC10THNjR0g1VWpTMQ?oc=5" target="_blank" rel="noreferrer" aria-label="세종시, 2026 청년정책 시행계획 수립 링크 바로가기">세종시, 2026 청년정책 시행계획 수립</a></h3>
       
       
-      <div class="article-actions"><a class="mini-link article-link-action" href="https://news.google.com/rss/articles/CBMia0FVX3lxTE5sWjRFdUtxcFhYM2xtZVJJYzNUVzZlNTRPYnRURTY0WUloNEpmc2tZTUdWcDNpVC1HYlVYa1dPdFk3RkVzS1ROTHZvdmtFY19DSW5jOFhmQU11b1lhOWdPSGFUWWtRempoRnJV?oc=5" target="_blank" rel="noreferrer" aria-label="전희영 진보당 도지사 후보 청년정책 공약 발표 링크 바로가기">링크 바로가기</a><button class="action-button" type="button" data-article-action="share" data-article-url="https://news.google.com/rss/articles/CBMia0FVX3lxTE5sWjRFdUtxcFhYM2xtZVJJYzNUVzZlNTRPYnRURTY0WUloNEpmc2tZTUdWcDNpVC1HYlVYa1dPdFk3RkVzS1ROTHZvdmtFY19DSW5jOFhmQU11b1lhOWdPSGFUWWtRempoRnJV?oc=5" data-share-title="전희영 진보당 도지사 후보 청년정책 공약 발표" aria-label="전희영 진보당 도지사 후보 청년정책 공약 발표 공유하기">공유하기</button><button class="action-button" type="button" data-article-action="copy" data-article-url="https://news.google.com/rss/articles/CBMia0FVX3lxTE5sWjRFdUtxcFhYM2xtZVJJYzNUVzZlNTRPYnRURTY0WUloNEpmc2tZTUdWcDNpVC1HYlVYa1dPdFk3RkVzS1ROTHZvdmtFY19DSW5jOFhmQU11b1lhOWdPSGFUWWtRempoRnJV?oc=5" data-share-title="전희영 진보당 도지사 후보 청년정책 공약 발표" aria-label="전희영 진보당 도지사 후보 청년정책 공약 발표 링크 복사">링크 복사</button></div><div class="article-feedback" data-article-feedback aria-live="polite"></div>
-    </article>
-    
-    <article class="article-card" data-article-card="true" data-article-url="https://news.google.com/rss/articles/CBMiT0FVX3lxTE5qQVAxVmJaeXdtcVhBVmQ2LVgwVkk2VU1iTThpREhIRzJUSzF5dzdmNXZQcEhvbnhmYmhJSFl3bDdLbDZGM2pVNmNZWV80S1k?oc=5" data-article-title="대구 서구, 청년정책 34억 투입⋯일자리·주거 등 맞춤 지원 확대" data-article-date="2026-03-29" data-article-region="대구" data-policy-card="true" data-policy-group="local" data-policy-type="지원사업">
-      <div class="article-meta"><div class="article-meta-tags"><span class="meta-pill primary">오늘 이슈</span><span class="meta-pill subtle">대구</span></div><div class="article-byline"><span class="meta-item">다음 뉴스</span><span class="meta-divider" aria-hidden="true">•</span><span class="meta-item">2026-03-29</span></div></div>
-      <h3><a class="article-title-link" href="https://news.google.com/rss/articles/CBMiT0FVX3lxTE5qQVAxVmJaeXdtcVhBVmQ2LVgwVkk2VU1iTThpREhIRzJUSzF5dzdmNXZQcEhvbnhmYmhJSFl3bDdLbDZGM2pVNmNZWV80S1k?oc=5" target="_blank" rel="noreferrer" aria-label="대구 서구, 청년정책 34억 투입⋯일자리·주거 등 맞춤 지원 확대 링크 바로가기">대구 서구, 청년정책 34억 투입⋯일자리·주거 등 맞춤 지원 확대</a></h3>
-      
-      
-      <div class="article-actions"><a class="mini-link article-link-action" href="https://news.google.com/rss/articles/CBMiT0FVX3lxTE5qQVAxVmJaeXdtcVhBVmQ2LVgwVkk2VU1iTThpREhIRzJUSzF5dzdmNXZQcEhvbnhmYmhJSFl3bDdLbDZGM2pVNmNZWV80S1k?oc=5" target="_blank" rel="noreferrer" aria-label="대구 서구, 청년정책 34억 투입⋯일자리·주거 등 맞춤 지원 확대 링크 바로가기">링크 바로가기</a><button class="action-button" type="button" data-article-action="share" data-article-url="https://news.google.com/rss/articles/CBMiT0FVX3lxTE5qQVAxVmJaeXdtcVhBVmQ2LVgwVkk2VU1iTThpREhIRzJUSzF5dzdmNXZQcEhvbnhmYmhJSFl3bDdLbDZGM2pVNmNZWV80S1k?oc=5" data-share-title="대구 서구, 청년정책 34억 투입⋯일자리·주거 등 맞춤 지원 확대" aria-label="대구 서구, 청년정책 34억 투입⋯일자리·주거 등 맞춤 지원 확대 공유하기">공유하기</button><button class="action-button" type="button" data-article-action="copy" data-article-url="https://news.google.com/rss/articles/CBMiT0FVX3lxTE5qQVAxVmJaeXdtcVhBVmQ2LVgwVkk2VU1iTThpREhIRzJUSzF5dzdmNXZQcEhvbnhmYmhJSFl3bDdLbDZGM2pVNmNZWV80S1k?oc=5" data-share-title="대구 서구, 청년정책 34억 투입⋯일자리·주거 등 맞춤 지원 확대" aria-label="대구 서구, 청년정책 34억 투입⋯일자리·주거 등 맞춤 지원 확대 링크 복사">링크 복사</button></div><div class="article-feedback" data-article-feedback aria-live="polite"></div>
+      <div class="article-actions"><a class="mini-link article-link-action" href="https://news.google.com/rss/articles/CBMibEFVX3lxTFB5SU5IazBqYlVWdlJ0cmRJNlVmYVE2anZBMVpQVkxyMV82X2NiQlFkVXlIT283VWxNWVNlcTBxdGJQYUc1OFh2R0NVejdWYWZhaU5yLWxZYXRjQjdSWWh2ZC10THNjR0g1VWpTMQ?oc=5" target="_blank" rel="noreferrer" aria-label="세종시, 2026 청년정책 시행계획 수립 링크 바로가기">링크 바로가기</a><button class="action-button" type="button" data-article-action="share" data-article-url="https://news.google.com/rss/articles/CBMibEFVX3lxTFB5SU5IazBqYlVWdlJ0cmRJNlVmYVE2anZBMVpQVkxyMV82X2NiQlFkVXlIT283VWxNWVNlcTBxdGJQYUc1OFh2R0NVejdWYWZhaU5yLWxZYXRjQjdSWWh2ZC10THNjR0g1VWpTMQ?oc=5" data-share-title="세종시, 2026 청년정책 시행계획 수립" aria-label="세종시, 2026 청년정책 시행계획 수립 공유하기">공유하기</button><button class="action-button" type="button" data-article-action="copy" data-article-url="https://news.google.com/rss/articles/CBMibEFVX3lxTFB5SU5IazBqYlVWdlJ0cmRJNlVmYVE2anZBMVpQVkxyMV82X2NiQlFkVXlIT283VWxNWVNlcTBxdGJQYUc1OFh2R0NVejdWYWZhaU5yLWxZYXRjQjdSWWh2ZC10THNjR0g1VWpTMQ?oc=5" data-share-title="세종시, 2026 청년정책 시행계획 수립" aria-label="세종시, 2026 청년정책 시행계획 수립 링크 복사">링크 복사</button></div><div class="article-feedback" data-article-feedback aria-live="polite"></div>
     </article>
     </div>
       </section>

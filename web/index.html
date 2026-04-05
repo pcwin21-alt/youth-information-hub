@@ -19,6 +19,10 @@
     --accent: #395677;
     --accent-soft: rgba(57, 86, 119, 0.12);
     --accent-strong: #172536;
+    --home-apricot: #dd9367;
+    --home-apricot-soft: rgba(221, 147, 103, 0.18);
+    --home-teal: #5f9188;
+    --home-teal-soft: rgba(95, 145, 136, 0.18);
     --shadow: 0 18px 42px rgba(31, 42, 51, 0.08);
     --shadow-soft: 0 8px 20px rgba(31, 42, 51, 0.05);
   }
@@ -696,7 +700,7 @@
     align-content: start;
   }
   .home-section-card.featured {
-    background: linear-gradient(180deg, rgba(37, 99, 235, 0.06) 0%, rgba(255, 255, 255, 1) 100%);
+    background: linear-gradient(180deg, rgba(221, 147, 103, 0.08) 0%, rgba(255, 255, 255, 1) 100%);
   }
   .home-briefing-grid {
     display: grid;
@@ -712,29 +716,96 @@
     display: grid;
     align-content: start;
     gap: 18px;
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
   }
-  .home-briefing-card.lead {
+  .home-briefing-card > * {
+    position: relative;
+    z-index: 1;
+  }
+  .home-briefing-card::before,
+  .home-briefing-card::after {
+    content: "";
+    position: absolute;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .home-briefing-card.lead-arch {
     border-color: rgba(23, 37, 54, 0.18);
+    border-radius: 40px 108px 40px 50px;
     background:
-      radial-gradient(circle at top left, rgba(143, 166, 194, 0.16), transparent 34%),
+      radial-gradient(circle at top left, rgba(95, 145, 136, 0.18), transparent 30%),
+      radial-gradient(circle at top right, rgba(221, 147, 103, 0.18), transparent 28%),
       linear-gradient(180deg, rgba(28, 40, 58, 0.98) 0%, rgba(23, 37, 54, 1) 100%);
     box-shadow: 0 22px 42px rgba(23, 37, 54, 0.18);
   }
-  .home-briefing-card.support {
-    background:
-      radial-gradient(circle at top left, rgba(205, 190, 161, 0.16), transparent 26%),
-      radial-gradient(circle at top right, rgba(57, 86, 119, 0.08), transparent 30%),
-      linear-gradient(180deg, rgba(250, 247, 241, 0.99) 0%, rgba(255, 255, 255, 0.99) 100%);
-    overflow: hidden;
+  .home-briefing-card.lead-arch::before {
+    top: -62px;
+    right: -28px;
+    width: 190px;
+    height: 190px;
+    border-radius: 0 0 0 170px;
+    background: radial-gradient(circle, rgba(221, 147, 103, 0.28) 0%, rgba(221, 147, 103, 0) 72%);
   }
-  .home-briefing-card.footer {
+  .home-briefing-card.lead-arch::after {
+    left: -64px;
+    bottom: -88px;
+    width: 180px;
+    height: 180px;
+    border-radius: 999px;
+    background: radial-gradient(circle, rgba(95, 145, 136, 0.18) 0%, rgba(95, 145, 136, 0) 74%);
+  }
+  .home-briefing-card.digest-organic {
+    border-color: var(--home-apricot-soft);
+    border-radius: 34px 30px 88px 34px;
+    background:
+      radial-gradient(circle at top right, rgba(221, 147, 103, 0.2), transparent 30%),
+      radial-gradient(circle at bottom left, rgba(95, 145, 136, 0.12), transparent 28%),
+      linear-gradient(180deg, rgba(252, 245, 239, 0.99) 0%, rgba(255, 255, 255, 0.99) 100%);
+  }
+  .home-briefing-card.digest-organic::before {
+    top: -38px;
+    right: -26px;
+    width: 132px;
+    height: 132px;
+    border-radius: 58% 42% 54% 46% / 42% 60% 40% 58%;
+    background: rgba(255, 255, 255, 0.72);
+  }
+  .home-briefing-card.support-pill {
+    border-color: var(--home-teal-soft);
+    border-radius: 86px 30px 42px 86px;
+    background:
+      radial-gradient(circle at top left, rgba(95, 145, 136, 0.22), transparent 26%),
+      radial-gradient(circle at bottom right, rgba(221, 147, 103, 0.12), transparent 30%),
+      linear-gradient(180deg, rgba(250, 247, 241, 0.99) 0%, rgba(255, 255, 255, 0.99) 100%);
+  }
+  .home-briefing-card.support-pill::after {
+    left: -58px;
+    bottom: -82px;
+    width: 210px;
+    height: 210px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.42);
+  }
+  .home-briefing-card.footer-warm {
     padding: 0;
     gap: 0;
+    border-color: var(--home-apricot-soft);
+    border-radius: 36px 36px 110px 44px;
     background:
-      radial-gradient(circle at top left, rgba(212, 200, 182, 0.18), transparent 24%),
-      linear-gradient(180deg, rgba(246, 242, 236, 0.98) 0%, rgba(255, 255, 255, 0.99) 100%);
+      radial-gradient(circle at top right, rgba(221, 147, 103, 0.22), transparent 28%),
+      radial-gradient(circle at bottom left, rgba(95, 145, 136, 0.1), transparent 30%),
+      linear-gradient(180deg, rgba(249, 240, 233, 0.99) 0%, rgba(255, 255, 255, 0.99) 100%);
     color: var(--text);
-    overflow: hidden;
+  }
+  .home-briefing-card.footer-warm::after {
+    right: -44px;
+    bottom: -70px;
+    width: 150px;
+    height: 150px;
+    border-radius: 999px;
+    background: rgba(221, 147, 103, 0.16);
   }
   .home-briefing-date {
     color: var(--accent-strong);
@@ -759,13 +830,13 @@
     word-break: keep-all;
     overflow-wrap: normal;
   }
-  .home-briefing-card.lead .home-briefing-date {
+  .home-briefing-card.lead-arch .home-briefing-date {
     color: rgba(255, 255, 255, 0.74);
   }
-  .home-briefing-card.lead .home-briefing-title {
+  .home-briefing-card.lead-arch .home-briefing-title {
     color: white;
   }
-  .home-briefing-card.lead .home-briefing-copy {
+  .home-briefing-card.lead-arch .home-briefing-copy {
     color: rgba(240, 245, 251, 0.9);
   }
   .home-briefing-meta {
@@ -799,17 +870,41 @@
     gap: 12px;
   }
   .home-glance-item {
-    display: grid;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     gap: 8px;
-    padding: 16px;
-    border-radius: 22px;
+    min-height: 110px;
+    aspect-ratio: 1 / 1;
+    padding: 16px 12px;
+    border-radius: 999px;
     border: 1px solid rgba(23, 33, 49, 0.08);
     background:
       linear-gradient(180deg, rgba(250, 248, 243, 0.96) 0%, rgba(255, 255, 255, 0.99) 100%);
+    text-align: center;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.88);
+  }
+  .home-glance-item.warm {
+    border-color: var(--home-apricot-soft);
+    background:
+      radial-gradient(circle at top, rgba(221, 147, 103, 0.2), transparent 44%),
+      linear-gradient(180deg, rgba(251, 241, 233, 0.98) 0%, rgba(255, 255, 255, 0.99) 100%);
+  }
+  .home-glance-item.neutral {
+    background:
+      radial-gradient(circle at top, rgba(57, 86, 119, 0.12), transparent 44%),
+      linear-gradient(180deg, rgba(247, 243, 239, 0.98) 0%, rgba(255, 255, 255, 0.99) 100%);
+  }
+  .home-glance-item.teal {
+    border-color: var(--home-teal-soft);
+    background:
+      radial-gradient(circle at top, rgba(95, 145, 136, 0.2), transparent 44%),
+      linear-gradient(180deg, rgba(238, 247, 244, 0.98) 0%, rgba(255, 255, 255, 0.99) 100%);
   }
   .home-glance-label {
     color: var(--muted);
-    font-size: 0.78rem;
+    font-size: 0.75rem;
     font-weight: 800;
     line-height: 1.3;
   }
@@ -825,9 +920,36 @@
     flex-wrap: wrap;
     gap: 10px;
   }
+  .home-glance-links .mini-link {
+    margin-top: 0;
+    padding: 10px 14px;
+    border-radius: 999px;
+    border: 1px solid rgba(23, 33, 49, 0.08);
+    background: rgba(255, 255, 255, 0.88);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.82);
+  }
+  .home-glance-links .mini-link:nth-child(1) {
+    border-color: var(--home-apricot-soft);
+    background: rgba(251, 235, 224, 0.96);
+  }
+  .home-glance-links .mini-link:nth-child(2) {
+    border-color: rgba(57, 86, 119, 0.14);
+    background: rgba(241, 245, 250, 0.96);
+  }
+  .home-glance-links .mini-link:nth-child(3) {
+    border-color: var(--home-teal-soft);
+    background: rgba(233, 244, 240, 0.96);
+  }
   .home-briefing-divider {
     height: 1px;
     background: rgba(23, 33, 49, 0.08);
+  }
+  .home-briefing-card.digest-organic .home-briefing-divider {
+    background: rgba(221, 147, 103, 0.16);
+  }
+  .home-briefing-card.digest-organic .home-urgent-list,
+  .home-briefing-card.digest-organic .home-urgent-item {
+    border-color: rgba(221, 147, 103, 0.16);
   }
   .home-briefing-subhead {
     display: grid;
@@ -866,7 +988,7 @@
     width: 34px;
     height: 34px;
     border-radius: 999px;
-    background: rgba(23, 37, 54, 0.08);
+    background: rgba(221, 147, 103, 0.16);
     color: var(--accent-strong);
     font-size: 0.8rem;
     font-weight: 800;
@@ -893,8 +1015,8 @@
     padding: 7px 12px;
     border-radius: 999px;
     border: 1px solid transparent;
-    background: var(--accent-strong);
-    color: rgba(255, 255, 255, 0.94);
+    background: rgba(23, 37, 54, 0.94);
+    color: rgba(255, 255, 255, 0.96);
     font-size: 0.78rem;
     font-weight: 800;
   }
@@ -930,11 +1052,25 @@
     gap: 12px;
   }
   .home-support-links a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 14px;
+    border-radius: 999px;
+    border: 1px solid rgba(23, 33, 49, 0.08);
+    background: rgba(255, 255, 255, 0.74);
     color: var(--accent-strong);
     font-size: 0.84rem;
     font-weight: 700;
-    text-decoration: underline;
-    text-underline-offset: 3px;
+    text-decoration: none;
+  }
+  .home-support-links a:first-child {
+    background: rgba(241, 245, 250, 0.92);
+    border-color: rgba(57, 86, 119, 0.14);
+  }
+  .home-support-links a:last-child {
+    background: rgba(251, 235, 224, 0.94);
+    border-color: var(--home-apricot-soft);
   }
   .home-support-credit {
     margin: 2px 0 0;
@@ -1000,27 +1136,27 @@
   }
   .home-support-metric-item:nth-child(1) {
     background:
-      linear-gradient(180deg, rgba(247, 243, 234, 0.98) 0%, rgba(255, 255, 255, 0.99) 100%);
+      linear-gradient(180deg, rgba(250, 238, 229, 0.98) 0%, rgba(255, 255, 255, 0.99) 100%);
   }
   .home-support-metric-item:nth-child(2) {
     background:
-      linear-gradient(180deg, rgba(241, 245, 243, 0.98) 0%, rgba(255, 255, 255, 0.99) 100%);
+      linear-gradient(180deg, rgba(236, 246, 242, 0.98) 0%, rgba(255, 255, 255, 0.99) 100%);
   }
   .home-support-metric-item:nth-child(3) {
     background:
-      linear-gradient(180deg, rgba(243, 246, 241, 0.98) 0%, rgba(255, 255, 255, 0.99) 100%);
+      linear-gradient(180deg, rgba(244, 243, 239, 0.98) 0%, rgba(255, 255, 255, 0.99) 100%);
   }
   .home-support-metric-item:nth-child(4) {
     background:
-      linear-gradient(180deg, rgba(245, 243, 240, 0.98) 0%, rgba(255, 255, 255, 0.99) 100%);
+      linear-gradient(180deg, rgba(251, 239, 231, 0.98) 0%, rgba(255, 255, 255, 0.99) 100%);
   }
   .home-support-metric-item:nth-child(5) {
     background:
-      linear-gradient(180deg, rgba(247, 242, 240, 0.98) 0%, rgba(255, 255, 255, 0.99) 100%);
+      linear-gradient(180deg, rgba(236, 246, 242, 0.98) 0%, rgba(255, 255, 255, 0.99) 100%);
   }
   .home-support-metric-item:nth-child(6) {
     background:
-      linear-gradient(180deg, rgba(242, 243, 239, 0.98) 0%, rgba(255, 255, 255, 0.99) 100%);
+      linear-gradient(180deg, rgba(245, 243, 239, 0.98) 0%, rgba(255, 255, 255, 0.99) 100%);
   }
   .youth-metrics-card {
     display: none;
@@ -1751,6 +1887,18 @@
     .home-briefing-card.footer {
       grid-area: footer;
     }
+    .home-briefing-card.lead-arch {
+      border-radius: 46px 132px 44px 58px;
+    }
+    .home-briefing-card.digest-organic {
+      border-radius: 40px 34px 104px 40px;
+    }
+    .home-briefing-card.support-pill {
+      border-radius: 96px 34px 46px 96px;
+    }
+    .home-briefing-card.footer-warm {
+      border-radius: 38px 38px 128px 48px;
+    }
     .home-spotlight-layout {
       grid-template-columns: minmax(0, 1.24fr) minmax(280px, 0.82fr);
       gap: 18px;
@@ -1833,6 +1981,18 @@
       padding: 20px;
       border-radius: 24px;
     }
+    .home-briefing-card.lead-arch {
+      border-radius: 32px 78px 32px 38px;
+    }
+    .home-briefing-card.digest-organic {
+      border-radius: 28px 24px 64px 28px;
+    }
+    .home-briefing-card.support-pill {
+      border-radius: 58px 24px 32px 58px;
+    }
+    .home-briefing-card.footer-warm {
+      border-radius: 28px 28px 72px 34px;
+    }
     .home-briefing-title {
       font-size: clamp(2.05rem, 9.8vw, 3.25rem);
       letter-spacing: -0.05em;
@@ -1840,6 +2000,10 @@
     .home-briefing-copy {
       max-width: 100%;
       font-size: 0.98rem;
+    }
+    .home-glance-item {
+      min-height: 96px;
+      padding: 14px 10px;
     }
     .bottom-nav {
       width: calc(100% - 8px);
@@ -1901,24 +2065,24 @@
       </div>
       <div class="topbar-side">
         <a class="guide-link" href="guide.html" data-guide-open-link="true">이용방법</a>
-        <div class="header-side"><strong>04.04 15:00</strong><span>최근 반영</span></div>
+        <div class="header-side"><strong>04.05 17:19</strong><span>최근 반영</span></div>
         <nav class="nav"><a class="active" href="index.html">홈</a><a class="" href="news.html">뉴스</a><a class="" href="policies.html">정책</a><a class="" href="hub.html">참여·회의</a><a class="" href="tools.html">자료도구</a><a class="" href="contact.html">제보·문의</a></nav>
       </div>
     </header>
     
     <section class="hero home-hero">
       <div class="home-briefing-grid">
-        <article class="home-briefing-card lead">
-          <span class="home-briefing-date">2026.04.04 (토)</span>
+        <article class="home-briefing-card lead lead-arch">
+          <span class="home-briefing-date">2026.04.05 (일)</span>
           <h1 class="home-briefing-title">청년은 오늘 -</h1>
           <p class="home-briefing-copy">혼자 버티는 하루가 너무 길게 느껴질 때에도, 오늘의 기사와 정책이 조금은 또렷한 길잡이가 되었으면 합니다. 당신의 오늘이 작지 않다는 마음으로, 지금 필요한 흐름을 한자리에 모았습니다.</p>
         </article>
-        <article class="home-briefing-card digest">
+        <article class="home-briefing-card digest digest-organic">
           <div class="home-briefing-head">
             <h2>오늘 한눈에 보기</h2>
             <p>오늘의 기사와 정책, 참여·회의 흐름을 빠르게 가늠합니다.</p>
           </div>
-          <div class="home-glance-grid"><article class="home-glance-item"><span class="home-glance-label">오늘의 기사</span><strong class="home-glance-value">293건</strong></article><article class="home-glance-item"><span class="home-glance-label">정책</span><strong class="home-glance-value">16건</strong></article><article class="home-glance-item"><span class="home-glance-label">참여·회의</span><strong class="home-glance-value">17건</strong></article></div>
+          <div class="home-glance-grid"><article class="home-glance-item warm"><span class="home-glance-label">오늘의 기사</span><strong class="home-glance-value">300건</strong></article><article class="home-glance-item neutral"><span class="home-glance-label">정책</span><strong class="home-glance-value">17건</strong></article><article class="home-glance-item teal"><span class="home-glance-label">참여·회의</span><strong class="home-glance-value">16건</strong></article></div>
           <div class="home-glance-links">
             <a class="mini-link" href="news.html">뉴스 보기</a>
             <a class="mini-link" href="policies.html">정책 보기</a>
@@ -1929,9 +2093,9 @@
             <h3>오늘 놓치면 안되는 뉴스 5가지</h3>
             <p>요약된 흐름을 기준으로 지금 가장 먼저 훑어볼 기사를 빠르게 묶었습니다.</p>
           </div>
-          <div class="home-urgent-list"><article class="home-urgent-item"><a class="home-urgent-link" href="https://news.google.com/rss/articles/CBMifEFVX3lxTE15NWZpclU4di1weGkzM0pZc3AzX0NlcUtidHY4TTNaWHhHeEJUekFMa0VUYkxld19QeGRreDlNa1N4TWVIQ0lidkxKd3FYZzhhYjY5Vkdwd0ZBYVFvVU10bEFaUUJKbTRfR1JIVmxLdEVuWEtiWllXMmplcTM?oc=5" target="_blank" rel="noreferrer" aria-label="‘청년이 만드는 포항의 내일’ 포항 청년정책학교 참여자 모집 링크 바로가기"><span class="home-urgent-rank">01</span><div class="home-urgent-text"><strong>‘청년이 만드는 포항의 내일’ 포항 청년정책학교 참여자 모집</strong><span class="home-urgent-meta">미디어경북 · 2026-04-04 · 경북</span></div></a></article><article class="home-urgent-item"><a class="home-urgent-link" href="https://news.google.com/rss/articles/CBMickFVX3lxTE1WX21LUWQ2WExWZXBKem9FYmxXX0s4dXRlSnEtLWlPaFJnSUJkc0FZbnlVa243MkZfdmU1d2NONFhoUkJwS0N2aFIxM2k5V2VzNC1kY1BkUVJ0SGNWNmthblMwbThyQUFBUjVBM1hjS2tOZw?oc=5" target="_blank" rel="noreferrer" aria-label="국내 정착을 생각 중인 조카에게 소개할 &#x27;동포 청년 지원 사업&#x27; 링크 바로가기"><span class="home-urgent-rank">02</span><div class="home-urgent-text"><strong>국내 정착을 생각 중인 조카에게 소개할 &#x27;동포 청년 지원 사업&#x27;</strong><span class="home-urgent-meta">대한민국 정책브리핑 · 2026-04-04</span></div></a></article><article class="home-urgent-item"><a class="home-urgent-link" href="https://news.google.com/rss/articles/CBMiU0FVX3lxTE8tekVaeEcyVVVudmFpdmROVG1tU1hSdnZPc0drdzRfZkNERlgwUWtzRkF3eWZncC1OOFVtUGpSc0phUkJSQ2g5Rk5uRGYyVTJTWGs40gFTQVVfeXFMTy16RVp4RzJVVW52YWl2ZE5UbW1TWFJ2dk9zR2t3NF9mQ0RGWDBRa3NGQXd5ZmdwLU44VW1QalJzSmFSQlJDaDlGTm5EZjJVMlNYazg?oc=5" target="_blank" rel="noreferrer" aria-label="[양산시 소식] 전기이륜차 보조금 확대-제4기 청년정책단 가동 링크 바로가기"><span class="home-urgent-rank">03</span><div class="home-urgent-text"><strong>[양산시 소식] 전기이륜차 보조금 확대-제4기 청년정책단 가동</strong><span class="home-urgent-meta">KPI뉴스 · 2026-04-04</span></div></a></article><article class="home-urgent-item"><a class="home-urgent-link" href="https://news.google.com/rss/articles/CBMic0FVX3lxTFBOTWU2TlRPZjdhMk8zNHpjQ1lpdURDN3ZmSmc1eWhzbzBzcWxNdUxzd3c4VXU3MlhzZUhueWN6QVRjVldGdEpsRkhxWXp2RkRKUG42UFlHNXpGZnVKd3JseFVKNzk4X3cydmlkeWk2RkU4Tk0?oc=5" target="_blank" rel="noreferrer" aria-label="청년 부채 중재 효과… &#x27;채무조정&#x27;으로 회복과 재도약의 길 찾기 링크 바로가기"><span class="home-urgent-rank">04</span><div class="home-urgent-text"><strong>청년 부채 중재 효과… &#x27;채무조정&#x27;으로 회복과 재도약의 길 찾기</strong><span class="home-urgent-meta">specialtimes.co.kr · 2026-04-03</span></div></a></article><article class="home-urgent-item"><a class="home-urgent-link" href="https://www.yna.co.kr/view/AKR20260403088000052" target="_blank" rel="noreferrer" aria-label="교방 문화에 AI·청년 입힌 &#x27;진주 논개제&#x27; 내달 2일 개막 링크 바로가기"><span class="home-urgent-rank">05</span><div class="home-urgent-text"><strong>교방 문화에 AI·청년 입힌 &#x27;진주 논개제&#x27; 내달 2일 개막</strong><span class="home-urgent-meta">연합뉴스 · 2026-04-04 · 경남</span></div></a></article></div>
+          <div class="home-urgent-list"><article class="home-urgent-item"><a class="home-urgent-link" href="https://news.google.com/rss/articles/CBMibEFVX3lxTE92QWd6MDRXVnZJZE1JYXRvOEtkbWotd2NGdGg1VDUzdWgxWjQ1cEs1SzVWQ3lhNm02QkdTei1LaF8tdGJFR3k2ZjUyRlVFeHpqQ0dYYm85eUZfNVF5RlR0d0MwZEI0RTFsN0tuWtIBcEFVX3lxTE02cHdjS1pCc1VtTjFucTlRa1VHR19jR2dvR2tTNXh2UWpuRXE1aXBCc2VQOXB3ZjhydjR2VTNXQVFCb01DQl82bDRsd1BRMGVxTXlablNLYkU5OEJKcGVhczg5OHgweG5SNFM2UHd4RzQ?oc=5" target="_blank" rel="noreferrer" aria-label="광주청년일자리스테이션 동명, 2026 진로탐색데이 성료 링크 바로가기"><span class="home-urgent-rank">01</span><div class="home-urgent-text"><strong>광주청년일자리스테이션 동명, 2026 진로탐색데이 성료</strong><span class="home-urgent-meta">남도일보 · 2026-04-05 · 광주</span></div></a></article><article class="home-urgent-item"><a class="home-urgent-link" href="https://news.google.com/rss/articles/CBMiT0FVX3lxTE9mUHQ4blZRalVBcjZ5amNORERCNS1KbWlrTHZaanp2N2RvY0hZWGE0aGdYWWJPQThjQkcxMFduNTBNc05NdFMwSEx3YkJzbEE?oc=5" target="_blank" rel="noreferrer" aria-label="조용진 경북도의원 “경북형 청년 정주정책 강화해야” 링크 바로가기"><span class="home-urgent-rank">02</span><div class="home-urgent-text"><strong>조용진 경북도의원 “경북형 청년 정주정책 강화해야”</strong><span class="home-urgent-meta">다음 뉴스 · 2026-04-05 · 경북</span></div></a></article><article class="home-urgent-item"><a class="home-urgent-link" href="https://news.google.com/rss/articles/CBMinwFBVV95cUxQN25DdW5Ic2hta2QxNlFoWnBIYVltYVAzaVcwNEdYczF3cFZzYUtKSHJuTFZ6WE56OTNSLWNvWk5VZGdaZ2FOcDhxMXNEM2c4ZWwyTFNnSS1lYmZzSXNyNko5R015T2ZPQ2lSVkw1a2F5VTFuSEx1RmVnSmpjN1ZOS3RhcmlxbUdBWmloX3VnZHN1eThEb2ozSmNCRG1LbjQ?oc=5" target="_blank" rel="noreferrer" aria-label="룽하이 코뮌 청년 연합 대회: 사회 공헌을 향한 청년들의 열망에 불을 지피다. 링크 바로가기"><span class="home-urgent-rank">03</span><div class="home-urgent-text"><strong>룽하이 코뮌 청년 연합 대회: 사회 공헌을 향한 청년들의 열망에 불을 지피다.</strong><span class="home-urgent-meta">Vietnam.vn · 2026-04-05</span></div></a></article><article class="home-urgent-item"><a class="home-urgent-link" href="https://news.google.com/rss/articles/CBMiXkFVX3lxTE1hWVZrbDliQnV5VmsxdjJTZkVEUzZUUG5GaTNSb2JGQnhFaDZ4RFVpd21BOW1qYlh0NjVvNV9HT2lOUlZNaE9ZZnB5Q3lqenI2S3Z3MkdzM2s4Z3o0eEE?oc=5" target="_blank" rel="noreferrer" aria-label="영천시, 청년 창업지원사업 참여자 모집 링크 바로가기"><span class="home-urgent-rank">04</span><div class="home-urgent-text"><strong>영천시, 청년 창업지원사업 참여자 모집</strong><span class="home-urgent-meta">한국방송뉴스 · 2026-04-05</span></div></a></article><article class="home-urgent-item"><a class="home-urgent-link" href="https://news.google.com/rss/articles/CBMiW0FVX3lxTFBQWnVWVk5VNlNfb3NwSXZtOW13SDZ4M2lLZkp6aEtVc1VaOExfUjRTZjd4YWN6X0dnUDRIeEZXdk42UUNDOHFNaGxkZzJ3T2hoSXlEakpINHlBbm8?oc=5" target="_blank" rel="noreferrer" aria-label="인천 청년공간 유유기지 부평, ‘한 걸음 플로깅’ 참여 청년 모집 링크 바로가기"><span class="home-urgent-rank">05</span><div class="home-urgent-text"><strong>인천 청년공간 유유기지 부평, ‘한 걸음 플로깅’ 참여 청년 모집</strong><span class="home-urgent-meta">경기일보 · 2026-04-05 · 인천</span></div></a></article></div>
         </article>
-        <article class="home-briefing-card support">
+        <article class="home-briefing-card support support-pill">
           
     <div class="home-support-metrics">
       <h3>청년 주요 지표</h3>
@@ -1994,15 +2158,15 @@
     </div>
     
         </article>
-        <article class="home-briefing-card footer">
+        <article class="home-briefing-card footer footer-warm">
           <div class="home-support-footer">
             <span class="home-support-version">v0.3 preview</span>
             <p class="home-support-copy">이 사이트는 무료로 운영됩니다. 청년들을 응원하기 위해 만들어졌습니다.</p>
             <p class="home-support-copy secondary">기사 한 줄과 정책 한 항목이 필요한 순간에 제때 닿기를 바라는 마음으로, 오늘의 흐름을 조용히 모아두고 있습니다.</p>
             <div class="home-support-meta">
-              <span>페이지 반영 2026-04-04 15:00</span>
-              <span>정책 기준 2026-04-03 08:06</span>
-              <span>기사 기준 2026-04-04 05:52</span>
+              <span>페이지 반영 2026-04-05 17:19</span>
+              <span>정책 기준 2026-04-05 00:00</span>
+              <span>기사 기준 2026-04-05 07:56</span>
               <span>매일 09:00, 15:00, 21:00 (Asia/Seoul)</span>
             </div>
             <div class="home-support-links">
