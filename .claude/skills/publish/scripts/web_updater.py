@@ -25,29 +25,29 @@ ILLUSTRATION_ROOT = "assets/illustrations"
 
 HOME_LEAD_ILLUSTRATION = {
     "src": f"{ILLUSTRATION_ROOT}/home-youth-group.svg",
-    "alt": "함께 서 있는 청년들 일러스트",
+    "alt": "노트와 말풍선, 별 모티프가 있는 홈 화면 장식 일러스트",
 }
 
 PAGE_INTRO_ILLUSTRATIONS = {
     "news": {
         "src": f"{ILLUSTRATION_ROOT}/intro-news.svg",
-        "alt": "청년이 뉴스를 확인하는 일러스트",
+        "alt": "뉴스 문서와 돋보기 모티프 일러스트",
     },
     "policies": {
         "src": f"{ILLUSTRATION_ROOT}/intro-policies.svg",
-        "alt": "청년들이 정책 자료를 살펴보는 일러스트",
+        "alt": "정책 문서와 체크 표시 모티프 일러스트",
     },
     "hub": {
         "src": f"{ILLUSTRATION_ROOT}/intro-hub.svg",
-        "alt": "청년들이 함께 대화하는 일러스트",
+        "alt": "대화와 연결을 나타내는 말풍선 모티프 일러스트",
     },
     "tools": {
         "src": f"{ILLUSTRATION_ROOT}/intro-tools.svg",
-        "alt": "청년이 자료와 노트를 정리하는 일러스트",
+        "alt": "자료 정리를 나타내는 폴더와 메모 모티프 일러스트",
     },
     "contact": {
         "src": f"{ILLUSTRATION_ROOT}/intro-contact.svg",
-        "alt": "청년이 메시지를 보내는 일러스트",
+        "alt": "문의와 전달을 나타내는 편지와 말풍선 모티프 일러스트",
     },
 }
 
