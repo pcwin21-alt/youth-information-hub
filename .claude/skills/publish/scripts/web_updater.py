@@ -21,6 +21,35 @@ NEWS_WINDOW_DAYS = 7
 NEWS_WINDOW_HOURS = NEWS_WINDOW_DAYS * 24
 HOME_UPDATE_SNAPSHOT = ROOT / "output" / "home_update_snapshot.json"
 REMOTE_TEXT_CACHE: dict[str, str] = {}
+ILLUSTRATION_ROOT = "assets/illustrations"
+
+HOME_LEAD_ILLUSTRATION = {
+    "src": f"{ILLUSTRATION_ROOT}/home-youth-group.svg",
+    "alt": "함께 서 있는 청년들 일러스트",
+}
+
+PAGE_INTRO_ILLUSTRATIONS = {
+    "news": {
+        "src": f"{ILLUSTRATION_ROOT}/intro-news.svg",
+        "alt": "청년이 뉴스를 확인하는 일러스트",
+    },
+    "policies": {
+        "src": f"{ILLUSTRATION_ROOT}/intro-policies.svg",
+        "alt": "청년들이 정책 자료를 살펴보는 일러스트",
+    },
+    "hub": {
+        "src": f"{ILLUSTRATION_ROOT}/intro-hub.svg",
+        "alt": "청년들이 함께 대화하는 일러스트",
+    },
+    "tools": {
+        "src": f"{ILLUSTRATION_ROOT}/intro-tools.svg",
+        "alt": "청년이 자료와 노트를 정리하는 일러스트",
+    },
+    "contact": {
+        "src": f"{ILLUSTRATION_ROOT}/intro-contact.svg",
+        "alt": "청년이 메시지를 보내는 일러스트",
+    },
+}
 
 YOUTH_METRICS = [
     {
@@ -390,6 +419,29 @@ BASE_CSS = """
     font-size: 0.96rem;
     line-height: 1.7;
     letter-spacing: -0.01em;
+  }
+  .page-intro-card.has-media {
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: end;
+    gap: 16px;
+  }
+  .page-intro-content {
+    display: grid;
+    gap: 10px;
+    min-width: 0;
+  }
+  .page-intro-media {
+    width: 104px;
+    align-self: end;
+    justify-self: end;
+    margin: 0 -2px -2px 0;
+    pointer-events: none;
+  }
+  .page-intro-media img {
+    display: block;
+    width: 100%;
+    height: auto;
+    filter: drop-shadow(0 12px 18px rgba(8, 18, 31, 0.18));
   }
   .hero-actions {
     display: flex;
@@ -1079,6 +1131,32 @@ BASE_CSS = """
   }
   .home-briefing-card.lead-arch .home-briefing-copy {
     color: rgba(240, 245, 251, 0.9);
+  }
+  .home-briefing-content {
+    display: grid;
+    gap: 18px;
+    min-width: 0;
+  }
+  .home-briefing-card.lead-arch.has-media {
+    padding-right: clamp(164px, 36%, 236px);
+    min-height: 312px;
+  }
+  .home-briefing-card > .home-illustration-slot {
+    position: absolute;
+    right: 16px;
+    bottom: 2px;
+    z-index: 0;
+  }
+  .home-illustration-slot {
+    width: clamp(142px, 30%, 214px);
+    max-width: 42%;
+    pointer-events: none;
+  }
+  .home-illustration-slot img {
+    display: block;
+    width: 100%;
+    height: auto;
+    filter: drop-shadow(0 16px 22px rgba(8, 18, 31, 0.22));
   }
   .home-briefing-meta {
     display: flex;
@@ -2134,6 +2212,9 @@ BASE_CSS = """
     .home-briefing-card.lead-arch {
       border-radius: 46px 132px 44px 58px;
     }
+    .home-briefing-card.lead-arch.has-media {
+      padding-right: clamp(188px, 30%, 252px);
+    }
     .home-briefing-card.digest-organic {
       border-radius: 40px 34px 104px 40px;
     }
@@ -2145,6 +2226,21 @@ BASE_CSS = """
     }
     .home-support-footer {
       padding: 28px 34px 34px 30px;
+    }
+    .home-briefing-card > .home-illustration-slot {
+      right: 24px;
+      bottom: 4px;
+    }
+    .home-illustration-slot {
+      width: clamp(170px, 30%, 236px);
+    }
+    .page-intro-card.has-media {
+      grid-template-columns: minmax(0, 1fr) 124px;
+      gap: 20px;
+    }
+    .page-intro-media {
+      width: 124px;
+      margin-right: -8px;
     }
     .home-spotlight-layout {
       grid-template-columns: minmax(0, 1.24fr) minmax(280px, 0.82fr);
@@ -2236,6 +2332,10 @@ BASE_CSS = """
     .home-briefing-card.lead-arch {
       border-radius: 32px 78px 32px 38px;
     }
+    .home-briefing-card.lead-arch.has-media {
+      padding-right: 20px;
+      min-height: 0;
+    }
     .home-briefing-card.digest-organic {
       border-radius: 28px 24px 64px 28px;
     }
@@ -2248,6 +2348,16 @@ BASE_CSS = """
     .home-support-footer {
       padding: 22px 22px 26px 22px;
     }
+    .home-briefing-card > .home-illustration-slot {
+      position: relative;
+      right: auto;
+      bottom: auto;
+      margin: 4px 0 -6px auto;
+    }
+    .home-illustration-slot {
+      width: min(148px, 42vw);
+      max-width: 58%;
+    }
     .home-briefing-title {
       font-size: clamp(2.05rem, 9.8vw, 3.25rem);
       letter-spacing: -0.05em;
@@ -2259,6 +2369,14 @@ BASE_CSS = """
     .home-glance-item {
       min-height: 96px;
       padding: 14px 10px;
+    }
+    .page-intro-card.has-media {
+      grid-template-columns: minmax(0, 1fr) 86px;
+      gap: 12px;
+    }
+    .page-intro-media {
+      width: 86px;
+      margin-right: -6px;
     }
     .bottom-nav {
       width: calc(100% - 8px);
@@ -3206,13 +3324,45 @@ def render_resource_card(
     """
 
 
-def render_compact_intro(kicker: str, description: str) -> str:
+def render_card_illustration(
+    config: dict[str, str] | None,
+    *,
+    slot_class: str,
+    img_class: str,
+    loading: str = "lazy",
+) -> str:
+    if not config:
+        return ""
+
+    onerror = (
+        "const host=this.closest('[data-media-host]');"
+        "if(host){host.classList.remove('has-media');}"
+        "this.parentElement.remove();"
+    )
+    return (
+        f'<div class="{slot_class}">'
+        f'<img class="{img_class}" src="{html.escape(config["src"])}" alt="{html.escape(config["alt"])}" '
+        f'decoding="async" loading="{loading}" onerror="{onerror}"></div>'
+    )
+
+
+def render_compact_intro(kicker: str, description: str, media_key: str | None = None) -> str:
+    media_config = PAGE_INTRO_ILLUSTRATIONS.get(media_key) if media_key else None
+    media_html = render_card_illustration(
+        media_config,
+        slot_class="page-intro-media",
+        img_class="page-intro-media-img",
+    )
+    media_class = " has-media" if media_html else ""
     return f"""
-    <article class="page-intro-card">
-      <div class="page-intro-top">
-        <span class="page-intro-badge">{html.escape(kicker)}</span>
+    <article class="page-intro-card{media_class}" data-media-host="page-intro">
+      <div class="page-intro-content">
+        <div class="page-intro-top">
+          <span class="page-intro-badge">{html.escape(kicker)}</span>
+        </div>
+        <p class="page-intro-copy">{html.escape(description)}</p>
       </div>
-      <p class="page-intro-copy">{html.escape(description)}</p>
+      {media_html}
     </article>
     """
 
@@ -4281,13 +4431,23 @@ def build_home_page(
         f'<div class="home-urgent-text"><strong>최근 {NEWS_WINDOW_DAYS}일 뉴스가 없습니다.</strong>'
         '<span class="home-urgent-meta">새 청년 뉴스가 수집되면 이 영역에 표시됩니다.</span></div></div></article>'
     )
+    home_lead_media = render_card_illustration(
+        HOME_LEAD_ILLUSTRATION,
+        slot_class="home-illustration-slot",
+        img_class="home-illustration-img",
+        loading="eager",
+    )
+    home_lead_class = " has-media" if home_lead_media else ""
     return f"""
     <section class="hero home-hero">
       <div class="home-briefing-grid">
-        <article class="home-briefing-card lead lead-arch">
-          <span class="home-briefing-date">{html.escape(home_date_label)}</span>
-          <h1 class="home-briefing-title">청년은 오늘 -</h1>
-          <p class="home-briefing-copy">{html.escape(lead_message)}</p>
+        <article class="home-briefing-card lead lead-arch{home_lead_class}" data-media-host="home-lead">
+          <div class="home-briefing-content">
+            <span class="home-briefing-date">{html.escape(home_date_label)}</span>
+            <h1 class="home-briefing-title">청년은 오늘 -</h1>
+            <p class="home-briefing-copy">{html.escape(lead_message)}</p>
+          </div>
+          {home_lead_media}
         </article>
         <article class="home-briefing-card digest digest-organic">
           <div class="home-briefing-head">
@@ -4411,6 +4571,7 @@ def build_news_page(articles: list[dict], status: dict) -> str:
     page_intro = render_compact_intro(
         "01 뉴스",
         "지역과 날짜 기준으로 최근 청년 뉴스를 빠르게 훑고, 필요한 기사만 골라볼 수 있습니다.",
+        media_key="news",
     )
     news_filter_panel = render_news_filter_panel(region_options, date_options, len(recent_news_articles))
     cards_html = "".join(render_article_card(article) for article in recent_news_articles)
@@ -4487,6 +4648,7 @@ def build_policies_page_compact(articles: list[dict], status: dict) -> str:
     page_intro = render_compact_intro(
         "02 정책",
         "정부 공식 발표와 지자체 발표 소식을 구분해 보고, 지역·유형·기간 기준으로 필요한 정책만 빠르게 확인할 수 있습니다.",
+        media_key="policies",
     )
     official_cards = "".join(
         render_article_card(
@@ -4555,6 +4717,7 @@ def build_hub_page(classified_articles: list[dict]) -> str:
     page_intro = render_compact_intro(
         "03 참여·회의",
         "청년 참여 회의와 지역 네트워크 움직임을 구분해 보고, 필요한 기록만 빠르게 걸러볼 수 있습니다.",
+        media_key="hub",
     )
     hub_filter_panel = render_hub_filter_panel(government_records, regional_records, other_records)
     government_cards = "".join(render_hub_record_card(article) for article in government_records)
@@ -4606,6 +4769,7 @@ def build_tools_page(articles: list[dict], status: dict) -> str:
     page_intro = render_compact_intro(
         "04 자료도구",
         "정책 조사와 제안서 초안을 준비할 때 필요한 자료를 짧은 흐름으로 따라볼 수 있습니다.",
+        media_key="tools",
     )
     page_updated_at = status.get("updated_at") or status.get("finished_at")
     tools_check_badge = f'<span class="mini-link" aria-disabled="true">자동 확인 {html.escape(format_display_datetime(page_updated_at))}</span>'
@@ -4802,6 +4966,7 @@ def build_contact_page(contact_settings: dict[str, str]) -> str:
     page_intro = render_compact_intro(
         "05 제보·문의",
         "빠진 기사 제보, 운영 문의, 검토 요청을 한곳에서 남기고 바로 이어서 확인할 수 있습니다.",
+        media_key="contact",
     )
     contact_overview = "".join(
         [
@@ -4891,12 +5056,13 @@ def write_page(path: Path, page_title: str, active_page: str, content: str, stat
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--input", default=str(ROOT / "output" / "step5_summarized.json"))
+    parser.add_argument("--status-input", default=str(ROOT / "output" / "pipeline_status.json"))
     parser.add_argument("--output", default=str(ROOT / "web" / "index.html"))
     args = parser.parse_args()
 
     articles = read_json(Path(args.input), default=[])
     classified_articles = read_json(ROOT / "output" / "step3_classified.json", default=articles)
-    status = read_json(ROOT / "output" / "pipeline_status.json", default={})
+    status = read_json(Path(args.status_input), default={})
     web_root = Path(args.output).parent
     web_root.mkdir(parents=True, exist_ok=True)
 
