@@ -789,6 +789,31 @@ BASE_CSS = """
     font-size: 0.8rem;
     line-height: 1.55;
   }
+  .filter-search-wrap {
+    display: grid;
+    gap: 6px;
+  }
+  .filter-search-input {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1px solid rgba(31, 42, 51, 0.08);
+    border-radius: 18px;
+    background: rgba(255, 255, 255, 0.96);
+    color: var(--text);
+    font: inherit;
+    font-size: 0.92rem;
+    font-weight: 600;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.78);
+  }
+  .filter-search-input::placeholder {
+    color: rgba(102, 113, 123, 0.82);
+    font-weight: 500;
+  }
+  .filter-search-input:focus {
+    outline: 2px solid rgba(57, 86, 119, 0.14);
+    outline-offset: 1px;
+    border-color: rgba(57, 86, 119, 0.24);
+  }
   .date-picker-row {
     display: grid;
     gap: 10px;
@@ -2543,7 +2568,25 @@ BASE_SCRIPT = """
     }
   }
 
-  function applyNewsFilters(root, selectedDateStart, selectedDateEnd, selectedRegion) {
+  function normalizeSearchQuery(value) {
+    return (value || '').trim().replace(/\s+/g, ' ');
+  }
+
+  function cardMatchesSearch(card, query) {
+    const normalizedQuery = normalizeSearchQuery(query);
+    if (!normalizedQuery) {
+      return true;
+    }
+    const searchText = (card.getAttribute('data-article-search') || '').toLowerCase();
+    return normalizedQuery.toLowerCase().split(' ').every((term) => searchText.includes(term));
+  }
+
+  function formatSearchLabel(query) {
+    const normalizedQuery = normalizeSearchQuery(query);
+    return normalizedQuery ? `검색 "${normalizedQuery}"` : '';
+  }
+
+  function applyNewsFilters(root, selectedDateStart, selectedDateEnd, selectedRegion, selectedQuery) {
     const normalizedDates = normalizeNewsDateRange(
       selectedDateStart ?? root.dataset.selectedDateStart ?? root.getAttribute('data-default-date-start') ?? '',
       selectedDateEnd ?? root.dataset.selectedDateEnd ?? root.getAttribute('data-default-date-end') ?? '',
@@ -2552,9 +2595,13 @@ BASE_SCRIPT = """
     const activeDateEnd = normalizedDates.endDate;
     const hasDateRange = Boolean(activeDateStart || activeDateEnd);
     const activeRegion = selectedRegion || root.dataset.selectedRegion || root.getAttribute('data-default-region') || 'all';
+    const activeQuery = normalizeSearchQuery(
+      selectedQuery ?? root.dataset.selectedSearchQuery ?? root.getAttribute('data-default-search-query') ?? ''
+    );
     root.dataset.selectedDateStart = activeDateStart;
     root.dataset.selectedDateEnd = activeDateEnd;
     root.dataset.selectedRegion = activeRegion;
+    root.dataset.selectedSearchQuery = activeQuery;
 
     const articleCards = Array.from(root.querySelectorAll('[data-article-date]'));
     let visibleCount = 0;
@@ -2566,7 +2613,8 @@ BASE_SCRIPT = """
       const isBeforeEnd = !activeDateEnd || (articleDate && articleDate <= activeDateEnd);
       const dateMatch = !hasDateRange || (isAfterStart && isBeforeEnd);
       const regionMatch = activeRegion === 'all' || articleRegion === activeRegion;
-      const isMatch = dateMatch && regionMatch;
+      const searchMatch = cardMatchesSearch(card, activeQuery);
+      const isMatch = dateMatch && regionMatch && searchMatch;
       card.hidden = !isMatch;
       if (isMatch) {
         visibleCount += 1;
@@ -2589,17 +2637,30 @@ BASE_SCRIPT = """
       }
     });
 
+    root.querySelectorAll('[data-news-search-input]').forEach((searchInput) => {
+      if (searchInput.value !== activeQuery) {
+        searchInput.value = activeQuery;
+      }
+    });
+
     const status = root.querySelector('[data-news-filter-status]');
     if (status) {
       const dateLabel = formatNewsDateRange(activeDateStart, activeDateEnd);
-      if (!hasDateRange && activeRegion === 'all') {
+      const searchLabel = formatSearchLabel(activeQuery);
+      if (!hasDateRange && activeRegion === 'all' && !searchLabel) {
         status.textContent = `전체 ${visibleCount}건을 보고 있습니다.`;
-      } else if (!hasDateRange) {
-        status.textContent = `${activeRegion} 기사 ${visibleCount}건을 보고 있습니다.`;
-      } else if (activeRegion === 'all') {
-        status.textContent = `${dateLabel} 기사 ${visibleCount}건을 보고 있습니다.`;
       } else {
-        status.textContent = `${activeRegion} · ${dateLabel} 기사 ${visibleCount}건을 보고 있습니다.`;
+        const parts = [];
+        if (activeRegion !== 'all') {
+          parts.push(activeRegion);
+        }
+        if (searchLabel) {
+          parts.push(searchLabel);
+        }
+        if (hasDateRange) {
+          parts.push(dateLabel);
+        }
+        status.textContent = `${parts.join(' · ')} 기사 ${visibleCount}건을 보고 있습니다.`;
       }
     }
 
@@ -2609,7 +2670,7 @@ BASE_SCRIPT = """
     }
   }
 
-  function getPolicyRegionAvailability(articleCards, activeGroup, activeType, activeDateStart, activeDateEnd, hasDateRange) {
+  function getPolicyRegionAvailability(articleCards, activeGroup, activeType, activeDateStart, activeDateEnd, hasDateRange, activeQuery) {
     const availableRegions = new Set();
 
     articleCards.forEach((card) => {
@@ -2622,8 +2683,9 @@ BASE_SCRIPT = """
       const isAfterStart = !activeDateStart || (articleDate && articleDate >= activeDateStart);
       const isBeforeEnd = !activeDateEnd || (articleDate && articleDate <= activeDateEnd);
       const dateMatch = !hasDateRange || (isAfterStart && isBeforeEnd);
+      const searchMatch = cardMatchesSearch(card, activeQuery);
 
-      if (groupMatch && typeMatch && dateMatch) {
+      if (groupMatch && typeMatch && dateMatch && searchMatch) {
         availableRegions.add(articleRegion);
       }
     });
@@ -2644,7 +2706,7 @@ BASE_SCRIPT = """
     return '전체';
   }
 
-  function applyPolicyFilters(root, selectedGroup, selectedRegion, selectedType, selectedDateStart, selectedDateEnd) {
+  function applyPolicyFilters(root, selectedGroup, selectedRegion, selectedType, selectedDateStart, selectedDateEnd, selectedQuery) {
     const normalizedDates = normalizeNewsDateRange(
       selectedDateStart ?? root.dataset.selectedDateStart ?? root.getAttribute('data-default-date-start') ?? '',
       selectedDateEnd ?? root.dataset.selectedDateEnd ?? root.getAttribute('data-default-date-end') ?? '',
@@ -2652,12 +2714,16 @@ BASE_SCRIPT = """
     const activeGroup = selectedGroup || root.dataset.selectedPolicyGroup || root.getAttribute('data-default-policy-group') || 'all';
     let activeRegion = selectedRegion || root.dataset.selectedPolicyRegion || root.getAttribute('data-default-policy-region') || 'all';
     const activeType = selectedType || root.dataset.selectedPolicyType || root.getAttribute('data-default-policy-type') || 'all';
+    const activeQuery = normalizeSearchQuery(
+      selectedQuery ?? root.dataset.selectedSearchQuery ?? root.getAttribute('data-default-search-query') ?? ''
+    );
     const activeDateStart = normalizedDates.startDate;
     const activeDateEnd = normalizedDates.endDate;
     const hasDateRange = Boolean(activeDateStart || activeDateEnd);
     root.dataset.selectedPolicyGroup = activeGroup;
     root.dataset.selectedPolicyRegion = activeRegion;
     root.dataset.selectedPolicyType = activeType;
+    root.dataset.selectedSearchQuery = activeQuery;
     root.dataset.selectedDateStart = activeDateStart;
     root.dataset.selectedDateEnd = activeDateEnd;
 
@@ -2669,6 +2735,7 @@ BASE_SCRIPT = """
       activeDateStart,
       activeDateEnd,
       hasDateRange,
+      activeQuery,
     );
     if (activeRegion !== 'all' && !availableRegions.has(activeRegion)) {
       activeRegion = 'all';
@@ -2689,7 +2756,8 @@ BASE_SCRIPT = """
       const isAfterStart = !activeDateStart || (articleDate && articleDate >= activeDateStart);
       const isBeforeEnd = !activeDateEnd || (articleDate && articleDate <= activeDateEnd);
       const dateMatch = !hasDateRange || (isAfterStart && isBeforeEnd);
-      const isMatch = groupMatch && regionMatch && typeMatch && dateMatch;
+      const searchMatch = cardMatchesSearch(card, activeQuery);
+      const isMatch = groupMatch && regionMatch && typeMatch && dateMatch && searchMatch;
       card.hidden = !isMatch;
       if (isMatch) {
         visibleCount += 1;
@@ -2720,6 +2788,12 @@ BASE_SCRIPT = """
       }
     });
 
+    root.querySelectorAll('[data-policy-search-input]').forEach((searchInput) => {
+      if (searchInput.value !== activeQuery) {
+        searchInput.value = activeQuery;
+      }
+    });
+
     root.querySelectorAll('[data-policy-section]').forEach((section) => {
       const sectionGroup = section.getAttribute('data-policy-section') || 'official';
       const visibleInSection = visibleByGroup[sectionGroup] || 0;
@@ -2741,6 +2815,9 @@ BASE_SCRIPT = """
       }
       if (activeType !== 'all') {
         parts.push(activeType);
+      }
+      if (activeQuery) {
+        parts.push(formatSearchLabel(activeQuery));
       }
       if (hasDateRange) {
         parts.push(formatNewsDateRange(activeDateStart, activeDateEnd));
@@ -2817,6 +2894,7 @@ BASE_SCRIPT = """
           group === 'date' ? '' : (root.dataset.selectedDateStart || root.getAttribute('data-default-date-start') || ''),
           group === 'date' ? '' : (root.dataset.selectedDateEnd || root.getAttribute('data-default-date-end') || ''),
           group === 'region' ? value : (root.dataset.selectedRegion || root.getAttribute('data-default-region') || 'all'),
+          root.dataset.selectedSearchQuery || root.getAttribute('data-default-search-query') || '',
         );
       }
       return;
@@ -2835,6 +2913,7 @@ BASE_SCRIPT = """
           filterGroup === 'type' ? filterValue : (root.dataset.selectedPolicyType || root.getAttribute('data-default-policy-type') || 'all'),
           filterGroup === 'date' ? '' : (root.dataset.selectedDateStart || root.getAttribute('data-default-date-start') || ''),
           filterGroup === 'date' ? '' : (root.dataset.selectedDateEnd || root.getAttribute('data-default-date-end') || ''),
+          root.dataset.selectedSearchQuery || root.getAttribute('data-default-search-query') || '',
         );
       }
       return;
@@ -2879,6 +2958,7 @@ BASE_SCRIPT = """
       root.getAttribute('data-default-date-start') || '',
       root.getAttribute('data-default-date-end') || '',
       root.getAttribute('data-default-region') || 'all',
+      root.getAttribute('data-default-search-query') || '',
     );
   });
 
@@ -2890,6 +2970,43 @@ BASE_SCRIPT = """
       root.getAttribute('data-default-policy-type') || 'all',
       root.getAttribute('data-default-date-start') || '',
       root.getAttribute('data-default-date-end') || '',
+      root.getAttribute('data-default-search-query') || '',
+    );
+  });
+
+  document.addEventListener('input', (event) => {
+    const searchInput = event.target.closest('[data-news-search-input]');
+    if (searchInput) {
+      const root = searchInput.closest('[data-news-filter-root]');
+      if (!root) {
+        return;
+      }
+      applyNewsFilters(
+        root,
+        root.dataset.selectedDateStart || root.getAttribute('data-default-date-start') || '',
+        root.dataset.selectedDateEnd || root.getAttribute('data-default-date-end') || '',
+        root.dataset.selectedRegion || root.getAttribute('data-default-region') || 'all',
+        searchInput.value,
+      );
+      return;
+    }
+
+    const policySearchInput = event.target.closest('[data-policy-search-input]');
+    if (!policySearchInput) {
+      return;
+    }
+    const policyRoot = policySearchInput.closest('[data-policy-filter-root]');
+    if (!policyRoot) {
+      return;
+    }
+    applyPolicyFilters(
+      policyRoot,
+      policyRoot.dataset.selectedPolicyGroup || policyRoot.getAttribute('data-default-policy-group') || 'all',
+      policyRoot.dataset.selectedPolicyRegion || policyRoot.getAttribute('data-default-policy-region') || 'all',
+      policyRoot.dataset.selectedPolicyType || policyRoot.getAttribute('data-default-policy-type') || 'all',
+      policyRoot.dataset.selectedDateStart || policyRoot.getAttribute('data-default-date-start') || '',
+      policyRoot.dataset.selectedDateEnd || policyRoot.getAttribute('data-default-date-end') || '',
+      policySearchInput.value,
     );
   });
 
@@ -2907,6 +3024,7 @@ BASE_SCRIPT = """
         startInput ? startInput.value : '',
         endInput ? endInput.value : '',
         root.dataset.selectedRegion || root.getAttribute('data-default-region') || 'all',
+        root.dataset.selectedSearchQuery || root.getAttribute('data-default-search-query') || '',
       );
       return;
     }
@@ -2928,6 +3046,7 @@ BASE_SCRIPT = """
       policyRoot.dataset.selectedPolicyType || policyRoot.getAttribute('data-default-policy-type') || 'all',
       policyStartInput ? policyStartInput.value : '',
       policyEndInput ? policyEndInput.value : '',
+      policyRoot.dataset.selectedSearchQuery || policyRoot.getAttribute('data-default-search-query') || '',
     );
   });
 
@@ -3135,9 +3254,7 @@ def render_article_card(article: dict, extra_attrs: dict[str, str] | None = None
     escaped_url = html.escape(article.get("url", ""))
     escaped_title = html.escape(display_article_title(article))
     article_region = html.escape(news_region_label(article))
-    article_group = hub_group_label(article)
-    article_type = html.escape(hub_activity_label(article))
-    article_region = html.escape(news_region_label(article))
+    article_search = html.escape(build_article_search_text(article, summary_text), quote=True)
     summary_html = (
         f'<p class="article-summary"><a class="article-summary-link" href="{escaped_url}" target="_blank" rel="noreferrer" '
         f'aria-label="{escaped_title} 링크 바로가기">{html.escape(summary_text)}</a></p>'
@@ -3152,6 +3269,7 @@ def render_article_card(article: dict, extra_attrs: dict[str, str] | None = None
         f'data-article-title="{escaped_title}"',
         f'data-article-date="{article_date}"',
         f'data-article-region="{article_region}"',
+        f'data-article-search="{article_search}"',
     ]
     if extra_attrs:
         for key, value in extra_attrs.items():
@@ -3187,8 +3305,12 @@ def render_hub_record_card(article: dict) -> str:
         else ""
     )
     article_date = html.escape(article_date_value(article))
+    article_search = html.escape(
+        build_article_search_text(article, summary_text, governance_scope, activity_types, hub_topics),
+        quote=True,
+    )
     return f"""
-    <article class="article-card" data-article-card="true" data-policy-card="true" data-policy-group="{article_group}" data-policy-type="{article_type}" data-article-url="{escaped_url}" data-article-title="{escaped_title}" data-article-date="{article_date}" data-article-region="{article_region}">
+    <article class="article-card" data-article-card="true" data-policy-card="true" data-policy-group="{article_group}" data-policy-type="{article_type}" data-article-url="{escaped_url}" data-article-title="{escaped_title}" data-article-date="{article_date}" data-article-region="{article_region}" data-article-search="{article_search}">
       {render_article_meta(article, category_label=governance_scope)}
       <h3><a class="article-title-link" href="{escaped_url}" target="_blank" rel="noreferrer" aria-label="{escaped_title} 링크 바로가기">{escaped_title}</a></h3>
       <div class="badge-row"><span class="badge">{html.escape(activity_types)}</span><span class="badge">{html.escape(hub_topics)}</span></div>
@@ -3505,6 +3627,20 @@ def article_date_value(article: dict) -> str:
     return ((article.get("published_date", "") or "")[:10]).strip()
 
 
+def build_article_search_text(article: dict, *extra_terms: str) -> str:
+    fields = [
+        clean_article_title(article.get("title")),
+        normalize_inline_text(article.get("summary")),
+        normalize_inline_text(article.get("lead_text")),
+        normalize_inline_text(article.get("source")),
+        normalize_inline_text(article.get("source_name")),
+        news_region_label(article),
+        *[normalize_inline_text(value) for value in article.get("display_badges", [])],
+        *[normalize_inline_text(value) for value in extra_terms],
+    ]
+    return normalize_inline_text(" ".join(value for value in fields if value))
+
+
 def collect_article_dates(articles: list[dict]) -> list[str]:
     return sorted({date for article in articles if (date := article_date_value(article))}, reverse=True)
 
@@ -3621,7 +3757,7 @@ def render_policy_filter_panel(official_policies: list[dict], reference_policies
     <section class="section">
       <article class="section-card filter-panel">
         <div class="filter-head">
-          <h3>구분 · 지역 · 유형 · 기간</h3>
+          <h3>구분 · 지역 · 유형 · 검색 · 기간</h3>
         </div>
         <div class="filter-stack">
           <div class="filter-group">
@@ -3635,6 +3771,12 @@ def render_policy_filter_panel(official_policies: list[dict], reference_policies
           <div class="filter-group">
             <span class="filter-group-label">유형</span>
             <div class="filter-controls">{''.join(type_buttons)}</div>
+          </div>
+          <div class="filter-group">
+            <span class="filter-group-label">검색</span>
+            <label class="filter-search-wrap">
+              <input class="filter-search-input" type="search" data-policy-search-input="true" placeholder="기사 제목, 요약, 출처 검색">
+            </label>
           </div>
           <div class="filter-group">
             <span class="filter-group-label">기간</span>
@@ -3710,7 +3852,7 @@ def render_hub_filter_panel(government_records: list[dict], regional_records: li
     <section class="section">
       <article class="section-card filter-panel">
         <div class="filter-head">
-          <h3>구분 · 지역 · 활동 · 기간</h3>
+          <h3>구분 · 지역 · 활동 · 검색 · 기간</h3>
           <p>정부 회의·위원회, 지역 참여·네트워크, 참고 기록을 같은 기준으로 빠르게 살펴볼 수 있습니다.</p>
         </div>
         <div class="filter-stack">
@@ -3725,6 +3867,12 @@ def render_hub_filter_panel(government_records: list[dict], regional_records: li
           <div class="filter-group">
             <span class="filter-group-label">활동</span>
             <div class="filter-controls">{''.join(type_buttons)}</div>
+          </div>
+          <div class="filter-group">
+            <span class="filter-group-label">검색</span>
+            <label class="filter-search-wrap">
+              <input class="filter-search-input" type="search" data-policy-search-input="true" placeholder="기사 제목, 요약, 출처 검색">
+            </label>
           </div>
           <div class="filter-group">
             <span class="filter-group-label">기간</span>
@@ -3800,13 +3948,19 @@ def render_news_filter_panel(regions: list[str], dates: list[str], total_count: 
     <section class="section">
       <article class="section-card filter-panel">
         <div class="filter-head">
-          <h3>지역별 · 날짜별로 보기</h3>
-          <p>지역은 바로 누르고, 날짜는 시작일과 종료일을 골라 필요한 구간만 빠르게 볼 수 있습니다.</p>
+          <h3>지역 · 검색 · 날짜별로 보기</h3>
+          <p>지역은 바로 누르고, 검색어와 날짜를 함께 써서 필요한 기사만 빠르게 찾을 수 있습니다.</p>
         </div>
         <div class="filter-stack">
           <div class="filter-group">
             <span class="filter-group-label">지역</span>
             <div class="filter-controls">{''.join(region_buttons)}</div>
+          </div>
+          <div class="filter-group">
+            <span class="filter-group-label">검색</span>
+            <label class="filter-search-wrap">
+              <input class="filter-search-input" type="search" data-news-search-input="true" placeholder="기사 제목, 요약, 출처 검색">
+            </label>
           </div>
           <div class="filter-group">
             <span class="filter-group-label">기간</span>
@@ -4576,7 +4730,7 @@ def build_news_page(articles: list[dict], status: dict) -> str:
     news_filter_panel = render_news_filter_panel(region_options, date_options, len(recent_news_articles))
     cards_html = "".join(render_article_card(article) for article in recent_news_articles)
     return f"""
-    <div data-news-filter-root="news" data-default-date-start="" data-default-date-end="" data-default-region="all">
+    <div data-news-filter-root="news" data-default-date-start="" data-default-date-end="" data-default-region="all" data-default-search-query="">
       {page_intro}
       {news_filter_panel}
       <section class="section">
@@ -4674,7 +4828,7 @@ def build_policies_page_compact(articles: list[dict], status: dict) -> str:
     )
     policy_filter_panel = render_policy_filter_panel(official_policies, reference_policies)
     return f"""
-    <div data-policy-filter-root="policies" data-default-policy-group="all" data-default-policy-region="all" data-default-policy-type="all" data-default-date-start="" data-default-date-end="">
+    <div data-policy-filter-root="policies" data-default-policy-group="all" data-default-policy-region="all" data-default-policy-type="all" data-default-date-start="" data-default-date-end="" data-default-search-query="">
       {page_intro}
       {policy_filter_panel}
       <section class="section" id="official-policies" data-policy-section="official">
@@ -4724,7 +4878,7 @@ def build_hub_page(classified_articles: list[dict]) -> str:
     regional_cards = "".join(render_hub_record_card(article) for article in regional_records)
     other_cards = "".join(render_hub_record_card(article) for article in other_records)
     return f"""
-    <div data-policy-filter-root="hub" data-default-policy-group="all" data-default-policy-region="all" data-default-policy-type="all" data-default-date-start="" data-default-date-end="">
+    <div data-policy-filter-root="hub" data-default-policy-group="all" data-default-policy-region="all" data-default-policy-type="all" data-default-date-start="" data-default-date-end="" data-default-search-query="">
       {page_intro}
       {hub_filter_panel}
       <section class="section" data-policy-section="official">

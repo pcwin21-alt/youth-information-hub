@@ -621,6 +621,31 @@
     font-size: 0.8rem;
     line-height: 1.55;
   }
+  .filter-search-wrap {
+    display: grid;
+    gap: 6px;
+  }
+  .filter-search-input {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1px solid rgba(31, 42, 51, 0.08);
+    border-radius: 18px;
+    background: rgba(255, 255, 255, 0.96);
+    color: var(--text);
+    font: inherit;
+    font-size: 0.92rem;
+    font-weight: 600;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.78);
+  }
+  .filter-search-input::placeholder {
+    color: rgba(102, 113, 123, 0.82);
+    font-weight: 500;
+  }
+  .filter-search-input:focus {
+    outline: 2px solid rgba(57, 86, 119, 0.14);
+    outline-offset: 1px;
+    border-color: rgba(57, 86, 119, 0.24);
+  }
   .date-picker-row {
     display: grid;
     gap: 10px;
@@ -2290,7 +2315,7 @@
             <h2>오늘 한눈에 보기</h2>
             <p>오늘의 기사와 정책, 참여·회의 흐름을 빠르게 가늠합니다.</p>
           </div>
-          <div class="home-glance-grid"><article class="home-glance-item warm"><span class="home-glance-label">오늘의 기사</span><strong class="home-glance-value">301건</strong></article><article class="home-glance-item neutral"><span class="home-glance-label">정책</span><strong class="home-glance-value">17건</strong></article><article class="home-glance-item teal"><span class="home-glance-label">참여·회의</span><strong class="home-glance-value">14건</strong></article></div>
+          <div class="home-glance-grid"><article class="home-glance-item warm"><span class="home-glance-label">오늘의 기사</span><strong class="home-glance-value">306건</strong></article><article class="home-glance-item neutral"><span class="home-glance-label">정책</span><strong class="home-glance-value">14건</strong></article><article class="home-glance-item teal"><span class="home-glance-label">참여·회의</span><strong class="home-glance-value">21건</strong></article></div>
           <div class="home-glance-links">
             <a class="mini-link" href="news.html">뉴스 보기</a>
             <a class="mini-link" href="policies.html">정책 보기</a>
@@ -2301,7 +2326,7 @@
             <h3>오늘 놓치면 안되는 뉴스 5가지</h3>
             <p>요약된 흐름을 기준으로 지금 가장 먼저 훑어볼 기사를 빠르게 묶었습니다.</p>
           </div>
-          <div class="home-urgent-list"><article class="home-urgent-item"><a class="home-urgent-link" href="https://news.google.com/rss/articles/CBMiWkFVX3lxTE5tNnp1TFA2WGNpbjhjQXhNWEdlY2lDZS14VkhBUDktX1lVWFEtTnRfNmtVSGlsa2diMUhoTTlKRXFjTTV0alZwa3ZGOUdNQkVZY3Y3RG00YThQQdIBX0FVX3lxTE5pVWJWN1dQVk1HZHVrR3JCeDVfeWdpSUxGeWc1ODFUMHNKdzR1bWNMYWlUaUtEaUJuRjh2TzdFNDJkZFo1a2hkNURtOV9mbkpCN3lHY3pJUEQzTy12bXNr?oc=5" target="_blank" rel="noreferrer" aria-label="[시선]‘청년’ 정치인의 존재 이유 링크 바로가기"><span class="home-urgent-rank">01</span><div class="home-urgent-text"><strong>[시선]‘청년’ 정치인의 존재 이유</strong><span class="home-urgent-meta">경향신문 · 2026-04-05</span></div></a></article><article class="home-urgent-item"><a class="home-urgent-link" href="https://news.google.com/rss/articles/CBMijAFBVV95cUxPTHZaZE52ZHdTMUdOdUNjaW44WXhzcS1pbHFkelphUEFRVnFVemRFUnNDeFRLRDBJT0lBWm01TFN0MU5OQXI3YXpnbzdsT2pmMlE1VWhiVUpKdTRsRU1CdE1vY3FOQ29RNEoxZjZ1OEtZUG1Hamt5dWd5blRmWlhQVUtGWU9HOUZyVTlVMg?oc=5" target="_blank" rel="noreferrer" aria-label="부산서 또 청년 울린 전세사기…피해 ‘눈덩이’ 우려 링크 바로가기"><span class="home-urgent-rank">02</span><div class="home-urgent-text"><strong>부산서 또 청년 울린 전세사기…피해 ‘눈덩이’ 우려</strong><span class="home-urgent-meta">국제신문 · 2026-04-05 · 부산</span></div></a></article><article class="home-urgent-item"><a class="home-urgent-link" href="https://news.google.com/rss/articles/CBMikwFBVV95cUxNOXBWaW9xN0c3bHJKcXBQeGktVHlKWkpXNGVHcXlsektSVjd4bVJFLUZFcWQyUTV6N251bm9mZWhQLTRHZGNWMjV4QXZudjc0c0dZNnE4VE1saUNlbl9qMkJLa3lhVm5CUWF0TFpOYmVmOEJQbHZwdWhjcC1rTnMzTjZEbmREX1BPRnRwcVp5VjJsaUk?oc=5" target="_blank" rel="noreferrer" aria-label="[청년의 소리] 부산 청년들은 진정성 있는 귀가 필요하다 링크 바로가기"><span class="home-urgent-rank">03</span><div class="home-urgent-text"><strong>[청년의 소리] 부산 청년들은 진정성 있는 귀가 필요하다</strong><span class="home-urgent-meta">국제신문 · 2026-04-05 · 부산</span></div></a></article><article class="home-urgent-item"><a class="home-urgent-link" href="https://news.google.com/rss/articles/CBMiSkFVX3lxTFAyQzNtTUpoMzZJd3dRaUhEQWViUkhidEp0Z1JySUtNeXRUMFdLYlgtbzhvdURDZFdNUVVFTlZWbFVTRnZRS3pkUVF3?oc=5" target="_blank" rel="noreferrer" aria-label="AI 인프라, 청년 자산 증식의 &#x27;숨겨진 비밀&#x27;은? : 라이프 링크 바로가기"><span class="home-urgent-rank">04</span><div class="home-urgent-text"><strong>AI 인프라, 청년 자산 증식의 &#x27;숨겨진 비밀&#x27;은? : 라이프</strong><span class="home-urgent-meta">재경일보 · 2026-04-05</span></div></a></article><article class="home-urgent-item"><a class="home-urgent-link" href="https://news.google.com/rss/articles/CBMibEFVX3lxTE92QWd6MDRXVnZJZE1JYXRvOEtkbWotd2NGdGg1VDUzdWgxWjQ1cEs1SzVWQ3lhNm02QkdTei1LaF8tdGJFR3k2ZjUyRlVFeHpqQ0dYYm85eUZfNVF5RlR0d0MwZEI0RTFsN0tuWtIBcEFVX3lxTE02cHdjS1pCc1VtTjFucTlRa1VHR19jR2dvR2tTNXh2UWpuRXE1aXBCc2VQOXB3ZjhydjR2VTNXQVFCb01DQl82bDRsd1BRMGVxTXlablNLYkU5OEJKcGVhczg5OHgweG5SNFM2UHd4RzQ?oc=5" target="_blank" rel="noreferrer" aria-label="광주청년일자리스테이션 동명, 2026 진로탐색데이 성료 링크 바로가기"><span class="home-urgent-rank">05</span><div class="home-urgent-text"><strong>광주청년일자리스테이션 동명, 2026 진로탐색데이 성료</strong><span class="home-urgent-meta">남도일보 · 2026-04-05 · 광주</span></div></a></article></div>
+          <div class="home-urgent-list"><article class="home-urgent-item"><a class="home-urgent-link" href="https://news.google.com/rss/articles/CBMiZEFVX3lxTFAxN0s0cm0ySjhCVHYzbTVpdFhXcFd6ek1fRmwyUndmNENQLUJ6OTlRUmY2N1FwWHI4ZjZFOHpjRkViNWdfcE1aSHJkZ294VUtHNWJScEsxcW1acnVMck1xT1E3aG8?oc=5" target="_blank" rel="noreferrer" aria-label="KOREA 태권도 유네스코추진단, 미래 이끌 ‘청년위원회’ 공식 출범 링크 바로가기"><span class="home-urgent-rank">01</span><div class="home-urgent-text"><strong>KOREA 태권도 유네스코추진단, 미래 이끌 ‘청년위원회’ 공식 출범</strong><span class="home-urgent-meta">koreatkdnews.com · 2026-04-07</span></div></a></article><article class="home-urgent-item"><a class="home-urgent-link" href="https://news.google.com/rss/articles/CBMiT0FVX3lxTE4yTzdoaXEteE9IWTBTb1ZheXpsNWRTSUQyQWM3SktnbE1LZDEtTy0tVVgwQXAxbnNySHlZbmFRN0lhZlNuX3Y5dU9XSkFORkU?oc=5" target="_blank" rel="noreferrer" aria-label="[기고] 청년은 떠나는 것이 아니라, 선택한다 링크 바로가기"><span class="home-urgent-rank">02</span><div class="home-urgent-text"><strong>[기고] 청년은 떠나는 것이 아니라, 선택한다</strong><span class="home-urgent-meta">다음 뉴스 · 2026-04-07</span></div></a></article><article class="home-urgent-item"><a class="home-urgent-link" href="https://news.google.com/rss/articles/CBMingFBVV95cUxNZHVhMzRVOERrR1E3Y2JRcWh5c2NiWlB2RlZKODNQZmRESU0wcVNLOWpRV1NBYWJlSDd3c0tQZ0VjS1loblcxVmt3U1NoZWJNTjhSX0VYSW12ZXpWc2RaMDhyQTIxd2ZKMW9keDFvVDZoQjRqVWUtdjhPT2JBaHRuV1RDbC1RdGd1QkJnaUNiRzlveEl5ZzJZQjBaUjdKQdIBsgFBVV95cUxQejdTVFlndUgzUHF3TU5vcm1lb21ITjh1Q2g4X3o3TEI3R3RrVlR6NEU3OG90V1RvRElUOEFKRGlBcEFzRXBIek1YeGh6VkhvMDQ3RXVkTFRBM1B4M3JRTExpSjY1dDJjNUs0THhOZ2NmOHhIdTVqNVJEeWNRZXBuREtWLWFrYTNKRm14YU8teGVMSVJrSGZKNy1nemNMNFhPaUliMHhvR01pRndGWHRrTEJB?oc=5" target="_blank" rel="noreferrer" aria-label="이란 “청년들, 발전소 모여라”... 트럼프 위협에 인간방패 모집 링크 바로가기"><span class="home-urgent-rank">03</span><div class="home-urgent-text"><strong>이란 “청년들, 발전소 모여라”... 트럼프 위협에 인간방패 모집</strong><span class="home-urgent-meta">조선일보 · 2026-04-07</span></div></a></article><article class="home-urgent-item"><a class="home-urgent-link" href="https://news.google.com/rss/articles/CBMib0FVX3lxTFAzRFkzbUY2cllhbzJjaDZLT3hrUG15Nm5wNm9BaGFURkh2OU9Rbjk5Tkp4WU04RzRaelh6dnNaaE1tU2ljNVRDVGRwT0xtZWhScnZqTVIzcTE3ZTBVTkhwb2w2X1BMWjZKVnMtajVBdw?oc=5" target="_blank" rel="noreferrer" aria-label="의왕시, 청년정책위원회 정기회의 열고 체감형 정책 강화 방안 논의 링크 바로가기"><span class="home-urgent-rank">04</span><div class="home-urgent-text"><strong>의왕시, 청년정책위원회 정기회의 열고 체감형 정책 강화 방안 논의</strong><span class="home-urgent-meta">기호일보 · 2026-04-07</span></div></a></article><article class="home-urgent-item"><a class="home-urgent-link" href="https://news.google.com/rss/articles/CBMiWkFVX3lxTFAwN0puWWNhV0k3UmlEbXhJV3haVE9jNFptaEdmbFQzaVhWY0JfbjhJWUJDSEd1MXo4UWd5Rk9jd21hV1BQbXNBUFFSS1ZzU3NQYzBNQndEZmVGZw?oc=5" target="_blank" rel="noreferrer" aria-label="의왕시, 2026년 청년 정책위원회 정기회의 개최 링크 바로가기"><span class="home-urgent-rank">05</span><div class="home-urgent-text"><strong>의왕시, 2026년 청년 정책위원회 정기회의 개최</strong><span class="home-urgent-meta">브릿지경제 · 2026-04-07</span></div></a></article></div>
         </article>
         <article class="home-briefing-card support support-pill">
           
@@ -2373,8 +2398,8 @@
             <p class="home-support-copy secondary">기사 한 줄과 정책 한 항목이 필요한 순간에 제때 닿기를 바라는 마음으로, 오늘의 흐름을 조용히 모아두고 있습니다.</p>
             <div class="home-support-meta">
               <span>페이지 반영 2026-04-05 22:23</span>
-              <span>정책 기준 2026-04-05 00:00</span>
-              <span>기사 기준 2026-04-05 10:56</span>
+              <span>정책 기준 2026-04-06 06:30</span>
+              <span>기사 기준 2026-04-07 11:09</span>
               <span>매일 09:00, 15:00, 21:00 (Asia/Seoul)</span>
             </div>
             <div class="home-support-links">
@@ -2486,7 +2511,25 @@
     }
   }
 
-  function applyNewsFilters(root, selectedDateStart, selectedDateEnd, selectedRegion) {
+  function normalizeSearchQuery(value) {
+    return (value || '').trim().replace(/\s+/g, ' ');
+  }
+
+  function cardMatchesSearch(card, query) {
+    const normalizedQuery = normalizeSearchQuery(query);
+    if (!normalizedQuery) {
+      return true;
+    }
+    const searchText = (card.getAttribute('data-article-search') || '').toLowerCase();
+    return normalizedQuery.toLowerCase().split(' ').every((term) => searchText.includes(term));
+  }
+
+  function formatSearchLabel(query) {
+    const normalizedQuery = normalizeSearchQuery(query);
+    return normalizedQuery ? `검색 "${normalizedQuery}"` : '';
+  }
+
+  function applyNewsFilters(root, selectedDateStart, selectedDateEnd, selectedRegion, selectedQuery) {
     const normalizedDates = normalizeNewsDateRange(
       selectedDateStart ?? root.dataset.selectedDateStart ?? root.getAttribute('data-default-date-start') ?? '',
       selectedDateEnd ?? root.dataset.selectedDateEnd ?? root.getAttribute('data-default-date-end') ?? '',
@@ -2495,9 +2538,13 @@
     const activeDateEnd = normalizedDates.endDate;
     const hasDateRange = Boolean(activeDateStart || activeDateEnd);
     const activeRegion = selectedRegion || root.dataset.selectedRegion || root.getAttribute('data-default-region') || 'all';
+    const activeQuery = normalizeSearchQuery(
+      selectedQuery ?? root.dataset.selectedSearchQuery ?? root.getAttribute('data-default-search-query') ?? ''
+    );
     root.dataset.selectedDateStart = activeDateStart;
     root.dataset.selectedDateEnd = activeDateEnd;
     root.dataset.selectedRegion = activeRegion;
+    root.dataset.selectedSearchQuery = activeQuery;
 
     const articleCards = Array.from(root.querySelectorAll('[data-article-date]'));
     let visibleCount = 0;
@@ -2509,7 +2556,8 @@
       const isBeforeEnd = !activeDateEnd || (articleDate && articleDate <= activeDateEnd);
       const dateMatch = !hasDateRange || (isAfterStart && isBeforeEnd);
       const regionMatch = activeRegion === 'all' || articleRegion === activeRegion;
-      const isMatch = dateMatch && regionMatch;
+      const searchMatch = cardMatchesSearch(card, activeQuery);
+      const isMatch = dateMatch && regionMatch && searchMatch;
       card.hidden = !isMatch;
       if (isMatch) {
         visibleCount += 1;
@@ -2532,17 +2580,30 @@
       }
     });
 
+    root.querySelectorAll('[data-news-search-input]').forEach((searchInput) => {
+      if (searchInput.value !== activeQuery) {
+        searchInput.value = activeQuery;
+      }
+    });
+
     const status = root.querySelector('[data-news-filter-status]');
     if (status) {
       const dateLabel = formatNewsDateRange(activeDateStart, activeDateEnd);
-      if (!hasDateRange && activeRegion === 'all') {
+      const searchLabel = formatSearchLabel(activeQuery);
+      if (!hasDateRange && activeRegion === 'all' && !searchLabel) {
         status.textContent = `전체 ${visibleCount}건을 보고 있습니다.`;
-      } else if (!hasDateRange) {
-        status.textContent = `${activeRegion} 기사 ${visibleCount}건을 보고 있습니다.`;
-      } else if (activeRegion === 'all') {
-        status.textContent = `${dateLabel} 기사 ${visibleCount}건을 보고 있습니다.`;
       } else {
-        status.textContent = `${activeRegion} · ${dateLabel} 기사 ${visibleCount}건을 보고 있습니다.`;
+        const parts = [];
+        if (activeRegion !== 'all') {
+          parts.push(activeRegion);
+        }
+        if (searchLabel) {
+          parts.push(searchLabel);
+        }
+        if (hasDateRange) {
+          parts.push(dateLabel);
+        }
+        status.textContent = `${parts.join(' · ')} 기사 ${visibleCount}건을 보고 있습니다.`;
       }
     }
 
@@ -2552,7 +2613,7 @@
     }
   }
 
-  function getPolicyRegionAvailability(articleCards, activeGroup, activeType, activeDateStart, activeDateEnd, hasDateRange) {
+  function getPolicyRegionAvailability(articleCards, activeGroup, activeType, activeDateStart, activeDateEnd, hasDateRange, activeQuery) {
     const availableRegions = new Set();
 
     articleCards.forEach((card) => {
@@ -2565,8 +2626,9 @@
       const isAfterStart = !activeDateStart || (articleDate && articleDate >= activeDateStart);
       const isBeforeEnd = !activeDateEnd || (articleDate && articleDate <= activeDateEnd);
       const dateMatch = !hasDateRange || (isAfterStart && isBeforeEnd);
+      const searchMatch = cardMatchesSearch(card, activeQuery);
 
-      if (groupMatch && typeMatch && dateMatch) {
+      if (groupMatch && typeMatch && dateMatch && searchMatch) {
         availableRegions.add(articleRegion);
       }
     });
@@ -2587,7 +2649,7 @@
     return '전체';
   }
 
-  function applyPolicyFilters(root, selectedGroup, selectedRegion, selectedType, selectedDateStart, selectedDateEnd) {
+  function applyPolicyFilters(root, selectedGroup, selectedRegion, selectedType, selectedDateStart, selectedDateEnd, selectedQuery) {
     const normalizedDates = normalizeNewsDateRange(
       selectedDateStart ?? root.dataset.selectedDateStart ?? root.getAttribute('data-default-date-start') ?? '',
       selectedDateEnd ?? root.dataset.selectedDateEnd ?? root.getAttribute('data-default-date-end') ?? '',
@@ -2595,12 +2657,16 @@
     const activeGroup = selectedGroup || root.dataset.selectedPolicyGroup || root.getAttribute('data-default-policy-group') || 'all';
     let activeRegion = selectedRegion || root.dataset.selectedPolicyRegion || root.getAttribute('data-default-policy-region') || 'all';
     const activeType = selectedType || root.dataset.selectedPolicyType || root.getAttribute('data-default-policy-type') || 'all';
+    const activeQuery = normalizeSearchQuery(
+      selectedQuery ?? root.dataset.selectedSearchQuery ?? root.getAttribute('data-default-search-query') ?? ''
+    );
     const activeDateStart = normalizedDates.startDate;
     const activeDateEnd = normalizedDates.endDate;
     const hasDateRange = Boolean(activeDateStart || activeDateEnd);
     root.dataset.selectedPolicyGroup = activeGroup;
     root.dataset.selectedPolicyRegion = activeRegion;
     root.dataset.selectedPolicyType = activeType;
+    root.dataset.selectedSearchQuery = activeQuery;
     root.dataset.selectedDateStart = activeDateStart;
     root.dataset.selectedDateEnd = activeDateEnd;
 
@@ -2612,6 +2678,7 @@
       activeDateStart,
       activeDateEnd,
       hasDateRange,
+      activeQuery,
     );
     if (activeRegion !== 'all' && !availableRegions.has(activeRegion)) {
       activeRegion = 'all';
@@ -2632,7 +2699,8 @@
       const isAfterStart = !activeDateStart || (articleDate && articleDate >= activeDateStart);
       const isBeforeEnd = !activeDateEnd || (articleDate && articleDate <= activeDateEnd);
       const dateMatch = !hasDateRange || (isAfterStart && isBeforeEnd);
-      const isMatch = groupMatch && regionMatch && typeMatch && dateMatch;
+      const searchMatch = cardMatchesSearch(card, activeQuery);
+      const isMatch = groupMatch && regionMatch && typeMatch && dateMatch && searchMatch;
       card.hidden = !isMatch;
       if (isMatch) {
         visibleCount += 1;
@@ -2663,6 +2731,12 @@
       }
     });
 
+    root.querySelectorAll('[data-policy-search-input]').forEach((searchInput) => {
+      if (searchInput.value !== activeQuery) {
+        searchInput.value = activeQuery;
+      }
+    });
+
     root.querySelectorAll('[data-policy-section]').forEach((section) => {
       const sectionGroup = section.getAttribute('data-policy-section') || 'official';
       const visibleInSection = visibleByGroup[sectionGroup] || 0;
@@ -2684,6 +2758,9 @@
       }
       if (activeType !== 'all') {
         parts.push(activeType);
+      }
+      if (activeQuery) {
+        parts.push(formatSearchLabel(activeQuery));
       }
       if (hasDateRange) {
         parts.push(formatNewsDateRange(activeDateStart, activeDateEnd));
@@ -2760,6 +2837,7 @@
           group === 'date' ? '' : (root.dataset.selectedDateStart || root.getAttribute('data-default-date-start') || ''),
           group === 'date' ? '' : (root.dataset.selectedDateEnd || root.getAttribute('data-default-date-end') || ''),
           group === 'region' ? value : (root.dataset.selectedRegion || root.getAttribute('data-default-region') || 'all'),
+          root.dataset.selectedSearchQuery || root.getAttribute('data-default-search-query') || '',
         );
       }
       return;
@@ -2778,6 +2856,7 @@
           filterGroup === 'type' ? filterValue : (root.dataset.selectedPolicyType || root.getAttribute('data-default-policy-type') || 'all'),
           filterGroup === 'date' ? '' : (root.dataset.selectedDateStart || root.getAttribute('data-default-date-start') || ''),
           filterGroup === 'date' ? '' : (root.dataset.selectedDateEnd || root.getAttribute('data-default-date-end') || ''),
+          root.dataset.selectedSearchQuery || root.getAttribute('data-default-search-query') || '',
         );
       }
       return;
@@ -2822,6 +2901,7 @@
       root.getAttribute('data-default-date-start') || '',
       root.getAttribute('data-default-date-end') || '',
       root.getAttribute('data-default-region') || 'all',
+      root.getAttribute('data-default-search-query') || '',
     );
   });
 
@@ -2833,6 +2913,43 @@
       root.getAttribute('data-default-policy-type') || 'all',
       root.getAttribute('data-default-date-start') || '',
       root.getAttribute('data-default-date-end') || '',
+      root.getAttribute('data-default-search-query') || '',
+    );
+  });
+
+  document.addEventListener('input', (event) => {
+    const searchInput = event.target.closest('[data-news-search-input]');
+    if (searchInput) {
+      const root = searchInput.closest('[data-news-filter-root]');
+      if (!root) {
+        return;
+      }
+      applyNewsFilters(
+        root,
+        root.dataset.selectedDateStart || root.getAttribute('data-default-date-start') || '',
+        root.dataset.selectedDateEnd || root.getAttribute('data-default-date-end') || '',
+        root.dataset.selectedRegion || root.getAttribute('data-default-region') || 'all',
+        searchInput.value,
+      );
+      return;
+    }
+
+    const policySearchInput = event.target.closest('[data-policy-search-input]');
+    if (!policySearchInput) {
+      return;
+    }
+    const policyRoot = policySearchInput.closest('[data-policy-filter-root]');
+    if (!policyRoot) {
+      return;
+    }
+    applyPolicyFilters(
+      policyRoot,
+      policyRoot.dataset.selectedPolicyGroup || policyRoot.getAttribute('data-default-policy-group') || 'all',
+      policyRoot.dataset.selectedPolicyRegion || policyRoot.getAttribute('data-default-policy-region') || 'all',
+      policyRoot.dataset.selectedPolicyType || policyRoot.getAttribute('data-default-policy-type') || 'all',
+      policyRoot.dataset.selectedDateStart || policyRoot.getAttribute('data-default-date-start') || '',
+      policyRoot.dataset.selectedDateEnd || policyRoot.getAttribute('data-default-date-end') || '',
+      policySearchInput.value,
     );
   });
 
@@ -2850,6 +2967,7 @@
         startInput ? startInput.value : '',
         endInput ? endInput.value : '',
         root.dataset.selectedRegion || root.getAttribute('data-default-region') || 'all',
+        root.dataset.selectedSearchQuery || root.getAttribute('data-default-search-query') || '',
       );
       return;
     }
@@ -2871,6 +2989,7 @@
       policyRoot.dataset.selectedPolicyType || policyRoot.getAttribute('data-default-policy-type') || 'all',
       policyStartInput ? policyStartInput.value : '',
       policyEndInput ? policyEndInput.value : '',
+      policyRoot.dataset.selectedSearchQuery || policyRoot.getAttribute('data-default-search-query') || '',
     );
   });
 

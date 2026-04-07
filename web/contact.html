@@ -621,6 +621,31 @@
     font-size: 0.8rem;
     line-height: 1.55;
   }
+  .filter-search-wrap {
+    display: grid;
+    gap: 6px;
+  }
+  .filter-search-input {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1px solid rgba(31, 42, 51, 0.08);
+    border-radius: 18px;
+    background: rgba(255, 255, 255, 0.96);
+    color: var(--text);
+    font: inherit;
+    font-size: 0.92rem;
+    font-weight: 600;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.78);
+  }
+  .filter-search-input::placeholder {
+    color: rgba(102, 113, 123, 0.82);
+    font-weight: 500;
+  }
+  .filter-search-input:focus {
+    outline: 2px solid rgba(57, 86, 119, 0.14);
+    outline-offset: 1px;
+    border-color: rgba(57, 86, 119, 0.24);
+  }
   .date-picker-row {
     display: grid;
     gap: 10px;
@@ -2457,7 +2482,25 @@
     }
   }
 
-  function applyNewsFilters(root, selectedDateStart, selectedDateEnd, selectedRegion) {
+  function normalizeSearchQuery(value) {
+    return (value || '').trim().replace(/\s+/g, ' ');
+  }
+
+  function cardMatchesSearch(card, query) {
+    const normalizedQuery = normalizeSearchQuery(query);
+    if (!normalizedQuery) {
+      return true;
+    }
+    const searchText = (card.getAttribute('data-article-search') || '').toLowerCase();
+    return normalizedQuery.toLowerCase().split(' ').every((term) => searchText.includes(term));
+  }
+
+  function formatSearchLabel(query) {
+    const normalizedQuery = normalizeSearchQuery(query);
+    return normalizedQuery ? `검색 "${normalizedQuery}"` : '';
+  }
+
+  function applyNewsFilters(root, selectedDateStart, selectedDateEnd, selectedRegion, selectedQuery) {
     const normalizedDates = normalizeNewsDateRange(
       selectedDateStart ?? root.dataset.selectedDateStart ?? root.getAttribute('data-default-date-start') ?? '',
       selectedDateEnd ?? root.dataset.selectedDateEnd ?? root.getAttribute('data-default-date-end') ?? '',
@@ -2466,9 +2509,13 @@
     const activeDateEnd = normalizedDates.endDate;
     const hasDateRange = Boolean(activeDateStart || activeDateEnd);
     const activeRegion = selectedRegion || root.dataset.selectedRegion || root.getAttribute('data-default-region') || 'all';
+    const activeQuery = normalizeSearchQuery(
+      selectedQuery ?? root.dataset.selectedSearchQuery ?? root.getAttribute('data-default-search-query') ?? ''
+    );
     root.dataset.selectedDateStart = activeDateStart;
     root.dataset.selectedDateEnd = activeDateEnd;
     root.dataset.selectedRegion = activeRegion;
+    root.dataset.selectedSearchQuery = activeQuery;
 
     const articleCards = Array.from(root.querySelectorAll('[data-article-date]'));
     let visibleCount = 0;
@@ -2480,7 +2527,8 @@
       const isBeforeEnd = !activeDateEnd || (articleDate && articleDate <= activeDateEnd);
       const dateMatch = !hasDateRange || (isAfterStart && isBeforeEnd);
       const regionMatch = activeRegion === 'all' || articleRegion === activeRegion;
-      const isMatch = dateMatch && regionMatch;
+      const searchMatch = cardMatchesSearch(card, activeQuery);
+      const isMatch = dateMatch && regionMatch && searchMatch;
       card.hidden = !isMatch;
       if (isMatch) {
         visibleCount += 1;
@@ -2503,17 +2551,30 @@
       }
     });
 
+    root.querySelectorAll('[data-news-search-input]').forEach((searchInput) => {
+      if (searchInput.value !== activeQuery) {
+        searchInput.value = activeQuery;
+      }
+    });
+
     const status = root.querySelector('[data-news-filter-status]');
     if (status) {
       const dateLabel = formatNewsDateRange(activeDateStart, activeDateEnd);
-      if (!hasDateRange && activeRegion === 'all') {
+      const searchLabel = formatSearchLabel(activeQuery);
+      if (!hasDateRange && activeRegion === 'all' && !searchLabel) {
         status.textContent = `전체 ${visibleCount}건을 보고 있습니다.`;
-      } else if (!hasDateRange) {
-        status.textContent = `${activeRegion} 기사 ${visibleCount}건을 보고 있습니다.`;
-      } else if (activeRegion === 'all') {
-        status.textContent = `${dateLabel} 기사 ${visibleCount}건을 보고 있습니다.`;
       } else {
-        status.textContent = `${activeRegion} · ${dateLabel} 기사 ${visibleCount}건을 보고 있습니다.`;
+        const parts = [];
+        if (activeRegion !== 'all') {
+          parts.push(activeRegion);
+        }
+        if (searchLabel) {
+          parts.push(searchLabel);
+        }
+        if (hasDateRange) {
+          parts.push(dateLabel);
+        }
+        status.textContent = `${parts.join(' · ')} 기사 ${visibleCount}건을 보고 있습니다.`;
       }
     }
 
@@ -2523,7 +2584,7 @@
     }
   }
 
-  function getPolicyRegionAvailability(articleCards, activeGroup, activeType, activeDateStart, activeDateEnd, hasDateRange) {
+  function getPolicyRegionAvailability(articleCards, activeGroup, activeType, activeDateStart, activeDateEnd, hasDateRange, activeQuery) {
     const availableRegions = new Set();
 
     articleCards.forEach((card) => {
@@ -2536,8 +2597,9 @@
       const isAfterStart = !activeDateStart || (articleDate && articleDate >= activeDateStart);
       const isBeforeEnd = !activeDateEnd || (articleDate && articleDate <= activeDateEnd);
       const dateMatch = !hasDateRange || (isAfterStart && isBeforeEnd);
+      const searchMatch = cardMatchesSearch(card, activeQuery);
 
-      if (groupMatch && typeMatch && dateMatch) {
+      if (groupMatch && typeMatch && dateMatch && searchMatch) {
         availableRegions.add(articleRegion);
       }
     });
@@ -2558,7 +2620,7 @@
     return '전체';
   }
 
-  function applyPolicyFilters(root, selectedGroup, selectedRegion, selectedType, selectedDateStart, selectedDateEnd) {
+  function applyPolicyFilters(root, selectedGroup, selectedRegion, selectedType, selectedDateStart, selectedDateEnd, selectedQuery) {
     const normalizedDates = normalizeNewsDateRange(
       selectedDateStart ?? root.dataset.selectedDateStart ?? root.getAttribute('data-default-date-start') ?? '',
       selectedDateEnd ?? root.dataset.selectedDateEnd ?? root.getAttribute('data-default-date-end') ?? '',
@@ -2566,12 +2628,16 @@
     const activeGroup = selectedGroup || root.dataset.selectedPolicyGroup || root.getAttribute('data-default-policy-group') || 'all';
     let activeRegion = selectedRegion || root.dataset.selectedPolicyRegion || root.getAttribute('data-default-policy-region') || 'all';
     const activeType = selectedType || root.dataset.selectedPolicyType || root.getAttribute('data-default-policy-type') || 'all';
+    const activeQuery = normalizeSearchQuery(
+      selectedQuery ?? root.dataset.selectedSearchQuery ?? root.getAttribute('data-default-search-query') ?? ''
+    );
     const activeDateStart = normalizedDates.startDate;
     const activeDateEnd = normalizedDates.endDate;
     const hasDateRange = Boolean(activeDateStart || activeDateEnd);
     root.dataset.selectedPolicyGroup = activeGroup;
     root.dataset.selectedPolicyRegion = activeRegion;
     root.dataset.selectedPolicyType = activeType;
+    root.dataset.selectedSearchQuery = activeQuery;
     root.dataset.selectedDateStart = activeDateStart;
     root.dataset.selectedDateEnd = activeDateEnd;
 
@@ -2583,6 +2649,7 @@
       activeDateStart,
       activeDateEnd,
       hasDateRange,
+      activeQuery,
     );
     if (activeRegion !== 'all' && !availableRegions.has(activeRegion)) {
       activeRegion = 'all';
@@ -2603,7 +2670,8 @@
       const isAfterStart = !activeDateStart || (articleDate && articleDate >= activeDateStart);
       const isBeforeEnd = !activeDateEnd || (articleDate && articleDate <= activeDateEnd);
       const dateMatch = !hasDateRange || (isAfterStart && isBeforeEnd);
-      const isMatch = groupMatch && regionMatch && typeMatch && dateMatch;
+      const searchMatch = cardMatchesSearch(card, activeQuery);
+      const isMatch = groupMatch && regionMatch && typeMatch && dateMatch && searchMatch;
       card.hidden = !isMatch;
       if (isMatch) {
         visibleCount += 1;
@@ -2634,6 +2702,12 @@
       }
     });
 
+    root.querySelectorAll('[data-policy-search-input]').forEach((searchInput) => {
+      if (searchInput.value !== activeQuery) {
+        searchInput.value = activeQuery;
+      }
+    });
+
     root.querySelectorAll('[data-policy-section]').forEach((section) => {
       const sectionGroup = section.getAttribute('data-policy-section') || 'official';
       const visibleInSection = visibleByGroup[sectionGroup] || 0;
@@ -2655,6 +2729,9 @@
       }
       if (activeType !== 'all') {
         parts.push(activeType);
+      }
+      if (activeQuery) {
+        parts.push(formatSearchLabel(activeQuery));
       }
       if (hasDateRange) {
         parts.push(formatNewsDateRange(activeDateStart, activeDateEnd));
@@ -2731,6 +2808,7 @@
           group === 'date' ? '' : (root.dataset.selectedDateStart || root.getAttribute('data-default-date-start') || ''),
           group === 'date' ? '' : (root.dataset.selectedDateEnd || root.getAttribute('data-default-date-end') || ''),
           group === 'region' ? value : (root.dataset.selectedRegion || root.getAttribute('data-default-region') || 'all'),
+          root.dataset.selectedSearchQuery || root.getAttribute('data-default-search-query') || '',
         );
       }
       return;
@@ -2749,6 +2827,7 @@
           filterGroup === 'type' ? filterValue : (root.dataset.selectedPolicyType || root.getAttribute('data-default-policy-type') || 'all'),
           filterGroup === 'date' ? '' : (root.dataset.selectedDateStart || root.getAttribute('data-default-date-start') || ''),
           filterGroup === 'date' ? '' : (root.dataset.selectedDateEnd || root.getAttribute('data-default-date-end') || ''),
+          root.dataset.selectedSearchQuery || root.getAttribute('data-default-search-query') || '',
         );
       }
       return;
@@ -2793,6 +2872,7 @@
       root.getAttribute('data-default-date-start') || '',
       root.getAttribute('data-default-date-end') || '',
       root.getAttribute('data-default-region') || 'all',
+      root.getAttribute('data-default-search-query') || '',
     );
   });
 
@@ -2804,6 +2884,43 @@
       root.getAttribute('data-default-policy-type') || 'all',
       root.getAttribute('data-default-date-start') || '',
       root.getAttribute('data-default-date-end') || '',
+      root.getAttribute('data-default-search-query') || '',
+    );
+  });
+
+  document.addEventListener('input', (event) => {
+    const searchInput = event.target.closest('[data-news-search-input]');
+    if (searchInput) {
+      const root = searchInput.closest('[data-news-filter-root]');
+      if (!root) {
+        return;
+      }
+      applyNewsFilters(
+        root,
+        root.dataset.selectedDateStart || root.getAttribute('data-default-date-start') || '',
+        root.dataset.selectedDateEnd || root.getAttribute('data-default-date-end') || '',
+        root.dataset.selectedRegion || root.getAttribute('data-default-region') || 'all',
+        searchInput.value,
+      );
+      return;
+    }
+
+    const policySearchInput = event.target.closest('[data-policy-search-input]');
+    if (!policySearchInput) {
+      return;
+    }
+    const policyRoot = policySearchInput.closest('[data-policy-filter-root]');
+    if (!policyRoot) {
+      return;
+    }
+    applyPolicyFilters(
+      policyRoot,
+      policyRoot.dataset.selectedPolicyGroup || policyRoot.getAttribute('data-default-policy-group') || 'all',
+      policyRoot.dataset.selectedPolicyRegion || policyRoot.getAttribute('data-default-policy-region') || 'all',
+      policyRoot.dataset.selectedPolicyType || policyRoot.getAttribute('data-default-policy-type') || 'all',
+      policyRoot.dataset.selectedDateStart || policyRoot.getAttribute('data-default-date-start') || '',
+      policyRoot.dataset.selectedDateEnd || policyRoot.getAttribute('data-default-date-end') || '',
+      policySearchInput.value,
     );
   });
 
@@ -2821,6 +2938,7 @@
         startInput ? startInput.value : '',
         endInput ? endInput.value : '',
         root.dataset.selectedRegion || root.getAttribute('data-default-region') || 'all',
+        root.dataset.selectedSearchQuery || root.getAttribute('data-default-search-query') || '',
       );
       return;
     }
@@ -2842,6 +2960,7 @@
       policyRoot.dataset.selectedPolicyType || policyRoot.getAttribute('data-default-policy-type') || 'all',
       policyStartInput ? policyStartInput.value : '',
       policyEndInput ? policyEndInput.value : '',
+      policyRoot.dataset.selectedSearchQuery || policyRoot.getAttribute('data-default-search-query') || '',
     );
   });
 
