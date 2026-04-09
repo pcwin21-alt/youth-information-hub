@@ -162,9 +162,13 @@ def parse_feed(feed_text: str, source_name: str, source_kind: str) -> list[dict[
             link_node = item.find("{http://www.w3.org/2005/Atom}link")
             if link_node is not None:
                 url = link_node.attrib.get("href")
+        source_node = item.find("source") or item.find("{http://www.w3.org/2005/Atom}source")
         publisher = strip_html(
             _find_text(item, ["source", "{http://www.w3.org/2005/Atom}source"]) or ""
         )
+        publisher_homepage_url = None
+        if source_node is not None:
+            publisher_homepage_url = source_node.attrib.get("url")
         description = _find_text(
             item,
             [
@@ -199,6 +203,7 @@ def parse_feed(feed_text: str, source_name: str, source_kind: str) -> list[dict[
                 "source": publisher or source_name,
                 "source_name": source_name,
                 "source_kind": source_kind,
+                "source_url": publisher_homepage_url,
                 "published_date": _parse_published(published),
                 "lead_text": strip_html(description)[:200],
             }
@@ -220,6 +225,7 @@ def parse_fsc_press_release(page_text: str, base_url: str, source_name: str, sou
                 "source": source_name,
                 "source_name": source_name,
                 "source_kind": source_kind,
+                "source_url": base_url,
                 "published_date": f'{match.group("date")}T00:00:00+09:00',
                 "lead_text": strip_html(match.group("department")),
             }
@@ -242,6 +248,7 @@ def parse_mohw_press_release(page_text: str, base_url: str, source_name: str, so
                 "source": source_name,
                 "source_name": source_name,
                 "source_kind": source_kind,
+                "source_url": base_url,
                 "published_date": f'{match.group("date")}T00:00:00+09:00',
                 "lead_text": strip_html(match.group("department")),
             }
@@ -274,6 +281,7 @@ def parse_moe_press_release(page_text: str, base_url: str, source_name: str, sou
                 "source": source_name,
                 "source_name": source_name,
                 "source_kind": source_kind,
+                "source_url": base_url,
                 "published_date": f'{match.group("date")}T00:00:00+09:00',
                 "lead_text": strip_html(match.group("department")),
             }
@@ -296,6 +304,7 @@ def parse_molit_board_list(page_text: str, base_url: str, source_name: str, sour
                 "source": source_name,
                 "source_name": source_name,
                 "source_kind": source_kind,
+                "source_url": base_url,
                 "published_date": f'{match.group("date")}T00:00:00+09:00',
                 "lead_text": strip_html(match.group("meta")),
             }
@@ -320,6 +329,7 @@ def parse_opm_press_release(page_text: str, base_url: str, source_name: str, sou
                 "url": urljoin(base_url, href),
                 "source": source_name,
                 "source_kind": source_kind,
+                "source_url": base_url,
                 "published_date": f"{published}T00:00:00+09:00",
                 "lead_text": department,
             }
@@ -350,6 +360,7 @@ def parse_korea_withyou_policy_news(
                 "url": urljoin(base_url, url),
                 "source": source_name,
                 "source_kind": source_kind,
+                "source_url": base_url,
                 "published_date": None,
                 "lead_text": label,
             }

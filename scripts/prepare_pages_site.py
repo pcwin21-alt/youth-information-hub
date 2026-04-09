@@ -30,6 +30,7 @@ def main() -> int:
     parser.add_argument("--status-file", default=str(ROOT / "output" / "pipeline_status.json"))
     parser.add_argument("--selected-file", default=str(ROOT / "output" / "step4_selected.json"))
     parser.add_argument("--summarized-file", default=str(ROOT / "output" / "step5_summarized.json"))
+    parser.add_argument("--funnel-file", default=str(ROOT / "output" / "article_funnel.json"))
     parser.add_argument("--cname", default=os.environ.get("PAGES_CNAME", ""))
     args = parser.parse_args()
 
@@ -48,6 +49,7 @@ def main() -> int:
     copy_if_exists(Path(args.status_file), site_data_dir / "pipeline_status.json")
     copy_if_exists(Path(args.selected_file), site_data_dir / "selected.json")
     copy_if_exists(Path(args.summarized_file), site_data_dir / "summarized.json")
+    copy_if_exists(Path(args.funnel_file), site_data_dir / "article_funnel.json")
 
     cname = normalize_cname(args.cname)
     if cname:

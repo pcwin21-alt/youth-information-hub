@@ -14,6 +14,7 @@ SRC = ROOT / "src"
 if str(SRC) not in sys.path:
     sys.path.insert(0, str(SRC))
 
+from youth_info_platform.article_metadata import preferred_article_url
 from youth_info_platform.contact_config import load_contact_settings
 from youth_info_platform.io_utils import read_json
 
@@ -3192,7 +3193,7 @@ def render_status(status: dict) -> dict[str, str]:
 
 
 def render_article_actions(article: dict, include_link_button: bool = True) -> str:
-    url = html.escape(article.get("url", ""))
+    url = html.escape(article_target_url(article))
     title = display_article_title(article, limit=140)
     title_attr = html.escape(title)
     parts: list[str] = ['<div class="article-actions">']
@@ -3221,7 +3222,7 @@ def render_article_list_item(
     overline: str | None = None,
     title: str | None = None,
 ) -> str:
-    url = article.get("url")
+    url = article_target_url(article)
     display_title = title or display_article_title(article)
     if not url:
         return (
@@ -3251,7 +3252,7 @@ def render_article_card(article: dict, extra_attrs: dict[str, str] | None = None
     badges = "".join(f'<span class="badge">{html.escape(badge)}</span>' for badge in article.get("display_badges", [])[:2])
     badge_row = f'<div class="badge-row">{badges}</div>' if badges else ""
     summary_text = summarize_article_text(article, limit=112)
-    escaped_url = html.escape(article.get("url", ""))
+    escaped_url = html.escape(article_target_url(article))
     escaped_title = html.escape(display_article_title(article))
     article_region = html.escape(news_region_label(article))
     article_search = html.escape(build_article_search_text(article, summary_text), quote=True)
@@ -3293,7 +3294,7 @@ def render_hub_record_card(article: dict) -> str:
     governance_scope = article.get("governance_scope") or "참여 기록"
     activity_types = ", ".join(article.get("governance_activity_types", [])[:3]) or "활동 기록"
     summary_text = summarize_article_text(article, limit=112)
-    escaped_url = html.escape(article.get("url", ""))
+    escaped_url = html.escape(article_target_url(article))
     escaped_title = html.escape(display_article_title(article))
     article_region = html.escape(news_region_label(article))
     article_group = hub_group_label(article)
@@ -3627,13 +3628,21 @@ def article_date_value(article: dict) -> str:
     return ((article.get("published_date", "") or "")[:10]).strip()
 
 
+def article_target_url(article: dict) -> str:
+    return preferred_article_url(article) or article.get("url") or ""
+
+
 def build_article_search_text(article: dict, *extra_terms: str) -> str:
     fields = [
         clean_article_title(article.get("title")),
         normalize_inline_text(article.get("summary")),
         normalize_inline_text(article.get("lead_text")),
+        normalize_inline_text(article.get("section")),
         normalize_inline_text(article.get("source")),
         normalize_inline_text(article.get("source_name")),
+        normalize_inline_text(" ".join(article.get("authors") or [])),
+        normalize_inline_text(" ".join(article.get("issue_tags") or [])),
+        normalize_inline_text(" ".join(article.get("location_tags") or [])),
         news_region_label(article),
         *[normalize_inline_text(value) for value in article.get("display_badges", [])],
         *[normalize_inline_text(value) for value in extra_terms],
@@ -4262,8 +4271,12 @@ def build_home_update_briefing(
         return stored_briefing
 
     previous_urls = set(snapshot.get("recent_news_urls", [])) if snapshot.get("page_updated_at") else set()
-    current_urls = [article.get("url") for article in recent_news_articles if article.get("url")]
-    added_articles = [article for article in recent_news_articles if article.get("url") and article.get("url") not in previous_urls]
+    current_urls = [article_target_url(article) for article in recent_news_articles if article_target_url(article)]
+    added_articles = [
+        article
+        for article in recent_news_articles
+        if article_target_url(article) and article_target_url(article) not in previous_urls
+    ]
     if previous_urls:
         added_label = "추가 기사"
     else:
@@ -4560,7 +4573,7 @@ def build_home_page(
     def render_urgent_news_item(index: int, article: dict) -> str:
         title = html.escape(display_article_title(article, limit=88))
         meta = html.escape(compact_article_meta(article))
-        url = article.get("url")
+        url = article_target_url(article)
         rank = f"{index:02d}"
         if not url:
             return (
