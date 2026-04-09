@@ -2671,35 +2671,37 @@ BASE_SCRIPT = """
     }
   }
 
-  function getPolicyRegionAvailability(articleCards, activeGroup, activeType, activeDateStart, activeDateEnd, hasDateRange, activeQuery) {
-    const availableRegions = new Set();
+  function getPolicyAvailabilityByAttribute(articleCards, targetGroup, attributeName, activeType, activeDateStart, activeDateEnd, hasDateRange, activeQuery) {
+    const availableValues = new Set();
 
     articleCards.forEach((card) => {
       const articleGroup = card.getAttribute('data-policy-group') || 'official';
-      const articleRegion = card.getAttribute('data-article-region') || '중앙';
+      if (articleGroup !== targetGroup) {
+        return;
+      }
+      const attributeValue = card.getAttribute(attributeName) || '';
       const articleType = card.getAttribute('data-policy-type') || '기타';
       const articleDate = card.getAttribute('data-article-date') || '';
-      const groupMatch = activeGroup === 'all' || articleGroup === activeGroup;
       const typeMatch = activeType === 'all' || articleType === activeType;
       const isAfterStart = !activeDateStart || (articleDate && articleDate >= activeDateStart);
       const isBeforeEnd = !activeDateEnd || (articleDate && articleDate <= activeDateEnd);
       const dateMatch = !hasDateRange || (isAfterStart && isBeforeEnd);
       const searchMatch = cardMatchesSearch(card, activeQuery);
 
-      if (groupMatch && typeMatch && dateMatch && searchMatch) {
-        availableRegions.add(articleRegion);
+      if (attributeValue && typeMatch && dateMatch && searchMatch) {
+        availableValues.add(attributeValue);
       }
     });
 
-    return availableRegions;
+    return availableValues;
   }
 
   function formatPolicyGroup(value) {
     if (value === 'official') {
-      return '정부 공식 발표';
+      return '중앙정부';
     }
     if (value === 'local') {
-      return '지자체 발표 소식';
+      return '지자체';
     }
     if (value === 'related') {
       return '참고 기록';
@@ -2707,13 +2709,25 @@ BASE_SCRIPT = """
     return '전체';
   }
 
+  function formatPolicyScopeLabel(group) {
+    if (group === 'official') {
+      return '중앙부처·기관';
+    }
+    if (group === 'local') {
+      return '지역';
+    }
+    return '세부 구분';
+  }
+
   function applyPolicyFilters(root, selectedGroup, selectedRegion, selectedType, selectedDateStart, selectedDateEnd, selectedQuery) {
     const normalizedDates = normalizeNewsDateRange(
       selectedDateStart ?? root.dataset.selectedDateStart ?? root.getAttribute('data-default-date-start') ?? '',
       selectedDateEnd ?? root.dataset.selectedDateEnd ?? root.getAttribute('data-default-date-end') ?? '',
     );
+    const scopeMode = root.dataset.policyScopeMode || '';
     const activeGroup = selectedGroup || root.dataset.selectedPolicyGroup || root.getAttribute('data-default-policy-group') || 'all';
     let activeRegion = selectedRegion || root.dataset.selectedPolicyRegion || root.getAttribute('data-default-policy-region') || 'all';
+    let activeScope = root.dataset.selectedPolicyScope || root.getAttribute('data-default-policy-scope') || 'all';
     const activeType = selectedType || root.dataset.selectedPolicyType || root.getAttribute('data-default-policy-type') || 'all';
     const activeQuery = normalizeSearchQuery(
       selectedQuery ?? root.dataset.selectedSearchQuery ?? root.getAttribute('data-default-search-query') ?? ''
@@ -2721,17 +2735,31 @@ BASE_SCRIPT = """
     const activeDateStart = normalizedDates.startDate;
     const activeDateEnd = normalizedDates.endDate;
     const hasDateRange = Boolean(activeDateStart || activeDateEnd);
+    const usesPolicyScope = scopeMode === 'authority-region';
     root.dataset.selectedPolicyGroup = activeGroup;
     root.dataset.selectedPolicyRegion = activeRegion;
+    root.dataset.selectedPolicyScope = activeScope;
     root.dataset.selectedPolicyType = activeType;
     root.dataset.selectedSearchQuery = activeQuery;
     root.dataset.selectedDateStart = activeDateStart;
     root.dataset.selectedDateEnd = activeDateEnd;
 
     const articleCards = Array.from(root.querySelectorAll('[data-policy-card="true"]'));
-    const availableRegions = getPolicyRegionAvailability(
+    const regionTargetGroup = usesPolicyScope ? (activeGroup === 'all' ? 'local' : activeGroup) : activeGroup;
+    const availableRegions = getPolicyAvailabilityByAttribute(
       articleCards,
-      activeGroup,
+      regionTargetGroup,
+      'data-article-region',
+      activeType,
+      activeDateStart,
+      activeDateEnd,
+      hasDateRange,
+      activeQuery,
+    );
+    const availableAuthorities = getPolicyAvailabilityByAttribute(
+      articleCards,
+      'official',
+      'data-policy-authority',
       activeType,
       activeDateStart,
       activeDateEnd,
@@ -2743,22 +2771,43 @@ BASE_SCRIPT = """
     }
     root.dataset.selectedPolicyRegion = activeRegion;
 
+    let visibleScopeKind = 'all';
+    let availableScopes = new Set();
+    if (usesPolicyScope) {
+      if (activeGroup === 'official') {
+        visibleScopeKind = 'official';
+        availableScopes = availableAuthorities;
+      } else if (activeGroup === 'local') {
+        visibleScopeKind = 'local';
+        availableScopes = availableRegions;
+      } else {
+        activeScope = 'all';
+      }
+      if (activeScope !== 'all' && !availableScopes.has(activeScope)) {
+        activeScope = 'all';
+      }
+      root.dataset.selectedPolicyScope = activeScope;
+    }
+
     const visibleByGroup = { official: 0, local: 0, related: 0 };
     let visibleCount = 0;
 
     articleCards.forEach((card) => {
       const articleGroup = card.getAttribute('data-policy-group') || 'official';
       const articleRegion = card.getAttribute('data-article-region') || '중앙';
+      const articleAuthority = card.getAttribute('data-policy-authority') || '';
+      const articleScope = articleGroup === 'official' ? articleAuthority : articleRegion;
       const articleType = card.getAttribute('data-policy-type') || '기타';
       const articleDate = card.getAttribute('data-article-date') || '';
       const groupMatch = activeGroup === 'all' || articleGroup === activeGroup;
       const regionMatch = activeRegion === 'all' || articleRegion === activeRegion;
+      const scopeMatch = !usesPolicyScope || activeGroup === 'all' || activeScope === 'all' || articleScope === activeScope;
       const typeMatch = activeType === 'all' || articleType === activeType;
       const isAfterStart = !activeDateStart || (articleDate && articleDate >= activeDateStart);
       const isBeforeEnd = !activeDateEnd || (articleDate && articleDate <= activeDateEnd);
       const dateMatch = !hasDateRange || (isAfterStart && isBeforeEnd);
       const searchMatch = cardMatchesSearch(card, activeQuery);
-      const isMatch = groupMatch && regionMatch && typeMatch && dateMatch && searchMatch;
+      const isMatch = groupMatch && regionMatch && scopeMatch && typeMatch && dateMatch && searchMatch;
       card.hidden = !isMatch;
       if (isMatch) {
         visibleCount += 1;
@@ -2769,7 +2818,8 @@ BASE_SCRIPT = """
     root.querySelectorAll('[data-policy-filter]').forEach((button) => {
       const group = button.getAttribute('data-filter-group') || 'group';
       const value = button.getAttribute('data-filter-value') || 'all';
-      const isActive =
+      const isScopeButton = button.hasAttribute('data-policy-scope-button');
+      let isActive =
         group === 'group' ? value === activeGroup :
         group === 'region' ? value === activeRegion :
         group === 'type' ? value === activeType :
@@ -2777,9 +2827,25 @@ BASE_SCRIPT = """
       if (group === 'region' && value !== 'all') {
         button.hidden = !availableRegions.has(value);
       }
+      if (usesPolicyScope && isScopeButton) {
+        const scopeKind = button.getAttribute('data-scope-kind') || 'all';
+        if (scopeKind === 'all') {
+          button.hidden = false;
+        } else if (scopeKind !== visibleScopeKind) {
+          button.hidden = true;
+        } else {
+          button.hidden = !availableScopes.has(value);
+        }
+        isActive = value === activeScope;
+      }
       button.classList.toggle('active', isActive);
       button.setAttribute('aria-pressed', isActive ? 'true' : 'false');
     });
+
+    const scopeLabel = root.querySelector('[data-policy-scope-label]');
+    if (scopeLabel && usesPolicyScope) {
+      scopeLabel.textContent = formatPolicyScopeLabel(activeGroup);
+    }
 
     root.querySelectorAll('[data-policy-date-input]').forEach((dateInput) => {
       const role = dateInput.getAttribute('data-date-role') || 'start';
@@ -2811,7 +2877,9 @@ BASE_SCRIPT = """
       if (activeGroup !== 'all') {
         parts.push(formatPolicyGroup(activeGroup));
       }
-      if (activeRegion !== 'all') {
+      if (usesPolicyScope && activeGroup !== 'all' && activeScope !== 'all') {
+        parts.push(activeScope);
+      } else if (activeRegion !== 'all') {
         parts.push(activeRegion);
       }
       if (activeType !== 'all') {
@@ -2907,6 +2975,9 @@ BASE_SCRIPT = """
       if (root) {
         const filterGroup = policyFilterButton.getAttribute('data-filter-group') || 'group';
         const filterValue = policyFilterButton.getAttribute('data-filter-value') || 'all';
+        if (filterGroup === 'scope') {
+          root.dataset.selectedPolicyScope = filterValue;
+        }
         applyPolicyFilters(
           root,
           filterGroup === 'group' ? filterValue : (root.dataset.selectedPolicyGroup || root.getAttribute('data-default-policy-group') || 'all'),
@@ -3688,6 +3759,35 @@ def policy_type_label(article: dict) -> str:
     return "기타"
 
 
+def policy_authority_label(article: dict) -> str:
+    source_text = normalize_inline_text(
+        " ".join(
+            value
+            for value in [
+                article.get("source"),
+                article.get("source_name"),
+                article.get("publisher_domain"),
+            ]
+            if value
+        )
+    )
+
+    preferred_matches = [
+        ("국무조정실", "국무조정실"),
+        ("고용노동부", "고용노동부"),
+        ("보건복지부", "보건복지부"),
+        ("국토교통부", "국토교통부"),
+        ("교육부", "교육부"),
+        ("금융위원회", "금융위원회"),
+        ("정책브리핑", "정책브리핑"),
+    ]
+    for keyword, label in preferred_matches:
+        if keyword in source_text:
+            return label
+
+    return format_source_label(article.get("source") or article.get("source_name"))
+
+
 def hub_group_label(article: dict) -> str:
     scope = normalize_inline_text(article.get("governance_scope"))
     if scope == "정부":
@@ -3710,6 +3810,32 @@ def collect_policy_types(articles: list[dict]) -> list[str]:
     return ordered
 
 
+def collect_policy_authorities(articles: list[dict]) -> list[str]:
+    preferred_order = [
+        "정책브리핑",
+        "국무조정실",
+        "고용노동부",
+        "보건복지부",
+        "국토교통부",
+        "교육부",
+        "금융위원회",
+    ]
+    seen = {policy_authority_label(article) for article in articles if policy_authority_label(article)}
+    ordered = [label for label in preferred_order if label in seen]
+    remaining = sorted(label for label in seen if label not in preferred_order)
+    return [*ordered, *remaining]
+
+
+def collect_local_policy_regions(articles: list[dict]) -> list[str]:
+    counts: dict[str, int] = {}
+    for article in articles:
+        region = normalize_inline_text(article.get("region"))
+        if not region or region == "전국":
+            continue
+        counts[region] = counts.get(region, 0) + 1
+    return sorted(counts, key=lambda region: (-counts[region], region))
+
+
 def collect_hub_activity_types(articles: list[dict]) -> list[str]:
     preferred_order = ["회의", "위원회", "출범", "발표회", "협약", "간담회", "포럼", "워크숍", "모집", "기타"]
     seen = {hub_activity_label(article) for article in articles}
@@ -3723,20 +3849,29 @@ def render_policy_filter_panel(official_policies: list[dict], reference_policies
         '<button class="filter-button active" type="button" data-policy-filter="true" '
         'data-filter-group="group" data-filter-value="all" aria-pressed="true">전체</button>',
         '<button class="filter-button" type="button" data-policy-filter="true" '
-        'data-filter-group="group" data-filter-value="official" aria-pressed="false">정부 공식 발표</button>',
+        'data-filter-group="group" data-filter-value="official" aria-pressed="false">중앙정부</button>',
         '<button class="filter-button" type="button" data-policy-filter="true" '
-        'data-filter-group="group" data-filter-value="local" aria-pressed="false">지자체 발표 소식</button>',
+        'data-filter-group="group" data-filter-value="local" aria-pressed="false">지자체</button>',
     ]
 
-    region_buttons = [
+    scope_buttons = [
         '<button class="filter-button active" type="button" data-policy-filter="true" '
-        'data-filter-group="region" data-filter-value="all" aria-pressed="true">전체</button>'
+        'data-filter-group="scope" data-filter-value="all" data-policy-scope-button="true" data-scope-kind="all" '
+        'aria-pressed="true">전체</button>'
     ]
-    for region in collect_news_regions(all_policies):
-        region_buttons.append(
+    for authority in collect_policy_authorities(official_policies):
+        scope_buttons.append(
             f'<button class="filter-button" type="button" data-policy-filter="true" '
-            f'data-filter-group="region" data-filter-value="{html.escape(region)}" '
-            f'aria-pressed="false">{html.escape(region)}</button>'
+            f'data-filter-group="scope" data-filter-value="{html.escape(authority)}" '
+            f'data-policy-scope-button="true" data-scope-kind="official" aria-pressed="false" hidden>'
+            f'{html.escape(authority)}</button>'
+        )
+    for region in collect_local_policy_regions(reference_policies):
+        scope_buttons.append(
+            f'<button class="filter-button" type="button" data-policy-filter="true" '
+            f'data-filter-group="scope" data-filter-value="{html.escape(region)}" '
+            f'data-policy-scope-button="true" data-scope-kind="local" aria-pressed="false" hidden>'
+            f'{html.escape(region)}</button>'
         )
 
     type_buttons = [
@@ -3766,7 +3901,7 @@ def render_policy_filter_panel(official_policies: list[dict], reference_policies
     <section class="section">
       <article class="section-card filter-panel">
         <div class="filter-head">
-          <h3>구분 · 지역 · 유형 · 검색 · 기간</h3>
+          <h3>구분 · 세부 · 유형 · 검색 · 기간</h3>
         </div>
         <div class="filter-stack">
           <div class="filter-group">
@@ -3774,8 +3909,8 @@ def render_policy_filter_panel(official_policies: list[dict], reference_policies
             <div class="filter-controls">{''.join(group_buttons)}</div>
           </div>
           <div class="filter-group">
-            <span class="filter-group-label">지역</span>
-            <div class="filter-controls">{''.join(region_buttons)}</div>
+            <span class="filter-group-label" data-policy-scope-label="true">세부 구분</span>
+            <div class="filter-controls">{''.join(scope_buttons)}</div>
           </div>
           <div class="filter-group">
             <span class="filter-group-label">유형</span>
@@ -4814,7 +4949,7 @@ def build_policies_page_compact(articles: list[dict], status: dict) -> str:
     reference_policies = [article for article in recent_articles if is_local_policy_update(article)]
     page_intro = render_compact_intro(
         "02 정책",
-        "정부 공식 발표와 지자체 발표 소식을 구분해 보고, 지역·유형·기간 기준으로 필요한 정책만 빠르게 확인할 수 있습니다.",
+        "중앙정부 정책 자료와 지자체 발표 소식을 나눠 보고, 중앙은 부처별 최근 3개월 자료를 바로 확인할 수 있습니다.",
         media_key="policies",
     )
     official_cards = "".join(
@@ -4823,6 +4958,7 @@ def build_policies_page_compact(articles: list[dict], status: dict) -> str:
             {
                 "data-policy-card": "true",
                 "data-policy-group": "official",
+                "data-policy-authority": policy_authority_label(article),
                 "data-policy-type": policy_type_label(article),
             },
         )
@@ -4841,18 +4977,18 @@ def build_policies_page_compact(articles: list[dict], status: dict) -> str:
     )
     policy_filter_panel = render_policy_filter_panel(official_policies, reference_policies)
     return f"""
-    <div data-policy-filter-root="policies" data-default-policy-group="all" data-default-policy-region="all" data-default-policy-type="all" data-default-date-start="" data-default-date-end="" data-default-search-query="">
+    <div data-policy-filter-root="policies" data-policy-scope-mode="authority-region" data-default-policy-group="all" data-default-policy-region="all" data-default-policy-scope="all" data-default-policy-type="all" data-default-date-start="" data-default-date-end="" data-default-search-query="">
       {page_intro}
       {policy_filter_panel}
       <section class="section" id="official-policies" data-policy-section="official">
         <div class="section-head">
           <div>
-            <h2>정부 공식 발표</h2>
-            <p>정책브리핑, 국무조정실, 고용노동부, 보건복지부, 국토교통부, 교육부, 금융위원회 등에서 직접 수집한 공식 발표입니다.</p>
+            <h2>중앙정부 정책 자료</h2>
+            <p>정책브리핑과 중앙정부 부처·기관에서 최근 3개월 안에 발표한 청년 정책 자료를 모았습니다.</p>
           </div>
           <span class="mini-link" aria-disabled="true" data-policy-section-count>{len(official_policies)}건</span>
         </div>
-        <div class="article-grid">{official_cards or '<article class="info-card"><h3>최근 공식 발표 없음</h3><p>최근 90일 안에 표시할 정부 원문이 아직 없습니다.</p></article>'}</div>
+        <div class="article-grid">{official_cards or '<article class="info-card"><h3>최근 중앙정부 정책 자료 없음</h3><p>최근 90일 안에 표시할 중앙정부 정책 자료가 아직 없습니다.</p></article>'}</div>
       </section>
       <section class="section" id="local-policy-updates" data-policy-section="local">
         <div class="section-head">
