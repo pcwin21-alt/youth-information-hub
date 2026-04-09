@@ -24,6 +24,77 @@ HOME_UPDATE_SNAPSHOT = ROOT / "output" / "home_update_snapshot.json"
 REMOTE_TEXT_CACHE: dict[str, str] = {}
 ILLUSTRATION_ROOT = "assets/illustrations"
 
+MAJOR_CENTRAL_POLICY_AUTHORITIES = [
+    "기획재정부",
+    "교육부",
+    "고용노동부",
+    "행정안전부",
+    "보건복지부",
+    "국토교통부",
+    "문화체육관광부",
+    "중소벤처기업부",
+    "금융위원회",
+]
+
+CURATED_MAJOR_POLICY_WATCHLIST = [
+    {
+        "policy_authority": "기획재정부",
+        "title": "2026 경제성장전략, 대한민국 경제대도약 원년",
+        "url": "https://www.moef.go.kr/nw/mosfnw/detailCardNewsView.do?menuNo=4040600&searchNttId1=MOSF_000000000076481",
+        "published_date": "2026-01-13T00:00:00+09:00",
+        "lead_text": "청년 4대 도약패키지로 주거·일자리·금융·교육·생활·복지 지원을 확대하는 2026 경제성장전략 카드뉴스입니다.",
+        "policy_type": "시행계획",
+    },
+    {
+        "policy_authority": "행정안전부",
+        "title": "「2026년 청년마을 만들기 사업」 공모 안내",
+        "url": "https://www.mois.go.kr/frt/bbs/type013/commonSelectBoardArticle.do?bbsId=BBSMSTR_000000000006&nttId=123187",
+        "published_date": "2026-01-14T00:00:00+09:00",
+        "lead_text": "전국 청년단체·기업을 대상으로 3년간 최대 6억 원을 지원하는 청년마을 만들기 사업 공고입니다.",
+        "policy_type": "모집",
+    },
+    {
+        "policy_authority": "보건복지부",
+        "title": "가족돌봄·고립은둔 청년 의견 직접 듣다",
+        "url": "https://www.mohw.go.kr/gallery.es?act=view&b_list=12&bid=0003&cg_code=C01&keyField=&list_no=379921&mid=a10605040000&nPage=1&orderby=&vlist_no_npage=1",
+        "published_date": "2026-03-16T00:00:00+09:00",
+        "lead_text": "청년미래센터 현장에서 가족돌봄·고립은둔 청년 의견을 듣고 자립·돌봄 지원 방향을 점검한 보건복지부 공식 현장 자료입니다.",
+        "policy_type": "정책 발표",
+    },
+    {
+        "policy_authority": "국토교통부",
+        "title": "월세 부담 줄여줄게, 2026 청년월세 지원 랩",
+        "url": "https://youtu.be/yYXSBPcfZvI?si=wsdo3zpR1D1VNR9a",
+        "published_date": "2026-03-30T00:00:00+09:00",
+        "lead_text": "국토교통부 포털 최신소식에 게시된 공식 설명 영상으로, 2026 청년월세 지원 내용을 한 번에 정리한 안내 자료입니다.",
+        "policy_type": "지원사업",
+    },
+    {
+        "policy_authority": "문화체육관광부",
+        "title": "2026년 청년문화포럼·주간개최 위탁용역",
+        "url": "https://www.mcst.go.kr/site/s_notice/notice/bidView.jsp?pSeq=19044",
+        "published_date": "2026-04-07T00:00:00+09:00",
+        "lead_text": "청년문화포럼과 청년문화주간 개최를 위한 문화체육관광부 공식 공고로, 청년 문화정책 의제를 다루는 최근 자료입니다.",
+        "policy_type": "모집",
+    },
+    {
+        "policy_authority": "중소벤처기업부",
+        "title": "2026년 창업중심대학 참여기업 모집",
+        "url": "https://www.mss.go.kr/site/smba/ex/bbs/View.do?bcIdx=1065967&cbIdx=86",
+        "published_date": "2026-03-03T00:00:00+09:00",
+        "lead_text": "청년정책과가 안내한 2026년 창업중심대학 참여기업 모집 공고로, 생애최초 청년 예비창업자와 초기 창업기업 지원을 담았습니다.",
+        "policy_type": "모집",
+    },
+    {
+        "policy_authority": "금융위원회",
+        "title": "금융분야 청년정책 관련 청년의 의견을 수렴하였습니다",
+        "url": "https://www.fsc.go.kr/no010101/86132?curPage=&srchBeginDt=&srchCtgry=&srchEndDt=&srchKey=&srchText=%EC%B2%AD%EB%85%84%EB%8F%84%EC%95%BD%EA%B3%84%EC%A2%8C",
+        "published_date": "2026-01-26T00:00:00+09:00",
+        "lead_text": "청년미래적금, 청년도약계좌 등 금융분야 청년정책에 대한 청년 의견을 수렴한 금융위원회 보도자료입니다.",
+        "policy_type": "정책 발표",
+    },
+]
+
 HOME_LEAD_ILLUSTRATION = {
     "src": f"{ILLUSTRATION_ROOT}/home-youth-group.svg",
     "alt": "노트와 말풍선, 별 모티프가 있는 홈 화면 장식 일러스트",
@@ -3743,6 +3814,10 @@ def collect_news_regions(articles: list[dict]) -> list[str]:
 
 
 def policy_type_label(article: dict) -> str:
+    override = normalize_inline_text(article.get("policy_type_override"))
+    if override:
+        return override
+
     text = normalize_inline_text(f'{article.get("title", "")} {article.get("lead_text", "")}')
     if any(keyword in text for keyword in ("시행계획", "종합계획", "기본계획", "중장기계획", "마스터플랜")):
         return "시행계획"
@@ -3760,10 +3835,15 @@ def policy_type_label(article: dict) -> str:
 
 
 def policy_authority_label(article: dict) -> str:
+    explicit_authority = normalize_inline_text(article.get("policy_authority"))
+    if explicit_authority:
+        return explicit_authority
+
     source_text = normalize_inline_text(
         " ".join(
             value
             for value in [
+                article.get("policy_authority"),
                 article.get("source"),
                 article.get("source_name"),
                 article.get("publisher_domain"),
@@ -3773,12 +3853,16 @@ def policy_authority_label(article: dict) -> str:
     )
 
     preferred_matches = [
-        ("국무조정실", "국무조정실"),
+        ("기획재정부", "기획재정부"),
+        ("교육부", "교육부"),
         ("고용노동부", "고용노동부"),
+        ("행정안전부", "행정안전부"),
         ("보건복지부", "보건복지부"),
         ("국토교통부", "국토교통부"),
-        ("교육부", "교육부"),
+        ("문화체육관광부", "문화체육관광부"),
+        ("중소벤처기업부", "중소벤처기업부"),
         ("금융위원회", "금융위원회"),
+        ("국무조정실", "국무조정실"),
         ("정책브리핑", "정책브리핑"),
     ]
     for keyword, label in preferred_matches:
@@ -3811,19 +3895,75 @@ def collect_policy_types(articles: list[dict]) -> list[str]:
 
 
 def collect_policy_authorities(articles: list[dict]) -> list[str]:
-    preferred_order = [
-        "정책브리핑",
-        "국무조정실",
-        "고용노동부",
-        "보건복지부",
-        "국토교통부",
-        "교육부",
-        "금융위원회",
-    ]
+    preferred_order = MAJOR_CENTRAL_POLICY_AUTHORITIES
     seen = {policy_authority_label(article) for article in articles if policy_authority_label(article)}
     ordered = [label for label in preferred_order if label in seen]
-    remaining = sorted(label for label in seen if label not in preferred_order)
-    return [*ordered, *remaining]
+    return ordered
+
+
+def build_curated_major_policy_articles() -> list[dict]:
+    curated_articles: list[dict] = []
+    for entry in CURATED_MAJOR_POLICY_WATCHLIST:
+        authority = entry["policy_authority"]
+        article = {
+            "title": entry["title"],
+            "url": entry["url"],
+            "publisher_url": entry["url"],
+            "canonical_url": entry["url"],
+            "feed_url": entry["url"],
+            "source": authority,
+            "source_name": authority,
+            "source_kind": "official",
+            "source_url": entry["url"],
+            "published_date": entry["published_date"],
+            "publisher_published_at": entry["published_date"],
+            "lead_text": entry["lead_text"],
+            "summary": entry["lead_text"],
+            "policy_authority": authority,
+            "is_official_source": True,
+            "region": "전국",
+            "display_badges": ["공식 자료", authority],
+            "issue_tags": [],
+            "location_tags": [],
+            "policy_type_override": entry["policy_type"],
+            "pipeline_flags": {
+                "collected": True,
+                "deduped": True,
+                "classified": True,
+                "selected": False,
+                "published": True,
+            },
+        }
+        curated_articles.append(article)
+    return curated_articles
+
+
+def add_major_policy_watchlist_articles(articles: list[dict]) -> list[dict]:
+    if not articles:
+        return build_curated_major_policy_articles()
+
+    existing_authorities = {
+        policy_authority_label(article)
+        for article in articles
+        if policy_authority_label(article) in MAJOR_CENTRAL_POLICY_AUTHORITIES
+    }
+    existing_keys = {
+        normalize_inline_text(article.get("publisher_url") or article.get("canonical_url") or article.get("url"))
+        or normalize_inline_text(f'{article.get("title", "")}|{policy_authority_label(article)}')
+        for article in articles
+    }
+
+    supplemented = list(articles)
+    for curated in build_curated_major_policy_articles():
+        authority = curated["policy_authority"]
+        identity_key = normalize_inline_text(curated.get("publisher_url") or curated.get("url"))
+        if authority in existing_authorities:
+            continue
+        if identity_key in existing_keys:
+            continue
+        supplemented.append(curated)
+
+    return sort_articles_by_recency(supplemented)
 
 
 def collect_local_policy_regions(articles: list[dict]) -> list[str]:
@@ -4946,10 +5086,11 @@ def build_policies_page_compact(articles: list[dict], status: dict) -> str:
     page_updated_at = status.get("finished_at") or status.get("updated_at") or ""
     recent_articles = filter_recent_articles(sort_articles_by_recency(articles), page_updated_at, 24 * 90)
     official_policies = [article for article in recent_articles if article.get("is_official_source")]
+    official_policies = add_major_policy_watchlist_articles(official_policies)
     reference_policies = [article for article in recent_articles if is_local_policy_update(article)]
     page_intro = render_compact_intro(
         "02 정책",
-        "중앙정부 정책 자료와 지자체 발표 소식을 나눠 보고, 중앙은 부처별 최근 3개월 자료를 바로 확인할 수 있습니다.",
+        "중앙정부 정책 자료와 지자체 발표 소식을 나눠 보고, 중앙은 9개 주요 부처별 최근 정책 자료를 바로 확인할 수 있습니다.",
         media_key="policies",
     )
     official_cards = "".join(
@@ -4984,7 +5125,7 @@ def build_policies_page_compact(articles: list[dict], status: dict) -> str:
         <div class="section-head">
           <div>
             <h2>중앙정부 정책 자료</h2>
-            <p>정책브리핑과 중앙정부 부처·기관에서 최근 3개월 안에 발표한 청년 정책 자료를 모았습니다.</p>
+            <p>기획재정부·교육부·고용노동부·행정안전부·보건복지부·국토교통부·문화체육관광부·중소벤처기업부·금융위원회 기준으로 최근 자료를 모았습니다.</p>
           </div>
           <span class="mini-link" aria-disabled="true" data-policy-section-count>{len(official_policies)}건</span>
         </div>
