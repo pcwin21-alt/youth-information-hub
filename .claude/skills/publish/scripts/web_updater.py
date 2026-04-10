@@ -36,6 +36,36 @@ MAJOR_CENTRAL_POLICY_AUTHORITIES = [
     "금융위원회",
 ]
 
+HUB_GROUP_CONFIG = {
+    "official": {
+        "scope": "정부",
+        "title": "중앙부처 자문·회의",
+        "description": "국무조정실과 중앙부처의 청년 관계장관회의, 자문단, 보좌역, 위원회 기록을 모았습니다.",
+        "empty_title": "등록된 중앙부처 자문·회의 기록이 없습니다",
+        "empty_body": "새 중앙부처 회의·자문 기록이 수집되면 이 영역에 표시됩니다.",
+        "scope_label": "부처·기관",
+        "button_label": "중앙부처 자문·회의",
+    },
+    "local": {
+        "scope": "지자체",
+        "title": "지역 청년정책 네트워크",
+        "description": "지자체가 운영하는 청년정책네트워크, 청년협의체, 청년위원회, 참여단 기록을 묶었습니다.",
+        "empty_title": "등록된 지역 청년정책 네트워크 기록이 없습니다",
+        "empty_body": "새 지역 참여·네트워크 기록이 수집되면 이 영역에 표시됩니다.",
+        "scope_label": "지역",
+        "button_label": "지역 청년정책 네트워크",
+    },
+    "public": {
+        "scope": "공공기관",
+        "title": "공공기관 참여·협의",
+        "description": "공공재단·진흥원·센터·공사·공단이 운영한 공식 청년 참여·자문 기록을 모았습니다.",
+        "empty_title": "등록된 공공기관 참여·협의 기록이 없습니다",
+        "empty_body": "새 공공기관 참여·협의 기록이 수집되면 이 영역에 표시됩니다.",
+        "scope_label": "공공기관",
+        "button_label": "공공기관 참여·협의",
+    },
+}
+
 CURATED_MAJOR_POLICY_WATCHLIST = [
     {
         "policy_authority": "기획재정부",
@@ -2767,20 +2797,41 @@ BASE_SCRIPT = """
     return availableValues;
   }
 
-  function formatPolicyGroup(value) {
+  function formatPolicyGroup(value, scopeMode) {
+    if (scopeMode === 'hub-detail') {
+      if (value === 'official') {
+        return '중앙부처 자문·회의';
+      }
+      if (value === 'local') {
+        return '지역 청년정책 네트워크';
+      }
+      if (value === 'public') {
+        return '공공기관 참여·협의';
+      }
+      return '전체';
+    }
     if (value === 'official') {
       return '중앙정부';
     }
     if (value === 'local') {
       return '지자체';
     }
-    if (value === 'related') {
-      return '참고 기록';
-    }
     return '전체';
   }
 
-  function formatPolicyScopeLabel(group) {
+  function formatPolicyScopeLabel(group, scopeMode) {
+    if (scopeMode === 'hub-detail') {
+      if (group === 'official') {
+        return '부처·기관';
+      }
+      if (group === 'local') {
+        return '지역';
+      }
+      if (group === 'public') {
+        return '공공기관';
+      }
+      return '세부 구분';
+    }
     if (group === 'official') {
       return '중앙부처·기관';
     }
@@ -2806,7 +2857,9 @@ BASE_SCRIPT = """
     const activeDateStart = normalizedDates.startDate;
     const activeDateEnd = normalizedDates.endDate;
     const hasDateRange = Boolean(activeDateStart || activeDateEnd);
-    const usesPolicyScope = scopeMode === 'authority-region';
+    const usesPolicyScope = scopeMode === 'authority-region' || scopeMode === 'hub-detail';
+    const usesHubDetailScope = scopeMode === 'hub-detail';
+    const keepEmptySections = root.dataset.keepEmptySections === 'true';
     root.dataset.selectedPolicyGroup = activeGroup;
     root.dataset.selectedPolicyRegion = activeRegion;
     root.dataset.selectedPolicyScope = activeScope;
@@ -2814,6 +2867,11 @@ BASE_SCRIPT = """
     root.dataset.selectedSearchQuery = activeQuery;
     root.dataset.selectedDateStart = activeDateStart;
     root.dataset.selectedDateEnd = activeDateEnd;
+
+    if (usesHubDetailScope) {
+      activeRegion = 'all';
+      root.dataset.selectedPolicyRegion = 'all';
+    }
 
     const articleCards = Array.from(root.querySelectorAll('[data-policy-card="true"]'));
     const regionTargetGroup = usesPolicyScope ? (activeGroup === 'all' ? 'local' : activeGroup) : activeGroup;
@@ -2830,7 +2888,27 @@ BASE_SCRIPT = """
     const availableAuthorities = getPolicyAvailabilityByAttribute(
       articleCards,
       'official',
-      'data-policy-authority',
+      usesHubDetailScope ? 'data-policy-scope' : 'data-policy-authority',
+      activeType,
+      activeDateStart,
+      activeDateEnd,
+      hasDateRange,
+      activeQuery,
+    );
+    const availableLocalScopes = getPolicyAvailabilityByAttribute(
+      articleCards,
+      'local',
+      usesHubDetailScope ? 'data-policy-scope' : 'data-article-region',
+      activeType,
+      activeDateStart,
+      activeDateEnd,
+      hasDateRange,
+      activeQuery,
+    );
+    const availablePublicScopes = getPolicyAvailabilityByAttribute(
+      articleCards,
+      'public',
+      'data-policy-scope',
       activeType,
       activeDateStart,
       activeDateEnd,
@@ -2850,7 +2928,10 @@ BASE_SCRIPT = """
         availableScopes = availableAuthorities;
       } else if (activeGroup === 'local') {
         visibleScopeKind = 'local';
-        availableScopes = availableRegions;
+        availableScopes = usesHubDetailScope ? availableLocalScopes : availableRegions;
+      } else if (usesHubDetailScope && activeGroup === 'public') {
+        visibleScopeKind = 'public';
+        availableScopes = availablePublicScopes;
       } else {
         activeScope = 'all';
       }
@@ -2860,14 +2941,16 @@ BASE_SCRIPT = """
       root.dataset.selectedPolicyScope = activeScope;
     }
 
-    const visibleByGroup = { official: 0, local: 0, related: 0 };
+    const visibleByGroup = { official: 0, local: 0, public: 0, related: 0 };
     let visibleCount = 0;
 
     articleCards.forEach((card) => {
       const articleGroup = card.getAttribute('data-policy-group') || 'official';
       const articleRegion = card.getAttribute('data-article-region') || '중앙';
       const articleAuthority = card.getAttribute('data-policy-authority') || '';
-      const articleScope = articleGroup === 'official' ? articleAuthority : articleRegion;
+      const articleScope = usesHubDetailScope
+        ? (card.getAttribute('data-policy-scope') || '')
+        : (articleGroup === 'official' ? articleAuthority : articleRegion);
       const articleType = card.getAttribute('data-policy-type') || '기타';
       const articleDate = card.getAttribute('data-article-date') || '';
       const groupMatch = activeGroup === 'all' || articleGroup === activeGroup;
@@ -2915,7 +2998,7 @@ BASE_SCRIPT = """
 
     const scopeLabel = root.querySelector('[data-policy-scope-label]');
     if (scopeLabel && usesPolicyScope) {
-      scopeLabel.textContent = formatPolicyScopeLabel(activeGroup);
+      scopeLabel.textContent = formatPolicyScopeLabel(activeGroup, scopeMode);
     }
 
     root.querySelectorAll('[data-policy-date-input]').forEach((dateInput) => {
@@ -2935,7 +3018,8 @@ BASE_SCRIPT = """
     root.querySelectorAll('[data-policy-section]').forEach((section) => {
       const sectionGroup = section.getAttribute('data-policy-section') || 'official';
       const visibleInSection = visibleByGroup[sectionGroup] || 0;
-      section.hidden = visibleInSection === 0;
+      const shouldKeepEmpty = keepEmptySections && (activeGroup === 'all' || sectionGroup === activeGroup);
+      section.hidden = visibleInSection === 0 && !shouldKeepEmpty;
       const count = section.querySelector('[data-policy-section-count]');
       if (count) {
         count.textContent = `${visibleInSection}건`;
@@ -2946,7 +3030,7 @@ BASE_SCRIPT = """
     if (status) {
       const parts = [];
       if (activeGroup !== 'all') {
-        parts.push(formatPolicyGroup(activeGroup));
+        parts.push(formatPolicyGroup(activeGroup, scopeMode));
       }
       if (usesPolicyScope && activeGroup !== 'all' && activeScope !== 'all') {
         parts.push(activeScope);
@@ -3431,6 +3515,25 @@ def render_article_card(article: dict, extra_attrs: dict[str, str] | None = None
     """
 
 
+def render_hub_article_meta(article: dict, category_label: str) -> str:
+    detail_label = hub_scope_detail_label(article)
+    source = format_source_label(article.get("source") or article.get("source_name"))
+    published = (article.get("published_date", "") or "")[:10] or "날짜 미상"
+    return (
+        '<div class="article-meta">'
+        '<div class="article-meta-tags">'
+        f'<span class="meta-pill primary">{html.escape(category_label)}</span>'
+        f'<span class="meta-pill subtle">{html.escape(detail_label)}</span>'
+        '</div>'
+        '<div class="article-byline">'
+        f'<span class="meta-item">{html.escape(source)}</span>'
+        '<span class="meta-divider" aria-hidden="true">•</span>'
+        f'<span class="meta-item">{html.escape(published)}</span>'
+        '</div>'
+        '</div>'
+    )
+
+
 def render_hub_record_card(article: dict) -> str:
     hub_topics = ", ".join(article.get("hub_topics", [])[:3]) or "참여 의제"
     governance_scope = article.get("governance_scope") or "참여 기록"
@@ -3440,6 +3543,7 @@ def render_hub_record_card(article: dict) -> str:
     escaped_title = html.escape(display_article_title(article))
     article_region = html.escape(news_region_label(article))
     article_group = hub_group_label(article)
+    article_scope = html.escape(hub_scope_detail_label(article))
     article_type = html.escape(hub_activity_label(article))
     summary_html = (
         f'<p class="article-summary"><a class="article-summary-link" href="{escaped_url}" target="_blank" rel="noreferrer" '
@@ -3449,12 +3553,12 @@ def render_hub_record_card(article: dict) -> str:
     )
     article_date = html.escape(article_date_value(article))
     article_search = html.escape(
-        build_article_search_text(article, summary_text, governance_scope, activity_types, hub_topics),
+        build_article_search_text(article, summary_text, governance_scope, activity_types, hub_topics, article_scope),
         quote=True,
     )
     return f"""
-    <article class="article-card" data-article-card="true" data-policy-card="true" data-policy-group="{article_group}" data-policy-type="{article_type}" data-article-url="{escaped_url}" data-article-title="{escaped_title}" data-article-date="{article_date}" data-article-region="{article_region}" data-article-search="{article_search}">
-      {render_article_meta(article, category_label=governance_scope)}
+    <article class="article-card" data-article-card="true" data-policy-card="true" data-policy-group="{article_group}" data-policy-scope="{article_scope}" data-policy-type="{article_type}" data-article-url="{escaped_url}" data-article-title="{escaped_title}" data-article-date="{article_date}" data-article-region="{article_region}" data-article-search="{article_search}">
+      {render_hub_article_meta(article, governance_scope)}
       <h3><a class="article-title-link" href="{escaped_url}" target="_blank" rel="noreferrer" aria-label="{escaped_title} 링크 바로가기">{escaped_title}</a></h3>
       <div class="badge-row"><span class="badge">{html.escape(activity_types)}</span><span class="badge">{html.escape(hub_topics)}</span></div>
       {summary_html}
@@ -3876,9 +3980,21 @@ def hub_group_label(article: dict) -> str:
     scope = normalize_inline_text(article.get("governance_scope"))
     if scope == "정부":
         return "official"
-    if scope == "지역":
+    if scope == "지자체":
         return "local"
-    return "related"
+    if scope == "공공기관":
+        return "public"
+    return "public"
+
+
+def hub_scope_detail_label(article: dict) -> str:
+    group = hub_group_label(article)
+    owner_label = normalize_inline_text(article.get("hub_owner_label"))
+    if group == "local":
+        return owner_label or news_region_label(article)
+    if group in {"official", "public"}:
+        return owner_label or format_source_label(article.get("source") or article.get("source_name"))
+    return owner_label or news_region_label(article)
 
 
 def hub_activity_label(article: dict) -> str:
@@ -3977,10 +4093,20 @@ def collect_local_policy_regions(articles: list[dict]) -> list[str]:
 
 
 def collect_hub_activity_types(articles: list[dict]) -> list[str]:
-    preferred_order = ["회의", "위원회", "출범", "발표회", "협약", "간담회", "포럼", "워크숍", "모집", "기타"]
+    preferred_order = ["회의", "위원회", "자문", "출범", "모집", "협약", "간담회", "포럼", "워크숍", "발표회", "기타"]
     seen = {hub_activity_label(article) for article in articles}
     ordered = [label for label in preferred_order if label in seen]
     return ordered
+
+
+def collect_hub_scope_labels(articles: list[dict]) -> list[str]:
+    counts: dict[str, int] = {}
+    for article in articles:
+        label = hub_scope_detail_label(article)
+        if not label or label == "중앙":
+            continue
+        counts[label] = counts.get(label, 0) + 1
+    return sorted(counts, key=lambda label: (-counts[label], label))
 
 
 def render_policy_filter_panel(official_policies: list[dict], reference_policies: list[dict]) -> str:
@@ -4085,28 +4211,49 @@ def render_policy_filter_panel(official_policies: list[dict], reference_policies
     """
 
 
-def render_hub_filter_panel(government_records: list[dict], regional_records: list[dict], other_records: list[dict]) -> str:
-    all_records = [*government_records, *regional_records, *other_records]
+def render_hub_filter_panel(
+    government_records: list[dict],
+    regional_records: list[dict],
+    public_records: list[dict],
+) -> str:
+    all_records = [*government_records, *regional_records, *public_records]
     group_buttons = [
         '<button class="filter-button active" type="button" data-policy-filter="true" '
         'data-filter-group="group" data-filter-value="all" aria-pressed="true">전체</button>',
         '<button class="filter-button" type="button" data-policy-filter="true" '
-        'data-filter-group="group" data-filter-value="official" aria-pressed="false">정부 회의·위원회</button>',
+        'data-filter-group="group" data-filter-value="official" aria-pressed="false">중앙부처 자문·회의</button>',
         '<button class="filter-button" type="button" data-policy-filter="true" '
-        'data-filter-group="group" data-filter-value="local" aria-pressed="false">지역 참여·네트워크</button>',
+        'data-filter-group="group" data-filter-value="local" aria-pressed="false">지역 청년정책 네트워크</button>',
         '<button class="filter-button" type="button" data-policy-filter="true" '
-        'data-filter-group="group" data-filter-value="related" aria-pressed="false">참고 기록</button>',
+        'data-filter-group="group" data-filter-value="public" aria-pressed="false">공공기관 참여·협의</button>',
     ]
 
-    region_buttons = [
+    scope_buttons = [
         '<button class="filter-button active" type="button" data-policy-filter="true" '
-        'data-filter-group="region" data-filter-value="all" aria-pressed="true">전체</button>'
+        'data-filter-group="scope" data-filter-value="all" data-policy-scope-button="true" data-scope-kind="all" '
+        'aria-pressed="true">전체</button>'
     ]
-    for region in collect_news_regions(all_records):
-        region_buttons.append(
+
+    for label in collect_hub_scope_labels(government_records):
+        scope_buttons.append(
             f'<button class="filter-button" type="button" data-policy-filter="true" '
-            f'data-filter-group="region" data-filter-value="{html.escape(region)}" '
-            f'aria-pressed="false">{html.escape(region)}</button>'
+            f'data-filter-group="scope" data-filter-value="{html.escape(label)}" '
+            f'data-policy-scope-button="true" data-scope-kind="official" aria-pressed="false" hidden>'
+            f'{html.escape(label)}</button>'
+        )
+    for label in collect_hub_scope_labels(regional_records):
+        scope_buttons.append(
+            f'<button class="filter-button" type="button" data-policy-filter="true" '
+            f'data-filter-group="scope" data-filter-value="{html.escape(label)}" '
+            f'data-policy-scope-button="true" data-scope-kind="local" aria-pressed="false" hidden>'
+            f'{html.escape(label)}</button>'
+        )
+    for label in collect_hub_scope_labels(public_records):
+        scope_buttons.append(
+            f'<button class="filter-button" type="button" data-policy-filter="true" '
+            f'data-filter-group="scope" data-filter-value="{html.escape(label)}" '
+            f'data-policy-scope-button="true" data-scope-kind="public" aria-pressed="false" hidden>'
+            f'{html.escape(label)}</button>'
         )
 
     type_buttons = [
@@ -4136,8 +4283,8 @@ def render_hub_filter_panel(government_records: list[dict], regional_records: li
     <section class="section">
       <article class="section-card filter-panel">
         <div class="filter-head">
-          <h3>구분 · 지역 · 활동 · 검색 · 기간</h3>
-          <p>정부 회의·위원회, 지역 참여·네트워크, 참고 기록을 같은 기준으로 빠르게 살펴볼 수 있습니다.</p>
+          <h3>구분 · 세부 · 활동 · 검색 · 기간</h3>
+          <p>뉴스와 별도로, 중앙부처 자문·회의와 지역 청년정책 네트워크, 공공기관 참여 기록만 구조화해 봅니다.</p>
         </div>
         <div class="filter-stack">
           <div class="filter-group">
@@ -4145,8 +4292,8 @@ def render_hub_filter_panel(government_records: list[dict], regional_records: li
             <div class="filter-controls">{''.join(group_buttons)}</div>
           </div>
           <div class="filter-group">
-            <span class="filter-group-label">지역</span>
-            <div class="filter-controls">{''.join(region_buttons)}</div>
+            <span class="filter-group-label" data-policy-scope-label="true">세부 구분</span>
+            <div class="filter-controls">{''.join(scope_buttons)}</div>
           </div>
           <div class="filter-group">
             <span class="filter-group-label">활동</span>
@@ -4613,11 +4760,88 @@ def summarize_menu_items(articles: list[dict], fallback_items: list[tuple[str, s
     return items or fallback_items
 
 
+def hub_representative_sort_key(article: dict) -> tuple[int, int, int, int, int, str]:
+    source_kind = normalize_inline_text(article.get("source_kind"))
+    source_text = normalize_inline_text(" ".join([str(article.get("source") or ""), str(article.get("source_name") or "")]))
+    is_official = 0 if source_kind == "official" or "보도자료" in source_text or "브리핑" in source_text else 1
+    source_rank = {"official": 0, "local": 1, "news": 2}.get(source_kind, 3)
+    has_publisher_url = 0 if article.get("publisher_url") else 1
+    owner_label = normalize_inline_text(article.get("hub_owner_label"))
+    owner_match = 0 if owner_label and owner_label in source_text else 1
+    parsed_published = parse_iso_datetime(article.get("published_date"))
+    timestamp = -int(parsed_published.timestamp()) if parsed_published else 0
+    return (
+        is_official,
+        source_rank,
+        has_publisher_url,
+        owner_match,
+        timestamp,
+        display_article_title(article, limit=120),
+    )
+
+
+def normalize_hub_owner_for_cluster(article: dict) -> str:
+    owner = normalize_inline_text(article.get("hub_owner_label")) or news_region_label(article)
+    if normalize_inline_text(article.get("governance_scope")) != "지자체":
+        return owner
+    if owner.endswith("시") and len(owner) > 2:
+        return owner[:-1]
+    if owner.endswith("도") and len(owner) > 2:
+        return owner[:-1]
+    if owner.endswith("군") and len(owner) > 2:
+        return owner[:-1]
+    if owner.endswith("구") and len(owner) > 2:
+        return owner[:-1]
+    return owner
+
+
+def hub_event_coarse_key(article: dict) -> str:
+    scope = article.get("governance_scope")
+    region_key = "" if scope == "지자체" else normalize_inline_text(article.get("region"))
+    return normalize_inline_text(
+        " | ".join(
+            value
+            for value in [
+                scope,
+                normalize_hub_owner_for_cluster(article),
+                region_key,
+                (article.get("hub_topics") or [""])[0],
+                (article.get("governance_activity_types") or [""])[0],
+                (article.get("published_date", "") or "")[:10],
+            ]
+            if value
+        )
+    )
+
+
+def deduplicate_hub_articles(classified_articles: list[dict]) -> list[dict]:
+    raw_articles = [article for article in classified_articles if article.get("is_hub_candidate")]
+    grouped: dict[str, list[dict]] = {}
+
+    for article in sort_articles_by_recency(raw_articles):
+        coarse_key = hub_event_coarse_key(article) or display_article_title(article, limit=120)
+        grouped.setdefault(coarse_key, []).append(article)
+
+    deduped: list[dict] = []
+    for cluster in grouped.values():
+        representative = dict(sorted(cluster, key=hub_representative_sort_key)[0])
+        representative["hub_related_count"] = len(cluster)
+        representative["hub_related_sources"] = list(
+            dict.fromkeys(
+                format_source_label(item.get("source") or item.get("source_name"))
+                for item in cluster
+                if item.get("source") or item.get("source_name")
+            )
+        )
+        deduped.append(representative)
+    return sort_articles_by_recency(deduped)
+
+
 def filter_hub_articles(classified_articles: list[dict], scope: str | None = None) -> list[dict]:
-    articles = [article for article in classified_articles if article.get("is_hub_candidate")]
+    articles = deduplicate_hub_articles(classified_articles)
     if scope is not None:
         articles = [article for article in articles if article.get("governance_scope") == scope]
-    return sort_articles_by_recency(articles)
+    return articles
 
 
 def render_empty_hub_state(title: str, body: str) -> str:
@@ -4626,13 +4850,14 @@ def render_empty_hub_state(title: str, body: str) -> str:
 
 def build_hub_menu_items(classified_articles: list[dict]) -> list[tuple[str, str]]:
     government_articles = filter_hub_articles(classified_articles, "정부")
-    regional_articles = filter_hub_articles(classified_articles, "지역")
+    regional_articles = filter_hub_articles(classified_articles, "지자체")
+    public_articles = filter_hub_articles(classified_articles, "공공기관")
 
     items: list[tuple[str, str]] = []
     if government_articles:
         items.append(
             (
-                f'정부 회의·위원회: {display_article_title(government_articles[0], limit=72)}',
+                f'중앙부처 자문·회의: {display_article_title(government_articles[0], limit=72)}',
                 " · ".join(
                     bit
                     for bit in [
@@ -4644,12 +4869,12 @@ def build_hub_menu_items(classified_articles: list[dict]) -> list[tuple[str, str
             )
         )
     else:
-        items.append(("정부 회의·위원회", "현재 등록된 항목이 없습니다."))
+        items.append(("중앙부처 자문·회의", "현재 등록된 항목이 없습니다."))
 
     if regional_articles:
         items.append(
             (
-                f'지역 참여·네트워크: {display_article_title(regional_articles[0], limit=72)}',
+                f'지역 청년정책 네트워크: {display_article_title(regional_articles[0], limit=72)}',
                 " · ".join(
                     bit
                     for bit in [
@@ -4661,9 +4886,25 @@ def build_hub_menu_items(classified_articles: list[dict]) -> list[tuple[str, str
             )
         )
     else:
-        items.append(("지역 참여·네트워크", "현재 등록된 항목이 없습니다."))
+        items.append(("지역 청년정책 네트워크", "현재 등록된 항목이 없습니다."))
 
-    items.append(("제보·문의", "사이트 개선 제안과 협업 문의는 제보·문의에서 이어집니다."))
+    if public_articles:
+        items.append(
+            (
+                f'공공기관 참여·협의: {display_article_title(public_articles[0], limit=72)}',
+                " · ".join(
+                    bit
+                    for bit in [
+                        public_articles[0].get("source", ""),
+                        public_articles[0].get("published_date", "")[:10],
+                    ]
+                    if bit
+                ),
+            )
+        )
+    else:
+        items.append(("공공기관 참여·협의", "현재 등록된 항목이 없습니다."))
+
     return items[:3]
 
 
@@ -5151,59 +5392,55 @@ def build_policies_page_compact(articles: list[dict], status: dict) -> str:
 
 def build_hub_page(classified_articles: list[dict]) -> str:
     hub_records = filter_hub_articles(classified_articles)
-    government_records = filter_hub_articles(classified_articles, "정부")[:6]
-    regional_records = filter_hub_articles(classified_articles, "지역")[:6]
-    other_records = [
-        article
-        for article in hub_records
-        if article.get("governance_scope") not in {"정부", "지역"}
-    ][:6]
+    government_records = filter_hub_articles(classified_articles, "정부")
+    regional_records = filter_hub_articles(classified_articles, "지자체")
+    public_records = filter_hub_articles(classified_articles, "공공기관")
     page_intro = render_compact_intro(
         "03 참여·회의",
-        "청년 참여 회의와 지역 네트워크 움직임을 구분해 보고, 필요한 기록만 빠르게 걸러볼 수 있습니다.",
+        "뉴스와는 별도로, 중앙부처 자문·회의와 지역 청년정책 네트워크, 공공기관 참여·협의 기록만 구조화해 모았습니다.",
         media_key="hub",
     )
-    hub_filter_panel = render_hub_filter_panel(government_records, regional_records, other_records)
+    hub_filter_panel = render_hub_filter_panel(government_records, regional_records, public_records)
     government_cards = "".join(render_hub_record_card(article) for article in government_records)
     regional_cards = "".join(render_hub_record_card(article) for article in regional_records)
-    other_cards = "".join(render_hub_record_card(article) for article in other_records)
+    public_cards = "".join(render_hub_record_card(article) for article in public_records)
     return f"""
-    <div data-policy-filter-root="hub" data-default-policy-group="all" data-default-policy-region="all" data-default-policy-type="all" data-default-date-start="" data-default-date-end="" data-default-search-query="">
+    <div data-policy-filter-root="hub" data-policy-scope-mode="hub-detail" data-keep-empty-sections="true" data-default-policy-group="all" data-default-policy-region="all" data-default-policy-scope="all" data-default-policy-type="all" data-default-date-start="" data-default-date-end="" data-default-search-query="">
       {page_intro}
       {hub_filter_panel}
       <section class="section" data-policy-section="official">
         <div class="section-head">
           <div>
-            <h2>정부 회의·위원회</h2>
-            <p>정부 기관이 연 회의, 위원회, 자문단, 협약 소식을 모았습니다.</p>
+            <h2>{HUB_GROUP_CONFIG["official"]["title"]}</h2>
+            <p>{HUB_GROUP_CONFIG["official"]["description"]}</p>
           </div>
           <span class="mini-link" aria-disabled="true" data-policy-section-count>{len(government_records)}건</span>
         </div>
-        <div class="article-grid">{government_cards or render_empty_hub_state("등록된 정부 회의 기록이 없습니다", "새 항목이 수집되면 이 영역에 표시됩니다.")}</div>
+        <div class="article-grid">{government_cards or render_empty_hub_state(HUB_GROUP_CONFIG["official"]["empty_title"], HUB_GROUP_CONFIG["official"]["empty_body"])}</div>
       </section>
       <section class="section" data-policy-section="local">
         <div class="section-head">
           <div>
-            <h2>지역 참여·네트워크</h2>
-            <p>지방자치단체와 지역 네트워크 활동 소식을 따로 보여줍니다.</p>
+            <h2>{HUB_GROUP_CONFIG["local"]["title"]}</h2>
+            <p>{HUB_GROUP_CONFIG["local"]["description"]}</p>
           </div>
           <span class="mini-link" aria-disabled="true" data-policy-section-count>{len(regional_records)}건</span>
         </div>
-        <div class="article-grid">{regional_cards or render_empty_hub_state("등록된 지역 참여 기록이 없습니다", "새 항목이 수집되면 이 영역에 표시됩니다.")}</div>
+        <div class="article-grid">{regional_cards or render_empty_hub_state(HUB_GROUP_CONFIG["local"]["empty_title"], HUB_GROUP_CONFIG["local"]["empty_body"])}</div>
       </section>
-      <section class="section" id="related" data-policy-section="related">
+      <section class="section" id="public-governance" data-policy-section="public">
         <div class="section-head">
           <div>
-            <h2>참고 기록</h2>
-            <p>정부·지역 구역으로 바로 분류되지 않은 연관 기록입니다.</p>
+            <h2>{HUB_GROUP_CONFIG["public"]["title"]}</h2>
+            <p>{HUB_GROUP_CONFIG["public"]["description"]}</p>
           </div>
-          <span class="mini-link" aria-disabled="true" data-policy-section-count>{len(other_records)}건</span>
+          <span class="mini-link" aria-disabled="true" data-policy-section-count>{len(public_records)}건</span>
         </div>
-        <div class="article-grid">{other_cards or render_empty_hub_state("등록된 참고 기록이 없습니다", "연관 기록이 수집되면 이 영역에 표시됩니다.")}</div>
+        <div class="article-grid">{public_cards or render_empty_hub_state(HUB_GROUP_CONFIG["public"]["empty_title"], HUB_GROUP_CONFIG["public"]["empty_body"])}</div>
       </section>
       <article class="info-card" data-policy-empty-state="true" hidden>
         <h3>조건에 맞는 참여·회의 기록이 없습니다</h3>
-        <p>구분이나 지역, 활동, 기간을 바꾸면 다른 기록을 확인할 수 있습니다.</p>
+        <p>구분이나 세부, 활동, 기간을 바꾸면 다른 기록을 확인할 수 있습니다.</p>
       </article>
     </div>
     """

@@ -56,6 +56,8 @@ def build_article_funnel(
             "governance_activity_types"
         ) or []
         entry["hub_topics"] = normalized.get("hub_topics") or entry.get("hub_topics") or []
+        entry["hub_owner_label"] = normalized.get("hub_owner_label") or entry.get("hub_owner_label")
+        entry["hub_cluster_key"] = normalized.get("hub_cluster_key") or entry.get("hub_cluster_key")
         entry["importance_score"] = normalized.get("importance_score", entry.get("importance_score"))
         entry["selection_bucket"] = normalized.get("selection_bucket") or entry.get("selection_bucket")
         entry["selection_reason"] = normalized.get("selection_reason") or entry.get("selection_reason")
@@ -154,6 +156,8 @@ def _base_entry(article: dict[str, Any], key: str) -> dict[str, Any]:
         "governance_scope": article.get("governance_scope"),
         "governance_activity_types": list(article.get("governance_activity_types") or []),
         "hub_topics": list(article.get("hub_topics") or []),
+        "hub_owner_label": article.get("hub_owner_label"),
+        "hub_cluster_key": article.get("hub_cluster_key"),
         "importance_score": article.get("importance_score"),
         "selection_bucket": article.get("selection_bucket"),
         "selection_reason": article.get("selection_reason"),

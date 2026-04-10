@@ -11,6 +11,7 @@ from .article_metadata import (
     extract_location_tags,
     infer_region,
     is_google_news_url,
+    normalize_article_title,
     normalize_article_record,
     normalize_tracking_url,
     title_similarity,
@@ -18,18 +19,22 @@ from .article_metadata import (
 from .constants import (
     CATEGORIES,
     CENTRAL_GOVERNMENT_CONTEXT_KEYWORDS,
+    CENTRAL_GOVERNMENT_OWNER_PATTERNS,
     CATEGORY_NOW,
     CATEGORY_OPINION,
     CATEGORY_POLICY,
     CATEGORY_REGION,
     GOVERNANCE_ACTIVITY_KEYWORDS,
     GOVERNMENT_GOVERNANCE_KEYWORDS,
+    HUB_EXCLUDE_KEYWORDS,
     HUB_ROUTING_KEYWORDS,
     LOCAL_GOVERNMENT_CONTEXT_KEYWORDS,
     NOISE_KEYWORDS,
     NOW_KEYWORDS,
     OFFICIAL_KEYWORDS,
     OPINION_KEYWORDS,
+    PUBLIC_GOVERNANCE_KEYWORDS,
+    PUBLIC_INSTITUTION_CONTEXT_KEYWORDS,
     REGIONS,
     REGIONAL_GOVERNANCE_KEYWORDS,
     YOUTH_RELATED_KEYWORDS,
@@ -140,9 +145,18 @@ def classify_articles(articles: list[dict]) -> list[dict]:
             article.get("section", "") or "",
             article.get("body_text", "") or "",
         )
-        hub_topics = extract_hub_topics(text)
-        governance_scope = extract_governance_scope(article, text)
         governance_activity_types = extract_governance_activity_types(text)
+        governance_scope = extract_governance_scope(article, text, governance_activity_types)
+        hub_topics = extract_hub_topics(text, governance_scope)
+        hub_owner_label = extract_hub_owner_label(article, text, governance_scope, region)
+        hub_cluster_key = build_hub_cluster_key(
+            article,
+            governance_scope=governance_scope,
+            hub_owner_label=hub_owner_label,
+            region=region,
+            hub_topics=hub_topics,
+            governance_activity_types=governance_activity_types,
+        )
         is_official = article.get("source_kind") == "official" or article_type == "official"
         has_policy_signal = is_official or any(keyword in text for keyword in OFFICIAL_KEYWORDS)
 
@@ -179,12 +193,15 @@ def classify_articles(articles: list[dict]) -> list[dict]:
                 "article_type": article_type,
                 "is_noise": is_noise,
                 "is_official_source": is_official,
-                "is_hub_candidate": bool(hub_topics),
+                "is_hub_candidate": bool(governance_scope and hub_topics),
                 "hub_topics": hub_topics,
                 "governance_scope": governance_scope,
                 "governance_activity_types": governance_activity_types,
+                "hub_owner_label": hub_owner_label,
+                "hub_cluster_key": hub_cluster_key,
                 "is_government_governance": governance_scope == "정부",
                 "is_regional_governance": governance_scope == "지자체",
+                "is_public_governance": governance_scope == "공공기관",
                 "classification_reason": build_classification_reason(
                     ordered_categories,
                     region,
@@ -293,6 +310,8 @@ def summarize_articles(articles: list[dict]) -> list[dict]:
             badges.append("정부 거버넌스")
         elif article.get("governance_scope") == "지자체":
             badges.append("지역 거버넌스")
+        elif article.get("governance_scope") == "공공기관":
+            badges.append("공공기관 참여")
 
         if article.get("related_article_count", 1) > 1:
             badges.append(f'유사 보도 {article["related_article_count"]}건')
@@ -324,8 +343,16 @@ def detect_noise(text: str) -> bool:
     return not any(keyword in text for keyword in YOUTH_RELATED_KEYWORDS)
 
 
-def extract_hub_topics(text: str) -> list[str]:
-    return [keyword for keyword in HUB_ROUTING_KEYWORDS if keyword in text]
+def extract_hub_topics(text: str, governance_scope: str | None = None) -> list[str]:
+    if governance_scope == "정부":
+        keywords = GOVERNMENT_GOVERNANCE_KEYWORDS
+    elif governance_scope == "지자체":
+        keywords = REGIONAL_GOVERNANCE_KEYWORDS
+    elif governance_scope == "공공기관":
+        keywords = PUBLIC_GOVERNANCE_KEYWORDS
+    else:
+        keywords = HUB_ROUTING_KEYWORDS
+    return [keyword for keyword in keywords if keyword in text]
 
 
 def extract_governance_activity_types(text: str) -> list[str]:
@@ -344,37 +371,138 @@ def extract_regional_governance_topics(text: str) -> list[str]:
     return [keyword for keyword in REGIONAL_GOVERNANCE_KEYWORDS if keyword in text]
 
 
+def extract_public_governance_topics(text: str) -> list[str]:
+    return [keyword for keyword in PUBLIC_GOVERNANCE_KEYWORDS if keyword in text]
+
+
 def has_central_government_context(article: dict, text: str) -> bool:
-    source_text = f'{article.get("source", "")} {text}'
+    source_text = _hub_context_text(article, text)
     return any(keyword in source_text for keyword in CENTRAL_GOVERNMENT_CONTEXT_KEYWORDS)
 
 
 def has_local_government_context(article: dict, text: str) -> bool:
-    source_text = f'{article.get("source", "")} {text}'
+    source_text = _hub_context_text(article, text)
     if any(keyword in source_text for keyword in LOCAL_GOVERNMENT_CONTEXT_KEYWORDS):
         return True
     if article.get("source_kind") == "local":
         return True
+    if _extract_local_owner_label(source_text):
+        return True
     return extract_region(text) != NATIONWIDE_REGION
 
 
-def extract_governance_scope(article: dict, text: str) -> str | None:
-    activity_types = extract_governance_activity_types(text)
+def has_public_institution_context(article: dict, text: str) -> bool:
+    source_text = _hub_context_text(article, text)
+    if any(keyword in source_text for keyword in HUB_EXCLUDE_KEYWORDS):
+        return False
+    return bool(_extract_public_institution_owner_label(source_text)) or any(
+        keyword in source_text for keyword in PUBLIC_INSTITUTION_CONTEXT_KEYWORDS
+    )
+
+
+def is_excluded_hub_record(article: dict, text: str, activity_types: list[str] | None = None) -> bool:
+    source_text = _hub_context_text(article, text)
+    if any(keyword in source_text for keyword in HUB_EXCLUDE_KEYWORDS):
+        return True
+
+    if "청년위원회" in text and not any(
+        keyword in source_text
+        for keyword in CENTRAL_GOVERNMENT_CONTEXT_KEYWORDS
+        + LOCAL_GOVERNMENT_CONTEXT_KEYWORDS
+        + PUBLIC_INSTITUTION_CONTEXT_KEYWORDS
+    ):
+        return True
+
+    normalized_activity_types = activity_types or []
+    if "협약" in normalized_activity_types and article.get("source_kind") == "news":
+        if not (
+            has_central_government_context(article, text)
+            or has_local_government_context(article, text)
+            or has_public_institution_context(article, text)
+        ):
+            return True
+
+    return False
+
+
+def extract_governance_scope(
+    article: dict,
+    text: str,
+    activity_types: list[str] | None = None,
+) -> str | None:
+    activity_types = activity_types or extract_governance_activity_types(text)
     if not activity_types:
         return None
 
     if not any(keyword in text for keyword in YOUTH_RELATED_KEYWORDS):
         return None
 
-    if has_central_government_context(article, text) and (
-        extract_government_governance_topics(text) or article.get("source_kind") == "official"
-    ):
+    if is_excluded_hub_record(article, text, activity_types):
+        return None
+
+    if has_central_government_context(article, text) and extract_government_governance_topics(text):
         return "정부"
 
     if extract_regional_governance_topics(text) and has_local_government_context(article, text):
         return "지자체"
 
+    if extract_public_governance_topics(text) and has_public_institution_context(article, text):
+        return "공공기관"
+
     return None
+
+
+def extract_hub_owner_label(article: dict, text: str, governance_scope: str | None, region: str) -> str | None:
+    if not governance_scope:
+        return None
+
+    source_text = _hub_context_text(article, text)
+    if governance_scope == "정부":
+        for label, keywords in CENTRAL_GOVERNMENT_OWNER_PATTERNS:
+            if any(keyword in source_text for keyword in keywords):
+                return label
+        source = str(article.get("source") or article.get("source_name") or "").replace("보도자료", "").strip()
+        return source or "중앙정부"
+
+    if governance_scope == "지자체":
+        owner = _extract_local_owner_label(source_text)
+        if owner:
+            return owner
+        if region and region != NATIONWIDE_REGION:
+            return region
+        return None
+
+    if governance_scope == "공공기관":
+        owner = _extract_public_institution_owner_label(source_text)
+        if owner:
+            return owner
+        source = str(article.get("source") or article.get("source_name") or "").strip()
+        return source or None
+
+    return None
+
+
+def build_hub_cluster_key(
+    article: dict,
+    *,
+    governance_scope: str | None,
+    hub_owner_label: str | None,
+    region: str,
+    hub_topics: list[str],
+    governance_activity_types: list[str],
+) -> str | None:
+    if not governance_scope or not hub_topics:
+        return None
+
+    owner = hub_owner_label or (region if region != NATIONWIDE_REGION else "") or str(article.get("source") or "")
+    primary_topic = hub_topics[0]
+    primary_activity = governance_activity_types[0] if governance_activity_types else ""
+    published_key = (selection_published_at(article) or "")[:10]
+    return "|".join(
+        part
+        for part in [governance_scope, owner.strip(), region or "", primary_topic, primary_activity, published_key]
+        if part
+    )
 
 
 def build_summary(article: dict) -> str:
@@ -563,6 +691,60 @@ def _article_text(article: dict[str, Any]) -> str:
         ]
         if part
     )
+
+
+def _hub_context_text(article: dict[str, Any], text: str) -> str:
+    return " ".join(
+        part
+        for part in [
+            str(article.get("source") or ""),
+            str(article.get("source_name") or ""),
+            str(article.get("section") or ""),
+            text,
+        ]
+        if part
+    )
+
+
+def _extract_local_owner_label(text: str) -> str | None:
+    match = re.search(
+        r"(?:^|[\s'\"“”‘’(\[])"
+        r"([가-힣]{1,12}(?:특별시|광역시|특별자치시|특별자치도|자치시|자치도|도|시|군|구))"
+        r"(?:[\s,.'\"“”‘’)\]]|$)",
+        text,
+    )
+    if match:
+        candidate = match.group(1)
+        if candidate not in {"주도"}:
+            return candidate
+
+    for pattern in [
+        r"([가-힣]{1,12}(?:시|군|구))장",
+        r"([가-힣]{1,12}도)지사",
+    ]:
+        extra_match = re.search(pattern, text)
+        if not extra_match:
+            continue
+        candidate = extra_match.group(1)
+        if candidate not in {"주도"}:
+            return candidate
+    return None
+
+
+def _extract_public_institution_owner_label(text: str) -> str | None:
+    matches = re.findall(
+        r"([가-힣A-Za-z0-9· ]{2,40}?(?:공단|공사|진흥원|재단|청년센터|센터|청년허브|허브|청년일자리스테이션|일자리스테이션))",
+        text,
+    )
+    for candidate in matches:
+        cleaned = normalize_article_title(candidate)
+        cleaned = re.sub(r"\s+", " ", cleaned).strip(" ,·")
+        if not cleaned:
+            continue
+        if any(keyword in cleaned for keyword in HUB_EXCLUDE_KEYWORDS):
+            continue
+        return cleaned
+    return None
 
 
 def _representative_sort_key(article: dict[str, Any]) -> tuple[Any, ...]:
