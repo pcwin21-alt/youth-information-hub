@@ -31,7 +31,7 @@ jobs:
   build:
     if: github.ref == format('refs/heads/{0}', github.event.repository.default_branch)
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 45
     env:
       PYTHONUTF8: "1"
       TZ: Asia/Seoul
@@ -67,7 +67,7 @@ jobs:
 
       - name: Run pipeline
         if: ${{ steps.deploy_mode.outputs.use_prebuilt_site != 'true' }}
-        run: python public-site/scripts/cron_runner.py
+        run: python public-site/scripts/cron_runner.py --curator-max-network-enrich 20
 
       - name: Verify generated artifacts
         run: python public-site/scripts/verify_site_artifacts.py --min-articles 1 --min-news-cards 0
