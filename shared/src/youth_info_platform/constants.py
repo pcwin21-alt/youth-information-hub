@@ -219,7 +219,7 @@ PUBLIC_INSTITUTION_CONTEXT_KEYWORDS = [
     "인재평생교육진흥원",
 ]
 
-HUB_EXCLUDE_KEYWORDS = [
+POLITICAL_HUB_EXCLUDE_KEYWORDS = [
     "국민의힘",
     "더불어민주당",
     "민주당",
@@ -229,6 +229,9 @@ HUB_EXCLUDE_KEYWORDS = [
     "후보",
     "선거",
     "정당",
+]
+
+HUB_EXCLUDE_KEYWORDS = POLITICAL_HUB_EXCLUDE_KEYWORDS + [
     "대학교",
     "대학",
     "학생회",

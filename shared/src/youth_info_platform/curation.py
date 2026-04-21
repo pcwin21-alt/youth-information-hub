@@ -33,6 +33,7 @@ from .constants import (
     NOW_KEYWORDS,
     OFFICIAL_KEYWORDS,
     OPINION_KEYWORDS,
+    POLITICAL_HUB_EXCLUDE_KEYWORDS,
     PUBLIC_GOVERNANCE_KEYWORDS,
     PUBLIC_INSTITUTION_CONTEXT_KEYWORDS,
     REGIONS,
@@ -70,6 +71,9 @@ BUCKET_LABELS = {
     "regional_issue": "지역 이슈",
     "governance": "거버넌스",
 }
+NON_POLITICAL_HUB_EXCLUDE_KEYWORDS = tuple(
+    keyword for keyword in HUB_EXCLUDE_KEYWORDS if keyword not in POLITICAL_HUB_EXCLUDE_KEYWORDS
+)
 
 
 def normalize_url(url: str) -> str:
@@ -455,7 +459,7 @@ def has_local_government_context(article: dict, text: str) -> bool:
 
 def has_public_institution_context(article: dict, text: str) -> bool:
     source_text = _hub_context_text(article, text)
-    if any(keyword in source_text for keyword in HUB_EXCLUDE_KEYWORDS):
+    if any(keyword in source_text for keyword in NON_POLITICAL_HUB_EXCLUDE_KEYWORDS):
         return False
     return bool(_extract_public_institution_owner_label(source_text)) or any(
         keyword in source_text for keyword in PUBLIC_INSTITUTION_CONTEXT_KEYWORDS
@@ -464,7 +468,7 @@ def has_public_institution_context(article: dict, text: str) -> bool:
 
 def is_excluded_hub_record(article: dict, text: str, activity_types: list[str] | None = None) -> bool:
     source_text = _hub_context_text(article, text)
-    if any(keyword in source_text for keyword in HUB_EXCLUDE_KEYWORDS):
+    if any(keyword in source_text for keyword in NON_POLITICAL_HUB_EXCLUDE_KEYWORDS):
         return True
 
     if "청년위원회" in text and not any(
