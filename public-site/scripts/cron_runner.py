@@ -107,6 +107,7 @@ def main() -> int:
                     "step3_classified": str(RUNTIME_PIPELINE_ROOT / "step3_classified.json"),
                     "step4_selected": str(RUNTIME_PIPELINE_ROOT / "step4_selected.json"),
                     "step5_summarized": str(RUNTIME_PIPELINE_ROOT / "step5_summarized.json"),
+                    "ops_radar": str(RUNTIME_PIPELINE_ROOT / "ops_radar.json"),
                 },
             },
             {

@@ -63,6 +63,15 @@ def build_article_funnel(
         entry["selection_reason"] = normalized.get("selection_reason") or entry.get("selection_reason")
         entry["classification_reason"] = normalized.get("classification_reason") or entry.get("classification_reason")
         entry["drop_reason"] = normalized.get("drop_reason") or entry.get("drop_reason")
+        entry["ops_radar_score"] = normalized.get("ops_radar_score", entry.get("ops_radar_score"))
+        entry["ops_radar_priority"] = normalized.get("ops_radar_priority") or entry.get("ops_radar_priority")
+        entry["ops_radar_overlooked"] = bool(
+            normalized.get("ops_radar_overlooked", entry.get("ops_radar_overlooked"))
+        )
+        entry["ops_radar_lanes"] = normalized.get("ops_radar_lanes") or entry.get("ops_radar_lanes") or []
+        entry["ops_radar_labels"] = normalized.get("ops_radar_labels") or entry.get("ops_radar_labels") or []
+        entry["ops_radar_matches"] = normalized.get("ops_radar_matches") or entry.get("ops_radar_matches") or []
+        entry["ops_radar_note"] = normalized.get("ops_radar_note") or entry.get("ops_radar_note")
         entry["summary"] = normalized.get("summary") or entry.get("summary")
         entry["display_badges"] = normalized.get("display_badges") or entry.get("display_badges") or []
         entry["matched_urls"] = sorted(
@@ -163,6 +172,13 @@ def _base_entry(article: dict[str, Any], key: str) -> dict[str, Any]:
         "selection_reason": article.get("selection_reason"),
         "classification_reason": article.get("classification_reason"),
         "drop_reason": article.get("drop_reason"),
+        "ops_radar_score": article.get("ops_radar_score"),
+        "ops_radar_priority": article.get("ops_radar_priority"),
+        "ops_radar_overlooked": bool(article.get("ops_radar_overlooked")),
+        "ops_radar_lanes": list(article.get("ops_radar_lanes") or []),
+        "ops_radar_labels": list(article.get("ops_radar_labels") or []),
+        "ops_radar_matches": list(article.get("ops_radar_matches") or []),
+        "ops_radar_note": article.get("ops_radar_note"),
         "summary": article.get("summary"),
         "display_badges": list(article.get("display_badges") or []),
         "pipeline_flags": {

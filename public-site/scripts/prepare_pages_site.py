@@ -30,6 +30,7 @@ def main() -> int:
     parser.add_argument("--selected-file", default=str(RUNTIME_PIPELINE_ROOT / "step4_selected.json"))
     parser.add_argument("--summarized-file", default=str(RUNTIME_PIPELINE_ROOT / "step5_summarized.json"))
     parser.add_argument("--funnel-file", default=str(RUNTIME_PIPELINE_ROOT / "article_funnel.json"))
+    parser.add_argument("--ops-radar-file", default=str(RUNTIME_PIPELINE_ROOT / "ops_radar.json"))
     parser.add_argument("--cname", default=os.environ.get("PAGES_CNAME", ""))
     args = parser.parse_args()
 
@@ -49,6 +50,7 @@ def main() -> int:
     copy_if_exists(Path(args.selected_file), site_data_dir / "selected.json")
     copy_if_exists(Path(args.summarized_file), site_data_dir / "summarized.json")
     copy_if_exists(Path(args.funnel_file), site_data_dir / "article_funnel.json")
+    copy_if_exists(Path(args.ops_radar_file), site_data_dir / "ops_radar.json")
 
     cname = normalize_cname(args.cname)
     if cname:
