@@ -18,6 +18,8 @@ jobs:
     env:
       PYTHONUTF8: "1"
       TZ: Asia/Seoul
+      DJANGO_DEBUG: "1"
+      DJANGO_SECRET_KEY: "ci-only-secret-key"
     steps:
       - uses: actions/checkout@v4
 
