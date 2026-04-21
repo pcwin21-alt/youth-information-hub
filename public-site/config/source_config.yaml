@@ -145,7 +145,16 @@
         "청년 노동",
         "청년 권리",
         "청년센터",
+        "청년센터장",
         "청년 공간",
+        "청년단체",
+        "청년 공약",
+        "청년공약",
+        "청년 후보",
+        "청년후보",
+        "청년 예비후보",
+        "청년 비례대표",
+        "청년비례대표",
         "청년보좌역",
         "청년위원회",
         "청년협의체"
@@ -157,7 +166,7 @@
         "고등학생",
         "유소년"
       ],
-      "limit": 80
+      "limit": 120
     },
     {
       "name": "네이버뉴스 청년정책(1주)",
@@ -242,6 +251,114 @@
         "고등학생"
       ],
       "limit": 30
+    },
+    {
+      "name": "네이버뉴스 청년 공약(1주)",
+      "kind": "news",
+      "enabled": true,
+      "parser": "naver_news_search",
+      "url": "https://search.naver.com/search.naver?where=news&sort=1&photo=0&field=0&nso=so:dd,p:1w,a:all&query=%EC%B2%AD%EB%85%84%20%EA%B3%B5%EC%95%BD",
+      "include_keywords": [
+        "청년 공약",
+        "청년공약",
+        "청년 정책",
+        "청년정책",
+        "청년 주거",
+        "청년 일자리",
+        "청년 고용",
+        "청년 지원"
+      ],
+      "exclude_keywords": [
+        "청소년",
+        "초등",
+        "중학생",
+        "고등학생"
+      ],
+      "limit": 25
+    },
+    {
+      "name": "네이버뉴스 청년 후보·비례대표(1주)",
+      "kind": "news",
+      "enabled": true,
+      "parser": "naver_news_search",
+      "url": "https://search.naver.com/search.naver?where=news&sort=1&photo=0&field=0&nso=so:dd,p:1w,a:all&query=%EC%B2%AD%EB%85%84%EB%B9%84%EB%A1%80%EB%8C%80%ED%91%9C",
+      "include_keywords": [
+        "청년 비례대표",
+        "청년비례대표",
+        "청년 후보",
+        "청년후보",
+        "청년 예비후보",
+        "청년 공약",
+        "청년공약",
+        "청년단체",
+        "청년센터장",
+        "공천",
+        "갑질"
+      ],
+      "exclude_keywords": [
+        "청소년",
+        "초등",
+        "중학생",
+        "고등학생"
+      ],
+      "limit": 60
+    },
+    {
+      "name": "네이버뉴스 청년단체(1주)",
+      "kind": "news",
+      "enabled": true,
+      "parser": "naver_news_search",
+      "url": "https://search.naver.com/search.naver?where=news&sort=1&photo=0&field=0&nso=so:dd,p:1w,a:all&query=%EC%B2%AD%EB%85%84%EB%8B%A8%EC%B2%B4",
+      "include_keywords": [
+        "청년단체",
+        "청년센터",
+        "청년센터장",
+        "청년정책네트워크",
+        "청년협의체",
+        "청년위원회",
+        "청년 공약",
+        "청년후보"
+      ],
+      "exclude_keywords": [
+        "청소년",
+        "초등",
+        "중학생",
+        "고등학생"
+      ],
+      "limit": 60
+    },
+    {
+      "name": "네이버뉴스 청년센터장·운영(1주)",
+      "kind": "news",
+      "enabled": true,
+      "parser": "naver_news_search",
+      "url": "https://search.naver.com/search.naver?where=news&sort=1&photo=0&field=0&nso=so:dd,p:1w,a:all&query=%EC%B2%AD%EB%85%84%EC%84%BC%ED%84%B0%EC%9E%A5",
+      "include_keywords": [
+        "청년센터장",
+        "청년센터",
+        "청년단체",
+        "청년정책네트워크",
+        "청년 비례대표",
+        "청년비례대표",
+        "공천",
+        "갑질"
+      ],
+      "exclude_keywords": [
+        "청소년",
+        "초등",
+        "중학생",
+        "고등학생",
+        "대학일자리플러스센터",
+        "대학일자리센터",
+        "취업지원",
+        "자기소개서",
+        "면접",
+        "신입생",
+        "교직원",
+        "JOB FAIR",
+        "직무/채용 박람회"
+      ],
+      "limit": 60
     },
     {
       "name": "네이버뉴스 거버넌스(1개월)",
@@ -384,6 +501,75 @@
       "parser": "rss",
       "url": "https://news.google.com/rss/search?q=%EC%B2%AD%EB%85%84%EB%B3%B4%EC%A2%8C%EC%97%AD%20when%3A30d&hl=ko&gl=KR&ceid=KR:ko",
       "limit": 40
+    },
+    {
+      "name": "구글뉴스 청년 공약(7일)",
+      "kind": "news",
+      "enabled": true,
+      "parser": "rss",
+      "url": "https://news.google.com/rss/search?q=%EC%B2%AD%EB%85%84%20%EA%B3%B5%EC%95%BD%20when%3A7d&hl=ko&gl=KR&ceid=KR:ko",
+      "include_keywords": [
+        "청년 공약",
+        "청년공약",
+        "청년 정책",
+        "청년정책",
+        "청년 주거",
+        "청년 일자리",
+        "청년 고용",
+        "청년 지원"
+      ],
+      "exclude_keywords": [
+        "청소년",
+        "초등",
+        "중학생",
+        "고등학생"
+      ],
+      "limit": 20
+    },
+    {
+      "name": "구글뉴스 청년단체(7일)",
+      "kind": "news",
+      "enabled": true,
+      "parser": "rss",
+      "url": "https://news.google.com/rss/search?q=%EC%B2%AD%EB%85%84%EB%8B%A8%EC%B2%B4%20when%3A7d&hl=ko&gl=KR&ceid=KR:ko",
+      "include_keywords": [
+        "청년단체",
+        "청년센터",
+        "청년센터장",
+        "청년 비례대표",
+        "청년비례대표",
+        "공천",
+        "갑질"
+      ],
+      "exclude_keywords": [
+        "청소년",
+        "초등",
+        "중학생",
+        "고등학생"
+      ],
+      "limit": 20
+    },
+    {
+      "name": "구글뉴스 청년비례대표(7일)",
+      "kind": "news",
+      "enabled": true,
+      "parser": "rss",
+      "url": "https://news.google.com/rss/search?q=%EC%B2%AD%EB%85%84%EB%B9%84%EB%A1%80%EB%8C%80%ED%91%9C%20when%3A7d&hl=ko&gl=KR&ceid=KR:ko",
+      "include_keywords": [
+        "청년 비례대표",
+        "청년비례대표",
+        "청년단체",
+        "청년센터장",
+        "공천",
+        "갑질"
+      ],
+      "exclude_keywords": [
+        "청소년",
+        "초등",
+        "중학생",
+        "고등학생"
+      ],
+      "limit": 20
     }
   ]
 }
