@@ -1,0 +1,75 @@
+{
+  "run_id": "96b0946c-35b3-4dff-9834-ed5762029e58",
+  "state": "completed",
+  "started_at": "2026-04-21T16:11:02.115697+09:00",
+  "updated_at": "2026-04-21T16:18:14.881819+09:00",
+  "finished_at": "2026-04-21T16:18:14.881819+09:00",
+  "current_step": null,
+  "steps": [
+    {
+      "name": "collect_youtube",
+      "state": "completed",
+      "updated_at": "2026-04-21T16:11:02.599875+09:00",
+      "details": {
+        "stdout": "collected_videos=1"
+      }
+    },
+    {
+      "name": "dedup_filter",
+      "state": "completed",
+      "updated_at": "2026-04-21T16:11:04.535506+09:00",
+      "details": {
+        "stdout": "filtered_articles=322"
+      }
+    },
+    {
+      "name": "content_curator",
+      "state": "completed",
+      "updated_at": "2026-04-21T16:18:13.622926+09:00",
+      "details": {
+        "stdout": "enriched=322 classified=322 selected=10 summarized=10 funnel=322"
+      }
+    },
+    {
+      "name": "publish_db",
+      "state": "completed",
+      "updated_at": "2026-04-21T16:18:13.856214+09:00",
+      "details": {
+        "stdout": "db_upserted=10"
+      }
+    },
+    {
+      "name": "publish_web",
+      "state": "completed",
+      "updated_at": "2026-04-21T16:18:14.864824+09:00",
+      "details": {
+        "stdout": "web_output=C:\\★_VIBE CODING\\1  개발 단계\\외부_#07_26-03_청년 투게더\\public-site\\web\\index.html"
+      }
+    }
+  ],
+  "artifacts": {
+    "step1_raw_youtube": "C:\\★_VIBE CODING\\1  개발 단계\\외부_#07_26-03_청년 투게더\\runtime\\pipeline\\step1_raw_youtube.json",
+    "step2_filtered": "C:\\★_VIBE CODING\\1  개발 단계\\외부_#07_26-03_청년 투게더\\runtime\\pipeline\\step2_filtered.json",
+    "step3_classified": "C:\\★_VIBE CODING\\1  개발 단계\\외부_#07_26-03_청년 투게더\\runtime\\pipeline\\step3_classified.json",
+    "step4_selected": "C:\\★_VIBE CODING\\1  개발 단계\\외부_#07_26-03_청년 투게더\\runtime\\pipeline\\step4_selected.json",
+    "step5_summarized": "C:\\★_VIBE CODING\\1  개발 단계\\외부_#07_26-03_청년 투게더\\runtime\\pipeline\\step5_summarized.json",
+    "articles_db": "C:\\★_VIBE CODING\\1  개발 단계\\외부_#07_26-03_청년 투게더\\runtime\\db\\articles.db",
+    "web_index": "C:\\★_VIBE CODING\\1  개발 단계\\외부_#07_26-03_청년 투게더\\public-site\\web\\index.html"
+  },
+  "date_basis": {
+    "timezone": "Asia/Seoul",
+    "article_date_basis": "원문 published_date 우선, 값이 없으면 수집 완료 시각 기준",
+    "freshness_target_hours": 24
+  },
+  "update_policy": {
+    "timezone": "Asia/Seoul",
+    "frequency": "daily_3x",
+    "times": [
+      "09:00",
+      "15:00",
+      "21:00"
+    ],
+    "notes": "정기 배치 기준이며, 긴급 이슈는 수동 재실행으로 보완"
+  },
+  "error": null
+}

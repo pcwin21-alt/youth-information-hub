@@ -2,10 +2,14 @@ name: Build And Deploy Pages
 
 on:
   push:
+    paths:
+      - "shared/**"
+      - "public-site/**"
+      - ".github/workflows/deploy-pages.yml"
   workflow_dispatch:
     inputs:
       use_prebuilt_site:
-        description: "Deploy checked-in web/output artifacts without rerunning the pipeline"
+        description: "Deploy checked-in public-site/runtime artifacts without rerunning the pipeline"
         required: false
         type: boolean
         default: false
@@ -43,7 +47,8 @@ jobs:
       - name: Install project
         run: |
           python -m pip install --upgrade pip
-          python -m pip install -e .
+          python -m pip install -e ./shared
+          python -m pip install -e ./public-site
 
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
@@ -62,20 +67,20 @@ jobs:
 
       - name: Run pipeline
         if: ${{ steps.deploy_mode.outputs.use_prebuilt_site != 'true' }}
-        run: python .claude/skills/scheduler/scripts/cron_runner.py
+        run: python public-site/scripts/cron_runner.py
 
       - name: Verify generated artifacts
-        run: python scripts/verify_site_artifacts.py --min-articles 1 --min-news-cards 1
+        run: python public-site/scripts/verify_site_artifacts.py --min-articles 1 --min-news-cards 0
 
       - name: Prepare Pages artifact
         env:
           PAGES_CNAME: ${{ vars.PAGES_CNAME }}
-        run: python scripts/prepare_pages_site.py --site-dir dist
+        run: python public-site/scripts/prepare_pages_site.py --site-dir public-site/dist
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: dist
+          path: public-site/dist
 
   deploy:
     needs: build

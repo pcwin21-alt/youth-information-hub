@@ -1,0 +1,18 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "youth-info-platform-shared"
+version = "0.1.0"
+description = "Shared pipeline and runtime helpers for the youth information platform"
+requires-python = ">=3.11"
+dependencies = [
+  "beautifulsoup4>=4.12,<5",
+]
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]

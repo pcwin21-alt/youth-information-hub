@@ -1,0 +1,389 @@
+{
+  "sources": [
+    {
+      "name": "정책브리핑 RSS",
+      "kind": "official",
+      "enabled": true,
+      "parser": "rss",
+      "url": "https://www.korea.kr/rss/policy.xml",
+      "include_youth_related": true,
+      "limit": 20
+    },
+    {
+      "name": "정책브리핑 청년정책 뉴스",
+      "kind": "official",
+      "enabled": true,
+      "parser": "korea_withyou_policy_news",
+      "url": "https://www.korea.kr/withyou/",
+      "detail_enrichment": true,
+      "detail_parser": "korea_policy_news",
+      "detail_limit": 6,
+      "limit": 20
+    },
+    {
+      "name": "국무조정실 보도자료",
+      "kind": "official",
+      "enabled": true,
+      "parser": "opm_press_release",
+      "url": "https://www.opm.go.kr/opm/news/press-release.do?mode=list&srSearchVal=%EC%B2%AD%EB%85%84&articleLimit=20",
+      "detail_enrichment": true,
+      "detail_parser": "opm_press_release",
+      "detail_limit": 6,
+      "include_youth_related": true,
+      "limit": 20
+    },
+    {
+      "name": "고용노동부 정책자료 RSS",
+      "kind": "official",
+      "enabled": true,
+      "parser": "rss",
+      "url": "https://www.moel.go.kr/rss/policy.do",
+      "include_youth_related": true,
+      "include_keywords": [
+        "청년고용",
+        "청년취업",
+        "청년 일경험",
+        "구직청년",
+        "국민취업지원제도",
+        "사회초년생"
+      ],
+      "limit": 20
+    },
+    {
+      "name": "보건복지부 보도자료",
+      "kind": "official",
+      "enabled": true,
+      "parser": "mohw_press_release",
+      "url": "https://www.mohw.go.kr/board.es?mid=a10503000000&bid=0027&tag=&act=list",
+      "include_youth_related": true,
+      "include_keywords": [
+        "청년 마음건강",
+        "고립·은둔",
+        "고립은둔"
+      ],
+      "limit": 20
+    },
+    {
+      "name": "국토교통부 보도자료",
+      "kind": "official",
+      "enabled": true,
+      "parser": "molit_board_list",
+      "url": "https://www.molit.go.kr/USR/NEWS/m_71/lst.jsp",
+      "include_youth_related": true,
+      "include_keywords": [
+        "청년주택",
+        "청년월세",
+        "청년안심주택",
+        "사회초년생"
+      ],
+      "limit": 20
+    },
+    {
+      "name": "국토교통부 정책자료",
+      "kind": "official",
+      "enabled": true,
+      "parser": "molit_board_list",
+      "url": "https://www.molit.go.kr/USR/policyData/m_34681/lst.jsp",
+      "include_youth_related": true,
+      "include_keywords": [
+        "청년주택",
+        "청년월세",
+        "청년안심주택",
+        "사회초년생"
+      ],
+      "limit": 20
+    },
+    {
+      "name": "교육부 보도자료",
+      "kind": "official",
+      "enabled": true,
+      "parser": "moe_press_release",
+      "url": "https://www.moe.go.kr/boardCnts/listRenew.do?boardID=294&lev=0&m=020402&searchType=null&statusYN=W&page=1&s=moe",
+      "include_youth_related": true,
+      "include_keywords": [
+        "지역대학",
+        "유학생",
+        "취업 지원",
+        "정주"
+      ],
+      "limit": 20
+    },
+    {
+      "name": "금융위원회 보도자료",
+      "kind": "official",
+      "enabled": true,
+      "parser": "fsc_press_release",
+      "url": "https://www.fsc.go.kr/no010101?srchCtgry=1",
+      "include_youth_related": true,
+      "include_keywords": [
+        "청년도약",
+        "청년희망",
+        "사회초년생"
+      ],
+      "limit": 20
+    },
+    {
+      "name": "네이버뉴스 청년 광역(1주)",
+      "kind": "news",
+      "enabled": true,
+      "parser": "naver_news_search",
+      "url": "https://search.naver.com/search.naver?where=news&sort=1&photo=0&field=0&nso=so:dd,p:1w,a:all&query=%EC%B2%AD%EB%85%84",
+      "include_keywords": [
+        "청년정책",
+        "청년 정책",
+        "청년 지원",
+        "청년 일자리",
+        "청년 고용",
+        "청년 취업",
+        "청년 실업",
+        "쉬었음",
+        "청년 주거",
+        "청년 월세",
+        "청년 부채",
+        "청년 금융",
+        "청년 대출",
+        "청년 노동",
+        "청년 권리",
+        "청년센터",
+        "청년 공간",
+        "청년보좌역",
+        "청년위원회",
+        "청년협의체"
+      ],
+      "exclude_keywords": [
+        "청소년",
+        "초등",
+        "중학생",
+        "고등학생",
+        "유소년"
+      ],
+      "limit": 80
+    },
+    {
+      "name": "네이버뉴스 청년정책(1주)",
+      "kind": "news",
+      "enabled": true,
+      "parser": "naver_news_search",
+      "url": "https://search.naver.com/search.naver?where=news&sort=1&photo=0&field=0&nso=so:dd,p:1w,a:all&query=%EC%B2%AD%EB%85%84%20%EC%A0%95%EC%B1%85",
+      "exclude_keywords": [
+        "청소년",
+        "초등",
+        "중학생",
+        "고등학생"
+      ],
+      "limit": 40
+    },
+    {
+      "name": "네이버뉴스 청년 고용·쉬었음(1주)",
+      "kind": "news",
+      "enabled": true,
+      "parser": "naver_news_search",
+      "url": "https://search.naver.com/search.naver?where=news&sort=1&photo=0&field=0&nso=so:dd,p:1w,a:all&query=%EC%B2%AD%EB%85%84%20%EC%9D%BC%EC%9E%90%EB%A6%AC",
+      "exclude_keywords": [
+        "청소년",
+        "초등",
+        "중학생",
+        "고등학생"
+      ],
+      "limit": 30
+    },
+    {
+      "name": "네이버뉴스 청년 부채·금융(1주)",
+      "kind": "news",
+      "enabled": true,
+      "parser": "naver_news_search",
+      "url": "https://search.naver.com/search.naver?where=news&sort=1&photo=0&field=0&nso=so:dd,p:1w,a:all&query=%EC%B2%AD%EB%85%84%20%EB%8C%80%EC%B6%9C",
+      "exclude_keywords": [
+        "청소년",
+        "초등",
+        "중학생",
+        "고등학생"
+      ],
+      "limit": 30
+    },
+    {
+      "name": "네이버뉴스 청년 주거·생활(1주)",
+      "kind": "news",
+      "enabled": true,
+      "parser": "naver_news_search",
+      "url": "https://search.naver.com/search.naver?where=news&sort=1&photo=0&field=0&nso=so:dd,p:1w,a:all&query=%EC%B2%AD%EB%85%84%20%EC%9B%94%EC%84%B8",
+      "exclude_keywords": [
+        "청소년",
+        "초등",
+        "중학생",
+        "고등학생"
+      ],
+      "limit": 30
+    },
+    {
+      "name": "네이버뉴스 청년 노동·권리(1주)",
+      "kind": "news",
+      "enabled": true,
+      "parser": "naver_news_search",
+      "url": "https://search.naver.com/search.naver?where=news&sort=1&photo=0&field=0&nso=so:dd,p:1w,a:all&query=%EC%B2%AD%EB%85%84%20%EB%85%B8%EB%8F%99",
+      "exclude_keywords": [
+        "청소년",
+        "초등",
+        "중학생",
+        "고등학생"
+      ],
+      "limit": 30
+    },
+    {
+      "name": "네이버뉴스 청년센터·활동(1주)",
+      "kind": "news",
+      "enabled": true,
+      "parser": "naver_news_search",
+      "url": "https://search.naver.com/search.naver?where=news&sort=1&photo=0&field=0&nso=so:dd,p:1w,a:all&query=%EC%B2%AD%EB%85%84%EC%84%BC%ED%84%B0",
+      "exclude_keywords": [
+        "청소년",
+        "초등",
+        "중학생",
+        "고등학생"
+      ],
+      "limit": 30
+    },
+    {
+      "name": "네이버뉴스 거버넌스(1개월)",
+      "kind": "news",
+      "enabled": true,
+      "parser": "naver_news_search",
+      "url": "https://search.naver.com/search.naver?where=news&sort=1&photo=0&field=0&nso=so:dd,p:1m,a:all&query=%EC%B2%AD%EB%85%84%EB%B3%B4%EC%A2%8C%EC%97%AD",
+      "limit": 30
+    },
+    {
+      "name": "네이버뉴스 YTN 전용(1주)",
+      "kind": "news",
+      "enabled": true,
+      "parser": "naver_news_search",
+      "url": "https://search.naver.com/search.naver?where=news&sort=1&photo=0&field=0&nso=so:dd,p:1w,a:all&query=%EC%B2%AD%EB%85%84%20YTN",
+      "allowed_domain_suffixes": [
+        "ytn.co.kr"
+      ],
+      "blocked_domain_suffixes": [
+        "star.ytn.co.kr",
+        "radio.ytn.co.kr",
+        "science.ytn.co.kr"
+      ],
+      "include_keywords": [
+        "청년 공간",
+        "청년 정책",
+        "청년정책",
+        "청년 고용",
+        "청년 일자리",
+        "청년 주거",
+        "청년 노동",
+        "청년 실업",
+        "쉬었음"
+      ],
+      "exclude_keywords": [
+        "청소년",
+        "초등",
+        "중학생",
+        "고등학생",
+        "YTN ON-AI RADIO"
+      ],
+      "limit": 40
+    },
+    {
+      "name": "네이버뉴스 연합뉴스 전용(1주)",
+      "kind": "news",
+      "enabled": true,
+      "parser": "naver_news_search",
+      "url": "https://search.naver.com/search.naver?where=news&sort=1&photo=0&field=0&nso=so:dd,p:1w,a:all&query=%EC%B2%AD%EB%85%84%20%EC%97%B0%ED%95%A9%EB%89%B4%EC%8A%A4",
+      "allowed_domain_suffixes": [
+        "yna.co.kr"
+      ],
+      "allowed_publishers": [
+        "연합뉴스"
+      ],
+      "include_keywords": [
+        "청년정책",
+        "청년 고용",
+        "청년 일자리",
+        "청년 주거",
+        "청년 부채",
+        "청년 금융",
+        "청년 노동",
+        "청년보좌역",
+        "청년협의체",
+        "청년위원회"
+      ],
+      "exclude_keywords": [
+        "청소년",
+        "초등",
+        "중학생",
+        "고등학생",
+        "이 시각 헤드라인",
+        "주요 신문 사설",
+        "주요일정",
+        "인사종합"
+      ],
+      "limit": 40
+    },
+    {
+      "name": "구글뉴스 청년정책(7일)",
+      "kind": "news",
+      "enabled": true,
+      "parser": "rss",
+      "url": "https://news.google.com/rss/search?q=%EC%B2%AD%EB%85%84%20%EC%A0%95%EC%B1%85%20when%3A7d&hl=ko&gl=KR&ceid=KR:ko",
+      "exclude_keywords": [
+        "청소년",
+        "초등",
+        "중학생",
+        "고등학생"
+      ],
+      "limit": 30
+    },
+    {
+      "name": "구글뉴스 청년 고용·쉬었음(7일)",
+      "kind": "news",
+      "enabled": true,
+      "parser": "rss",
+      "url": "https://news.google.com/rss/search?q=%EC%B2%AD%EB%85%84%20%EC%9D%BC%EC%9E%90%EB%A6%AC%20when%3A7d&hl=ko&gl=KR&ceid=KR:ko",
+      "exclude_keywords": [
+        "청소년",
+        "초등",
+        "중학생",
+        "고등학생"
+      ],
+      "limit": 30
+    },
+    {
+      "name": "구글뉴스 청년 부채·금융(7일)",
+      "kind": "news",
+      "enabled": true,
+      "parser": "rss",
+      "url": "https://news.google.com/rss/search?q=%EC%B2%AD%EB%85%84%20%EB%8C%80%EC%B6%9C%20when%3A7d&hl=ko&gl=KR&ceid=KR:ko",
+      "exclude_keywords": [
+        "청소년",
+        "초등",
+        "중학생",
+        "고등학생"
+      ],
+      "limit": 30
+    },
+    {
+      "name": "구글뉴스 청년 주거·생활(7일)",
+      "kind": "news",
+      "enabled": true,
+      "parser": "rss",
+      "url": "https://news.google.com/rss/search?q=%EC%B2%AD%EB%85%84%20%EC%9B%94%EC%84%B8%20when%3A7d&hl=ko&gl=KR&ceid=KR:ko",
+      "exclude_keywords": [
+        "청소년",
+        "초등",
+        "중학생",
+        "고등학생"
+      ],
+      "limit": 30
+    },
+    {
+      "name": "구글뉴스 거버넌스(30일)",
+      "kind": "news",
+      "enabled": true,
+      "parser": "rss",
+      "url": "https://news.google.com/rss/search?q=%EC%B2%AD%EB%85%84%EB%B3%B4%EC%A2%8C%EC%97%AD%20when%3A30d&hl=ko&gl=KR&ceid=KR:ko",
+      "limit": 40
+    }
+  ]
+}
