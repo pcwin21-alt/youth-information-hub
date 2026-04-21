@@ -1,0 +1,1 @@
+"""Institution portal Django project."""

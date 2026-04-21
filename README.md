@@ -1,81 +1,47 @@
-# Youth Info Platform
+# Youth Info Platform Monorepo
 
-청년 정보 통합 플랫폼의 첫 구현 골격입니다.
+이 저장소는 공개용 정적 사이트와 기관용 Django 포털을 같은 데이터 파이프라인 위에서 함께 운영하기 위한 모노레포다.
 
-현재 포함 범위:
-- 뉴스 수집(RSS + 샘플 폴백)
-- 중복 제거 및 기본 필터링
-- 규칙 기반 분류/선별/요약
-- SQLite 저장
-- 단순 HTML 다이제스트 생성
+## Layout
 
-빠른 실행:
-
-```powershell
-python .claude/skills/scheduler/scripts/cron_runner.py --use-sample-data
+```text
+shared/            공통 Python 패키지와 파이프라인 코어
+public-site/       공개용 정적 사이트, 배포 스크립트, 검증 스크립트
+institution-site/  기관용 Django 앱
+runtime/           공용 런타임 산출물과 DB, 로그
+docs/              운영 문서
 ```
 
-진행 현황 확인:
+## Quick Start
+
+### 1. 공개용 파이프라인 실행
 
 ```powershell
-python scripts/status_report.py
+python -m pip install -e .\\shared -e .\\public-site
+python public-site\\scripts\\cron_runner.py --use-sample-data
+python public-site\\scripts\\verify_site_artifacts.py --min-articles 1 --min-news-cards 1
 ```
 
-절전/최대절전 자동 깨우기 설정:
+### 2. 기관용 포털 실행
 
 ```powershell
-powershell -NoProfile -ExecutionPolicy Bypass -File scripts\configure_sleep_wake.ps1
-powershell -NoProfile -ExecutionPolicy Bypass -File scripts\install_windows_scheduler.ps1 -WakeToRun -Force
+python -m pip install -e .\\shared -e .\\institution-site
+python institution-site\\manage.py migrate
+python institution-site\\manage.py sync_runtime_articles
+$env:DJANGO_DEBUG='1'
+python institution-site\\manage.py runserver
 ```
 
-로컬 미리보기 서버 백그라운드 실행:
+## Runtime Contract
 
-```powershell
-powershell -NoProfile -ExecutionPolicy Bypass -File scripts\start_preview_servers.ps1
-```
+- 파이프라인 산출물: `runtime/pipeline/`
+- 공유 SQLite: `runtime/db/articles.db`
+- 공개용 HTML: `public-site/web/`
+- 기관용 개인화 데이터: Django DB
 
-임시 외부 공유 링크 시작:
+## Notes
 
-```powershell
-powershell -NoProfile -ExecutionPolicy Bypass -File scripts\start_public_tunnel.ps1 -InstallIfMissing
-```
-
-미리보기 서버/외부 터널 상태 확인:
-
-```powershell
-powershell -NoProfile -ExecutionPolicy Bypass -File scripts\preview_servers_status.ps1
-powershell -NoProfile -ExecutionPolicy Bypass -File scripts\public_tunnel_status.ps1
-```
-
-소스 상태 점검:
-
-```powershell
-python scripts/source_healthcheck.py
-```
-
-배포 준비도 점검:
-
-```powershell
-python scripts/deployment_readiness.py
-```
-
-생성 결과:
-- `output/step1_raw_articles.json`
-- `output/step2_filtered.json`
-- `output/step3_classified.json`
-- `output/step4_selected.json`
-- `output/step5_summarized.json`
-- `output/pipeline_status.json`
-- `db/articles.db`
-- `web/index.html`
-
-다음 구현 단계:
-- 실제 RSS/정책브리핑 소스 확정
-- LLM 기반 content-curator 연동
-- Next.js 프론트엔드 전환
-
-운영/배포 문서:
-- `docs/always-on-deployment.md`
-- `docs/deployment-rollout-plan.md`
-- `docs/lightsail-staging-deployment.md`
-- `docs/github-pages-deployment.md`
+- `shared` 수정은 공개용과 기관용에 모두 영향을 준다.
+- `public-site` 수정은 공개용에만 영향을 준다.
+- `institution-site` 수정은 기관용에만 영향을 준다.
+- 이전 문서 중 일부는 레거시 경로를 설명할 수 있으니, 새 구조는 이 README와 각 사이트 폴더 README를 기준으로 본다.

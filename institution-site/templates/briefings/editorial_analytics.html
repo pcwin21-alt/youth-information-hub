@@ -1,0 +1,151 @@
+{% extends "base.html" %}
+
+{% block title %}방문 통계{% endblock %}
+
+{% block content %}
+  <article class="panel" style="margin-bottom: 16px;">
+    <div class="toolbar">
+      <div>
+        <h2 class="section-title">방문 통계</h2>
+        <p class="section-copy">공개 사이트와 기관용 포털 방문 흐름을 직접 수집한 데이터로 확인합니다.</p>
+      </div>
+      <div class="actions">
+        <a class="button subtle" href="{% url 'editorial_dashboard' %}">기사 운영</a>
+        <a class="button subtle" href="{% url 'editorial_history' %}">반영 이력</a>
+      </div>
+    </div>
+    <form method="get" class="filters compact">
+      <label>
+        범위
+        <select name="scope">
+          {% for value, label in scope_choices %}
+            <option value="{{ value }}" {% if scope == value %}selected{% endif %}>{{ label }}</option>
+          {% endfor %}
+        </select>
+      </label>
+      <div></div>
+      <button class="button subtle" type="submit">보기</button>
+    </form>
+  </article>
+
+  <section class="stats">
+    <article class="panel">
+      <span class="stat-label">오늘 방문자</span>
+      <strong class="stat-value">{{ today_visitors }}</strong>
+    </article>
+    <article class="panel">
+      <span class="stat-label">오늘 페이지뷰</span>
+      <strong class="stat-value">{{ today_pageviews }}</strong>
+    </article>
+    <article class="panel">
+      <span class="stat-label">최근 7일 방문자</span>
+      <strong class="stat-value">{{ seven_day_visitors }}</strong>
+    </article>
+    <article class="panel">
+      <span class="stat-label">최근 7일 페이지뷰</span>
+      <strong class="stat-value">{{ seven_day_pageviews }}</strong>
+    </article>
+    <article class="panel">
+      <span class="stat-label">직접 유입</span>
+      <strong class="stat-value">{{ direct_visits }}</strong>
+    </article>
+  </section>
+
+  <section class="grid" style="margin-bottom: 16px;">
+    <article class="panel">
+      <div style="margin-bottom: 14px;">
+        <h2 class="section-title">인기 페이지</h2>
+        <p class="section-copy">최근 7일 기준으로 많이 본 페이지입니다.</p>
+      </div>
+      <div class="log-list">
+        {% for item in top_pages %}
+          <article>
+            <div class="log-card-header">
+              <div>
+                <h3 class="log-card-title">{{ item.page_title|default:item.page_path }}</h3>
+                <div class="article-meta">{{ item.page_path }}</div>
+              </div>
+              <span class="tag">{{ item.pageviews }} view</span>
+            </div>
+            <div class="article-meta">방문자 {{ item.visitors }}</div>
+          </article>
+        {% empty %}
+          <p class="empty">아직 집계된 페이지가 없습니다.</p>
+        {% endfor %}
+      </div>
+    </article>
+
+    <article class="panel">
+      <div style="margin-bottom: 14px;">
+        <h2 class="section-title">유입 경로</h2>
+        <p class="section-copy">최근 7일 기준 referrer host 집계입니다.</p>
+      </div>
+      <div class="log-list">
+        {% for item in top_referrers %}
+          <article>
+            <div class="log-card-header">
+              <div>
+                <h3 class="log-card-title">{{ item.referrer_host }}</h3>
+              </div>
+              <span class="tag">{{ item.pageviews }} view</span>
+            </div>
+            <div class="article-meta">방문자 {{ item.visitors }}</div>
+          </article>
+        {% empty %}
+          <p class="empty">아직 기록된 외부 유입이 없습니다.</p>
+        {% endfor %}
+      </div>
+    </article>
+  </section>
+
+  <section class="grid">
+    <article class="panel">
+      <div style="margin-bottom: 14px;">
+        <h2 class="section-title">일별 흐름</h2>
+        <p class="section-copy">최근 7일 방문량 변화를 날짜별로 보여줍니다.</p>
+      </div>
+      <div class="log-list">
+        {% for item in daily_breakdown %}
+          <article>
+            <div class="log-card-header">
+              <div>
+                <h3 class="log-card-title">{{ item.day|date:"Y-m-d" }}</h3>
+              </div>
+              <span class="tag">{{ item.pageviews }} view</span>
+            </div>
+            <div class="article-meta">방문자 {{ item.visitors }}</div>
+          </article>
+        {% empty %}
+          <p class="empty">최근 7일 방문 기록이 없습니다.</p>
+        {% endfor %}
+      </div>
+    </article>
+
+    <article class="panel">
+      <div style="margin-bottom: 14px;">
+        <h2 class="section-title">최근 이벤트</h2>
+        <p class="section-copy">방문 이벤트 최신 20건입니다.</p>
+      </div>
+      <div class="log-list">
+        {% for event in recent_events %}
+          <article>
+            <div class="log-card-header">
+              <div>
+                <h3 class="log-card-title">{{ event.page_title|default:event.page_path }}</h3>
+                <div class="article-meta">
+                  {{ event.get_site_scope_display }} · {{ event.page_path }} · {{ event.occurred_at|date:"Y-m-d H:i" }}
+                </div>
+              </div>
+              <span class="tag">{{ event.visitor_id|slice:":8" }}</span>
+            </div>
+            <div class="article-meta">
+              {% if event.referrer_host %}{{ event.referrer_host }}{% else %}직접 유입{% endif %}
+            </div>
+          </article>
+        {% empty %}
+          <p class="empty">아직 수집된 방문 이벤트가 없습니다.</p>
+        {% endfor %}
+      </div>
+    </article>
+  </section>
+{% endblock %}

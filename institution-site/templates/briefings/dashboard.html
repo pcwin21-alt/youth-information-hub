@@ -1,0 +1,211 @@
+{% extends "base.html" %}
+
+{% block title %}대시보드{% endblock %}
+
+{% block content %}
+  <section class="stats">
+    <article class="panel">
+      <span class="stat-label">동기화 기사</span>
+      <strong class="stat-value">{{ synced_count }}</strong>
+    </article>
+    <article class="panel">
+      <span class="stat-label">상단 노출</span>
+      <strong class="stat-value">{{ featured_count }}</strong>
+    </article>
+    <article class="panel">
+      <span class="stat-label">배제</span>
+      <strong class="stat-value">{{ excluded_count }}</strong>
+    </article>
+    <article class="panel">
+      <span class="stat-label">최근 7일 방문자</span>
+      <strong class="stat-value">{{ public_visitor_count_7d }}</strong>
+    </article>
+    <article class="panel">
+      <span class="stat-label">저장 기사</span>
+      <strong class="stat-value">{{ saved_count }}</strong>
+    </article>
+    <article class="panel">
+      <span class="stat-label">보고서 초안</span>
+      <strong class="stat-value">{{ draft_count }}</strong>
+    </article>
+    {% if can_manage_editorial %}
+      <article class="panel">
+        <span class="stat-label">자동 반영</span>
+        <strong class="stat-value">
+          {% if auto_update_settings.enabled %}ON{% else %}OFF{% endif %}
+        </strong>
+      </article>
+    {% endif %}
+  </section>
+
+  {% if can_manage_editorial and ops_radar.items %}
+    <section class="panel" style="margin-bottom: 16px;">
+      <div class="toolbar">
+        <div>
+          <h2 class="section-title">운영 레이더</h2>
+          <p class="section-copy">공개 상단 노출과 별개로 놓치기 아쉬운 기사를 다시 묶었습니다.</p>
+        </div>
+        <div class="article-meta">
+          {% if ops_radar.generated_at %}{{ ops_radar.generated_at }}{% endif %}
+        </div>
+      </div>
+      <div class="meta-grid" style="margin-bottom: 14px;">
+        <div class="meta-item">
+          <strong>레이더 후보</strong>
+          <div>{{ ops_radar.summary.total_matched|default:0 }}</div>
+        </div>
+        <div class="meta-item">
+          <strong>놓침 후보</strong>
+          <div>{{ ops_radar.summary.overlooked_count|default:0 }}</div>
+        </div>
+        <div class="meta-item">
+          <strong>상위 노출 포함</strong>
+          <div>{{ ops_radar.summary.selected_count|default:0 }}</div>
+        </div>
+      </div>
+      <div class="log-list">
+        {% for item in ops_radar.items %}
+          <article>
+            <div class="log-card-header">
+              <div>
+                <h3 class="log-card-title">
+                  {% if item.preferred_url %}
+                    <a href="{{ item.preferred_url }}" target="_blank" rel="noreferrer">{{ item.title }}</a>
+                  {% else %}
+                    {{ item.title }}
+                  {% endif %}
+                </h3>
+                <div class="article-meta">
+                  {{ item.source|default:item.source_name|default:"출처 미상" }}
+                  {% if item.region %} 쨌 {{ item.region }}{% endif %}
+                  {% if item.published_at %} 쨌 {{ item.published_at }}{% endif %}
+                </div>
+              </div>
+              <span class="tag">{{ item.ops_radar_priority }}</span>
+            </div>
+            <div class="tag-list" style="margin-bottom: 10px;">
+              {% for label in item.ops_radar_labels %}
+                <span class="tag">{{ label }}</span>
+              {% endfor %}
+            </div>
+            <p class="article-summary">{{ item.ops_radar_note }}</p>
+          </article>
+        {% endfor %}
+      </div>
+    </section>
+  {% endif %}
+
+  <section class="grid">
+    <article class="panel stack">
+      <div>
+        <h2 class="section-title">추적 지역</h2>
+        <p class="section-copy">주로 확인하는 지역 기사를 빠르게 다시 볼 수 있습니다.</p>
+      </div>
+      {% if tracked_regions %}
+        <div class="tag-list">
+          {% for region in tracked_regions %}
+            <span class="tag">{{ region }}</span>
+          {% endfor %}
+        </div>
+      {% else %}
+        <p class="empty">아직 등록된 추적 지역이 없습니다.</p>
+      {% endif %}
+
+      {% if can_manage_editorial %}
+        <div class="meta-grid">
+          <div class="meta-item">
+            <strong>자동 반영 상태</strong>
+            <div>
+              {{ auto_update_runtime.display_state }}
+              {% if auto_update_settings.interval_minutes %}<br>{{ auto_update_settings.interval_minutes }}분 주기{% endif %}
+            </div>
+          </div>
+          <div class="meta-item">
+            <strong>최근 자동 반영</strong>
+            <div>
+              {% if auto_update_runtime.last_published_at %}
+                {{ auto_update_runtime.last_published_at }}
+              {% else %}
+                아직 없음
+              {% endif %}
+            </div>
+          </div>
+          <div class="meta-item">
+            <strong>최근 확인</strong>
+            <div>{{ auto_update_runtime.last_checked_at|default:"아직 없음" }}</div>
+          </div>
+          <div class="meta-item">
+            <strong>운영 메모</strong>
+            <div>{{ auto_update_runtime.summary }}</div>
+          </div>
+        </div>
+        <div class="link-row">
+          <a class="button primary" href="{% url 'editorial_dashboard' %}">기사 운영</a>
+          <a class="button subtle" href="{% url 'editorial_settings' %}">문의 설정</a>
+          <a class="button subtle" href="{% url 'editorial_history' %}">반영 이력</a>
+          <a class="button subtle" href="{% url 'editorial_analytics' %}">방문 통계</a>
+        </div>
+      {% endif %}
+    </article>
+
+    <article class="panel">
+      <div style="margin-bottom: 14px;">
+        <h2 class="section-title">최근 기사</h2>
+        <p class="section-copy">기관용 포털에 동기화된 최신 기사입니다.</p>
+      </div>
+      <div class="article-card-list">
+        {% for article in recent_articles %}
+          <article>
+            <h3 class="article-title">{{ article.title }}</h3>
+            <div class="article-meta">
+              {{ article.source_name|default:"출처 미상" }}
+              {% if article.region %} · {{ article.region }}{% endif %}
+              {% if article.published_date %} · {{ article.published_date|date:"Y-m-d H:i" }}{% endif %}
+            </div>
+            <div class="tag-list" style="margin-bottom: 10px;">
+              {% if article.is_editorially_featured %}
+                <span class="tag feature">상단 노출</span>
+              {% elif article.is_editorially_excluded %}
+                <span class="tag exclude">배제</span>
+              {% endif %}
+              {% for category in article.categories %}
+                <span class="tag">{{ category }}</span>
+              {% endfor %}
+            </div>
+            <p class="article-summary">{{ article.summary|default:article.lead_text|default:"요약이 아직 없습니다." }}</p>
+          </article>
+        {% empty %}
+          <p class="empty">동기화된 기사가 없습니다. <code>python manage.py sync_runtime_articles</code>를 먼저 실행해 주세요.</p>
+        {% endfor %}
+      </div>
+    </article>
+  </section>
+
+  {% if can_manage_editorial %}
+    <section class="panel" style="margin-top: 16px;">
+      <div style="margin-bottom: 14px;">
+        <h2 class="section-title">최근 운영 이력</h2>
+        <p class="section-copy">기사 결정, 문의 설정, 공개 반영 기록을 최근 순서로 보여줍니다.</p>
+      </div>
+      <div class="log-list">
+        {% for log in recent_audit_logs %}
+          <article>
+            <div class="log-card-header">
+              <div>
+                <h3 class="log-card-title">{{ log.summary }}</h3>
+                <div class="article-meta">
+                  {{ log.get_scope_display }} · {{ log.action }}
+                  {% if log.actor %} · {{ log.actor.username }}{% endif %}
+                  · {{ log.created_at|date:"Y-m-d H:i" }}
+                </div>
+              </div>
+              <span class="tag">{{ log.target_key|default:"-" }}</span>
+            </div>
+          </article>
+        {% empty %}
+          <p class="empty">아직 기록된 운영 이력이 없습니다.</p>
+        {% endfor %}
+      </div>
+    </section>
+  {% endif %}
+{% endblock %}

@@ -1,0 +1,431 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}기관용 포털{% endblock %}</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #eef2f6;
+      --panel: #ffffff;
+      --line: #d3dbe5;
+      --text: #1f2933;
+      --muted: #66737f;
+      --accent: #0f7a5a;
+      --accent-soft: #e7f4ef;
+      --danger: #b34a3f;
+      --danger-soft: #faece9;
+      --warning: #8a6411;
+      --warning-soft: #fbf2de;
+      --shadow: 0 10px 24px rgba(31, 41, 51, 0.06);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Noto Sans KR", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
+    a { color: inherit; text-decoration: none; }
+    button, input, select, textarea { font: inherit; }
+    code, pre {
+      font-family: "Cascadia Code", Consolas, monospace;
+    }
+    .shell {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 24px 16px 48px;
+    }
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+    .brand-wrap {
+      display: grid;
+      gap: 6px;
+    }
+    .brand {
+      font-size: 1.3rem;
+      font-weight: 800;
+      letter-spacing: 0;
+    }
+    .brand-sub {
+      color: var(--muted);
+      font-size: 0.92rem;
+      line-height: 1.5;
+    }
+    .actions, .nav {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .nav {
+      margin-bottom: 20px;
+    }
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      box-shadow: var(--shadow);
+      padding: 18px;
+    }
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+    .stat-label {
+      display: block;
+      color: var(--muted);
+      margin-bottom: 8px;
+      font-size: 0.9rem;
+    }
+    .stat-value {
+      font-size: 1.8rem;
+      font-weight: 800;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: minmax(240px, 300px) minmax(0, 1fr);
+      gap: 16px;
+    }
+    .stack,
+    .article-card-list,
+    .log-list {
+      display: grid;
+      gap: 14px;
+    }
+    .article-title {
+      margin: 0 0 8px;
+      font-size: 1rem;
+      line-height: 1.4;
+    }
+    .article-meta,
+    .help-text,
+    .muted {
+      color: var(--muted);
+    }
+    .article-meta,
+    .help-text {
+      font-size: 0.88rem;
+      line-height: 1.6;
+    }
+    .article-summary,
+    .section-copy {
+      margin: 0;
+      line-height: 1.6;
+      color: #30404f;
+    }
+    .tag-list {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .tag {
+      padding: 4px 8px;
+      border-radius: 8px;
+      background: #f3f7fa;
+      color: #2d4a64;
+      font-size: 0.84rem;
+      font-weight: 700;
+    }
+    .tag.feature {
+      background: var(--accent-soft);
+      color: var(--accent);
+    }
+    .tag.exclude {
+      background: var(--danger-soft);
+      color: var(--danger);
+    }
+    .empty {
+      color: var(--muted);
+      margin: 0;
+      line-height: 1.6;
+    }
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 38px;
+      padding: 0 14px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+      text-decoration: none;
+      cursor: pointer;
+    }
+    .button.primary {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: white;
+    }
+    .button.subtle {
+      background: #f8fafc;
+    }
+    .button.small {
+      min-height: 34px;
+      padding: 0 10px;
+      font-size: 0.9rem;
+    }
+    .toolbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 16px;
+    }
+    .filters {
+      display: grid;
+      grid-template-columns: minmax(180px, 2fr) repeat(2, minmax(120px, 160px)) auto;
+      gap: 10px;
+      align-items: end;
+    }
+    .filters.compact {
+      grid-template-columns: minmax(180px, 2fr) minmax(140px, 180px) auto;
+    }
+    label {
+      display: grid;
+      gap: 6px;
+      font-size: 0.9rem;
+      color: var(--muted);
+    }
+    input[type="text"],
+    input[type="email"],
+    input[type="password"],
+    input[type="number"],
+    select,
+    textarea {
+      width: 100%;
+      min-height: 40px;
+      padding: 10px 12px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+      color: var(--text);
+    }
+    textarea {
+      min-height: 90px;
+      resize: vertical;
+    }
+    .messages {
+      display: grid;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+    .message {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 12px 14px;
+      background: #fff;
+      line-height: 1.5;
+    }
+    .message.success {
+      background: var(--accent-soft);
+      border-color: #bedfce;
+      color: #16543f;
+    }
+    .message.error {
+      background: var(--danger-soft);
+      border-color: #efc4bf;
+      color: #8d3f36;
+    }
+    .message.info {
+      background: #eff5fb;
+      border-color: #cad9ea;
+      color: #244d73;
+    }
+    .message.warning {
+      background: var(--warning-soft);
+      border-color: #ead38d;
+      color: var(--warning);
+    }
+    .article-admin-row {
+      display: grid;
+      grid-template-columns: minmax(0, 1.6fr) minmax(280px, 0.9fr);
+      gap: 16px;
+      align-items: start;
+    }
+    .article-admin-controls {
+      display: grid;
+      gap: 10px;
+    }
+    .inline-fields {
+      display: grid;
+      grid-template-columns: minmax(110px, 140px) minmax(0, 1fr);
+      gap: 10px;
+    }
+    .meta-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 10px;
+      margin-top: 12px;
+    }
+    .meta-item {
+      padding: 10px 12px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #f8fafc;
+    }
+    .meta-item strong {
+      display: block;
+      margin-bottom: 4px;
+      font-size: 0.85rem;
+      color: var(--muted);
+      font-weight: 700;
+    }
+    .pagination {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      justify-content: center;
+      margin-top: 20px;
+      flex-wrap: wrap;
+    }
+    .section-title {
+      margin: 0 0 8px;
+      font-size: 1.1rem;
+    }
+    .link-row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    .log-card-header {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 12px;
+    }
+    .log-card-title {
+      margin: 0;
+      font-size: 1rem;
+    }
+    .detail-box {
+      margin-top: 12px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #f8fafc;
+      padding: 12px;
+    }
+    .detail-box summary {
+      cursor: pointer;
+      font-weight: 700;
+      color: #244d73;
+    }
+    .detail-box pre {
+      margin: 10px 0 0;
+      white-space: pre-wrap;
+      word-break: break-word;
+      font-size: 0.84rem;
+      line-height: 1.5;
+    }
+    @media (max-width: 900px) {
+      .grid,
+      .article-admin-row {
+        grid-template-columns: 1fr;
+      }
+      .filters,
+      .filters.compact,
+      .inline-fields {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <div class="topbar">
+      <div class="brand-wrap">
+        <div class="brand">청년 투게더 기관용 포털</div>
+        <div class="brand-sub">기사 운영, 문의 정보 수정, 반영 이력 확인을 한 곳에서 관리합니다.</div>
+      </div>
+      <div class="actions">
+        {% if request.user.is_authenticated %}
+          <span class="muted">{{ request.user.username }}</span>
+          <form method="post" action="{% url 'logout' %}">
+            {% csrf_token %}
+            <button class="button" type="submit">로그아웃</button>
+          </form>
+        {% endif %}
+      </div>
+    </div>
+
+    {% if request.user.is_authenticated %}
+      <div class="nav">
+        <a class="button subtle" href="{% url 'dashboard' %}">대시보드</a>
+        {% if can_manage_editorial %}
+          <a class="button subtle" href="{% url 'editorial_dashboard' %}">기사 운영</a>
+          <a class="button subtle" href="{% url 'editorial_analytics' %}">방문 통계</a>
+          <a class="button subtle" href="{% url 'editorial_settings' %}">문의 설정</a>
+          <a class="button subtle" href="{% url 'editorial_history' %}">반영 이력</a>
+          <a class="button subtle" href="/admin/">Django admin</a>
+        {% endif %}
+      </div>
+    {% endif %}
+
+    {% if messages %}
+      <div class="messages">
+        {% for message in messages %}
+          <div class="message {{ message.tags|default:'info' }}">{{ message }}</div>
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    {% block content %}{% endblock %}
+  </div>
+  <script>
+    (() => {
+      const endpoint = "/analytics/collect/";
+      const scope = "institution";
+      function getStoredId(storage, key) {
+        try {
+          let value = storage.getItem(key);
+          if (!value) {
+            value = (window.crypto && window.crypto.randomUUID) ? window.crypto.randomUUID() : `${Date.now()}-${Math.random().toString(16).slice(2)}`;
+            storage.setItem(key, value);
+          }
+          return value;
+        } catch (error) {
+          return `${Date.now()}-${Math.random().toString(16).slice(2)}`;
+        }
+      }
+      const visitorId = getStoredId(window.localStorage, "ytVisitorId");
+      const sessionId = getStoredId(window.sessionStorage, "ytSessionId");
+      const payload = JSON.stringify({
+        site_scope: scope,
+        visitor_id: visitorId,
+        session_id: sessionId,
+        page_path: window.location.pathname,
+        page_url: window.location.href,
+        page_title: document.title,
+        referrer: document.referrer || "",
+        source_origin: window.location.origin || ""
+      });
+      try {
+        if (navigator.sendBeacon) {
+          navigator.sendBeacon(endpoint, payload);
+        } else {
+          fetch(endpoint, {
+            method: "POST",
+            mode: "no-cors",
+            keepalive: true,
+            headers: { "Content-Type": "text/plain;charset=UTF-8" },
+            body: payload
+          });
+        }
+      } catch (error) {
+        console.debug("analytics_beacon_failed", error);
+      }
+    })();
+  </script>
+</body>
+</html>

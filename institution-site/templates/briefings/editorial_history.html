@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+
+{% block title %}반영 이력{% endblock %}
+
+{% block content %}
+  <article class="panel" style="margin-bottom: 16px;">
+    <div class="toolbar">
+      <div>
+        <h2 class="section-title">반영 이력</h2>
+        <p class="section-copy">기사 결정, 문의 설정, 공개 반영, 권한 변경 이력을 시간순으로 확인합니다.</p>
+      </div>
+      <div class="actions">
+        <a class="button subtle" href="{% url 'editorial_dashboard' %}">기사 운영</a>
+        <a class="button subtle" href="{% url 'editorial_settings' %}">문의 설정</a>
+      </div>
+    </div>
+    <form method="get" class="filters compact">
+      <label>
+        검색
+        <input type="text" name="query" value="{{ query }}" placeholder="요약, 액션, 대상, 사용자">
+      </label>
+      <label>
+        범위
+        <select name="scope">
+          {% for value, label in scope_choices %}
+            <option value="{{ value }}" {% if scope == value %}selected{% endif %}>{{ label }}</option>
+          {% endfor %}
+        </select>
+      </label>
+      <button class="button subtle" type="submit">필터 적용</button>
+    </form>
+  </article>
+
+  <section class="log-list">
+    {% for log in page_obj %}
+      <article class="panel">
+        <div class="log-card-header">
+          <div>
+            <h3 class="log-card-title">{{ log.summary }}</h3>
+            <div class="article-meta">
+              {{ log.get_scope_display }} · {{ log.action }}
+              {% if log.actor %} · {{ log.actor.username }}{% endif %}
+              · {{ log.created_at|date:"Y-m-d H:i" }}
+            </div>
+          </div>
+          <span class="tag">{{ log.target_key|default:"-" }}</span>
+        </div>
+
+        {% if log.before_data or log.after_data %}
+          <details class="detail-box">
+            <summary>변경 데이터 보기</summary>
+            {% if log.before_data %}
+              <pre>Before
+{{ log.before_data|pprint }}</pre>
+            {% endif %}
+            {% if log.after_data %}
+              <pre>After
+{{ log.after_data|pprint }}</pre>
+            {% endif %}
+          </details>
+        {% endif %}
+      </article>
+    {% empty %}
+      <article class="panel">
+        <p class="empty">조건에 맞는 반영 이력이 없습니다.</p>
+      </article>
+    {% endfor %}
+  </section>
+
+  {% if page_obj.paginator.num_pages > 1 %}
+    <div class="pagination">
+      {% if page_obj.has_previous %}
+        <a class="button small" href="?query={{ query|urlencode }}&scope={{ scope|urlencode }}&page={{ page_obj.previous_page_number }}">이전</a>
+      {% endif %}
+      <span class="muted">{{ page_obj.number }} / {{ page_obj.paginator.num_pages }}</span>
+      {% if page_obj.has_next %}
+        <a class="button small" href="?query={{ query|urlencode }}&scope={{ scope|urlencode }}&page={{ page_obj.next_page_number }}">다음</a>
+      {% endif %}
+    </div>
+  {% endif %}
+{% endblock %}

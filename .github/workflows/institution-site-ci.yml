@@ -1,0 +1,45 @@
+name: Institution Site CI
+
+on:
+  push:
+    paths:
+      - "shared/**"
+      - "institution-site/**"
+      - ".github/workflows/institution-site-ci.yml"
+  pull_request:
+    paths:
+      - "shared/**"
+      - "institution-site/**"
+      - ".github/workflows/institution-site-ci.yml"
+
+jobs:
+  verify-institution-site:
+    runs-on: ubuntu-latest
+    env:
+      PYTHONUTF8: "1"
+      TZ: Asia/Seoul
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install packages
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -e ./shared
+          python -m pip install -e ./public-site
+          python -m pip install -e ./institution-site
+
+      - name: Build runtime sample data
+        run: python public-site/scripts/cron_runner.py --use-sample-data
+
+      - name: Run migrations
+        run: python institution-site/manage.py migrate --noinput
+
+      - name: Sync runtime articles
+        run: python institution-site/manage.py sync_runtime_articles
+
+      - name: Run institution tests
+        run: python institution-site/manage.py test briefings

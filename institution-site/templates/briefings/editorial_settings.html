@@ -1,0 +1,134 @@
+{% extends "base.html" %}
+
+{% block title %}문의 설정{% endblock %}
+
+{% block content %}
+  <article class="panel" style="margin-bottom: 16px;">
+    <div class="toolbar">
+      <div>
+        <h2 class="section-title">문의/연락처 설정</h2>
+        <p class="section-copy">공개 사이트의 contact 페이지와 하단 메타 정보를 여기서 바로 수정합니다.</p>
+      </div>
+      <div class="actions">
+        <a class="button subtle" href="{% url 'editorial_dashboard' %}">기사 운영</a>
+        <a class="button subtle" href="{% url 'editorial_history' %}">반영 이력</a>
+      </div>
+    </div>
+    <div class="meta-grid">
+      <div class="meta-item">
+        <strong>설정 파일</strong>
+        <div>{{ contact_settings_path }}</div>
+      </div>
+      <div class="meta-item">
+        <strong>반영 방식</strong>
+        <div>저장 직후 공개 페이지를 다시 생성합니다.</div>
+      </div>
+    </div>
+  </article>
+
+  <article class="panel">
+    <form method="post" class="stack">
+      {% csrf_token %}
+      <input type="hidden" name="action" value="save_contact_settings">
+      <div class="grid" style="grid-template-columns: repeat(2, minmax(0, 1fr));">
+        <label>
+          단체명
+          <input type="text" name="organization_name" value="{{ contact_settings.organization_name }}" maxlength="120" required>
+        </label>
+        <label>
+          문의 이메일
+          <input type="email" name="email" value="{{ contact_settings.email }}" maxlength="160" required>
+        </label>
+        <label>
+          저작권 문구
+          <input type="text" name="copyright_text" value="{{ contact_settings.copyright_text }}" maxlength="80" required>
+        </label>
+        <label>
+          버전 문구
+          <input type="text" name="version_text" value="{{ contact_settings.version_text }}" maxlength="80" required>
+        </label>
+      </div>
+      <label>
+        안내 문구 1
+        <textarea name="extra_line_1" maxlength="180" required>{{ contact_settings.extra_line_1 }}</textarea>
+      </label>
+      <label>
+        안내 문구 2
+        <textarea name="extra_line_2" maxlength="180">{{ contact_settings.extra_line_2 }}</textarea>
+      </label>
+      <div class="actions">
+        <button class="button primary" type="submit">저장하고 공개 반영</button>
+      </div>
+    </form>
+  </article>
+
+  <article class="panel" style="margin-top: 16px;">
+    <div class="toolbar">
+      <div>
+        <h2 class="section-title">자동 반영 설정</h2>
+        <p class="section-copy">네이버 뉴스 변화를 주기적으로 확인하고, 새 기사가 감지되면 공개 사이트를 다시 생성합니다. 이 기능은 이 노트북에서 자동 반영 러너가 실행 중일 때만 동작합니다.</p>
+      </div>
+      <div class="actions">
+        <a class="button subtle" href="{% url 'editorial_analytics' %}">방문 통계</a>
+      </div>
+    </div>
+    <div class="meta-grid" style="margin-bottom: 16px;">
+      <div class="meta-item">
+        <strong>설정 파일</strong>
+        <div>{{ auto_update_settings_path }}</div>
+      </div>
+      <div class="meta-item">
+        <strong>현재 상태</strong>
+        <div>{{ auto_update_runtime.display_state }}</div>
+      </div>
+      <div class="meta-item">
+        <strong>최근 자동 반영</strong>
+        <div>
+          {% if auto_update_runtime.last_published_at %}
+            {{ auto_update_runtime.last_published_at }}
+          {% else %}
+            아직 없음
+          {% endif %}
+        </div>
+      </div>
+      <div class="meta-item">
+        <strong>최근 확인</strong>
+        <div>{{ auto_update_runtime.last_checked_at|default:"아직 없음" }}</div>
+      </div>
+      <div class="meta-item">
+        <strong>다음 확인</strong>
+        <div>{{ auto_update_runtime.next_check_at|default:"러너 미실행" }}</div>
+      </div>
+      <div class="meta-item">
+        <strong>러너 PID</strong>
+        <div>{{ auto_update_runtime.runner_pid|default:"미실행" }}</div>
+      </div>
+      <div class="meta-item">
+        <strong>운영 안내</strong>
+        <div>{{ auto_update_runtime.summary }}</div>
+      </div>
+      {% if auto_update_runtime.last_error %}
+      <div class="meta-item">
+        <strong>최근 오류</strong>
+        <div>{{ auto_update_runtime.last_error }}</div>
+      </div>
+      {% endif %}
+    </div>
+    <form method="post" class="stack">
+      {% csrf_token %}
+      <input type="hidden" name="action" value="save_auto_update_settings">
+      <label style="display: flex; gap: 10px; align-items: center; color: var(--text);">
+        <input type="checkbox" name="auto_update_enabled" {% if auto_update_settings.enabled %}checked{% endif %}>
+        자동 반영 사용
+      </label>
+      <label>
+        점검 주기(분)
+        <input type="number" min="3" max="60" name="auto_update_interval_minutes" value="{{ auto_update_settings.interval_minutes }}">
+      </label>
+      <p class="help-text">실행 중인 자동 러너가 이 설정을 읽어 동작합니다. 시작은 <code>{{ auto_update_start_command }}</code>, 중지는 <code>{{ auto_update_stop_command }}</code>를 사용합니다. 자동 모드에서는 사이트 반영만 수행하고 알림 발송은 기본으로 건너뜁니다.</p>
+      <div class="actions">
+        <button class="button primary" type="submit">자동 반영 설정 저장</button>
+      </div>
+    </form>
+  </article>
+{% endblock %}

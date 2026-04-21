@@ -1,0 +1,38 @@
+name: Public Site CI
+
+on:
+  push:
+    paths:
+      - "shared/**"
+      - "public-site/**"
+      - ".github/workflows/public-site-ci.yml"
+  pull_request:
+    paths:
+      - "shared/**"
+      - "public-site/**"
+      - ".github/workflows/public-site-ci.yml"
+
+jobs:
+  verify-public-site:
+    runs-on: ubuntu-latest
+    env:
+      PYTHONUTF8: "1"
+      TZ: Asia/Seoul
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install packages
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -e ./shared
+          python -m pip install -e ./public-site
+
+      - name: Run sample pipeline
+        run: python public-site/scripts/cron_runner.py --use-sample-data
+
+      - name: Verify public artifacts
+        run: python public-site/scripts/verify_site_artifacts.py --min-articles 1 --min-news-cards 0
