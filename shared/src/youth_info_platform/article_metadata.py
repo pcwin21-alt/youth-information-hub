@@ -136,6 +136,45 @@ def normalize_article_title(value: str | None) -> str:
     return normalized
 
 
+def strip_title_suffixes(value: str | None, suffixes: list[str] | tuple[str, ...]) -> str:
+    normalized = normalize_article_title(value)
+    if not normalized:
+        return ""
+    for raw_suffix in suffixes:
+        suffix = normalize_article_title(raw_suffix)
+        if not suffix:
+            continue
+        markers = (
+            f" - {suffix}",
+            f" | {suffix}",
+            f" : {suffix}",
+            f" / {suffix}",
+            f" :: {suffix}",
+        )
+        updated = True
+        while updated:
+            updated = False
+            for marker in markers:
+                if normalized.endswith(marker):
+                    normalized = normalized[: -len(marker)].strip()
+                    updated = True
+    return normalized
+
+
+def clean_metadata_title(value: str | None, article: dict[str, Any]) -> str:
+    normalized = normalize_article_title(value)
+    if not normalized:
+        return ""
+    cleaned = strip_title_suffixes(
+        normalized,
+        (
+            article.get("source") or "",
+            article.get("source_name") or "",
+        ),
+    )
+    return cleaned or normalized
+
+
 def title_similarity(left: str | None, right: str | None) -> float:
     return difflib.SequenceMatcher(
         a=normalize_article_title(left).lower(),
@@ -222,14 +261,19 @@ def preferred_article_url(article: dict[str, Any]) -> str:
 
 
 def extract_meta_content(html_text: str, key: str, attr_name: str = "name") -> str | None:
-    patterns = [
-        rf'<meta[^>]+{attr_name}=["\']{re.escape(key)}["\'][^>]+content=["\'](.*?)["\']',
-        rf'<meta[^>]+content=["\'](.*?)["\'][^>]+{attr_name}=["\']{re.escape(key)}["\']',
-    ]
-    for pattern in patterns:
-        match = re.search(pattern, html_text, re.IGNORECASE | re.DOTALL)
-        if match:
-            return html.unescape(match.group(1)).strip()
+    attr_name = attr_name.lower()
+    key = key.lower()
+    attr_pattern = re.compile(
+        r'([^\s=/>]+)\s*=\s*(?:(["\'])(.*?)\2|([^\s>]+))',
+        re.IGNORECASE | re.DOTALL,
+    )
+    for match in re.finditer(r"<meta\b[^>]*>", html_text, re.IGNORECASE | re.DOTALL):
+        attrs: dict[str, str] = {}
+        for attr_match in attr_pattern.finditer(match.group(0)):
+            value = attr_match.group(3) if attr_match.group(3) is not None else (attr_match.group(4) or "")
+            attrs[attr_match.group(1).lower()] = html.unescape(value).strip()
+        if attrs.get(attr_name, "").lower() == key and attrs.get("content"):
+            return attrs["content"]
     return None
 
 
@@ -473,7 +517,10 @@ def resolve_article_metadata(
                 "region",
             ]:
                 if metadata.get(key):
-                    updated[key] = metadata[key]
+                    if key == "title":
+                        updated[key] = clean_metadata_title(metadata[key], updated)
+                    else:
+                        updated[key] = metadata[key]
             if metadata.get("lead_text"):
                 updated["lead_text"] = metadata["lead_text"]
             updated["authors"] = list(dict.fromkeys((updated.get("authors") or []) + (metadata.get("authors") or [])))
