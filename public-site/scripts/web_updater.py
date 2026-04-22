@@ -5482,7 +5482,7 @@ def build_home_page(
         (article for article in selected_articles if article.get("editorial_is_highlighted")),
         None,
     )
-    today_articles, weekly_articles, _ = build_home_curated_lists(
+    today_articles, _, _ = build_home_curated_lists(
         recent_news_articles,
         highlighted_article,
         page_updated_at,
@@ -5507,7 +5507,9 @@ def build_home_page(
     home_date_label = format_home_date_label(page_updated_at)
     latest_news_basis = describe_article_basis(recent_news_articles, f"최근 {NEWS_WINDOW_DAYS}일 기사 없음")
     policy_basis = describe_article_basis(official_policy_articles or policy_articles, "최근 정책 없음")
-    version_text = contact_settings.get("version_text", "").strip() or "버전 정보 준비 중"
+    organization_name = contact_settings.get("organization_name", "").strip()
+    support_brand_name = organization_name.split("(")[0].strip() if organization_name else "유스사이드"
+    support_badge_text = f"{support_brand_name} preview"
     lead_message = (
         "혼자 버티는 하루가 너무 길게 느껴질 때에도, 오늘의 기사와 정책이 조금은 또렷한 길잡이가 되었으면 합니다. "
         "당신의 오늘이 작지 않다는 마음으로, 지금 필요한 흐름을 한자리에 모았습니다."
@@ -5549,11 +5551,6 @@ def build_home_page(
         '<div class="home-urgent-text"><strong>오늘 크게 볼 기사가 아직 없습니다.</strong>'
         '<span class="home-urgent-meta">새 청년 뉴스가 들어오면 이 영역이 먼저 채워집니다.</span></div></div></article>'
     )
-    weekly_news_html = "".join(
-        render_home_news_item(index, article)
-        for index, article in enumerate(weekly_articles[:HOME_WEEKLY_LIMIT], start=1)
-    )
-
     def render_home_highlight_card(article: dict | None) -> str:
         if not article:
             return ""
@@ -5590,27 +5587,7 @@ def build_home_page(
             '</article>'
         )
 
-    def render_home_weekly_card(items: list[dict]) -> str:
-        if not items:
-            return ""
-        return (
-            '<article class="home-briefing-card home-news-card">'
-            '<div class="home-section-head">'
-            '<div class="home-section-title">'
-            '<h2>이번 주 계속 볼 기사</h2>'
-            '<p class="home-section-copy">중요하지만 하루 만에 밀리면 아쉬운 기사를 조금 더 오래 붙잡아 둡니다.</p>'
-            '</div>'
-            '</div>'
-            f'<div class="home-urgent-list">{weekly_news_html}</div>'
-            '<div class="home-meta-line home-meta-footer">'
-            '<span>최근 7일 기준</span>'
-            '<span>적격 기사만 느리게 교체</span>'
-            '</div>'
-            '</article>'
-        )
-
     highlight_card_html = render_home_highlight_card(highlighted_article)
-    weekly_card_html = render_home_weekly_card(weekly_articles)
     home_lead_media = render_card_illustration(
         HOME_LEAD_ILLUSTRATION,
         slot_class="home-illustration-slot",
@@ -5652,13 +5629,12 @@ def build_home_page(
           </div>
         </article>
         {highlight_card_html}
-        {weekly_card_html}
         <article class="home-briefing-card support support-pill">
           {render_support_metrics()}
         </article>
         <article class="home-briefing-card footer footer-warm">
           <div class="home-support-footer">
-            <span class="home-support-version">{html.escape(version_text)}</span>
+            <span class="home-support-version">{html.escape(support_badge_text)}</span>
             <p class="home-support-copy">이 사이트는 무료로 운영됩니다. 청년들을 응원하기 위해 만들어졌습니다.</p>
             <p class="home-support-copy secondary">기사 한 줄과 정책 한 항목이 필요한 순간에 제때 닿기를 바라는 마음으로, 오늘의 흐름을 조용히 모아두고 있습니다.</p>
             <div class="home-support-meta">
