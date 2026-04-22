@@ -11,7 +11,7 @@ from pathlib import Path
 
 from _bootstrap import PUBLIC_WEB_ROOT, RUNTIME_PIPELINE_ROOT
 
-from youth_info_platform.article_metadata import preferred_article_url
+from youth_info_platform.article_metadata import article_identity_key, preferred_article_url
 from youth_info_platform.contact_config import load_contact_settings
 from youth_info_platform.io_utils import read_json
 
@@ -1321,6 +1321,11 @@ BASE_CSS = """
       linear-gradient(180deg, rgba(250, 248, 243, 0.96) 0%, rgba(255, 255, 255, 0.99) 100%);
     text-align: center;
     box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.88);
+  }
+  .home-glance-item.full {
+    grid-column: 1 / -1;
+    width: min(220px, 100%);
+    justify-self: center;
   }
   .home-glance-item.warm {
     border-color: var(--home-apricot-soft);
@@ -4636,6 +4641,35 @@ def latest_article_timestamp(articles: list[dict], fallback: str) -> str:
     return fallback
 
 
+def count_articles_on_reference_day(articles: list[dict], reference_time: str | None) -> int:
+    reference_dt = parse_iso_datetime(reference_time)
+    if reference_dt is None:
+        parsed_dates = [parse_iso_datetime(article.get("published_date")) for article in articles]
+        parsed_dates = [value for value in parsed_dates if value is not None]
+        reference_dt = max(parsed_dates) if parsed_dates else None
+    if reference_dt is None:
+        return 0
+
+    seen_keys: set[str] = set()
+    total = 0
+    for article in articles:
+        published_dt = parse_iso_datetime(article.get("published_date"))
+        if published_dt is None:
+            continue
+        if reference_dt.tzinfo is not None and published_dt.tzinfo is not None:
+            published_day = published_dt.astimezone(reference_dt.tzinfo).date()
+        else:
+            published_day = published_dt.date()
+        if published_day != reference_dt.date():
+            continue
+        identity = article_identity_key(article)
+        if identity in seen_keys:
+            continue
+        seen_keys.add(identity)
+        total += 1
+    return total
+
+
 def latest_reference_articles(articles: list[dict], limit: int = 5) -> list[dict]:
     sorted_articles = sort_articles_by_recency(articles)
     if not sorted_articles:
@@ -5503,7 +5537,7 @@ def build_home_page(
         page_updated_at,
         24 * 90,
     )
-    participation_count = len(government_hub_articles) + len(regional_hub_articles)
+    today_total_count = count_articles_on_reference_day(all_articles, page_updated_at)
     home_date_label = format_home_date_label(page_updated_at)
     latest_news_basis = describe_article_basis(recent_news_articles, f"최근 {NEWS_WINDOW_DAYS}일 기사 없음")
     policy_basis = describe_article_basis(official_policy_articles or policy_articles, "최근 정책 없음")
@@ -5515,9 +5549,7 @@ def build_home_page(
     glance_stats_html = "".join(
         f'<article class="{card_class}"><span class="home-glance-label">{label}</span><strong class="home-glance-value">{value}</strong></article>'
         for card_class, label, value in [
-            ("home-glance-item warm", "오늘 메인", f"{len(today_articles)}건"),
-            ("home-glance-item neutral", "정책", f"{len(official_policy_articles)}건"),
-            ("home-glance-item teal", "참여·회의", f"{participation_count}건"),
+            ("home-glance-item warm full", "오늘 올라온 기사", f"{today_total_count}건"),
         ]
     )
 
@@ -5607,7 +5639,7 @@ def build_home_page(
         <article class="home-briefing-card digest digest-organic">
           <div class="home-briefing-head">
             <h2>오늘 한눈에 보기</h2>
-            <p>오늘의 기사와 정책, 참여·회의 흐름을 빠르게 가늠합니다.</p>
+            <p>오늘 날짜로 올라온 기사 전체 수를 먼저 보여드립니다.</p>
           </div>
           <div class="home-glance-grid">{glance_stats_html}</div>
           <div class="home-glance-links">

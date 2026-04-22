@@ -121,6 +121,46 @@ class HomeSelectionTests(unittest.TestCase):
         self.assertNotIn(highlighted["url"], selected_urls)
         self.assertIn(today_candidate["url"], {article["url"] for article in today})
 
+    def test_home_page_shows_total_articles_published_today(self) -> None:
+        news_today = make_article(
+            title="오늘 올라온 청년 기사",
+            lead_text="오늘 날짜로 발행된 기사다.",
+            url="https://example.com/news-today",
+        )
+        policy_today = make_article(
+            title="오늘 올라온 정책 발표",
+            lead_text="오늘 날짜로 발행된 공식 발표다.",
+            url="https://example.com/policy-today",
+        )
+        policy_today["is_official_source"] = True
+
+        older_article = make_article(
+            title="어제 올라온 기사",
+            lead_text="어제 날짜로 발행된 기사다.",
+            url="https://example.com/yesterday",
+            published_date="2026-04-21T18:00:00+09:00",
+        )
+        duplicated_today = dict(news_today)
+        duplicated_today["lead_text"] = "같은 기사 중복 레코드"
+
+        page_html = web_updater.build_home_page(
+            [news_today],
+            [news_today, duplicated_today, policy_today, older_article],
+            {"finished_at": self.reference_time},
+            {
+                "organization_name": "유스사이드(Youthside)",
+                "copyright_text": "© 2026 유스사이드 · 박진감",
+                "version_text": "v0.3",
+                "email": "hello@example.com",
+            },
+        )
+
+        self.assertIn("오늘 올라온 기사", page_html)
+        self.assertIn(">2건<", page_html)
+        self.assertNotIn("오늘 메인", page_html)
+        self.assertNotIn('<span class="home-glance-label">정책</span>', page_html)
+        self.assertNotIn('<span class="home-glance-label">참여·회의</span>', page_html)
+
 
     def test_home_page_omits_weekly_section_and_uses_support_credit_badge(self) -> None:
         daily_issue = make_article(
