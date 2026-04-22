@@ -371,13 +371,6 @@ BASE_CSS = """
     font-size: 0.8rem;
     line-height: 1.35;
   }
-  .brand-by {
-    display: block;
-    color: var(--accent);
-    font-size: 0.72rem;
-    font-weight: 800;
-    line-height: 1.3;
-  }
   .header-side {
     display: grid;
     gap: 4px;
@@ -1111,6 +1104,7 @@ BASE_CSS = """
     margin-top: 28px;
     color: var(--muted);
     font-size: 0.84rem;
+    line-height: 1.55;
     text-align: center;
   }
   .home-section-card {
@@ -1515,15 +1509,6 @@ BASE_CSS = """
   .home-support-links a:last-child {
     background: rgba(251, 235, 224, 0.94);
     border-color: var(--home-apricot-soft);
-  }
-  .home-support-credit {
-    margin: 2px 0 0;
-    color: rgba(102, 113, 123, 0.9);
-    font-size: 0.77rem;
-    line-height: 1.55;
-    text-align: left;
-    max-width: 100%;
-    overflow-wrap: anywhere;
   }
   .home-support-metrics {
     display: grid;
@@ -2570,7 +2555,6 @@ PAGE_TEMPLATE = """<!doctype html>
         <img class="brand-logo" src="assets/branding/youth-together-lockup.svg" alt="청년 투게더">
         <div class="brand-copy">
           <span class="brand-sub">오늘의 청년 정책과 이슈를 한곳에</span>
-          <span class="brand-by">by 유스사이드(Youthside)</span>
         </div>
       </a>
       <div class="topbar-side">
@@ -2580,6 +2564,7 @@ PAGE_TEMPLATE = """<!doctype html>
       </div>
     </header>
     {content}
+    <footer class="footer-note">운영: 유스사이드(Youthside)</footer>
   </div>
   <nav class="bottom-nav">{bottom_nav}</nav>
   {guide_overlay}
@@ -5686,7 +5671,6 @@ def build_home_page(
               <a href="guide.html">사이트 소개</a>
               <a href="contact.html">제보·문의</a>
             </div>
-            <p class="home-support-credit">by 유스사이드(Youthside)</p>
           </div>
         </article>
       </div>
