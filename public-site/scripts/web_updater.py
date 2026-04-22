@@ -17,6 +17,8 @@ from youth_info_platform.io_utils import read_json
 
 NEWS_WINDOW_DAYS = 7
 NEWS_WINDOW_HOURS = NEWS_WINDOW_DAYS * 24
+ELECTION_WINDOW_DAYS = 21
+ELECTION_WINDOW_HOURS = ELECTION_WINDOW_DAYS * 24
 HOME_DAILY_LIMIT = 5
 HOME_WEEKLY_LIMIT = 3
 HOME_DAILY_STICKY_LIMIT = 2
@@ -2144,7 +2146,7 @@ BASE_CSS = """
     transform: translateX(-50%);
     z-index: 30;
     display: grid;
-    grid-template-columns: repeat(6, minmax(0, 1fr));
+    grid-template-columns: repeat(var(--bottom-nav-count, 6), minmax(0, 1fr));
     gap: 4px;
     width: min(100%, 430px);
     padding: 10px 10px calc(10px + env(safe-area-inset-bottom));
@@ -2571,7 +2573,7 @@ PAGE_TEMPLATE = """<!doctype html>
     {content}
     <footer class="footer-note">{footer_note}</footer>
   </div>
-  <nav class="bottom-nav">{bottom_nav}</nav>
+  <nav class="bottom-nav" style="--bottom-nav-count: {bottom_nav_count};">{bottom_nav}</nav>
   {guide_overlay}
   <script>{script}</script>
 </body>
@@ -3348,6 +3350,7 @@ def build_page_script() -> str:
 NAV_ITEMS = [
     ("index.html", "홈"),
     ("news.html", "뉴스"),
+    ("election.html", "선거·공약"),
     ("policies.html", "정책"),
     ("hub.html", "참여·회의"),
     ("tools.html", "자료도구"),
@@ -3358,6 +3361,7 @@ NAV_ITEMS = [
 NAV_ICONS = {
     "index.html": "홈",
     "news.html": "뉴",
+    "election.html": "선",
     "policies.html": "정",
     "hub.html": "참",
     "tools.html": "자",
@@ -3404,10 +3408,11 @@ def render_guide_overlay(active_page: str) -> str:
     <div class="guide-dialog" role="dialog" aria-modal="true" aria-labelledby="guide-dialog-title">
       <span class="eyebrow">이용방법</span>
       <h2 id="guide-dialog-title">처음 오셨다면 이렇게 보시면 됩니다.</h2>
-      <p>홈 첫 화면은 오늘 바로 볼 기사부터 보는 구조입니다. 기사 수와 정책, 참여·회의 건수도 첫 화면에서 함께 확인할 수 있습니다.</p>
+      <p>홈 첫 화면은 오늘 바로 볼 기사부터 보는 구조입니다. 오늘 날짜로 올라온 기사 전체 수를 먼저 보고, 뉴스와 선거·공약, 정책 흐름으로 이어서 볼 수 있습니다.</p>
       <div class="list">
         <div class="list-item"><strong>홈</strong><span>가장 먼저 볼 기사와 오늘 집계를 한 번에 봅니다.</span></div>
         <div class="list-item"><strong>정책</strong><span>정부 원문 중심의 공식 발표를 확인합니다.</span></div>
+        <div class="list-item"><strong>선거·공약</strong><span>지방선거 시기에는 청년 공약과 선거 기사를 따로 모아 봅니다.</span></div>
         <div class="list-item"><strong>참여·회의</strong><span>정부 회의와 지역 네트워크 움직임을 나눠서 봅니다.</span></div>
       </div>
       <div class="hero-actions">
@@ -4393,6 +4398,29 @@ def is_local_policy_update(article: dict) -> bool:
     return True
 
 
+def is_election_promise_article(article: dict) -> bool:
+    if article.get("is_official_source"):
+        return False
+    return home_campaign_political(article)
+
+
+def with_election_badges(article: dict) -> dict:
+    badges: list[str] = []
+    if home_substantive_promise(article):
+        badges.append("정책 공약")
+    elif home_campaign_political(article):
+        badges.append("선거 기사")
+
+    existing_badges = [str(value).strip() for value in article.get("display_badges", []) if str(value).strip()]
+    merged_badges = list(dict.fromkeys([*badges, *existing_badges]))
+    if merged_badges == existing_badges:
+        return article
+
+    tagged_article = dict(article)
+    tagged_article["display_badges"] = merged_badges
+    return tagged_article
+
+
 def render_news_filter_panel(regions: list[str], dates: list[str], total_count: int) -> str:
     region_buttons = [
         '<button class="filter-button active" type="button" data-news-filter="true" '
@@ -4838,12 +4866,23 @@ def home_article_key(article: dict) -> str:
 
 
 def _home_text(article: dict) -> str:
-    return build_article_search_text(article, article.get("body_text", ""))
+    return normalize_inline_text(
+        " ".join(
+            value
+            for value in [
+                clean_article_title(article.get("title")),
+                normalize_inline_text(article.get("summary")),
+                normalize_inline_text(article.get("lead_text")),
+                normalize_inline_text(article.get("section")),
+                normalize_inline_text(article.get("source")),
+                normalize_inline_text(article.get("source_name")),
+            ]
+            if value
+        )
+    )
 
 
 def home_campaign_political(article: dict) -> bool:
-    if article.get("campaign_political"):
-        return True
     text = _home_text(article)
     return any(
         keyword in text
@@ -4938,8 +4977,6 @@ def home_has_structural_issue_signal(article: dict) -> bool:
 
 
 def home_substantive_promise(article: dict) -> bool:
-    if article.get("substantive_promise"):
-        return True
     return home_campaign_political(article) and home_has_policy_or_operational_signal(article)
 
 
@@ -5644,6 +5681,7 @@ def build_home_page(
           <div class="home-glance-grid">{glance_stats_html}</div>
           <div class="home-glance-links">
             <a class="mini-link" href="news.html">뉴스 보기</a>
+            <a class="mini-link" href="election.html">선거·공약 보기</a>
             <a class="mini-link" href="policies.html">정책 보기</a>
             <a class="mini-link" href="hub.html">참여·회의 보기</a>
           </div>
@@ -5691,7 +5729,8 @@ def build_guide_page(status: dict) -> str:
         [
             render_feature_card("홈", "오늘 바로 볼 기사와 오늘 집계를 먼저 보는 첫 화면입니다.", "index.html", "첫 화면"),
             render_feature_card("뉴스", f"최근 {NEWS_WINDOW_DAYS}일 청년 뉴스를 날짜별로 빠르게 훑어봅니다.", "news.html", "최근 기사"),
-            render_feature_card("정책", "정부 공식 발표와 참고 기사를 구분해 원문 흐름을 확인합니다.", "policies.html", "공식 발표"),
+            render_feature_card("선거·공약", f"최근 {ELECTION_WINDOW_DAYS}일 선거 기사와 청년 공약 흐름을 일반 뉴스와 분리해 봅니다.", "election.html", "선거 흐름"),
+            render_feature_card("정책", "정부 공식 발표와 행정성 높은 참고 기사를 구분해 원문 흐름을 확인합니다.", "policies.html", "공식 발표"),
             render_feature_card("참여·회의", "정부 회의와 지역 참여·네트워크 움직임을 한데 모아 봅니다.", "hub.html", "참여 흐름"),
             render_feature_card("자료도구", "자료 찾기, 초안 정리, 제보·문의로 이어지는 실무 동선을 정리했습니다.", "tools.html", "실무 도구"),
         ]
@@ -5755,13 +5794,17 @@ def build_guide_page(status: dict) -> str:
 
 def build_news_page(articles: list[dict], status: dict) -> str:
     page_updated_at = status.get("finished_at") or status.get("updated_at") or ""
-    news_articles = [article for article in sort_articles_by_recency(articles) if not article.get("is_official_source")]
+    news_articles = [
+        article
+        for article in sort_articles_by_recency(articles)
+        if not article.get("is_official_source") and not is_election_promise_article(article)
+    ]
     recent_news_articles = filter_recent_articles(news_articles, page_updated_at, NEWS_WINDOW_HOURS)
     date_options = collect_article_dates(recent_news_articles)
     region_options = collect_news_regions(recent_news_articles)
     page_intro = render_compact_intro(
         "01 뉴스",
-        "지역과 날짜 기준으로 최근 청년 뉴스를 빠르게 훑고, 필요한 기사만 골라볼 수 있습니다.",
+        "지역과 날짜 기준으로 최근 청년 뉴스를 빠르게 훑고, 선거·공약 성격이 강한 기사는 별도 탭으로 분리했습니다.",
         media_key="news",
     )
     news_filter_panel = render_news_filter_panel(region_options, date_options, len(recent_news_articles))
@@ -5783,15 +5826,54 @@ def build_news_page(articles: list[dict], status: dict) -> str:
     """
 
 
+def build_election_page(articles: list[dict], status: dict) -> str:
+    page_updated_at = status.get("finished_at") or status.get("updated_at") or ""
+    election_articles = [
+        with_election_badges(article)
+        for article in sort_articles_by_recency(articles)
+        if is_election_promise_article(article)
+    ]
+    recent_election_articles = filter_recent_articles(election_articles, page_updated_at, ELECTION_WINDOW_HOURS)
+    date_options = collect_article_dates(recent_election_articles)
+    region_options = collect_news_regions(recent_election_articles)
+    page_intro = render_compact_intro(
+        "02 선거·공약",
+        "지방선거 시기에는 청년 공약과 선거성 기사를 이 탭으로 분리해, 일반 뉴스와 정책 흐름을 더 또렷하게 보이게 했습니다.",
+    )
+    election_filter_panel = render_news_filter_panel(region_options, date_options, len(recent_election_articles))
+    cards_html = "".join(render_article_card(article) for article in recent_election_articles)
+    return f"""
+    <div data-news-filter-root="election" data-default-date-start="" data-default-date-end="" data-default-region="all" data-default-search-query="">
+      {page_intro}
+      <section class="section">
+        <article class="info-card">
+          <h3>이 탭은 이렇게 봅니다</h3>
+          <p>후보 동정, 유세, 공천, 청년 공약 기사까지 선거 국면의 흐름을 따로 모았습니다. 일반 뉴스와 정책 탭에서는 이런 기사 비중을 낮추고 여기에서 더 모아 보게 했습니다.</p>
+        </article>
+      </section>
+      {election_filter_panel}
+      <section class="section">
+        <div class="article-grid">
+          {cards_html or '<article class="info-card" data-news-empty-state="true"><h3>최근 선거·공약 기사가 없습니다</h3><p>청년 관련 선거 기사와 공약 기사가 수집되면 이 영역에 표시됩니다.</p></article>'}
+        </div>
+        <article class="info-card" data-news-empty-state="true" hidden>
+          <h3>조건에 맞는 기사가 없습니다</h3>
+          <p>지역이나 날짜 조건을 바꾸면 다른 선거·공약 기사를 볼 수 있습니다.</p>
+        </article>
+      </section>
+    </div>
+    """
+
+
 def build_policies_page(articles: list[dict], status: dict) -> str:
     page_updated_at = status.get("finished_at") or status.get("updated_at") or ""
-    policies = filter_recent_articles(
-        [article for article in articles if article.get("is_official_source")],
-        page_updated_at,
-        24 * 90,
-    )
+    policies = filter_recent_articles([article for article in articles if article.get("is_official_source")], page_updated_at, 24 * 90)
     official_policies = [article for article in policies if article.get("source_kind") == "official"]
-    reference_policies = [article for article in policies if article.get("source_kind") != "official"]
+    reference_policies = [
+        article
+        for article in policies
+        if article.get("source_kind") != "official" and not is_election_promise_article(article)
+    ]
     official_cards = "".join(render_article_card(article) for article in official_policies)
     reference_cards = "".join(render_article_card(article) for article in reference_policies[:8])
     return f"""
@@ -5836,10 +5918,14 @@ def build_policies_page_compact(articles: list[dict], status: dict) -> str:
     recent_articles = filter_recent_articles(sort_articles_by_recency(articles), page_updated_at, 24 * 90)
     official_policies = [article for article in recent_articles if article.get("is_official_source")]
     official_policies = add_major_policy_watchlist_articles(official_policies)
-    reference_policies = [article for article in recent_articles if is_local_policy_update(article)]
+    reference_policies = [
+        article
+        for article in recent_articles
+        if is_local_policy_update(article) and not is_election_promise_article(article)
+    ]
     page_intro = render_compact_intro(
-        "02 정책",
-        "중앙정부 정책 자료와 지자체 발표 소식을 나눠 보고, 중앙은 9개 주요 부처별 최근 정책 자료를 바로 확인할 수 있습니다.",
+        "03 정책",
+        "중앙정부 정책 자료와 지자체 발표 소식을 나눠 보고, 선거성 기사는 별도 탭으로 분리해 정책 흐름을 더 선명하게 봅니다.",
         media_key="policies",
     )
     official_cards = "".join(
@@ -5884,7 +5970,7 @@ def build_policies_page_compact(articles: list[dict], status: dict) -> str:
         <div class="section-head">
           <div>
             <h2>지자체 발표 소식</h2>
-            <p>청년 정책과 공약, 시행계획 발표 성격이 분명한 지역 기사만 따로 모았습니다.</p>
+            <p>청년 정책과 시행계획, 행정 발표 성격이 분명한 지역 기사만 따로 모았습니다. 선거·공약성 기사는 별도 탭에서 봅니다.</p>
           </div>
           <span class="mini-link" aria-disabled="true" data-policy-section-count>{len(reference_policies)}건</span>
         </div>
@@ -5904,7 +5990,7 @@ def build_hub_page(classified_articles: list[dict]) -> str:
     regional_records = filter_hub_articles(classified_articles, "지자체")
     public_records = filter_hub_articles(classified_articles, "공공기관")
     page_intro = render_compact_intro(
-        "03 참여·회의",
+        "04 참여·회의",
         "뉴스와는 별도로, 중앙부처 자문·회의와 지역 청년정책 네트워크, 공공기관 참여·협의 기록만 구조화해 모았습니다.",
         media_key="hub",
     )
@@ -6252,6 +6338,7 @@ def write_page(
             header_meta=render_header_meta(active_page, status),
             nav=render_nav(active_page),
             bottom_nav=render_bottom_nav(active_page),
+            bottom_nav_count=len(NAV_ITEMS),
             guide_overlay=render_guide_overlay(active_page),
             footer_note=build_footer_note(contact_settings),
             content=content,
@@ -6291,6 +6378,14 @@ def main() -> int:
         "청년 뉴스",
         "news.html",
         build_news_page(classified_articles, status),
+        status,
+        contact_settings,
+    )
+    write_page(
+        web_root / "election.html",
+        "청년 선거·공약",
+        "election.html",
+        build_election_page(classified_articles, status),
         status,
         contact_settings,
     )

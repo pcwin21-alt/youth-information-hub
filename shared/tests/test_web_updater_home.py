@@ -28,6 +28,8 @@ def make_article(
     importance_score: int = 10,
     clean_score: int = 4,
     editorial_is_highlighted: bool = False,
+    region: str = "",
+    source_kind: str = "news",
 ) -> dict:
     return {
         "url": url,
@@ -43,6 +45,8 @@ def make_article(
         "is_official_source": False,
         "is_noise": False,
         "article_type": "news",
+        "source_kind": source_kind,
+        "region": region,
         "governance_scope": None,
         "importance_score": importance_score,
         "clean_score": clean_score,
@@ -189,6 +193,73 @@ class HomeSelectionTests(unittest.TestCase):
         self.assertNotIn("이번 주 계속 볼 기사", page_html)
         self.assertIn("© 2026 유스사이드 · 박진감", page_html)
         self.assertNotIn("유스사이드 preview", page_html)
+
+    def test_news_policy_and_election_pages_are_split_by_campaign_signal(self) -> None:
+        general_news = make_article(
+            title="청년센터 운영 확대와 청년 주거 지원 발표",
+            lead_text="청년센터 예산 확대와 청년 주거 지원사업 시행 계획을 발표했다.",
+            url="https://example.com/general-news",
+            region="서울",
+        )
+        pure_campaign = make_article(
+            title="시장 후보, 청년 공약 앞세워 유세 총력",
+            lead_text="후보와 정당 지도부가 청년층 표심을 잡기 위한 유세에 나섰다.",
+            url="https://example.com/campaign-only",
+            region="부산",
+        )
+        substantive_promise = make_article(
+            title="시장 후보, 청년센터 예산 확대·지원사업 공약 발표",
+            lead_text="청년센터 운영 확대와 청년 지원사업 시행 계획을 공약에 담았다.",
+            url="https://example.com/substantive-promise",
+            region="광주",
+        )
+        local_policy = make_article(
+            title="부산시 청년정책 시행계획 발표",
+            lead_text="부산시가 청년정책 시행계획과 청년센터 운영 확대 방안을 발표했다.",
+            url="https://example.com/local-policy",
+            region="부산",
+        )
+        official_policy = make_article(
+            title="고용노동부 청년 지원사업 발표",
+            lead_text="정부가 청년 고용 지원사업 추진 계획을 발표했다.",
+            url="https://example.com/official-policy",
+            source_kind="official",
+        )
+        official_policy["is_official_source"] = True
+        official_policy["source"] = "고용노동부"
+        official_policy["source_name"] = "고용노동부"
+
+        status = {"finished_at": self.reference_time}
+
+        news_html = web_updater.build_news_page(
+            [general_news, pure_campaign, substantive_promise, local_policy],
+            status,
+        )
+        policies_html = web_updater.build_policies_page_compact(
+            [general_news, pure_campaign, substantive_promise, local_policy, official_policy],
+            status,
+        )
+        election_html = web_updater.build_election_page(
+            [general_news, pure_campaign, substantive_promise, local_policy],
+            status,
+        )
+
+        self.assertIn(general_news["title"], news_html)
+        self.assertIn(local_policy["title"], news_html)
+        self.assertNotIn(pure_campaign["title"], news_html)
+        self.assertNotIn(substantive_promise["title"], news_html)
+
+        self.assertIn(official_policy["title"], policies_html)
+        self.assertIn(local_policy["title"], policies_html)
+        self.assertNotIn(pure_campaign["title"], policies_html)
+        self.assertNotIn(substantive_promise["title"], policies_html)
+        self.assertIn("선거·공약성 기사는 별도 탭에서 봅니다.", policies_html)
+
+        self.assertIn(pure_campaign["title"], election_html)
+        self.assertIn(substantive_promise["title"], election_html)
+        self.assertIn("선거 기사", election_html)
+        self.assertIn("정책 공약", election_html)
+        self.assertNotIn(general_news["title"], election_html)
 
 
 if __name__ == "__main__":
