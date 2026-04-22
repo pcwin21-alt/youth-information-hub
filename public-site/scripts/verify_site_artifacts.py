@@ -38,6 +38,7 @@ def main() -> int:
 
     require_file(status_file)
     require_file(summarized_file)
+    # Prebuilt Pages deploys also depend on the checked-in ops radar artifact.
     require_file(ops_radar_file)
     require_file(web_root / "index.html")
     require_file(web_root / "news.html")
