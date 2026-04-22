@@ -122,7 +122,7 @@ class HomeSelectionTests(unittest.TestCase):
         self.assertIn(today_candidate["url"], {article["url"] for article in today})
 
 
-    def test_home_page_omits_weekly_section_and_uses_youthside_preview_badge(self) -> None:
+    def test_home_page_omits_weekly_section_and_uses_support_credit_badge(self) -> None:
         daily_issue = make_article(
             title="泥?뀈?쇳꽣 ?댁쁺 ?뺣?? 泥?뀈 二쇨굅 吏??諛쒗몴",
             lead_text="泥?뀈?쇳꽣 ?덉궛 ?뺣?? 泥?뀈 二쇨굅 吏?먯궗???쒗뻾 怨꾪쉷??諛쒗몴?덈떎.",
@@ -140,13 +140,15 @@ class HomeSelectionTests(unittest.TestCase):
             {"finished_at": self.reference_time},
             {
                 "organization_name": "유스사이드(Youthside)",
-                "version_text": "v0.3 preview",
+                "copyright_text": "© 2026 유스사이드 · 박진감",
+                "version_text": "v0.3",
                 "email": "hello@example.com",
             },
         )
 
         self.assertNotIn("이번 주 계속 볼 기사", page_html)
-        self.assertIn("유스사이드 preview", page_html)
+        self.assertIn("© 2026 유스사이드 · 박진감", page_html)
+        self.assertNotIn("유스사이드 preview", page_html)
 
 
 if __name__ == "__main__":

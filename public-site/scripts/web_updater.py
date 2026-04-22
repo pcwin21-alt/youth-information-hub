@@ -2564,7 +2564,7 @@ PAGE_TEMPLATE = """<!doctype html>
       </div>
     </header>
     {content}
-    <footer class="footer-note">운영: 유스사이드(Youthside)</footer>
+    <footer class="footer-note">{footer_note}</footer>
   </div>
   <nav class="bottom-nav">{bottom_nav}</nav>
   {guide_overlay}
@@ -5507,9 +5507,7 @@ def build_home_page(
     home_date_label = format_home_date_label(page_updated_at)
     latest_news_basis = describe_article_basis(recent_news_articles, f"최근 {NEWS_WINDOW_DAYS}일 기사 없음")
     policy_basis = describe_article_basis(official_policy_articles or policy_articles, "최근 정책 없음")
-    organization_name = contact_settings.get("organization_name", "").strip()
-    support_brand_name = organization_name.split("(")[0].strip() if organization_name else "유스사이드"
-    support_badge_text = f"{support_brand_name} preview"
+    support_badge_text = build_footer_note(contact_settings)
     lead_message = (
         "혼자 버티는 하루가 너무 길게 느껴질 때에도, 오늘의 기사와 정책이 조금은 또렷한 길잡이가 되었으면 합니다. "
         "당신의 오늘이 작지 않다는 마음으로, 지금 필요한 흐름을 한자리에 모았습니다."
@@ -6194,7 +6192,24 @@ def build_contact_page(contact_settings: dict[str, str]) -> str:
     """
 
 
-def write_page(path: Path, page_title: str, active_page: str, content: str, status: dict) -> None:
+def build_footer_note(contact_settings: dict[str, str]) -> str:
+    copyright_text = (contact_settings.get("copyright_text") or "").strip()
+    organization_name = (contact_settings.get("organization_name") or "").strip()
+    if copyright_text:
+        return html.escape(copyright_text)
+    if organization_name:
+        return html.escape(f"운영: {organization_name}")
+    return "운영: 유스사이드(Youthside)"
+
+
+def write_page(
+    path: Path,
+    page_title: str,
+    active_page: str,
+    content: str,
+    status: dict,
+    contact_settings: dict[str, str],
+) -> None:
     path.write_text(
         PAGE_TEMPLATE.format(
             page_title=html.escape(page_title),
@@ -6206,6 +6221,7 @@ def write_page(path: Path, page_title: str, active_page: str, content: str, stat
             nav=render_nav(active_page),
             bottom_nav=render_bottom_nav(active_page),
             guide_overlay=render_guide_overlay(active_page),
+            footer_note=build_footer_note(contact_settings),
             content=content,
         ),
         encoding="utf-8",
@@ -6229,19 +6245,55 @@ def main() -> int:
 
     contact_settings = load_contact_settings()
 
-    write_page(web_root / "index.html", "청년 투게더", "index.html", build_home_page(articles, classified_articles, status, contact_settings), status)
-    write_page(web_root / "guide.html", "이용방법", "guide.html", build_guide_page(status), status)
-    write_page(web_root / "news.html", "청년 뉴스", "news.html", build_news_page(classified_articles, status), status)
+    write_page(
+        web_root / "index.html",
+        "청년 투게더",
+        "index.html",
+        build_home_page(articles, classified_articles, status, contact_settings),
+        status,
+        contact_settings,
+    )
+    write_page(web_root / "guide.html", "이용방법", "guide.html", build_guide_page(status), status, contact_settings)
+    write_page(
+        web_root / "news.html",
+        "청년 뉴스",
+        "news.html",
+        build_news_page(classified_articles, status),
+        status,
+        contact_settings,
+    )
     write_page(
         web_root / "policies.html",
         "청년 정책",
         "policies.html",
         build_policies_page_compact(classified_articles, status),
         status,
+        contact_settings,
     )
-    write_page(web_root / "hub.html", "청년 참여·회의", "hub.html", build_hub_page(classified_articles), status)
-    write_page(web_root / "tools.html", "자료·작성 도구", "tools.html", build_tools_page(classified_articles, status), status)
-    write_page(web_root / "contact.html", "제보·문의", "contact.html", build_contact_page(contact_settings), status)
+    write_page(
+        web_root / "hub.html",
+        "청년 참여·회의",
+        "hub.html",
+        build_hub_page(classified_articles),
+        status,
+        contact_settings,
+    )
+    write_page(
+        web_root / "tools.html",
+        "자료·작성 도구",
+        "tools.html",
+        build_tools_page(classified_articles, status),
+        status,
+        contact_settings,
+    )
+    write_page(
+        web_root / "contact.html",
+        "제보·문의",
+        "contact.html",
+        build_contact_page(contact_settings),
+        status,
+        contact_settings,
+    )
 
     print(f"web_output={web_root / 'index.html'}")
     return 0

@@ -16,8 +16,8 @@ ADMIN_SETTINGS_PATH = ROOT / "config" / "contact_admin.local.json"
 
 DEFAULT_CONTACT_SETTINGS = {
     "organization_name": "유스사이드(Youthside)",
-    "copyright_text": "© 2026",
-    "version_text": "v0.3 preview",
+    "copyright_text": "© 2026 유스사이드 · 박진감",
+    "version_text": "v0.3",
     "email": "pcwin21@gmail.com",
     "extra_line_1": "궁금한 점이나 제안할 내용이 있다면 언제든 편하게 보내주세요.",
     "extra_line_2": "문의, 제보, 협업 제안은 연락 페이지에서 확인할 수 있습니다.",
