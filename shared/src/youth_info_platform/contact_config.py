@@ -15,7 +15,7 @@ CONTACT_SETTINGS_PATH = ROOT / "content" / "contact_settings.json"
 ADMIN_SETTINGS_PATH = ROOT / "config" / "contact_admin.local.json"
 
 DEFAULT_CONTACT_SETTINGS = {
-    "organization_name": "유쾌한 청년들(박진감)",
+    "organization_name": "유스사이드(Youthside)",
     "copyright_text": "© 2026",
     "version_text": "v0.3 preview",
     "email": "pcwin21@gmail.com",

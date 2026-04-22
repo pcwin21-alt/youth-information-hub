@@ -17,6 +17,11 @@ from youth_info_platform.io_utils import read_json
 
 NEWS_WINDOW_DAYS = 7
 NEWS_WINDOW_HOURS = NEWS_WINDOW_DAYS * 24
+HOME_DAILY_LIMIT = 5
+HOME_WEEKLY_LIMIT = 3
+HOME_DAILY_STICKY_LIMIT = 2
+HOME_DAILY_STICKY_HOURS = 24
+HOME_WEEKLY_STICKY_HOURS = 72
 HOME_UPDATE_SNAPSHOT = RUNTIME_PIPELINE_ROOT / "home_update_snapshot.json"
 REMOTE_TEXT_CACHE: dict[str, str] = {}
 ILLUSTRATION_ROOT = "assets/illustrations"
@@ -333,63 +338,44 @@ BASE_CSS = """
     box-sizing: border-box;
   }
   .brand {
-    display: flex;
-    align-items: center;
-    gap: 12px;
+    display: grid;
+    gap: 6px;
+    align-content: center;
     min-width: 0;
     color: inherit;
     text-decoration: none;
   }
-  .brand:hover .brand-title,
-  .brand:focus-visible .brand-title {
-    text-decoration: underline;
-    text-underline-offset: 4px;
+  .brand:hover .brand-logo,
+  .brand:focus-visible .brand-logo {
+    opacity: 0.92;
   }
   .brand:focus-visible {
     outline: 2px solid rgba(48, 75, 104, 0.45);
     outline-offset: 4px;
     border-radius: 8px;
   }
-  .brand-mark {
-    position: relative;
-    width: 42px;
-    height: 42px;
-    border-radius: 12px;
-    border: 1px solid rgba(31, 42, 51, 0.12);
-    background: linear-gradient(180deg, #ffffff 0%, #f2eee7 100%);
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.8);
-  }
-  .brand-mark::before,
-  .brand-mark::after {
-    content: "";
-    position: absolute;
-    left: 8px;
-    right: 8px;
-    border-radius: 999px;
-    background: rgba(23, 33, 49, 0.18);
-  }
-  .brand-mark::before {
-    top: 10px;
-    height: 12px;
-    border-radius: 4px;
-    background: linear-gradient(180deg, #8fa6c2 0%, #304b68 100%);
-  }
-  .brand-mark::after {
-    top: 26px;
-    height: 2px;
-    box-shadow: 0 -6px 0 rgba(23, 33, 49, 0.18), 0 6px 0 rgba(23, 33, 49, 0.12);
-  }
-  .brand-title {
+  .brand-logo {
     display: block;
-    font-size: 1.52rem;
-    font-weight: 800;
-    letter-spacing: -0.04em;
+    width: clamp(168px, 42vw, 286px);
+    max-width: 100%;
+    height: auto;
+  }
+  .brand-copy {
+    display: grid;
+    gap: 4px;
+    padding-left: 2px;
   }
   .brand-sub {
     display: block;
-    margin-top: 2px;
     color: var(--muted);
-    font-size: 0.81rem;
+    font-size: 0.8rem;
+    line-height: 1.35;
+  }
+  .brand-by {
+    display: block;
+    color: var(--accent);
+    font-size: 0.72rem;
+    font-weight: 800;
     line-height: 1.3;
   }
   .header-side {
@@ -2574,16 +2560,17 @@ PAGE_TEMPLATE = """<!doctype html>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;800&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/svg+xml" href="assets/branding/youth-together-mark.svg">
   <style>{styles}</style>
 </head>
 <body data-page="{active_page}">
   <div class="shell">
     <header class="topbar">
-      <a class="brand" href="index.html" aria-label="청년 투게더 홈으로 이동">
-        <div class="brand-mark"></div>
-        <div>
-          <span class="brand-title">청년 투게더</span>
-          <span class="brand-sub">오늘 기준 청년 정책과 이슈를 한곳에 모아 봅니다</span>
+<a class="brand" href="index.html" aria-label="청년 투게더 홈으로 이동">
+        <img class="brand-logo" src="assets/branding/youth-together-lockup.svg" alt="청년 투게더">
+        <div class="brand-copy">
+          <span class="brand-sub">오늘의 청년 정책과 이슈를 한곳에</span>
+          <span class="brand-by">by 유스사이드(Youthside)</span>
         </div>
       </a>
       <div class="topbar-side">
@@ -4605,16 +4592,11 @@ def render_header_meta(active_page: str, status: dict) -> str:
 
 def article_sort_key(article: dict) -> tuple[int, float]:
     editorial_decision = str(article.get("editorial_decision") or "").strip().lower()
-    feature_rank = article.get("editorial_feature_rank")
-    try:
-        normalized_rank = int(feature_rank)
-    except (TypeError, ValueError):
-        normalized_rank = 9999
+    is_highlighted = bool(article.get("editorial_is_highlighted"))
     parsed = parse_iso_datetime(article.get("published_date"))
     timestamp = parsed.timestamp() if parsed else 0.0
     return (
-        1 if editorial_decision == "feature" else 0,
-        -normalized_rank if editorial_decision == "feature" else 0,
+        2 if is_highlighted else 1 if editorial_decision == "include" else 0,
         timestamp,
     )
 
@@ -4818,14 +4800,391 @@ def build_home_update_briefing(
         "copy": copy,
         "meta": meta,
     }
-    save_home_update_snapshot(
+    updated_snapshot = dict(snapshot)
+    updated_snapshot.update(
         {
             "page_updated_at": page_updated_at,
             "recent_news_urls": current_urls,
             "briefing": briefing,
         }
     )
+    save_home_update_snapshot(
+        updated_snapshot
+    )
     return briefing
+
+
+def home_article_key(article: dict) -> str:
+    return article_target_url(article) or clean_article_title(article.get("title"))
+
+
+def _home_text(article: dict) -> str:
+    return build_article_search_text(article, article.get("body_text", ""))
+
+
+def home_campaign_political(article: dict) -> bool:
+    if article.get("campaign_political"):
+        return True
+    text = _home_text(article)
+    return any(
+        keyword in text
+        for keyword in (
+            "선거",
+            "후보",
+            "예비후보",
+            "유세",
+            "공천",
+            "지지율",
+            "단일화",
+            "출마",
+            "경선",
+            "정당",
+            "국민의힘",
+            "더불어민주당",
+            "민주당",
+            "개혁신당",
+            "조국혁신당",
+            "진보당",
+            "공약",
+        )
+    )
+
+
+def home_article_age_hours(article: dict, reference_dt: datetime | None) -> float:
+    if reference_dt is None:
+        return 10_000.0
+    published_dt = parse_iso_datetime(article.get("published_date"))
+    if published_dt is None:
+        return 10_000.0
+    delta = reference_dt - published_dt
+    return max(delta.total_seconds() / 3600, 0.0)
+
+
+def home_has_policy_or_operational_signal(article: dict) -> bool:
+    if article.get("has_policy_operational_context"):
+        return True
+    text = _home_text(article)
+    return any(
+        keyword in text
+        for keyword in (
+            "청년센터",
+            "청년공간",
+            "청년허브",
+            "운영",
+            "위탁",
+            "개소",
+            "신설",
+            "폐지",
+            "예산",
+            "조례",
+            "시행계획",
+            "종합계획",
+            "기본계획",
+            "지원사업",
+            "모집",
+            "발표",
+            "시행",
+            "설치",
+            "확대",
+        )
+    )
+
+
+def home_has_structural_issue_signal(article: dict) -> bool:
+    if article.get("issue_tags"):
+        return True
+    text = _home_text(article)
+    return any(
+        keyword in text
+        for keyword in (
+            "고용",
+            "취업",
+            "실업",
+            "주거",
+            "주택",
+            "월세",
+            "전세",
+            "부채",
+            "금융",
+            "노동",
+            "노동권",
+            "은둔",
+            "고립",
+            "복지",
+            "청년센터",
+            "청년공간",
+            "청년허브",
+        )
+    )
+
+
+def home_substantive_promise(article: dict) -> bool:
+    if article.get("substantive_promise"):
+        return True
+    return home_campaign_political(article) and home_has_policy_or_operational_signal(article)
+
+
+def home_weak_youth_signal(article: dict) -> bool:
+    if article.get("weak_youth_signal"):
+        return True
+    text = _home_text(article)
+    if not any(keyword in text for keyword in ("청년", "청년층", "청년세대", "사회초년생", "대학생", "취준생")):
+        return False
+    if home_has_policy_or_operational_signal(article) or home_has_structural_issue_signal(article):
+        return False
+    if any(
+        keyword in text
+        for keyword in (
+            "청년보좌역",
+            "청년자문단",
+            "청년참여단",
+            "청년네트워크",
+            "청년협의체",
+            "청년위원회",
+            "청년거버넌스",
+        )
+    ):
+        return False
+    return True
+
+
+def is_home_today_candidate(article: dict, reference_dt: datetime | None) -> bool:
+    if article.get("is_official_source"):
+        return False
+    if article.get("article_type") == "opinion" or article.get("is_noise"):
+        return False
+    if home_campaign_political(article):
+        return False
+    if home_weak_youth_signal(article):
+        return False
+    if home_article_age_hours(article, reference_dt) > NEWS_WINDOW_HOURS:
+        return False
+    return (
+        home_has_policy_or_operational_signal(article)
+        or home_has_structural_issue_signal(article)
+        or int(article.get("clean_score") or 0) >= 4
+        or bool(article.get("governance_scope"))
+    )
+
+
+def is_home_weekly_candidate(article: dict, reference_dt: datetime | None) -> bool:
+    if article.get("is_official_source"):
+        return False
+    if article.get("article_type") == "opinion" or article.get("is_noise"):
+        return False
+    if home_campaign_political(article) and not home_substantive_promise(article):
+        return False
+    if home_article_age_hours(article, reference_dt) > NEWS_WINDOW_HOURS:
+        return False
+    if home_weak_youth_signal(article) and int(article.get("clean_score") or 0) < 4:
+        return False
+    return (
+        home_substantive_promise(article)
+        or home_has_policy_or_operational_signal(article)
+        or home_has_structural_issue_signal(article)
+        or int(article.get("clean_score") or 0) >= 4
+        or bool(article.get("governance_scope"))
+    )
+
+
+def score_home_today_article(article: dict, reference_dt: datetime | None) -> int:
+    score = int(article.get("importance_score") or 0)
+    if home_has_policy_or_operational_signal(article):
+        score += 6
+    if home_has_structural_issue_signal(article):
+        score += 4
+    if int(article.get("clean_score") or 0) >= 4:
+        score += 3
+    if article.get("governance_scope"):
+        score += 2
+    if home_substantive_promise(article):
+        score -= 3
+    age_hours = home_article_age_hours(article, reference_dt)
+    if age_hours <= 24:
+        score += 8
+    elif age_hours <= 48:
+        score += 5
+    elif age_hours <= 72:
+        score += 2
+    elif age_hours <= 120:
+        score -= 1
+    else:
+        score -= 3
+    return score
+
+
+def score_home_weekly_article(article: dict, reference_dt: datetime | None) -> int:
+    score = int(article.get("importance_score") or 0)
+    if home_has_policy_or_operational_signal(article):
+        score += 7
+    if home_has_structural_issue_signal(article):
+        score += 4
+    if int(article.get("clean_score") or 0) >= 4:
+        score += 4
+    if int(article.get("clean_score") or 0) >= 6:
+        score += 2
+    if article.get("governance_scope"):
+        score += 3
+    if home_substantive_promise(article):
+        score += 3
+    age_hours = home_article_age_hours(article, reference_dt)
+    if age_hours <= 72:
+        score += 4
+    elif age_hours <= NEWS_WINDOW_HOURS:
+        score += 2
+    return score
+
+
+def _snapshot_entries(snapshot: dict, key: str) -> list[dict[str, str]]:
+    raw_entries = snapshot.get(key)
+    if isinstance(raw_entries, list):
+        entries = [
+            {
+                "url": str(entry.get("url") or "").strip(),
+                "started_at": str(entry.get("started_at") or "").strip(),
+            }
+            for entry in raw_entries
+            if isinstance(entry, dict) and str(entry.get("url") or "").strip()
+        ]
+        if entries:
+            return entries
+
+    urls = snapshot.get(f"{key[:-8]}_urls", []) if key.endswith("_entries") else []
+    started_at = str(snapshot.get(f"{key[:-8]}_started_at") or "").strip() if key.endswith("_entries") else ""
+    if not isinstance(urls, list):
+        return []
+    return [{"url": str(url).strip(), "started_at": started_at} for url in urls if str(url).strip()]
+
+
+def select_home_articles_with_hysteresis(
+    *,
+    candidates: list[dict],
+    previous_entries: list[dict[str, str]],
+    reference_dt: datetime | None,
+    limit: int,
+    sticky_limit: int,
+    sticky_hours: int,
+    excluded_keys: set[str] | None = None,
+) -> tuple[list[dict], list[dict[str, str]]]:
+    excluded_keys = excluded_keys or set()
+    candidate_map = {home_article_key(article): article for article in candidates}
+    rank_map = {home_article_key(article): index for index, article in enumerate(candidates)}
+    sticky_rank_limit = max(limit + sticky_limit, limit)
+    retained: list[dict] = []
+    retained_entry_map: dict[str, str] = {}
+
+    for entry in previous_entries:
+        article_key = entry.get("url", "").strip()
+        article = candidate_map.get(article_key)
+        if not article or article_key in excluded_keys:
+            continue
+        rank_index = rank_map.get(article_key, sticky_rank_limit + 1)
+        if rank_index >= sticky_rank_limit:
+            continue
+        started_at = entry.get("started_at", "").strip()
+        started_dt = parse_iso_datetime(started_at) or reference_dt
+        if started_dt is None:
+            continue
+        age_hours = max((reference_dt - started_dt).total_seconds() / 3600, 0.0) if reference_dt else 0.0
+        if age_hours > sticky_hours:
+            continue
+        retained.append(article)
+        retained_entry_map[article_key] = started_at or (
+            reference_dt.isoformat() if reference_dt is not None else ""
+        )
+        if len(retained) >= sticky_limit:
+            break
+
+    selected: list[dict] = list(retained)
+    selected_keys = {home_article_key(article) for article in selected}
+    entry_rows: list[dict[str, str]] = [
+        {"url": article_key, "started_at": retained_entry_map[article_key]}
+        for article_key in retained_entry_map
+    ]
+
+    for article in candidates:
+        article_key = home_article_key(article)
+        if article_key in excluded_keys or article_key in selected_keys:
+            continue
+        selected.append(article)
+        selected_keys.add(article_key)
+        entry_rows.append(
+            {
+                "url": article_key,
+                "started_at": reference_dt.isoformat() if reference_dt is not None else "",
+            }
+        )
+        if len(selected) >= limit:
+            break
+
+    return selected[:limit], entry_rows[:limit]
+
+
+def build_home_curated_lists(
+    selected_news_articles: list[dict],
+    highlighted_article: dict | None,
+    page_updated_at: str,
+) -> tuple[list[dict], list[dict], dict]:
+    reference_dt = parse_iso_datetime(page_updated_at)
+    snapshot = load_home_update_snapshot()
+    previous_today_entries = _snapshot_entries(snapshot, "today_entries")
+    previous_weekly_entries = _snapshot_entries(snapshot, "weekly_entries")
+
+    highlight_key = home_article_key(highlighted_article) if highlighted_article else ""
+    base_articles = [article for article in selected_news_articles if home_article_key(article) != highlight_key]
+
+    today_ranked = sorted(
+        [article for article in base_articles if is_home_today_candidate(article, reference_dt)],
+        key=lambda article: (
+            score_home_today_article(article, reference_dt),
+            article_sort_key(article)[1],
+        ),
+        reverse=True,
+    )
+    today_articles, today_entries = select_home_articles_with_hysteresis(
+        candidates=today_ranked,
+        previous_entries=previous_today_entries,
+        reference_dt=reference_dt,
+        limit=HOME_DAILY_LIMIT,
+        sticky_limit=HOME_DAILY_STICKY_LIMIT,
+        sticky_hours=HOME_DAILY_STICKY_HOURS,
+    )
+    today_keys = {home_article_key(article) for article in today_articles}
+
+    weekly_ranked = sorted(
+        [
+            article
+            for article in base_articles
+            if home_article_key(article) not in today_keys and is_home_weekly_candidate(article, reference_dt)
+        ],
+        key=lambda article: (
+            score_home_weekly_article(article, reference_dt),
+            article_sort_key(article)[1],
+        ),
+        reverse=True,
+    )
+    weekly_articles, weekly_entries = select_home_articles_with_hysteresis(
+        candidates=weekly_ranked,
+        previous_entries=previous_weekly_entries,
+        reference_dt=reference_dt,
+        limit=HOME_WEEKLY_LIMIT,
+        sticky_limit=HOME_WEEKLY_LIMIT,
+        sticky_hours=HOME_WEEKLY_STICKY_HOURS,
+    )
+
+    updated_snapshot = dict(snapshot)
+    updated_snapshot.update(
+        {
+            "today_entries": today_entries,
+            "today_urls": [entry["url"] for entry in today_entries],
+            "today_started_at": today_entries[0]["started_at"] if today_entries else "",
+            "weekly_entries": weekly_entries,
+            "weekly_urls": [entry["url"] for entry in weekly_entries],
+            "weekly_started_at": weekly_entries[0]["started_at"] if weekly_entries else "",
+        }
+    )
+    save_home_update_snapshot(updated_snapshot)
+    return today_articles, weekly_articles, updated_snapshot
 
 
 def summarize_menu_items(articles: list[dict], fallback_items: list[tuple[str, str]], limit: int = 2) -> list[tuple[str, str]]:
@@ -5130,9 +5489,19 @@ def build_home_page(
 ) -> str:
     status_meta = render_status(status)
     page_updated_at = status.get("finished_at") or status.get("updated_at") or ""
-    all_articles = sort_articles_by_recency(classified_articles or articles)
-    news_articles = [article for article in all_articles if not article.get("is_official_source")]
-    recent_news_articles = filter_recent_articles(news_articles, page_updated_at, NEWS_WINDOW_HOURS)
+    selected_articles = sort_articles_by_recency(articles or classified_articles)
+    all_articles = sort_articles_by_recency(classified_articles or selected_articles)
+    selected_news_articles = [article for article in selected_articles if not article.get("is_official_source")]
+    recent_news_articles = filter_recent_articles(selected_news_articles, page_updated_at, NEWS_WINDOW_HOURS)
+    highlighted_article = next(
+        (article for article in selected_articles if article.get("editorial_is_highlighted")),
+        None,
+    )
+    today_articles, weekly_articles, _ = build_home_curated_lists(
+        recent_news_articles,
+        highlighted_article,
+        page_updated_at,
+    )
     policy_articles = filter_recent_articles(
         [article for article in all_articles if article.get("is_official_source")],
         page_updated_at,
@@ -5161,13 +5530,13 @@ def build_home_page(
     glance_stats_html = "".join(
         f'<article class="{card_class}"><span class="home-glance-label">{label}</span><strong class="home-glance-value">{value}</strong></article>'
         for card_class, label, value in [
-            ("home-glance-item warm", "오늘의 기사", f"{len(recent_news_articles)}건"),
+            ("home-glance-item warm", "오늘 메인", f"{len(today_articles)}건"),
             ("home-glance-item neutral", "정책", f"{len(official_policy_articles)}건"),
             ("home-glance-item teal", "참여·회의", f"{participation_count}건"),
         ]
     )
 
-    def render_urgent_news_item(index: int, article: dict) -> str:
+    def render_home_news_item(index: int, article: dict) -> str:
         title = html.escape(display_article_title(article, limit=88))
         meta = html.escape(compact_article_meta(article))
         url = article_target_url(article)
@@ -5188,13 +5557,75 @@ def build_home_page(
             f'<span class="home-urgent-meta">{meta}</span></div></a></article>'
         )
 
-    urgent_news_html = "".join(
-        render_urgent_news_item(index, article) for index, article in enumerate(recent_news_articles[:5], start=1)
+    today_news_html = "".join(
+        render_home_news_item(index, article) for index, article in enumerate(today_articles[:HOME_DAILY_LIMIT], start=1)
     ) or (
         '<article class="home-urgent-item"><div class="home-urgent-link"><span class="home-urgent-rank">00</span>'
-        f'<div class="home-urgent-text"><strong>최근 {NEWS_WINDOW_DAYS}일 뉴스가 없습니다.</strong>'
-        '<span class="home-urgent-meta">새 청년 뉴스가 수집되면 이 영역에 표시됩니다.</span></div></div></article>'
+        '<div class="home-urgent-text"><strong>오늘 크게 볼 기사가 아직 없습니다.</strong>'
+        '<span class="home-urgent-meta">새 청년 뉴스가 들어오면 이 영역이 먼저 채워집니다.</span></div></div></article>'
     )
+    weekly_news_html = "".join(
+        render_home_news_item(index, article)
+        for index, article in enumerate(weekly_articles[:HOME_WEEKLY_LIMIT], start=1)
+    )
+
+    def render_home_highlight_card(article: dict | None) -> str:
+        if not article:
+            return ""
+
+        title = html.escape(display_article_title(article, limit=88))
+        summary = html.escape(
+            article.get("summary")
+            or article.get("lead_text")
+            or "운영자가 대표로 지정한 기사입니다."
+        )
+        meta = html.escape(compact_article_meta(article))
+        badges = list(dict.fromkeys([badge for badge in article.get("display_badges", []) if badge]))
+        badges = ["하이라이트", *[badge for badge in badges if badge != "하이라이트"]][:3]
+        badge_html = "".join(f'<span class="tag">{html.escape(badge)}</span>' for badge in badges)
+        url = article_target_url(article)
+        if url:
+            body_html = (
+                f'<a class="list-item" href="{html.escape(url)}" target="_blank" rel="noreferrer">'
+                f'<strong>{title}</strong><span>{summary}</span></a>'
+            )
+        else:
+            body_html = f'<div class="list-item"><strong>{title}</strong><span>{summary}</span></div>'
+        return (
+            '<article class="home-briefing-card home-highlight-card">'
+            '<div class="home-section-head">'
+            '<div class="home-section-title">'
+            '<h2>대표 하이라이트</h2>'
+            '<p class="home-section-copy">운영자가 놓치지 말아야 할 기사로 직접 지정한 항목입니다.</p>'
+            '</div>'
+            f'<div class="tag-list">{badge_html}</div>'
+            '</div>'
+            f'{body_html}'
+            f'<div class="home-meta-line"><span>{meta}</span></div>'
+            '</article>'
+        )
+
+    def render_home_weekly_card(items: list[dict]) -> str:
+        if not items:
+            return ""
+        return (
+            '<article class="home-briefing-card home-news-card">'
+            '<div class="home-section-head">'
+            '<div class="home-section-title">'
+            '<h2>이번 주 계속 볼 기사</h2>'
+            '<p class="home-section-copy">중요하지만 하루 만에 밀리면 아쉬운 기사를 조금 더 오래 붙잡아 둡니다.</p>'
+            '</div>'
+            '</div>'
+            f'<div class="home-urgent-list">{weekly_news_html}</div>'
+            '<div class="home-meta-line home-meta-footer">'
+            '<span>최근 7일 기준</span>'
+            '<span>적격 기사만 느리게 교체</span>'
+            '</div>'
+            '</article>'
+        )
+
+    highlight_card_html = render_home_highlight_card(highlighted_article)
+    weekly_card_html = render_home_weekly_card(weekly_articles)
     home_lead_media = render_card_illustration(
         HOME_LEAD_ILLUSTRATION,
         slot_class="home-illustration-slot",
@@ -5227,10 +5658,16 @@ def build_home_page(
           <div class="home-briefing-divider"></div>
           <div class="home-briefing-subhead">
             <h3>오늘 놓치면 안되는 뉴스 5가지</h3>
-            <p>요약된 흐름을 기준으로 지금 가장 먼저 훑어볼 기사를 빠르게 묶었습니다.</p>
+            <p>오늘성, 즉시성, 정책·현장 맥락을 더 좁게 보고 지금 먼저 볼 기사를 묶었습니다.</p>
           </div>
-          <div class="home-urgent-list">{urgent_news_html}</div>
+          <div class="home-urgent-list">{today_news_html}</div>
+          <div class="home-meta-line home-meta-footer">
+            <span>선거 공방형은 기본 제외</span>
+            <span>상위 일부는 하루 정도 유지</span>
+          </div>
         </article>
+        {highlight_card_html}
+        {weekly_card_html}
         <article class="home-briefing-card support support-pill">
           {render_support_metrics()}
         </article>
@@ -5249,7 +5686,7 @@ def build_home_page(
               <a href="guide.html">사이트 소개</a>
               <a href="contact.html">제보·문의</a>
             </div>
-            <p class="home-support-credit">유쾌한 청년들, 박진감이 만들었습니다.</p>
+            <p class="home-support-credit">by 유스사이드(Youthside)</p>
           </div>
         </article>
       </div>

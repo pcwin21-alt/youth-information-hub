@@ -7,6 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;800&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/svg+xml" href="assets/branding/youth-together-mark.svg">
   <style>
   :root {
     --page-bg: #e8e1d8;
@@ -64,63 +65,44 @@
     box-sizing: border-box;
   }
   .brand {
-    display: flex;
-    align-items: center;
-    gap: 12px;
+    display: grid;
+    gap: 6px;
+    align-content: center;
     min-width: 0;
     color: inherit;
     text-decoration: none;
   }
-  .brand:hover .brand-title,
-  .brand:focus-visible .brand-title {
-    text-decoration: underline;
-    text-underline-offset: 4px;
+  .brand:hover .brand-logo,
+  .brand:focus-visible .brand-logo {
+    opacity: 0.92;
   }
   .brand:focus-visible {
     outline: 2px solid rgba(48, 75, 104, 0.45);
     outline-offset: 4px;
     border-radius: 8px;
   }
-  .brand-mark {
-    position: relative;
-    width: 42px;
-    height: 42px;
-    border-radius: 12px;
-    border: 1px solid rgba(31, 42, 51, 0.12);
-    background: linear-gradient(180deg, #ffffff 0%, #f2eee7 100%);
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.8);
-  }
-  .brand-mark::before,
-  .brand-mark::after {
-    content: "";
-    position: absolute;
-    left: 8px;
-    right: 8px;
-    border-radius: 999px;
-    background: rgba(23, 33, 49, 0.18);
-  }
-  .brand-mark::before {
-    top: 10px;
-    height: 12px;
-    border-radius: 4px;
-    background: linear-gradient(180deg, #8fa6c2 0%, #304b68 100%);
-  }
-  .brand-mark::after {
-    top: 26px;
-    height: 2px;
-    box-shadow: 0 -6px 0 rgba(23, 33, 49, 0.18), 0 6px 0 rgba(23, 33, 49, 0.12);
-  }
-  .brand-title {
+  .brand-logo {
     display: block;
-    font-size: 1.52rem;
-    font-weight: 800;
-    letter-spacing: -0.04em;
+    width: clamp(168px, 42vw, 286px);
+    max-width: 100%;
+    height: auto;
+  }
+  .brand-copy {
+    display: grid;
+    gap: 4px;
+    padding-left: 2px;
   }
   .brand-sub {
     display: block;
-    margin-top: 2px;
     color: var(--muted);
-    font-size: 0.81rem;
+    font-size: 0.8rem;
+    line-height: 1.35;
+  }
+  .brand-by {
+    display: block;
+    color: var(--accent);
+    font-size: 0.72rem;
+    font-weight: 800;
     line-height: 1.3;
   }
   .header-side {
@@ -2298,16 +2280,16 @@
 <body data-page="policies.html">
   <div class="shell">
     <header class="topbar">
-      <a class="brand" href="index.html" aria-label="청년 투게더 홈으로 이동">
-        <div class="brand-mark"></div>
-        <div>
-          <span class="brand-title">청년 투게더</span>
-          <span class="brand-sub">오늘 기준 청년 정책과 이슈를 한곳에 모아 봅니다</span>
+<a class="brand" href="index.html" aria-label="청년 투게더 홈으로 이동">
+        <img class="brand-logo" src="assets/branding/youth-together-lockup.svg" alt="청년 투게더">
+        <div class="brand-copy">
+          <span class="brand-sub">오늘의 청년 정책과 이슈를 한곳에</span>
+          <span class="brand-by">by 유스사이드(Youthside)</span>
         </div>
       </a>
       <div class="topbar-side">
         <a class="guide-link" href="guide.html" data-guide-open-link="true">이용방법</a>
-        <div class="header-side"><strong>04.21 20:39</strong><span>최근 반영</span></div>
+        <div class="header-side"><strong>04.22 03:53</strong><span>최근 반영</span></div>
         <nav class="nav"><a class="" href="index.html">홈</a><a class="" href="news.html">뉴스</a><a class="active" href="policies.html">정책</a><a class="" href="hub.html">참여·회의</a><a class="" href="tools.html">자료도구</a><a class="" href="contact.html">제보·문의</a></nav>
       </div>
     </header>
@@ -2337,7 +2319,7 @@
           </div>
           <div class="filter-group">
             <span class="filter-group-label" data-policy-scope-label="true">세부 구분</span>
-            <div class="filter-controls"><button class="filter-button active" type="button" data-policy-filter="true" data-filter-group="scope" data-filter-value="all" data-policy-scope-button="true" data-scope-kind="all" aria-pressed="true">전체</button><button class="filter-button" type="button" data-policy-filter="true" data-filter-group="scope" data-filter-value="기획재정부" data-policy-scope-button="true" data-scope-kind="official" aria-pressed="false" hidden>기획재정부</button><button class="filter-button" type="button" data-policy-filter="true" data-filter-group="scope" data-filter-value="고용노동부" data-policy-scope-button="true" data-scope-kind="official" aria-pressed="false" hidden>고용노동부</button><button class="filter-button" type="button" data-policy-filter="true" data-filter-group="scope" data-filter-value="행정안전부" data-policy-scope-button="true" data-scope-kind="official" aria-pressed="false" hidden>행정안전부</button><button class="filter-button" type="button" data-policy-filter="true" data-filter-group="scope" data-filter-value="보건복지부" data-policy-scope-button="true" data-scope-kind="official" aria-pressed="false" hidden>보건복지부</button><button class="filter-button" type="button" data-policy-filter="true" data-filter-group="scope" data-filter-value="국토교통부" data-policy-scope-button="true" data-scope-kind="official" aria-pressed="false" hidden>국토교통부</button><button class="filter-button" type="button" data-policy-filter="true" data-filter-group="scope" data-filter-value="문화체육관광부" data-policy-scope-button="true" data-scope-kind="official" aria-pressed="false" hidden>문화체육관광부</button><button class="filter-button" type="button" data-policy-filter="true" data-filter-group="scope" data-filter-value="중소벤처기업부" data-policy-scope-button="true" data-scope-kind="official" aria-pressed="false" hidden>중소벤처기업부</button><button class="filter-button" type="button" data-policy-filter="true" data-filter-group="scope" data-filter-value="금융위원회" data-policy-scope-button="true" data-scope-kind="official" aria-pressed="false" hidden>금융위원회</button><button class="filter-button" type="button" data-policy-filter="true" data-filter-group="scope" data-filter-value="전북" data-policy-scope-button="true" data-scope-kind="local" aria-pressed="false" hidden>전북</button><button class="filter-button" type="button" data-policy-filter="true" data-filter-group="scope" data-filter-value="제주" data-policy-scope-button="true" data-scope-kind="local" aria-pressed="false" hidden>제주</button><button class="filter-button" type="button" data-policy-filter="true" data-filter-group="scope" data-filter-value="경기" data-policy-scope-button="true" data-scope-kind="local" aria-pressed="false" hidden>경기</button><button class="filter-button" type="button" data-policy-filter="true" data-filter-group="scope" data-filter-value="경남" data-policy-scope-button="true" data-scope-kind="local" aria-pressed="false" hidden>경남</button><button class="filter-button" type="button" data-policy-filter="true" data-filter-group="scope" data-filter-value="광주" data-policy-scope-button="true" data-scope-kind="local" aria-pressed="false" hidden>광주</button><button class="filter-button" type="button" data-policy-filter="true" data-filter-group="scope" data-filter-value="대구" data-policy-scope-button="true" data-scope-kind="local" aria-pressed="false" hidden>대구</button><button class="filter-button" type="button" data-policy-filter="true" data-filter-group="scope" data-filter-value="충북" data-policy-scope-button="true" data-scope-kind="local" aria-pressed="false" hidden>충북</button></div>
+            <div class="filter-controls"><button class="filter-button active" type="button" data-policy-filter="true" data-filter-group="scope" data-filter-value="all" data-policy-scope-button="true" data-scope-kind="all" aria-pressed="true">전체</button><button class="filter-button" type="button" data-policy-filter="true" data-filter-group="scope" data-filter-value="기획재정부" data-policy-scope-button="true" data-scope-kind="official" aria-pressed="false" hidden>기획재정부</button><button class="filter-button" type="button" data-policy-filter="true" data-filter-group="scope" data-filter-value="고용노동부" data-policy-scope-button="true" data-scope-kind="official" aria-pressed="false" hidden>고용노동부</button><button class="filter-button" type="button" data-policy-filter="true" data-filter-group="scope" data-filter-value="행정안전부" data-policy-scope-button="true" data-scope-kind="official" aria-pressed="false" hidden>행정안전부</button><button class="filter-button" type="button" data-policy-filter="true" data-filter-group="scope" data-filter-value="보건복지부" data-policy-scope-button="true" data-scope-kind="official" aria-pressed="false" hidden>보건복지부</button><button class="filter-button" type="button" data-policy-filter="true" data-filter-group="scope" data-filter-value="국토교통부" data-policy-scope-button="true" data-scope-kind="official" aria-pressed="false" hidden>국토교통부</button><button class="filter-button" type="button" data-policy-filter="true" data-filter-group="scope" data-filter-value="문화체육관광부" data-policy-scope-button="true" data-scope-kind="official" aria-pressed="false" hidden>문화체육관광부</button><button class="filter-button" type="button" data-policy-filter="true" data-filter-group="scope" data-filter-value="중소벤처기업부" data-policy-scope-button="true" data-scope-kind="official" aria-pressed="false" hidden>중소벤처기업부</button><button class="filter-button" type="button" data-policy-filter="true" data-filter-group="scope" data-filter-value="금융위원회" data-policy-scope-button="true" data-scope-kind="official" aria-pressed="false" hidden>금융위원회</button><button class="filter-button" type="button" data-policy-filter="true" data-filter-group="scope" data-filter-value="제주" data-policy-scope-button="true" data-scope-kind="local" aria-pressed="false" hidden>제주</button><button class="filter-button" type="button" data-policy-filter="true" data-filter-group="scope" data-filter-value="경기" data-policy-scope-button="true" data-scope-kind="local" aria-pressed="false" hidden>경기</button><button class="filter-button" type="button" data-policy-filter="true" data-filter-group="scope" data-filter-value="경남" data-policy-scope-button="true" data-scope-kind="local" aria-pressed="false" hidden>경남</button><button class="filter-button" type="button" data-policy-filter="true" data-filter-group="scope" data-filter-value="경북" data-policy-scope-button="true" data-scope-kind="local" aria-pressed="false" hidden>경북</button><button class="filter-button" type="button" data-policy-filter="true" data-filter-group="scope" data-filter-value="광주" data-policy-scope-button="true" data-scope-kind="local" aria-pressed="false" hidden>광주</button><button class="filter-button" type="button" data-policy-filter="true" data-filter-group="scope" data-filter-value="서울" data-policy-scope-button="true" data-scope-kind="local" aria-pressed="false" hidden>서울</button><button class="filter-button" type="button" data-policy-filter="true" data-filter-group="scope" data-filter-value="전북" data-policy-scope-button="true" data-scope-kind="local" aria-pressed="false" hidden>전북</button></div>
           </div>
           <div class="filter-group">
             <span class="filter-group-label">유형</span>
@@ -2356,17 +2338,17 @@
               <div class="date-range-fields">
                 <label class="date-input-wrap" data-policy-date-launch="true">
                   <span class="date-picker-label">시작일</span>
-                  <input class="date-input" type="date" data-policy-date-input="true" data-date-role="start" min="2026-01-13" max="2026-04-21">
+                  <input class="date-input" type="date" data-policy-date-input="true" data-date-role="start" min="2026-01-13" max="2026-04-22">
                 </label>
                 <label class="date-input-wrap" data-policy-date-launch="true">
                   <span class="date-picker-label">종료일</span>
-                  <input class="date-input" type="date" data-policy-date-input="true" data-date-role="end" min="2026-01-13" max="2026-04-21">
+                  <input class="date-input" type="date" data-policy-date-input="true" data-date-role="end" min="2026-01-13" max="2026-04-22">
                 </label>
               </div>
             </div>
           </div>
         </div>
-        <div class="filter-status" data-policy-filter-status>전체 33건을 보고 있습니다.</div>
+        <div class="filter-status" data-policy-filter-status>전체 30건을 보고 있습니다.</div>
       </article>
     </section>
     
@@ -2376,17 +2358,9 @@
             <h2>중앙정부 정책 자료</h2>
             <p>기획재정부·교육부·고용노동부·행정안전부·보건복지부·국토교통부·문화체육관광부·중소벤처기업부·금융위원회 기준으로 최근 자료를 모았습니다.</p>
           </div>
-          <span class="mini-link" aria-disabled="true" data-policy-section-count>22건</span>
+          <span class="mini-link" aria-disabled="true" data-policy-section-count>21건</span>
         </div>
         <div class="article-grid">
-    <article class="article-card" data-article-card="true" data-article-url="https://www.kfenews.co.kr/news/articleView.html?idxno=657165" data-article-title="하나금융, 금감원과 미래금융 혁신 주도할 청년 인재 양성 맞손" data-article-date="2026-04-21" data-article-region="중앙" data-article-search="하나금융, 금감원과 미래금융 혁신 주도할 청년 인재 양성 맞손 한국금융경제신문=김선재 기자 | 하나금융그룹이 미래금융 혁신을 주도할 차세대 인재 육성을 위해 ‘하나 청년 금융 인재 양성 프로젝트’ 선포식을 개최하고, 프로젝트 최종 참여자 선발을 위한 본선 대회를 진행했다.21일 하나금융그룹에 따르면 금융감독원과 구글, 아마존웹서비스(AWS), 마이크로소프트가 후원하는 ‘하나 청년 금융 인재 양성 프로젝트’는 청년들에게 도전과 성장의 기회를 제공하는 실무형 금융 인재 양성 프로그램이다. 기존 ‘하나 디지털 파워 온’ 프로그램을 확대 개편해 ▲금융 ▲ESG ▲AI·데이터 분석 등의 교육을 강화했고 경제 &gt; 보도자료 한국금융경제신문 네이버뉴스 청년 광역(1주) 김선재 기자 부채 고용 연구 중앙 한국금융경제신문=김선재 기자 | 하나금융그룹이 미래금융 혁신을 주도할 차세대 인재 육성을 위해 ‘하나 청년 금융 인재 양성 프로젝트’ 선포식을 개최하고, 프로젝트 최종 참여자 선발을 위한 본선 대회를..." data-policy-card="true" data-policy-group="official" data-policy-authority="한국금융경제신문" data-policy-type="모집">
-      <div class="article-meta"><div class="article-meta-tags"><span class="meta-pill primary">공식 발표</span><span class="meta-pill subtle">중앙</span></div><div class="article-byline"><span class="meta-item">한국금융경제신문</span><span class="meta-divider" aria-hidden="true">•</span><span class="meta-item">2026-04-21</span></div></div>
-      <h3><a class="article-title-link" href="https://www.kfenews.co.kr/news/articleView.html?idxno=657165" target="_blank" rel="noreferrer" aria-label="하나금융, 금감원과 미래금융 혁신 주도할 청년 인재 양성 맞손 링크 바로가기">하나금융, 금감원과 미래금융 혁신 주도할 청년 인재 양성 맞손</a></h3>
-      
-      <p class="article-summary"><a class="article-summary-link" href="https://www.kfenews.co.kr/news/articleView.html?idxno=657165" target="_blank" rel="noreferrer" aria-label="하나금융, 금감원과 미래금융 혁신 주도할 청년 인재 양성 맞손 링크 바로가기">한국금융경제신문=김선재 기자 | 하나금융그룹이 미래금융 혁신을 주도할 차세대 인재 육성을 위해 ‘하나 청년 금융 인재 양성 프로젝트’ 선포식을 개최하고, 프로젝트 최종 참여자 선발을 위한 본선 대회를...</a></p>
-      <div class="article-actions"><a class="mini-link article-link-action" href="https://www.kfenews.co.kr/news/articleView.html?idxno=657165" target="_blank" rel="noreferrer" aria-label="하나금융, 금감원과 미래금융 혁신 주도할 청년 인재 양성 맞손 링크 바로가기">링크 바로가기</a><button class="action-button" type="button" data-article-action="share" data-article-url="https://www.kfenews.co.kr/news/articleView.html?idxno=657165" data-share-title="하나금융, 금감원과 미래금융 혁신 주도할 청년 인재 양성 맞손" aria-label="하나금융, 금감원과 미래금융 혁신 주도할 청년 인재 양성 맞손 공유하기">공유하기</button><button class="action-button" type="button" data-article-action="copy" data-article-url="https://www.kfenews.co.kr/news/articleView.html?idxno=657165" data-share-title="하나금융, 금감원과 미래금융 혁신 주도할 청년 인재 양성 맞손" aria-label="하나금융, 금감원과 미래금융 혁신 주도할 청년 인재 양성 맞손 링크 복사">링크 복사</button></div><div class="article-feedback" data-article-feedback aria-live="polite"></div>
-    </article>
-    
     <article class="article-card" data-article-card="true" data-article-url="https://www.opm.go.kr/opm/news/press-release.do?mode=view&amp;articleNo=162003&amp;srSearchVal=청년&amp;article.offset=0&amp;articleLimit=20" data-article-title="[보도자료] 김구 탄생 150주년 유네스코 기념해 기념사업 TF 1차 회의" data-article-date="2026-04-21" data-article-region="서울" data-article-search="[보도자료] 김구 탄생 150주년 유네스코 기념해 기념사업 TF 1차 회의 김구 탄생 150주년 유네스코 기념해 추진 민관합동 TF 1차회의 개최 - 백범김구기념관, 유네스코한국위, 광복회, 문화계, 청년 등 민관이 협력 - ‘평화의 문화’ 등 김구 사상의 보편적 가치를 국민과 국제사회에 널리 알리기로 □ 정부는 4월 21일(화) 오후 15시 컨퍼런스하우스 달개비(서울 중구)에서 김영수 국무조정실 국무1차장 주재로 ｢김구 탄생 150주년 유네스코 기념해 기념사업 추진 TF｣ 1차 회의를 개최하였다. ㅇ 이번 회의는 지난 3.20일 김민석 국무총리 주재 전문가 간담회 후속조치로서, 김구 탄생 150주년 유네스코 기념해 기념사업을 추진하기 위한 민관 협의체를 구성하고, 기념사업 추진방안을 논의하기 위한 자리였다. □ TF에는 국무조정실 국무1차장을 단장으로 하여, 국가보훈부, 문화체육관광부 등 8개 관계부처와 백범김구기념관, 유네스코한국위, 광복회 등의 유관기관, 문화 분야 전문가와 청년세대 등 다양한 주체가 참여하였다. ㅇ 정부는 국가보훈부 내에 전담추진팀을 구성하여, 민관합동 TF 논의사항의 후속 이행을 지원하고, 관계부처·전문가·유관기관 간 협업을 연계하는 실무 총괄 창구로 운영할 계획이다. □ 이날 TF는 김구 선생을 기억·계승하고, ‘평화의 문화’ 등 사상의 보편적 가치를 재조명하여 국민과 국제사회에 알리는 다양한 방안을 논의하였다. ㅇ 특히, 광화문 일대 문화주간 집중 운영, 민간 전광판 및 정부 보유매체 등을 활용한 범정부 홍보를 통해 김구 탄생 150주년 유네스코 기념해에 대한 국민 인지도 및 체감도를 제고하기로 하였다. □ 김영수 국무1차장은 “민관이 힘을 합쳐 김구 탄생 150주년이 한국의 문화 비전을 국제사회에 제시할 기회가 되도록 활용하자”고 당부하며, “‘평화의 문화’ 등 보편적 가치를 확산하는 사업을 글로벌 문화 의제 논의에 기여한다는 차원에서 지속적으로 추진해야 한다”고 하였다. □ 한편, 정부는 오늘 TF 논의를 토대로 국무총리 주재 국가보훈위원회에서 기념사업 추진방안을 확정할 예정이다. 국무조정실 보도자료 국무조정실 보도자료 서울 구로 중구 김구 서울 김구 탄생 150주년 유네스코 기념해 추진 민관합동 TF 1차회의 개최 - 백범김구기념관, 유네스코한국위, 광복회, 문화계, 청년 등 민관이 협력 - ‘평화의 문화’ 등 김구 사상의 보편적 가치를 국민..." data-policy-card="true" data-policy-group="official" data-policy-authority="국무조정실" data-policy-type="지원사업">
       <div class="article-meta"><div class="article-meta-tags"><span class="meta-pill primary">공식 발표</span><span class="meta-pill subtle">서울</span></div><div class="article-byline"><span class="meta-item">국무조정실 보도자료</span><span class="meta-divider" aria-hidden="true">•</span><span class="meta-item">2026-04-21</span></div></div>
       <h3><a class="article-title-link" href="https://www.opm.go.kr/opm/news/press-release.do?mode=view&amp;articleNo=162003&amp;srSearchVal=청년&amp;article.offset=0&amp;articleLimit=20" target="_blank" rel="noreferrer" aria-label="[보도자료] 김구 탄생 150주년 유네스코 기념해 기념사업 TF 1차 회의 링크 바로가기">[보도자료] 김구 탄생 150주년 유네스코 기념해 기념사업 TF 1차 회의</a></h3>
@@ -2562,47 +2536,39 @@
             <h2>지자체 발표 소식</h2>
             <p>청년 정책과 공약, 시행계획 발표 성격이 분명한 지역 기사만 따로 모았습니다.</p>
           </div>
-          <span class="mini-link" aria-disabled="true" data-policy-section-count>11건</span>
+          <span class="mini-link" aria-disabled="true" data-policy-section-count>9건</span>
         </div>
         <div class="article-grid">
-    <article class="article-card" data-article-card="true" data-article-url="https://www.dkilbo.com/news/articleView.html?idxno=541913" data-article-title="달서구 혼인신고 청년부부에 온누리상품권 30만원 지급" data-article-date="2026-04-21" data-article-region="대구" data-article-search="달서구 혼인신고 청년부부에 온누리상품권 30만원 지급 대구 달서구가 신혼부부의 안정적인 출발을 돕고 지역 내 결혼 장려 분위기를 확산하기 위해 ‘청년부부 결혼축하금 지원사업’을 올해도 계속 추진한다고 21일 밝혔다. 이번 사업은 ‘대구광역시 달서구 결혼장려지원에 관한 조례’에 따라 혼인신고를 마친 청년부부에게 온누리상품권 30만원을 지원하는 제도다. 결혼 초기 경제적 부담을 덜고 청년 세대의 정착을 돕기 지역뉴스 &gt; 대구 대경일보 네이버뉴스 청년정책(1주) 장완익 기자 대구 달서구 반드시 대구 대구 달서구가 신혼부부의 안정적인 출발을 돕고 지역 내 결혼 장려 분위기를 확산하기 위해 ‘청년부부 결혼축하금 지원사업’을 올해도 계속 추진한다고 21일 밝혔다. 이번 사업은 ‘대구광역시 달서구 결혼장..." data-policy-card="true" data-policy-group="local" data-policy-type="지원사업">
-      <div class="article-meta"><div class="article-meta-tags"><span class="meta-pill primary">지역 움직임</span><span class="meta-pill subtle">대구</span></div><div class="article-byline"><span class="meta-item">대경일보</span><span class="meta-divider" aria-hidden="true">•</span><span class="meta-item">2026-04-21</span></div></div>
-      <h3><a class="article-title-link" href="https://www.dkilbo.com/news/articleView.html?idxno=541913" target="_blank" rel="noreferrer" aria-label="달서구 혼인신고 청년부부에 온누리상품권 30만원 지급 링크 바로가기">달서구 혼인신고 청년부부에 온누리상품권 30만원 지급</a></h3>
+    <article class="article-card" data-article-card="true" data-article-url="http://www.weeklytoday.com/news/articleView.html?idxno=772161" data-article-title="[위클리오늘] 이남오 함평군수 후보 소식(4.21)" data-article-date="2026-04-22" data-article-region="광주" data-article-search="[위클리오늘] 이남오 함평군수 후보 소식(4.21) ■이남오 더불어민주당 함평군수 후보, 1호 공약 발표더불어민주당 함평군수 후보로 확정된 이남오 후보가 민선9기 첫 번째 대표 공약으로 ‘함평형 농어촌 기본소득’을 공식 발표했다.이 후보는 “지역소멸 위기와 인구감소, 침체된 지역경제를 돌파하기 위해서는 보여주기식 개발사업이 아니라 군민의 삶에 직접 힘이 되는 정책이 필요하다”며 “함평군민 모두가 체감하는 실질 소득 정책, 함평형 농어촌 기본소득을 반드시 추진하겠다”고 밝혔다.■ 군민 모두에게 월 15만원… 4인 가족 연 720만원 효과함평형 농어촌 기본소득은 함평군민에게 1인당 매달 전국지사 &gt; 광주·전남 위클리오늘 네이버뉴스 청년정책(1주) 이경재 기자 광주 전남 반드시 역시 함평군 특별시 즉시 무주군 구례군 가구 광주 ■이남오 더불어민주당 함평군수 후보, 1호 공약 발표더불어민주당 함평군수 후보로 확정된 이남오 후보가 민선9기 첫 번째 대표 공약으로 ‘함평형 농어촌 기본소득’을 공식 발표했다.이 후보는 “지역소멸 위..." data-policy-card="true" data-policy-group="local" data-policy-type="공약">
+      <div class="article-meta"><div class="article-meta-tags"><span class="meta-pill primary">공식 발표</span><span class="meta-pill subtle">광주</span></div><div class="article-byline"><span class="meta-item">위클리오늘</span><span class="meta-divider" aria-hidden="true">•</span><span class="meta-item">2026-04-22</span></div></div>
+      <h3><a class="article-title-link" href="http://www.weeklytoday.com/news/articleView.html?idxno=772161" target="_blank" rel="noreferrer" aria-label="[위클리오늘] 이남오 함평군수 후보 소식(4.21) 링크 바로가기">[위클리오늘] 이남오 함평군수 후보 소식(4.21)</a></h3>
       
-      <p class="article-summary"><a class="article-summary-link" href="https://www.dkilbo.com/news/articleView.html?idxno=541913" target="_blank" rel="noreferrer" aria-label="달서구 혼인신고 청년부부에 온누리상품권 30만원 지급 링크 바로가기">대구 달서구가 신혼부부의 안정적인 출발을 돕고 지역 내 결혼 장려 분위기를 확산하기 위해 ‘청년부부 결혼축하금 지원사업’을 올해도 계속 추진한다고 21일 밝혔다. 이번 사업은 ‘대구광역시 달서구 결혼장...</a></p>
-      <div class="article-actions"><a class="mini-link article-link-action" href="https://www.dkilbo.com/news/articleView.html?idxno=541913" target="_blank" rel="noreferrer" aria-label="달서구 혼인신고 청년부부에 온누리상품권 30만원 지급 링크 바로가기">링크 바로가기</a><button class="action-button" type="button" data-article-action="share" data-article-url="https://www.dkilbo.com/news/articleView.html?idxno=541913" data-share-title="달서구 혼인신고 청년부부에 온누리상품권 30만원 지급" aria-label="달서구 혼인신고 청년부부에 온누리상품권 30만원 지급 공유하기">공유하기</button><button class="action-button" type="button" data-article-action="copy" data-article-url="https://www.dkilbo.com/news/articleView.html?idxno=541913" data-share-title="달서구 혼인신고 청년부부에 온누리상품권 30만원 지급" aria-label="달서구 혼인신고 청년부부에 온누리상품권 30만원 지급 링크 복사">링크 복사</button></div><div class="article-feedback" data-article-feedback aria-live="polite"></div>
+      <p class="article-summary"><a class="article-summary-link" href="http://www.weeklytoday.com/news/articleView.html?idxno=772161" target="_blank" rel="noreferrer" aria-label="[위클리오늘] 이남오 함평군수 후보 소식(4.21) 링크 바로가기">■이남오 더불어민주당 함평군수 후보, 1호 공약 발표더불어민주당 함평군수 후보로 확정된 이남오 후보가 민선9기 첫 번째 대표 공약으로 ‘함평형 농어촌 기본소득’을 공식 발표했다.이 후보는 “지역소멸 위...</a></p>
+      <div class="article-actions"><a class="mini-link article-link-action" href="http://www.weeklytoday.com/news/articleView.html?idxno=772161" target="_blank" rel="noreferrer" aria-label="[위클리오늘] 이남오 함평군수 후보 소식(4.21) 링크 바로가기">링크 바로가기</a><button class="action-button" type="button" data-article-action="share" data-article-url="http://www.weeklytoday.com/news/articleView.html?idxno=772161" data-share-title="[위클리오늘] 이남오 함평군수 후보 소식(4.21)" aria-label="[위클리오늘] 이남오 함평군수 후보 소식(4.21) 공유하기">공유하기</button><button class="action-button" type="button" data-article-action="copy" data-article-url="http://www.weeklytoday.com/news/articleView.html?idxno=772161" data-share-title="[위클리오늘] 이남오 함평군수 후보 소식(4.21)" aria-label="[위클리오늘] 이남오 함평군수 후보 소식(4.21) 링크 복사">링크 복사</button></div><div class="article-feedback" data-article-feedback aria-live="polite"></div>
     </article>
     
-    <article class="article-card" data-article-card="true" data-article-url="https://sjbnews.com/news/news.php?number=876805" data-article-title="완주군, 청년 들 지역 안착 위해 로컬 브랜딩 지원사업 추진" data-article-date="2026-04-21" data-article-region="전북" data-article-search="완주군, 청년 들 지역 안착 위해 로컬 브랜딩 지원사업 추진 센터 는 참여 청년 을 대상으로 상표 이미지 구축(브랜딩) 전반에 대한 체계적인 교육과 실전 중심의 과정을 운영한다. 교육과정은 지역 브랜드의 개념과 사례 이해, 핵심 내용(콘텐츠) 기획, 사업계획 수립 등 창업에 필요한 핵심 역량을 단계적으로 습득할 수 있도록 구성했다. 교육 이후에는 팀 단위 기획 과제... 새전북신문 네이버뉴스 청년센터·활동(1주) 청년센터 운영 전북 완주군 전북 센터 는 참여 청년 을 대상으로 상표 이미지 구축(브랜딩) 전반에 대한 체계적인 교육과 실전 중심의 과정을 운영한다. 교육과정은 지역 브랜드의 개념과 사례 이해, 핵심 내용(콘텐츠) 기획, 사업계획 수..." data-policy-card="true" data-policy-group="local" data-policy-type="심의·의결">
-      <div class="article-meta"><div class="article-meta-tags"><span class="meta-pill primary">공식 발표</span><span class="meta-pill subtle">전북</span></div><div class="article-byline"><span class="meta-item">새전북신문</span><span class="meta-divider" aria-hidden="true">•</span><span class="meta-item">2026-04-21</span></div></div>
-      <h3><a class="article-title-link" href="https://sjbnews.com/news/news.php?number=876805" target="_blank" rel="noreferrer" aria-label="완주군, 청년 들 지역 안착 위해 로컬 브랜딩 지원사업 추진 링크 바로가기">완주군, 청년 들 지역 안착 위해 로컬 브랜딩 지원사업 추진</a></h3>
+    <article class="article-card" data-article-card="true" data-article-url="http://www.weeklytoday.com/news/articleView.html?idxno=772149" data-article-title="[위클리오늘] 영양군 오늘(4. 21)" data-article-date="2026-04-22" data-article-region="경북" data-article-search="[위클리오늘] 영양군 오늘(4. 21) ◇ 영양군, 기본소득 연계 ‘청년창업 프로젝트’ 추진 - 청년 일자리·지역 소비 선순환 구조 강화[경북 위클리오늘=황보용택 기자] 영양군이 기본소득과 연계한 청년창업에 따른 일자리 창출로 침체된 지역 경제 살리기에 행정력을 집중하고 있다.영양군은 기본소득으로 활성화된 지역 내 소비 흐름을 실제 창업으로 연결하기 위해 지역특화 청년창업 지원사업을 추진하고 있으며, 2026년에는 총 41명의 청년 창업가를 지원하고, 신규 창업 발굴도 함께 진행할 계획이다.군은 농림축산식품부·한국농어촌공사와 협력하여 지역에 파견된 청년들이 건강·교육·복 전국지사 &gt; 경북 위클리오늘 네이버뉴스 청년 광역(1주) 황보용택 기자 고용 경북 영양군 경북 ◇ 영양군, 기본소득 연계 ‘청년창업 프로젝트’ 추진 - 청년 일자리·지역 소비 선순환 구조 강화[경북 위클리오늘=황보용택 기자] 영양군이 기본소득과 연계한 청년창업에 따른 일자리 창출로 침체된 지역..." data-policy-card="true" data-policy-group="local" data-policy-type="지원사업">
+      <div class="article-meta"><div class="article-meta-tags"><span class="meta-pill primary">공식 발표</span><span class="meta-pill subtle">경북</span></div><div class="article-byline"><span class="meta-item">위클리오늘</span><span class="meta-divider" aria-hidden="true">•</span><span class="meta-item">2026-04-22</span></div></div>
+      <h3><a class="article-title-link" href="http://www.weeklytoday.com/news/articleView.html?idxno=772149" target="_blank" rel="noreferrer" aria-label="[위클리오늘] 영양군 오늘(4. 21) 링크 바로가기">[위클리오늘] 영양군 오늘(4. 21)</a></h3>
       
-      <p class="article-summary"><a class="article-summary-link" href="https://sjbnews.com/news/news.php?number=876805" target="_blank" rel="noreferrer" aria-label="완주군, 청년 들 지역 안착 위해 로컬 브랜딩 지원사업 추진 링크 바로가기">센터 는 참여 청년 을 대상으로 상표 이미지 구축(브랜딩) 전반에 대한 체계적인 교육과 실전 중심의 과정을 운영한다. 교육과정은 지역 브랜드의 개념과 사례 이해, 핵심 내용(콘텐츠) 기획, 사업계획 수...</a></p>
-      <div class="article-actions"><a class="mini-link article-link-action" href="https://sjbnews.com/news/news.php?number=876805" target="_blank" rel="noreferrer" aria-label="완주군, 청년 들 지역 안착 위해 로컬 브랜딩 지원사업 추진 링크 바로가기">링크 바로가기</a><button class="action-button" type="button" data-article-action="share" data-article-url="https://sjbnews.com/news/news.php?number=876805" data-share-title="완주군, 청년 들 지역 안착 위해 로컬 브랜딩 지원사업 추진" aria-label="완주군, 청년 들 지역 안착 위해 로컬 브랜딩 지원사업 추진 공유하기">공유하기</button><button class="action-button" type="button" data-article-action="copy" data-article-url="https://sjbnews.com/news/news.php?number=876805" data-share-title="완주군, 청년 들 지역 안착 위해 로컬 브랜딩 지원사업 추진" aria-label="완주군, 청년 들 지역 안착 위해 로컬 브랜딩 지원사업 추진 링크 복사">링크 복사</button></div><div class="article-feedback" data-article-feedback aria-live="polite"></div>
+      <p class="article-summary"><a class="article-summary-link" href="http://www.weeklytoday.com/news/articleView.html?idxno=772149" target="_blank" rel="noreferrer" aria-label="[위클리오늘] 영양군 오늘(4. 21) 링크 바로가기">◇ 영양군, 기본소득 연계 ‘청년창업 프로젝트’ 추진 - 청년 일자리·지역 소비 선순환 구조 강화[경북 위클리오늘=황보용택 기자] 영양군이 기본소득과 연계한 청년창업에 따른 일자리 창출로 침체된 지역...</a></p>
+      <div class="article-actions"><a class="mini-link article-link-action" href="http://www.weeklytoday.com/news/articleView.html?idxno=772149" target="_blank" rel="noreferrer" aria-label="[위클리오늘] 영양군 오늘(4. 21) 링크 바로가기">링크 바로가기</a><button class="action-button" type="button" data-article-action="share" data-article-url="http://www.weeklytoday.com/news/articleView.html?idxno=772149" data-share-title="[위클리오늘] 영양군 오늘(4. 21)" aria-label="[위클리오늘] 영양군 오늘(4. 21) 공유하기">공유하기</button><button class="action-button" type="button" data-article-action="copy" data-article-url="http://www.weeklytoday.com/news/articleView.html?idxno=772149" data-share-title="[위클리오늘] 영양군 오늘(4. 21)" aria-label="[위클리오늘] 영양군 오늘(4. 21) 링크 복사">링크 복사</button></div><div class="article-feedback" data-article-feedback aria-live="polite"></div>
     </article>
     
-    <article class="article-card" data-article-card="true" data-article-url="http://news.lghellovision.net/news/articleView.html?idxno=540994" data-article-title="&quot; 일자리 3만개 창출&quot;…홍태용 김해시장 예비후보, 7대 경제공약 발표" data-article-date="2026-04-21" data-article-region="중앙" data-article-search="&quot; 일자리 3만개 창출&quot;…홍태용 김해시장 예비후보, 7대 경제공약 발표 국민의힘 홍태용 김해시장 후보가 김해 경제 회복과 일자리 창출을 위한 7대 공약을 발표했습니다. 홍 후보는 오늘(21일) 김해시청에서 기자회견을 열고 지역사랑상품권 1천억 원 확대 발행과 청년 ·소상공인 성장펀드 400억 원 조성 등 민생경제 활성화 방안을 제시했습니다. 또 푸드테크 실증단지와... LG헬로비전 네이버뉴스 청년 고용·쉬었음(1주) 고용 중앙 국민의힘 홍태용 김해시장 후보가 김해 경제 회복과 일자리 창출을 위한 7대 공약을 발표했습니다. 홍 후보는 오늘(21일) 김해시청에서 기자회견을 열고 지역사랑상품권 1천억 원 확대 발행과 청년 ·소상공..." data-policy-card="true" data-policy-group="local" data-policy-type="공약">
-      <div class="article-meta"><div class="article-meta-tags"><span class="meta-pill primary">공식 발표</span><span class="meta-pill subtle">중앙</span></div><div class="article-byline"><span class="meta-item">LG헬로비전</span><span class="meta-divider" aria-hidden="true">•</span><span class="meta-item">2026-04-21</span></div></div>
-      <h3><a class="article-title-link" href="http://news.lghellovision.net/news/articleView.html?idxno=540994" target="_blank" rel="noreferrer" aria-label="&quot; 일자리 3만개 창출&quot;…홍태용 김해시장 예비후보, 7대 경제공약 발표 링크 바로가기">&quot; 일자리 3만개 창출&quot;…홍태용 김해시장 예비후보, 7대 경제공약 발표</a></h3>
+    <article class="article-card" data-article-card="true" data-article-url="https://www.sentv.co.kr/article/view/sentv202604210175" data-article-title="이철우 경북도지사 후보, 첨단산업·과학기술분야 10대 공약 발표" data-article-date="2026-04-21" data-article-region="서울" data-article-search="이철우 경북도지사 후보, 첨단산업·과학기술분야 10대 공약 발표 구조전환, 청년 인재양성을 연계해 제조업의 새로운 성장축을 세우겠다는 계획이다. 방산 분야에서는 국방반도체와 AI 기반 유·무인 복합체계를... 이어 “그 성과를 양질의 일자리 와 지역의 지속가능한 성장으로 연결해 도민이 자부심을 느끼는 경북, 세계와 경쟁하는 경북을 반드시 실현하겠다”고 밝혔다. 서울경제TV 네이버뉴스 청년 고용·쉬었음(1주) 고용 서울 경북 반드시 서울 구조전환, 청년 인재양성을 연계해 제조업의 새로운 성장축을 세우겠다는 계획이다. 방산 분야에서는 국방반도체와 AI 기반 유·무인 복합체계를... 이어 “그 성과를 양질의 일자리 와 지역의 지속가능한 성..." data-policy-card="true" data-policy-group="local" data-policy-type="공약">
+      <div class="article-meta"><div class="article-meta-tags"><span class="meta-pill primary">공식 발표</span><span class="meta-pill subtle">서울</span></div><div class="article-byline"><span class="meta-item">서울경제TV</span><span class="meta-divider" aria-hidden="true">•</span><span class="meta-item">2026-04-21</span></div></div>
+      <h3><a class="article-title-link" href="https://www.sentv.co.kr/article/view/sentv202604210175" target="_blank" rel="noreferrer" aria-label="이철우 경북도지사 후보, 첨단산업·과학기술분야 10대 공약 발표 링크 바로가기">이철우 경북도지사 후보, 첨단산업·과학기술분야 10대 공약 발표</a></h3>
       
-      <p class="article-summary"><a class="article-summary-link" href="http://news.lghellovision.net/news/articleView.html?idxno=540994" target="_blank" rel="noreferrer" aria-label="&quot; 일자리 3만개 창출&quot;…홍태용 김해시장 예비후보, 7대 경제공약 발표 링크 바로가기">국민의힘 홍태용 김해시장 후보가 김해 경제 회복과 일자리 창출을 위한 7대 공약을 발표했습니다. 홍 후보는 오늘(21일) 김해시청에서 기자회견을 열고 지역사랑상품권 1천억 원 확대 발행과 청년 ·소상공...</a></p>
-      <div class="article-actions"><a class="mini-link article-link-action" href="http://news.lghellovision.net/news/articleView.html?idxno=540994" target="_blank" rel="noreferrer" aria-label="&quot; 일자리 3만개 창출&quot;…홍태용 김해시장 예비후보, 7대 경제공약 발표 링크 바로가기">링크 바로가기</a><button class="action-button" type="button" data-article-action="share" data-article-url="http://news.lghellovision.net/news/articleView.html?idxno=540994" data-share-title="&quot; 일자리 3만개 창출&quot;…홍태용 김해시장 예비후보, 7대 경제공약 발표" aria-label="&quot; 일자리 3만개 창출&quot;…홍태용 김해시장 예비후보, 7대 경제공약 발표 공유하기">공유하기</button><button class="action-button" type="button" data-article-action="copy" data-article-url="http://news.lghellovision.net/news/articleView.html?idxno=540994" data-share-title="&quot; 일자리 3만개 창출&quot;…홍태용 김해시장 예비후보, 7대 경제공약 발표" aria-label="&quot; 일자리 3만개 창출&quot;…홍태용 김해시장 예비후보, 7대 경제공약 발표 링크 복사">링크 복사</button></div><div class="article-feedback" data-article-feedback aria-live="polite"></div>
+      <p class="article-summary"><a class="article-summary-link" href="https://www.sentv.co.kr/article/view/sentv202604210175" target="_blank" rel="noreferrer" aria-label="이철우 경북도지사 후보, 첨단산업·과학기술분야 10대 공약 발표 링크 바로가기">구조전환, 청년 인재양성을 연계해 제조업의 새로운 성장축을 세우겠다는 계획이다. 방산 분야에서는 국방반도체와 AI 기반 유·무인 복합체계를... 이어 “그 성과를 양질의 일자리 와 지역의 지속가능한 성...</a></p>
+      <div class="article-actions"><a class="mini-link article-link-action" href="https://www.sentv.co.kr/article/view/sentv202604210175" target="_blank" rel="noreferrer" aria-label="이철우 경북도지사 후보, 첨단산업·과학기술분야 10대 공약 발표 링크 바로가기">링크 바로가기</a><button class="action-button" type="button" data-article-action="share" data-article-url="https://www.sentv.co.kr/article/view/sentv202604210175" data-share-title="이철우 경북도지사 후보, 첨단산업·과학기술분야 10대 공약 발표" aria-label="이철우 경북도지사 후보, 첨단산업·과학기술분야 10대 공약 발표 공유하기">공유하기</button><button class="action-button" type="button" data-article-action="copy" data-article-url="https://www.sentv.co.kr/article/view/sentv202604210175" data-share-title="이철우 경북도지사 후보, 첨단산업·과학기술분야 10대 공약 발표" aria-label="이철우 경북도지사 후보, 첨단산업·과학기술분야 10대 공약 발표 링크 복사">링크 복사</button></div><div class="article-feedback" data-article-feedback aria-live="polite"></div>
     </article>
     
-    <article class="article-card" data-article-card="true" data-article-url="https://www.pointe.co.kr/news/articleView.html?idxno=78644" data-article-title="홍태용 &quot; 일자리 3만개·GRDP 24조&quot; 7대 경제공약 발표" data-article-date="2026-04-21" data-article-region="중앙" data-article-search="홍태용 &quot; 일자리 3만개·GRDP 24조&quot; 7대 경제공약 발표 경제· 일자리 ·미래성장 7대 공약&#x27;을 공개했다. 출마 선언에 이어 두 번째 공약 발표다. 홍 후보는 21일 시청 프레스센터에서 기자회견을 열고 골목경제 회복부터 미래 성장동력 확보까지 단계적으로 구성된 7대 공약을 구체적으로 제시했다. 민생 회복 측면에서는 지역사랑상품권 1000억원 확대 발행과 청년 ... 포인트경제 네이버뉴스 청년 고용·쉬었음(1주) 고용 중앙 경제· 일자리 ·미래성장 7대 공약&#x27;을 공개했다. 출마 선언에 이어 두 번째 공약 발표다. 홍 후보는 21일 시청 프레스센터에서 기자회견을 열고 골목경제 회복부터 미래 성장동력 확보까지 단계적으로 구성..." data-policy-card="true" data-policy-group="local" data-policy-type="공약">
-      <div class="article-meta"><div class="article-meta-tags"><span class="meta-pill primary">공식 발표</span><span class="meta-pill subtle">중앙</span></div><div class="article-byline"><span class="meta-item">포인트경제</span><span class="meta-divider" aria-hidden="true">•</span><span class="meta-item">2026-04-21</span></div></div>
-      <h3><a class="article-title-link" href="https://www.pointe.co.kr/news/articleView.html?idxno=78644" target="_blank" rel="noreferrer" aria-label="홍태용 &quot; 일자리 3만개·GRDP 24조&quot; 7대 경제공약 발표 링크 바로가기">홍태용 &quot; 일자리 3만개·GRDP 24조&quot; 7대 경제공약 발표</a></h3>
+    <article class="article-card" data-article-card="true" data-article-url="http://www.newstown.co.kr/news/articleView.html?idxno=701305" data-article-title="맹의석 아산시장 후보, 아산의 새로운 방향 제시...8대 핵심 공약 발표" data-article-date="2026-04-21" data-article-region="중앙" data-article-search="맹의석 아산시장 후보, 아산의 새로운 방향 제시...8대 핵심 공약 발표 물으며 &quot; 청년 은 떠나고, 부모는 버티고, 어르신은 불안을 안고 살아가는 것이 지금 아산의 현실&quot;이라고 진단했다. 맹 후보는 아산의 새로운 방향을... [산업·경제 체질 개선]-첨단 제조, 미래 모빌리티, 반도체·디스플레이 연관 산업 중심의 고부가가치 생태계를 구축하고 지역 인재와 연결되는 일자리 구조를... 뉴스타운 네이버뉴스 청년 고용·쉬었음(1주) 고용 제시 중앙 물으며 &quot; 청년 은 떠나고, 부모는 버티고, 어르신은 불안을 안고 살아가는 것이 지금 아산의 현실&quot;이라고 진단했다. 맹 후보는 아산의 새로운 방향을... [산업·경제 체질 개선]-첨단 제조, 미래 모빌..." data-policy-card="true" data-policy-group="local" data-policy-type="공약">
+      <div class="article-meta"><div class="article-meta-tags"><span class="meta-pill primary">공식 발표</span><span class="meta-pill subtle">중앙</span></div><div class="article-byline"><span class="meta-item">뉴스타운</span><span class="meta-divider" aria-hidden="true">•</span><span class="meta-item">2026-04-21</span></div></div>
+      <h3><a class="article-title-link" href="http://www.newstown.co.kr/news/articleView.html?idxno=701305" target="_blank" rel="noreferrer" aria-label="맹의석 아산시장 후보, 아산의 새로운 방향 제시...8대 핵심 공약 발표 링크 바로가기">맹의석 아산시장 후보, 아산의 새로운 방향 제시...8대 핵심 공약 발표</a></h3>
       
-      <p class="article-summary"><a class="article-summary-link" href="https://www.pointe.co.kr/news/articleView.html?idxno=78644" target="_blank" rel="noreferrer" aria-label="홍태용 &quot; 일자리 3만개·GRDP 24조&quot; 7대 경제공약 발표 링크 바로가기">경제· 일자리 ·미래성장 7대 공약&#x27;을 공개했다. 출마 선언에 이어 두 번째 공약 발표다. 홍 후보는 21일 시청 프레스센터에서 기자회견을 열고 골목경제 회복부터 미래 성장동력 확보까지 단계적으로 구성...</a></p>
-      <div class="article-actions"><a class="mini-link article-link-action" href="https://www.pointe.co.kr/news/articleView.html?idxno=78644" target="_blank" rel="noreferrer" aria-label="홍태용 &quot; 일자리 3만개·GRDP 24조&quot; 7대 경제공약 발표 링크 바로가기">링크 바로가기</a><button class="action-button" type="button" data-article-action="share" data-article-url="https://www.pointe.co.kr/news/articleView.html?idxno=78644" data-share-title="홍태용 &quot; 일자리 3만개·GRDP 24조&quot; 7대 경제공약 발표" aria-label="홍태용 &quot; 일자리 3만개·GRDP 24조&quot; 7대 경제공약 발표 공유하기">공유하기</button><button class="action-button" type="button" data-article-action="copy" data-article-url="https://www.pointe.co.kr/news/articleView.html?idxno=78644" data-share-title="홍태용 &quot; 일자리 3만개·GRDP 24조&quot; 7대 경제공약 발표" aria-label="홍태용 &quot; 일자리 3만개·GRDP 24조&quot; 7대 경제공약 발표 링크 복사">링크 복사</button></div><div class="article-feedback" data-article-feedback aria-live="polite"></div>
-    </article>
-    
-    <article class="article-card" data-article-card="true" data-article-url="http://www.kjdaily.com/article.php?aid=1776766765677248008" data-article-title="곡성군 이장·상인·유관기관 ‘ 청년 도전’ 돕는다" data-article-date="2026-04-21" data-article-region="광주" data-article-search="곡성군 이장·상인·유관기관 ‘ 청년 도전’ 돕는다 곡성군 일하잡(JOB)센터는 최근 전남과학대학교를 찾아 청년 지원사업 홍보 부스를 운영했다. 구직 단념 청년 들의 사회 진출을 돕는 곡성군 ‘2026년 청년 도전지원사업’이 지역사회의 촘촘한 협력망을 바탕으로 순조롭게 추진되고 있다. 21일 곡성군에 따르면 관내 상인 90여명을 비롯해 마을... 광주매일신문 네이버뉴스 청년 광역(1주) 광주 전남 곡성군 광주 곡성군 일하잡(JOB)센터는 최근 전남과학대학교를 찾아 청년 지원사업 홍보 부스를 운영했다. 구직 단념 청년 들의 사회 진출을 돕는 곡성군 ‘2026년 청년 도전지원사업’이 지역사회의 촘촘한 협력망을..." data-policy-card="true" data-policy-group="local" data-policy-type="지원사업">
-      <div class="article-meta"><div class="article-meta-tags"><span class="meta-pill primary">지역 움직임</span><span class="meta-pill subtle">광주</span></div><div class="article-byline"><span class="meta-item">광주매일신문</span><span class="meta-divider" aria-hidden="true">•</span><span class="meta-item">2026-04-21</span></div></div>
-      <h3><a class="article-title-link" href="http://www.kjdaily.com/article.php?aid=1776766765677248008" target="_blank" rel="noreferrer" aria-label="곡성군 이장·상인·유관기관 ‘ 청년 도전’ 돕는다 링크 바로가기">곡성군 이장·상인·유관기관 ‘ 청년 도전’ 돕는다</a></h3>
-      
-      <p class="article-summary"><a class="article-summary-link" href="http://www.kjdaily.com/article.php?aid=1776766765677248008" target="_blank" rel="noreferrer" aria-label="곡성군 이장·상인·유관기관 ‘ 청년 도전’ 돕는다 링크 바로가기">곡성군 일하잡(JOB)센터는 최근 전남과학대학교를 찾아 청년 지원사업 홍보 부스를 운영했다. 구직 단념 청년 들의 사회 진출을 돕는 곡성군 ‘2026년 청년 도전지원사업’이 지역사회의 촘촘한 협력망을...</a></p>
-      <div class="article-actions"><a class="mini-link article-link-action" href="http://www.kjdaily.com/article.php?aid=1776766765677248008" target="_blank" rel="noreferrer" aria-label="곡성군 이장·상인·유관기관 ‘ 청년 도전’ 돕는다 링크 바로가기">링크 바로가기</a><button class="action-button" type="button" data-article-action="share" data-article-url="http://www.kjdaily.com/article.php?aid=1776766765677248008" data-share-title="곡성군 이장·상인·유관기관 ‘ 청년 도전’ 돕는다" aria-label="곡성군 이장·상인·유관기관 ‘ 청년 도전’ 돕는다 공유하기">공유하기</button><button class="action-button" type="button" data-article-action="copy" data-article-url="http://www.kjdaily.com/article.php?aid=1776766765677248008" data-share-title="곡성군 이장·상인·유관기관 ‘ 청년 도전’ 돕는다" aria-label="곡성군 이장·상인·유관기관 ‘ 청년 도전’ 돕는다 링크 복사">링크 복사</button></div><div class="article-feedback" data-article-feedback aria-live="polite"></div>
+      <p class="article-summary"><a class="article-summary-link" href="http://www.newstown.co.kr/news/articleView.html?idxno=701305" target="_blank" rel="noreferrer" aria-label="맹의석 아산시장 후보, 아산의 새로운 방향 제시...8대 핵심 공약 발표 링크 바로가기">물으며 &quot; 청년 은 떠나고, 부모는 버티고, 어르신은 불안을 안고 살아가는 것이 지금 아산의 현실&quot;이라고 진단했다. 맹 후보는 아산의 새로운 방향을... [산업·경제 체질 개선]-첨단 제조, 미래 모빌...</a></p>
+      <div class="article-actions"><a class="mini-link article-link-action" href="http://www.newstown.co.kr/news/articleView.html?idxno=701305" target="_blank" rel="noreferrer" aria-label="맹의석 아산시장 후보, 아산의 새로운 방향 제시...8대 핵심 공약 발표 링크 바로가기">링크 바로가기</a><button class="action-button" type="button" data-article-action="share" data-article-url="http://www.newstown.co.kr/news/articleView.html?idxno=701305" data-share-title="맹의석 아산시장 후보, 아산의 새로운 방향 제시...8대 핵심 공약 발표" aria-label="맹의석 아산시장 후보, 아산의 새로운 방향 제시...8대 핵심 공약 발표 공유하기">공유하기</button><button class="action-button" type="button" data-article-action="copy" data-article-url="http://www.newstown.co.kr/news/articleView.html?idxno=701305" data-share-title="맹의석 아산시장 후보, 아산의 새로운 방향 제시...8대 핵심 공약 발표" aria-label="맹의석 아산시장 후보, 아산의 새로운 방향 제시...8대 핵심 공약 발표 링크 복사">링크 복사</button></div><div class="article-feedback" data-article-feedback aria-live="polite"></div>
     </article>
     
     <article class="article-card" data-article-card="true" data-article-url="http://www.domin.co.kr/news/articleView.html?idxno=1553105" data-article-title="신동이 전주시의원 예비후보 선거사무소 개소" data-article-date="2026-04-21" data-article-region="전북" data-article-search="신동이 전주시의원 예비후보 선거사무소 개소 신동이 예비후보는 &quot;젊고 패기있는 후보로 생활정치를 통해 청년 과 가족 중심의 지역밀착형 서민정치를 실현 하겠다&quot;며 &quot;다자녀가구 대출 이자 저렴 지원, 청년 주거 인센티브 확대, 젊은 신혼부부 출산지원정책 등을 과감하게 추진하겠다&quot;고 출마의 변을 밝혔다. 신 예비후보는 이어 &quot;우아동과 호성동의... 전북도민일보 네이버뉴스 청년 부채·금융(1주) 주거 부채 전북 성동 다자녀가구 전북 신동이 예비후보는 &quot;젊고 패기있는 후보로 생활정치를 통해 청년 과 가족 중심의 지역밀착형 서민정치를 실현 하겠다&quot;며 &quot;다자녀가구 대출 이자 저렴 지원, 청년 주거 인센티브 확대, 젊은 신혼부부 출산지원..." data-policy-card="true" data-policy-group="local" data-policy-type="심의·의결">
@@ -2627,14 +2593,6 @@
       
       <p class="article-summary"><a class="article-summary-link" href="http://www.areyou.co.kr/news/articleView.html?idxno=93473" target="_blank" rel="noreferrer" aria-label="[아유경제_부동산] 경기도, 정부에 청년 월세 지원 확대 건의 링크 바로가기">경기도는 청년 주거비 부담 완화를 위해 정부에 &#x27; 청년월세 지원사업&#x27; 관련 제도 개선 방안을 건의했다고 이달 20일 밝혔다. 청년월세 지원사업은 부모와 떨어져 사는 19~34세 무주택 청년에게 2년간...</a></p>
       <div class="article-actions"><a class="mini-link article-link-action" href="http://www.areyou.co.kr/news/articleView.html?idxno=93473" target="_blank" rel="noreferrer" aria-label="[아유경제_부동산] 경기도, 정부에 청년 월세 지원 확대 건의 링크 바로가기">링크 바로가기</a><button class="action-button" type="button" data-article-action="share" data-article-url="http://www.areyou.co.kr/news/articleView.html?idxno=93473" data-share-title="[아유경제_부동산] 경기도, 정부에 청년 월세 지원 확대 건의" aria-label="[아유경제_부동산] 경기도, 정부에 청년 월세 지원 확대 건의 공유하기">공유하기</button><button class="action-button" type="button" data-article-action="copy" data-article-url="http://www.areyou.co.kr/news/articleView.html?idxno=93473" data-share-title="[아유경제_부동산] 경기도, 정부에 청년 월세 지원 확대 건의" aria-label="[아유경제_부동산] 경기도, 정부에 청년 월세 지원 확대 건의 링크 복사">링크 복사</button></div><div class="article-feedback" data-article-feedback aria-live="polite"></div>
-    </article>
-    
-    <article class="article-card" data-article-card="true" data-article-url="https://news.google.com/rss/articles/CBMiT0FVX3lxTE8xR3J3ZzU4UUdSd2RJdjlVS21oWDhvdEJZZWNuWU1DQ2lQeW5oYUhWcDJXRUNCWDhCUUg2UlBlOWs3N1pDQlZ3bWlSQTBrR2s?oc=5" data-article-title="“지역 정착 해법 제시” 충북청년정책원 공식 출범" data-article-date="2026-04-20" data-article-region="충북" data-article-search="“지역 정착 해법 제시” 충북청년정책원 공식 출범 “지역 정착 해법 제시” 충북청년정책원 공식 출범 v.daum.net v.daum.net 구글뉴스 청년정책(7일) 충북 충북" data-policy-card="true" data-policy-group="local" data-policy-type="기타">
-      <div class="article-meta"><div class="article-meta-tags"><span class="meta-pill primary">지역 움직임</span><span class="meta-pill subtle">충북</span></div><div class="article-byline"><span class="meta-item">다음 뉴스</span><span class="meta-divider" aria-hidden="true">•</span><span class="meta-item">2026-04-20</span></div></div>
-      <h3><a class="article-title-link" href="https://news.google.com/rss/articles/CBMiT0FVX3lxTE8xR3J3ZzU4UUdSd2RJdjlVS21oWDhvdEJZZWNuWU1DQ2lQeW5oYUhWcDJXRUNCWDhCUUg2UlBlOWs3N1pDQlZ3bWlSQTBrR2s?oc=5" target="_blank" rel="noreferrer" aria-label="“지역 정착 해법 제시” 충북청년정책원 공식 출범 링크 바로가기">“지역 정착 해법 제시” 충북청년정책원 공식 출범</a></h3>
-      
-      
-      <div class="article-actions"><a class="mini-link article-link-action" href="https://news.google.com/rss/articles/CBMiT0FVX3lxTE8xR3J3ZzU4UUdSd2RJdjlVS21oWDhvdEJZZWNuWU1DQ2lQeW5oYUhWcDJXRUNCWDhCUUg2UlBlOWs3N1pDQlZ3bWlSQTBrR2s?oc=5" target="_blank" rel="noreferrer" aria-label="“지역 정착 해법 제시” 충북청년정책원 공식 출범 링크 바로가기">링크 바로가기</a><button class="action-button" type="button" data-article-action="share" data-article-url="https://news.google.com/rss/articles/CBMiT0FVX3lxTE8xR3J3ZzU4UUdSd2RJdjlVS21oWDhvdEJZZWNuWU1DQ2lQeW5oYUhWcDJXRUNCWDhCUUg2UlBlOWs3N1pDQlZ3bWlSQTBrR2s?oc=5" data-share-title="“지역 정착 해법 제시” 충북청년정책원 공식 출범" aria-label="“지역 정착 해법 제시” 충북청년정책원 공식 출범 공유하기">공유하기</button><button class="action-button" type="button" data-article-action="copy" data-article-url="https://news.google.com/rss/articles/CBMiT0FVX3lxTE8xR3J3ZzU4UUdSd2RJdjlVS21oWDhvdEJZZWNuWU1DQ2lQeW5oYUhWcDJXRUNCWDhCUUg2UlBlOWs3N1pDQlZ3bWlSQTBrR2s?oc=5" data-share-title="“지역 정착 해법 제시” 충북청년정책원 공식 출범" aria-label="“지역 정착 해법 제시” 충북청년정책원 공식 출범 링크 복사">링크 복사</button></div><div class="article-feedback" data-article-feedback aria-live="polite"></div>
     </article>
     
     <article class="article-card" data-article-card="true" data-article-url="https://news.google.com/rss/articles/CBMidkFVX3lxTFA5d20zYjZKWHZTXzJKSExNbDBkMDBOVzlmeW5vV0NtY0x6MDY4ZGlFMEMtVnBiS3BrZHo2Y1R2NlItekFxakdHTW83aWFWb2VJTW9RQVdYVDMzOHBwWEZmQ2lCak53UDVhVXJyNHJGMDdrbTk0N0E?oc=5" data-article-title="“경남도, 청년 주거부담 낮춘다” 청년월세 지원사업 본격 추진" data-article-date="2026-04-17" data-article-region="경남" data-article-search="“경남도, 청년 주거부담 낮춘다” 청년월세 지원사업 본격 추진 “경남도, 청년 주거부담 낮춘다” 청년월세 지원사업 본격 추진 진주인터넷뉴스 진주인터넷뉴스 구글뉴스 청년 주거·생활(7일) 주거 경남 경남" data-policy-card="true" data-policy-group="local" data-policy-type="지원사업">

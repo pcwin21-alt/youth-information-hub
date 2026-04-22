@@ -1,23 +1,15 @@
 {
-  "run_id": "ce39421c-e5b9-497c-b7b7-27253786c16f",
+  "run_id": "46a120e0-34ba-44e3-afcd-b8998127ee08",
   "state": "completed",
-  "started_at": "2026-04-21T17:16:06.531849+09:00",
-  "updated_at": "2026-04-21T17:17:37.930295+09:00",
-  "finished_at": "2026-04-21T17:17:37.930295+09:00",
+  "started_at": "2026-04-22T03:50:30.241943+09:00",
+  "updated_at": "2026-04-22T03:53:45.896887+09:00",
+  "finished_at": "2026-04-22T03:53:45.896887+09:00",
   "current_step": null,
   "steps": [
     {
-      "name": "collect_news",
-      "state": "completed",
-      "updated_at": "2026-04-21T17:16:54.322767+09:00",
-      "details": {
-        "stdout": "collected_articles=296"
-      }
-    },
-    {
       "name": "collect_youtube",
       "state": "completed",
-      "updated_at": "2026-04-21T17:16:54.887925+09:00",
+      "updated_at": "2026-04-22T03:50:30.708475+09:00",
       "details": {
         "stdout": "collected_videos=1"
       }
@@ -25,23 +17,23 @@
     {
       "name": "dedup_filter",
       "state": "completed",
-      "updated_at": "2026-04-21T17:16:56.454844+09:00",
+      "updated_at": "2026-04-22T03:50:32.758437+09:00",
       "details": {
-        "stdout": "filtered_articles=270"
+        "stdout": "filtered_articles=325"
       }
     },
     {
       "name": "content_curator",
       "state": "completed",
-      "updated_at": "2026-04-21T17:17:36.134211+09:00",
+      "updated_at": "2026-04-22T03:53:43.028623+09:00",
       "details": {
-        "stdout": "enriched=270 classified=270 selected=10 summarized=10 funnel=270"
+        "stdout": "enriched=325 classified=325 selected=10 summarized=10 funnel=325 ops_radar=120"
       }
     },
     {
       "name": "publish_db",
       "state": "completed",
-      "updated_at": "2026-04-21T17:17:36.391096+09:00",
+      "updated_at": "2026-04-22T03:53:43.226670+09:00",
       "details": {
         "stdout": "db_upserted=10"
       }
@@ -49,19 +41,19 @@
     {
       "name": "publish_web",
       "state": "completed",
-      "updated_at": "2026-04-21T17:17:37.910298+09:00",
+      "updated_at": "2026-04-22T03:53:45.882518+09:00",
       "details": {
         "stdout": "web_output=C:\\★_VIBE CODING\\1  개발 단계\\외부_#07_26-03_청년 투게더\\public-site\\web\\index.html"
       }
     }
   ],
   "artifacts": {
-    "step1_raw_articles": "C:\\★_VIBE CODING\\1  개발 단계\\외부_#07_26-03_청년 투게더\\runtime\\pipeline\\step1_raw_articles.json",
     "step1_raw_youtube": "C:\\★_VIBE CODING\\1  개발 단계\\외부_#07_26-03_청년 투게더\\runtime\\pipeline\\step1_raw_youtube.json",
     "step2_filtered": "C:\\★_VIBE CODING\\1  개발 단계\\외부_#07_26-03_청년 투게더\\runtime\\pipeline\\step2_filtered.json",
     "step3_classified": "C:\\★_VIBE CODING\\1  개발 단계\\외부_#07_26-03_청년 투게더\\runtime\\pipeline\\step3_classified.json",
     "step4_selected": "C:\\★_VIBE CODING\\1  개발 단계\\외부_#07_26-03_청년 투게더\\runtime\\pipeline\\step4_selected.json",
     "step5_summarized": "C:\\★_VIBE CODING\\1  개발 단계\\외부_#07_26-03_청년 투게더\\runtime\\pipeline\\step5_summarized.json",
+    "ops_radar": "C:\\★_VIBE CODING\\1  개발 단계\\외부_#07_26-03_청년 투게더\\runtime\\pipeline\\ops_radar.json",
     "articles_db": "C:\\★_VIBE CODING\\1  개발 단계\\외부_#07_26-03_청년 투게더\\runtime\\db\\articles.db",
     "web_index": "C:\\★_VIBE CODING\\1  개발 단계\\외부_#07_26-03_청년 투게더\\public-site\\web\\index.html"
   },
