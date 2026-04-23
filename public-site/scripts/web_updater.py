@@ -1406,31 +1406,6 @@ BASE_CSS = """
     border-color: var(--home-apricot-soft);
     background: rgba(251, 235, 224, 0.94);
   }
-  .home-glance-links {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-  }
-  .home-glance-links .mini-link {
-    margin-top: 0;
-    padding: 10px 14px;
-    border-radius: 999px;
-    border: 1px solid rgba(23, 33, 49, 0.08);
-    background: rgba(255, 255, 255, 0.88);
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.82);
-  }
-  .home-glance-links .mini-link:nth-child(1) {
-    border-color: var(--home-apricot-soft);
-    background: rgba(251, 235, 224, 0.96);
-  }
-  .home-glance-links .mini-link:nth-child(2) {
-    border-color: rgba(57, 86, 119, 0.14);
-    background: rgba(241, 245, 250, 0.96);
-  }
-  .home-glance-links .mini-link:nth-child(3) {
-    border-color: rgba(57, 86, 119, 0.12);
-    background: rgba(244, 246, 249, 0.96);
-  }
   .home-briefing-divider {
     height: 1px;
     background: rgba(23, 33, 49, 0.08);
@@ -5885,12 +5860,6 @@ def build_home_page(
             <p>오늘 날짜로 올라온 기사 전체 수와 많이 잡힌 키워드를 함께 봅니다.</p>
           </div>
           <div class="home-glance-grid">{glance_stats_html}{hot_keywords_html}</div>
-          <div class="home-glance-links">
-            <a class="mini-link" href="news.html">뉴스 보기</a>
-            <a class="mini-link" href="election.html">선거·공약 보기</a>
-            <a class="mini-link" href="policies.html">정책 보기</a>
-            <a class="mini-link" href="hub.html">참여·회의 보기</a>
-          </div>
           <div class="home-briefing-divider"></div>
           <div class="home-briefing-subhead">
             <h3>오늘 놓치면 안되는 뉴스 5가지</h3>
