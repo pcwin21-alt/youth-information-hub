@@ -4948,6 +4948,47 @@ HOME_BUSINESS_RESULT_KEYWORDS: tuple[str, ...] = (
     "소각",
 )
 
+HOME_POLITICAL_ANALYSIS_KEYWORDS: tuple[str, ...] = (
+    "여론조사",
+    "보수 성향",
+    "진보 성향",
+    "지지율",
+    "표심",
+    "민심",
+    "정치 성향",
+)
+
+HOME_EXPLICIT_YOUTH_LEAD_KEYWORDS: tuple[str, ...] = (
+    "청년센터",
+    "청년공간",
+    "청년허브",
+    "청년정책",
+    "청년 일자리",
+    "청년일자리",
+    "청년 주거",
+    "청년주거",
+    "청년 대출",
+    "청년부채",
+    "청년 금융",
+    "청년금융",
+    "청년 지원사업",
+    "청년지원사업",
+    "청년 모집",
+    "청년모집",
+    "청년 예산",
+    "청년조례",
+    "청년 조례",
+    "청년 노동",
+    "청년복지",
+    "청년 복지",
+    "청년 고립",
+    "청년 은둔",
+    "취업 후 상환",
+    "대학생",
+    "취준생",
+    "사회초년생",
+)
+
 
 def _home_title_text(article: dict) -> str:
     return normalize_inline_text(
@@ -4974,6 +5015,31 @@ def home_is_generic_business_result_article(article: dict) -> bool:
     if home_has_direct_title_signal(article):
         return False
     return any(keyword in title_text for keyword in HOME_BUSINESS_RESULT_KEYWORDS)
+
+
+def home_is_political_analysis_article(article: dict) -> bool:
+    title_text = _home_title_text(article)
+    if not title_text:
+        return False
+    if home_has_direct_title_signal(article):
+        return False
+    return any(keyword in title_text for keyword in HOME_POLITICAL_ANALYSIS_KEYWORDS)
+
+
+def home_has_explicit_youth_lead_signal(article: dict) -> bool:
+    lead_text = normalize_inline_text(
+        " ".join(
+            value
+            for value in [
+                normalize_inline_text(article.get("summary")),
+                normalize_inline_text(article.get("lead_text")),
+            ]
+            if value
+        )
+    )
+    if not lead_text:
+        return False
+    return any(keyword in lead_text for keyword in HOME_EXPLICIT_YOUTH_LEAD_KEYWORDS)
 
 
 HOME_HOT_KEYWORD_PATTERNS: tuple[tuple[str, tuple[str, ...]], ...] = (
@@ -5198,11 +5264,15 @@ def is_home_today_candidate(article: dict, reference_dt: datetime | None) -> boo
         return False
     if home_is_generic_business_result_article(article):
         return False
+    if home_is_political_analysis_article(article):
+        return False
     if home_campaign_political(article):
         return False
     if home_weak_youth_signal(article):
         return False
     if home_article_age_hours(article, reference_dt) > NEWS_WINDOW_HOURS:
+        return False
+    if not home_has_direct_title_signal(article) and not home_has_explicit_youth_lead_signal(article):
         return False
     return (
         home_has_policy_or_operational_signal(article)
@@ -5221,11 +5291,15 @@ def is_home_today_fill_candidate(article: dict, reference_dt: datetime | None) -
         return False
     if home_is_generic_business_result_article(article):
         return False
+    if home_is_political_analysis_article(article):
+        return False
     if home_campaign_political(article):
         return False
     if home_article_age_hours(article, reference_dt) > NEWS_WINDOW_HOURS:
         return False
     if home_weak_youth_signal(article) and not article.get("issue_tags") and int(article.get("clean_score") or 0) < 4:
+        return False
+    if not home_has_direct_title_signal(article) and not home_has_explicit_youth_lead_signal(article):
         return False
     return (
         bool(article.get("issue_tags"))
@@ -5243,11 +5317,15 @@ def is_home_weekly_candidate(article: dict, reference_dt: datetime | None) -> bo
         return False
     if home_is_generic_business_result_article(article):
         return False
+    if home_is_political_analysis_article(article):
+        return False
     if home_campaign_political(article) and not home_substantive_promise(article):
         return False
     if home_article_age_hours(article, reference_dt) > NEWS_WINDOW_HOURS:
         return False
     if home_weak_youth_signal(article) and int(article.get("clean_score") or 0) < 4:
+        return False
+    if not home_has_direct_title_signal(article) and not home_has_explicit_youth_lead_signal(article):
         return False
     return (
         home_substantive_promise(article)
