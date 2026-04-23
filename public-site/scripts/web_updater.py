@@ -1441,6 +1441,10 @@ BASE_CSS = """
     padding: 16px 0;
     border-bottom: 1px solid rgba(23, 33, 49, 0.08);
   }
+  .home-urgent-item:last-child {
+    border-bottom: 0;
+    padding-bottom: 0;
+  }
   .home-urgent-link {
     display: grid;
     grid-template-columns: auto minmax(0, 1fr);
@@ -1713,11 +1717,6 @@ BASE_CSS = """
     display: inline-flex;
     align-items: center;
     gap: 4px;
-  }
-  .home-meta-line.home-meta-footer {
-    margin-top: 18px;
-    padding-top: 12px;
-    border-top: 1px solid rgba(23, 33, 49, 0.08);
   }
   .home-section-card .list {
     margin-top: 12px;
@@ -5866,10 +5865,6 @@ def build_home_page(
             <p>오늘성, 즉시성, 정책·현장 맥락을 더 좁게 보고 지금 먼저 볼 기사를 묶었습니다.</p>
           </div>
           <div class="home-urgent-list">{today_news_html}</div>
-          <div class="home-meta-line home-meta-footer">
-            <span>선거 공방형은 기본 제외</span>
-            <span>상위 일부는 하루 정도 유지</span>
-          </div>
         </article>
         {highlight_card_html}
         <article class="home-briefing-card support support-pill">
