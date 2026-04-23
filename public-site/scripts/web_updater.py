@@ -4893,12 +4893,87 @@ def _home_text(article: dict) -> str:
                 normalize_inline_text(article.get("summary")),
                 normalize_inline_text(article.get("lead_text")),
                 normalize_inline_text(article.get("section")),
-                normalize_inline_text(article.get("source")),
-                normalize_inline_text(article.get("source_name")),
             ]
             if value
         )
     )
+
+
+HOME_TITLE_SIGNAL_KEYWORDS: tuple[str, ...] = (
+    "청년",
+    "청년층",
+    "청년세대",
+    "사회초년생",
+    "취준생",
+    "대학생",
+    "청년센터",
+    "청년공간",
+    "청년허브",
+    "청년정책",
+    "주거",
+    "월세",
+    "전세",
+    "주택",
+    "고용",
+    "취업",
+    "일자리",
+    "노동",
+    "노동권",
+    "복지",
+    "고립",
+    "은둔",
+    "부채",
+    "대출",
+    "지원사업",
+    "모집",
+    "예산",
+    "조례",
+    "시행계획",
+    "종합계획",
+    "기본계획",
+    "위탁",
+)
+
+HOME_BUSINESS_RESULT_KEYWORDS: tuple[str, ...] = (
+    "순이익",
+    "영업이익",
+    "매출",
+    "실적",
+    "자사주",
+    "주주환원",
+    "배당",
+    "증권",
+    "주가",
+    "시가총액",
+    "소각",
+)
+
+
+def _home_title_text(article: dict) -> str:
+    return normalize_inline_text(
+        " ".join(
+            value
+            for value in [
+                clean_article_title(article.get("title")),
+                normalize_inline_text(article.get("section")),
+            ]
+            if value
+        )
+    )
+
+
+def home_has_direct_title_signal(article: dict) -> bool:
+    title_text = _home_title_text(article)
+    return any(keyword in title_text for keyword in HOME_TITLE_SIGNAL_KEYWORDS)
+
+
+def home_is_generic_business_result_article(article: dict) -> bool:
+    title_text = _home_title_text(article)
+    if not title_text:
+        return False
+    if home_has_direct_title_signal(article):
+        return False
+    return any(keyword in title_text for keyword in HOME_BUSINESS_RESULT_KEYWORDS)
 
 
 HOME_HOT_KEYWORD_PATTERNS: tuple[tuple[str, tuple[str, ...]], ...] = (
@@ -5121,6 +5196,8 @@ def is_home_today_candidate(article: dict, reference_dt: datetime | None) -> boo
         return False
     if article.get("article_type") == "opinion" or article.get("is_noise"):
         return False
+    if home_is_generic_business_result_article(article):
+        return False
     if home_campaign_political(article):
         return False
     if home_weak_youth_signal(article):
@@ -5142,6 +5219,8 @@ def is_home_today_fill_candidate(article: dict, reference_dt: datetime | None) -
         return False
     if article.get("article_type") == "opinion" or article.get("is_noise"):
         return False
+    if home_is_generic_business_result_article(article):
+        return False
     if home_campaign_political(article):
         return False
     if home_article_age_hours(article, reference_dt) > NEWS_WINDOW_HOURS:
@@ -5161,6 +5240,8 @@ def is_home_weekly_candidate(article: dict, reference_dt: datetime | None) -> bo
     if article.get("is_official_source"):
         return False
     if article.get("article_type") == "opinion" or article.get("is_noise"):
+        return False
+    if home_is_generic_business_result_article(article):
         return False
     if home_campaign_political(article) and not home_substantive_promise(article):
         return False
