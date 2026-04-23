@@ -1,17 +1,27 @@
 # Public Site
 
-`public-site`는 공개용 정적 사이트 빌드와 배포 스크립트를 담당한다.
+`public-site` contains the static public site, news collection scripts, and
+GitHub Pages deployment pipeline.
 
 ## Quick Start
 
 ```powershell
-python -m pip install -e ..\\shared -e .
-python scripts\\cron_runner.py --use-sample-data
-python scripts\\verify_site_artifacts.py --min-articles 1 --min-news-cards 0
+python -m pip install -e ..\shared -e .
+python scripts\cron_runner.py --use-sample-data
+python scripts\verify_site_artifacts.py --min-articles 1 --min-news-cards 0
 ```
+
+## Deployment Notes
+
+- The live GitHub Pages site is refreshed by the `Build And Deploy Pages`
+  workflow.
+- Scheduled runs are configured in UTC and can be delayed by GitHub Actions.
+  Treat the displayed update times as target windows, not exact clock times.
+- The local auto-update runner updates local runtime/site artifacts only. A live
+  GitHub Pages refresh still needs a GitHub Actions deployment.
 
 ## Key Paths
 
-- 정적 산출물: `public-site/web/`
-- Pages 아티팩트: `public-site/dist/`
-- 공용 런타임: `../runtime/pipeline/`, `../runtime/db/`, `../runtime/logs/`
+- Static source: `public-site/web/`
+- Pages artifact: `public-site/dist/`
+- Shared runtime data: `../runtime/pipeline/`, `../runtime/db/`, `../runtime/logs/`
