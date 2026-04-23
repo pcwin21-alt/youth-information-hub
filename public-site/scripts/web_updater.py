@@ -1499,18 +1499,6 @@ BASE_CSS = """
     font-size: 0.82rem;
     line-height: 1.5;
   }
-  .home-support-version {
-    display: inline-flex;
-    align-items: center;
-    width: fit-content;
-    padding: 7px 12px;
-    border-radius: 999px;
-    border: 1px solid transparent;
-    background: rgba(23, 37, 54, 0.94);
-    color: rgba(255, 255, 255, 0.96);
-    font-size: 0.78rem;
-    font-weight: 800;
-  }
   .home-support-footer {
     display: grid;
     gap: 14px;
@@ -5785,7 +5773,6 @@ def build_home_page(
     home_date_label = format_home_date_label(page_updated_at)
     latest_news_basis = describe_article_basis(recent_news_articles, f"최근 {NEWS_WINDOW_DAYS}일 기사 없음")
     policy_basis = describe_article_basis(official_policy_articles or policy_articles, "최근 정책 없음")
-    support_badge_text = build_footer_note(contact_settings)
     lead_message = (
         "혼자 버티는 하루가 너무 길게 느껴질 때에도, 오늘의 기사와 정책이 조금은 또렷한 길잡이가 되었으면 합니다. "
         "당신의 오늘이 작지 않다는 마음으로, 지금 필요한 흐름을 한자리에 모았습니다."
@@ -5921,7 +5908,6 @@ def build_home_page(
         </article>
         <article class="home-briefing-card footer footer-warm">
           <div class="home-support-footer">
-            <span class="home-support-version">{html.escape(support_badge_text)}</span>
             <p class="home-support-copy">이 사이트는 무료로 운영됩니다. 청년들을 응원하기 위해 만들어졌습니다.</p>
             <p class="home-support-copy secondary">기사 한 줄과 정책 한 항목이 필요한 순간에 제때 닿기를 바라는 마음으로, 오늘의 흐름을 조용히 모아두고 있습니다.</p>
             <div class="home-support-meta">
