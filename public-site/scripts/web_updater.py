@@ -6,6 +6,7 @@ import html
 import json
 import os
 import re
+import urllib.parse
 import urllib.request
 from pathlib import Path
 
@@ -25,6 +26,7 @@ HOME_DAILY_STICKY_LIMIT = 2
 HOME_DAILY_STICKY_HOURS = 24
 HOME_WEEKLY_STICKY_HOURS = 72
 HOME_UPDATE_SNAPSHOT = RUNTIME_PIPELINE_ROOT / "home_update_snapshot.json"
+HOME_HOT_KEYWORD_LIMIT = 8
 REMOTE_TEXT_CACHE: dict[str, str] = {}
 ILLUSTRATION_ROOT = "assets/illustrations"
 PUBLIC_ANALYTICS_ENDPOINT = os.getenv("PUBLIC_SITE_ANALYTICS_ENDPOINT", "").strip()
@@ -1305,8 +1307,9 @@ BASE_CSS = """
   }
   .home-glance-grid {
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 12px;
+    grid-template-columns: minmax(140px, 190px) minmax(0, 1fr);
+    gap: 14px;
+    align-items: stretch;
   }
   .home-glance-item {
     display: flex;
@@ -1314,10 +1317,9 @@ BASE_CSS = """
     justify-content: center;
     align-items: center;
     gap: 8px;
-    min-height: 110px;
-    aspect-ratio: 1 / 1;
+    min-height: 132px;
     padding: 16px 12px;
-    border-radius: 999px;
+    border-radius: 8px;
     border: 1px solid rgba(23, 33, 49, 0.08);
     background:
       linear-gradient(180deg, rgba(250, 248, 243, 0.96) 0%, rgba(255, 255, 255, 0.99) 100%);
@@ -1325,9 +1327,7 @@ BASE_CSS = """
     box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.88);
   }
   .home-glance-item.full {
-    grid-column: 1 / -1;
-    width: min(220px, 100%);
-    justify-self: center;
+    width: 100%;
   }
   .home-glance-item.warm {
     border-color: var(--home-apricot-soft);
@@ -1353,11 +1353,58 @@ BASE_CSS = """
     line-height: 1.3;
   }
   .home-glance-value {
-    font-size: 1.72rem;
+    font-size: 1.88rem;
     font-weight: 800;
     letter-spacing: -0.05em;
     line-height: 1;
     color: var(--accent-strong);
+  }
+  .home-keyword-panel {
+    display: grid;
+    gap: 10px;
+    min-height: 132px;
+    padding: 16px;
+    border: 1px solid rgba(23, 33, 49, 0.08);
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.72);
+  }
+  .home-keyword-heading {
+    display: grid;
+    gap: 3px;
+  }
+  .home-keyword-heading strong {
+    color: var(--accent-strong);
+    font-size: 0.86rem;
+    line-height: 1.35;
+  }
+  .home-keyword-heading span {
+    color: var(--muted);
+    font-size: 0.76rem;
+    line-height: 1.45;
+  }
+  .home-keyword-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-content: start;
+  }
+  .home-keyword-chip {
+    display: inline-flex;
+    align-items: center;
+    min-height: 34px;
+    padding: 7px 10px;
+    border: 1px solid rgba(57, 86, 119, 0.14);
+    border-radius: 8px;
+    background: rgba(241, 245, 250, 0.96);
+    color: var(--accent-strong);
+    font-size: 0.78rem;
+    font-weight: 800;
+    line-height: 1.2;
+    text-decoration: none;
+  }
+  .home-keyword-chip:nth-child(odd) {
+    border-color: var(--home-apricot-soft);
+    background: rgba(251, 235, 224, 0.94);
   }
   .home-glance-links {
     display: flex;
@@ -2486,6 +2533,13 @@ BASE_CSS = """
       min-height: 96px;
       padding: 14px 10px;
     }
+    .home-glance-grid {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .home-keyword-panel {
+      min-height: 0;
+      padding: 14px;
+    }
     .page-intro-card.has-media {
       grid-template-columns: minmax(0, 1fr) 86px;
       gap: 12px;
@@ -3169,13 +3223,16 @@ BASE_SCRIPT = """
     }
   });
 
+  const pageParams = new URLSearchParams(window.location.search);
+  const queryFromUrl = normalizeSearchQuery(pageParams.get('q') || pageParams.get('keyword') || '');
+
   document.querySelectorAll('[data-news-filter-root]').forEach((root) => {
     applyNewsFilters(
       root,
       root.getAttribute('data-default-date-start') || '',
       root.getAttribute('data-default-date-end') || '',
       root.getAttribute('data-default-region') || 'all',
-      root.getAttribute('data-default-search-query') || '',
+      queryFromUrl || root.getAttribute('data-default-search-query') || '',
     );
   });
 
@@ -4882,6 +4939,99 @@ def _home_text(article: dict) -> str:
     )
 
 
+HOME_HOT_KEYWORD_PATTERNS: tuple[tuple[str, tuple[str, ...]], ...] = (
+    ("청년센터", ("청년센터", "청년공간", "청년허브")),
+    ("지원사업", ("지원사업", "지원 사업", "지원금", "바우처", "수당")),
+    ("모집", ("모집", "공모", "신청", "접수", "선발")),
+    ("취업", ("취업", "채용", "일자리", "고용", "대학일자리")),
+    ("주거", ("주거", "주택", "월세", "전세", "임대")),
+    ("금융", ("금융", "부채", "대출", "자산", "적금", "저축")),
+    ("노동", ("노동", "노동권", "임금", "근로")),
+    ("고립·은둔", ("고립", "은둔", "외로움")),
+    ("복지", ("복지", "돌봄", "마음건강", "상담")),
+    ("창업", ("창업", "스타트업", "벤처")),
+    ("예산", ("예산", "추경", "재정")),
+    ("조례", ("조례", "의회", "시행계획", "종합계획", "기본계획")),
+)
+
+HOME_HOT_KEYWORD_ALIASES = {
+    "청년센터 운영": "청년센터",
+    "고용": "취업",
+    "부채": "금융",
+    "고립·은둔": "고립·은둔",
+}
+
+
+def normalize_home_hot_keyword(value: object) -> str:
+    keyword = normalize_inline_text(value)
+    if not keyword:
+        return ""
+    return HOME_HOT_KEYWORD_ALIASES.get(keyword, keyword)
+
+
+def articles_on_reference_day(articles: list[dict], reference_time: str | None) -> list[dict]:
+    reference_dt = parse_iso_datetime(reference_time)
+    if reference_dt is None:
+        parsed_dates = [parse_iso_datetime(article.get("published_date")) for article in articles]
+        parsed_dates = [value for value in parsed_dates if value is not None]
+        reference_dt = max(parsed_dates) if parsed_dates else None
+    if reference_dt is None:
+        return []
+
+    day_articles: list[dict] = []
+    seen_keys: set[str] = set()
+    for article in articles:
+        published_dt = parse_iso_datetime(article.get("published_date"))
+        if published_dt is None:
+            continue
+        if reference_dt.tzinfo is not None and published_dt.tzinfo is not None:
+            published_day = published_dt.astimezone(reference_dt.tzinfo).date()
+        else:
+            published_day = published_dt.date()
+        if published_day != reference_dt.date():
+            continue
+        identity = article_identity_key(article)
+        if identity in seen_keys:
+            continue
+        seen_keys.add(identity)
+        day_articles.append(article)
+    return day_articles
+
+
+def build_home_hot_keywords(articles: list[dict], reference_time: str | None, limit: int = HOME_HOT_KEYWORD_LIMIT) -> list[tuple[str, int]]:
+    counts: dict[str, int] = {}
+    for article in articles_on_reference_day(articles, reference_time):
+        text = _home_text(article)
+        article_keywords: list[str] = []
+        for tag in article.get("issue_tags") or []:
+            keyword = normalize_home_hot_keyword(tag)
+            if keyword:
+                article_keywords.append(keyword)
+        for label, patterns in HOME_HOT_KEYWORD_PATTERNS:
+            if any(pattern in text for pattern in patterns):
+                article_keywords.append(label)
+        for keyword in dict.fromkeys(article_keywords):
+            counts[keyword] = counts.get(keyword, 0) + 1
+    return sorted(counts.items(), key=lambda item: (-item[1], item[0]))[:limit]
+
+
+def merge_home_candidate_articles(primary_articles: list[dict], fallback_articles: list[dict]) -> list[dict]:
+    merged: list[dict] = []
+    seen_keys: set[str] = set()
+    for article, is_primary in [
+        *((article, True) for article in primary_articles),
+        *((article, False) for article in fallback_articles),
+    ]:
+        article_key = home_article_key(article)
+        if not article_key or article_key in seen_keys:
+            continue
+        seen_keys.add(article_key)
+        tagged_article = dict(article)
+        tagged_article["_home_primary_candidate"] = is_primary
+        merged.append(tagged_article)
+    return merged
+
+
 def home_campaign_political(article: dict) -> bool:
     text = _home_text(article)
     return any(
@@ -5023,6 +5173,28 @@ def is_home_today_candidate(article: dict, reference_dt: datetime | None) -> boo
     )
 
 
+def is_home_today_fill_candidate(article: dict, reference_dt: datetime | None) -> bool:
+    if is_home_today_candidate(article, reference_dt):
+        return True
+    if article.get("is_official_source"):
+        return False
+    if article.get("article_type") == "opinion" or article.get("is_noise"):
+        return False
+    if home_campaign_political(article):
+        return False
+    if home_article_age_hours(article, reference_dt) > NEWS_WINDOW_HOURS:
+        return False
+    if home_weak_youth_signal(article) and not article.get("issue_tags") and int(article.get("clean_score") or 0) < 4:
+        return False
+    return (
+        bool(article.get("issue_tags"))
+        or home_has_policy_or_operational_signal(article)
+        or home_has_structural_issue_signal(article)
+        or int(article.get("clean_score") or 0) >= 3
+        or bool(article.get("governance_scope"))
+    )
+
+
 def is_home_weekly_candidate(article: dict, reference_dt: datetime | None) -> bool:
     if article.get("is_official_source"):
         return False
@@ -5045,6 +5217,8 @@ def is_home_weekly_candidate(article: dict, reference_dt: datetime | None) -> bo
 
 def score_home_today_article(article: dict, reference_dt: datetime | None) -> int:
     score = int(article.get("importance_score") or 0)
+    if article.get("_home_primary_candidate"):
+        score += 24
     if home_has_policy_or_operational_signal(article):
         score += 6
     if home_has_structural_issue_signal(article):
@@ -5134,6 +5308,8 @@ def select_home_articles_with_hysteresis(
         article = candidate_map.get(article_key)
         if not article or article_key in excluded_keys:
             continue
+        if not article.get("_home_primary_candidate"):
+            continue
         rank_index = rank_map.get(article_key, sticky_rank_limit + 1)
         if rank_index >= sticky_rank_limit:
             continue
@@ -5189,14 +5365,31 @@ def build_home_curated_lists(
     highlight_key = home_article_key(highlighted_article) if highlighted_article else ""
     base_articles = [article for article in selected_news_articles if home_article_key(article) != highlight_key]
 
+    today_primary_articles = [
+        article for article in base_articles if is_home_today_candidate(article, reference_dt)
+    ]
+    today_fill_articles = [
+        article
+        for article in base_articles
+        if not is_home_today_candidate(article, reference_dt) and is_home_today_fill_candidate(article, reference_dt)
+    ]
     today_ranked = sorted(
-        [article for article in base_articles if is_home_today_candidate(article, reference_dt)],
+        today_primary_articles,
         key=lambda article: (
             score_home_today_article(article, reference_dt),
             article_sort_key(article)[1],
         ),
         reverse=True,
     )
+    today_fill_ranked = sorted(
+        today_fill_articles,
+        key=lambda article: (
+            score_home_today_article(article, reference_dt) - 5,
+            article_sort_key(article)[1],
+        ),
+        reverse=True,
+    )
+    today_ranked = [*today_ranked, *today_fill_ranked]
     today_articles, today_entries = select_home_articles_with_hysteresis(
         candidates=today_ranked,
         previous_entries=previous_today_entries,
@@ -5547,14 +5740,27 @@ def build_home_page(
     page_updated_at = status.get("finished_at") or status.get("updated_at") or ""
     selected_articles = sort_articles_by_recency(articles or classified_articles)
     all_articles = sort_articles_by_recency(classified_articles or selected_articles)
-    selected_news_articles = [article for article in selected_articles if not article.get("is_official_source")]
+    selected_news_articles = [
+        article
+        for article in selected_articles
+        if not article.get("is_official_source") and not is_election_promise_article(article)
+    ]
     recent_news_articles = filter_recent_articles(selected_news_articles, page_updated_at, NEWS_WINDOW_HOURS)
+    all_news_articles = [
+        article
+        for article in all_articles
+        if not article.get("is_official_source") and not is_election_promise_article(article)
+    ]
+    recent_home_news_candidates = merge_home_candidate_articles(
+        recent_news_articles,
+        filter_recent_articles(all_news_articles, page_updated_at, NEWS_WINDOW_HOURS),
+    )
     highlighted_article = next(
         (article for article in selected_articles if article.get("editorial_is_highlighted")),
         None,
     )
     today_articles, _, _ = build_home_curated_lists(
-        recent_news_articles,
+        recent_home_news_candidates,
         highlighted_article,
         page_updated_at,
     )
@@ -5575,6 +5781,7 @@ def build_home_page(
         24 * 90,
     )
     today_total_count = count_articles_on_reference_day(all_articles, page_updated_at)
+    hot_keywords = build_home_hot_keywords(recent_home_news_candidates, page_updated_at)
     home_date_label = format_home_date_label(page_updated_at)
     latest_news_basis = describe_article_basis(recent_news_articles, f"최근 {NEWS_WINDOW_DAYS}일 기사 없음")
     policy_basis = describe_article_basis(official_policy_articles or policy_articles, "최근 정책 없음")
@@ -5588,6 +5795,18 @@ def build_home_page(
         for card_class, label, value in [
             ("home-glance-item warm full", "오늘 올라온 기사", f"{today_total_count}건"),
         ]
+    )
+    hot_keyword_links = "".join(
+        f'<a class="home-keyword-chip" href="news.html?q={urllib.parse.quote(keyword)}">#{html.escape(keyword)}</a>'
+        for keyword, _ in hot_keywords
+    )
+    hot_keyword_body = hot_keyword_links or '<span class="home-urgent-meta">오늘 키워드가 더 모이면 표시됩니다.</span>'
+    hot_keywords_html = (
+        '<article class="home-keyword-panel">'
+        '<div class="home-keyword-heading"><strong>오늘 많이 잡힌 키워드</strong>'
+        '<span>누르면 뉴스 탭에서 바로 걸러봅니다.</span></div>'
+        f'<div class="home-keyword-list">{hot_keyword_body}</div>'
+        '</article>'
     )
 
     def render_home_news_item(index: int, article: dict) -> str:
@@ -5676,9 +5895,9 @@ def build_home_page(
         <article class="home-briefing-card digest digest-organic">
           <div class="home-briefing-head">
             <h2>오늘 한눈에 보기</h2>
-            <p>오늘 날짜로 올라온 기사 전체 수를 먼저 보여드립니다.</p>
+            <p>오늘 날짜로 올라온 기사 전체 수와 많이 잡힌 키워드를 함께 봅니다.</p>
           </div>
-          <div class="home-glance-grid">{glance_stats_html}</div>
+          <div class="home-glance-grid">{glance_stats_html}{hot_keywords_html}</div>
           <div class="home-glance-links">
             <a class="mini-link" href="news.html">뉴스 보기</a>
             <a class="mini-link" href="election.html">선거·공약 보기</a>
