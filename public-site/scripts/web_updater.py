@@ -6073,7 +6073,7 @@ def build_home_page(
         <article class="home-briefing-card lead lead-arch{home_lead_class}" data-media-host="home-lead">
           <div class="home-briefing-content">
             <span class="home-briefing-date">{html.escape(home_date_label)}</span>
-            <h1 class="home-briefing-title">청년은 오늘 -</h1>
+            <h1 class="home-briefing-title">청년의 오늘을<br>모아봅니다.</h1>
             <p class="home-briefing-copy">{html.escape(lead_message)}</p>
           </div>
           {home_lead_media}
