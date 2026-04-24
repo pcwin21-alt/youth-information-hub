@@ -10,8 +10,8 @@
         font-weight: 800;
         letter-spacing: 0;
       }
-      .basket { fill: #3278bd; }
-      .basket-lip { fill: #2268ad; }
+      .basket { fill: #4d8fc7; }
+      .basket-lip { fill: #347abb; }
       .sun { fill: #ff7436; }
       .sun-ray { fill: none; stroke: #ff7436; stroke-width: 8; stroke-linecap: round; }
       .paper { fill: #fffdf9; }
@@ -52,9 +52,9 @@
     <rect class="line-soft" x="68" y="89" width="34" height="5" rx="2.5"/>
     <rect class="line-soft" x="68" y="102" width="27" height="5" rx="2.5"/>
 
-    <path class="basket-lip" d="M19 91h122l-10 19H29L19 91Z"/>
-    <path class="basket" d="M24 96h112l-10.8 36.5c-1.6 5.5-6.2 8.5-11.9 8.5H46.7c-5.7 0-10.3-3-11.9-8.5L24 96Z"/>
-    <rect class="paper" x="57" y="124" width="46" height="6" rx="3" opacity=".95"/>
+    <path class="basket-lip" d="M25 96h112l-8.5 16h-95L25 96Z"/>
+    <path class="basket" d="M31 101h100l-8.8 28.5c-1.4 4.7-5.4 7.2-10.2 7.2H50c-4.8 0-8.8-2.5-10.2-7.2L31 101Z"/>
+    <rect class="paper" x="61" y="123" width="40" height="5" rx="2.5" opacity=".95"/>
   </g>
   <text class="wordmark" x="178" y="96">청년 모아봄</text>
 </svg>
