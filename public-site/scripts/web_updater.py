@@ -344,8 +344,8 @@ BASE_CSS = """
   }
   .brand {
     display: grid;
-    grid-template-columns: 82px minmax(0, 1fr);
-    column-gap: 14px;
+    grid-template-columns: 76px minmax(0, 1fr);
+    column-gap: 13px;
     row-gap: 2px;
     align-items: center;
     min-width: 0;
@@ -365,7 +365,7 @@ BASE_CSS = """
   .brand-logo {
     display: block;
     grid-row: 1 / span 2;
-    width: 82px;
+    width: 76px;
     max-width: none;
     height: auto;
     aspect-ratio: 1;
@@ -379,7 +379,7 @@ BASE_CSS = """
   .brand-title {
     display: block;
     color: var(--ink);
-    font-size: 2.42rem;
+    font-size: 2.24rem;
     font-weight: 800;
     line-height: 1;
     letter-spacing: 0;
@@ -388,7 +388,7 @@ BASE_CSS = """
   .brand-sub {
     display: block;
     color: var(--muted);
-    font-size: 0.98rem;
+    font-size: 0.92rem;
     font-weight: 500;
     line-height: 1.25;
     word-break: keep-all;
@@ -2252,17 +2252,17 @@ BASE_CSS = """
       padding: 18px 32px;
     }
     .brand {
-      grid-template-columns: 96px minmax(0, 1fr);
-      column-gap: 18px;
+      grid-template-columns: 86px minmax(0, 1fr);
+      column-gap: 16px;
     }
     .brand-logo {
-      width: 96px;
+      width: 86px;
     }
     .brand-title {
-      font-size: 3.05rem;
+      font-size: 2.76rem;
     }
     .brand-sub {
-      font-size: 1.12rem;
+      font-size: 1rem;
     }
     .section {
       margin-top: 42px;
@@ -2459,17 +2459,17 @@ BASE_CSS = """
       gap: 12px;
     }
     .brand {
-      grid-template-columns: 76px minmax(0, 1fr);
-      column-gap: 12px;
+      grid-template-columns: 70px minmax(0, 1fr);
+      column-gap: 11px;
     }
     .brand-logo {
-      width: 76px;
+      width: 70px;
     }
     .brand-title {
-      font-size: 2.1rem;
+      font-size: 1.92rem;
     }
     .brand-sub {
-      font-size: 0.88rem;
+      font-size: 0.82rem;
     }
     .topbar-side {
       display: grid;
@@ -2571,17 +2571,17 @@ BASE_CSS = """
   }
   @media (max-width: 380px) {
     .brand {
-      grid-template-columns: 66px minmax(0, 1fr);
-      column-gap: 12px;
+      grid-template-columns: 60px minmax(0, 1fr);
+      column-gap: 10px;
     }
     .brand-logo {
-      width: 66px;
+      width: 60px;
     }
     .brand-title {
-      font-size: 1.78rem;
+      font-size: 1.6rem;
     }
     .brand-sub {
-      font-size: 0.78rem;
+      font-size: 0.72rem;
     }
     .header-side strong {
       font-size: 0.88rem;
