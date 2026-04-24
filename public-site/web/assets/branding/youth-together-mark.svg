@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" width="160" height="160" role="img" aria-labelledby="title desc">
   <title id="title">청년 모아봄 심볼</title>
-  <desc id="desc">해가 비추는 기사 한 장이 파란 받침 위에 놓인 로고</desc>
+  <desc id="desc">해가 비추는 기사들이 파란 받침 위에 모인 로고</desc>
   <defs>
     <style>
       .basket { fill: #3278bd; }
@@ -9,6 +9,9 @@
       .sun-ray { fill: none; stroke: #ff7436; stroke-width: 8; stroke-linecap: round; }
       .paper { fill: #fffdf9; }
       .paper-stroke { stroke: #102747; }
+      .paper-side-blue { fill: #f7fbff; stroke: #8fb7df; stroke-width: 4; }
+      .paper-side-warm { fill: #fff3e7; stroke: #f0d8c4; stroke-width: 4; }
+      .detail-blue { fill: #8fb7df; }
       .line { fill: #9ca6af; }
       .line-soft { fill: #d9dde2; }
     </style>
@@ -23,6 +26,18 @@
     </g>
     <circle class="sun" cx="82" cy="45" r="29"/>
 
+    <g opacity=".92" transform="rotate(-8 47 82)">
+      <rect class="paper-side-blue" x="32" y="54" width="32" height="58" rx="8"/>
+      <rect class="detail-blue" x="42" y="67" width="10" height="13" rx="2"/>
+      <rect class="line-soft" x="55" y="69" width="8" height="5" rx="2.5"/>
+      <rect class="line-soft" x="42" y="91" width="20" height="5" rx="2.5"/>
+    </g>
+    <g opacity=".92" transform="rotate(8 116 82)">
+      <rect class="paper-side-warm" x="96" y="54" width="32" height="58" rx="8"/>
+      <rect class="sun" x="106" y="67" width="10" height="13" rx="2"/>
+      <rect class="line-soft" x="119" y="69" width="8" height="5" rx="2.5"/>
+      <rect class="line-soft" x="106" y="91" width="20" height="5" rx="2.5"/>
+    </g>
     <rect class="paper paper-stroke" x="55" y="39" width="52" height="77" rx="12" stroke-width="5"/>
     <rect class="sun" x="67" y="55" width="15" height="17" rx="3"/>
     <rect class="line" x="90" y="58" width="14" height="6" rx="3"/>
