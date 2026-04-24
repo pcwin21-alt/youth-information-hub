@@ -97,6 +97,36 @@ class HomeSelectionTests(unittest.TestCase):
         self.assertIn(substantive_promise["url"], weekly_urls)
         self.assertTrue(today_urls.isdisjoint(weekly_urls))
 
+    def test_old_primary_candidate_stays_out_of_today_list(self) -> None:
+        fresh_daily_issue = make_article(
+            title="청년센터 운영 예산 확대 발표",
+            lead_text="청년센터 운영 예산과 청년 지원사업 시행 계획을 오늘 발표했다.",
+            url="https://example.com/fresh-daily",
+            published_date="2026-04-22T09:30:00+09:00",
+            importance_score=12,
+            clean_score=5,
+        )
+        old_primary_candidate = make_article(
+            title='김 총리, 신임 청년보좌역들과 소통..."참신한 청년정책 만들어달라"',
+            lead_text="정부 청년보좌역과 청년정책 소통 자리를 열었다.",
+            url="https://www.newsis.com/view/NISX20260418_0003596702",
+            published_date="2026-04-16T10:00:00+09:00",
+            importance_score=80,
+            clean_score=6,
+        )
+        old_primary_candidate["governance_scope"] = "정부"
+        old_primary_candidate["_home_primary_candidate"] = True
+
+        today, _, _ = web_updater.build_home_curated_lists(
+            [old_primary_candidate, fresh_daily_issue],
+            None,
+            self.reference_time,
+        )
+
+        today_urls = {article["url"] for article in today}
+        self.assertIn(fresh_daily_issue["url"], today_urls)
+        self.assertNotIn(old_primary_candidate["url"], today_urls)
+
     def test_highlight_article_is_not_duplicated_into_today_or_weekly(self) -> None:
         highlighted = make_article(
             title="대표 하이라이트 기사",

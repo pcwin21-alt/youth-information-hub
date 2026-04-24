@@ -19,6 +19,7 @@ from youth_info_platform.io_utils import read_json
 
 NEWS_WINDOW_DAYS = 7
 NEWS_WINDOW_HOURS = NEWS_WINDOW_DAYS * 24
+HOME_TODAY_MAX_AGE_HOURS = 48
 ELECTION_WINDOW_DAYS = 21
 ELECTION_WINDOW_HOURS = ELECTION_WINDOW_DAYS * 24
 HOME_DAILY_LIMIT = 5
@@ -5339,7 +5340,7 @@ def is_home_today_candidate(article: dict, reference_dt: datetime | None) -> boo
         return False
     if home_weak_youth_signal(article):
         return False
-    if home_article_age_hours(article, reference_dt) > NEWS_WINDOW_HOURS:
+    if home_article_age_hours(article, reference_dt) > HOME_TODAY_MAX_AGE_HOURS:
         return False
     if not home_has_direct_title_signal(article) and not home_has_explicit_youth_lead_signal(article):
         return False
@@ -5364,7 +5365,7 @@ def is_home_today_fill_candidate(article: dict, reference_dt: datetime | None) -
         return False
     if home_campaign_political(article):
         return False
-    if home_article_age_hours(article, reference_dt) > NEWS_WINDOW_HOURS:
+    if home_article_age_hours(article, reference_dt) > HOME_TODAY_MAX_AGE_HOURS:
         return False
     if home_weak_youth_signal(article) and not article.get("issue_tags") and int(article.get("clean_score") or 0) < 4:
         return False
@@ -5407,7 +5408,8 @@ def is_home_weekly_candidate(article: dict, reference_dt: datetime | None) -> bo
 
 def score_home_today_article(article: dict, reference_dt: datetime | None) -> int:
     score = int(article.get("importance_score") or 0)
-    if article.get("_home_primary_candidate"):
+    age_hours = home_article_age_hours(article, reference_dt)
+    if article.get("_home_primary_candidate") and age_hours <= HOME_TODAY_MAX_AGE_HOURS:
         score += 24
     if home_has_policy_or_operational_signal(article):
         score += 6
@@ -5419,7 +5421,6 @@ def score_home_today_article(article: dict, reference_dt: datetime | None) -> in
         score += 2
     if home_substantive_promise(article):
         score -= 3
-    age_hours = home_article_age_hours(article, reference_dt)
     if age_hours <= 24:
         score += 8
     elif age_hours <= 48:

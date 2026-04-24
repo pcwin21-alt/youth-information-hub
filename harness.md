@@ -1,6 +1,6 @@
 # 청년 투게더 HARNESS
 
-Last updated: 2026-04-23
+Last updated: 2026-04-24
 
 이 문서는 청년 투게더 저장소의 작업 맥락, 운영 규칙, 재발 방지 지침, 실제 장애 기록을 한 곳에 모아둔 살아 있는 운영 문서다.
 
@@ -412,6 +412,44 @@ GitHub Pages는 `public-site/web/`를 직접 배포하지 않는다.
 
 - meta 파서는 quote type을 보존하는 방식으로 테스트되어야 한다.
 - 제목이 한두 단어로 비정상 축약되면 raw -> filtered -> classified -> web 렌더링 순서로 층위를 확인한다.
+
+### Incident 08. 오래된 선정 기사가 홈 `오늘` 리스트에 재진입한 문제
+
+문제 URL:
+
+- `https://www.newsis.com/view/NISX20260418_0003596702`
+
+증상:
+
+- 2026-04-24 홈 `오늘 놓치면 안되는 뉴스 5가지`에 2026-04-18 뉴시스 기사 `김 총리, 신임 청년보좌역들과 소통...`이 3위로 노출됨
+- 뉴스 페이지/아카이브에는 남아도 되지만, 오늘성/즉시성이 필요한 홈 상위 리스트에는 맞지 않았음
+
+확인 결과:
+
+- 해당 기사는 `step5_summarized.json`까지 정상 선정된 기사였고, 홈 후보 병합 과정에서 `_home_primary_candidate=True`가 붙어 있었음
+- `home_update_snapshot.json`의 `today_entries`에도 해당 URL이 저장되어 있었음
+
+원인:
+
+- 홈의 `오늘` 후보 판정이 7일짜리 `NEWS_WINDOW_HOURS`를 그대로 사용하고 있었음
+- `_home_primary_candidate` 보너스가 24점이라, 오래된 거버넌스/정책 기사도 새 기사보다 높게 랭크될 수 있었음
+- 그 결과 7일 안의 오래된 선정 기사와 24시간 sticky 로직이 결합해 `오늘` 리스트에 남을 수 있었음
+
+조치:
+
+- `HOME_TODAY_MAX_AGE_HOURS = 48`을 별도로 두고, `오늘`/`오늘 보충` 후보는 이 문턱을 넘으면 제외하도록 수정
+- `_home_primary_candidate` 보너스도 48시간 이내 기사에만 적용하도록 제한
+- 회귀 테스트를 추가해 4~6일 지난 primary 선정 기사가 홈 `오늘` 리스트에 들어오지 못하게 고정
+
+재발 방지:
+
+- `오늘 놓치면 안되는 뉴스`는 절대 7일 뉴스 창을 직접 쓰지 않는다.
+- 오래된 기사가 뉴스 페이지, 선거·공약 페이지, 주간/아카이브에 남는 것과 홈 `오늘` 진입은 분리해서 판단한다.
+- 비슷한 문제가 보이면 아래 순서로 본다.
+  1. `runtime/pipeline/step5_summarized.json`의 `published_date`, `importance_score`, `clean_score`
+  2. `_home_primary_candidate` 여부
+  3. `home_update_snapshot.json`의 `today_entries`
+  4. `is_home_today_candidate()`, `is_home_today_fill_candidate()`의 날짜 문턱
 
 ## 7. 문제 발생 시 진단 순서
 
