@@ -3,8 +3,8 @@
   <desc id="desc">해가 비추는 기사들이 파란 받침 위에 모인 로고</desc>
   <defs>
     <style>
-      .basket { fill: #4d8fc7; }
-      .basket-lip { fill: #347abb; }
+      .basket { fill: #5b98ca; }
+      .basket-lip { fill: #3d82bd; }
       .sun { fill: #ff7436; }
       .sun-ray { fill: none; stroke: #ff7436; stroke-width: 8; stroke-linecap: round; }
       .paper { fill: #fffdf9; }
@@ -45,8 +45,8 @@
     <rect class="line-soft" x="68" y="89" width="34" height="5" rx="2.5"/>
     <rect class="line-soft" x="68" y="102" width="27" height="5" rx="2.5"/>
 
-    <path class="basket-lip" d="M25 96h112l-8.5 16h-95L25 96Z"/>
-    <path class="basket" d="M31 101h100l-8.8 28.5c-1.4 4.7-5.4 7.2-10.2 7.2H50c-4.8 0-8.8-2.5-10.2-7.2L31 101Z"/>
-    <rect class="paper" x="61" y="123" width="40" height="5" rx="2.5" opacity=".95"/>
+    <path class="basket-lip" d="M31 99h100l-6.8 12H37.8L31 99Z"/>
+    <path class="basket" d="M42 108h78l-5 14.5c-1 3-3.4 4.6-6.6 4.6H53.6c-3.2 0-5.6-1.6-6.6-4.6L42 108Z"/>
+    <rect class="paper" x="64" y="118" width="34" height="4.5" rx="2.25" opacity=".9"/>
   </g>
 </svg>
