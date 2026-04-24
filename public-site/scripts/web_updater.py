@@ -382,8 +382,8 @@ BASE_CSS = """
   .brand-title {
     display: block;
     color: var(--ink);
-    font-size: 1.96rem;
-    font-weight: 700;
+    font-size: 1.78rem;
+    font-weight: 650;
     line-height: 1;
     letter-spacing: 0;
     white-space: nowrap;
@@ -391,7 +391,7 @@ BASE_CSS = """
   .brand-sub {
     display: block;
     color: var(--muted);
-    font-size: 0.82rem;
+    font-size: 0.78rem;
     font-weight: 500;
     line-height: 1.25;
     word-break: keep-all;
@@ -1250,11 +1250,11 @@ BASE_CSS = """
   }
   .home-briefing-title {
     margin: 0;
-    font-size: clamp(2.18rem, 6.9vw, 4.12rem);
-    font-weight: 700;
-    line-height: 0.95;
-    letter-spacing: -0.035em;
-    max-width: 12em;
+    font-size: 3.22rem;
+    font-weight: 650;
+    line-height: 1.03;
+    letter-spacing: 0;
+    max-width: 11em;
     white-space: normal;
   }
   .home-briefing-title-line {
@@ -2260,17 +2260,17 @@ BASE_CSS = """
       padding: 18px 32px;
     }
     .brand {
-      grid-template-columns: 86px minmax(0, 1fr);
-      column-gap: 16px;
+      grid-template-columns: 82px minmax(0, 1fr);
+      column-gap: 15px;
     }
     .brand-logo {
-      width: 86px;
+      width: 82px;
     }
     .brand-title {
-      font-size: 2.76rem;
+      font-size: 2.26rem;
     }
     .brand-sub {
-      font-size: 1rem;
+      font-size: 0.88rem;
     }
     .section {
       margin-top: 42px;
@@ -2474,10 +2474,10 @@ BASE_CSS = """
       width: 70px;
     }
     .brand-title {
-      font-size: 1.68rem;
+      font-size: 1.48rem;
     }
     .brand-sub {
-      font-size: 0.76rem;
+      font-size: 0.7rem;
     }
     .topbar-side {
       display: grid;
@@ -2536,8 +2536,8 @@ BASE_CSS = """
       max-width: 70%;
     }
     .home-briefing-title {
-      font-size: clamp(1.82rem, 8.2vw, 2.82rem);
-      letter-spacing: -0.035em;
+      font-size: 2.18rem;
+      letter-spacing: 0;
     }
     .home-briefing-copy {
       max-width: 100%;
@@ -2586,10 +2586,10 @@ BASE_CSS = """
       width: 60px;
     }
     .brand-title {
-      font-size: 1.4rem;
+      font-size: 1.24rem;
     }
     .brand-sub {
-      font-size: 0.65rem;
+      font-size: 0.62rem;
     }
     .header-side strong {
       font-size: 0.88rem;
