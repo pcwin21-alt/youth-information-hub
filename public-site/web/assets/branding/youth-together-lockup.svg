@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 610 160" width="610" height="160" role="img" aria-labelledby="title desc">
   <title id="title">청년 모아봄 로고</title>
-  <desc id="desc">여러 뉴스 카드 뒤로 봄 햇살이 비추고, 옆에 청년 모아봄 이름이 놓인 로고</desc>
+  <desc id="desc">해가 비추는 기사 한 장이 파란 받침 위에 놓이고, 옆에 청년 모아봄 이름이 놓인 로고</desc>
   <defs>
     <style>
       .wordmark {
@@ -10,46 +10,32 @@
         font-weight: 800;
         letter-spacing: 0;
       }
-      .blue { fill: #3278bd; }
-      .blue-dark { fill: #2268ad; }
-      .blue-soft { fill: #8fb7df; }
-      .sun { fill: #fb7435; }
+      .basket { fill: #3278bd; }
+      .basket-lip { fill: #2268ad; }
+      .sun { fill: #ff7436; }
       .paper { fill: #fffdf9; }
-      .paper-soft { fill: #f7fbff; }
-      .paper-warm { fill: #fff3e7; }
+      .paper-stroke { stroke: #102747; }
       .line { fill: #9ca6af; }
       .line-soft { fill: #d9dde2; }
-      .stroke-blue { stroke: #8fb7df; }
-      .stroke-warm { stroke: #f0d8c4; }
-      .stroke-navy { stroke: #102747; }
     </style>
   </defs>
   <g>
-    <circle class="sun" cx="96" cy="42" r="30"/>
-    <rect class="sun" x="92" y="6" width="8" height="17" rx="4"/>
-    <rect class="sun" x="58" y="23" width="8" height="19" rx="4" transform="rotate(-40 62 32.5)"/>
-    <rect class="sun" x="125" y="31" width="8" height="19" rx="4" transform="rotate(42 129 40.5)"/>
-    <rect class="sun" x="124" y="61" width="19" height="8" rx="4"/>
-    <g opacity=".96">
-      <rect x="33" y="50" width="39" height="58" rx="8" class="paper-soft stroke-blue" stroke-width="4" transform="rotate(-8 52.5 79)"/>
-      <rect class="blue-soft" x="44" y="63" width="10" height="13" rx="2" transform="rotate(-8 49 69.5)"/>
-      <rect class="line-soft" x="57" y="64" width="14" height="5" rx="2.5" transform="rotate(-8 64 66.5)"/>
-      <rect class="line-soft" x="45" y="85" width="23" height="5" rx="2.5" transform="rotate(-8 56.5 87.5)"/>
-    </g>
-    <g opacity=".96">
-      <rect x="88" y="50" width="39" height="58" rx="8" class="paper-warm stroke-warm" stroke-width="4" transform="rotate(8 107.5 79)"/>
-      <rect class="sun" x="99" y="63" width="10" height="13" rx="2" transform="rotate(8 104 69.5)"/>
-      <rect class="line-soft" x="112" y="64" width="14" height="5" rx="2.5" transform="rotate(8 119 66.5)"/>
-      <rect class="line-soft" x="100" y="85" width="23" height="5" rx="2.5" transform="rotate(8 111.5 87.5)"/>
-    </g>
-    <rect class="paper stroke-navy" x="56" y="40" width="50" height="76" rx="11" stroke-width="5"/>
-    <rect class="sun" x="68" y="55" width="15" height="17" rx="3"/>
-    <rect class="line" x="90" y="57" width="14" height="6" rx="3"/>
-    <rect class="line-soft" x="90" y="70" width="11" height="5" rx="2.5"/>
-    <rect class="line-soft" x="68" y="88" width="34" height="5" rx="2.5"/>
-    <rect class="line-soft" x="68" y="101" width="27" height="5" rx="2.5"/>
-    <path class="blue" d="M24 96h113l-10.8 36c-1.7 5.6-6.1 8.4-11.8 8.4H46.6c-5.7 0-10.1-2.8-11.8-8.4L24 96Z"/>
-    <path class="blue-dark" d="M20 94h121l-10 19H30L20 94Z"/>
+    <circle class="sun" cx="82" cy="45" r="29"/>
+    <rect class="sun" x="78" y="7" width="8" height="16" rx="4"/>
+    <rect class="sun" x="42" y="26" width="8" height="19" rx="4" transform="rotate(-42 46 35.5)"/>
+    <rect class="sun" x="115" y="26" width="8" height="19" rx="4" transform="rotate(42 119 35.5)"/>
+    <rect class="sun" x="23" y="42" width="17" height="8" rx="4"/>
+    <rect class="sun" x="124" y="42" width="17" height="8" rx="4"/>
+
+    <rect class="paper paper-stroke" x="55" y="39" width="52" height="77" rx="12" stroke-width="5"/>
+    <rect class="sun" x="67" y="55" width="15" height="17" rx="3"/>
+    <rect class="line" x="90" y="58" width="14" height="6" rx="3"/>
+    <rect class="line-soft" x="90" y="72" width="11" height="5" rx="2.5"/>
+    <rect class="line-soft" x="68" y="89" width="34" height="5" rx="2.5"/>
+    <rect class="line-soft" x="68" y="102" width="27" height="5" rx="2.5"/>
+
+    <path class="basket-lip" d="M19 91h122l-10 19H29L19 91Z"/>
+    <path class="basket" d="M24 96h112l-10.8 36.5c-1.6 5.5-6.2 8.5-11.9 8.5H46.7c-5.7 0-10.3-3-11.9-8.5L24 96Z"/>
     <rect class="paper" x="57" y="124" width="46" height="6" rx="3" opacity=".95"/>
   </g>
   <text class="wordmark" x="178" y="96">청년 모아봄</text>
