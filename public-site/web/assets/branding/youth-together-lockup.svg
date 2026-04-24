@@ -7,10 +7,9 @@
         fill: #102747;
         font-family: "Noto Sans KR", "Pretendard", "Apple SD Gothic Neo", sans-serif;
         font-size: 72px;
-        font-weight: 850;
+        font-weight: 800;
         letter-spacing: 0;
       }
-      .navy { fill: #102747; }
       .blue { fill: #3278bd; }
       .blue-dark { fill: #2268ad; }
       .blue-soft { fill: #8fb7df; }
@@ -18,36 +17,28 @@
       .paper { fill: #fffdf9; }
       .line { fill: #9ca6af; }
       .line-soft { fill: #d9dde2; }
+      .stroke-blue { stroke: #8fb7df; }
+      .stroke-navy { stroke: #102747; }
     </style>
   </defs>
   <g>
-    <circle class="sun" cx="103" cy="45" r="22"/>
-    <rect class="sun" x="100" y="12" width="7" height="16" rx="3.5"/>
-    <path class="sun" d="m70 29 6-10 14 8-6 10z"/>
-    <path class="sun" d="m119 27 14-8 6 10-14 8z"/>
-    <path class="sun" d="m133 53 16-1 1 7-16 1z"/>
-    <g transform="rotate(-7 52 78)">
-      <rect x="32" y="44" width="42" height="66" rx="8" fill="#f8fbfe" stroke="#8fb7df" stroke-width="4"/>
-      <rect class="blue-soft" x="43" y="56" width="13" height="15" rx="3"/>
-      <rect class="line-soft" x="43" y="79" width="22" height="5" rx="2.5"/>
-      <rect class="line-soft" x="43" y="91" width="27" height="5" rx="2.5"/>
+    <circle class="sun" cx="101" cy="43" r="28"/>
+    <rect class="sun" x="97" y="5" width="8" height="19" rx="4"/>
+    <rect class="sun" x="67" y="22" width="8" height="20" rx="4" transform="rotate(-38 71 32)"/>
+    <rect class="sun" x="130" y="23" width="8" height="20" rx="4" transform="rotate(38 134 33)"/>
+    <rect class="sun" x="134" y="60" width="20" height="8" rx="4"/>
+    <g opacity=".94">
+      <rect x="35" y="55" width="35" height="53" rx="8" fill="#f8fbfe" class="stroke-blue" stroke-width="4" transform="rotate(-7 52.5 81.5)"/>
+      <rect x="90" y="55" width="35" height="53" rx="8" fill="#f8fbfe" class="stroke-blue" stroke-width="4" transform="rotate(7 107.5 81.5)"/>
     </g>
-    <g transform="rotate(7 102 78)">
-      <rect x="86" y="44" width="42" height="66" rx="8" fill="#f8fbfe" stroke="#8fb7df" stroke-width="4"/>
-      <rect class="blue-soft" x="97" y="56" width="13" height="15" rx="3"/>
-      <rect class="line-soft" x="97" y="79" width="22" height="5" rx="2.5"/>
-      <rect class="line-soft" x="97" y="91" width="27" height="5" rx="2.5"/>
-    </g>
-    <rect class="paper" x="57" y="36" width="50" height="82" rx="10" stroke="#102747" stroke-width="5"/>
-    <rect class="sun" x="69" y="51" width="15" height="17" rx="3"/>
-    <rect class="line" x="90" y="52" width="26" height="6" rx="3"/>
-    <rect class="line-soft" x="90" y="65" width="20" height="5" rx="2.5"/>
-    <rect class="line-soft" x="69" y="82" width="38" height="5" rx="2.5"/>
-    <rect class="line-soft" x="69" y="95" width="28" height="5" rx="2.5"/>
-    <path class="sun" d="M87 87h17v28l-8.5-5.8L87 115z"/>
-    <path class="blue" d="M22 96h116l-11 36c-1.8 5.7-6.3 8.5-12 8.5H45c-5.7 0-10.2-2.8-12-8.5z"/>
-    <path class="blue-dark" d="M20 94h120l-10 19H30z"/>
-    <rect class="paper" x="57" y="124" width="46" height="6" rx="3" opacity=".94"/>
+    <rect class="paper stroke-navy" x="58" y="42" width="50" height="74" rx="10" stroke-width="5"/>
+    <rect class="sun" x="70" y="56" width="16" height="17" rx="3"/>
+    <rect class="line" x="92" y="57" width="24" height="6" rx="3"/>
+    <rect class="line-soft" x="92" y="70" width="18" height="5" rx="2.5"/>
+    <rect class="line-soft" x="70" y="88" width="36" height="5" rx="2.5"/>
+    <path class="blue" d="M23 97h114l-10.5 35c-1.7 5.7-6.2 8.5-11.9 8.5H45.4c-5.7 0-10.2-2.8-11.9-8.5L23 97Z"/>
+    <path class="blue-dark" d="M20 95h120l-10 19H30L20 95Z"/>
+    <rect class="paper" x="57" y="124" width="46" height="6" rx="3" opacity=".95"/>
   </g>
   <text class="wordmark" x="178" y="96">청년 모아봄</text>
 </svg>
