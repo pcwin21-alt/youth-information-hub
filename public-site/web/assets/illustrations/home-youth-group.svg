@@ -1,25 +1,37 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 250" fill="none">
-  <ellipse cx="168" cy="216" rx="90" ry="14" fill="#F2E7DB" opacity=".42"/>
-  <circle cx="104" cy="86" r="30" fill="#DCE7EA"/>
-  <circle cx="226" cy="70" r="36" fill="#F3E0D2"/>
-  <rect x="110" y="63" width="104" height="80" rx="24" fill="#F4EBE0" opacity=".94"/>
-  <rect x="88" y="80" width="146" height="100" rx="28" fill="#FBF6EE"/>
-  <rect x="88" y="80" width="146" height="100" rx="28" stroke="#ECE0D5" stroke-width="4"/>
-  <rect x="106" y="99" width="110" height="66" rx="20" fill="#FFFFFF"/>
-  <rect x="122" y="114" width="52" height="10" rx="5" fill="#223445"/>
-  <rect x="122" y="132" width="68" height="8" rx="4" fill="#D89A78"/>
-  <rect x="122" y="147" width="78" height="8" rx="4" fill="#90A5B0"/>
-  <path d="M70 135c0-15 12-27 27-27h39c15 0 27 12 27 27v8c0 15-12 27-27 27h-12l-20 15 3-15h-10c-15 0-27-12-27-27v-8Z" fill="#8EA2AF"/>
-  <circle cx="102" cy="139" r="4.5" fill="#FFF8F1"/>
-  <circle cx="115" cy="139" r="4.5" fill="#FFF8F1"/>
-  <circle cx="128" cy="139" r="4.5" fill="#FFF8F1"/>
-  <circle cx="224" cy="113" r="22" fill="#E8B393"/>
-  <path d="M209 116l24-6-8 22-4-10-12-6Z" fill="#FFF8F1"/>
-  <path d="M209 116l24-6-8 22-4-10-12-6Z" stroke="#223445" stroke-linejoin="round" stroke-width="4"/>
-  <path d="M221 120l17 14" stroke="#223445" stroke-linecap="round" stroke-width="4"/>
-  <path d="M216 145c0-14 11-25 25-25h15c14 0 25 11 25 25v7c0 14-11 25-25 25h-10l-14 13 4-13h-5c-14 0-25-11-25-25v-7Z" fill="#F7E8DB"/>
-  <path d="M216 145c0-14 11-25 25-25h15c14 0 25 11 25 25v7c0 14-11 25-25 25h-10l-14 13 4-13h-5c-14 0-25-11-25-25v-7Z" stroke="#F0E1D4" stroke-width="3"/>
-  <path d="M248 59l4 9 10 2-7 7 2 10-9-5-9 5 2-10-7-7 10-2 4-9Z" fill="#D89A78"/>
-  <circle cx="92" cy="63" r="6" fill="#FFF8F1" opacity=".82"/>
-  <circle cx="241" cy="98" r="5" fill="#FFF8F1" opacity=".74"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 250" fill="none" role="img" aria-labelledby="title desc">
+  <title id="title">희망적인 청년 정보 길잡이 일러스트</title>
+  <desc id="desc">떠오르는 해와 길, 정책 카드, 작은 새싹이 함께 있는 홈 화면 일러스트</desc>
+  <ellipse cx="164" cy="220" rx="94" ry="13" fill="#F2E7DB" opacity=".34"/>
+  <circle cx="230" cy="62" r="33" fill="#FB7435"/>
+  <rect x="225" y="13" width="10" height="25" rx="5" fill="#FB7435"/>
+  <rect x="254" y="25" width="10" height="26" rx="5" fill="#FB7435" transform="rotate(38 259 38)"/>
+  <rect x="181" y="33" width="27" height="10" rx="5" fill="#FB7435" transform="rotate(-28 194.5 38)"/>
+  <rect x="266" y="66" width="28" height="10" rx="5" fill="#FB7435"/>
+  <circle cx="96" cy="75" r="28" fill="#DCE7EA"/>
+  <circle cx="111" cy="62" r="7" fill="#FFF8F1" opacity=".85"/>
+  <path d="M102 119c10-28 32-44 58-44s48 16 58 44v82H102v-82Z" fill="#F4EBE0" opacity=".9"/>
+  <path d="M62 203c19-54 55-92 98-118 43 26 79 64 98 118H62Z" fill="#FFF8F1"/>
+  <path d="M62 203c19-54 55-92 98-118 43 26 79 64 98 118" stroke="#F0E1D4" stroke-width="4" stroke-linecap="round"/>
+  <path d="M160 103c-18 30-29 63-34 100h68c-5-37-16-70-34-100Z" fill="#F7E8DB"/>
+  <path d="M160 125v12M160 153v12M160 181v12" stroke="#D89A78" stroke-width="5" stroke-linecap="round"/>
+  <rect x="94" y="83" width="62" height="82" rx="16" fill="#FFFDF9" stroke="#8FB7DF" stroke-width="4" transform="rotate(-7 125 124)"/>
+  <rect x="111" y="103" width="16" height="18" rx="4" fill="#3278BD" transform="rotate(-7 119 112)"/>
+  <rect x="132" y="101" width="31" height="7" rx="3.5" fill="#223445" transform="rotate(-7 147.5 104.5)"/>
+  <rect x="114" y="130" width="47" height="6" rx="3" fill="#D9DDE2" transform="rotate(-7 137.5 133)"/>
+  <rect x="117" y="145" width="35" height="6" rx="3" fill="#D9DDE2" transform="rotate(-7 134.5 148)"/>
+  <rect x="164" y="84" width="62" height="82" rx="16" fill="#FFFDF9" stroke="#F0E1D4" stroke-width="4" transform="rotate(7 195 125)"/>
+  <rect x="181" y="104" width="16" height="18" rx="4" fill="#FB7435" transform="rotate(7 189 113)"/>
+  <rect x="202" y="105" width="31" height="7" rx="3.5" fill="#223445" transform="rotate(7 217.5 108.5)"/>
+  <rect x="181" y="132" width="48" height="6" rx="3" fill="#D9DDE2" transform="rotate(7 205 135)"/>
+  <rect x="179" y="147" width="36" height="6" rx="3" fill="#D9DDE2" transform="rotate(7 197 150)"/>
+  <path d="M105 190c0-14 10-24 22-24s22 10 22 24v7h-44v-7Z" fill="#3278BD"/>
+  <circle cx="127" cy="157" r="14" fill="#F7E8DB"/>
+  <path d="M116 159c8 7 17 7 25 0" stroke="#223445" stroke-width="4" stroke-linecap="round"/>
+  <path d="M120 183c5-9 9-14 16-21" stroke="#FFF8F1" stroke-width="4" stroke-linecap="round"/>
+  <path d="M217 178c7 4 11 10 12 18M216 178c1-9 8-16 19-19M216 178c-8-8-18-11-29-8" stroke="#6FAF8F" stroke-width="5" stroke-linecap="round"/>
+  <path d="M235 159c-5 17-15 24-22 20 2-12 10-20 22-20Z" fill="#8DCAAE"/>
+  <path d="M187 170c14 2 24 7 29 17-13 4-24-1-29-17Z" fill="#8DCAAE"/>
+  <path d="M229 196h-24" stroke="#FFF8F1" stroke-width="5" stroke-linecap="round"/>
+  <path d="M54 171h26l-13 18-13-18Z" fill="#FB7435" opacity=".92"/>
+  <path d="M267 128h20l-10 14-10-14Z" fill="#8FB7DF" opacity=".85"/>
 </svg>
