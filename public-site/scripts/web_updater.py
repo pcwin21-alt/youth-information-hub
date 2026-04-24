@@ -135,7 +135,7 @@ CURATED_MAJOR_POLICY_WATCHLIST = [
 ]
 
 HOME_LEAD_ILLUSTRATION = {
-    "src": f"{ILLUSTRATION_ROOT}/home-youth-group.svg",
+    "src": f"{ILLUSTRATION_ROOT}/home-moabom-collection.svg",
     "alt": "뉴스와 정책 카드가 파란 모음함으로 모이는 홈 화면 일러스트",
 }
 
