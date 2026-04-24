@@ -1262,6 +1262,7 @@ BASE_CSS = """
     max-width: 42ch;
     word-break: keep-all;
     overflow-wrap: normal;
+    white-space: pre-line;
   }
   .home-briefing-card.lead-arch .home-briefing-date {
     color: rgba(255, 255, 255, 0.74);
@@ -5969,8 +5970,11 @@ def build_home_page(
     latest_news_basis = describe_article_basis(recent_news_articles, f"최근 {NEWS_WINDOW_DAYS}일 기사 없음")
     policy_basis = describe_article_basis(official_policy_articles or policy_articles, "최근 정책 없음")
     lead_message = (
-        "혼자 버티는 하루가 너무 길게 느껴질 때에도, 오늘의 기사와 정책이 조금은 또렷한 길잡이가 되었으면 합니다. "
-        "당신의 오늘이 작지 않다는 마음으로, 지금 필요한 흐름을 한자리에 모았습니다."
+        "혼자 챙기기엔 너무 많은 하루에도,\n"
+        "청년에게 닿는 정책과 이슈는 놓치지 않도록.\n\n"
+        "오늘 필요한 기사와 흐름을\n"
+        "한곳에 차분히 모아두었습니다.\n\n"
+        "작은 정보 하나가 오늘의 길잡이가 되기를 바랍니다."
     )
     glance_stats_html = "".join(
         f'<article class="{card_class}"><span class="home-glance-label">{label}</span><strong class="home-glance-value">{value}</strong></article>'
