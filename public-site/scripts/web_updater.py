@@ -381,7 +381,7 @@ BASE_CSS = """
   .brand-title {
     display: block;
     color: var(--ink);
-    font-size: 2.24rem;
+    font-size: 2.06rem;
     font-weight: 800;
     line-height: 1;
     letter-spacing: 0;
@@ -390,7 +390,7 @@ BASE_CSS = """
   .brand-sub {
     display: block;
     color: var(--muted);
-    font-size: 0.92rem;
+    font-size: 0.86rem;
     font-weight: 500;
     line-height: 1.25;
     word-break: keep-all;
@@ -1249,7 +1249,7 @@ BASE_CSS = """
   }
   .home-briefing-title {
     margin: 0;
-    font-size: clamp(2.5rem, 8vw, 4.8rem);
+    font-size: clamp(2.32rem, 7.35vw, 4.42rem);
     line-height: 0.95;
     letter-spacing: -0.055em;
     max-width: 12em;
@@ -2472,10 +2472,10 @@ BASE_CSS = """
       width: 70px;
     }
     .brand-title {
-      font-size: 1.92rem;
+      font-size: 1.78rem;
     }
     .brand-sub {
-      font-size: 0.82rem;
+      font-size: 0.78rem;
     }
     .topbar-side {
       display: grid;
@@ -2534,7 +2534,7 @@ BASE_CSS = """
       max-width: 70%;
     }
     .home-briefing-title {
-      font-size: clamp(2.05rem, 9.8vw, 3.25rem);
+      font-size: clamp(1.92rem, 8.9vw, 3rem);
       letter-spacing: -0.05em;
     }
     .home-briefing-copy {
@@ -2584,10 +2584,10 @@ BASE_CSS = """
       width: 60px;
     }
     .brand-title {
-      font-size: 1.6rem;
+      font-size: 1.48rem;
     }
     .brand-sub {
-      font-size: 0.72rem;
+      font-size: 0.68rem;
     }
     .header-side strong {
       font-size: 0.88rem;
