@@ -136,7 +136,7 @@ CURATED_MAJOR_POLICY_WATCHLIST = [
 
 HOME_LEAD_ILLUSTRATION = {
     "src": f"{ILLUSTRATION_ROOT}/home-youth-group.svg",
-    "alt": "떠오르는 해와 길, 정책 카드, 작은 새싹이 함께 있는 홈 화면 일러스트",
+    "alt": "뉴스와 정책 카드가 파란 모음함으로 모이는 홈 화면 일러스트",
 }
 
 PAGE_INTRO_ILLUSTRATIONS = {
