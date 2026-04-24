@@ -127,14 +127,24 @@ class SyncedArticleAdmin(admin.ModelAdmin):
     list_display = (
         "title",
         "editorial_decision",
-        "editorial_feature_rank",
+        "editorial_is_highlighted",
+        "is_manual_entry",
+        "clean_score",
         "source_name",
         "region",
         "published_date",
         "updated_at",
     )
     search_fields = ("title", "region", "source_name", "hub_owner_label", "editorial_note")
-    list_filter = ("editorial_decision", "region", "governance_scope", "is_official_source", "source_kind")
+    list_filter = (
+        "editorial_decision",
+        "editorial_is_highlighted",
+        "is_manual_entry",
+        "region",
+        "governance_scope",
+        "is_official_source",
+        "source_kind",
+    )
     readonly_fields = (
         "article_key",
         "title",
@@ -152,6 +162,9 @@ class SyncedArticleAdmin(admin.ModelAdmin):
         "selection_bucket",
         "is_noise",
         "is_official_source",
+        "is_manual_entry",
+        "clean_score",
+        "clean_labels",
         "lead_text",
         "summary",
         "raw_payload",
@@ -166,7 +179,7 @@ class SyncedArticleAdmin(admin.ModelAdmin):
             {
                 "fields": (
                     "editorial_decision",
-                    "editorial_feature_rank",
+                    "editorial_is_highlighted",
                     "editorial_note",
                     "editorial_updated_at",
                     "editorial_updated_by",
@@ -193,6 +206,9 @@ class SyncedArticleAdmin(admin.ModelAdmin):
                     "selection_bucket",
                     "is_noise",
                     "is_official_source",
+                    "is_manual_entry",
+                    "clean_score",
+                    "clean_labels",
                     "lead_text",
                     "summary",
                     "raw_payload",

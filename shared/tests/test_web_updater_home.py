@@ -191,7 +191,7 @@ class HomeSelectionTests(unittest.TestCase):
         )
 
         self.assertNotIn("이번 주 계속 볼 기사", page_html)
-        self.assertIn("© 2026 유스사이드 · 박진감", page_html)
+        self.assertIn("이 사이트는 무료로 운영됩니다. 청년들을 응원하기 위해 만들어졌습니다.", page_html)
         self.assertNotIn("유스사이드 preview", page_html)
 
     def test_news_policy_and_election_pages_are_split_by_campaign_signal(self) -> None:
@@ -260,6 +260,28 @@ class HomeSelectionTests(unittest.TestCase):
         self.assertIn("선거 기사", election_html)
         self.assertIn("정책 공약", election_html)
         self.assertNotIn(general_news["title"], election_html)
+
+    def test_filter_public_articles_drops_low_value_business_story_but_keeps_manual_include(self) -> None:
+        weak_business_story = make_article(
+            title="KB금융, 1분기 순이익 1조8924억원…자사주 1426만주 전량 소각",
+            lead_text="실적 기사 말미에 청년 자산형성 상품 문장이 한 줄 덧붙었다.",
+            url="https://example.com/weak-business",
+        )
+        practical_story = make_article(
+            title="한국장학재단, 취업 후 상환 전환 대출 신청 모집",
+            lead_text="대학생과 사회초년생 대상 학자금 전환 대출 신청을 받는다.",
+            url="https://example.com/practical-story",
+        )
+
+        filtered = web_updater.filter_public_articles([weak_business_story, practical_story])
+        filtered_urls = {article["url"] for article in filtered}
+
+        self.assertNotIn(weak_business_story["url"], filtered_urls)
+        self.assertIn(practical_story["url"], filtered_urls)
+
+        weak_business_story["editorial_decision"] = "include"
+        included_urls = {article["url"] for article in web_updater.filter_public_articles([weak_business_story])}
+        self.assertIn(weak_business_story["url"], included_urls)
 
 
 if __name__ == "__main__":

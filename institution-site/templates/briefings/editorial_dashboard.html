@@ -4,22 +4,13 @@
 
 {% block content %}
   <section class="stats">
-    <article class="panel">
-      <span class="stat-label">동기화 기사</span>
-      <strong class="stat-value">{{ synced_count }}</strong>
-    </article>
-    <article class="panel">
-      <span class="stat-label">기본</span>
-      <strong class="stat-value">{{ default_count }}</strong>
-    </article>
-    <article class="panel">
-      <span class="stat-label">상단 노출</span>
-      <strong class="stat-value">{{ featured_count }}</strong>
-    </article>
-    <article class="panel">
-      <span class="stat-label">배제</span>
-      <strong class="stat-value">{{ excluded_count }}</strong>
-    </article>
+    <article class="panel"><span class="stat-label">전체 기사</span><strong class="stat-value">{{ synced_count }}</strong></article>
+    <article class="panel"><span class="stat-label">기본</span><strong class="stat-value">{{ default_count }}</strong></article>
+    <article class="panel"><span class="stat-label">포함</span><strong class="stat-value">{{ included_count }}</strong></article>
+    <article class="panel"><span class="stat-label">대표 하이라이트</span><strong class="stat-value">{{ highlighted_count }}</strong></article>
+    <article class="panel"><span class="stat-label">배제</span><strong class="stat-value">{{ excluded_count }}</strong></article>
+    <article class="panel"><span class="stat-label">수동 추가</span><strong class="stat-value">{{ manual_count }}</strong></article>
+    <article class="panel"><span class="stat-label">클린 기사</span><strong class="stat-value">{{ clean_count }}</strong></article>
   </section>
 
   {% if ops_radar.items %}
@@ -27,25 +18,16 @@
       <div class="toolbar">
         <div>
           <h2 class="section-title">운영 레이더</h2>
-          <p class="section-copy">선별 상단에 오르지 않았어도 실무상 놓치기 아쉬운 후보를 따로 보여줍니다.</p>
+          <p class="section-copy">메인에 잘 안 올라와도 다시 볼 가치가 있는 기사 후보를 모아 둡니다.</p>
         </div>
         <div class="article-meta">
           {% if ops_radar.generated_at %}{{ ops_radar.generated_at }}{% endif %}
         </div>
       </div>
       <div class="meta-grid" style="margin-bottom: 14px;">
-        <div class="meta-item">
-          <strong>레이더 후보</strong>
-          <div>{{ ops_radar.summary.total_matched|default:0 }}</div>
-        </div>
-        <div class="meta-item">
-          <strong>놓침 후보</strong>
-          <div>{{ ops_radar.summary.overlooked_count|default:0 }}</div>
-        </div>
-        <div class="meta-item">
-          <strong>현재 표시</strong>
-          <div>{{ ops_radar.summary.top_overlooked_count|default:0 }}</div>
-        </div>
+        <div class="meta-item"><strong>레이더 후보</strong><div>{{ ops_radar.summary.total_matched|default:0 }}</div></div>
+        <div class="meta-item"><strong>놓침 후보</strong><div>{{ ops_radar.summary.overlooked_count|default:0 }}</div></div>
+        <div class="meta-item"><strong>상위 노출 포함</strong><div>{{ ops_radar.summary.top_overlooked_count|default:0 }}</div></div>
       </div>
       <div class="log-list">
         {% for item in ops_radar.items %}
@@ -61,17 +43,15 @@
                 </h3>
                 <div class="article-meta">
                   {{ item.source|default:item.source_name|default:"출처 미상" }}
-                  {% if item.region %} 쨌 {{ item.region }}{% endif %}
-                  {% if item.published_at %} 쨌 {{ item.published_at }}{% endif %}
-                  쨌 점수 {{ item.ops_radar_score|default:0 }}
+                  {% if item.region %} · {{ item.region }}{% endif %}
+                  {% if item.published_at %} · {{ item.published_at }}{% endif %}
+                  · 점수 {{ item.ops_radar_score|default:0 }}
                 </div>
               </div>
               <span class="tag">{{ item.ops_radar_priority }}</span>
             </div>
             <div class="tag-list" style="margin-bottom: 10px;">
-              {% for label in item.ops_radar_labels %}
-                <span class="tag">{{ label }}</span>
-              {% endfor %}
+              {% for label in item.ops_radar_labels %}<span class="tag">{{ label }}</span>{% endfor %}
             </div>
             <p class="article-summary">{{ item.ops_radar_note }}</p>
           </article>
@@ -84,102 +64,51 @@
     <div class="toolbar">
       <div>
         <h2 class="section-title">기사 운영</h2>
-        <p class="section-copy">기사별로 기본, 상단 노출, 배제를 지정하고 공개 사이트 반영을 직접 실행합니다. 새 기사 수집이 필요할 때는 수동 전체 반영을 사용합니다.</p>
+        <p class="section-copy">기본, 포함, 배제를 나누고 대표 하이라이트 1건을 직접 지정할 수 있습니다. 놓친 기사는 URL로 바로 추가합니다.</p>
       </div>
       <div class="actions">
         <a class="button subtle" href="{% url 'editorial_settings' %}">문의 설정</a>
         <a class="button subtle" href="{% url 'editorial_history' %}">반영 이력</a>
         <a class="button subtle" href="{% url 'editorial_analytics' %}">방문 통계</a>
-        <form method="post">
-          {% csrf_token %}
-          <input type="hidden" name="action" value="sync_runtime">
-          <input type="hidden" name="next" value="{{ request.get_full_path }}">
-          <button class="button subtle" type="submit">후보 동기화</button>
-        </form>
-        <form method="post">
-          {% csrf_token %}
-          <input type="hidden" name="action" value="collect_and_refresh_public">
-          <input type="hidden" name="next" value="{{ request.get_full_path }}">
-          <button class="button primary" type="submit">지금 수집 및 반영</button>
-        </form>
-        <form method="post">
-          {% csrf_token %}
-          <input type="hidden" name="action" value="refresh_public">
-          <input type="hidden" name="next" value="{{ request.get_full_path }}">
-          <button class="button subtle" type="submit">공개 반영</button>
-        </form>
+        <form method="post">{% csrf_token %}<input type="hidden" name="action" value="sync_runtime"><input type="hidden" name="next" value="{{ request.get_full_path }}"><button class="button subtle" type="submit">목록 새로고침</button></form>
+        <form method="post">{% csrf_token %}<input type="hidden" name="action" value="collect_and_refresh_public"><input type="hidden" name="next" value="{{ request.get_full_path }}"><button class="button primary" type="submit">지금 수집 및 반영</button></form>
+        <form method="post">{% csrf_token %}<input type="hidden" name="action" value="refresh_public"><input type="hidden" name="next" value="{{ request.get_full_path }}"><button class="button subtle" type="submit">공개 반영</button></form>
       </div>
     </div>
     <div class="meta-grid">
-      <div class="meta-item">
-        <strong>운영 규칙 파일</strong>
-        <div>{{ override_path }}</div>
-      </div>
-      <div class="meta-item">
-        <strong>운영 원칙</strong>
-        <div>상단 노출은 첫 화면과 주요 기사 정렬에 우선 반영됩니다.</div>
-      </div>
-      <div class="meta-item">
-        <strong>자동 반영</strong>
-        <div>
-          {% if auto_update_settings.enabled %}ON{% else %}OFF{% endif %}
-          {% if auto_update_settings.interval_minutes %} · {{ auto_update_settings.interval_minutes }}분 주기{% endif %}
-          <br>{{ auto_update_runtime.display_state }}
-        </div>
-      </div>
-      <div class="meta-item">
-        <strong>최근 확인</strong>
-        <div>{{ auto_update_runtime.last_checked_at|default:"아직 없음" }}</div>
-      </div>
-      <div class="meta-item">
-        <strong>다음 확인</strong>
-        <div>{{ auto_update_runtime.next_check_at|default:"러너 미실행" }}</div>
-      </div>
-      <div class="meta-item">
-        <strong>러너 PID</strong>
-        <div>{{ auto_update_runtime.runner_pid|default:"미실행" }}</div>
-      </div>
-      <div class="meta-item">
-        <strong>운영 메모</strong>
-        <div>{{ auto_update_runtime.summary }}</div>
-      </div>
-      <div class="meta-item">
-        <strong>실행 방식</strong>
-        <div><code>{{ auto_update_start_command }}</code> 시작 / <code>{{ auto_update_stop_command }}</code> 중지</div>
-      </div>
-      {% if auto_update_runtime.last_error %}
-      <div class="meta-item">
-        <strong>최근 오류</strong>
-        <div>{{ auto_update_runtime.last_error }}</div>
-      </div>
-      {% endif %}
+      <div class="meta-item"><strong>운영 규칙 파일</strong><div>{{ override_path }}</div></div>
+      <div class="meta-item"><strong>하이라이트 규칙</strong><div>대표 하이라이트는 전체 기사 중 1건만 유지됩니다.</div></div>
+      <div class="meta-item"><strong>자동 반영</strong><div>{% if auto_update_settings.enabled %}ON{% else %}OFF{% endif %}{% if auto_update_settings.interval_minutes %} · {{ auto_update_settings.interval_minutes }}분 주기{% endif %}<br>{{ auto_update_runtime.display_state }}</div></div>
+      <div class="meta-item"><strong>최근 확인</strong><div>{{ auto_update_runtime.last_checked_at|default:"아직 없음" }}</div></div>
+      <div class="meta-item"><strong>다음 확인</strong><div>{{ auto_update_runtime.next_check_at|default:"러너 미실행" }}</div></div>
+      <div class="meta-item"><strong>러너 PID</strong><div>{{ auto_update_runtime.runner_pid|default:"미실행" }}</div></div>
+      <div class="meta-item"><strong>운영 메모</strong><div>{{ auto_update_runtime.summary }}</div></div>
     </div>
   </article>
 
   <article class="panel" style="margin-bottom: 16px;">
+    <form method="post" class="stack">
+      {% csrf_token %}
+      <input type="hidden" name="action" value="add_manual_article">
+      <input type="hidden" name="next" value="{{ request.get_full_path }}">
+      <div>
+        <h2 class="section-title">기사 URL 추가</h2>
+        <p class="section-copy">누락된 기사가 있으면 URL 1개만 넣어 주세요. 제목, 출처, 날짜, 요약은 가능한 범위에서 자동으로 채웁니다.</p>
+      </div>
+      <div class="inline-fields">
+        <label style="flex: 1;">기사 URL<input type="url" name="article_url" placeholder="https://example.com/article" required></label>
+        <div class="actions" style="align-self: end;"><button class="button primary" type="submit">기사 추가</button></div>
+      </div>
+    </form>
+  </article>
+
+  <article class="panel" style="margin-bottom: 16px;">
     <form method="get" class="filters">
-      <label>
-        검색
-        <input type="text" name="query" value="{{ query }}" placeholder="제목, 출처, 지역, 메모">
-      </label>
-      <label>
-        결정
-        <select name="decision">
-          <option value="all" {% if decision == "all" %}selected{% endif %}>전체</option>
-          {% for value, label in decision_choices %}
-            <option value="{{ value }}" {% if decision == value %}selected{% endif %}>{{ label }}</option>
-          {% endfor %}
-        </select>
-      </label>
-      <label>
-        지역
-        <select name="region">
-          <option value="all" {% if region == "all" %}selected{% endif %}>전체</option>
-          {% for option in region_options %}
-            <option value="{{ option }}" {% if region == option %}selected{% endif %}>{{ option }}</option>
-          {% endfor %}
-        </select>
-      </label>
+      <label>검색<input type="text" name="query" value="{{ query }}" placeholder="제목, URL, 출처, 지역, 메모"></label>
+      <label>결정<select name="decision"><option value="all" {% if decision == "all" %}selected{% endif %}>전체</option>{% for value, label in decision_choices %}<option value="{{ value }}" {% if decision == value %}selected{% endif %}>{{ label }}</option>{% endfor %}</select></label>
+      <label>클린<select name="clean">{% for value, label in clean_choices %}<option value="{{ value }}" {% if clean == value %}selected{% endif %}>{{ label }}</option>{% endfor %}</select></label>
+      <label>출처 유형<select name="origin">{% for value, label in origin_choices %}<option value="{{ value }}" {% if origin == value %}selected{% endif %}>{{ label }}</option>{% endfor %}</select></label>
+      <label>지역<select name="region"><option value="all" {% if region == "all" %}selected{% endif %}>전체</option>{% for option in region_options %}<option value="{{ option }}" {% if region == option %}selected{% endif %}>{{ option }}</option>{% endfor %}</select></label>
       <button class="button subtle" type="submit">필터 적용</button>
     </form>
   </article>
@@ -190,129 +119,44 @@
         <div class="article-admin-row">
           <div>
             <div class="tag-list" style="margin-bottom: 10px;">
-              {% if article.editorial_decision == "feature" %}
-                <span class="tag feature">상단 노출</span>
-              {% elif article.editorial_decision == "exclude" %}
-                <span class="tag exclude">배제</span>
-              {% else %}
-                <span class="tag">기본</span>
-              {% endif %}
-
-              {% if article.selection_bucket %}
-                <span class="tag">{{ article.selection_bucket }}</span>
-              {% endif %}
-
-              {% if article.raw_payload.ops_radar_labels %}
-                {% for label in article.raw_payload.ops_radar_labels %}
-                  <span class="tag">{{ label }}</span>
-                {% endfor %}
-              {% endif %}
-
-              {% for category in article.categories %}
-                <span class="tag">{{ category }}</span>
-              {% endfor %}
+              {% if article.editorial_is_highlighted %}<span class="tag feature">대표 하이라이트</span>{% endif %}
+              {% if article.editorial_decision == "include" %}<span class="tag">포함</span>{% elif article.editorial_decision == "exclude" %}<span class="tag exclude">배제</span>{% else %}<span class="tag">기본</span>{% endif %}
+              {% if article.is_manual_entry %}<span class="tag">수동 추가</span>{% endif %}
+              {% if article.is_clean_article %}<span class="tag">클린</span>{% endif %}
+              {% for label in article.clean_labels %}<span class="tag">{{ label }}</span>{% endfor %}
+              {% for category in article.categories %}<span class="tag">{{ category }}</span>{% endfor %}
             </div>
-
-            <h3 class="article-title">
-              {% if article.article_url %}
-                <a href="{{ article.article_url }}" target="_blank" rel="noreferrer">{{ article.title }}</a>
-              {% else %}
-                {{ article.title }}
-              {% endif %}
-            </h3>
-            <div class="article-meta">
-              {{ article.source_name|default:"출처 미상" }}
-              {% if article.region %} · {{ article.region }}{% endif %}
-              {% if article.published_date %} · {{ article.published_date|date:"Y-m-d H:i" }}{% endif %}
-              {% if article.importance_score %} · 점수 {{ article.importance_score }}{% endif %}
-            </div>
+            <h3 class="article-title">{% if article.article_url %}<a href="{{ article.article_url }}" target="_blank" rel="noreferrer">{{ article.title }}</a>{% else %}{{ article.title }}{% endif %}</h3>
+            <div class="article-meta">{{ article.source_name|default:"출처 미상" }}{% if article.region %} · {{ article.region }}{% endif %}{% if article.published_date %} · {{ article.published_date|date:"Y-m-d H:i" }}{% endif %}{% if article.clean_score %} · clean {{ article.clean_score }}{% endif %}</div>
             <p class="article-summary">{{ article.summary|default:article.lead_text|default:"요약이 아직 없습니다." }}</p>
-
-            <div class="meta-grid">
-              <div class="meta-item">
-                <strong>분류 이유</strong>
-                <div>{{ article.raw_payload.classification_reason|default:"-" }}</div>
-              </div>
-              <div class="meta-item">
-                <strong>선정 이유</strong>
-                <div>{{ article.raw_payload.selection_reason|default:"-" }}</div>
-              </div>
-              <div class="meta-item">
-                <strong>레이더</strong>
-                <div>{{ article.raw_payload.ops_radar_note|default:"-" }}</div>
-              </div>
-              <div class="meta-item">
-                <strong>현재 제외 이유</strong>
-                <div>{{ article.raw_payload.drop_reason|default:"-" }}</div>
-              </div>
-            </div>
           </div>
-
           <div class="article-admin-controls">
             <form method="post" class="stack">
               {% csrf_token %}
               <input type="hidden" name="action" value="update_article">
               <input type="hidden" name="article_id" value="{{ article.id }}">
               <input type="hidden" name="next" value="{{ request.get_full_path }}">
-
-              <label>
-                운영 결정
-                <select name="editorial_decision">
-                  {% for value, label in decision_choices %}
-                    <option value="{{ value }}" {% if article.editorial_decision == value %}selected{% endif %}>{{ label }}</option>
-                  {% endfor %}
-                </select>
-              </label>
-
-              <div class="inline-fields">
-                <label>
-                  상단 순번
-                  <input type="number" min="1" max="20" name="editorial_feature_rank" value="{{ article.editorial_feature_rank|default:'' }}" placeholder="1">
-                </label>
-                <div class="meta-item">
-                  <strong>최근 반영</strong>
-                  <div>
-                    {% if article.editorial_updated_at %}
-                      {{ article.editorial_updated_at|date:"Y-m-d H:i" }}
-                      {% if article.editorial_updated_by %}<br>{{ article.editorial_updated_by.username }}{% endif %}
-                    {% else %}
-                      아직 없음
-                    {% endif %}
-                  </div>
-                </div>
-              </div>
-
-              <label>
-                운영 메모
-                <textarea name="editorial_note" placeholder="배제 이유, 상단 노출 이유, 검토 메모">{{ article.editorial_note }}</textarea>
-              </label>
-
-              <div class="actions">
-                <button class="button primary small" type="submit">저장</button>
-                {% if article.source_url %}
-                  <a class="button small" href="{{ article.source_url }}" target="_blank" rel="noreferrer">출처 보기</a>
-                {% endif %}
-              </div>
+              <label>운영 결정<select name="editorial_decision">{% for value, label in decision_choices %}<option value="{{ value }}" {% if article.editorial_decision == value %}selected{% endif %}>{{ label }}</option>{% endfor %}</select></label>
+              <label><input type="checkbox" name="editorial_is_highlighted" {% if article.editorial_is_highlighted %}checked{% endif %}> 대표 하이라이트로 지정</label>
+              <label>운영 메모<textarea name="editorial_note" placeholder="배제 이유, 포함 이유, 확인 메모">{{ article.editorial_note }}</textarea></label>
+              <div class="actions"><button class="button primary small" type="submit">저장</button>{% if article.source_url %}<a class="button small" href="{{ article.source_url }}" target="_blank" rel="noreferrer">출처 보기</a>{% endif %}</div>
             </form>
+            {% if article.is_manual_entry %}
+              <form method="post" style="margin-top: 8px;">{% csrf_token %}<input type="hidden" name="action" value="delete_manual_article"><input type="hidden" name="article_id" value="{{ article.id }}"><input type="hidden" name="next" value="{{ request.get_full_path }}"><button class="button small" type="submit" onclick="return confirm('이 수동 추가 기사를 삭제할까요?');">목록 삭제</button></form>
+            {% endif %}
           </div>
         </div>
       </article>
     {% empty %}
-      <article class="panel">
-        <p class="empty">조건에 맞는 기사가 없습니다.</p>
-      </article>
+      <article class="panel"><p class="empty">조건에 맞는 기사가 없습니다.</p></article>
     {% endfor %}
   </section>
 
   {% if page_obj.paginator.num_pages > 1 %}
     <div class="pagination">
-      {% if page_obj.has_previous %}
-        <a class="button small" href="?query={{ query|urlencode }}&decision={{ decision }}&region={{ region|urlencode }}&page={{ page_obj.previous_page_number }}">이전</a>
-      {% endif %}
+      {% if page_obj.has_previous %}<a class="button small" href="?query={{ query|urlencode }}&decision={{ decision }}&clean={{ clean }}&origin={{ origin }}&region={{ region|urlencode }}&page={{ page_obj.previous_page_number }}">이전</a>{% endif %}
       <span class="muted">{{ page_obj.number }} / {{ page_obj.paginator.num_pages }}</span>
-      {% if page_obj.has_next %}
-        <a class="button small" href="?query={{ query|urlencode }}&decision={{ decision }}&region={{ region|urlencode }}&page={{ page_obj.next_page_number }}">다음</a>
-      {% endif %}
+      {% if page_obj.has_next %}<a class="button small" href="?query={{ query|urlencode }}&decision={{ decision }}&clean={{ clean }}&origin={{ origin }}&region={{ region|urlencode }}&page={{ page_obj.next_page_number }}">다음</a>{% endif %}
     </div>
   {% endif %}
 {% endblock %}

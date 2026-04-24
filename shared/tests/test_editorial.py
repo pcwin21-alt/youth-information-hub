@@ -12,9 +12,10 @@ if str(SHARED_SRC) not in sys.path:
 from youth_info_platform.curation import select_articles, summarize_articles  # noqa: E402
 from youth_info_platform.editorial import (  # noqa: E402
     DECISION_EXCLUDE,
-    DECISION_FEATURE,
+    DECISION_INCLUDE,
     apply_editorial_overrides,
     build_article_identifiers,
+    merge_manual_articles,
 )
 
 
@@ -40,6 +41,8 @@ def make_article(
         "article_type": None,
         "source_kind": "news",
         "is_noise": False,
+        "is_public_interest_article": True,
+        "public_relevance_score": 6,
         "is_official_source": False,
         "related_article_count": 1,
         "pipeline_flags": {},
@@ -52,23 +55,23 @@ class EditorialOverrideTests(unittest.TestCase):
         identifier = build_article_identifiers(article)[0]
         overrides = {
             identifier: {
-                "decision": DECISION_FEATURE,
-                "feature_rank": 1,
-                "note": "메인 상단 고정",
+                "decision": DECISION_INCLUDE,
+                "is_highlighted": True,
+                "note": "메인 하이라이트",
                 "identifiers": [identifier],
             }
         }
 
         updated = apply_editorial_overrides([article], overrides)
 
-        self.assertEqual(updated[0]["editorial_decision"], DECISION_FEATURE)
-        self.assertEqual(updated[0]["editorial_feature_rank"], 1)
-        self.assertEqual(updated[0]["editorial_note"], "메인 상단 고정")
+        self.assertEqual(updated[0]["editorial_decision"], DECISION_INCLUDE)
+        self.assertTrue(updated[0]["editorial_is_highlighted"])
+        self.assertEqual(updated[0]["editorial_note"], "메인 하이라이트")
 
-    def test_select_articles_respects_feature_and_exclude(self) -> None:
-        featured = make_article(
-            url="https://example.com/featured",
-            title="상단 노출 기사",
+    def test_select_articles_respects_highlight_include_and_exclude(self) -> None:
+        highlighted = make_article(
+            url="https://example.com/highlighted",
+            title="대표 기사",
             published_date="2026-04-10T09:00:00+09:00",
         )
         regular = make_article(
@@ -82,14 +85,14 @@ class EditorialOverrideTests(unittest.TestCase):
             published_date="2026-04-21T09:00:00+09:00",
         )
 
-        featured["editorial_decision"] = DECISION_FEATURE
-        featured["editorial_feature_rank"] = 1
+        highlighted["editorial_decision"] = DECISION_INCLUDE
+        highlighted["editorial_is_highlighted"] = True
         excluded["editorial_decision"] = DECISION_EXCLUDE
 
-        selected, prepared = select_articles([regular, excluded, featured], limit=2)
+        selected, prepared = select_articles([regular, excluded, highlighted], limit=2)
         selected_urls = [article["url"] for article in selected]
 
-        self.assertEqual(selected_urls[0], "https://example.com/featured")
+        self.assertEqual(selected_urls[0], "https://example.com/highlighted")
         self.assertIn("https://example.com/regular", selected_urls)
         self.assertNotIn("https://example.com/excluded", selected_urls)
 
@@ -97,7 +100,34 @@ class EditorialOverrideTests(unittest.TestCase):
         self.assertEqual(excluded_record["drop_reason"], "editorial_excluded")
 
         summarized = summarize_articles(selected)
-        self.assertEqual(summarized[0]["display_badges"][0], "상단 노출")
+        self.assertEqual(summarized[0]["display_badges"][0], "하이라이트")
+
+    def test_merge_manual_articles_overlays_runtime_article_and_adds_missing_manual(self) -> None:
+        runtime_article = make_article(url="https://example.com/runtime", title="런타임 기사")
+        runtime_article["article_key"] = "runtime-key"
+        manual_override = {
+            **runtime_article,
+            "editorial_decision": DECISION_INCLUDE,
+            "editorial_is_highlighted": True,
+            "editorial_note": "운영 포함",
+            "is_manual_entry": True,
+        }
+        manual_only = make_article(url="https://example.com/manual-only", title="수동 기사")
+        manual_only["article_key"] = "manual-key"
+        manual_only["editorial_decision"] = DECISION_INCLUDE
+        manual_only["is_manual_entry"] = True
+
+        merged = merge_manual_articles([runtime_article], [manual_override, manual_only])
+
+        self.assertEqual(len(merged), 2)
+        updated_runtime = next(article for article in merged if article["article_key"] == "runtime-key")
+        self.assertEqual(updated_runtime["editorial_decision"], DECISION_INCLUDE)
+        self.assertTrue(updated_runtime["editorial_is_highlighted"])
+        self.assertEqual(updated_runtime["editorial_note"], "운영 포함")
+        self.assertFalse(updated_runtime.get("is_manual_entry", False))
+
+        added_manual = next(article for article in merged if article["article_key"] == "manual-key")
+        self.assertTrue(added_manual["is_manual_entry"])
 
 
 if __name__ == "__main__":

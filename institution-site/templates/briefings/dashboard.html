@@ -9,8 +9,8 @@
       <strong class="stat-value">{{ synced_count }}</strong>
     </article>
     <article class="panel">
-      <span class="stat-label">상단 노출</span>
-      <strong class="stat-value">{{ featured_count }}</strong>
+      <span class="stat-label">대표 하이라이트</span>
+      <strong class="stat-value">{{ highlighted_count }}</strong>
     </article>
     <article class="panel">
       <span class="stat-label">배제</span>
@@ -43,7 +43,7 @@
       <div class="toolbar">
         <div>
           <h2 class="section-title">운영 레이더</h2>
-          <p class="section-copy">공개 상단 노출과 별개로 놓치기 아쉬운 기사를 다시 묶었습니다.</p>
+          <p class="section-copy">공개 대표 하이라이트과 별개로 놓치기 아쉬운 기사를 다시 묶었습니다.</p>
         </div>
         <div class="article-meta">
           {% if ops_radar.generated_at %}{{ ops_radar.generated_at }}{% endif %}
@@ -163,8 +163,8 @@
               {% if article.published_date %} · {{ article.published_date|date:"Y-m-d H:i" }}{% endif %}
             </div>
             <div class="tag-list" style="margin-bottom: 10px;">
-              {% if article.is_editorially_featured %}
-                <span class="tag feature">상단 노출</span>
+              {% if article.is_editorially_highlighted %}
+                <span class="tag feature">대표 하이라이트</span>
               {% elif article.is_editorially_excluded %}
                 <span class="tag exclude">배제</span>
               {% endif %}

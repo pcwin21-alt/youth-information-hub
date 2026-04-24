@@ -33,18 +33,28 @@ from .constants import (
     NOW_KEYWORDS,
     OFFICIAL_KEYWORDS,
     OPINION_KEYWORDS,
+    POLITICAL_CAMPAIGN_KEYWORDS,
     POLITICAL_HUB_EXCLUDE_KEYWORDS,
     PUBLIC_GOVERNANCE_KEYWORDS,
     PUBLIC_INSTITUTION_CONTEXT_KEYWORDS,
     REGIONS,
     REGIONAL_GOVERNANCE_KEYWORDS,
+    SUBSTANTIVE_PROMISE_KEYWORDS,
+    YOUTH_ISSUE_CONTEXT_KEYWORDS,
+    YOUTH_ISSUE_KEYWORDS,
+    YOUTH_INSTITUTION_CONTEXT_KEYWORDS,
     YOUTH_RELATED_KEYWORDS,
+    YOUTH_STRONG_CONTEXT_KEYWORDS,
+    YOUTH_KEYWORDS,
+    YOUTH_POLICY_CONTEXT_KEYWORDS,
 )
 from .editorial import (
     DECISION_EXCLUDE,
-    DECISION_FEATURE,
+    DECISION_INCLUDE,
+    apply_clean_signal,
+    is_clean_article,
     normalize_editorial_decision,
-    normalize_feature_rank,
+    normalize_editorial_highlighted,
 )
 
 
@@ -74,6 +84,286 @@ BUCKET_LABELS = {
 NON_POLITICAL_HUB_EXCLUDE_KEYWORDS = tuple(
     keyword for keyword in HUB_EXCLUDE_KEYWORDS if keyword not in POLITICAL_HUB_EXCLUDE_KEYWORDS
 )
+YOUTH_POLICY_OR_OPERATIONAL_CONTEXT_KEYWORDS = tuple(
+    dict.fromkeys(
+        YOUTH_POLICY_CONTEXT_KEYWORDS
+        + YOUTH_INSTITUTION_CONTEXT_KEYWORDS
+        + CENTRAL_GOVERNMENT_CONTEXT_KEYWORDS
+        + LOCAL_GOVERNMENT_CONTEXT_KEYWORDS
+        + PUBLIC_INSTITUTION_CONTEXT_KEYWORDS
+    )
+)
+PUBLIC_HELPFUL_DIRECT_KEYWORDS = tuple(
+    dict.fromkeys(
+        YOUTH_ISSUE_KEYWORDS
+        + [
+            "학자금",
+            "취업 후 상환",
+            "청년정책",
+            "청년복지",
+            "청년고용",
+            "청년일자리",
+            "청년월세",
+            "청년전세",
+            "청년주택",
+            "청년대출",
+            "청년부채",
+            "청년금융",
+            "청년자산형성",
+            "고립·은둔 청년",
+            "쉬었음 청년",
+            "구직단념 청년",
+        ]
+    )
+)
+PUBLIC_HELPFUL_CONTEXT_KEYWORDS = tuple(
+    dict.fromkeys(
+        YOUTH_ISSUE_CONTEXT_KEYWORDS
+        + YOUTH_POLICY_CONTEXT_KEYWORDS
+        + YOUTH_INSTITUTION_CONTEXT_KEYWORDS
+        + [
+            "지원",
+            "신청",
+            "접수",
+            "상담",
+            "자립",
+            "돌봄",
+            "안내",
+        ]
+    )
+)
+PUBLIC_OPERATOR_ENTITY_KEYWORDS = (
+    "청년센터",
+    "청년공간",
+    "청년허브",
+    "청년일자리스테이션",
+    "청년일자리센터",
+    "청년창업센터",
+    "청년미래센터",
+)
+PUBLIC_OPERATOR_ACTION_KEYWORDS = (
+    "운영",
+    "위탁",
+    "개소",
+    "신설",
+    "설치",
+    "폐지",
+    "재개관",
+    "시행",
+    "계획",
+    "지원사업",
+    "모집",
+    "공고",
+)
+LOW_VALUE_BUSINESS_KEYWORDS = (
+    "순이익",
+    "영업이익",
+    "매출",
+    "실적",
+    "배당",
+    "자사주",
+    "주가",
+    "시가총액",
+    "소각",
+    "증권",
+)
+LOW_VALUE_POLITICAL_ANALYSIS_KEYWORDS = (
+    "여론조사",
+    "지지율",
+    "표심",
+    "민심",
+    "보수 성향",
+    "진보 성향",
+    "정치 성향",
+)
+POLITICAL_ATTACK_KEYWORDS = (
+    "사퇴",
+    "사퇴 촉구",
+    "갑질",
+    "의혹",
+    "논란",
+    "비판",
+    "고발",
+    "공세",
+    "검증 요구",
+)
+
+
+def _contains_any(text: str, keywords: list[str] | tuple[str, ...]) -> bool:
+    return any(keyword in text for keyword in keywords)
+
+
+def has_youth_keyword_signal(text: str) -> bool:
+    return _contains_any(text, YOUTH_KEYWORDS)
+
+
+def has_strong_youth_context(text: str) -> bool:
+    return _contains_any(text, YOUTH_STRONG_CONTEXT_KEYWORDS)
+
+
+def has_policy_or_operational_youth_context(text: str) -> bool:
+    return _contains_any(text, YOUTH_POLICY_OR_OPERATIONAL_CONTEXT_KEYWORDS)
+
+
+def has_campaign_political_signal(text: str) -> bool:
+    return _contains_any(text, POLITICAL_CAMPAIGN_KEYWORDS)
+
+
+def has_substantive_promise_signal(text: str) -> bool:
+    return has_campaign_political_signal(text) and _contains_any(text, SUBSTANTIVE_PROMISE_KEYWORDS)
+
+
+def has_political_attack_signal(text: str) -> bool:
+    return has_campaign_political_signal(text) and _contains_any(text, POLITICAL_ATTACK_KEYWORDS)
+
+
+def has_meaningful_youth_context(article: dict[str, Any], text: str) -> bool:
+    if article.get("source_kind") == "official":
+        return True
+    if article.get("issue_tags"):
+        return True
+    if _contains_any(text, YOUTH_RELATED_KEYWORDS) and not has_youth_keyword_signal(text):
+        return True
+    if not has_youth_keyword_signal(text):
+        return _contains_any(text, YOUTH_RELATED_KEYWORDS)
+    return has_strong_youth_context(text) or has_policy_or_operational_youth_context(text)
+
+
+def is_weak_youth_signal(article: dict[str, Any], text: str) -> bool:
+    if article.get("source_kind") == "official":
+        return False
+    if not has_youth_keyword_signal(text):
+        return False
+    return not has_meaningful_youth_context(article, text)
+
+
+def _article_prominent_text(article: dict[str, Any]) -> str:
+    return " ".join(
+        part
+        for part in [
+            article.get("title", "") or "",
+            article.get("summary", "") or "",
+            article.get("lead_text", "") or "",
+            article.get("section", "") or "",
+        ]
+        if part
+    )
+
+
+def _article_title_text(article: dict[str, Any]) -> str:
+    return " ".join(
+        part
+        for part in [
+            article.get("title", "") or "",
+            article.get("section", "") or "",
+        ]
+        if part
+    )
+
+
+def has_direct_helpful_youth_signal(article: dict[str, Any], text: str, prominent_text: str | None = None) -> bool:
+    prominent = prominent_text or _article_prominent_text(article)
+    if _contains_any(prominent, PUBLIC_HELPFUL_DIRECT_KEYWORDS):
+        return True
+    return has_youth_keyword_signal(prominent) and has_strong_youth_context(prominent)
+
+
+def has_operator_relevant_signal(article: dict[str, Any], text: str, prominent_text: str | None = None) -> bool:
+    prominent = prominent_text or _article_prominent_text(article)
+    if article.get("is_official_source") or article.get("governance_scope"):
+        return True
+    if _contains_any(prominent, PUBLIC_OPERATOR_ENTITY_KEYWORDS):
+        return True
+    if _contains_any(prominent, PUBLIC_OPERATOR_ACTION_KEYWORDS) and (
+        has_direct_helpful_youth_signal(article, text, prominent)
+        or _contains_any(prominent, PUBLIC_OPERATOR_ENTITY_KEYWORDS)
+    ) and (
+        has_central_government_context(article, text)
+        or has_local_government_context(article, text)
+        or has_public_institution_context(article, text)
+    ):
+        return True
+    return has_public_institution_context(article, text) and _contains_any(prominent, PUBLIC_HELPFUL_CONTEXT_KEYWORDS)
+
+
+def is_generic_business_result_article(article: dict[str, Any], text: str, prominent_text: str | None = None) -> bool:
+    title_text = _article_title_text(article)
+    if not _contains_any(title_text, LOW_VALUE_BUSINESS_KEYWORDS):
+        return False
+    if has_direct_helpful_youth_signal(article, text, title_text):
+        return False
+    return not has_operator_relevant_signal(article, text, title_text)
+
+
+def is_political_analysis_article(article: dict[str, Any], text: str, prominent_text: str | None = None) -> bool:
+    title_text = _article_title_text(article)
+    if not _contains_any(title_text, LOW_VALUE_POLITICAL_ANALYSIS_KEYWORDS):
+        return False
+    if has_direct_helpful_youth_signal(article, text, title_text):
+        return False
+    return not has_operator_relevant_signal(article, text, title_text)
+
+
+def score_public_relevance(article: dict[str, Any], text: str, prominent_text: str | None = None) -> int:
+    prominent = prominent_text or _article_prominent_text(article)
+    score = 0
+
+    if has_direct_helpful_youth_signal(article, text, prominent):
+        score += 4
+    if has_operator_relevant_signal(article, text, prominent):
+        score += 4
+    if _contains_any(prominent, PUBLIC_HELPFUL_CONTEXT_KEYWORDS) and has_meaningful_youth_context(article, text):
+        score += 2
+    if article.get("issue_tags"):
+        score += min(len(article.get("issue_tags") or []), 2)
+    if article.get("governance_scope"):
+        score += 2
+    if article.get("is_official_source"):
+        score += 2
+    if is_clean_article(article):
+        score += 1
+    if article.get("substantive_promise"):
+        score += 1
+
+    if article.get("weak_youth_signal"):
+        score -= 6
+    if article.get("campaign_political") and not article.get("substantive_promise"):
+        score -= 6
+    if article.get("campaign_attack") or has_political_attack_signal(text):
+        score -= 8
+    if is_generic_business_result_article(article, text, prominent):
+        score -= 10
+    if is_political_analysis_article(article, text, prominent):
+        score -= 8
+
+    return score
+
+
+def is_public_interest_article(article: dict[str, Any], text: str | None = None) -> bool:
+    article_text = text or _article_text(article)
+    prominent = _article_prominent_text(article)
+    if article.get("is_noise") or article.get("article_type") == "opinion":
+        return False
+    if article.get("campaign_attack") or has_political_attack_signal(article_text):
+        return False
+    if article.get("weak_youth_signal"):
+        return False
+    if article.get("campaign_political") and not article.get("substantive_promise"):
+        return False
+    if is_generic_business_result_article(article, article_text, prominent):
+        return False
+    if is_political_analysis_article(article, article_text, prominent):
+        return False
+    if article.get("is_official_source") or article.get("governance_scope"):
+        return True
+
+    has_help_signal = has_direct_helpful_youth_signal(article, article_text, prominent)
+    has_operator_signal = has_operator_relevant_signal(article, article_text, prominent)
+    if not has_help_signal and not has_operator_signal:
+        return False
+
+    score = int(article.get("public_relevance_score") or score_public_relevance(article, article_text, prominent))
+    return score >= 4
 
 
 def normalize_url(url: str) -> str:
@@ -139,16 +429,16 @@ def choose_representative(group: list[dict]) -> dict:
     return dict(sorted(group, key=_representative_sort_key)[0])
 
 
-def editorial_feature_rank(article: dict[str, Any]) -> int | None:
-    return normalize_feature_rank(article.get("editorial_feature_rank"))
-
-
 def is_editorially_excluded(article: dict[str, Any]) -> bool:
     return normalize_editorial_decision(article.get("editorial_decision")) == DECISION_EXCLUDE
 
 
-def is_editorially_featured(article: dict[str, Any]) -> bool:
-    return normalize_editorial_decision(article.get("editorial_decision")) == DECISION_FEATURE
+def is_editorially_included(article: dict[str, Any]) -> bool:
+    return normalize_editorial_decision(article.get("editorial_decision")) == DECISION_INCLUDE
+
+
+def is_editorially_highlighted(article: dict[str, Any]) -> bool:
+    return normalize_editorial_highlighted(article.get("editorial_is_highlighted"))
 
 
 def classify_articles(articles: list[dict]) -> list[dict]:
@@ -167,6 +457,11 @@ def classify_articles(articles: list[dict]) -> list[dict]:
             article.get("section", "") or "",
             article.get("body_text", "") or "",
         )
+        campaign_political = has_campaign_political_signal(text)
+        substantive_promise = has_substantive_promise_signal(text)
+        campaign_attack = has_political_attack_signal(text)
+        weak_youth_signal = is_weak_youth_signal(article, text)
+        has_policy_operational_context = has_policy_or_operational_youth_context(text)
         governance_activity_types = extract_governance_activity_types(text)
         governance_scope = extract_governance_scope(article, text, governance_activity_types)
         hub_topics = extract_hub_topics(text, governance_scope)
@@ -195,7 +490,7 @@ def classify_articles(articles: list[dict]) -> list[dict]:
             categories.append(CATEGORY_NOW)
 
         ordered_categories = [category for category in CATEGORIES if category in categories]
-        is_noise = False if is_official else detect_noise(text)
+        is_noise = False if is_official else detect_noise(text) or weak_youth_signal
         pipeline_flags = {
             **article.get("pipeline_flags", {}),
             "collected": True,
@@ -205,7 +500,7 @@ def classify_articles(articles: list[dict]) -> list[dict]:
             "published": False,
         }
 
-        classified.append(
+        classified_article = apply_clean_signal(
             {
                 **article,
                 "categories": ordered_categories,
@@ -214,6 +509,11 @@ def classify_articles(articles: list[dict]) -> list[dict]:
                 "location_tags": location_tags,
                 "article_type": article_type,
                 "is_noise": is_noise,
+                "weak_youth_signal": weak_youth_signal,
+                "campaign_political": campaign_political,
+                "substantive_promise": substantive_promise,
+                "campaign_attack": campaign_attack,
+                "has_policy_operational_context": has_policy_operational_context,
                 "is_official_source": is_official,
                 "is_hub_candidate": bool(governance_scope and hub_topics),
                 "hub_topics": hub_topics,
@@ -234,9 +534,13 @@ def classify_articles(articles: list[dict]) -> list[dict]:
                     governance_scope=governance_scope,
                     governance_activity_types=governance_activity_types,
                     article_type=article_type,
+                    weak_youth_signal=weak_youth_signal,
+                    campaign_political=campaign_political,
+                    substantive_promise=substantive_promise,
+                    campaign_attack=campaign_attack,
                 ),
                 "editorial_decision": normalize_editorial_decision(article.get("editorial_decision")),
-                "editorial_feature_rank": editorial_feature_rank(article),
+                "editorial_is_highlighted": normalize_editorial_highlighted(article.get("editorial_is_highlighted")),
                 "editorial_note": (article.get("editorial_note") or "").strip(),
                 "editorial_updated_at": article.get("editorial_updated_at"),
                 "editorial_updated_by": article.get("editorial_updated_by"),
@@ -244,6 +548,18 @@ def classify_articles(articles: list[dict]) -> list[dict]:
                 "drop_reason": None,
             }
         )
+        public_relevance_score = score_public_relevance(classified_article, text)
+        classified_article["has_direct_helpful_youth_signal"] = has_direct_helpful_youth_signal(
+            classified_article,
+            text,
+        )
+        classified_article["has_operator_relevant_signal"] = has_operator_relevant_signal(
+            classified_article,
+            text,
+        )
+        classified_article["public_relevance_score"] = public_relevance_score
+        classified_article["is_public_interest_article"] = is_public_interest_article(classified_article, text)
+        classified.append(classified_article)
     return classified
 
 
@@ -257,7 +573,7 @@ def select_articles(articles: list[dict], limit: int = 10) -> tuple[list[dict], 
         article["issue_tags"] = list(article.get("issue_tags") or [])
         article["location_tags"] = list(article.get("location_tags") or [])
         article["editorial_decision"] = normalize_editorial_decision(article.get("editorial_decision"))
-        article["editorial_feature_rank"] = editorial_feature_rank(article)
+        article["editorial_is_highlighted"] = normalize_editorial_highlighted(article.get("editorial_is_highlighted"))
         article["editorial_note"] = (article.get("editorial_note") or "").strip()
         article["pipeline_flags"] = {
             **article.get("pipeline_flags", {}),
@@ -272,14 +588,21 @@ def select_articles(articles: list[dict], limit: int = 10) -> tuple[list[dict], 
         article["selection_reason"] = build_selection_reason(article, article["importance_score"])
         article["is_representative"] = True
         article["related_article_count"] = article.get("related_article_count", 1)
-        if article.get("is_noise"):
+        is_manual_priority = is_editorially_highlighted(article) or is_editorially_included(article)
+        if article.get("is_noise") and not is_manual_priority:
             article["drop_reason"] = "noise_filtered"
+        elif not article.get("is_public_interest_article") and not is_manual_priority:
+            article["drop_reason"] = "public_relevance_filtered"
         elif is_editorially_excluded(article):
             article["drop_reason"] = "editorial_excluded"
         else:
             article["drop_reason"] = None
         prepared.append(article)
-        if not article.get("is_noise") and not is_editorially_excluded(article):
+        if (
+            not is_editorially_excluded(article)
+            and (not article.get("is_noise") or is_manual_priority)
+            and (article.get("is_public_interest_article") or is_manual_priority)
+        ):
             eligible.append(article)
 
     ranked = sorted(
@@ -307,21 +630,25 @@ def select_articles(articles: list[dict], limit: int = 10) -> tuple[list[dict], 
             selected_keys.add(key)
             taken += 1
 
-    featured_candidates = sorted(
-        [article for article in ranked if is_editorially_featured(article)],
-        key=lambda article: (
-            editorial_feature_rank(article) or 9999,
-            -article.get("importance_score", 0),
-            -_published_timestamp(selection_published_at(article)),
-        ),
-    )
-    take_candidates(featured_candidates, limit)
+    highlighted_candidates = [article for article in ranked if is_editorially_highlighted(article)]
+    take_candidates(highlighted_candidates, len(highlighted_candidates))
+
+    included_candidates = [
+        article
+        for article in ranked
+        if is_editorially_included(article) and not is_editorially_highlighted(article)
+    ]
+    take_candidates(included_candidates, len(included_candidates))
 
     for bucket, minimum in SELECTION_BUCKET_SPECS:
         bucket_candidates = [
             article
             for article in ranked
-            if article.get("selection_bucket") == bucket and not is_editorially_featured(article)
+            if (
+                article.get("selection_bucket") == bucket
+                and not is_editorially_highlighted(article)
+                and not is_editorially_included(article)
+            )
         ]
         take_candidates(bucket_candidates, minimum)
 
@@ -329,11 +656,24 @@ def select_articles(articles: list[dict], limit: int = 10) -> tuple[list[dict], 
         remaining = [
             article
             for article in ranked
-            if article_identity_key(article) not in selected_keys and not is_editorially_featured(article)
+            if article_identity_key(article) not in selected_keys
+            and not is_editorially_highlighted(article)
+            and not is_editorially_included(article)
         ]
         take_candidates(remaining, limit - len(selected))
 
-    if len(selected) > limit:
+    protected_keys = {
+        article_identity_key(article)
+        for article in selected
+        if is_editorially_highlighted(article) or is_editorially_included(article)
+    }
+    if len(selected) > limit and protected_keys:
+        ordered_selected = sort_selected_articles(selected)
+        protected_articles = [article for article in ordered_selected if article_identity_key(article) in protected_keys]
+        auto_articles = [article for article in ordered_selected if article_identity_key(article) not in protected_keys]
+        selected = protected_articles + auto_articles[: max(limit - len(protected_articles), 0)]
+        selected_keys = {article_identity_key(article) for article in selected}
+    elif len(selected) > limit:
         selected = sort_selected_articles(selected)[:limit]
         selected_keys = {article_identity_key(article) for article in selected}
 
@@ -342,9 +682,10 @@ def select_articles(articles: list[dict], limit: int = 10) -> tuple[list[dict], 
         if key in selected_keys:
             article["pipeline_flags"]["selected"] = True
             article["drop_reason"] = None
-            if is_editorially_featured(article):
-                rank = editorial_feature_rank(article) or 9999
-                article["selection_reason"] = f"editorial_featured:rank={rank}"
+            if is_editorially_highlighted(article):
+                article["selection_reason"] = "editorial_highlighted"
+            elif is_editorially_included(article):
+                article["selection_reason"] = "editorial_included"
         elif not article.get("drop_reason"):
             bucket = BUCKET_LABELS.get(article.get("selection_bucket", ""), article.get("selection_bucket", "기타"))
             article["drop_reason"] = f"selection_cutoff:{bucket}:score={article.get('importance_score', 0)}"
@@ -360,10 +701,10 @@ def summarize_articles(articles: list[dict]) -> list[dict]:
     for raw_article in articles:
         article = normalize_article_record(raw_article)
         article["editorial_decision"] = normalize_editorial_decision(article.get("editorial_decision"))
-        article["editorial_feature_rank"] = editorial_feature_rank(article)
+        article["editorial_is_highlighted"] = normalize_editorial_highlighted(article.get("editorial_is_highlighted"))
         badges: list[str] = []
-        if is_editorially_featured(article):
-            badges.append("상단 노출")
+        if is_editorially_highlighted(article):
+            badges.append("하이라이트")
         if article.get("is_official_source"):
             badges.append("공식 발표")
         elif article.get("article_type") == "opinion":
@@ -406,7 +747,11 @@ def extract_region(text: str) -> str:
 def detect_noise(text: str) -> bool:
     if any(keyword in text for keyword in NOISE_KEYWORDS):
         return True
-    return not any(keyword in text for keyword in YOUTH_RELATED_KEYWORDS)
+    if _contains_any(text, HUB_ROUTING_KEYWORDS):
+        return False
+    if has_youth_keyword_signal(text):
+        return not (has_strong_youth_context(text) or has_policy_or_operational_youth_context(text))
+    return not _contains_any(text, YOUTH_RELATED_KEYWORDS)
 
 
 def extract_hub_topics(text: str, governance_scope: str | None = None) -> list[str]:
@@ -591,6 +936,10 @@ def build_classification_reason(
     governance_scope: str | None = None,
     governance_activity_types: list[str] | None = None,
     article_type: str | None = None,
+    weak_youth_signal: bool = False,
+    campaign_political: bool = False,
+    substantive_promise: bool = False,
+    campaign_attack: bool = False,
 ) -> str:
     if is_noise:
         return "청년 관련성이 약하거나 노이즈로 판정했습니다."
@@ -608,6 +957,14 @@ def build_classification_reason(
         chunks.append(f"거버넌스={governance_scope}")
     if governance_activity_types:
         chunks.append(f"활동={', '.join(governance_activity_types[:3])}")
+    if weak_youth_signal:
+        chunks.append("청년맥락 약함")
+    if campaign_political:
+        chunks.append("선거성")
+    if substantive_promise:
+        chunks.append("실질공약")
+    if campaign_attack:
+        chunks.append("공방형")
     chunks.append(f"지역={region}")
     return " / ".join(chunks)
 
@@ -616,7 +973,9 @@ def build_selection_reason(article: dict, score: int) -> str:
     bucket = BUCKET_LABELS.get(determine_selection_bucket(article), "기타")
     issue_tags = article.get("issue_tags") or []
     issue_text = f" / 이슈={', '.join(issue_tags[:2])}" if issue_tags else ""
-    return f"{bucket} 버킷 우선순위 반영{issue_text} (score={score})"
+    public_score = int(article.get("public_relevance_score") or 0)
+    public_text = " / 공개적합" if article.get("is_public_interest_article") else " / 공개보류"
+    return f"{bucket} 버킷 우선순위 반영{issue_text}{public_text} (score={score}, public={public_score})"
 
 
 def score_article(article: dict) -> int:
@@ -646,6 +1005,20 @@ def score_article(article: dict) -> int:
 
     for tag in article.get("issue_tags") or []:
         score += ISSUE_TAG_SCORES.get(tag, 1)
+
+    if is_clean_article(article):
+        score += 2
+    if int(article.get("clean_score") or 0) >= 6:
+        score += 1
+    score += int(article.get("public_relevance_score") or 0)
+    if article.get("campaign_political"):
+        score -= 3
+    if article.get("substantive_promise"):
+        score += 2
+    if article.get("weak_youth_signal"):
+        score -= 5
+    if not article.get("is_public_interest_article"):
+        score -= 12
 
     score += freshness_bonus(selection_published_at(article))
     return score
@@ -693,8 +1066,8 @@ def sort_selected_articles(articles: list[dict[str, Any]]) -> list[dict[str, Any
     return sorted(
         articles,
         key=lambda article: (
-            0 if is_editorially_featured(article) else 1,
-            editorial_feature_rank(article) or 9999,
+            0 if is_editorially_highlighted(article) else 1,
+            0 if is_editorially_included(article) else 1,
             -article.get("importance_score", 0),
             -_published_timestamp(selection_published_at(article)),
             -(article.get("related_article_count", 1)),
@@ -729,7 +1102,9 @@ def _is_candidate(article: dict) -> bool:
     text = _article_text(article)
     if article.get("issue_tags"):
         return True
-    return any(keyword in text for keyword in YOUTH_RELATED_KEYWORDS)
+    if has_meaningful_youth_context(article, text):
+        return True
+    return has_youth_keyword_signal(text) and has_policy_or_operational_youth_context(text)
 
 
 def _is_similar(left: str, right: str) -> bool:

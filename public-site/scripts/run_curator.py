@@ -8,7 +8,7 @@ from _bootstrap import RUNTIME_PIPELINE_ROOT
 from youth_info_platform.article_funnel import build_article_funnel
 from youth_info_platform.article_metadata import article_identity_key, enrich_articles_for_curation
 from youth_info_platform.curation import classify_articles, select_articles, summarize_articles
-from youth_info_platform.editorial import apply_editorial_overrides
+from youth_info_platform.editorial import apply_editorial_overrides, merge_manual_articles
 from youth_info_platform.io_utils import read_json, write_json
 from youth_info_platform.ops_radar import annotate_ops_radar
 
@@ -27,6 +27,7 @@ def main() -> int:
     articles = read_json(Path(args.input), default=[])
     enriched = enrich_articles_for_curation(articles, max_network_enrich=args.max_network_enrich)
     classified = classify_articles(enriched)
+    classified = merge_manual_articles(classified)
     classified = apply_editorial_overrides(classified)
     selected, classified_with_selection = select_articles(classified)
     classified_with_selection, ops_radar = annotate_ops_radar(classified_with_selection)

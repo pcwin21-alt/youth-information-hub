@@ -27,13 +27,21 @@ MANAGE_PY = REPO_ROOT / "institution-site" / "manage.py"
 
 
 class SecuritySettingsTests(TestCase):
-    def _run_manage_command(self, *args: str, env: dict[str, str] | None = None) -> subprocess.CompletedProcess[str]:
+    def _run_manage_command(
+        self,
+        *args: str,
+        env: dict[str, str | None] | None = None,
+    ) -> subprocess.CompletedProcess[str]:
         command = [sys.executable, str(MANAGE_PY), *args]
         full_env = os.environ.copy()
         full_env.setdefault("PYTHONUTF8", "1")
         full_env.setdefault("PYTHONIOENCODING", "utf-8")
         if env:
-            full_env.update(env)
+            for key, value in env.items():
+                if value is None:
+                    full_env.pop(key, None)
+                else:
+                    full_env[key] = value
         return subprocess.run(
             command,
             cwd=REPO_ROOT,
@@ -48,8 +56,8 @@ class SecuritySettingsTests(TestCase):
         env = {
             "DJANGO_DEBUG": "0",
             "DJANGO_ALLOWED_HOSTS": "example.com",
+            "DJANGO_SECRET_KEY": None,
         }
-        env.pop("DJANGO_SECRET_KEY", None)
         result = self._run_manage_command("check", env=env)
         self.assertNotEqual(result.returncode, 0)
         self.assertIn("DJANGO_SECRET_KEY", (result.stderr or "") + (result.stdout or ""))
@@ -174,8 +182,8 @@ class EditorialDashboardTests(TestCase):
                 {
                     "action": "update_article",
                     "article_id": self.article.id,
-                    "editorial_decision": SyncedArticle.DECISION_FEATURE,
-                    "editorial_feature_rank": "1",
+                    "editorial_decision": SyncedArticle.DECISION_INCLUDE,
+                    "editorial_is_highlighted": "on",
                     "editorial_note": "첫 화면 고정",
                     "next": "/editorial/",
                 },
@@ -184,17 +192,51 @@ class EditorialDashboardTests(TestCase):
 
         self.assertEqual(response.status_code, 200)
         self.article.refresh_from_db()
-        self.assertEqual(self.article.editorial_decision, SyncedArticle.DECISION_FEATURE)
-        self.assertEqual(self.article.editorial_feature_rank, 1)
+        self.assertEqual(self.article.editorial_decision, SyncedArticle.DECISION_INCLUDE)
+        self.assertTrue(self.article.editorial_is_highlighted)
         self.assertEqual(self.article.editorial_note, "첫 화면 고정")
 
         payload = json.loads(override_path.read_text(encoding="utf-8"))
-        self.assertEqual(payload["articles"][0]["decision"], SyncedArticle.DECISION_FEATURE)
+        self.assertEqual(payload["articles"][0]["decision"], SyncedArticle.DECISION_INCLUDE)
+        self.assertTrue(payload["articles"][0]["is_highlighted"])
 
         log = AdminAuditLog.objects.get(scope=AdminAuditLog.SCOPE_EDITORIAL)
         self.assertEqual(log.actor, self.platform_admin)
         self.assertEqual(log.target_key, self.article.article_key)
-        self.assertEqual(log.after_data["decision"], SyncedArticle.DECISION_FEATURE)
+        self.assertEqual(log.after_data["decision"], SyncedArticle.DECISION_INCLUDE)
+        self.assertTrue(log.after_data["is_highlighted"])
+
+    def test_editorial_dashboard_adds_manual_article_and_creates_audit_log(self) -> None:
+        self.client.force_login(self.platform_admin)
+        manual_article = SyncedArticle.objects.create(
+            article_key="https://example.com/manual-1",
+            title="수동 추가 기사",
+            article_url="https://example.com/manual-1",
+            source_name="테스트신문",
+            summary="수동 추가 요약",
+            editorial_decision=SyncedArticle.DECISION_INCLUDE,
+            is_manual_entry=True,
+        )
+
+        with (
+            patch("briefings.views.create_manual_synced_article", return_value=(manual_article, True)),
+            patch("briefings.views.export_editorial_overrides", return_value="test_overrides.json"),
+        ):
+            response = self.client.post(
+                "/editorial/",
+                {
+                    "action": "add_manual_article",
+                    "article_url": "https://example.com/manual-1",
+                    "next": "/editorial/",
+                },
+                follow=True,
+            )
+
+        self.assertEqual(response.status_code, 200)
+        log = AdminAuditLog.objects.get(scope=AdminAuditLog.SCOPE_EDITORIAL, action="create_manual_article")
+        self.assertEqual(log.actor, self.platform_admin)
+        self.assertEqual(log.target_key, manual_article.article_key)
+        self.assertEqual(log.after_data["decision"], SyncedArticle.DECISION_INCLUDE)
 
     def test_contact_settings_save_updates_json_and_creates_audit_log(self) -> None:
         self.client.force_login(self.platform_admin)

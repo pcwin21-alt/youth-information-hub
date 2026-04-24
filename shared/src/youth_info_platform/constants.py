@@ -112,6 +112,96 @@ YOUTH_ISSUE_KEYWORDS = [
     "청년 공약",
 ]
 
+YOUTH_ISSUE_CONTEXT_KEYWORDS = [
+    "고용",
+    "취업",
+    "실업",
+    "일자리",
+    "노동",
+    "노동권",
+    "주거",
+    "주택",
+    "월세",
+    "전세",
+    "부채",
+    "대출",
+    "금융",
+    "복지",
+    "은둔",
+    "고립",
+    "마음건강",
+    "자산형성",
+]
+
+YOUTH_INSTITUTION_CONTEXT_KEYWORDS = [
+    "청년센터",
+    "청년공간",
+    "청년허브",
+    "청년일자리스테이션",
+    "청년일자리센터",
+    "청년창업센터",
+    "운영",
+    "위탁",
+    "개소",
+    "신설",
+    "설치",
+    "폐지",
+    "재개관",
+]
+
+YOUTH_POLICY_CONTEXT_KEYWORDS = [
+    "조례",
+    "예산",
+    "계획",
+    "시행",
+    "사업",
+    "지원사업",
+    "모집",
+    "발표",
+    "공고",
+    "추진",
+    "확대",
+    "편성",
+    "집행",
+    "시행계획",
+    "종합계획",
+    "기본계획",
+]
+
+POLITICAL_CAMPAIGN_KEYWORDS = [
+    "선거",
+    "후보",
+    "예비후보",
+    "유세",
+    "공천",
+    "지지율",
+    "단일화",
+    "출마",
+    "경선",
+    "정당",
+    "국민의힘",
+    "더불어민주당",
+    "민주당",
+    "개혁신당",
+    "조국혁신당",
+    "진보당",
+    "공약",
+]
+
+SUBSTANTIVE_PROMISE_KEYWORDS = [
+    "청년센터",
+    "청년공간",
+    "청년허브",
+    "예산",
+    "조례",
+    "계획",
+    "지원사업",
+    "시행",
+    "운영",
+    "설치",
+    "확대",
+]
+
 HUB_KEYWORDS = [
     "청년보좌역",
     "2030자문단",
@@ -173,6 +263,15 @@ HUB_ROUTING_KEYWORDS = list(
 
 YOUTH_RELATED_KEYWORDS = list(
     dict.fromkeys(YOUTH_KEYWORDS + YOUTH_ISSUE_KEYWORDS + HUB_ROUTING_KEYWORDS)
+)
+
+YOUTH_STRONG_CONTEXT_KEYWORDS = list(
+    dict.fromkeys(
+        YOUTH_ISSUE_CONTEXT_KEYWORDS
+        + YOUTH_INSTITUTION_CONTEXT_KEYWORDS
+        + YOUTH_POLICY_CONTEXT_KEYWORDS
+        + HUB_ROUTING_KEYWORDS
+    )
 )
 
 LOCAL_GOVERNMENT_CONTEXT_KEYWORDS = [

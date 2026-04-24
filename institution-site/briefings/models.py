@@ -112,11 +112,11 @@ class TrackedRegion(models.Model):
 
 class SyncedArticle(models.Model):
     DECISION_DEFAULT = "default"
+    DECISION_INCLUDE = "include"
     DECISION_EXCLUDE = "exclude"
-    DECISION_FEATURE = "feature"
     EDITORIAL_DECISION_CHOICES = [
         (DECISION_DEFAULT, "기본"),
-        (DECISION_FEATURE, "상단 노출"),
+        (DECISION_INCLUDE, "포함"),
         (DECISION_EXCLUDE, "배제"),
     ]
 
@@ -141,7 +141,7 @@ class SyncedArticle(models.Model):
         choices=EDITORIAL_DECISION_CHOICES,
         default=DECISION_DEFAULT,
     )
-    editorial_feature_rank = models.PositiveSmallIntegerField(null=True, blank=True)
+    editorial_is_highlighted = models.BooleanField(default=False)
     editorial_note = models.TextField(blank=True)
     editorial_updated_at = models.DateTimeField(null=True, blank=True)
     editorial_updated_by = models.ForeignKey(
@@ -151,6 +151,9 @@ class SyncedArticle(models.Model):
         blank=True,
         related_name="editorially_updated_articles",
     )
+    is_manual_entry = models.BooleanField(default=False)
+    clean_score = models.IntegerField(default=0)
+    clean_labels = models.JSONField(default=list, blank=True)
     lead_text = models.TextField(blank=True)
     summary = models.TextField(blank=True)
     raw_payload = models.JSONField(default=dict, blank=True)
@@ -164,12 +167,25 @@ class SyncedArticle(models.Model):
         return self.title
 
     @property
+    def is_editorially_included(self) -> bool:
+        return self.editorial_decision == self.DECISION_INCLUDE
+
+    @property
+    def is_editorially_highlighted(self) -> bool:
+        return bool(self.editorial_is_highlighted)
+
+    @property
     def is_editorially_featured(self) -> bool:
-        return self.editorial_decision == self.DECISION_FEATURE
+        return self.is_editorially_highlighted
 
     @property
     def is_editorially_excluded(self) -> bool:
         return self.editorial_decision == self.DECISION_EXCLUDE
+
+    @property
+    def is_clean_article(self) -> bool:
+        article_type = str((self.raw_payload or {}).get("article_type") or "").strip().lower()
+        return self.clean_score >= 4 and not self.is_noise and article_type != "opinion"
 
 
 class SavedArticle(models.Model):

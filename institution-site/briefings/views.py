@@ -7,7 +7,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.management import call_command
 from django.core.paginator import Paginator
-from django.db.models import Case, IntegerField, Q, Value, When
+from django.db.models import Q
 from django.http import HttpRequest, HttpResponse, HttpResponseForbidden, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
@@ -30,9 +30,10 @@ from .analytics import analytics_dashboard_context, record_page_view
 from .editorial import (
     DECISION_DEFAULT,
     DECISION_EXCLUDE,
-    DECISION_FEATURE,
+    DECISION_INCLUDE,
     PipelineLockedError,
     create_admin_audit_log,
+    create_manual_synced_article,
     export_editorial_overrides,
     load_pipeline_lock_snapshot,
     run_contact_settings_refresh,
@@ -74,7 +75,7 @@ def _redirect_target(request: HttpRequest, fallback: str) -> str:
 def _decision_label(decision: str) -> str:
     labels = {
         DECISION_DEFAULT: "기본",
-        DECISION_FEATURE: "상단 노출",
+        DECISION_INCLUDE: "포함",
         DECISION_EXCLUDE: "배제",
     }
     return labels.get(decision, decision)
@@ -262,37 +263,78 @@ def _audit_contact_save(
     )
 
 
+def _is_highlight_requested(request: HttpRequest) -> bool:
+    return bool((request.POST.get("editorial_is_highlighted") or "").strip())
+
+
+def _clear_other_highlights(article: SyncedArticle, *, actor, updated_at) -> int:
+    return (
+        SyncedArticle.objects.filter(editorial_is_highlighted=True)
+        .exclude(pk=article.pk)
+        .update(
+            editorial_is_highlighted=False,
+            editorial_updated_at=updated_at,
+            editorial_updated_by=actor,
+            updated_at=updated_at,
+        )
+    )
+
+
+def _editorial_priority(article: SyncedArticle) -> tuple[int, int, int, float, float, str]:
+    published = article.published_date or article.updated_at
+    published_ts = published.timestamp() if published else 0.0
+    updated_ts = article.updated_at.timestamp() if article.updated_at else 0.0
+
+    if article.editorial_is_highlighted:
+        decision_rank = 0
+    elif article.editorial_decision == DECISION_INCLUDE:
+        decision_rank = 1
+    elif article.editorial_decision == DECISION_DEFAULT:
+        decision_rank = 2
+    else:
+        decision_rank = 3
+
+    return (
+        decision_rank,
+        0 if article.is_clean_article else 1,
+        -int(article.clean_score or 0),
+        -published_ts,
+        -updated_ts,
+        (article.title or "").lower(),
+    )
+
+
 def _update_article_editorial(article: SyncedArticle, request: HttpRequest) -> str:
     decision = (request.POST.get("editorial_decision") or DECISION_DEFAULT).strip().lower()
-    if decision not in {DECISION_DEFAULT, DECISION_EXCLUDE, DECISION_FEATURE}:
+    if decision not in {DECISION_DEFAULT, DECISION_INCLUDE, DECISION_EXCLUDE}:
         decision = DECISION_DEFAULT
 
-    rank_value = request.POST.get("editorial_feature_rank")
-    try:
-        feature_rank = int(rank_value) if rank_value else None
-    except (TypeError, ValueError):
-        feature_rank = None
-    if feature_rank is not None and feature_rank <= 0:
-        feature_rank = None
+    highlight_requested = _is_highlight_requested(request)
+    if decision == DECISION_EXCLUDE:
+        highlight_requested = False
+    elif highlight_requested:
+        decision = DECISION_INCLUDE
 
-    if decision != DECISION_FEATURE:
-        feature_rank = None
-
+    updated_at = timezone.now()
     note = (request.POST.get("editorial_note") or "").strip()
     before_state = {
         "decision": article.editorial_decision,
-        "feature_rank": article.editorial_feature_rank,
+        "is_highlighted": bool(article.editorial_is_highlighted),
         "note": article.editorial_note,
     }
+
+    if highlight_requested:
+        _clear_other_highlights(article, actor=request.user, updated_at=updated_at)
+
     article.editorial_decision = decision
-    article.editorial_feature_rank = feature_rank
+    article.editorial_is_highlighted = highlight_requested
     article.editorial_note = note
-    article.editorial_updated_at = timezone.now()
+    article.editorial_updated_at = updated_at
     article.editorial_updated_by = request.user
     article.save(
         update_fields=[
             "editorial_decision",
-            "editorial_feature_rank",
+            "editorial_is_highlighted",
             "editorial_note",
             "editorial_updated_at",
             "editorial_updated_by",
@@ -309,11 +351,13 @@ def _update_article_editorial(article: SyncedArticle, request: HttpRequest) -> s
         before_data=before_state,
         after_data={
             "decision": decision,
-            "feature_rank": feature_rank,
+            "is_highlighted": highlight_requested,
             "note": note,
             "override_path": override_path,
         },
     )
+    if highlight_requested:
+        return f"{_decision_label(decision)} / 대표 하이라이트"
     return _decision_label(decision)
 
 
@@ -327,6 +371,7 @@ def dashboard(request: HttpRequest) -> HttpResponse:
     if tracked_regions:
         articles = articles.filter(region__in=tracked_regions)
 
+    all_articles = list(SyncedArticle.objects.all())
     auto_update_context = _auto_update_context_bundle()
     context = {
         "tracked_regions": tracked_regions,
@@ -334,7 +379,8 @@ def dashboard(request: HttpRequest) -> HttpResponse:
         "saved_count": SavedArticle.objects.filter(user=request.user).count(),
         "draft_count": ReportDraft.objects.filter(user=request.user).count(),
         "synced_count": SyncedArticle.objects.count(),
-        "featured_count": SyncedArticle.objects.filter(editorial_decision=DECISION_FEATURE).count(),
+        "highlighted_count": SyncedArticle.objects.filter(editorial_is_highlighted=True).count(),
+        "included_count": SyncedArticle.objects.filter(editorial_decision=DECISION_INCLUDE).count(),
         "excluded_count": SyncedArticle.objects.filter(editorial_decision=DECISION_EXCLUDE).count(),
         "recent_audit_logs": AdminAuditLog.objects.select_related("actor")[:6],
         "public_visitor_count_7d": PageViewEvent.objects.filter(site_scope=PageViewEvent.SCOPE_PUBLIC)
@@ -373,10 +419,75 @@ def editorial_dashboard(request: HttpRequest) -> HttpResponse:
             messages.success(request, "운영 후보 기사를 최신 상태로 동기화했습니다.")
             return redirect(redirect_to)
 
+        if action == "add_manual_article":
+            article_url = (request.POST.get("article_url") or "").strip()
+            if not article_url:
+                messages.error(request, "기사 URL을 입력해 주세요.")
+                return redirect(redirect_to)
+
+            try:
+                article, created = create_manual_synced_article(article_url, request.user)
+            except ValueError:
+                messages.error(request, "기사 메타데이터를 읽지 못했습니다. 접근 가능한 기사 URL인지 확인해 주세요.")
+                return redirect(redirect_to)
+            except Exception as exc:  # noqa: BLE001
+                messages.error(request, f"기사 추가 중 오류가 발생했습니다: {exc}")
+                return redirect(redirect_to)
+
+            override_path = export_editorial_overrides()
+            if not created:
+                messages.info(request, f"이미 등록된 기사입니다: {article.title}")
+                return redirect(redirect_to)
+
+            create_admin_audit_log(
+                request.user,
+                AdminAuditLog.SCOPE_EDITORIAL,
+                "create_manual_article",
+                target_key=article.article_key,
+                summary="기사 URL을 직접 추가했습니다.",
+                after_data={
+                    "title": article.title,
+                    "article_url": article.article_url,
+                    "decision": article.editorial_decision,
+                    "is_highlighted": bool(article.editorial_is_highlighted),
+                    "override_path": override_path,
+                },
+            )
+            messages.success(request, f"기사 URL을 추가했습니다: {article.title}")
+            return redirect(redirect_to)
+
         if action == "update_article":
             article = get_object_or_404(SyncedArticle, pk=request.POST.get("article_id"))
             label = _update_article_editorial(article, request)
             messages.success(request, f"운영 결정을 저장했습니다. {label}")
+            return redirect(redirect_to)
+
+        if action == "delete_manual_article":
+            article = get_object_or_404(SyncedArticle, pk=request.POST.get("article_id"))
+            if not article.is_manual_entry:
+                messages.error(request, "수동 추가 기사만 삭제할 수 있습니다.")
+                return redirect(redirect_to)
+
+            before_data = {
+                "title": article.title,
+                "article_url": article.article_url,
+                "decision": article.editorial_decision,
+                "is_highlighted": bool(article.editorial_is_highlighted),
+            }
+            article_key = article.article_key
+            article_title = article.title
+            article.delete()
+            override_path = export_editorial_overrides()
+            create_admin_audit_log(
+                request.user,
+                AdminAuditLog.SCOPE_EDITORIAL,
+                "delete_manual_article",
+                target_key=article_key,
+                summary="수동 추가 기사를 삭제했습니다.",
+                before_data=before_data,
+                after_data={"deleted": True, "override_path": override_path},
+            )
+            messages.success(request, f"수동 추가 기사를 삭제했습니다: {article_title}")
             return redirect(redirect_to)
 
         if action == "collect_and_refresh_public":
@@ -510,39 +621,45 @@ def editorial_dashboard(request: HttpRequest) -> HttpResponse:
 
     query = (request.GET.get("query") or "").strip()
     decision = (request.GET.get("decision") or "all").strip().lower()
+    clean = (request.GET.get("clean") or "all").strip().lower()
+    origin = (request.GET.get("origin") or "all").strip().lower()
     region = (request.GET.get("region") or "all").strip()
 
-    articles = SyncedArticle.objects.all()
+    articles = SyncedArticle.objects.select_related("editorial_updated_by").all()
     if query:
         articles = articles.filter(
             Q(title__icontains=query)
+            | Q(article_url__icontains=query)
             | Q(source_name__icontains=query)
             | Q(region__icontains=query)
             | Q(hub_owner_label__icontains=query)
             | Q(editorial_note__icontains=query)
         )
-    if decision in {DECISION_DEFAULT, DECISION_FEATURE, DECISION_EXCLUDE}:
+    if decision in {DECISION_DEFAULT, DECISION_INCLUDE, DECISION_EXCLUDE}:
         articles = articles.filter(editorial_decision=decision)
     if region and region != "all":
         articles = articles.filter(region=region)
+    if origin == "manual":
+        articles = articles.filter(is_manual_entry=True)
+    elif origin == "runtime":
+        articles = articles.filter(is_manual_entry=False)
 
-    articles = articles.annotate(
-        editorial_priority=Case(
-            When(editorial_decision=DECISION_FEATURE, then=Value(0)),
-            When(editorial_decision=DECISION_EXCLUDE, then=Value(2)),
-            default=Value(1),
-            output_field=IntegerField(),
-        )
-    ).order_by("editorial_priority", "editorial_feature_rank", "-published_date", "-updated_at")
+    article_list = list(articles)
+    if clean == "clean":
+        article_list = [article for article in article_list if article.is_clean_article]
+    elif clean == "not_clean":
+        article_list = [article for article in article_list if not article.is_clean_article]
 
-    paginator = Paginator(articles, 20)
+    article_list = sorted(article_list, key=_editorial_priority)
+    paginator = Paginator(article_list, 20)
     page_obj = paginator.get_page(request.GET.get("page"))
 
+    all_articles = list(SyncedArticle.objects.all())
     auto_update_context = _auto_update_context_bundle()
     context = {
         "decision_choices": [
             (DECISION_DEFAULT, "기본"),
-            (DECISION_FEATURE, "상단 노출"),
+            (DECISION_INCLUDE, "포함"),
             (DECISION_EXCLUDE, "배제"),
         ],
         "page_obj": page_obj,
@@ -552,12 +669,33 @@ def editorial_dashboard(request: HttpRequest) -> HttpResponse:
         "region_options": list(
             SyncedArticle.objects.exclude(region="").order_by("region").values_list("region", flat=True).distinct()
         ),
-        "featured_count": SyncedArticle.objects.filter(editorial_decision=DECISION_FEATURE).count(),
+        "highlighted_count": SyncedArticle.objects.filter(editorial_is_highlighted=True).count(),
         "excluded_count": SyncedArticle.objects.filter(editorial_decision=DECISION_EXCLUDE).count(),
         "default_count": SyncedArticle.objects.filter(editorial_decision=DECISION_DEFAULT).count(),
         "synced_count": SyncedArticle.objects.count(),
         "override_path": str(editorial_overrides_path()),
         "ops_radar": _load_ops_radar_payload(),
+        "decision_choices": [
+            (DECISION_DEFAULT, "기본"),
+            (DECISION_INCLUDE, "포함"),
+            (DECISION_EXCLUDE, "배제"),
+        ],
+        "clean_choices": [
+            ("all", "전체"),
+            ("clean", "클린 기사"),
+            ("not_clean", "클린 아님"),
+        ],
+        "origin_choices": [
+            ("all", "전체"),
+            ("runtime", "자동 수집"),
+            ("manual", "수동 추가"),
+        ],
+        "clean": clean,
+        "origin": origin,
+        "highlighted_count": SyncedArticle.objects.filter(editorial_is_highlighted=True).count(),
+        "included_count": SyncedArticle.objects.filter(editorial_decision=DECISION_INCLUDE).count(),
+        "manual_count": SyncedArticle.objects.filter(is_manual_entry=True).count(),
+        "clean_count": sum(1 for article in all_articles if article.is_clean_article),
     }
     context.update(auto_update_context)
     return render(request, "briefings/editorial_dashboard.html", context)

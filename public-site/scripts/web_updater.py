@@ -14,6 +14,7 @@ from _bootstrap import PUBLIC_WEB_ROOT, RUNTIME_PIPELINE_ROOT
 
 from youth_info_platform.article_metadata import article_identity_key, preferred_article_url
 from youth_info_platform.contact_config import load_contact_settings
+from youth_info_platform.curation import is_public_interest_article
 from youth_info_platform.io_utils import read_json
 
 NEWS_WINDOW_DAYS = 7
@@ -2574,8 +2575,8 @@ PAGE_TEMPLATE = """<!doctype html>
 <body data-page="{active_page}">
   <div class="shell">
     <header class="topbar">
-<a class="brand" href="index.html" aria-label="청년 투게더 홈으로 이동">
-        <img class="brand-logo" src="assets/branding/youth-together-lockup.svg" alt="청년 투게더">
+<a class="brand" href="index.html" aria-label="청년 모아봄 홈으로 이동">
+        <img class="brand-logo" src="assets/branding/youth-together-lockup.svg" alt="청년 모아봄">
         <div class="brand-copy">
           <span class="brand-sub">오늘의 청년 정책과 이슈를 한곳에</span>
         </div>
@@ -4647,7 +4648,17 @@ def is_publicly_excluded(article: dict) -> bool:
 
 
 def filter_public_articles(articles: list[dict]) -> list[dict]:
-    return [article for article in articles if not is_publicly_excluded(article)]
+    filtered: list[dict] = []
+    for article in articles:
+        if is_publicly_excluded(article):
+            continue
+        editorial_decision = str(article.get("editorial_decision") or "").strip().lower()
+        if article.get("editorial_is_highlighted") or editorial_decision == "include":
+            filtered.append(article)
+            continue
+        if is_public_interest_article(article):
+            filtered.append(article)
+    return filtered
 
 
 def resolve_freshness_hours(status: dict, default: int = 24) -> int:
@@ -6694,7 +6705,7 @@ def main() -> int:
 
     write_page(
         web_root / "index.html",
-        "청년 투게더",
+        "청년 모아봄",
         "index.html",
         build_home_page(articles, classified_articles, status, contact_settings),
         status,
