@@ -1282,7 +1282,7 @@ BASE_CSS = """
     min-width: 0;
   }
   .home-briefing-card.lead-arch.has-media {
-    padding-right: clamp(164px, 36%, 236px);
+    padding-right: clamp(188px, 39%, 272px);
     min-height: 312px;
   }
   .home-briefing-card > .home-illustration-slot {
@@ -1292,8 +1292,8 @@ BASE_CSS = """
     z-index: 0;
   }
   .home-illustration-slot {
-    width: clamp(142px, 30%, 214px);
-    max-width: 42%;
+    width: clamp(168px, 34%, 250px);
+    max-width: 48%;
     pointer-events: none;
   }
   .home-illustration-slot img {
@@ -2373,7 +2373,7 @@ BASE_CSS = """
       border-radius: 46px 132px 44px 58px;
     }
     .home-briefing-card.lead-arch.has-media {
-      padding-right: clamp(188px, 30%, 252px);
+      padding-right: clamp(218px, 34%, 296px);
     }
     .home-briefing-card.digest-organic {
       border-radius: 40px 34px 104px 40px;
@@ -2392,7 +2392,7 @@ BASE_CSS = """
       bottom: 4px;
     }
     .home-illustration-slot {
-      width: clamp(170px, 30%, 236px);
+      width: clamp(202px, 32%, 276px);
     }
     .page-intro-card.has-media {
       grid-template-columns: minmax(0, 1fr) 124px;
@@ -2528,8 +2528,8 @@ BASE_CSS = """
       margin: 4px 0 -6px auto;
     }
     .home-illustration-slot {
-      width: min(148px, 42vw);
-      max-width: 58%;
+      width: min(184px, 52vw);
+      max-width: 70%;
     }
     .home-briefing-title {
       font-size: clamp(2.05rem, 9.8vw, 3.25rem);
