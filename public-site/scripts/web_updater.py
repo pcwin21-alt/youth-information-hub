@@ -30,6 +30,8 @@ HOME_UPDATE_SNAPSHOT = RUNTIME_PIPELINE_ROOT / "home_update_snapshot.json"
 HOME_HOT_KEYWORD_LIMIT = 8
 REMOTE_TEXT_CACHE: dict[str, str] = {}
 ILLUSTRATION_ROOT = "assets/illustrations"
+ASSET_VERSION = "20260424-visual-refresh-2"
+BRAND_MARK_SRC = f"assets/branding/youth-together-mark.svg?v={ASSET_VERSION}"
 PUBLIC_ANALYTICS_ENDPOINT = os.getenv("PUBLIC_SITE_ANALYTICS_ENDPOINT", "").strip()
 PUBLIC_ANALYTICS_SCOPE = os.getenv("PUBLIC_SITE_ANALYTICS_SCOPE", "public").strip() or "public"
 
@@ -135,7 +137,7 @@ CURATED_MAJOR_POLICY_WATCHLIST = [
 ]
 
 HOME_LEAD_ILLUSTRATION = {
-    "src": f"{ILLUSTRATION_ROOT}/home-moabom-collection.svg",
+    "src": f"{ILLUSTRATION_ROOT}/home-moabom-collection.svg?v={ASSET_VERSION}",
     "alt": "청년들이 함께 웃으며 오늘의 기사와 정책 정보를 살펴보는 홈 화면 일러스트",
 }
 
@@ -2623,14 +2625,14 @@ PAGE_TEMPLATE = """<!doctype html>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;800&display=swap" rel="stylesheet">
-  <link rel="icon" type="image/svg+xml" href="assets/branding/youth-together-mark.svg">
+  <link rel="icon" type="image/svg+xml" href="{brand_mark_src}">
   <style>{styles}</style>
 </head>
 <body data-page="{active_page}">
   <div class="shell">
     <header class="topbar">
 <a class="brand" href="index.html" aria-label="청년 모아봄 홈으로 이동">
-        <img class="brand-logo" src="assets/branding/youth-together-mark.svg" alt="">
+        <img class="brand-logo" src="{brand_mark_src}" alt="">
         <div class="brand-copy">
           <span class="brand-title">청년 모아봄</span>
           <span class="brand-sub">오늘의 청년 정책과 이슈를 모아봅니다</span>
@@ -6730,6 +6732,7 @@ def write_page(
             page_title=html.escape(page_title),
             active_page=html.escape(active_page),
             styles=BASE_CSS,
+            brand_mark_src=html.escape(BRAND_MARK_SRC),
             script=build_page_script(),
             guide_link=render_guide_link(active_page),
             header_meta=render_header_meta(active_page, status),
