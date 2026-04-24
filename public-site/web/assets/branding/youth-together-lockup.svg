@@ -22,11 +22,11 @@
   </defs>
   <g>
     <g aria-hidden="true">
-      <line class="sun-ray" x1="82" y1="7" x2="82" y2="20"/>
-      <line class="sun-ray" x1="55" y1="18" x2="45" y2="8"/>
-      <line class="sun-ray" x1="109" y1="18" x2="119" y2="8"/>
-      <line class="sun-ray" x1="40" y1="45" x2="25" y2="45"/>
-      <line class="sun-ray" x1="124" y1="45" x2="139" y2="45"/>
+      <line class="sun-ray" x1="82" y1="6" x2="82" y2="19"/>
+      <line class="sun-ray" x1="82" y1="6" x2="82" y2="19" transform="rotate(-45 82 45)"/>
+      <line class="sun-ray" x1="82" y1="6" x2="82" y2="19" transform="rotate(45 82 45)"/>
+      <line class="sun-ray" x1="82" y1="6" x2="82" y2="19" transform="rotate(-90 82 45)"/>
+      <line class="sun-ray" x1="82" y1="6" x2="82" y2="19" transform="rotate(90 82 45)"/>
     </g>
     <circle class="sun" cx="82" cy="45" r="29"/>
 
