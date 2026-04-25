@@ -132,6 +132,8 @@ GitHub Pages는 `public-site/web/`를 직접 배포하지 않는다.
 - 실제 시작/중지는 아래 스크립트가 운영 표준이다.
   - `public-site/scripts/start_auto_update.ps1`
   - `public-site/scripts/stop_auto_update.ps1`
+- 어드민 서버가 내려가 있어도 로컬에서는 `powershell -ExecutionPolicy Bypass -File public-site/scripts/refresh_public_site_now.ps1`로 전체 파이프라인을 직접 실행할 수 있다.
+- 로컬 PC를 쓰지 못하는 상황에서는 GitHub Actions `Build And Deploy Pages`의 `Run workflow`를 수동 실행하는 경로를 백업으로 둔다.
 - GitHub Pages 정시 배포는 백업 경로로 유지한다.
 
 ### 3-3. 기사 운영 계약
