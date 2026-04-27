@@ -596,7 +596,7 @@ BASE_CSS = """
     gap: 14px;
   }
   .article-grid {
-    align-items: start;
+    align-items: stretch;
   }
   .stat {
     display: flex;
@@ -2452,7 +2452,7 @@ BASE_CSS = """
     .article-grid {
       grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 18px;
-      align-items: start;
+      align-items: stretch;
     }
     .feature-grid {
       grid-template-columns: repeat(3, minmax(0, 1fr));
