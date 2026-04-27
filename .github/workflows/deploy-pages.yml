@@ -70,6 +70,18 @@ jobs:
       - name: Verify generated artifacts
         run: python public-site/scripts/verify_site_artifacts.py --min-articles 1 --min-news-cards 0
 
+      - name: Upload verification reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: verification-reports
+          path: |
+            runtime/pipeline/article_date_audit.json
+            runtime/pipeline/pipeline_status.json
+            runtime/pipeline/step5_summarized.json
+            runtime/pipeline/ops_radar.json
+          if-no-files-found: ignore
+
       - name: Prepare Pages artifact
         env:
           PAGES_CNAME: ${{ vars.PAGES_CNAME }}

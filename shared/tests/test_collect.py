@@ -13,6 +13,7 @@ if str(SHARED_SRC) not in sys.path:
 from youth_info_platform.collect import (  # noqa: E402
     apply_source_filters,
     get_source_parser,
+    parse_feed,
     parse_naver_news_search,
     parse_source_payload,
 )
@@ -77,6 +78,30 @@ class NaverParserTests(unittest.TestCase):
         self.assertIn("청년 일자리", article["lead_text"])
         self.assertIsNotNone(article["published_date"])
         self.assertTrue(article["published_date"].startswith("2026-04-20T15:00:00"))
+
+    def test_parse_feed_keeps_google_news_date_as_portal_date_only(self) -> None:
+        feed = """
+        <rss>
+          <channel>
+            <item>
+              <title>Youth rent support starts</title>
+              <link>https://news.google.com/rss/articles/example?oc=5</link>
+              <source url="https://www.korea.kr">Korea Policy Briefing</source>
+              <pubDate>Thu, 23 Apr 2026 02:45:17 GMT</pubDate>
+              <description>Youth rent support starts - Korea Policy Briefing</description>
+            </item>
+          </channel>
+        </rss>
+        """
+
+        articles = parse_feed(feed, "Google News youth policy", "news")
+
+        self.assertEqual(len(articles), 1)
+        article = articles[0]
+        self.assertEqual(article["source"], "Korea Policy Briefing")
+        self.assertEqual(article["source_url"], "https://www.korea.kr")
+        self.assertIsNone(article["published_date"])
+        self.assertEqual(article["portal_published_at"], "2026-04-23T02:45:17+00:00")
 
     def test_parse_source_payload_uses_registry_for_naver(self) -> None:
         source = {

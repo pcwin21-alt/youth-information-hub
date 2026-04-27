@@ -12,7 +12,7 @@ from pathlib import Path
 
 from _bootstrap import PUBLIC_WEB_ROOT, RUNTIME_PIPELINE_ROOT
 
-from youth_info_platform.article_metadata import article_identity_key, preferred_article_url
+from youth_info_platform.article_metadata import article_identity_key, extract_youth_preview_text, preferred_article_url
 from youth_info_platform.contact_config import load_contact_settings
 from youth_info_platform.curation import is_public_interest_article
 from youth_info_platform.io_utils import read_json
@@ -20,6 +20,7 @@ from youth_info_platform.io_utils import read_json
 NEWS_WINDOW_DAYS = 7
 NEWS_WINDOW_HOURS = NEWS_WINDOW_DAYS * 24
 HOME_TODAY_MAX_AGE_HOURS = 48
+HOME_CATEGORY_WINDOW_HOURS = 48
 ELECTION_WINDOW_DAYS = 21
 ELECTION_WINDOW_HOURS = ELECTION_WINDOW_DAYS * 24
 HOME_DAILY_LIMIT = 5
@@ -2754,7 +2755,7 @@ BASE_SCRIPT = """
     return normalizedQuery ? `검색 "${normalizedQuery}"` : '';
   }
 
-  function applyNewsFilters(root, selectedDateStart, selectedDateEnd, selectedRegion, selectedQuery) {
+  function applyNewsFilters(root, selectedDateStart, selectedDateEnd, selectedRegion, selectedTopic, selectedQuery) {
     const normalizedDates = normalizeNewsDateRange(
       selectedDateStart ?? root.dataset.selectedDateStart ?? root.getAttribute('data-default-date-start') ?? '',
       selectedDateEnd ?? root.dataset.selectedDateEnd ?? root.getAttribute('data-default-date-end') ?? '',
@@ -2763,12 +2764,14 @@ BASE_SCRIPT = """
     const activeDateEnd = normalizedDates.endDate;
     const hasDateRange = Boolean(activeDateStart || activeDateEnd);
     const activeRegion = selectedRegion || root.dataset.selectedRegion || root.getAttribute('data-default-region') || 'all';
+    const activeTopic = selectedTopic || root.dataset.selectedTopic || root.getAttribute('data-default-topic') || 'all';
     const activeQuery = normalizeSearchQuery(
       selectedQuery ?? root.dataset.selectedSearchQuery ?? root.getAttribute('data-default-search-query') ?? ''
     );
     root.dataset.selectedDateStart = activeDateStart;
     root.dataset.selectedDateEnd = activeDateEnd;
     root.dataset.selectedRegion = activeRegion;
+    root.dataset.selectedTopic = activeTopic;
     root.dataset.selectedSearchQuery = activeQuery;
 
     const articleCards = Array.from(root.querySelectorAll('[data-article-date]'));
@@ -2777,12 +2780,14 @@ BASE_SCRIPT = """
     articleCards.forEach((card) => {
       const articleDate = card.getAttribute('data-article-date') || '';
       const articleRegion = card.getAttribute('data-article-region') || '중앙';
+      const articleTopics = (card.getAttribute('data-article-topics') || '').split('|').filter(Boolean);
       const isAfterStart = !activeDateStart || (articleDate && articleDate >= activeDateStart);
       const isBeforeEnd = !activeDateEnd || (articleDate && articleDate <= activeDateEnd);
       const dateMatch = !hasDateRange || (isAfterStart && isBeforeEnd);
       const regionMatch = activeRegion === 'all' || articleRegion === activeRegion;
+      const topicMatch = activeTopic === 'all' || articleTopics.includes(activeTopic);
       const searchMatch = cardMatchesSearch(card, activeQuery);
-      const isMatch = dateMatch && regionMatch && searchMatch;
+      const isMatch = dateMatch && regionMatch && topicMatch && searchMatch;
       card.hidden = !isMatch;
       if (isMatch) {
         visibleCount += 1;
@@ -2792,7 +2797,11 @@ BASE_SCRIPT = """
     root.querySelectorAll('[data-news-filter]').forEach((button) => {
       const group = button.getAttribute('data-filter-group') || 'date';
       const value = button.getAttribute('data-filter-value') || 'all';
-      const isActive = group === 'region' ? value === activeRegion : (value === 'all' && !hasDateRange);
+      const isActive = group === 'region'
+        ? value === activeRegion
+        : group === 'topic'
+          ? value === activeTopic
+          : (value === 'all' && !hasDateRange);
       button.classList.toggle('active', isActive);
       button.setAttribute('aria-pressed', isActive ? 'true' : 'false');
     });
@@ -2815,12 +2824,15 @@ BASE_SCRIPT = """
     if (status) {
       const dateLabel = formatNewsDateRange(activeDateStart, activeDateEnd);
       const searchLabel = formatSearchLabel(activeQuery);
-      if (!hasDateRange && activeRegion === 'all' && !searchLabel) {
+      if (!hasDateRange && activeRegion === 'all' && activeTopic === 'all' && !searchLabel) {
         status.textContent = `전체 ${visibleCount}건을 보고 있습니다.`;
       } else {
         const parts = [];
         if (activeRegion !== 'all') {
           parts.push(activeRegion);
+        }
+        if (activeTopic !== 'all') {
+          parts.push(`#${activeTopic}`);
         }
         if (searchLabel) {
           parts.push(searchLabel);
@@ -3184,6 +3196,7 @@ BASE_SCRIPT = """
           group === 'date' ? '' : (root.dataset.selectedDateStart || root.getAttribute('data-default-date-start') || ''),
           group === 'date' ? '' : (root.dataset.selectedDateEnd || root.getAttribute('data-default-date-end') || ''),
           group === 'region' ? value : (root.dataset.selectedRegion || root.getAttribute('data-default-region') || 'all'),
+          group === 'topic' ? value : (root.dataset.selectedTopic || root.getAttribute('data-default-topic') || 'all'),
           root.dataset.selectedSearchQuery || root.getAttribute('data-default-search-query') || '',
         );
       }
@@ -3247,6 +3260,7 @@ BASE_SCRIPT = """
 
   const pageParams = new URLSearchParams(window.location.search);
   const queryFromUrl = normalizeSearchQuery(pageParams.get('q') || pageParams.get('keyword') || '');
+  const topicFromUrl = normalizeSearchQuery(pageParams.get('topic') || '');
 
   document.querySelectorAll('[data-news-filter-root]').forEach((root) => {
     applyNewsFilters(
@@ -3254,6 +3268,7 @@ BASE_SCRIPT = """
       root.getAttribute('data-default-date-start') || '',
       root.getAttribute('data-default-date-end') || '',
       root.getAttribute('data-default-region') || 'all',
+      topicFromUrl || root.getAttribute('data-default-topic') || 'all',
       queryFromUrl || root.getAttribute('data-default-search-query') || '',
     );
   });
@@ -3282,6 +3297,7 @@ BASE_SCRIPT = """
         root.dataset.selectedDateStart || root.getAttribute('data-default-date-start') || '',
         root.dataset.selectedDateEnd || root.getAttribute('data-default-date-end') || '',
         root.dataset.selectedRegion || root.getAttribute('data-default-region') || 'all',
+        root.dataset.selectedTopic || root.getAttribute('data-default-topic') || 'all',
         searchInput.value,
       );
       return;
@@ -3320,6 +3336,7 @@ BASE_SCRIPT = """
         startInput ? startInput.value : '',
         endInput ? endInput.value : '',
         root.dataset.selectedRegion || root.getAttribute('data-default-region') || 'all',
+        root.dataset.selectedTopic || root.getAttribute('data-default-topic') || 'all',
         root.dataset.selectedSearchQuery || root.getAttribute('data-default-search-query') || '',
       );
       return;
@@ -3600,12 +3617,15 @@ def render_article_list_item(
 
 
 def render_article_card(article: dict, extra_attrs: dict[str, str] | None = None) -> str:
-    badges = "".join(f'<span class="badge">{html.escape(badge)}</span>' for badge in article.get("display_badges", [])[:2])
+    topic_tags = article_topic_tags(article)
+    badge_values = list(dict.fromkeys([*topic_tags, *article.get("display_badges", [])]))[:3]
+    badges = "".join(f'<span class="badge">{html.escape(badge)}</span>' for badge in badge_values)
     badge_row = f'<div class="badge-row">{badges}</div>' if badges else ""
     summary_text = summarize_article_text(article, limit=112)
     escaped_url = html.escape(article_target_url(article))
     escaped_title = html.escape(display_article_title(article))
     article_region = html.escape(news_region_label(article))
+    article_topics = html.escape("|".join(topic_tags), quote=True)
     article_search = html.escape(build_article_search_text(article, summary_text), quote=True)
     summary_html = (
         f'<p class="article-summary"><a class="article-summary-link" href="{escaped_url}" target="_blank" rel="noreferrer" '
@@ -3621,6 +3641,7 @@ def render_article_card(article: dict, extra_attrs: dict[str, str] | None = None
         f'data-article-title="{escaped_title}"',
         f'data-article-date="{article_date}"',
         f'data-article-region="{article_region}"',
+        f'data-article-topics="{article_topics}"',
         f'data-article-search="{article_search}"',
     ]
     if extra_attrs:
@@ -3643,7 +3664,7 @@ def render_article_card(article: dict, extra_attrs: dict[str, str] | None = None
 def render_hub_article_meta(article: dict, category_label: str) -> str:
     detail_label = hub_scope_detail_label(article)
     source = format_source_label(article.get("source") or article.get("source_name"))
-    published = (article.get("published_date", "") or "")[:10] or "날짜 미상"
+    published = article_published_label(article) or "날짜 미상"
     return (
         '<div class="article-meta">'
         '<div class="article-meta-tags">'
@@ -3999,6 +4020,27 @@ def article_date_value(article: dict) -> str:
     return ((article.get("published_date", "") or "")[:10]).strip()
 
 
+def article_topic_tags(article: dict, limit: int = 2) -> list[str]:
+    tags = [normalize_inline_text(value) for value in article.get("topic_tags", [])]
+    return [tag for tag in dict.fromkeys(tags) if tag][:limit]
+
+
+def article_published_label(article: dict) -> str:
+    for value in (
+        article.get("publisher_published_at"),
+        article.get("published_date"),
+        article.get("portal_published_at"),
+    ):
+        parsed = parse_iso_datetime(value)
+        if parsed:
+            if any((parsed.hour, parsed.minute, parsed.second, parsed.microsecond)):
+                return parsed.strftime("%Y-%m-%d %H:%M")
+            return parsed.strftime("%Y-%m-%d")
+        if value:
+            return str(value)[:10]
+    return ""
+
+
 def article_target_url(article: dict) -> str:
     return preferred_article_url(article) or article.get("url") or ""
 
@@ -4013,6 +4055,7 @@ def build_article_search_text(article: dict, *extra_terms: str) -> str:
         normalize_inline_text(article.get("source_name")),
         normalize_inline_text(" ".join(article.get("authors") or [])),
         normalize_inline_text(" ".join(article.get("issue_tags") or [])),
+        normalize_inline_text(" ".join(article_topic_tags(article))),
         normalize_inline_text(" ".join(article.get("location_tags") or [])),
         news_region_label(article),
         *[normalize_inline_text(value) for value in article.get("display_badges", [])],
@@ -4023,6 +4066,14 @@ def build_article_search_text(article: dict, *extra_terms: str) -> str:
 
 def collect_article_dates(articles: list[dict]) -> list[str]:
     return sorted({date for article in articles if (date := article_date_value(article))}, reverse=True)
+
+
+def collect_news_topics(articles: list[dict]) -> list[str]:
+    counts: dict[str, int] = {}
+    for article in articles:
+        for topic in article_topic_tags(article):
+            counts[topic] = counts.get(topic, 0) + 1
+    return sorted(counts, key=lambda topic: (-counts[topic], topic))
 
 
 def news_region_label(article: dict) -> str:
@@ -4500,7 +4551,7 @@ def with_election_badges(article: dict) -> dict:
     return tagged_article
 
 
-def render_news_filter_panel(regions: list[str], dates: list[str], total_count: int) -> str:
+def render_news_filter_panel(regions: list[str], topics: list[str], dates: list[str], total_count: int) -> str:
     region_buttons = [
         '<button class="filter-button active" type="button" data-news-filter="true" '
         'data-filter-group="region" data-filter-value="all" aria-pressed="true">전체</button>'
@@ -4510,6 +4561,17 @@ def render_news_filter_panel(regions: list[str], dates: list[str], total_count: 
             f'<button class="filter-button" type="button" data-news-filter="true" '
             f'data-filter-group="region" data-filter-value="{html.escape(region)}" '
             f'aria-pressed="false">{html.escape(region)}</button>'
+        )
+
+    topic_buttons = [
+        '<button class="filter-button active" type="button" data-news-filter="true" '
+        'data-filter-group="topic" data-filter-value="all" aria-pressed="true">전체</button>'
+    ]
+    for topic in topics:
+        topic_buttons.append(
+            f'<button class="filter-button" type="button" data-news-filter="true" '
+            f'data-filter-group="topic" data-filter-value="{html.escape(topic)}" '
+            f'aria-pressed="false">#{html.escape(topic)}</button>'
         )
 
     date_min = html.escape(dates[-1]) if dates else ""
@@ -4534,6 +4596,10 @@ def render_news_filter_panel(regions: list[str], dates: list[str], total_count: 
           <div class="filter-group">
             <span class="filter-group-label">지역</span>
             <div class="filter-controls">{''.join(region_buttons)}</div>
+          </div>
+          <div class="filter-group">
+            <span class="filter-group-label">주제</span>
+            <div class="filter-controls">{''.join(topic_buttons)}</div>
           </div>
           <div class="filter-group">
             <span class="filter-group-label">검색</span>
@@ -4581,7 +4647,13 @@ def format_source_label(value: str | None) -> str:
 
 
 def summarize_article_text(article: dict, limit: int = 118) -> str:
-    text = normalize_inline_text(article.get("summary") or article.get("lead_text") or "")
+    text = normalize_inline_text(
+        article.get("youth_excerpt")
+        or extract_youth_preview_text(article, limit=limit * 2)
+        or article.get("summary")
+        or article.get("lead_text")
+        or ""
+    )
     if not text:
         return ""
 
@@ -4646,13 +4718,18 @@ def render_article_meta(article: dict, category_label: str | None = None) -> str
     }
     category = category_aliases.get(category, category)
     region = news_region_label(article)
+    topics = article_topic_tags(article)
+    meta_labels = [*topics, region] if topics else [category, region]
+    meta_pills = "".join(
+        f'<span class="meta-pill {"primary" if index == 0 else "subtle"}">{html.escape(label)}</span>'
+        for index, label in enumerate(dict.fromkeys(label for label in meta_labels if label))
+    )
     source = format_source_label(article.get("source") or article.get("source_name"))
-    published = (article.get("published_date", "") or "")[:10] or "날짜 미상"
+    published = article_published_label(article) or "날짜 미상"
     return (
         '<div class="article-meta">'
         '<div class="article-meta-tags">'
-        f'<span class="meta-pill primary">{html.escape(category)}</span>'
-        f'<span class="meta-pill subtle">{html.escape(region)}</span>'
+        f'{meta_pills}'
         '</div>'
         '<div class="article-byline">'
         f'<span class="meta-item">{html.escape(source)}</span>'
@@ -4666,7 +4743,7 @@ def render_article_meta(article: dict, category_label: str | None = None) -> str
 def compact_article_meta(article: dict) -> str:
     bits = []
     source = format_source_label(article.get("source") or article.get("source_name"))
-    published = article_date_value(article)
+    published = article_published_label(article)
     if source:
         bits.append(source)
     if published:
@@ -5133,6 +5210,7 @@ HOME_HOT_KEYWORD_ALIASES = {
     "부채": "금융",
     "고립·은둔": "고립·은둔",
 }
+HOME_TOPIC_FILTER_LABELS = {"취업", "주거", "노동", "금융", "청년센터", "모집", "복지", "창업"}
 
 
 def normalize_home_hot_keyword(value: object) -> str:
@@ -5140,6 +5218,17 @@ def normalize_home_hot_keyword(value: object) -> str:
     if not keyword:
         return ""
     return HOME_HOT_KEYWORD_ALIASES.get(keyword, keyword)
+
+
+def home_hot_keyword_href(keyword: str) -> str:
+    normalized = normalize_inline_text(keyword)
+    if normalized in HOME_TOPIC_FILTER_LABELS:
+        return f"news.html?topic={urllib.parse.quote(normalized)}"
+    return f"news.html?q={urllib.parse.quote(normalized)}"
+
+
+def home_topic_category_href(topic: str) -> str:
+    return f"news.html?topic={urllib.parse.quote(normalize_inline_text(topic))}"
 
 
 def articles_on_reference_day(articles: list[dict], reference_time: str | None) -> list[dict]:
@@ -5176,6 +5265,7 @@ def build_home_hot_keywords(articles: list[dict], reference_time: str | None, li
     for article in articles_on_reference_day(articles, reference_time):
         text = _home_text(article)
         article_keywords: list[str] = []
+        article_keywords.extend(article_topic_tags(article))
         for tag in article.get("issue_tags") or []:
             keyword = normalize_home_hot_keyword(tag)
             if keyword:
@@ -5185,6 +5275,22 @@ def build_home_hot_keywords(articles: list[dict], reference_time: str | None, li
                 article_keywords.append(label)
         for keyword in dict.fromkeys(article_keywords):
             counts[keyword] = counts.get(keyword, 0) + 1
+    return sorted(counts.items(), key=lambda item: (-item[1], item[0]))[:limit]
+
+
+def build_home_topic_categories(
+    articles: list[dict],
+    reference_time: str | None,
+    *,
+    limit: int = HOME_HOT_KEYWORD_LIMIT,
+    max_age_hours: int = HOME_CATEGORY_WINDOW_HOURS,
+) -> list[tuple[str, int]]:
+    counts: dict[str, int] = {}
+    for article in filter_recent_articles(articles, reference_time, max_age_hours):
+        if not is_home_latest_news_candidate(article):
+            continue
+        for topic in dict.fromkeys(article_topic_tags(article)):
+            counts[topic] = counts.get(topic, 0) + 1
     return sorted(counts.items(), key=lambda item: (-item[1], item[0]))[:limit]
 
 
@@ -5454,6 +5560,47 @@ def score_home_weekly_article(article: dict, reference_dt: datetime | None) -> i
     elif age_hours <= NEWS_WINDOW_HOURS:
         score += 2
     return score
+
+
+def is_home_latest_news_candidate(article: dict) -> bool:
+    if article.get("is_official_source") or article.get("source_kind") == "official":
+        return False
+    if is_election_promise_article(article):
+        return False
+    if article.get("is_noise"):
+        return False
+    if article.get("article_type") == "opinion":
+        return False
+    if is_publicly_excluded(article):
+        return False
+    return True
+
+
+def home_latest_news_sort_key(article: dict) -> tuple[int, float]:
+    published_dt = parse_iso_datetime(article.get("published_date"))
+    if published_dt is None:
+        return (0, 0.0)
+    return (1, published_dt.timestamp())
+
+
+def build_home_latest_news_articles(
+    articles: list[dict],
+    highlighted_article: dict | None,
+    *,
+    limit: int = HOME_DAILY_LIMIT,
+) -> list[dict]:
+    highlight_key = home_article_key(highlighted_article) if highlighted_article else ""
+    candidates: list[dict] = []
+    seen_keys: set[str] = set()
+    for article in articles:
+        article_key = home_article_key(article)
+        if not article_key or article_key == highlight_key or article_key in seen_keys:
+            continue
+        if not is_home_latest_news_candidate(article):
+            continue
+        seen_keys.add(article_key)
+        candidates.append(article)
+    return sorted(candidates, key=home_latest_news_sort_key, reverse=True)[:limit]
 
 
 def _snapshot_entries(snapshot: dict, key: str) -> list[dict[str, str]]:
@@ -5942,18 +6089,14 @@ def build_home_page(
         for article in all_articles
         if not article.get("is_official_source") and not is_election_promise_article(article)
     ]
-    recent_home_news_candidates = merge_home_candidate_articles(
-        recent_news_articles,
-        filter_recent_articles(all_news_articles, page_updated_at, NEWS_WINDOW_HOURS),
-    )
     highlighted_article = next(
         (article for article in selected_articles if article.get("editorial_is_highlighted")),
         None,
     )
-    today_articles, _, _ = build_home_curated_lists(
-        recent_home_news_candidates,
+    latest_home_news_candidates = merge_home_candidate_articles(selected_news_articles, all_news_articles)
+    today_articles = build_home_latest_news_articles(
+        latest_home_news_candidates,
         highlighted_article,
-        page_updated_at,
     )
     policy_articles = filter_recent_articles(
         [article for article in all_articles if article.get("is_official_source")],
@@ -5972,7 +6115,7 @@ def build_home_page(
         24 * 90,
     )
     today_total_count = count_articles_on_reference_day(all_articles, page_updated_at)
-    hot_keywords = build_home_hot_keywords(recent_home_news_candidates, page_updated_at)
+    home_topic_categories = build_home_topic_categories(latest_home_news_candidates, page_updated_at)
     home_date_label = format_home_date_label(page_updated_at)
     latest_news_basis = describe_article_basis(recent_news_articles, f"최근 {NEWS_WINDOW_DAYS}일 기사 없음")
     policy_basis = describe_article_basis(official_policy_articles or policy_articles, "최근 정책 없음")
@@ -5989,16 +6132,16 @@ def build_home_page(
             ("home-glance-item warm full", "오늘 올라온 기사", f"{today_total_count}건"),
         ]
     )
-    hot_keyword_links = "".join(
-        f'<a class="home-keyword-chip" href="news.html?q={urllib.parse.quote(keyword)}">#{html.escape(keyword)}</a>'
-        for keyword, _ in hot_keywords
+    home_category_links = "".join(
+        f'<a class="home-keyword-chip" href="{html.escape(home_topic_category_href(topic))}">#{html.escape(topic)}</a>'
+        for topic, _ in home_topic_categories
     )
-    hot_keyword_body = hot_keyword_links or '<span class="home-urgent-meta">오늘 키워드가 더 모이면 표시됩니다.</span>'
-    hot_keywords_html = (
+    home_category_body = home_category_links or '<span class="home-urgent-meta">최근 48시간 카테고리가 더 모이면 표시됩니다.</span>'
+    home_categories_html = (
         '<article class="home-keyword-panel">'
-        '<div class="home-keyword-heading"><strong>오늘 많이 잡힌 키워드</strong>'
-        '<span>누르면 뉴스 탭에서 바로 걸러봅니다.</span></div>'
-        f'<div class="home-keyword-list">{hot_keyword_body}</div>'
+        '<div class="home-keyword-heading"><strong>최근 많이 잡힌 카테고리</strong>'
+        '<span>최근 48시간 기준입니다. 누르면 뉴스 탭에서 바로 걸러봅니다.</span></div>'
+        f'<div class="home-keyword-list">{home_category_body}</div>'
         '</article>'
     )
 
@@ -6027,7 +6170,7 @@ def build_home_page(
         render_home_news_item(index, article) for index, article in enumerate(today_articles[:HOME_DAILY_LIMIT], start=1)
     ) or (
         '<article class="home-urgent-item"><div class="home-urgent-link"><span class="home-urgent-rank">00</span>'
-        '<div class="home-urgent-text"><strong>오늘 크게 볼 기사가 아직 없습니다.</strong>'
+        '<div class="home-urgent-text"><strong>최근 올라온 청년 뉴스가 아직 없습니다.</strong>'
         '<span class="home-urgent-meta">새 청년 뉴스가 들어오면 이 영역이 먼저 채워집니다.</span></div></div></article>'
     )
     def render_home_highlight_card(article: dict | None) -> str:
@@ -6088,13 +6231,13 @@ def build_home_page(
         <article class="home-briefing-card digest digest-organic">
           <div class="home-briefing-head">
             <h2>오늘 한눈에 보기</h2>
-            <p>오늘 날짜로 올라온 기사 전체 수와 많이 잡힌 키워드를 함께 봅니다.</p>
+            <p>오늘 날짜로 올라온 기사 수와 최근 48시간 많이 잡힌 카테고리를 함께 봅니다.</p>
           </div>
-          <div class="home-glance-grid">{glance_stats_html}{hot_keywords_html}</div>
+          <div class="home-glance-grid">{glance_stats_html}{home_categories_html}</div>
           <div class="home-briefing-divider"></div>
           <div class="home-briefing-subhead">
-            <h3>오늘 놓치면 안되는 뉴스 5가지</h3>
-            <p>오늘성, 즉시성, 정책·현장 맥락을 더 좁게 보고 지금 먼저 볼 기사를 묶었습니다.</p>
+            <h3>최근 올라온 청년 뉴스 5개</h3>
+            <p>기본 필터를 통과한 청년 기사 중 게시시각이 최신인 순서입니다.</p>
           </div>
           <div class="home-urgent-list">{today_news_html}</div>
         </article>
@@ -6203,15 +6346,16 @@ def build_news_page(articles: list[dict], status: dict) -> str:
     recent_news_articles = filter_recent_articles(news_articles, page_updated_at, NEWS_WINDOW_HOURS)
     date_options = collect_article_dates(recent_news_articles)
     region_options = collect_news_regions(recent_news_articles)
+    topic_options = collect_news_topics(recent_news_articles)
     page_intro = render_compact_intro(
         "01 뉴스",
         "지역과 날짜 기준으로 최근 청년 뉴스를 빠르게 훑고, 선거·공약 성격이 강한 기사는 별도 탭으로 분리했습니다.",
         media_key="news",
     )
-    news_filter_panel = render_news_filter_panel(region_options, date_options, len(recent_news_articles))
+    news_filter_panel = render_news_filter_panel(region_options, topic_options, date_options, len(recent_news_articles))
     cards_html = "".join(render_article_card(article) for article in recent_news_articles)
     return f"""
-    <div data-news-filter-root="news" data-default-date-start="" data-default-date-end="" data-default-region="all" data-default-search-query="">
+    <div data-news-filter-root="news" data-default-date-start="" data-default-date-end="" data-default-region="all" data-default-topic="all" data-default-search-query="">
       {page_intro}
       {news_filter_panel}
       <section class="section">
@@ -6237,14 +6381,15 @@ def build_election_page(articles: list[dict], status: dict) -> str:
     recent_election_articles = filter_recent_articles(election_articles, page_updated_at, ELECTION_WINDOW_HOURS)
     date_options = collect_article_dates(recent_election_articles)
     region_options = collect_news_regions(recent_election_articles)
+    topic_options = collect_news_topics(recent_election_articles)
     page_intro = render_compact_intro(
         "02 선거·공약",
         "지방선거 시기에는 청년 공약과 선거성 기사를 이 탭으로 분리해, 일반 뉴스와 정책 흐름을 더 또렷하게 보이게 했습니다.",
     )
-    election_filter_panel = render_news_filter_panel(region_options, date_options, len(recent_election_articles))
+    election_filter_panel = render_news_filter_panel(region_options, topic_options, date_options, len(recent_election_articles))
     cards_html = "".join(render_article_card(article) for article in recent_election_articles)
     return f"""
-    <div data-news-filter-root="election" data-default-date-start="" data-default-date-end="" data-default-region="all" data-default-search-query="">
+    <div data-news-filter-root="election" data-default-date-start="" data-default-date-end="" data-default-region="all" data-default-topic="all" data-default-search-query="">
       {page_intro}
       <section class="section">
         <article class="info-card">

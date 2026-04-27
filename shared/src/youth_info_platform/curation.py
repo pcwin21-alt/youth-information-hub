@@ -9,6 +9,7 @@ from .article_metadata import (
     detect_article_type,
     extract_issue_tags,
     extract_location_tags,
+    extract_youth_preview_text,
     infer_region,
     is_google_news_url,
     normalize_article_title,
@@ -81,6 +82,17 @@ BUCKET_LABELS = {
     "regional_issue": "지역 이슈",
     "governance": "거버넌스",
 }
+TOPIC_TAG_RULES: tuple[tuple[str, tuple[str, ...]], ...] = (
+    ("취업", ("취업", "채용", "일자리", "고용", "구직", "구직단념", "직무", "GSAT", "인턴")),
+    ("주거", ("주거", "주택", "월세", "전세", "임대", "기숙사", "보증금", "청년월세", "청년전세")),
+    ("노동", ("노동", "노동권", "근로", "임금", "직장", "계약", "부당해고", "괴롭힘", "노조")),
+    ("금융", ("금융", "대출", "부채", "자산형성", "적금", "도약계좌", "학자금", "상환", "신용회복")),
+    ("청년센터", ("청년센터", "청년공간", "청년허브", "청년일자리센터", "청년지원센터", "청년재단")),
+    ("모집", ("모집", "신청", "접수", "선발", "공고", "참여자", "지원자", "대상자", "모집공고")),
+    ("복지", ("복지", "돌봄", "자립", "상담", "마음건강", "고립", "은둔", "생활비", "지원금")),
+    ("창업", ("창업", "예비창업", "초기창업", "스타트업", "벤처", "창업기업", "청년농업인")),
+    ("지역정착", ("지역정착", "지역 정착", "관계인구", "생활인구", "인구소멸", "지역소멸", "소멸위기", "빈집", "지역활력", "지역재생", "청년마을", "꿈터")),
+)
 NON_POLITICAL_HUB_EXCLUDE_KEYWORDS = tuple(
     keyword for keyword in HUB_EXCLUDE_KEYWORDS if keyword not in POLITICAL_HUB_EXCLUDE_KEYWORDS
 )
@@ -191,6 +203,15 @@ POLITICAL_ATTACK_KEYWORDS = (
 
 def _contains_any(text: str, keywords: list[str] | tuple[str, ...]) -> bool:
     return any(keyword in text for keyword in keywords)
+
+
+def classify_topic_tags(text: str, *, limit: int = 2) -> list[str]:
+    scored_tags: list[tuple[int, int, str]] = []
+    for priority, (label, keywords) in enumerate(TOPIC_TAG_RULES):
+        score = sum(1 for keyword in keywords if keyword in text)
+        if score:
+            scored_tags.append((-score, priority, label))
+    return [label for _, _, label in sorted(scored_tags)[:limit]]
 
 
 def has_youth_keyword_signal(text: str) -> bool:
@@ -344,6 +365,8 @@ def is_public_interest_article(article: dict[str, Any], text: str | None = None)
     prominent = _article_prominent_text(article)
     if article.get("is_noise") or article.get("article_type") == "opinion":
         return False
+    if article.get("missing_youth_content_signal"):
+        return False
     if article.get("campaign_attack") or has_political_attack_signal(article_text):
         return False
     if article.get("weak_youth_signal"):
@@ -446,9 +469,10 @@ def classify_articles(articles: list[dict]) -> list[dict]:
     for raw_article in articles:
         article = normalize_article_record(raw_article)
         text = _article_text(article)
-        issue_tags = list(dict.fromkeys((article.get("issue_tags") or []) + extract_issue_tags(text)))
-        location_tags = list(dict.fromkeys((article.get("location_tags") or []) + extract_location_tags(text)))
-        region = article.get("region") or infer_region(text, location_tags)
+        content_text = _article_content_text(article)
+        issue_tags = list(dict.fromkeys((article.get("issue_tags") or []) + extract_issue_tags(content_text)))
+        location_tags = list(dict.fromkeys((article.get("location_tags") or []) + extract_location_tags(content_text)))
+        region = article.get("region") or infer_region(content_text, location_tags)
         if not region:
             region = NATIONWIDE_REGION
 
@@ -460,12 +484,16 @@ def classify_articles(articles: list[dict]) -> list[dict]:
         campaign_political = has_campaign_political_signal(text)
         substantive_promise = has_substantive_promise_signal(text)
         campaign_attack = has_political_attack_signal(text)
-        weak_youth_signal = is_weak_youth_signal(article, text)
-        has_policy_operational_context = has_policy_or_operational_youth_context(text)
-        governance_activity_types = extract_governance_activity_types(text)
-        governance_scope = extract_governance_scope(article, text, governance_activity_types)
-        hub_topics = extract_hub_topics(text, governance_scope)
-        hub_owner_label = extract_hub_owner_label(article, text, governance_scope, region)
+        is_official = article.get("source_kind") == "official" or article_type == "official"
+        has_youth_content_signal = _contains_any(content_text, YOUTH_RELATED_KEYWORDS)
+        missing_youth_content_signal = not is_official and not has_youth_content_signal
+        topic_tags = list(dict.fromkeys((article.get("topic_tags") or []) + classify_topic_tags(content_text)))
+        weak_youth_signal = False if missing_youth_content_signal else is_weak_youth_signal(article, content_text)
+        has_policy_operational_context = has_policy_or_operational_youth_context(content_text)
+        governance_activity_types = extract_governance_activity_types(content_text)
+        governance_scope = extract_governance_scope(article, content_text, governance_activity_types)
+        hub_topics = extract_hub_topics(content_text, governance_scope)
+        hub_owner_label = extract_hub_owner_label(article, content_text, governance_scope, region)
         hub_cluster_key = build_hub_cluster_key(
             article,
             governance_scope=governance_scope,
@@ -474,7 +502,6 @@ def classify_articles(articles: list[dict]) -> list[dict]:
             hub_topics=hub_topics,
             governance_activity_types=governance_activity_types,
         )
-        is_official = article.get("source_kind") == "official" or article_type == "official"
         has_policy_signal = is_official or any(keyword in text for keyword in OFFICIAL_KEYWORDS)
 
         categories: list[str] = []
@@ -490,7 +517,7 @@ def classify_articles(articles: list[dict]) -> list[dict]:
             categories.append(CATEGORY_NOW)
 
         ordered_categories = [category for category in CATEGORIES if category in categories]
-        is_noise = False if is_official else detect_noise(text) or weak_youth_signal
+        is_noise = False if is_official else detect_noise(content_text) or weak_youth_signal or missing_youth_content_signal
         pipeline_flags = {
             **article.get("pipeline_flags", {}),
             "collected": True,
@@ -506,9 +533,12 @@ def classify_articles(articles: list[dict]) -> list[dict]:
                 "categories": ordered_categories,
                 "region": region,
                 "issue_tags": issue_tags,
+                "topic_tags": topic_tags[:2],
                 "location_tags": location_tags,
                 "article_type": article_type,
                 "is_noise": is_noise,
+                "has_youth_content_signal": has_youth_content_signal,
+                "missing_youth_content_signal": missing_youth_content_signal,
                 "weak_youth_signal": weak_youth_signal,
                 "campaign_political": campaign_political,
                 "substantive_promise": substantive_promise,
@@ -918,9 +948,12 @@ def build_hub_cluster_key(
 
 def build_summary(article: dict) -> str:
     lead = " ".join((article.get("lead_text") or "").split())
+    preview = article.get("youth_excerpt") or extract_youth_preview_text(article, limit=160)
     primary_category = (article.get("categories") or [CATEGORY_NOW])[0]
-    first_line = f"[{primary_category}] {article.get('title', '제목 없음')}"
-    second_line = lead[:120] if lead else "본문 보강이 필요한 기사입니다."
+    topic_text = ", ".join(article.get("topic_tags") or [])
+    headline_prefix = f"{primary_category} · {topic_text}" if topic_text else primary_category
+    first_line = f"[{headline_prefix}] {article.get('title', '제목 없음')}"
+    second_line = (preview or lead)[:120] if (preview or lead) else "본문 보강이 필요한 기사입니다."
     third_line = f'지역 {article.get("region", NATIONWIDE_REGION)} / 출처 {article.get("source", "미상")}'
     return "\n".join([first_line, second_line, third_line])
 
@@ -1099,7 +1132,7 @@ def _published_timestamp(value: str | None) -> float:
 def _is_candidate(article: dict) -> bool:
     if article.get("source_kind") == "official":
         return True
-    text = _article_text(article)
+    text = _article_content_text(article)
     if article.get("issue_tags"):
         return True
     if has_meaningful_youth_context(article, text):
@@ -1130,16 +1163,47 @@ def _is_same_story(left: dict[str, Any], right: dict[str, Any]) -> bool:
     return True
 
 
-def _article_text(article: dict[str, Any]) -> str:
+def _article_content_text(article: dict[str, Any]) -> str:
     authors = " ".join(article.get("authors") or [])
     return " ".join(
         part
         for part in [
-            article.get("title", "") or "",
-            article.get("lead_text", "") or "",
-            article.get("section", "") or "",
-            article.get("body_text", "") or "",
+            _strip_source_markers(article.get("title", "") or "", article),
+            _strip_source_markers(article.get("summary", "") or "", article),
+            _strip_source_markers(article.get("lead_text", "") or "", article),
+            _strip_source_markers(article.get("section", "") or "", article),
+            _strip_source_markers(article.get("body_text", "") or "", article),
             authors,
+        ]
+        if part
+    )
+
+
+def _strip_source_markers(value: str, article: dict[str, Any]) -> str:
+    text = normalize_article_title(value)
+    if not text:
+        return ""
+    source_values = [
+        normalize_article_title(candidate)
+        for candidate in (
+            article.get("source"),
+            article.get("source_name"),
+            article.get("publisher_domain"),
+        )
+        if normalize_article_title(candidate)
+    ]
+    for source in sorted(set(source_values), key=len, reverse=True):
+        escaped = re.escape(source)
+        text = re.sub(rf"^\s*[\[【〈(<［]\s*{escaped}\s*[\]】〉)>］]\s*", "", text)
+        text = re.sub(rf"\s*[-|·]\s*{escaped}\s*$", "", text)
+    return normalize_article_title(text)
+
+
+def _article_text(article: dict[str, Any]) -> str:
+    return " ".join(
+        part
+        for part in [
+            _article_content_text(article),
             article.get("source", "") or "",
             article.get("source_name", "") or "",
         ]

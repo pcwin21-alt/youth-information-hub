@@ -45,9 +45,11 @@ def build_article_funnel(
         entry["section"] = normalized.get("section") or entry.get("section")
         entry["article_type"] = normalized.get("article_type") or entry.get("article_type")
         entry["authors"] = list(dict.fromkeys((entry.get("authors") or []) + (normalized.get("authors") or [])))
+        entry["youth_excerpt"] = normalized.get("youth_excerpt") or entry.get("youth_excerpt")
         entry["categories"] = normalized.get("categories") or entry.get("categories") or []
         entry["region"] = normalized.get("region") or entry.get("region")
         entry["issue_tags"] = list(dict.fromkeys((entry.get("issue_tags") or []) + (normalized.get("issue_tags") or [])))
+        entry["topic_tags"] = list(dict.fromkeys((entry.get("topic_tags") or []) + (normalized.get("topic_tags") or [])))
         entry["location_tags"] = list(
             dict.fromkeys((entry.get("location_tags") or []) + (normalized.get("location_tags") or []))
         )
@@ -158,9 +160,11 @@ def _base_entry(article: dict[str, Any], key: str) -> dict[str, Any]:
         "section": article.get("section"),
         "article_type": article.get("article_type"),
         "authors": list(article.get("authors") or []),
+        "youth_excerpt": article.get("youth_excerpt"),
         "categories": list(article.get("categories") or []),
         "region": article.get("region"),
         "issue_tags": list(article.get("issue_tags") or []),
+        "topic_tags": list(article.get("topic_tags") or []),
         "location_tags": list(article.get("location_tags") or []),
         "governance_scope": article.get("governance_scope"),
         "governance_activity_types": list(article.get("governance_activity_types") or []),

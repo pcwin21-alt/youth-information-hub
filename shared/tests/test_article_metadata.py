@@ -11,6 +11,7 @@ if str(SHARED_SRC) not in sys.path:
 
 from youth_info_platform.article_metadata import (  # noqa: E402
     extract_meta_content,
+    extract_youth_preview_text,
     parse_generic_article_page,
     resolve_article_metadata,
 )
@@ -49,6 +50,49 @@ class ArticleMetadataTests(unittest.TestCase):
         self.assertEqual(parsed["title"], '경실련, \'봄 후원회\' 행사 성황리 개최···"연대와 화합의 장 마련"')
         self.assertEqual(parsed["canonical_url"], "https://www.ngonews.kr/news/articleView.html?idxno=228784")
 
+    def test_parse_generic_article_page_prefers_full_heading_when_meta_title_is_short(self) -> None:
+        parsed = parse_generic_article_page(
+            """
+            <html>
+              <head>
+                <meta property="og:title" content="순천시, 청년 자산 형성" />
+              </head>
+              <body>
+                <h1>순천시, 청년 자산 형성 '희망디딤돌 통장' 본격 가동</h1>
+                <article itemprop="articleBody">
+                  <p>순천시가 청년 희망디딤돌 통장사업 신규 대상자를 모집한다.</p>
+                </article>
+              </body>
+            </html>
+            """,
+            "https://example.com/news/1",
+        )
+
+        self.assertEqual(parsed["title"], "순천시, 청년 자산 형성 '희망디딤돌 통장' 본격 가동")
+
+    def test_parse_generic_article_page_extracts_json_ld_published_time(self) -> None:
+        parsed = parse_generic_article_page(
+            """
+            <html>
+              <head>
+                <meta property="og:title" content="Youth policy update" />
+                <meta name="date" content="2026-04-24" />
+                <script type="application/ld+json">
+                {
+                  "@context": "https://schema.org",
+                  "@type": "NewsArticle",
+                  "datePublished": "2026-04-24T11:08:44+09:00"
+                }
+                </script>
+              </head>
+              <body><p>청년 정책 기사 본문입니다.</p></body>
+            </html>
+            """,
+            "https://example.com/news/1",
+        )
+
+        self.assertEqual(parsed["publisher_published_at"], "2026-04-24T11:08:44+09:00")
+
     def test_resolve_article_metadata_strips_trailing_publisher_name_from_title(self) -> None:
         article = {
             "url": "https://www.ngonews.kr/news/articleView.html?idxno=228784",
@@ -73,6 +117,59 @@ class ArticleMetadataTests(unittest.TestCase):
         )
 
         self.assertEqual(updated["title"], '경실련, \'봄 후원회\' 행사 성황리 개최···"연대와 화합의 장 마련"')
+
+    def test_resolve_article_metadata_promotes_publisher_published_time(self) -> None:
+        article = {
+            "url": "https://example.com/news/1",
+            "title": "Youth policy update",
+            "source": "Example News",
+            "source_name": "Example News",
+            "published_date": "2026-04-24T00:00:00+09:00",
+            "pipeline_flags": {},
+        }
+        updated = resolve_article_metadata(
+            article,
+            homepage_cache={},
+            page_cache={
+                article["url"]: {
+                    "title": "Youth policy update",
+                    "canonical_url": article["url"],
+                    "publisher_url": article["url"],
+                    "publisher_domain": "example.com",
+                    "publisher_published_at": "2026-04-24T11:08:44+09:00",
+                }
+            },
+        )
+
+        self.assertEqual(updated["publisher_published_at"], "2026-04-24T11:08:44+09:00")
+        self.assertEqual(updated["published_date"], "2026-04-24T11:08:44+09:00")
+
+    def test_resolve_article_metadata_does_not_trust_unresolved_google_news_date(self) -> None:
+        article = {
+            "url": "https://news.google.com/rss/articles/example?oc=5",
+            "title": "Youth rent support starts",
+            "source": "Korea Policy Briefing",
+            "source_name": "Google News youth policy",
+            "published_date": "2026-04-25T02:45:17+00:00",
+            "pipeline_flags": {},
+        }
+
+        updated = resolve_article_metadata(article, homepage_cache={}, page_cache={})
+
+        self.assertIsNone(updated["published_date"])
+        self.assertIsNone(updated["publisher_published_at"])
+        self.assertEqual(updated["portal_published_at"], "2026-04-25T02:45:17+00:00")
+
+    def test_extract_youth_preview_text_prefers_sentence_with_youth_keyword(self) -> None:
+        article = {
+            "lead_text": "첫 문장은 행사 전체 개요입니다.",
+            "body_text": "첫 문장은 행사 전체 개요입니다. 청년 참여자에게 제공되는 지원 내용을 별도로 안내했습니다.",
+        }
+
+        excerpt = extract_youth_preview_text(article)
+
+        self.assertIn("청년 참여자", excerpt)
+        self.assertNotEqual(excerpt, article["lead_text"])
 
 
 if __name__ == "__main__":

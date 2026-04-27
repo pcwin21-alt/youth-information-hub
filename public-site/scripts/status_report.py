@@ -29,6 +29,7 @@ def main() -> int:
     auto_update_settings = read_json(RUNTIME_PIPELINE_ROOT / "auto_update_settings.json", default={})
     auto_update_status = read_json(RUNTIME_PIPELINE_ROOT / "auto_update_status.json", default={})
     wake_configuration_status = read_json(RUNTIME_PIPELINE_ROOT / "wake_configuration_status.json", default={})
+    article_date_audit = read_json(RUNTIME_PIPELINE_ROOT / "article_date_audit.json", default={})
     if not status:
         print("pipeline_status=missing")
         return 1
@@ -77,6 +78,14 @@ def main() -> int:
         print(f'wake_timers_ac={wake_configuration_status.get("wake_timers_ac")}')
         print(f'wake_timers_dc={wake_configuration_status.get("wake_timers_dc")}')
         print(f'wake_battery_mode={wake_configuration_status.get("battery_mode")}')
+    if article_date_audit:
+        print(f'article_date_audit_generated_at={article_date_audit.get("generated_at")}')
+        print(f'article_date_audit_errors={article_date_audit.get("error_count")}')
+        print(f'article_date_audit_warnings={article_date_audit.get("warning_count")}')
+        issues = article_date_audit.get("issues") or []
+        first_error = next((issue for issue in issues if issue.get("severity") == "error"), None)
+        if first_error:
+            print(f'article_date_audit_first_error={first_error.get("code")}:{first_error.get("title")}')
     print("steps:")
     for step in status.get("steps", []):
         print(format_step(step))

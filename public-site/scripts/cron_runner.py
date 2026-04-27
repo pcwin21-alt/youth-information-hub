@@ -3,6 +3,7 @@ from __future__ import annotations
 import argparse
 import json
 import os
+import shutil
 import subprocess
 import sys
 from datetime import datetime, timedelta, timezone
@@ -11,6 +12,9 @@ from pathlib import Path
 from _bootstrap import PUBLIC_SITE_ROOT, RUNTIME_DB_ROOT, RUNTIME_PIPELINE_ROOT
 
 from youth_info_platform.status_utils import complete_run, initialize_status, update_step
+
+
+SNAPSHOT_ARTIFACT_NAMES = ("step2_filtered.json", "step5_summarized.json", "pipeline_status.json")
 
 
 def run_step(command: list[str]) -> str:
@@ -54,6 +58,67 @@ def acquire_lock(lock_path: Path, stale_after_hours: int = 6) -> None:
 
 def release_lock(lock_path: Path) -> None:
     lock_path.unlink(missing_ok=True)
+
+
+def parse_status_time(value: str | None) -> datetime | None:
+    if not value:
+        return None
+    try:
+        parsed = datetime.fromisoformat(value)
+    except ValueError:
+        return None
+    if parsed.tzinfo is None:
+        return parsed.replace(tzinfo=timezone.utc).astimezone()
+    return parsed.astimezone()
+
+
+def safe_path_fragment(value: str) -> str:
+    cleaned = "".join(char if char.isalnum() or char in "-_" else "_" for char in value).strip("_")
+    return cleaned[:80] or datetime.now(timezone.utc).astimezone().strftime("%H%M%S")
+
+
+def archive_run_artifacts(status_path: Path) -> dict[str, object]:
+    try:
+        status = json.loads(status_path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        status = {}
+
+    started_at = parse_status_time(status.get("started_at"))
+    finished_at = parse_status_time(status.get("finished_at")) or datetime.now(timezone.utc).astimezone()
+    run_id = safe_path_fragment(status.get("run_id") or finished_at.strftime("%H%M%S"))
+    snapshot_dir = RUNTIME_PIPELINE_ROOT / "archive" / finished_at.date().isoformat() / run_id
+    snapshot_dir.mkdir(parents=True, exist_ok=True)
+
+    copied: list[str] = []
+    skipped_stale: list[str] = []
+    for artifact_name in SNAPSHOT_ARTIFACT_NAMES:
+        source_path = RUNTIME_PIPELINE_ROOT / artifact_name
+        if not source_path.exists():
+            continue
+
+        if artifact_name != "pipeline_status.json" and started_at is not None:
+            modified_at = datetime.fromtimestamp(source_path.stat().st_mtime, tz=timezone.utc).astimezone()
+            if modified_at < started_at - timedelta(minutes=1):
+                skipped_stale.append(artifact_name)
+                continue
+
+        shutil.copy2(source_path, snapshot_dir / artifact_name)
+        copied.append(artifact_name)
+
+    return {
+        "snapshot_dir": str(snapshot_dir),
+        "copied": copied,
+        "skipped_stale": skipped_stale,
+    }
+
+
+def print_archive_snapshot(snapshot: dict[str, object]) -> None:
+    copied = ",".join(snapshot.get("copied", [])) if snapshot.get("copied") else ""
+    skipped_stale = ",".join(snapshot.get("skipped_stale", [])) if snapshot.get("skipped_stale") else ""
+    print(f"archive_snapshot_dir={snapshot.get('snapshot_dir')}")
+    print(f"archive_snapshot_files={copied}")
+    if skipped_stale:
+        print(f"archive_snapshot_skipped_stale={skipped_stale}")
 
 
 def main() -> int:
@@ -111,6 +176,11 @@ def main() -> int:
                 },
             },
             {
+                "name": "audit_article_dates",
+                "command": [python, str(PUBLIC_SITE_ROOT / "scripts" / "audit_article_dates.py")],
+                "artifacts": {"article_date_audit": str(RUNTIME_PIPELINE_ROOT / "article_date_audit.json")},
+            },
+            {
                 "name": "publish_db",
                 "command": [python, str(PUBLIC_SITE_ROOT / "scripts" / "db_writer.py")],
                 "artifacts": {"articles_db": str(RUNTIME_DB_ROOT / "articles.db")},
@@ -158,11 +228,13 @@ def main() -> int:
             artifacts=entry["artifacts"],
         )
         complete_run(status_path, success=False, error=(error.stderr or str(error)).strip())
+        print_archive_snapshot(archive_run_artifacts(status_path))
         raise
     finally:
         release_lock(lock_path)
 
     complete_run(status_path, success=True)
+    print_archive_snapshot(archive_run_artifacts(status_path))
     run_step([python, str(PUBLIC_SITE_ROOT / "scripts" / "web_updater.py")])
     print("pipeline=completed")
     return 0

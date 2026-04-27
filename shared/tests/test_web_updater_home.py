@@ -30,6 +30,7 @@ def make_article(
     editorial_is_highlighted: bool = False,
     region: str = "",
     source_kind: str = "news",
+    topic_tags: list[str] | None = None,
 ) -> dict:
     return {
         "url": url,
@@ -46,6 +47,7 @@ def make_article(
         "is_noise": False,
         "article_type": "news",
         "source_kind": source_kind,
+        "topic_tags": topic_tags or [],
         "region": region,
         "governance_scope": None,
         "importance_score": importance_score,
@@ -195,6 +197,144 @@ class HomeSelectionTests(unittest.TestCase):
         self.assertNotIn('<span class="home-glance-label">정책</span>', page_html)
         self.assertNotIn('<span class="home-glance-label">참여·회의</span>', page_html)
 
+    def test_home_latest_news_uses_published_date_not_importance_score(self) -> None:
+        older_high_score = make_article(
+            title="청년 주거 지원 오래된 고점수 기사",
+            lead_text="청년 주거 지원을 다룬 기사다.",
+            url="https://example.com/older-high-score",
+            published_date="2026-04-22T08:00:00+09:00",
+            importance_score=100,
+        )
+        newest_low_score = make_article(
+            title="청년센터 운영 최신 저점수 기사",
+            lead_text="청년센터 운영 변화를 다룬 기사다.",
+            url="https://example.com/newest-low-score",
+            published_date="2026-04-22T09:45:00+09:00",
+            importance_score=1,
+        )
+        middle_article = make_article(
+            title="청년 취업 지원 중간 기사",
+            lead_text="청년 취업 지원을 다룬 기사다.",
+            url="https://example.com/middle",
+            published_date="2026-04-22T09:00:00+09:00",
+            importance_score=50,
+        )
+
+        page_html = web_updater.build_home_page(
+            [older_high_score, newest_low_score, middle_article],
+            [older_high_score, newest_low_score, middle_article],
+            {"finished_at": self.reference_time},
+            {
+                "organization_name": "유스사이드(Youthside)",
+                "copyright_text": "© 2026 유스사이드 · 박진감",
+                "version_text": "v0.3",
+                "email": "hello@example.com",
+            },
+        )
+
+        self.assertIn("최근 올라온 청년 뉴스 5개", page_html)
+        self.assertNotIn("오늘 놓치면 안되는 뉴스 5가지", page_html)
+        self.assertLess(page_html.index(newest_low_score["title"]), page_html.index(middle_article["title"]))
+        self.assertLess(page_html.index(middle_article["title"]), page_html.index(older_high_score["title"]))
+
+    def test_home_latest_news_excludes_non_news_candidates(self) -> None:
+        visible_news = make_article(
+            title="청년 월세 지원 최신 일반 기사",
+            lead_text="청년 월세 지원 신청 소식을 다룬 기사다.",
+            url="https://example.com/visible-news",
+        )
+        official = make_article(
+            title="메인에 나오면 안 되는 공식 발표",
+            lead_text="청년 지원사업 공식 발표다.",
+            url="https://example.com/official",
+            source_kind="official",
+        )
+        official["is_official_source"] = True
+        noisy = make_article(
+            title="메인에 나오면 안 되는 노이즈 기사",
+            lead_text="청년과 무관한 단순 언급 기사다.",
+            url="https://example.com/noisy",
+        )
+        noisy["is_noise"] = True
+        opinion = make_article(
+            title="메인에 나오면 안 되는 오피니언",
+            lead_text="청년 정책에 대한 칼럼이다.",
+            url="https://example.com/opinion",
+        )
+        opinion["article_type"] = "opinion"
+        campaign = make_article(
+            title="메인에 나오면 안 되는 시장 후보 청년 공약 유세",
+            lead_text="후보가 청년 공약을 앞세워 유세에 나섰다.",
+            url="https://example.com/campaign",
+        )
+
+        page_html = web_updater.build_home_page(
+            [visible_news, official, noisy, opinion, campaign],
+            [visible_news, official, noisy, opinion, campaign],
+            {"finished_at": self.reference_time},
+            {
+                "organization_name": "유스사이드(Youthside)",
+                "copyright_text": "© 2026 유스사이드 · 박진감",
+                "version_text": "v0.3",
+                "email": "hello@example.com",
+            },
+        )
+
+        self.assertIn(visible_news["title"], page_html)
+        self.assertNotIn(official["title"], page_html)
+        self.assertNotIn(noisy["title"], page_html)
+        self.assertNotIn(opinion["title"], page_html)
+        self.assertNotIn(campaign["title"], page_html)
+
+    def test_home_categories_use_recent_48_hour_topic_tags(self) -> None:
+        recent_housing = make_article(
+            title="청년 월세 신청자 모집",
+            lead_text="청년 월세 신청자를 모집한다.",
+            url="https://example.com/recent-housing",
+            published_date="2026-04-22T09:00:00+09:00",
+            topic_tags=["주거", "모집"],
+        )
+        recent_housing_second = make_article(
+            title="청년 주택 지원 접수",
+            lead_text="청년 주택 지원 접수를 안내했다.",
+            url="https://example.com/recent-housing-second",
+            published_date="2026-04-21T12:00:00+09:00",
+            topic_tags=["주거"],
+        )
+        recent_job = make_article(
+            title="청년 일자리 안내",
+            lead_text="청년 일자리 지원사업을 안내했다.",
+            url="https://example.com/recent-job",
+            published_date="2026-04-21T11:00:00+09:00",
+            topic_tags=["취업"],
+        )
+        outside_window = make_article(
+            title="오래된 청년 자산형성 안내",
+            lead_text="오래된 청년 자산형성 지원 안내다.",
+            url="https://example.com/old-finance",
+            published_date="2026-04-20T08:30:00+09:00",
+            topic_tags=["금융"],
+        )
+
+        page_html = web_updater.build_home_page(
+            [recent_housing, recent_housing_second, recent_job, outside_window],
+            [recent_housing, recent_housing_second, recent_job, outside_window],
+            {"finished_at": self.reference_time},
+            {
+                "organization_name": "유스사이드(Youthside)",
+                "copyright_text": "© 2026 유스사이드 · 박진감",
+                "version_text": "v0.3",
+                "email": "hello@example.com",
+            },
+        )
+
+        self.assertIn("최근 많이 잡힌 카테고리", page_html)
+        self.assertIn("최근 48시간 기준입니다.", page_html)
+        self.assertNotIn("오늘 많이 잡힌 키워드", page_html)
+        self.assertIn("news.html?topic=%EC%A3%BC%EA%B1%B0", page_html)
+        self.assertIn("news.html?topic=%EC%B7%A8%EC%97%85", page_html)
+        self.assertNotIn("news.html?topic=%EA%B8%88%EC%9C%B5", page_html)
+
 
     def test_home_page_omits_weekly_section_and_uses_support_credit_badge(self) -> None:
         daily_issue = make_article(
@@ -312,6 +452,25 @@ class HomeSelectionTests(unittest.TestCase):
         weak_business_story["editorial_decision"] = "include"
         included_urls = {article["url"] for article in web_updater.filter_public_articles([weak_business_story])}
         self.assertIn(weak_business_story["url"], included_urls)
+
+    def test_news_page_renders_topic_tags_and_topic_filter(self) -> None:
+        article = make_article(
+            title="파주시, 청년월세 지원금 신청자 모집",
+            lead_text="파주시가 청년 주거 안정을 위해 월세 지원금 신청자를 모집한다.",
+            url="https://example.com/topic-news",
+            region="경기",
+        )
+        article["topic_tags"] = ["주거", "모집"]
+        article["categories"] = ["청년은 지금", "지역 이슈"]
+
+        page_html = web_updater.build_news_page([article], {"finished_at": self.reference_time})
+
+        self.assertIn('data-filter-group="topic" data-filter-value="주거"', page_html)
+        self.assertIn('data-article-topics="주거|모집"', page_html)
+        self.assertIn(">#주거</button>", page_html)
+        self.assertIn(">주거</span>", page_html)
+        self.assertLess(page_html.index(">주거</span>"), page_html.index(">경기</span>"))
+        self.assertNotIn(">오늘 이슈</span>", page_html)
 
 
 if __name__ == "__main__":

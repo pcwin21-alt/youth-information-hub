@@ -2,13 +2,15 @@ from __future__ import annotations
 
 import difflib
 import html
+import json
 import re
-from datetime import datetime
+from datetime import datetime, timedelta, timezone
+from email.utils import parsedate_to_datetime
 from typing import Any
 from urllib.parse import parse_qsl, urljoin, urlparse, urlunparse
 
 from .collect import fetch_url, strip_html
-from .constants import OPINION_KEYWORDS, REGIONS
+from .constants import OPINION_KEYWORDS, REGIONS, YOUTH_KEYWORDS
 
 
 GOOGLE_NEWS_HOSTS = {"news.google.com"}
@@ -59,6 +61,28 @@ BODY_CONTAINER_PATTERNS = [
     r'<div[^>]+class=["\'][^"\']*article[^"\']*body[^"\']*["\'][^>]*>(?P<body>.*?)</div>',
     r'<div[^>]+class=["\'][^"\']*article[^"\']*view[^"\']*body[^"\']*["\'][^>]*>(?P<body>.*?)</div>',
 ]
+HTML_ATTR_PATTERN = re.compile(
+    r'([^\s=/>]+)\s*=\s*(?:(["\'])(.*?)\2|([^\s>]+))',
+    re.IGNORECASE | re.DOTALL,
+)
+PUBLISHED_META_FIELDS = (
+    ("article:published_time", "property"),
+    ("og:article:published_time", "property"),
+    ("article:published", "property"),
+    ("datePublished", "itemprop"),
+    ("datePublished", "name"),
+    ("pubdate", "name"),
+    ("publishdate", "name"),
+    ("publish_date", "name"),
+    ("parsely-pub-date", "name"),
+    ("sailthru.date", "name"),
+    ("dc.date.issued", "name"),
+    ("dcterms.created", "name"),
+    ("originalpublicationdate", "name"),
+    ("date", "name"),
+)
+YOUTH_EXCERPT_KEYWORDS = tuple(dict.fromkeys(["청년", *YOUTH_KEYWORDS]))
+EXCERPT_BOUNDARY_CHARS = ".!?。！？"
 NATIONWIDE_REGION = "전국"
 LOCATION_STOPWORDS = {"다시", "예시", "실시", "지시", "변경시", "누구"}
 
@@ -175,6 +199,48 @@ def clean_metadata_title(value: str | None, article: dict[str, Any]) -> str:
     return cleaned or normalized
 
 
+def simplify_title_for_comparison(value: str | None) -> str:
+    normalized = normalize_article_title(value).lower()
+    return re.sub(r"[^0-9a-z가-힣]+", "", normalized)
+
+
+def should_prefer_richer_heading_title(base_title: str | None, heading_title: str | None) -> bool:
+    base = normalize_article_title(base_title)
+    heading = normalize_article_title(heading_title)
+    if not heading:
+        return False
+    if not base:
+        return True
+    if len(heading) <= len(base):
+        return False
+    simplified_base = simplify_title_for_comparison(base)
+    simplified_heading = simplify_title_for_comparison(heading)
+    return bool(simplified_base and simplified_base in simplified_heading)
+
+
+def extract_heading_titles(html_text: str) -> list[str]:
+    titles: list[str] = []
+    for match in re.finditer(r"<h1\b[^>]*>(?P<title>.*?)</h1>", html_text, re.IGNORECASE | re.DOTALL):
+        title = normalize_article_title(match.group("title"))
+        if title:
+            titles.append(title)
+    return list(dict.fromkeys(titles))
+
+
+def choose_article_page_title(base_title: str | None, heading_titles: list[str]) -> str:
+    title = normalize_article_title(base_title)
+    richer_headings = [
+        heading
+        for heading in heading_titles
+        if should_prefer_richer_heading_title(title, heading)
+    ]
+    if richer_headings:
+        return max(richer_headings, key=len)
+    if title:
+        return title
+    return max(heading_titles, key=len) if heading_titles else ""
+
+
 def title_similarity(left: str | None, right: str | None) -> float:
     return difflib.SequenceMatcher(
         a=normalize_article_title(left).lower(),
@@ -199,6 +265,18 @@ def normalize_article_record(article: dict[str, Any]) -> dict[str, Any]:
             canonical_url = normalize_tracking_url(publisher_url)
         else:
             canonical_url = normalize_tracking_url(url)
+    has_resolved_publisher_url = bool(publisher_url and not is_google_news_url(publisher_url))
+    has_resolved_canonical_url = bool(canonical_url and not is_google_news_url(canonical_url))
+    is_unresolved_google_news = is_google_news_url(url) and not (
+        has_resolved_publisher_url or has_resolved_canonical_url
+    )
+    published_date = record.get("published_date")
+    publisher_published_at = record.get("publisher_published_at") or published_date
+    portal_published_at = record.get("portal_published_at")
+    if is_unresolved_google_news:
+        portal_published_at = portal_published_at or publisher_published_at or published_date
+        published_date = None
+        publisher_published_at = None
 
     record.update(
         {
@@ -207,15 +285,18 @@ def normalize_article_record(article: dict[str, Any]) -> dict[str, Any]:
             "publisher_url": publisher_url,
             "portal_urls": portal_urls,
             "publisher_domain": record.get("publisher_domain") or source_domain,
-            "publisher_published_at": record.get("publisher_published_at") or record.get("published_date"),
-            "portal_published_at": record.get("portal_published_at"),
+            "published_date": published_date,
+            "publisher_published_at": publisher_published_at,
+            "portal_published_at": portal_published_at,
             "section": record.get("section"),
             "article_type": record.get("article_type"),
             "authors": list(dict.fromkeys(record.get("authors") or [])),
             "discovered_from": discovered_from,
             "resolved_at": record.get("resolved_at"),
             "body_text": record.get("body_text"),
+            "youth_excerpt": record.get("youth_excerpt") or extract_youth_preview_text(record),
             "issue_tags": list(dict.fromkeys(record.get("issue_tags") or [])),
+            "topic_tags": list(dict.fromkeys(record.get("topic_tags") or [])),
             "location_tags": list(dict.fromkeys(record.get("location_tags") or [])),
             "source_homepage_url": source_url,
             "pipeline_flags": {
@@ -260,18 +341,19 @@ def preferred_article_url(article: dict[str, Any]) -> str:
     return article.get("url") or ""
 
 
+def parse_html_attributes(tag_text: str) -> dict[str, str]:
+    attrs: dict[str, str] = {}
+    for attr_match in HTML_ATTR_PATTERN.finditer(tag_text):
+        value = attr_match.group(3) if attr_match.group(3) is not None else (attr_match.group(4) or "")
+        attrs[attr_match.group(1).lower()] = html.unescape(value).strip()
+    return attrs
+
+
 def extract_meta_content(html_text: str, key: str, attr_name: str = "name") -> str | None:
     attr_name = attr_name.lower()
     key = key.lower()
-    attr_pattern = re.compile(
-        r'([^\s=/>]+)\s*=\s*(?:(["\'])(.*?)\2|([^\s>]+))',
-        re.IGNORECASE | re.DOTALL,
-    )
     for match in re.finditer(r"<meta\b[^>]*>", html_text, re.IGNORECASE | re.DOTALL):
-        attrs: dict[str, str] = {}
-        for attr_match in attr_pattern.finditer(match.group(0)):
-            value = attr_match.group(3) if attr_match.group(3) is not None else (attr_match.group(4) or "")
-            attrs[attr_match.group(1).lower()] = html.unescape(value).strip()
+        attrs = parse_html_attributes(match.group(0))
         if attrs.get(attr_name, "").lower() == key and attrs.get("content"):
             return attrs["content"]
     return None
@@ -282,6 +364,227 @@ def extract_canonical_link(html_text: str) -> str | None:
     if not match:
         return None
     return html.unescape(match.group(1)).strip()
+
+
+def _kst_datetime(
+    year: str,
+    month: str,
+    day: str,
+    hour: str | None = None,
+    minute: str | None = None,
+    second: str | None = None,
+) -> str:
+    parsed = datetime(
+        int(year),
+        int(month),
+        int(day),
+        int(hour or 0),
+        int(minute or 0),
+        int(second or 0),
+        tzinfo=timezone(timedelta(hours=9)),
+    )
+    return parsed.isoformat()
+
+
+def normalize_published_datetime(value: Any) -> str | None:
+    if value is None:
+        return None
+    normalized = strip_html(str(value))
+    normalized = html.unescape(normalized)
+    normalized = re.sub(r"\s+", " ", normalized).strip(" \t\r\n[]()")
+    if not normalized:
+        return None
+
+    try:
+        parsed = datetime.fromisoformat(normalized.replace("Z", "+00:00"))
+        if parsed.tzinfo is None:
+            parsed = parsed.replace(tzinfo=timezone(timedelta(hours=9)))
+        return parsed.isoformat()
+    except ValueError:
+        pass
+
+    try:
+        return parsedate_to_datetime(normalized).isoformat()
+    except (TypeError, ValueError, IndexError):
+        pass
+
+    korean_match = re.search(
+        r"(\d{4})\s*년\s*(\d{1,2})\s*월\s*(\d{1,2})\s*일(?:\s*(\d{1,2})[:시]\s*(\d{1,2})?(?:[:분]\s*(\d{1,2}))?)?",
+        normalized,
+    )
+    if korean_match:
+        return _kst_datetime(*korean_match.groups())
+
+    numeric_match = re.search(
+        r"(\d{4})[./-](\d{1,2})[./-](\d{1,2})(?:[T\s.]+(\d{1,2}):(\d{2})(?::(\d{2}))?)?",
+        normalized,
+    )
+    if numeric_match:
+        return _kst_datetime(*numeric_match.groups())
+
+    return None
+
+
+def _iter_json_ld_nodes(value: Any) -> list[dict[str, Any]]:
+    nodes: list[dict[str, Any]] = []
+    if isinstance(value, dict):
+        nodes.append(value)
+        for nested in value.values():
+            nodes.extend(_iter_json_ld_nodes(nested))
+    elif isinstance(value, list):
+        for item in value:
+            nodes.extend(_iter_json_ld_nodes(item))
+    return nodes
+
+
+def _first_normalized_published_value(value: Any) -> str | None:
+    if isinstance(value, list):
+        for item in value:
+            if normalized := _first_normalized_published_value(item):
+                return normalized
+        return None
+    return normalize_published_datetime(value)
+
+
+def extract_json_ld_published_at(html_text: str) -> str | None:
+    pattern = re.compile(
+        r'<script[^>]+type=["\'][^"\']*ld\+json[^"\']*["\'][^>]*>(?P<payload>.*?)</script>',
+        re.IGNORECASE | re.DOTALL,
+    )
+    for match in pattern.finditer(html_text):
+        payload = html.unescape(match.group("payload")).strip()
+        payload = re.sub(r"^\s*<!--|-->\s*$", "", payload).strip()
+        if not payload:
+            continue
+        try:
+            parsed = json.loads(payload)
+        except json.JSONDecodeError:
+            continue
+        for node in _iter_json_ld_nodes(parsed):
+            for key in ("datePublished", "dateCreated", "uploadDate"):
+                if key in node:
+                    if normalized := _first_normalized_published_value(node.get(key)):
+                        return normalized
+    return None
+
+
+def extract_time_tag_published_at(html_text: str) -> str | None:
+    for match in re.finditer(r"<(?:time|span|div)\b[^>]*>", html_text, re.IGNORECASE | re.DOTALL):
+        attrs = parse_html_attributes(match.group(0))
+        marker_values = {
+            (attrs.get("itemprop") or "").lower(),
+            (attrs.get("property") or "").lower(),
+            (attrs.get("name") or "").lower(),
+        }
+        is_time_tag = match.group(0).lower().startswith("<time")
+        is_published_marker = bool(marker_values.intersection({"datepublished", "article:published_time"}))
+        if not is_time_tag and not is_published_marker:
+            continue
+        for attr_name in ("datetime", "content", "data-date", "data-published", "title"):
+            if normalized := normalize_published_datetime(attrs.get(attr_name)):
+                return normalized
+    return None
+
+
+def extract_published_datetime(html_text: str) -> str | None:
+    candidates: list[str] = []
+    for key, attr_name in PUBLISHED_META_FIELDS:
+        if normalized := normalize_published_datetime(extract_meta_content(html_text, key, attr_name)):
+            candidates.append(normalized)
+    for extractor in (extract_json_ld_published_at, extract_time_tag_published_at):
+        if normalized := extractor(html_text):
+            candidates.append(normalized)
+    for candidate in candidates:
+        if has_specific_time(candidate):
+            return candidate
+    return candidates[0] if candidates else None
+
+
+def has_specific_time(value: str | None) -> bool:
+    if not value:
+        return False
+    try:
+        parsed = datetime.fromisoformat(value.replace("Z", "+00:00"))
+    except ValueError:
+        return False
+    return any((parsed.hour, parsed.minute, parsed.second, parsed.microsecond))
+
+
+def should_use_publisher_published_at(current_value: str | None, publisher_value: str | None) -> bool:
+    if not publisher_value:
+        return False
+    if not current_value:
+        return True
+    if has_specific_time(publisher_value):
+        return True
+    return not has_specific_time(current_value)
+
+
+def normalize_excerpt_text(value: Any) -> str:
+    if value is None:
+        return ""
+    text = strip_html(str(value))
+    text = html.unescape(text)
+    return re.sub(r"\s+", " ", text).strip()
+
+
+def keyword_excerpt(text: Any, *, keywords: tuple[str, ...] = YOUTH_EXCERPT_KEYWORDS, limit: int = 220) -> str:
+    normalized = normalize_excerpt_text(text)
+    if not normalized:
+        return ""
+
+    lowered = normalized.lower()
+    matches = [
+        (index, keyword)
+        for keyword in keywords
+        if keyword and (index := lowered.find(keyword.lower())) >= 0
+    ]
+    if not matches:
+        return ""
+
+    keyword_index, keyword = min(matches, key=lambda item: item[0])
+    start = 0
+    for position in range(keyword_index - 1, -1, -1):
+        if normalized[position] in EXCERPT_BOUNDARY_CHARS:
+            start = position + 1
+            break
+
+    if keyword_index - start > limit // 2:
+        start = max(0, keyword_index - limit // 3)
+        while start > 0 and start < keyword_index and not normalized[start - 1].isspace():
+            start += 1
+
+    end = len(normalized)
+    keyword_end = keyword_index + len(keyword)
+    for position in range(keyword_end, len(normalized)):
+        if normalized[position] in EXCERPT_BOUNDARY_CHARS:
+            end = position + 1
+            break
+
+    if end - start < min(80, limit) and end < len(normalized):
+        end = min(len(normalized), start + limit)
+    if end - start > limit:
+        if keyword_index - start > limit // 3:
+            start = max(0, keyword_index - limit // 3)
+            while start > 0 and start < keyword_index and not normalized[start - 1].isspace():
+                start += 1
+        end = min(len(normalized), start + limit)
+
+    excerpt = normalized[start:end].strip()
+    if not excerpt:
+        return ""
+    if start > 0:
+        excerpt = "..." + excerpt.lstrip(" .,:;")
+    if end < len(normalized):
+        excerpt = excerpt.rstrip(" .,:;") + "..."
+    return excerpt
+
+
+def extract_youth_preview_text(article: dict[str, Any], *, limit: int = 220) -> str:
+    for field in ("lead_text", "body_text", "summary"):
+        if excerpt := keyword_excerpt(article.get(field), limit=limit):
+            return excerpt
+    return ""
 
 
 def extract_links_with_titles(html_text: str, base_url: str) -> list[tuple[str, str]]:
@@ -398,6 +701,7 @@ def parse_generic_article_page(html_text: str, source_url: str) -> dict[str, Any
         title_match = re.search(r"<title>(.*?)</title>", html_text, re.IGNORECASE | re.DOTALL)
         if title_match:
             title = normalize_article_title(title_match.group(1))
+    title = choose_article_page_title(title, extract_heading_titles(html_text))
 
     description = (
         extract_meta_content(html_text, "og:description", "property")
@@ -418,12 +722,7 @@ def parse_generic_article_page(html_text: str, source_url: str) -> dict[str, Any
             continue
         section_parts.append(cleaned)
     section = " > ".join(section_parts)
-    published_at = (
-        extract_meta_content(html_text, "article:published_time", "property")
-        or extract_meta_content(html_text, "og:article:published_time", "property")
-        or extract_meta_content(html_text, "datePublished", "itemprop")
-        or ""
-    )
+    published_at = extract_published_datetime(html_text)
     body_text = extract_body_text(html_text)
     author_values = [
         extract_meta_content(html_text, "author"),
@@ -444,6 +743,7 @@ def parse_generic_article_page(html_text: str, source_url: str) -> dict[str, Any
 
     merged_text = " ".join(part for part in [title or "", description, section, body_text] if part)
     location_tags = extract_location_tags(merged_text)
+    youth_excerpt = extract_youth_preview_text({"lead_text": description, "body_text": body_text})
     return {
         "title": title or None,
         "canonical_url": canonical_url,
@@ -457,6 +757,7 @@ def parse_generic_article_page(html_text: str, source_url: str) -> dict[str, Any
         "authors": list(dict.fromkeys(authors)),
         "lead_text": description or None,
         "body_text": body_text or None,
+        "youth_excerpt": youth_excerpt or None,
         "issue_tags": extract_issue_tags(merged_text),
         "location_tags": location_tags,
         "region": infer_region(merged_text, location_tags),
@@ -514,6 +815,7 @@ def resolve_article_metadata(
                 "section",
                 "article_type",
                 "body_text",
+                "youth_excerpt",
                 "region",
             ]:
                 if metadata.get(key):
@@ -521,6 +823,9 @@ def resolve_article_metadata(
                         updated[key] = clean_metadata_title(metadata[key], updated)
                     else:
                         updated[key] = metadata[key]
+            publisher_published_at = metadata.get("publisher_published_at")
+            if should_use_publisher_published_at(updated.get("published_date"), publisher_published_at):
+                updated["published_date"] = publisher_published_at
             if metadata.get("lead_text"):
                 updated["lead_text"] = metadata["lead_text"]
             updated["authors"] = list(dict.fromkeys((updated.get("authors") or []) + (metadata.get("authors") or [])))
@@ -551,6 +856,8 @@ def resolve_article_metadata(
         updated["location_tags"] = extract_location_tags(text_for_classification)
     if updated.get("region") in {None, "", NATIONWIDE_REGION}:
         updated["region"] = infer_region(text_for_classification, updated.get("location_tags") or [])
+    if excerpt := extract_youth_preview_text(updated):
+        updated["youth_excerpt"] = excerpt
     updated["resolved_at"] = datetime.now().astimezone().isoformat()
     return updated
 

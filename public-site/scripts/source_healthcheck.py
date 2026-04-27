@@ -8,6 +8,7 @@ from youth_info_platform.collect import (
     fetch_source_items,
     load_source_config,
 )
+from youth_info_platform.date_audit import audit_article_dates
 from youth_info_platform.io_utils import write_json
 
 
@@ -15,11 +16,15 @@ def inspect_source(source: dict) -> dict:
     try:
         items = fetch_source_items(source)
         filtered = apply_source_filters(items, source)
+        date_issues = audit_article_dates(filtered, context=source["name"])
         return {
             "name": source["name"],
             "status": "ok",
             "total_items": len(items),
             "filtered_items": len(filtered),
+            "date_error_count": sum(1 for issue in date_issues if issue.get("severity") == "error"),
+            "date_warning_count": sum(1 for issue in date_issues if issue.get("severity") == "warning"),
+            "date_issues": date_issues[:20],
             "sample_titles": [item["title"] for item in filtered[:3]],
         }
     except ValueError as error:
@@ -29,6 +34,9 @@ def inspect_source(source: dict) -> dict:
                 "status": "unsupported_parser",
                 "total_items": 0,
                 "filtered_items": 0,
+                "date_error_count": 0,
+                "date_warning_count": 0,
+                "date_issues": [],
                 "sample_titles": [],
             }
         raise
@@ -38,6 +46,9 @@ def inspect_source(source: dict) -> dict:
             "status": f"error:{error.__class__.__name__}",
             "total_items": 0,
             "filtered_items": 0,
+            "date_error_count": 0,
+            "date_warning_count": 0,
+            "date_issues": [],
             "sample_titles": [],
         }
 
@@ -55,6 +66,9 @@ def main() -> int:
                     "status": "disabled",
                     "total_items": 0,
                     "filtered_items": 0,
+                    "date_error_count": 0,
+                    "date_warning_count": 0,
+                    "date_issues": [],
                     "sample_titles": [],
                 }
             )
@@ -63,7 +77,8 @@ def main() -> int:
         report.append(entry)
         print(
             f'- {entry["name"]}: {entry["status"]} / '
-            f'total_items={entry["total_items"]} / filtered_items={entry["filtered_items"]}'
+            f'total_items={entry["total_items"]} / filtered_items={entry["filtered_items"]} / '
+            f'date_errors={entry["date_error_count"]}'
         )
     output_path = RUNTIME_PIPELINE_ROOT / "source_healthcheck.json"
     write_json(

@@ -31,6 +31,7 @@ NAVER_INTERNAL_HOSTS = {
     "news.naver.com",
     "n.news.naver.com",
 }
+GOOGLE_NEWS_HOSTS = {"news.google.com"}
 NAVER_IGNORED_TEXTS = {
     "",
     "언론사 선정",
@@ -38,6 +39,12 @@ NAVER_IGNORED_TEXTS = {
     "Keep에 바로가기",
 }
 ParserFn = Callable[[str, dict[str, Any]], list[dict[str, Any]]]
+
+
+def is_google_news_feed_url(url: str | None) -> bool:
+    if not url:
+        return False
+    return urlparse(url).netloc.lower() in GOOGLE_NEWS_HOSTS
 
 
 def resolve_command(*candidates: str) -> str:
@@ -185,7 +192,9 @@ def parse_feed(feed_text: str, source_name: str, source_kind: str) -> list[dict[
             link_node = item.find("{http://www.w3.org/2005/Atom}link")
             if link_node is not None:
                 url = link_node.attrib.get("href")
-        source_node = item.find("source") or item.find("{http://www.w3.org/2005/Atom}source")
+        source_node = item.find("source")
+        if source_node is None:
+            source_node = item.find("{http://www.w3.org/2005/Atom}source")
         publisher = strip_html(
             _find_text(item, ["source", "{http://www.w3.org/2005/Atom}source"]) or ""
         )
@@ -219,18 +228,22 @@ def parse_feed(feed_text: str, source_name: str, source_kind: str) -> list[dict[
         for suffix in ["> 뉴스", "| 뉴스", "- 뉴스"]:
             if cleaned_title.endswith(suffix):
                 cleaned_title = cleaned_title[: -len(suffix)].strip()
-        articles.append(
-            {
-                "title": cleaned_title,
-                "url": url.strip(),
-                "source": publisher or source_name,
-                "source_name": source_name,
-                "source_kind": source_kind,
-                "source_url": publisher_homepage_url,
-                "published_date": _parse_published(published),
-                "lead_text": strip_html(description)[:200],
-            }
-        )
+        article_url = url.strip()
+        parsed_published = _parse_published(published)
+        is_google_news_item = is_google_news_feed_url(article_url)
+        article = {
+            "title": cleaned_title,
+            "url": article_url,
+            "source": publisher or source_name,
+            "source_name": source_name,
+            "source_kind": source_kind,
+            "source_url": publisher_homepage_url,
+            "published_date": None if is_google_news_item else parsed_published,
+            "lead_text": strip_html(description)[:200],
+        }
+        if is_google_news_item:
+            article["portal_published_at"] = parsed_published
+        articles.append(article)
     return articles
 
 

@@ -11,6 +11,7 @@ if str(SHARED_SRC) not in sys.path:
 
 from youth_info_platform.curation import (  # noqa: E402
     classify_articles,
+    deduplicate_and_filter,
     has_campaign_political_signal,
     has_public_institution_context,
     has_substantive_promise_signal,
@@ -90,6 +91,61 @@ class HomeSignalTests(unittest.TestCase):
 
         self.assertTrue(classified["weak_youth_signal"])
         self.assertTrue(classified["is_noise"])
+
+    def test_source_name_youth_keyword_does_not_make_article_relevant(self) -> None:
+        article = make_article(
+            title="대구 남구센터, 도전지원사업 기업탐방 실시",
+            lead_text="대구 남구센터는 외부연계활동의 일환으로 참여자들과 기업탐방 프로그램을 실시했다.",
+        )
+        article["source"] = "뉴스핌"
+        article["source_name"] = "네이버뉴스 청년정책(1주)"
+        article["body_text"] = article["lead_text"]
+
+        classified = classify_articles([article])[0]
+        selected, prepared = select_articles([classified], limit=1)
+
+        self.assertFalse(classified["has_youth_content_signal"])
+        self.assertTrue(classified["missing_youth_content_signal"])
+        self.assertTrue(classified["is_noise"])
+        self.assertFalse(classified["is_public_interest_article"])
+        self.assertEqual(selected, [])
+        self.assertEqual(prepared[0]["drop_reason"], "noise_filtered")
+        self.assertEqual(deduplicate_and_filter([article]), [])
+
+    def test_source_prefix_youth_keyword_does_not_make_article_relevant(self) -> None:
+        article = make_article(
+            title="[청년일보] 삼성, 2026년 상반기 GSAT 실시",
+            lead_text="삼성전자 관계사가 입사 지원자를 대상으로 직무적성검사를 실시했다.",
+        )
+        article["source"] = "청년일보"
+        article["source_name"] = "청년일보"
+        article["body_text"] = article["lead_text"]
+
+        classified = classify_articles([article])[0]
+
+        self.assertFalse(classified["has_youth_content_signal"])
+        self.assertTrue(classified["missing_youth_content_signal"])
+        self.assertTrue(classified["is_noise"])
+
+    def test_topic_tags_are_assigned_without_ai(self) -> None:
+        article = make_article(
+            title="파주시, 1분기 청년월세 지원금 지급",
+            lead_text="파주시가 청년 주거 안정을 위해 청년월세 지원금 신청자를 모집하고 지원금을 지급했다.",
+        )
+
+        classified = classify_articles([article])[0]
+
+        self.assertEqual(classified["topic_tags"], ["주거", "모집"])
+
+    def test_regional_settlement_topic_is_assigned_without_ai(self) -> None:
+        article = make_article(
+            title="불 꺼진 빈집, 청년의 꿈터로 되살린다",
+            lead_text="전남이 인구소멸 위기에 처한 지역에 청년 관계인구 유입 정책을 추진한다.",
+        )
+
+        classified = classify_articles([article])[0]
+
+        self.assertIn("지역정착", classified["topic_tags"])
 
     def test_substantive_promise_can_survive_selection_over_pure_campaign_piece(self) -> None:
         pure_campaign = make_article(
