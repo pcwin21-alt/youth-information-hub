@@ -18,6 +18,12 @@ def require_file(path: Path) -> None:
         raise SystemExit(f"missing_required_file:{path}")
 
 
+def load_optional_json(path: Path, default: object) -> object:
+    if not path.exists():
+        return default
+    return load_json(path)
+
+
 def count_marker(path: Path, marker: str) -> int:
     return path.read_text(encoding="utf-8-sig").count(marker)
 
@@ -54,10 +60,7 @@ def main() -> int:
     web_root = Path(args.web_root)
 
     require_file(status_file)
-    require_file(classified_file)
-    require_file(selected_file)
     require_file(summarized_file)
-    require_file(funnel_file)
     # Prebuilt Pages deploys also depend on the checked-in ops radar artifact.
     require_file(ops_radar_file)
     require_file(web_root / "index.html")
@@ -68,10 +71,10 @@ def main() -> int:
     require_file(web_root / "contact.html")
 
     status = load_json(status_file)
-    classified = load_json(classified_file)
-    selected = load_json(selected_file)
+    classified = load_optional_json(classified_file, [])
+    selected = load_optional_json(selected_file, [])
     summarized = load_json(summarized_file)
-    funnel = load_json(funnel_file)
+    funnel = load_optional_json(funnel_file, [])
     ops_radar = load_json(ops_radar_file)
 
     if not isinstance(status, dict):
@@ -86,11 +89,11 @@ def main() -> int:
         raise SystemExit("invalid_ops_radar_payload")
     if not isinstance(ops_radar.get("items"), list):
         raise SystemExit("invalid_ops_radar_items")
-    if not isinstance(classified, list):
+    if classified_file.exists() and not isinstance(classified, list):
         raise SystemExit("invalid_classified_payload")
-    if not isinstance(selected, list):
+    if selected_file.exists() and not isinstance(selected, list):
         raise SystemExit("invalid_selected_payload")
-    if not isinstance(funnel, list):
+    if funnel_file.exists() and not isinstance(funnel, list):
         raise SystemExit("invalid_funnel_payload")
     if len(summarized) < args.min_articles:
         raise SystemExit(

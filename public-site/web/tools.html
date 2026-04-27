@@ -7,7 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;800&display=swap" rel="stylesheet">
-  <link rel="icon" type="image/svg+xml" href="assets/branding/youth-together-mark.svg">
+  <link rel="icon" type="image/svg+xml" href="assets/branding/youth-together-mark.svg?v=20260424-visual-refresh-2">
   <style>
   :root {
     --page-bg: #e8e1d8;
@@ -101,8 +101,8 @@
   .brand-title {
     display: block;
     color: var(--ink);
-    font-size: 2.24rem;
-    font-weight: 800;
+    font-size: 1.78rem;
+    font-weight: 650;
     line-height: 1;
     letter-spacing: 0;
     white-space: nowrap;
@@ -110,7 +110,7 @@
   .brand-sub {
     display: block;
     color: var(--muted);
-    font-size: 0.92rem;
+    font-size: 0.78rem;
     font-weight: 500;
     line-height: 1.25;
     word-break: keep-all;
@@ -969,12 +969,16 @@
   }
   .home-briefing-title {
     margin: 0;
-    font-size: clamp(2.5rem, 8vw, 4.8rem);
-    line-height: 0.95;
-    letter-spacing: -0.07em;
-    max-width: 8ch;
+    font-size: 3.22rem;
+    font-weight: 650;
+    line-height: 1.03;
+    letter-spacing: 0;
+    max-width: 11em;
     white-space: normal;
-    text-wrap: balance;
+  }
+  .home-briefing-title-line {
+    display: block;
+    white-space: nowrap;
   }
   .home-briefing-copy {
     margin: 0;
@@ -1001,7 +1005,7 @@
     min-width: 0;
   }
   .home-briefing-card.lead-arch.has-media {
-    padding-right: clamp(164px, 36%, 236px);
+    padding-right: clamp(188px, 39%, 272px);
     min-height: 312px;
   }
   .home-briefing-card > .home-illustration-slot {
@@ -1011,8 +1015,8 @@
     z-index: 0;
   }
   .home-illustration-slot {
-    width: clamp(142px, 30%, 214px);
-    max-width: 42%;
+    width: clamp(168px, 34%, 250px);
+    max-width: 48%;
     pointer-events: none;
   }
   .home-illustration-slot img {
@@ -1975,17 +1979,17 @@
       padding: 18px 32px;
     }
     .brand {
-      grid-template-columns: 86px minmax(0, 1fr);
-      column-gap: 16px;
+      grid-template-columns: 82px minmax(0, 1fr);
+      column-gap: 15px;
     }
     .brand-logo {
-      width: 86px;
+      width: 82px;
     }
     .brand-title {
-      font-size: 2.76rem;
+      font-size: 2.26rem;
     }
     .brand-sub {
-      font-size: 1rem;
+      font-size: 0.88rem;
     }
     .section {
       margin-top: 42px;
@@ -2092,7 +2096,7 @@
       border-radius: 46px 132px 44px 58px;
     }
     .home-briefing-card.lead-arch.has-media {
-      padding-right: clamp(188px, 30%, 252px);
+      padding-right: clamp(218px, 34%, 296px);
     }
     .home-briefing-card.digest-organic {
       border-radius: 40px 34px 104px 40px;
@@ -2111,7 +2115,7 @@
       bottom: 4px;
     }
     .home-illustration-slot {
-      width: clamp(170px, 30%, 236px);
+      width: clamp(202px, 32%, 276px);
     }
     .page-intro-card.has-media {
       grid-template-columns: minmax(0, 1fr) 124px;
@@ -2189,10 +2193,10 @@
       width: 70px;
     }
     .brand-title {
-      font-size: 1.92rem;
+      font-size: 1.48rem;
     }
     .brand-sub {
-      font-size: 0.82rem;
+      font-size: 0.7rem;
     }
     .topbar-side {
       display: grid;
@@ -2247,12 +2251,12 @@
       margin: 4px 0 -6px auto;
     }
     .home-illustration-slot {
-      width: min(148px, 42vw);
-      max-width: 58%;
+      width: min(184px, 52vw);
+      max-width: 70%;
     }
     .home-briefing-title {
-      font-size: clamp(2.05rem, 9.8vw, 3.25rem);
-      letter-spacing: -0.05em;
+      font-size: 2.18rem;
+      letter-spacing: 0;
     }
     .home-briefing-copy {
       max-width: 100%;
@@ -2301,10 +2305,10 @@
       width: 60px;
     }
     .brand-title {
-      font-size: 1.6rem;
+      font-size: 1.24rem;
     }
     .brand-sub {
-      font-size: 0.72rem;
+      font-size: 0.62rem;
     }
     .header-side strong {
       font-size: 0.88rem;
@@ -2336,7 +2340,7 @@
   <div class="shell">
     <header class="topbar">
 <a class="brand" href="index.html" aria-label="청년 모아봄 홈으로 이동">
-        <img class="brand-logo" src="assets/branding/youth-together-mark.svg" alt="">
+        <img class="brand-logo" src="assets/branding/youth-together-mark.svg?v=20260424-visual-refresh-2" alt="">
         <div class="brand-copy">
           <span class="brand-title">청년 모아봄</span>
           <span class="brand-sub">오늘의 청년 정책과 이슈를 모아봅니다</span>
@@ -2612,7 +2616,7 @@
     return normalizedQuery ? `검색 "${normalizedQuery}"` : '';
   }
 
-  function applyNewsFilters(root, selectedDateStart, selectedDateEnd, selectedRegion, selectedQuery) {
+  function applyNewsFilters(root, selectedDateStart, selectedDateEnd, selectedRegion, selectedTopic, selectedQuery) {
     const normalizedDates = normalizeNewsDateRange(
       selectedDateStart ?? root.dataset.selectedDateStart ?? root.getAttribute('data-default-date-start') ?? '',
       selectedDateEnd ?? root.dataset.selectedDateEnd ?? root.getAttribute('data-default-date-end') ?? '',
@@ -2621,12 +2625,14 @@
     const activeDateEnd = normalizedDates.endDate;
     const hasDateRange = Boolean(activeDateStart || activeDateEnd);
     const activeRegion = selectedRegion || root.dataset.selectedRegion || root.getAttribute('data-default-region') || 'all';
+    const activeTopic = selectedTopic || root.dataset.selectedTopic || root.getAttribute('data-default-topic') || 'all';
     const activeQuery = normalizeSearchQuery(
       selectedQuery ?? root.dataset.selectedSearchQuery ?? root.getAttribute('data-default-search-query') ?? ''
     );
     root.dataset.selectedDateStart = activeDateStart;
     root.dataset.selectedDateEnd = activeDateEnd;
     root.dataset.selectedRegion = activeRegion;
+    root.dataset.selectedTopic = activeTopic;
     root.dataset.selectedSearchQuery = activeQuery;
 
     const articleCards = Array.from(root.querySelectorAll('[data-article-date]'));
@@ -2635,12 +2641,14 @@
     articleCards.forEach((card) => {
       const articleDate = card.getAttribute('data-article-date') || '';
       const articleRegion = card.getAttribute('data-article-region') || '중앙';
+      const articleTopics = (card.getAttribute('data-article-topics') || '').split('|').filter(Boolean);
       const isAfterStart = !activeDateStart || (articleDate && articleDate >= activeDateStart);
       const isBeforeEnd = !activeDateEnd || (articleDate && articleDate <= activeDateEnd);
       const dateMatch = !hasDateRange || (isAfterStart && isBeforeEnd);
       const regionMatch = activeRegion === 'all' || articleRegion === activeRegion;
+      const topicMatch = activeTopic === 'all' || articleTopics.includes(activeTopic);
       const searchMatch = cardMatchesSearch(card, activeQuery);
-      const isMatch = dateMatch && regionMatch && searchMatch;
+      const isMatch = dateMatch && regionMatch && topicMatch && searchMatch;
       card.hidden = !isMatch;
       if (isMatch) {
         visibleCount += 1;
@@ -2650,7 +2658,11 @@
     root.querySelectorAll('[data-news-filter]').forEach((button) => {
       const group = button.getAttribute('data-filter-group') || 'date';
       const value = button.getAttribute('data-filter-value') || 'all';
-      const isActive = group === 'region' ? value === activeRegion : (value === 'all' && !hasDateRange);
+      const isActive = group === 'region'
+        ? value === activeRegion
+        : group === 'topic'
+          ? value === activeTopic
+          : (value === 'all' && !hasDateRange);
       button.classList.toggle('active', isActive);
       button.setAttribute('aria-pressed', isActive ? 'true' : 'false');
     });
@@ -2673,12 +2685,15 @@
     if (status) {
       const dateLabel = formatNewsDateRange(activeDateStart, activeDateEnd);
       const searchLabel = formatSearchLabel(activeQuery);
-      if (!hasDateRange && activeRegion === 'all' && !searchLabel) {
+      if (!hasDateRange && activeRegion === 'all' && activeTopic === 'all' && !searchLabel) {
         status.textContent = `전체 ${visibleCount}건을 보고 있습니다.`;
       } else {
         const parts = [];
         if (activeRegion !== 'all') {
           parts.push(activeRegion);
+        }
+        if (activeTopic !== 'all') {
+          parts.push(`#${activeTopic}`);
         }
         if (searchLabel) {
           parts.push(searchLabel);
@@ -3042,6 +3057,7 @@
           group === 'date' ? '' : (root.dataset.selectedDateStart || root.getAttribute('data-default-date-start') || ''),
           group === 'date' ? '' : (root.dataset.selectedDateEnd || root.getAttribute('data-default-date-end') || ''),
           group === 'region' ? value : (root.dataset.selectedRegion || root.getAttribute('data-default-region') || 'all'),
+          group === 'topic' ? value : (root.dataset.selectedTopic || root.getAttribute('data-default-topic') || 'all'),
           root.dataset.selectedSearchQuery || root.getAttribute('data-default-search-query') || '',
         );
       }
@@ -3105,6 +3121,7 @@
 
   const pageParams = new URLSearchParams(window.location.search);
   const queryFromUrl = normalizeSearchQuery(pageParams.get('q') || pageParams.get('keyword') || '');
+  const topicFromUrl = normalizeSearchQuery(pageParams.get('topic') || '');
 
   document.querySelectorAll('[data-news-filter-root]').forEach((root) => {
     applyNewsFilters(
@@ -3112,6 +3129,7 @@
       root.getAttribute('data-default-date-start') || '',
       root.getAttribute('data-default-date-end') || '',
       root.getAttribute('data-default-region') || 'all',
+      topicFromUrl || root.getAttribute('data-default-topic') || 'all',
       queryFromUrl || root.getAttribute('data-default-search-query') || '',
     );
   });
@@ -3140,6 +3158,7 @@
         root.dataset.selectedDateStart || root.getAttribute('data-default-date-start') || '',
         root.dataset.selectedDateEnd || root.getAttribute('data-default-date-end') || '',
         root.dataset.selectedRegion || root.getAttribute('data-default-region') || 'all',
+        root.dataset.selectedTopic || root.getAttribute('data-default-topic') || 'all',
         searchInput.value,
       );
       return;
@@ -3178,6 +3197,7 @@
         startInput ? startInput.value : '',
         endInput ? endInput.value : '',
         root.dataset.selectedRegion || root.getAttribute('data-default-region') || 'all',
+        root.dataset.selectedTopic || root.getAttribute('data-default-topic') || 'all',
         root.dataset.selectedSearchQuery || root.getAttribute('data-default-search-query') || '',
       );
       return;
