@@ -595,6 +595,9 @@ BASE_CSS = """
     grid-template-columns: 1fr;
     gap: 14px;
   }
+  .article-grid {
+    align-items: start;
+  }
   .stat {
     display: flex;
     justify-content: space-between;
@@ -818,13 +821,13 @@ BASE_CSS = """
     align-items: center;
   }
   .article-actions {
-    margin-top: 14px;
+    margin-top: 8px;
   }
   .action-button {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    padding: 8px 12px;
+    padding: 9px 13px;
     border: 1px solid rgba(31, 42, 51, 0.08);
     border-radius: 999px;
     background: rgba(249, 247, 242, 0.96);
@@ -1037,11 +1040,27 @@ BASE_CSS = """
   .article-card {
     display: grid;
     align-content: start;
-    gap: 14px;
+    gap: 12px;
+    position: relative;
+    overflow: hidden;
+    border-color: rgba(31, 42, 51, 0.12);
+    padding: 17px 17px 17px 22px;
+  }
+  .article-card::before {
+    content: "";
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: 5px;
+    background: linear-gradient(180deg, rgba(57, 86, 119, 0.22), rgba(221, 147, 103, 0.2));
+    opacity: 0.86;
+  }
+  .article-card > * {
+    position: relative;
+    z-index: 1;
   }
   .article-meta {
     display: grid;
-    gap: 8px;
+    gap: 7px;
   }
   .article-meta-tags {
     display: flex;
@@ -1051,9 +1070,9 @@ BASE_CSS = """
   .meta-pill {
     display: inline-flex;
     align-items: center;
-    padding: 6px 10px;
+    padding: 7px 11px;
     border-radius: 999px;
-    font-size: 0.74rem;
+    font-size: 0.8rem;
     font-weight: 800;
     line-height: 1;
   }
@@ -1071,7 +1090,7 @@ BASE_CSS = """
     align-items: center;
     gap: 8px;
     color: var(--muted);
-    font-size: 0.77rem;
+    font-size: 0.86rem;
     line-height: 1.5;
   }
   .article-byline .meta-divider {
@@ -1096,11 +1115,16 @@ BASE_CSS = """
     font-size: 0.72rem;
     font-weight: 700;
   }
+  .article-card h3 {
+    font-size: clamp(1.16rem, 1.08rem + 0.42vw, 1.36rem);
+    line-height: 1.32;
+    letter-spacing: -0.045em;
+  }
   .article-summary {
     margin: 0;
-    color: rgba(31, 42, 51, 0.8);
-    font-size: 0.95rem;
-    line-height: 1.68;
+    color: rgba(31, 42, 51, 0.88);
+    font-size: clamp(1.01rem, 0.98rem + 0.18vw, 1.09rem);
+    line-height: 1.62;
     white-space: pre-wrap;
   }
   .list {
@@ -2341,6 +2365,10 @@ BASE_CSS = """
     .menu-update-card {
       padding: 24px 26px;
     }
+    .article-card {
+      padding: 22px 24px 22px 28px;
+      gap: 13px;
+    }
     .home-meta-line {
       margin: 14px 0 2px;
       gap: 8px 18px;
@@ -2424,6 +2452,7 @@ BASE_CSS = """
     .article-grid {
       grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 18px;
+      align-items: start;
     }
     .feature-grid {
       grid-template-columns: repeat(3, minmax(0, 1fr));
