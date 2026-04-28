@@ -1,9 +1,11 @@
 from __future__ import annotations
 
 import sys
+import subprocess
 import unittest
 from datetime import datetime, timezone, timedelta
 from pathlib import Path
+from unittest.mock import patch
 
 
 SHARED_SRC = Path(__file__).resolve().parents[1] / "src"
@@ -12,6 +14,7 @@ if str(SHARED_SRC) not in sys.path:
 
 from youth_info_platform.collect import (  # noqa: E402
     apply_source_filters,
+    fetch_url_via_curl,
     get_source_parser,
     parse_feed,
     parse_naver_news_search,
@@ -166,6 +169,23 @@ class SourceFilterTests(unittest.TestCase):
         self.assertEqual(len(filtered), 1)
         self.assertEqual(filtered[0]["source"], "YTN")
         self.assertIn("ytn.co.kr", filtered[0]["url"])
+
+
+class FetchUrlTests(unittest.TestCase):
+    @patch("youth_info_platform.collect.resolve_command", return_value="curl")
+    @patch("youth_info_platform.collect.subprocess.run")
+    def test_curl_fallback_fails_on_http_error_status(
+        self,
+        run_mock,
+        _resolve_mock,
+    ) -> None:
+        run_mock.side_effect = subprocess.CalledProcessError(22, ["curl"])
+
+        with self.assertRaises(subprocess.CalledProcessError):
+            fetch_url_via_curl("https://example.com/forbidden")
+
+        command = run_mock.call_args.args[0]
+        self.assertIn("--fail", command)
 
 
 if __name__ == "__main__":

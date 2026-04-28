@@ -85,6 +85,18 @@ YOUTH_EXCERPT_KEYWORDS = tuple(dict.fromkeys(["청년", *YOUTH_KEYWORDS]))
 EXCERPT_BOUNDARY_CHARS = ".!?。！？"
 NATIONWIDE_REGION = "전국"
 LOCATION_STOPWORDS = {"다시", "예시", "실시", "지시", "변경시", "누구"}
+HTTP_ERROR_PAGE_TITLES = {
+    "401 unauthorized",
+    "403 forbidden",
+    "404 not found",
+    "429 too many requests",
+    "500 internal server error",
+    "502 bad gateway",
+    "503 service unavailable",
+    "504 gateway timeout",
+    "access denied",
+    "forbidden",
+}
 
 
 def normalize_tracking_url(url: str | None) -> str:
@@ -158,6 +170,23 @@ def normalize_article_title(value: str | None) -> str:
     normalized = html.unescape(normalized)
     normalized = re.sub(r"\s+", " ", normalized).strip()
     return normalized
+
+
+def is_http_error_page_title(value: str | None) -> bool:
+    normalized = normalize_article_title(value).casefold()
+    if not normalized:
+        return False
+    normalized = re.sub(r"\s+", " ", normalized)
+    if normalized in HTTP_ERROR_PAGE_TITLES:
+        return True
+    return bool(
+        re.fullmatch(
+            r"(?:error\s*)?(?:401|403|404|429|500|502|503|504)"
+            r"(?:\s*[-:]\s*|\s+)"
+            r"(?:unauthorized|forbidden|not found|too many requests|internal server error|bad gateway|service unavailable|gateway timeout)",
+            normalized,
+        )
+    )
 
 
 def strip_title_suffixes(value: str | None, suffixes: list[str] | tuple[str, ...]) -> str:
@@ -702,6 +731,8 @@ def parse_generic_article_page(html_text: str, source_url: str) -> dict[str, Any
         if title_match:
             title = normalize_article_title(title_match.group(1))
     title = choose_article_page_title(title, extract_heading_titles(html_text))
+    if is_http_error_page_title(title):
+        title = None
 
     description = (
         extract_meta_content(html_text, "og:description", "property")
@@ -820,7 +851,9 @@ def resolve_article_metadata(
             ]:
                 if metadata.get(key):
                     if key == "title":
-                        updated[key] = clean_metadata_title(metadata[key], updated)
+                        cleaned_title = clean_metadata_title(metadata[key], updated)
+                        if not is_http_error_page_title(cleaned_title):
+                            updated[key] = cleaned_title
                     else:
                         updated[key] = metadata[key]
             publisher_published_at = metadata.get("publisher_published_at")

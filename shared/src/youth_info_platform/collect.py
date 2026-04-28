@@ -113,6 +113,8 @@ def fetch_url_via_curl(url: str, timeout: int = 10) -> str:
         [
             curl_command,
             "-L",
+            "--fail",
+            "--show-error",
             "--max-time",
             str(timeout),
             "-A",

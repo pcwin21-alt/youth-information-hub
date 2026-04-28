@@ -12,6 +12,7 @@ if str(SHARED_SRC) not in sys.path:
 from youth_info_platform.article_metadata import (  # noqa: E402
     extract_meta_content,
     extract_youth_preview_text,
+    is_http_error_page_title,
     parse_generic_article_page,
     resolve_article_metadata,
 )
@@ -93,6 +94,20 @@ class ArticleMetadataTests(unittest.TestCase):
 
         self.assertEqual(parsed["publisher_published_at"], "2026-04-24T11:08:44+09:00")
 
+    def test_parse_generic_article_page_ignores_http_error_page_title(self) -> None:
+        parsed = parse_generic_article_page(
+            """
+            <html>
+              <head><title>403 Forbidden</title></head>
+              <body><h1>403 Forbidden</h1></body>
+            </html>
+            """,
+            "https://www.sedaily.com/article/20038288",
+        )
+
+        self.assertTrue(is_http_error_page_title("403 Forbidden"))
+        self.assertIsNone(parsed["title"])
+
     def test_resolve_article_metadata_strips_trailing_publisher_name_from_title(self) -> None:
         article = {
             "url": "https://www.ngonews.kr/news/articleView.html?idxno=228784",
@@ -117,6 +132,30 @@ class ArticleMetadataTests(unittest.TestCase):
         )
 
         self.assertEqual(updated["title"], '경실련, \'봄 후원회\' 행사 성황리 개최···"연대와 화합의 장 마련"')
+
+    def test_resolve_article_metadata_does_not_replace_title_with_http_error_page(self) -> None:
+        article = {
+            "url": "https://www.sedaily.com/article/20038288",
+            "title": "영상 엄마, 좀만 더 같이 살면 안될까?",
+            "source": "서울경제",
+            "source_name": "네이버뉴스 청년 고용",
+            "published_date": "2026-04-28T21:00:00+09:00",
+            "pipeline_flags": {},
+        }
+        updated = resolve_article_metadata(
+            article,
+            homepage_cache={},
+            page_cache={
+                article["url"]: {
+                    "title": "403 Forbidden",
+                    "canonical_url": article["url"],
+                    "publisher_url": article["url"],
+                    "publisher_domain": "www.sedaily.com",
+                }
+            },
+        )
+
+        self.assertEqual(updated["title"], article["title"])
 
     def test_resolve_article_metadata_promotes_publisher_published_time(self) -> None:
         article = {

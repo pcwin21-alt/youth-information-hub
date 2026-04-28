@@ -74,8 +74,10 @@ def _compact_metadata(metadata: dict[str, object] | None) -> dict[str, object] |
         "article_type": metadata.get("article_type"),
         "region": metadata.get("region"),
         "issue_tags": metadata.get("issue_tags"),
+        "topic_tags": metadata.get("topic_tags"),
         "location_tags": metadata.get("location_tags"),
         "lead_text": metadata.get("lead_text"),
+        "youth_excerpt": metadata.get("youth_excerpt"),
         "body_preview": str(metadata.get("body_text") or "")[:240],
     }
 
