@@ -1081,6 +1081,23 @@ BASE_CSS = """
   .article-media:focus-visible .article-thumbnail {
     transform: scale(1.025);
   }
+  .article-media.fallback {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background:
+      linear-gradient(135deg, rgba(246, 238, 225, 0.94), rgba(234, 244, 240, 0.94));
+  }
+  .article-media.fallback .article-thumbnail {
+    object-fit: contain;
+    padding: 18px;
+    box-sizing: border-box;
+    opacity: 0.92;
+  }
+  .article-media.fallback:hover .article-thumbnail,
+  .article-media.fallback:focus-visible .article-thumbnail {
+    transform: scale(1.015);
+  }
   .article-meta {
     display: grid;
     gap: 7px;
@@ -3657,20 +3674,34 @@ def render_publisher_icon(article: dict) -> str:
     )
 
 
+def article_fallback_media_src(article: dict) -> str:
+    if article.get("governance_scope") or article.get("is_hub_candidate"):
+        asset_name = "intro-hub.svg"
+    elif article.get("is_official_source") or article.get("source_kind") == "official" or is_election_promise_article(article):
+        asset_name = "intro-policies.svg"
+    elif any(topic in {"자료", "도구", "교육"} for topic in article_topic_tags(article, limit=4)):
+        asset_name = "intro-tools.svg"
+    else:
+        asset_name = "intro-news.svg"
+    return f"{ILLUSTRATION_ROOT}/{asset_name}?v={ASSET_VERSION}"
+
+
 def render_article_media(article: dict) -> str:
     image_url = normalize_media_url(article.get("image_url"), article_target_url(article))
-    if not image_url:
-        return ""
+    is_fallback = not image_url
+    image_src = image_url or article_fallback_media_src(article)
     url = html.escape(article_target_url(article))
     title = display_article_title(article)
     alt = normalize_inline_text(article.get("image_alt") or title)
     escaped_title = html.escape(title)
+    media_class = "article-media fallback" if is_fallback else "article-media"
+    onerror = "" if is_fallback else ' onerror="this.parentElement.hidden=true"'
     return (
-        f'<a class="article-media" href="{url}" target="_blank" rel="noreferrer" '
+        f'<a class="{media_class}" href="{url}" target="_blank" rel="noreferrer" '
         f'aria-label="{escaped_title} 이미지와 기사 링크 바로가기">'
-        f'<img class="article-thumbnail" src="{html.escape(image_url)}" alt="{html.escape(alt)}" '
+        f'<img class="article-thumbnail" src="{html.escape(image_src)}" alt="{html.escape(alt)}" '
         'loading="lazy" decoding="async" referrerpolicy="no-referrer" '
-        'onerror="this.parentElement.hidden=true">'
+        f'{onerror}>'
         '</a>'
     )
 
