@@ -13,6 +13,34 @@ from youth_info_platform.io_utils import read_json, write_json
 from youth_info_platform.ops_radar import annotate_ops_radar
 
 
+def enrich_selected_articles_for_media(
+    selected: list[dict],
+    *,
+    max_network_enrich: int | None,
+) -> list[dict]:
+    if not selected or max_network_enrich == 0:
+        return selected
+
+    limit = len(selected) if max_network_enrich is None else min(len(selected), max_network_enrich)
+    candidates = [
+        article
+        for article in selected
+        if not article.get("image_url") or not article.get("publisher_icon_url")
+    ][:limit]
+    if not candidates:
+        return selected
+
+    enriched_candidates = enrich_articles_for_curation(candidates, max_network_enrich=len(candidates))
+    enriched_by_key = {article_identity_key(article): article for article in enriched_candidates}
+    return [
+        {
+            **article,
+            **enriched_by_key.get(article_identity_key(article), {}),
+        }
+        for article in selected
+    ]
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--input", default=str(RUNTIME_PIPELINE_ROOT / "step2_filtered.json"))
@@ -50,6 +78,10 @@ def main() -> int:
         }
         for article in selected
     ]
+    selected = enrich_selected_articles_for_media(
+        selected,
+        max_network_enrich=args.max_network_enrich,
+    )
     summarized = summarize_articles(selected)
     funnel = build_article_funnel(enriched, classified_with_selection, selected, summarized)
 
