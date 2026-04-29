@@ -106,6 +106,29 @@ class NaverParserTests(unittest.TestCase):
         self.assertIsNone(article["published_date"])
         self.assertEqual(article["portal_published_at"], "2026-04-23T02:45:17+00:00")
 
+    def test_parse_feed_extracts_media_thumbnail(self) -> None:
+        feed = """
+        <rss xmlns:media="http://search.yahoo.com/mrss/">
+          <channel>
+            <item>
+              <title>Youth center opens</title>
+              <link>https://example.com/news/1</link>
+              <source url="https://example.com">Example News</source>
+              <pubDate>Thu, 23 Apr 2026 02:45:17 GMT</pubDate>
+              <description>Youth center opens</description>
+              <media:thumbnail url="/images/youth-center.jpg" />
+            </item>
+          </channel>
+        </rss>
+        """
+
+        articles = parse_feed(feed, "Example feed", "news")
+
+        self.assertEqual(len(articles), 1)
+        self.assertEqual(articles[0]["image_url"], "https://example.com/images/youth-center.jpg")
+        self.assertEqual(articles[0]["image_source"], "feed_media")
+        self.assertEqual(articles[0]["image_alt"], "Youth center opens")
+
     def test_parse_source_payload_uses_registry_for_naver(self) -> None:
         source = {
             "name": "네이버뉴스 청년정책(1주)",

@@ -46,6 +46,11 @@ def build_article_funnel(
         entry["article_type"] = normalized.get("article_type") or entry.get("article_type")
         entry["authors"] = list(dict.fromkeys((entry.get("authors") or []) + (normalized.get("authors") or [])))
         entry["youth_excerpt"] = normalized.get("youth_excerpt") or entry.get("youth_excerpt")
+        entry["image_url"] = normalized.get("image_url") or entry.get("image_url")
+        entry["image_source"] = normalized.get("image_source") or entry.get("image_source")
+        entry["image_alt"] = normalized.get("image_alt") or entry.get("image_alt")
+        entry["publisher_icon_url"] = normalized.get("publisher_icon_url") or entry.get("publisher_icon_url")
+        entry["publisher_icon_source"] = normalized.get("publisher_icon_source") or entry.get("publisher_icon_source")
         entry["categories"] = normalized.get("categories") or entry.get("categories") or []
         entry["region"] = normalized.get("region") or entry.get("region")
         entry["issue_tags"] = list(dict.fromkeys((entry.get("issue_tags") or []) + (normalized.get("issue_tags") or [])))
@@ -161,6 +166,11 @@ def _base_entry(article: dict[str, Any], key: str) -> dict[str, Any]:
         "article_type": article.get("article_type"),
         "authors": list(article.get("authors") or []),
         "youth_excerpt": article.get("youth_excerpt"),
+        "image_url": article.get("image_url"),
+        "image_source": article.get("image_source"),
+        "image_alt": article.get("image_alt"),
+        "publisher_icon_url": article.get("publisher_icon_url"),
+        "publisher_icon_source": article.get("publisher_icon_source"),
         "categories": list(article.get("categories") or []),
         "region": article.get("region"),
         "issue_tags": list(article.get("issue_tags") or []),

@@ -97,6 +97,13 @@ HTTP_ERROR_PAGE_TITLES = {
     "access denied",
     "forbidden",
 }
+MEDIA_URL_BLOCKLIST_TOKENS = (
+    "spacer",
+    "blank",
+    "pixel",
+    "tracking",
+    "analytics",
+)
 
 
 def normalize_tracking_url(url: str | None) -> str:
@@ -170,6 +177,98 @@ def normalize_article_title(value: str | None) -> str:
     normalized = html.unescape(normalized)
     normalized = re.sub(r"\s+", " ", normalized).strip()
     return normalized
+
+
+def normalize_media_url(value: Any, base_url: str | None = None) -> str | None:
+    if value is None:
+        return None
+    if isinstance(value, dict):
+        for key in ("url", "contentUrl", "thumbnailUrl", "@id"):
+            if normalized := normalize_media_url(value.get(key), base_url):
+                return normalized
+        return None
+    if isinstance(value, list):
+        for item in value:
+            if normalized := normalize_media_url(item, base_url):
+                return normalized
+        return None
+
+    raw = html.unescape(str(value)).strip().strip("'\"")
+    if not raw or raw.lower().startswith(("data:", "javascript:", "mailto:")):
+        return None
+    resolved = urljoin(base_url or "", raw)
+    parsed = urlparse(resolved)
+    if parsed.scheme.lower() not in {"http", "https"} or not parsed.netloc:
+        return None
+    lowered = resolved.lower()
+    if any(token in lowered for token in MEDIA_URL_BLOCKLIST_TOKENS):
+        return None
+    return resolved
+
+
+def extract_json_ld_image_url(html_text: str, base_url: str) -> str | None:
+    pattern = re.compile(
+        r'<script[^>]+type=["\'][^"\']*ld\+json[^"\']*["\'][^>]*>(?P<payload>.*?)</script>',
+        re.IGNORECASE | re.DOTALL,
+    )
+    for match in pattern.finditer(html_text):
+        payload = html.unescape(match.group("payload")).strip()
+        payload = re.sub(r"^\s*<!--|-->\s*$", "", payload).strip()
+        if not payload:
+            continue
+        try:
+            parsed = json.loads(payload)
+        except json.JSONDecodeError:
+            continue
+        for node in _iter_json_ld_nodes(parsed):
+            for key in ("image", "thumbnailUrl", "primaryImageOfPage"):
+                if key in node:
+                    if normalized := normalize_media_url(node.get(key), base_url):
+                        return normalized
+    return None
+
+
+def extract_article_image_url(html_text: str, base_url: str) -> str | None:
+    candidates = [
+        extract_meta_content(html_text, "og:image", "property"),
+        extract_meta_content(html_text, "og:image:secure_url", "property"),
+        extract_meta_content(html_text, "og:image:url", "property"),
+        extract_meta_content(html_text, "twitter:image", "name"),
+        extract_meta_content(html_text, "twitter:image:src", "name"),
+        extract_meta_content(html_text, "image", "itemprop"),
+        extract_json_ld_image_url(html_text, base_url),
+    ]
+    for candidate in candidates:
+        if normalized := normalize_media_url(candidate, base_url):
+            return normalized
+    return None
+
+
+def extract_publisher_icon_url(html_text: str, base_url: str) -> str | None:
+    icon_candidates: list[tuple[int, str]] = []
+    for match in re.finditer(r"<link\b[^>]*>", html_text, re.IGNORECASE | re.DOTALL):
+        attrs = parse_html_attributes(match.group(0))
+        rel_values = {part.strip().lower() for part in (attrs.get("rel") or "").split()}
+        href = attrs.get("href")
+        if not href:
+            continue
+        priority = None
+        if "apple-touch-icon" in rel_values:
+            priority = 0
+        elif "icon" in rel_values or "shortcut" in rel_values and "icon" in rel_values:
+            priority = 1
+        if priority is None:
+            continue
+        if normalized := normalize_media_url(href, base_url):
+            icon_candidates.append((priority, normalized))
+
+    if icon_candidates:
+        return sorted(icon_candidates, key=lambda item: item[0])[0][1]
+
+    parsed = urlparse(base_url)
+    if parsed.scheme in {"http", "https"} and parsed.netloc:
+        return f"{parsed.scheme}://{parsed.netloc}/favicon.ico"
+    return None
 
 
 def is_http_error_page_title(value: str | None) -> bool:
@@ -324,6 +423,11 @@ def normalize_article_record(article: dict[str, Any]) -> dict[str, Any]:
             "resolved_at": record.get("resolved_at"),
             "body_text": record.get("body_text"),
             "youth_excerpt": record.get("youth_excerpt") or extract_youth_preview_text(record),
+            "image_url": normalize_media_url(record.get("image_url"), canonical_url or url),
+            "image_source": record.get("image_source"),
+            "image_alt": normalize_article_title(record.get("image_alt") or record.get("title")),
+            "publisher_icon_url": normalize_media_url(record.get("publisher_icon_url"), source_url or canonical_url or url),
+            "publisher_icon_source": record.get("publisher_icon_source"),
             "issue_tags": list(dict.fromkeys(record.get("issue_tags") or [])),
             "topic_tags": list(dict.fromkeys(record.get("topic_tags") or [])),
             "location_tags": list(dict.fromkeys(record.get("location_tags") or [])),
@@ -754,6 +858,8 @@ def parse_generic_article_page(html_text: str, source_url: str) -> dict[str, Any
         section_parts.append(cleaned)
     section = " > ".join(section_parts)
     published_at = extract_published_datetime(html_text)
+    image_url = extract_article_image_url(html_text, source_url)
+    publisher_icon_url = extract_publisher_icon_url(html_text, source_url)
     body_text = extract_body_text(html_text)
     author_values = [
         extract_meta_content(html_text, "author"),
@@ -789,6 +895,11 @@ def parse_generic_article_page(html_text: str, source_url: str) -> dict[str, Any
         "lead_text": description or None,
         "body_text": body_text or None,
         "youth_excerpt": youth_excerpt or None,
+        "image_url": image_url,
+        "image_source": "article_page" if image_url else None,
+        "image_alt": title or None,
+        "publisher_icon_url": publisher_icon_url,
+        "publisher_icon_source": "page_icon" if publisher_icon_url else None,
         "issue_tags": extract_issue_tags(merged_text),
         "location_tags": location_tags,
         "region": infer_region(merged_text, location_tags),
@@ -847,6 +958,11 @@ def resolve_article_metadata(
                 "article_type",
                 "body_text",
                 "youth_excerpt",
+                "image_url",
+                "image_source",
+                "image_alt",
+                "publisher_icon_url",
+                "publisher_icon_source",
                 "region",
             ]:
                 if metadata.get(key):
@@ -854,6 +970,9 @@ def resolve_article_metadata(
                         cleaned_title = clean_metadata_title(metadata[key], updated)
                         if not is_http_error_page_title(cleaned_title):
                             updated[key] = cleaned_title
+                    elif key in {"image_url", "publisher_icon_url"}:
+                        if normalized_media_url := normalize_media_url(metadata[key], target_url):
+                            updated[key] = normalized_media_url
                     else:
                         updated[key] = metadata[key]
             publisher_published_at = metadata.get("publisher_published_at")

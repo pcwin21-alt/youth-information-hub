@@ -163,6 +163,54 @@ def strip_html(value: str) -> str:
     return plain
 
 
+def _normalize_feed_media_url(value: str | None, base_url: str | None = None) -> str | None:
+    if not value:
+        return None
+    raw = html.unescape(value).strip().strip("'\"")
+    if not raw or raw.lower().startswith(("data:", "javascript:", "mailto:")):
+        return None
+    resolved = urljoin(base_url or "", raw)
+    parsed = urlparse(resolved)
+    if parsed.scheme.lower() not in {"http", "https"} or not parsed.netloc:
+        return None
+    lowered = resolved.lower()
+    if any(token in lowered for token in ("spacer", "blank", "pixel", "tracking", "analytics")):
+        return None
+    return resolved
+
+
+def _local_xml_name(tag: str) -> str:
+    return tag.rsplit("}", 1)[-1].lower()
+
+
+def _extract_feed_image_url(item: ET.Element, article_url: str) -> str | None:
+    for node in item.iter():
+        local_name = _local_xml_name(node.tag)
+        if local_name in {"content", "thumbnail"}:
+            medium = (node.attrib.get("medium") or "").lower()
+            content_type = (node.attrib.get("type") or "").lower()
+            if local_name == "content" and medium and medium != "image" and not content_type.startswith("image/"):
+                continue
+            if normalized := _normalize_feed_media_url(node.attrib.get("url"), article_url):
+                return normalized
+        if local_name == "enclosure":
+            content_type = (node.attrib.get("type") or "").lower()
+            if content_type and not content_type.startswith("image/"):
+                continue
+            if normalized := _normalize_feed_media_url(node.attrib.get("url"), article_url):
+                return normalized
+
+    for node in item.iter():
+        if _local_xml_name(node.tag) != "image":
+            continue
+        if normalized := _normalize_feed_media_url((node.text or "").strip(), article_url):
+            return normalized
+        image_url = _find_text(node, ["url"])
+        if normalized := _normalize_feed_media_url(image_url, article_url):
+            return normalized
+    return None
+
+
 def _parse_published(value: str | None) -> str | None:
     if not value:
         return None
@@ -233,6 +281,7 @@ def parse_feed(feed_text: str, source_name: str, source_kind: str) -> list[dict[
         article_url = url.strip()
         parsed_published = _parse_published(published)
         is_google_news_item = is_google_news_feed_url(article_url)
+        image_url = _extract_feed_image_url(item, article_url)
         article = {
             "title": cleaned_title,
             "url": article_url,
@@ -243,6 +292,10 @@ def parse_feed(feed_text: str, source_name: str, source_kind: str) -> list[dict[
             "published_date": None if is_google_news_item else parsed_published,
             "lead_text": strip_html(description)[:200],
         }
+        if image_url:
+            article["image_url"] = image_url
+            article["image_source"] = "feed_media"
+            article["image_alt"] = cleaned_title
         if is_google_news_item:
             article["portal_published_at"] = parsed_published
         articles.append(article)

@@ -12,7 +12,12 @@ from pathlib import Path
 
 from _bootstrap import PUBLIC_WEB_ROOT, RUNTIME_PIPELINE_ROOT
 
-from youth_info_platform.article_metadata import article_identity_key, extract_youth_preview_text, preferred_article_url
+from youth_info_platform.article_metadata import (
+    article_identity_key,
+    extract_youth_preview_text,
+    normalize_media_url,
+    preferred_article_url,
+)
 from youth_info_platform.contact_config import load_contact_settings
 from youth_info_platform.curation import is_public_interest_article
 from youth_info_platform.io_utils import read_json
@@ -1058,6 +1063,24 @@ BASE_CSS = """
     position: relative;
     z-index: 1;
   }
+  .article-media {
+    display: block;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    border-radius: 8px;
+    background: rgba(245, 241, 234, 0.96);
+  }
+  .article-thumbnail {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.2s ease;
+  }
+  .article-media:hover .article-thumbnail,
+  .article-media:focus-visible .article-thumbnail {
+    transform: scale(1.025);
+  }
   .article-meta {
     display: grid;
     gap: 7px;
@@ -1099,6 +1122,15 @@ BASE_CSS = """
   .article-byline .meta-item {
     display: inline-flex;
     align-items: center;
+    gap: 6px;
+  }
+  .publisher-icon {
+    width: 18px;
+    height: 18px;
+    border-radius: 4px;
+    object-fit: contain;
+    background: rgba(255, 255, 255, 0.86);
+    box-shadow: 0 0 0 1px rgba(31, 42, 51, 0.08);
   }
   .badge-row {
     display: flex;
@@ -3612,6 +3644,37 @@ def render_article_actions(article: dict, include_link_button: bool = True) -> s
     return "".join(parts)
 
 
+def render_publisher_icon(article: dict) -> str:
+    icon_url = normalize_media_url(article.get("publisher_icon_url"), article_target_url(article))
+    if not icon_url:
+        return ""
+    source = format_source_label(article.get("source") or article.get("source_name"))
+    alt = f"{source} 아이콘" if source else "언론사 아이콘"
+    return (
+        f'<img class="publisher-icon" src="{html.escape(icon_url)}" alt="{html.escape(alt)}" '
+        'loading="lazy" decoding="async" referrerpolicy="no-referrer" '
+        'onerror="this.hidden=true">'
+    )
+
+
+def render_article_media(article: dict) -> str:
+    image_url = normalize_media_url(article.get("image_url"), article_target_url(article))
+    if not image_url:
+        return ""
+    url = html.escape(article_target_url(article))
+    title = display_article_title(article)
+    alt = normalize_inline_text(article.get("image_alt") or title)
+    escaped_title = html.escape(title)
+    return (
+        f'<a class="article-media" href="{url}" target="_blank" rel="noreferrer" '
+        f'aria-label="{escaped_title} 이미지와 기사 링크 바로가기">'
+        f'<img class="article-thumbnail" src="{html.escape(image_url)}" alt="{html.escape(alt)}" '
+        'loading="lazy" decoding="async" referrerpolicy="no-referrer" '
+        'onerror="this.parentElement.hidden=true">'
+        '</a>'
+    )
+
+
 def render_article_list_item(
     article: dict,
     body: str,
@@ -3679,8 +3742,10 @@ def render_article_card(article: dict, extra_attrs: dict[str, str] | None = None
                 continue
             attr_parts.append(f'{key}="{html.escape(str(value), quote=True)}"')
     attr_text = " ".join(attr_parts)
+    media_html = render_article_media(article)
     return f"""
     <article {attr_text}>
+      {media_html}
       {render_article_meta(article)}
       <h3><a class="article-title-link" href="{escaped_url}" target="_blank" rel="noreferrer" aria-label="{escaped_title} 링크 바로가기">{escaped_title}</a></h3>
       {badge_row}
@@ -3694,6 +3759,7 @@ def render_hub_article_meta(article: dict, category_label: str) -> str:
     detail_label = hub_scope_detail_label(article)
     source = format_source_label(article.get("source") or article.get("source_name"))
     published = article_published_label(article) or "날짜 미상"
+    publisher_icon = render_publisher_icon(article)
     return (
         '<div class="article-meta">'
         '<div class="article-meta-tags">'
@@ -3701,7 +3767,7 @@ def render_hub_article_meta(article: dict, category_label: str) -> str:
         f'<span class="meta-pill subtle">{html.escape(detail_label)}</span>'
         '</div>'
         '<div class="article-byline">'
-        f'<span class="meta-item">{html.escape(source)}</span>'
+        f'<span class="meta-item">{publisher_icon}{html.escape(source)}</span>'
         '<span class="meta-divider" aria-hidden="true">•</span>'
         f'<span class="meta-item">{html.escape(published)}</span>'
         '</div>'
@@ -4755,13 +4821,14 @@ def render_article_meta(article: dict, category_label: str | None = None) -> str
     )
     source = format_source_label(article.get("source") or article.get("source_name"))
     published = article_published_label(article) or "날짜 미상"
+    publisher_icon = render_publisher_icon(article)
     return (
         '<div class="article-meta">'
         '<div class="article-meta-tags">'
         f'{meta_pills}'
         '</div>'
         '<div class="article-byline">'
-        f'<span class="meta-item">{html.escape(source)}</span>'
+        f'<span class="meta-item">{publisher_icon}{html.escape(source)}</span>'
         '<span class="meta-divider" aria-hidden="true">•</span>'
         f'<span class="meta-item">{html.escape(published)}</span>'
         '</div>'

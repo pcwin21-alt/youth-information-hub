@@ -24,7 +24,9 @@ ARTICLE_HTML = """
     <meta property="og:title" content="경실련, '봄 후원회' 행사 성황리 개최···&quot;연대와 화합의 장 마련&quot;" />
     <meta name="twitter:title" content="경실련, '봄 후원회' 행사 성황리 개최···&quot;연대와 화합의 장 마련&quot;" />
     <meta name="description" content="행사 소식 요약입니다." />
+    <meta property="og:image" content="/news/photo/202604/sample.jpg" />
     <link rel="canonical" href="https://www.ngonews.kr/news/articleView.html?idxno=228784" />
+    <link rel="icon" href="/favicon.ico" />
     <title>경실련, '봄 후원회' 행사 성황리 개최···&quot;연대와 화합의 장 마련&quot; - 한국NGO신문</title>
   </head>
   <body>
@@ -50,6 +52,9 @@ class ArticleMetadataTests(unittest.TestCase):
 
         self.assertEqual(parsed["title"], '경실련, \'봄 후원회\' 행사 성황리 개최···"연대와 화합의 장 마련"')
         self.assertEqual(parsed["canonical_url"], "https://www.ngonews.kr/news/articleView.html?idxno=228784")
+        self.assertEqual(parsed["image_url"], "https://www.ngonews.kr/news/photo/202604/sample.jpg")
+        self.assertEqual(parsed["image_source"], "article_page")
+        self.assertEqual(parsed["publisher_icon_url"], "https://www.ngonews.kr/favicon.ico")
 
     def test_parse_generic_article_page_prefers_full_heading_when_meta_title_is_short(self) -> None:
         parsed = parse_generic_article_page(
@@ -176,12 +181,17 @@ class ArticleMetadataTests(unittest.TestCase):
                     "publisher_url": article["url"],
                     "publisher_domain": "example.com",
                     "publisher_published_at": "2026-04-24T11:08:44+09:00",
+                    "image_url": "/images/youth.jpg",
+                    "image_source": "article_page",
+                    "publisher_icon_url": "/favicon.ico",
                 }
             },
         )
 
         self.assertEqual(updated["publisher_published_at"], "2026-04-24T11:08:44+09:00")
         self.assertEqual(updated["published_date"], "2026-04-24T11:08:44+09:00")
+        self.assertEqual(updated["image_url"], "https://example.com/images/youth.jpg")
+        self.assertEqual(updated["publisher_icon_url"], "https://example.com/favicon.ico")
 
     def test_resolve_article_metadata_does_not_trust_unresolved_google_news_date(self) -> None:
         article = {
