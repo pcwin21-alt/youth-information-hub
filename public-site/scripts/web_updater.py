@@ -2694,6 +2694,389 @@ BASE_CSS = """
       font-size: 0.64rem;
     }
   }
+
+  /* GovNews-style dashboard skin: keeps the current pages and data contract. */
+  :root {
+    --page-bg: #f4f3f8;
+    --app-bg: #f9f9fe;
+    --panel: #ffffff;
+    --panel-soft: #e8e8ed;
+    --text: #1a1c1f;
+    --muted: #43474f;
+    --line: #c3c6d1;
+    --accent: #005cba;
+    --accent-soft: #d7e3ff;
+    --accent-strong: #003366;
+    --surface-container-low: #f4f3f8;
+    --surface-container-high: #e8e8ed;
+    --surface-container-highest: #e2e2e7;
+    --error: #ba1a1a;
+    --shadow: none;
+    --shadow-soft: none;
+  }
+  body {
+    background: var(--page-bg);
+    font-family: "Public Sans", "Noto Sans KR", sans-serif;
+    padding: 0;
+  }
+  .shell {
+    max-width: none;
+    width: 100%;
+    min-height: 100vh;
+    margin: 0;
+    padding: 76px 18px 104px;
+    border: 0;
+    background: var(--surface-container-low);
+    box-shadow: none;
+  }
+  .topbar {
+    position: fixed;
+    inset: 0 0 auto 0;
+    height: 64px;
+    margin: 0;
+    padding: 0 20px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    background: #003366;
+    color: #ffffff;
+    box-shadow: none;
+    backdrop-filter: none;
+  }
+  .brand {
+    grid-template-columns: 40px minmax(0, 1fr);
+    column-gap: 12px;
+    max-width: min(58vw, 360px);
+    color: #ffffff;
+  }
+  .brand-logo {
+    width: 40px;
+    padding: 4px;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.12);
+  }
+  .brand-title {
+    color: #ffffff;
+    font-size: 1.18rem;
+    font-weight: 900;
+  }
+  .brand-sub {
+    color: rgba(255, 255, 255, 0.72);
+    font-size: 0.72rem;
+  }
+  .topbar-side {
+    gap: 10px;
+  }
+  .guide-link {
+    border-radius: 4px;
+    border-color: rgba(255, 255, 255, 0.22);
+    background: rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.92);
+  }
+  .guide-link:hover,
+  .guide-link.active {
+    background: rgba(255, 255, 255, 0.18);
+    color: #ffffff;
+  }
+  .header-side strong {
+    color: #ffffff;
+    font-size: 0.86rem;
+  }
+  .header-side span {
+    color: rgba(255, 255, 255, 0.68);
+  }
+  .hero-card,
+  .status-card,
+  .section-card,
+  .article-card,
+  .info-card,
+  .list-card,
+  .menu-update-card,
+  .filter-panel,
+  .news-intro-card,
+  .page-intro-card {
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: var(--panel);
+    box-shadow: none;
+  }
+  .page-intro-card {
+    color: var(--text);
+    background: var(--panel);
+  }
+  .page-intro-badge,
+  .eyebrow {
+    border-radius: 4px;
+    background: var(--surface-container-highest);
+    color: var(--accent-strong);
+    font-size: 0.75rem;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+  }
+  .page-intro-copy {
+    color: var(--muted);
+  }
+  .page-intro-media img {
+    filter: none;
+  }
+  .section {
+    margin-top: 24px;
+  }
+  .section-head {
+    padding-top: 18px;
+    border-top: 1px solid var(--line);
+  }
+  .section-head p,
+  .section-card p,
+  .info-card p,
+  .list-card p,
+  .news-intro-copy {
+    color: var(--muted);
+  }
+  .filter-panel {
+    background: var(--panel);
+  }
+  .filter-button,
+  .date-input-wrap,
+  .filter-search-input,
+  .action-button,
+  .button,
+  .badge,
+  .meta-pill.subtle {
+    border-radius: 4px;
+    background: var(--surface-container-highest);
+    border-color: transparent;
+    box-shadow: none;
+  }
+  .filter-button.active,
+  .button.primary,
+  .meta-pill.primary {
+    background: var(--accent-strong);
+    color: #ffffff;
+  }
+  .article-grid {
+    gap: 14px;
+  }
+  .article-card {
+    grid-template-columns: minmax(0, 1fr) 96px;
+    grid-template-areas:
+      "meta meta"
+      "title media"
+      "badges media"
+      "summary media"
+      "actions actions"
+      "feedback feedback";
+    align-content: start;
+    column-gap: 16px;
+    row-gap: 10px;
+    padding: 18px;
+    border-color: var(--line);
+    transition: box-shadow 0.16s ease, border-color 0.16s ease, transform 0.16s ease;
+  }
+  .article-card:hover {
+    border-color: #aeb4c2;
+    box-shadow: 0 8px 18px rgba(26, 28, 31, 0.08);
+    transform: translateY(-1px);
+  }
+  .article-card::before {
+    display: none;
+  }
+  .article-meta {
+    grid-area: meta;
+  }
+  .article-card h3 {
+    grid-area: title;
+    font-size: 1.04rem;
+    line-height: 1.42;
+    letter-spacing: 0;
+  }
+  .article-media {
+    grid-area: media;
+    width: 96px;
+    height: 96px;
+    aspect-ratio: 1;
+    border-radius: 6px;
+    background: var(--surface-variant, #e2e2e7);
+  }
+  .article-media.fallback {
+    background: var(--surface-container-highest);
+  }
+  .article-media.fallback .article-thumbnail {
+    padding: 18px;
+  }
+  .badge-row {
+    grid-area: badges;
+  }
+  .article-summary {
+    grid-area: summary;
+    display: -webkit-box;
+    overflow: hidden;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    color: var(--muted);
+    font-size: 0.92rem;
+    line-height: 1.58;
+    white-space: normal;
+  }
+  .article-actions {
+    grid-area: actions;
+    padding-top: 12px;
+    border-top: 1px solid var(--surface-container-highest);
+  }
+  .article-feedback {
+    grid-area: feedback;
+  }
+  .meta-pill,
+  .badge {
+    padding: 5px 8px;
+    font-size: 0.68rem;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+  }
+  .article-byline {
+    font-size: 0.78rem;
+    color: var(--outline, #737780);
+  }
+  .mini-link {
+    color: var(--accent);
+  }
+  .footer-note {
+    color: var(--muted);
+  }
+  @media (min-width: 980px) {
+    body {
+      background: var(--surface-container-low);
+    }
+    .shell {
+      max-width: none;
+      padding: 88px 32px 48px 288px;
+      background: var(--surface-container-low);
+    }
+    .shell > .hero,
+    .shell > .section,
+    .shell > .page-intro-card,
+    .shell > .news-intro-card,
+    .shell > .footer-note {
+      max-width: 1280px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .topbar {
+      margin: 0;
+      padding: 0 24px;
+    }
+    .brand {
+      grid-template-columns: 40px minmax(0, 1fr);
+      column-gap: 12px;
+    }
+    .brand-logo {
+      width: 40px;
+    }
+    .brand-title {
+      font-size: 1.22rem;
+    }
+    .brand-sub {
+      font-size: 0.72rem;
+    }
+    .nav {
+      position: fixed;
+      left: 0;
+      top: 64px;
+      bottom: 0;
+      z-index: 19;
+      display: flex;
+      width: 256px;
+      padding: 78px 12px 24px;
+      border-right: 1px solid #d1d5db;
+      background: #ffffff;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 4px;
+    }
+    .nav::before {
+      content: "Navigation\\A청년 모아봄";
+      position: absolute;
+      top: 20px;
+      left: 24px;
+      right: 24px;
+      color: #003366;
+      font-size: 0.72rem;
+      font-weight: 900;
+      line-height: 1.55;
+      white-space: pre;
+      text-transform: uppercase;
+    }
+    .nav a {
+      justify-content: flex-start;
+      padding: 12px 14px;
+      border-radius: 4px;
+      border: 0;
+      border-right: 4px solid transparent;
+      color: #43474f;
+      font-size: 0.9rem;
+      font-weight: 700;
+    }
+    .nav a:hover {
+      background: #f4f3f8;
+      color: #003366;
+    }
+    .nav a.active {
+      border-right-color: #005cba;
+      background: #f4f3f8;
+      color: #003366;
+    }
+    .hero {
+      grid-template-columns: minmax(0, 1.35fr) minmax(300px, 0.65fr);
+      gap: 16px;
+    }
+    .article-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+    }
+    .filter-stack {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  @media (max-width: 720px) {
+    .shell {
+      padding-left: 14px;
+      padding-right: 14px;
+    }
+    .topbar {
+      height: auto;
+      min-height: 64px;
+      padding: 10px 14px;
+    }
+    .brand {
+      grid-template-columns: 38px minmax(0, 1fr);
+      max-width: none;
+    }
+    .brand-logo {
+      width: 38px;
+    }
+    .brand-title {
+      font-size: 1.08rem;
+    }
+    .brand-sub {
+      font-size: 0.66rem;
+    }
+    .guide-link {
+      padding: 7px 9px;
+      font-size: 0.72rem;
+    }
+    .article-card {
+      grid-template-columns: minmax(0, 1fr) 82px;
+    }
+    .article-media {
+      width: 82px;
+      height: 82px;
+    }
+    .article-card h3 {
+      font-size: 0.98rem;
+    }
+    .article-summary {
+      -webkit-line-clamp: 2;
+      font-size: 0.86rem;
+    }
+  }
 """
 
 
@@ -2705,7 +3088,7 @@ PAGE_TEMPLATE = """<!doctype html>
   <title>{page_title}</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700;900&family=Noto+Sans+KR:wght@400;500;700;800&display=swap" rel="stylesheet">
   <link rel="icon" type="image/svg+xml" href="{brand_mark_src}">
   <style>{styles}</style>
 </head>
@@ -3828,8 +4211,10 @@ def render_hub_record_card(article: dict) -> str:
         build_article_search_text(article, summary_text, governance_scope, activity_types, hub_topics, article_scope),
         quote=True,
     )
+    media_html = render_article_media(article)
     return f"""
     <article class="article-card" data-article-card="true" data-policy-card="true" data-policy-group="{article_group}" data-policy-scope="{article_scope}" data-policy-type="{article_type}" data-article-url="{escaped_url}" data-article-title="{escaped_title}" data-article-date="{article_date}" data-article-region="{article_region}" data-article-search="{article_search}">
+      {media_html}
       {render_hub_article_meta(article, governance_scope)}
       <h3><a class="article-title-link" href="{escaped_url}" target="_blank" rel="noreferrer" aria-label="{escaped_title} 링크 바로가기">{escaped_title}</a></h3>
       <div class="badge-row"><span class="badge">{html.escape(activity_types)}</span><span class="badge">{html.escape(hub_topics)}</span></div>
