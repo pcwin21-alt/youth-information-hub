@@ -3355,6 +3355,31 @@ BASE_CSS = """
   .article-feedback {
     margin: 0 18px 12px;
   }
+  .article-card.no-media {
+    gap: 0;
+    padding: 20px;
+    border-left: 4px solid var(--accent);
+  }
+  .article-card.no-media > :not(.article-media) {
+    margin-left: 0;
+    margin-right: 0;
+  }
+  .article-card.no-media .article-meta {
+    margin-top: 0;
+  }
+  .article-card.no-media h3 {
+    margin-top: 12px;
+    font-size: 1.16rem;
+  }
+  .article-card.no-media .article-summary {
+    -webkit-line-clamp: 4;
+  }
+  .article-card.no-media .article-actions {
+    margin: auto 0 0;
+  }
+  .article-card.no-media .article-feedback {
+    margin: 0;
+  }
   .action-button,
   .mini-link {
     color: var(--accent);
@@ -3512,8 +3537,8 @@ BASE_CSS = """
       grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: 24px;
     }
-    body[data-page="news.html"] .article-grid > .article-card:first-child,
-    body[data-page="election.html"] .article-grid > .article-card:first-child {
+    body[data-page="news.html"] .article-grid > .article-card.has-media:first-child,
+    body[data-page="election.html"] .article-grid > .article-card.has-media:first-child {
       grid-column: span 2;
       display: grid;
       grid-template-columns: minmax(0, 1fr) minmax(280px, 0.92fr);
@@ -3528,8 +3553,8 @@ BASE_CSS = """
       min-height: 360px;
       align-content: stretch;
     }
-    body[data-page="news.html"] .article-grid > .article-card:first-child .article-media,
-    body[data-page="election.html"] .article-grid > .article-card:first-child .article-media {
+    body[data-page="news.html"] .article-grid > .article-card.has-media:first-child .article-media,
+    body[data-page="election.html"] .article-grid > .article-card.has-media:first-child .article-media {
       grid-area: media;
       width: 100%;
       height: 100%;
@@ -3537,33 +3562,33 @@ BASE_CSS = """
       border-right: 1px solid var(--outline-variant);
       border-bottom: 0;
     }
-    body[data-page="news.html"] .article-grid > .article-card:first-child .article-meta,
-    body[data-page="election.html"] .article-grid > .article-card:first-child .article-meta {
+    body[data-page="news.html"] .article-grid > .article-card.has-media:first-child .article-meta,
+    body[data-page="election.html"] .article-grid > .article-card.has-media:first-child .article-meta {
       grid-area: meta;
       margin-top: 24px;
     }
-    body[data-page="news.html"] .article-grid > .article-card:first-child h3,
-    body[data-page="election.html"] .article-grid > .article-card:first-child h3 {
+    body[data-page="news.html"] .article-grid > .article-card.has-media:first-child h3,
+    body[data-page="election.html"] .article-grid > .article-card.has-media:first-child h3 {
       grid-area: title;
       font-size: 1.42rem;
       line-height: 1.38;
     }
-    body[data-page="news.html"] .article-grid > .article-card:first-child .badge-row,
-    body[data-page="election.html"] .article-grid > .article-card:first-child .badge-row {
+    body[data-page="news.html"] .article-grid > .article-card.has-media:first-child .badge-row,
+    body[data-page="election.html"] .article-grid > .article-card.has-media:first-child .badge-row {
       grid-area: badges;
     }
-    body[data-page="news.html"] .article-grid > .article-card:first-child .article-summary,
-    body[data-page="election.html"] .article-grid > .article-card:first-child .article-summary {
+    body[data-page="news.html"] .article-grid > .article-card.has-media:first-child .article-summary,
+    body[data-page="election.html"] .article-grid > .article-card.has-media:first-child .article-summary {
       grid-area: summary;
       font-size: 1rem;
       -webkit-line-clamp: 4;
     }
-    body[data-page="news.html"] .article-grid > .article-card:first-child .article-actions,
-    body[data-page="election.html"] .article-grid > .article-card:first-child .article-actions {
+    body[data-page="news.html"] .article-grid > .article-card.has-media:first-child .article-actions,
+    body[data-page="election.html"] .article-grid > .article-card.has-media:first-child .article-actions {
       grid-area: actions;
     }
-    body[data-page="news.html"] .article-grid > .article-card:first-child .article-feedback,
-    body[data-page="election.html"] .article-grid > .article-card:first-child .article-feedback {
+    body[data-page="news.html"] .article-grid > .article-card.has-media:first-child .article-feedback,
+    body[data-page="election.html"] .article-grid > .article-card.has-media:first-child .article-feedback {
       grid-area: feedback;
     }
     body[data-page="index.html"] .home-briefing-grid {
@@ -3618,6 +3643,16 @@ BASE_CSS = """
     }
     .article-actions {
       margin: auto 16px 16px;
+    }
+    .article-card.no-media {
+      padding: 18px;
+    }
+    .article-card.no-media > :not(.article-media) {
+      margin-left: 0;
+      margin-right: 0;
+    }
+    .article-card.no-media .article-actions {
+      margin: auto 0 0;
     }
     .home-briefing-card {
       padding: 18px;
@@ -4603,32 +4638,25 @@ def render_publisher_icon(article: dict) -> str:
     )
 
 
-def article_fallback_media_src(article: dict) -> str:
-    if article.get("governance_scope") or article.get("is_hub_candidate"):
-        asset_name = "intro-hub.svg"
-    elif article.get("is_official_source") or article.get("source_kind") == "official" or is_election_promise_article(article):
-        asset_name = "intro-policies.svg"
-    elif any(topic in {"자료", "도구", "교육"} for topic in article_topic_tags(article, limit=4)):
-        asset_name = "intro-tools.svg"
-    else:
-        asset_name = "intro-news.svg"
-    return f"{ILLUSTRATION_ROOT}/{asset_name}?v={ASSET_VERSION}"
-
-
 def render_article_media(article: dict) -> str:
     image_url = normalize_media_url(article.get("image_url"), article_target_url(article))
-    is_fallback = not image_url
-    image_src = image_url or article_fallback_media_src(article)
+    if not image_url:
+        return ""
+
     url = html.escape(article_target_url(article))
     title = display_article_title(article)
     alt = normalize_inline_text(article.get("image_alt") or title)
     escaped_title = html.escape(title)
-    media_class = "article-media fallback" if is_fallback else "article-media"
-    onerror = "" if is_fallback else ' onerror="this.parentElement.hidden=true"'
+    onerror = (
+        ' onerror="this.parentElement.hidden=true;'
+        "var c=this.closest('.article-card');"
+        "if(c){c.classList.remove('has-media');c.classList.add('no-media');}"
+        '"'
+    )
     return (
-        f'<a class="{media_class}" href="{url}" target="_blank" rel="noreferrer" '
+        f'<a class="article-media" href="{url}" target="_blank" rel="noreferrer" '
         f'aria-label="{escaped_title} 이미지와 기사 링크 바로가기">'
-        f'<img class="article-thumbnail" src="{html.escape(image_src)}" alt="{html.escape(alt)}" '
+        f'<img class="article-thumbnail" src="{html.escape(image_url)}" alt="{html.escape(alt)}" '
         'loading="lazy" decoding="async" referrerpolicy="no-referrer" '
         f'{onerror}>'
         '</a>'
@@ -4669,6 +4697,8 @@ def render_article_list_item(
 
 
 def render_article_card(article: dict, extra_attrs: dict[str, str] | None = None) -> str:
+    media_html = render_article_media(article)
+    media_state_class = "has-media" if media_html else "no-media"
     topic_tags = article_topic_tags(article)
     badge_values = list(dict.fromkeys([*topic_tags, *article.get("display_badges", [])]))[:3]
     badges = "".join(f'<span class="badge">{html.escape(badge)}</span>' for badge in badge_values)
@@ -4687,7 +4717,7 @@ def render_article_card(article: dict, extra_attrs: dict[str, str] | None = None
     )
     article_date = html.escape(article_date_value(article))
     attr_parts = [
-        'class="article-card"',
+        f'class="article-card {media_state_class}"',
         'data-article-card="true"',
         f'data-article-url="{escaped_url}"',
         f'data-article-title="{escaped_title}"',
@@ -4702,7 +4732,6 @@ def render_article_card(article: dict, extra_attrs: dict[str, str] | None = None
                 continue
             attr_parts.append(f'{key}="{html.escape(str(value), quote=True)}"')
     attr_text = " ".join(attr_parts)
-    media_html = render_article_media(article)
     return f"""
     <article {attr_text}>
       {media_html}
@@ -4758,8 +4787,9 @@ def render_hub_record_card(article: dict) -> str:
         quote=True,
     )
     media_html = render_article_media(article)
+    media_state_class = "has-media" if media_html else "no-media"
     return f"""
-    <article class="article-card" data-article-card="true" data-policy-card="true" data-policy-group="{article_group}" data-policy-scope="{article_scope}" data-policy-type="{article_type}" data-article-url="{escaped_url}" data-article-title="{escaped_title}" data-article-date="{article_date}" data-article-region="{article_region}" data-article-search="{article_search}">
+    <article class="article-card {media_state_class}" data-article-card="true" data-policy-card="true" data-policy-group="{article_group}" data-policy-scope="{article_scope}" data-policy-type="{article_type}" data-article-url="{escaped_url}" data-article-title="{escaped_title}" data-article-date="{article_date}" data-article-region="{article_region}" data-article-search="{article_search}">
       {media_html}
       {render_hub_article_meta(article, governance_scope)}
       <h3><a class="article-title-link" href="{escaped_url}" target="_blank" rel="noreferrer" aria-label="{escaped_title} 링크 바로가기">{escaped_title}</a></h3>
