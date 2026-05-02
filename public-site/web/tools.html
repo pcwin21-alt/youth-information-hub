@@ -3676,7 +3676,8 @@
   }
   .hero[id],
   .section[id],
-  .home-briefing-card[id] {
+  .home-briefing-card[id],
+  .home-overview[id] {
     scroll-margin-top: 96px;
   }
   @media (min-width: 720px) {
@@ -4458,38 +4459,46 @@
   }
   body[data-page="index.html"] .home-briefing-grid {
     display: grid;
-    grid-template-columns: minmax(0, 1.02fr) minmax(360px, 0.78fr);
-    gap: 46px;
-    min-height: 500px;
-    padding: 60px;
+    grid-template-columns: 1fr;
+    gap: 18px;
+    min-height: auto;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+    align-items: stretch;
+  }
+  body[data-page="index.html"] .home-briefing-card.lead {
+    min-width: 0;
+    min-height: 168px;
+    padding: 28px 32px;
     border: 1px solid var(--dashboard-dark-line);
     border-radius: 8px;
     background: var(--dashboard-dark);
     box-shadow: none;
+    display: grid;
     align-items: center;
-  }
-  body[data-page="index.html"] .home-briefing-card.lead,
-  body[data-page="index.html"] .home-briefing-card.digest {
-    border: 0;
-    box-shadow: none;
-    min-width: 0;
-  }
-  body[data-page="index.html"] .home-briefing-card.lead {
-    padding: 0;
-    background: transparent;
-    display: block;
-    grid-template-columns: none;
-    min-height: auto;
+    overflow: hidden;
   }
   body[data-page="index.html"] .home-briefing-card.lead .home-briefing-content {
-    max-width: 650px;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas:
+      "date actions"
+      "title actions"
+      "copy summary";
+    gap: 10px 24px;
+    max-width: none;
+    align-items: center;
   }
   body[data-page="index.html"] .home-briefing-date,
   body[data-page="index.html"] .home-briefing-card.lead-arch .home-briefing-date {
+    grid-area: date;
     display: inline-flex;
     width: fit-content;
-    margin-bottom: 20px;
-    padding: 7px 16px;
+    margin-bottom: 0;
+    padding: 6px 14px;
     border: 1px solid rgba(222, 119, 0, 0.55);
     border-radius: 999px;
     background: rgba(222, 119, 0, 0.16);
@@ -4501,10 +4510,11 @@
   }
   body[data-page="index.html"] .home-briefing-title,
   body[data-page="index.html"] .home-briefing-card.lead-arch .home-briefing-title {
-    max-width: 660px;
+    grid-area: title;
+    max-width: 100%;
     color: #ffffff;
-    font-size: clamp(3.3rem, 4vw, 4.55rem);
-    line-height: 1.1;
+    font-size: clamp(2.05rem, 3vw, 3.05rem);
+    line-height: 1.08;
     letter-spacing: 0;
     text-shadow: 0 2px 0 #111513;
     word-break: keep-all;
@@ -4513,44 +4523,141 @@
   }
   body[data-page="index.html"] .home-briefing-copy,
   body[data-page="index.html"] .home-briefing-card.lead-arch .home-briefing-copy {
-    max-width: 620px;
+    grid-area: copy;
+    max-width: 720px;
     color: rgba(255, 255, 255, 0.76);
-    font-size: 1.28rem;
-    line-height: 1.76;
+    font-size: 1rem;
+    line-height: 1.62;
     white-space: normal;
     word-break: keep-all;
     overflow-wrap: break-word;
   }
   body[data-page="index.html"] .home-briefing-summary {
-    display: none;
+    grid-area: summary;
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    min-width: 0;
+    margin: 0;
+  }
+  body[data-page="index.html"] .home-briefing-summary span {
+    min-width: 92px;
+    padding: 8px 10px;
+    border: 1px solid rgba(255,255,255,0.18);
+    border-radius: 8px;
+    background: rgba(255,255,255,0.08);
+    color: #ffffff;
+  }
+  body[data-page="index.html"] .home-briefing-summary strong {
+    color: #ffffff;
+    font-size: 1.02rem;
+    letter-spacing: 0;
+  }
+  body[data-page="index.html"] .home-briefing-summary em {
+    color: rgba(255,255,255,0.68);
+    font-size: 0.72rem;
+  }
+  body[data-page="index.html"] .home-briefing-card.lead .hero-actions {
+    grid-area: actions;
+    align-self: center;
+    justify-self: end;
+    margin: 0;
+    padding: 0;
   }
   body[data-page="index.html"] .home-briefing-card > .home-illustration-slot {
     display: none;
   }
-  body[data-page="index.html"] .home-briefing-card.digest {
-    min-height: 390px;
-    max-height: 430px;
-    padding: 30px;
-    border: 1px solid #141816;
+  .home-overview {
+    display: grid;
+    gap: 18px;
+    padding: 24px;
+    border: 1px solid #d2cec6;
     border-radius: 8px;
-    background: linear-gradient(145deg, rgba(255,255,255,0.92), rgba(230,229,228,0.84));
-    box-shadow: 0 34px 54px rgba(0, 0, 0, 0.32);
-    overflow: hidden;
+    background: #ffffff;
   }
-  body[data-page="index.html"] .home-briefing-card.digest::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    background: linear-gradient(90deg, rgba(255,255,255,0.12), rgba(255,255,255,0.72) 62%, rgba(255,255,255,0.86));
+  .home-overview-head {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(300px, 0.82fr);
+    gap: 18px;
+    align-items: end;
   }
-  body[data-page="index.html"] .home-briefing-card.digest > * {
-    position: relative;
-    z-index: 1;
+  .home-overview-kicker {
+    display: inline-flex;
+    width: fit-content;
+    margin-bottom: 8px;
+    padding: 6px 12px;
+    border: 1px solid rgba(222, 119, 0, 0.35);
+    border-radius: 999px;
+    background: var(--accent-soft);
+    color: var(--accent);
+    font-size: 0.82rem;
+    font-weight: 900;
   }
-  body[data-page="index.html"] .home-briefing-card.digest h2 {
-    color: #111827;
-    font-size: 1.55rem;
+  .home-overview h2 {
+    margin: 0;
+    color: var(--text);
+    font-size: clamp(1.8rem, 2.3vw, 2.45rem);
+    line-height: 1.12;
+  }
+  .home-overview h3 {
+    margin: 0;
+    color: var(--text);
+    font-size: 1.22rem;
+    line-height: 1.25;
+  }
+  .home-overview p {
+    margin: 8px 0 0;
+    color: var(--muted);
+  }
+  .home-overview .home-glance-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 10px;
+  }
+  .home-overview .home-glance-item {
+    min-height: 86px;
+    padding: 12px 10px;
+  }
+  .home-overview .home-glance-value {
+    font-size: 1.44rem;
+    letter-spacing: 0;
+  }
+  .home-overview-columns {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
+    align-items: start;
+  }
+  .home-overview-column {
+    display: grid;
+    gap: 14px;
+    min-width: 0;
+    padding: 20px;
+    border: 1px solid #dedbd5;
+    border-radius: 8px;
+    background: #fbfbfa;
+  }
+  .home-overview-column-head {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    align-items: start;
+  }
+  .home-overview-column-head span {
+    display: block;
+    margin-bottom: 4px;
+    color: var(--accent);
+    font-size: 0.82rem;
+    font-weight: 900;
+  }
+  .home-overview-column .home-urgent-item {
+    padding: 13px 0;
+  }
+  .home-overview-column .home-urgent-text strong {
+    font-size: 0.98rem;
+    line-height: 1.45;
+  }
+  .home-keyword-strip .home-keyword-panel {
+    min-height: auto;
   }
   .hero-actions {
     gap: 12px;
@@ -4770,7 +4877,25 @@
     }
     body[data-page="index.html"] .home-briefing-grid {
       grid-template-columns: 1fr;
-      padding: 44px;
+      padding: 0;
+    }
+    body[data-page="index.html"] .home-briefing-card.lead .home-briefing-content {
+      grid-template-columns: 1fr;
+      grid-template-areas:
+        "date"
+        "title"
+        "copy"
+        "summary"
+        "actions";
+    }
+    body[data-page="index.html"] .home-briefing-card.lead .hero-actions,
+    body[data-page="index.html"] .home-briefing-summary {
+      justify-self: start;
+      justify-content: flex-start;
+    }
+    .home-overview-head,
+    .home-overview-columns {
+      grid-template-columns: 1fr;
     }
     .youth-metrics-grid {
       grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -4806,8 +4931,8 @@
       width: 100%;
       max-width: 100%;
       min-height: auto;
-      padding: 28px 22px;
-      border-radius: 8px;
+      padding: 0;
+      border-radius: 0;
     }
     body[data-page="index.html"] .home-briefing-card,
     body[data-page="index.html"] .home-briefing-content {
@@ -4832,10 +4957,30 @@
       line-break: anywhere;
       overflow-wrap: anywhere;
     }
-    body[data-page="index.html"] .home-briefing-card.digest {
+    body[data-page="index.html"] .home-briefing-card.lead {
       min-height: auto;
-      max-height: none;
-      padding: 20px;
+      padding: 24px 22px;
+    }
+    body[data-page="index.html"] .home-briefing-summary {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      width: 100%;
+    }
+    body[data-page="index.html"] .home-briefing-summary span {
+      min-width: 0;
+    }
+    .home-overview {
+      padding: 18px;
+    }
+    .home-overview .home-glance-grid {
+      grid-template-columns: 1fr;
+    }
+    .home-overview-column {
+      padding: 18px;
+    }
+    .home-overview-column-head {
+      align-items: start;
+      flex-direction: column;
     }
     .youth-metrics-grid,
     .article-grid,
@@ -4849,6 +4994,84 @@
     }
     .bottom-nav {
       display: grid;
+    }
+  }
+  body[data-page="index.html"] .home-briefing-grid {
+    grid-template-columns: 1fr !important;
+    grid-template-areas: none !important;
+    grid-auto-flow: row;
+    gap: 18px;
+    min-height: auto;
+    padding: 0;
+    border: 0;
+    background: transparent;
+  }
+  body[data-page="index.html"] .home-briefing-card.lead {
+    grid-area: auto !important;
+    min-height: 162px;
+    width: 100%;
+    padding: 28px 32px;
+  }
+  body[data-page="index.html"] .home-overview {
+    grid-area: auto !important;
+    width: 100%;
+  }
+  body[data-page="index.html"] .home-briefing-card.lead .home-briefing-content {
+    width: 100%;
+    max-width: none;
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas:
+      "date summary"
+      "title actions"
+      "copy actions";
+    gap: 10px 24px;
+  }
+  body[data-page="index.html"] .home-briefing-title,
+  body[data-page="index.html"] .home-briefing-card.lead-arch .home-briefing-title {
+    max-width: none;
+    font-size: clamp(2rem, 3vw, 3rem);
+    line-height: 1.08;
+    white-space: normal;
+    word-break: keep-all;
+    overflow-wrap: break-word;
+  }
+  body[data-page="index.html"] .home-briefing-copy,
+  body[data-page="index.html"] .home-briefing-card.lead-arch .home-briefing-copy {
+    max-width: 760px;
+    font-size: 1rem;
+    line-height: 1.62;
+  }
+  @media (max-width: 1180px) {
+    body[data-page="index.html"] .home-briefing-card.lead .home-briefing-content {
+      grid-template-columns: 1fr;
+      grid-template-areas:
+        "date"
+        "title"
+        "copy"
+        "summary"
+        "actions";
+    }
+    body[data-page="index.html"] .home-briefing-summary,
+    body[data-page="index.html"] .home-briefing-card.lead .hero-actions {
+      justify-self: start;
+      justify-content: flex-start;
+    }
+    .home-overview-head,
+    .home-overview-columns {
+      grid-template-columns: 1fr;
+    }
+  }
+  @media (max-width: 900px) {
+    body[data-page="index.html"] .home-briefing-card.lead {
+      padding: 24px 22px;
+    }
+    body[data-page="index.html"] .home-briefing-summary {
+      width: 100%;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+    .home-overview .home-glance-grid {
+      grid-template-columns: 1fr;
     }
   }
 </style>

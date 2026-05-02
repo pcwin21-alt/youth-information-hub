@@ -3676,7 +3676,8 @@
   }
   .hero[id],
   .section[id],
-  .home-briefing-card[id] {
+  .home-briefing-card[id],
+  .home-overview[id] {
     scroll-margin-top: 96px;
   }
   @media (min-width: 720px) {
@@ -4458,38 +4459,46 @@
   }
   body[data-page="index.html"] .home-briefing-grid {
     display: grid;
-    grid-template-columns: minmax(0, 1.02fr) minmax(360px, 0.78fr);
-    gap: 46px;
-    min-height: 500px;
-    padding: 60px;
+    grid-template-columns: 1fr;
+    gap: 18px;
+    min-height: auto;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+    align-items: stretch;
+  }
+  body[data-page="index.html"] .home-briefing-card.lead {
+    min-width: 0;
+    min-height: 168px;
+    padding: 28px 32px;
     border: 1px solid var(--dashboard-dark-line);
     border-radius: 8px;
     background: var(--dashboard-dark);
     box-shadow: none;
+    display: grid;
     align-items: center;
-  }
-  body[data-page="index.html"] .home-briefing-card.lead,
-  body[data-page="index.html"] .home-briefing-card.digest {
-    border: 0;
-    box-shadow: none;
-    min-width: 0;
-  }
-  body[data-page="index.html"] .home-briefing-card.lead {
-    padding: 0;
-    background: transparent;
-    display: block;
-    grid-template-columns: none;
-    min-height: auto;
+    overflow: hidden;
   }
   body[data-page="index.html"] .home-briefing-card.lead .home-briefing-content {
-    max-width: 650px;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas:
+      "date actions"
+      "title actions"
+      "copy summary";
+    gap: 10px 24px;
+    max-width: none;
+    align-items: center;
   }
   body[data-page="index.html"] .home-briefing-date,
   body[data-page="index.html"] .home-briefing-card.lead-arch .home-briefing-date {
+    grid-area: date;
     display: inline-flex;
     width: fit-content;
-    margin-bottom: 20px;
-    padding: 7px 16px;
+    margin-bottom: 0;
+    padding: 6px 14px;
     border: 1px solid rgba(222, 119, 0, 0.55);
     border-radius: 999px;
     background: rgba(222, 119, 0, 0.16);
@@ -4501,10 +4510,11 @@
   }
   body[data-page="index.html"] .home-briefing-title,
   body[data-page="index.html"] .home-briefing-card.lead-arch .home-briefing-title {
-    max-width: 660px;
+    grid-area: title;
+    max-width: 100%;
     color: #ffffff;
-    font-size: clamp(3.3rem, 4vw, 4.55rem);
-    line-height: 1.1;
+    font-size: clamp(2.05rem, 3vw, 3.05rem);
+    line-height: 1.08;
     letter-spacing: 0;
     text-shadow: 0 2px 0 #111513;
     word-break: keep-all;
@@ -4513,44 +4523,141 @@
   }
   body[data-page="index.html"] .home-briefing-copy,
   body[data-page="index.html"] .home-briefing-card.lead-arch .home-briefing-copy {
-    max-width: 620px;
+    grid-area: copy;
+    max-width: 720px;
     color: rgba(255, 255, 255, 0.76);
-    font-size: 1.28rem;
-    line-height: 1.76;
+    font-size: 1rem;
+    line-height: 1.62;
     white-space: normal;
     word-break: keep-all;
     overflow-wrap: break-word;
   }
   body[data-page="index.html"] .home-briefing-summary {
-    display: none;
+    grid-area: summary;
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    min-width: 0;
+    margin: 0;
+  }
+  body[data-page="index.html"] .home-briefing-summary span {
+    min-width: 92px;
+    padding: 8px 10px;
+    border: 1px solid rgba(255,255,255,0.18);
+    border-radius: 8px;
+    background: rgba(255,255,255,0.08);
+    color: #ffffff;
+  }
+  body[data-page="index.html"] .home-briefing-summary strong {
+    color: #ffffff;
+    font-size: 1.02rem;
+    letter-spacing: 0;
+  }
+  body[data-page="index.html"] .home-briefing-summary em {
+    color: rgba(255,255,255,0.68);
+    font-size: 0.72rem;
+  }
+  body[data-page="index.html"] .home-briefing-card.lead .hero-actions {
+    grid-area: actions;
+    align-self: center;
+    justify-self: end;
+    margin: 0;
+    padding: 0;
   }
   body[data-page="index.html"] .home-briefing-card > .home-illustration-slot {
     display: none;
   }
-  body[data-page="index.html"] .home-briefing-card.digest {
-    min-height: 390px;
-    max-height: 430px;
-    padding: 30px;
-    border: 1px solid #141816;
+  .home-overview {
+    display: grid;
+    gap: 18px;
+    padding: 24px;
+    border: 1px solid #d2cec6;
     border-radius: 8px;
-    background: linear-gradient(145deg, rgba(255,255,255,0.92), rgba(230,229,228,0.84));
-    box-shadow: 0 34px 54px rgba(0, 0, 0, 0.32);
-    overflow: hidden;
+    background: #ffffff;
   }
-  body[data-page="index.html"] .home-briefing-card.digest::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    background: linear-gradient(90deg, rgba(255,255,255,0.12), rgba(255,255,255,0.72) 62%, rgba(255,255,255,0.86));
+  .home-overview-head {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(300px, 0.82fr);
+    gap: 18px;
+    align-items: end;
   }
-  body[data-page="index.html"] .home-briefing-card.digest > * {
-    position: relative;
-    z-index: 1;
+  .home-overview-kicker {
+    display: inline-flex;
+    width: fit-content;
+    margin-bottom: 8px;
+    padding: 6px 12px;
+    border: 1px solid rgba(222, 119, 0, 0.35);
+    border-radius: 999px;
+    background: var(--accent-soft);
+    color: var(--accent);
+    font-size: 0.82rem;
+    font-weight: 900;
   }
-  body[data-page="index.html"] .home-briefing-card.digest h2 {
-    color: #111827;
-    font-size: 1.55rem;
+  .home-overview h2 {
+    margin: 0;
+    color: var(--text);
+    font-size: clamp(1.8rem, 2.3vw, 2.45rem);
+    line-height: 1.12;
+  }
+  .home-overview h3 {
+    margin: 0;
+    color: var(--text);
+    font-size: 1.22rem;
+    line-height: 1.25;
+  }
+  .home-overview p {
+    margin: 8px 0 0;
+    color: var(--muted);
+  }
+  .home-overview .home-glance-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 10px;
+  }
+  .home-overview .home-glance-item {
+    min-height: 86px;
+    padding: 12px 10px;
+  }
+  .home-overview .home-glance-value {
+    font-size: 1.44rem;
+    letter-spacing: 0;
+  }
+  .home-overview-columns {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
+    align-items: start;
+  }
+  .home-overview-column {
+    display: grid;
+    gap: 14px;
+    min-width: 0;
+    padding: 20px;
+    border: 1px solid #dedbd5;
+    border-radius: 8px;
+    background: #fbfbfa;
+  }
+  .home-overview-column-head {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    align-items: start;
+  }
+  .home-overview-column-head span {
+    display: block;
+    margin-bottom: 4px;
+    color: var(--accent);
+    font-size: 0.82rem;
+    font-weight: 900;
+  }
+  .home-overview-column .home-urgent-item {
+    padding: 13px 0;
+  }
+  .home-overview-column .home-urgent-text strong {
+    font-size: 0.98rem;
+    line-height: 1.45;
+  }
+  .home-keyword-strip .home-keyword-panel {
+    min-height: auto;
   }
   .hero-actions {
     gap: 12px;
@@ -4770,7 +4877,25 @@
     }
     body[data-page="index.html"] .home-briefing-grid {
       grid-template-columns: 1fr;
-      padding: 44px;
+      padding: 0;
+    }
+    body[data-page="index.html"] .home-briefing-card.lead .home-briefing-content {
+      grid-template-columns: 1fr;
+      grid-template-areas:
+        "date"
+        "title"
+        "copy"
+        "summary"
+        "actions";
+    }
+    body[data-page="index.html"] .home-briefing-card.lead .hero-actions,
+    body[data-page="index.html"] .home-briefing-summary {
+      justify-self: start;
+      justify-content: flex-start;
+    }
+    .home-overview-head,
+    .home-overview-columns {
+      grid-template-columns: 1fr;
     }
     .youth-metrics-grid {
       grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -4806,8 +4931,8 @@
       width: 100%;
       max-width: 100%;
       min-height: auto;
-      padding: 28px 22px;
-      border-radius: 8px;
+      padding: 0;
+      border-radius: 0;
     }
     body[data-page="index.html"] .home-briefing-card,
     body[data-page="index.html"] .home-briefing-content {
@@ -4832,10 +4957,30 @@
       line-break: anywhere;
       overflow-wrap: anywhere;
     }
-    body[data-page="index.html"] .home-briefing-card.digest {
+    body[data-page="index.html"] .home-briefing-card.lead {
       min-height: auto;
-      max-height: none;
-      padding: 20px;
+      padding: 24px 22px;
+    }
+    body[data-page="index.html"] .home-briefing-summary {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      width: 100%;
+    }
+    body[data-page="index.html"] .home-briefing-summary span {
+      min-width: 0;
+    }
+    .home-overview {
+      padding: 18px;
+    }
+    .home-overview .home-glance-grid {
+      grid-template-columns: 1fr;
+    }
+    .home-overview-column {
+      padding: 18px;
+    }
+    .home-overview-column-head {
+      align-items: start;
+      flex-direction: column;
     }
     .youth-metrics-grid,
     .article-grid,
@@ -4849,6 +4994,84 @@
     }
     .bottom-nav {
       display: grid;
+    }
+  }
+  body[data-page="index.html"] .home-briefing-grid {
+    grid-template-columns: 1fr !important;
+    grid-template-areas: none !important;
+    grid-auto-flow: row;
+    gap: 18px;
+    min-height: auto;
+    padding: 0;
+    border: 0;
+    background: transparent;
+  }
+  body[data-page="index.html"] .home-briefing-card.lead {
+    grid-area: auto !important;
+    min-height: 162px;
+    width: 100%;
+    padding: 28px 32px;
+  }
+  body[data-page="index.html"] .home-overview {
+    grid-area: auto !important;
+    width: 100%;
+  }
+  body[data-page="index.html"] .home-briefing-card.lead .home-briefing-content {
+    width: 100%;
+    max-width: none;
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas:
+      "date summary"
+      "title actions"
+      "copy actions";
+    gap: 10px 24px;
+  }
+  body[data-page="index.html"] .home-briefing-title,
+  body[data-page="index.html"] .home-briefing-card.lead-arch .home-briefing-title {
+    max-width: none;
+    font-size: clamp(2rem, 3vw, 3rem);
+    line-height: 1.08;
+    white-space: normal;
+    word-break: keep-all;
+    overflow-wrap: break-word;
+  }
+  body[data-page="index.html"] .home-briefing-copy,
+  body[data-page="index.html"] .home-briefing-card.lead-arch .home-briefing-copy {
+    max-width: 760px;
+    font-size: 1rem;
+    line-height: 1.62;
+  }
+  @media (max-width: 1180px) {
+    body[data-page="index.html"] .home-briefing-card.lead .home-briefing-content {
+      grid-template-columns: 1fr;
+      grid-template-areas:
+        "date"
+        "title"
+        "copy"
+        "summary"
+        "actions";
+    }
+    body[data-page="index.html"] .home-briefing-summary,
+    body[data-page="index.html"] .home-briefing-card.lead .hero-actions {
+      justify-self: start;
+      justify-content: flex-start;
+    }
+    .home-overview-head,
+    .home-overview-columns {
+      grid-template-columns: 1fr;
+    }
+  }
+  @media (max-width: 900px) {
+    body[data-page="index.html"] .home-briefing-card.lead {
+      padding: 24px 22px;
+    }
+    body[data-page="index.html"] .home-briefing-summary {
+      width: 100%;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+    .home-overview .home-glance-grid {
+      grid-template-columns: 1fr;
     }
   }
 </style>
@@ -4899,39 +5122,51 @@
         <article class="home-briefing-card lead lead-arch has-media" data-media-host="home-lead">
           <div class="home-briefing-content">
             <span class="home-briefing-date">2026.05.02 (토)</span>
-            <h1 class="home-briefing-title">청년의&nbsp;오늘을<br>모아봅니다.</h1>
-            <p class="home-briefing-copy">청년에게 닿는 정책과 이슈를 놓치지 않도록 오늘 필요한 기사와 흐름을 한곳에 모았습니다. 작은 정보 하나가 오늘의 길잡이가 되기를 바랍니다.</p>
-            <div class="home-briefing-summary" aria-label="오늘 운영 요약"><span><strong>2건</strong><em>오늘 기사</em></span><span><strong>5개</strong><em>최근 표시</em></span><span><strong>5개</strong><em>정책 발표</em></span></div>
+            <h1 class="home-briefing-title">오늘 필요한 청년 이슈</h1>
+            <p class="home-briefing-copy">최신 뉴스와 정부·지자체 발표를 한 화면에서 빠르게 확인하세요.</p>
+            <div class="home-briefing-summary" aria-label="오늘 운영 요약"><span><strong>2건</strong><em>오늘 기사</em></span><span><strong>5개</strong><em>최근 표시</em></span><span><strong>5개</strong><em>정부·지자체</em></span></div>
             <div class="hero-actions">
-              <a class="button primary" href="news.html">뉴스 보기</a>
-              <a class="button" href="#youth-metrics">주요 지표 보기</a>
+              <a class="button primary" href="#today-briefing">오늘 한눈에 보기</a>
+              <a class="button" href="news.html">뉴스 탭</a>
             </div>
           </div>
           <div class="home-illustration-slot"><img class="home-illustration-img" src="assets/illustrations/home-moabom-collection.svg?v=20260501-sunlit-logo-1" alt="청년들이 봄꽃 아래에서 오늘의 기사와 정책 정보를 살펴보는 홈 화면 일러스트" decoding="async" loading="eager" onerror="const host=this.closest('[data-media-host]');if(host){host.classList.remove('has-media');}this.parentElement.remove();"></div>
         </article>
-        <article class="home-briefing-card digest digest-organic home-top-briefing" id="today-briefing">
-          <div class="home-briefing-head">
-            <span class="home-briefing-date">오늘 브리핑</span>
-            <h2>오늘 한눈에 보기</h2>
-            <p>최신 기사와 꼭 봐야 하는 정부 정책 발표를 나눠 봅니다.</p>
-          </div>
-          <div class="home-glance-grid"><article class="home-glance-item warm full"><span class="home-glance-label">오늘 올라온 기사</span><strong class="home-glance-value">2건</strong></article><article class="home-keyword-panel"><div class="home-keyword-heading"><strong>최근 많이 잡힌 카테고리</strong><span>최근 48시간 기준입니다. 누르면 뉴스 탭에서 바로 걸러봅니다.</span></div><div class="home-keyword-list"><a class="home-keyword-chip" href="news.html?topic=%EC%A3%BC%EA%B1%B0">#주거</a><a class="home-keyword-chip" href="news.html?topic=%EC%B7%A8%EC%97%85">#취업</a><a class="home-keyword-chip" href="news.html?topic=%EB%AA%A8%EC%A7%91">#모집</a><a class="home-keyword-chip" href="news.html?topic=%EB%85%B8%EB%8F%99">#노동</a><a class="home-keyword-chip" href="news.html?topic=%EA%B8%88%EC%9C%B5">#금융</a><a class="home-keyword-chip" href="news.html?topic=%EC%B0%BD%EC%97%85">#창업</a><a class="home-keyword-chip" href="news.html?topic=%EB%B3%B5%EC%A7%80">#복지</a></div></article></div>
-          <div class="home-briefing-divider"></div>
-          <div class="home-briefing-tabs" data-home-briefing-tabs>
-            <div class="home-briefing-tablist" role="tablist" aria-label="오늘 브리핑 전환">
-              <button class="home-briefing-tab active" id="home-briefing-tab-latest" type="button" role="tab" aria-selected="true" aria-controls="home-briefing-panel-latest" data-home-briefing-tab="latest">가장 최근에 나온</button>
-              <button class="home-briefing-tab" id="home-briefing-tab-policy" type="button" role="tab" aria-selected="false" aria-controls="home-briefing-panel-policy" data-home-briefing-tab="policy" tabindex="-1">정부 발표·보도자료</button>
+        <section class="home-overview" id="today-briefing" aria-labelledby="today-briefing-title">
+          <div class="home-overview-head">
+            <div>
+              <span class="home-overview-kicker">오늘 브리핑</span>
+              <h2 id="today-briefing-title">오늘 한눈에 보기</h2>
+              <p>첫 화면에서는 가장 최근 뉴스와 정부·지자체 동향을 바로 펼쳐 봅니다.</p>
             </div>
-            <div class="home-briefing-panel active" id="home-briefing-panel-latest" role="tabpanel" aria-labelledby="home-briefing-tab-latest" data-home-briefing-panel="latest">
-              <p class="home-briefing-panel-note">가장 최근에 나온 청년 관련 기사입니다.</p>
+            <div class="home-glance-grid"><article class="home-glance-item warm"><span class="home-glance-label">오늘 올라온 기사</span><strong class="home-glance-value">2건</strong></article><article class="home-glance-item neutral"><span class="home-glance-label">가장 최근 뉴스</span><strong class="home-glance-value">5건</strong></article><article class="home-glance-item teal"><span class="home-glance-label">정부·지자체 동향</span><strong class="home-glance-value">5건</strong></article></div>
+          </div>
+          <div class="home-overview-columns">
+            <article class="home-overview-column">
+              <div class="home-overview-column-head">
+                <div>
+                  <span>가장 최근 뉴스</span>
+                  <h3>지금 새로 들어온 기사</h3>
+                </div>
+                <a class="mini-link" href="news.html">전체 보기</a>
+              </div>
+              <p class="home-briefing-panel-note">언론 기사 중 선거·공약성 기사를 제외한 최신 청년 이슈입니다.</p>
               <div class="home-urgent-list"><article class="home-urgent-item"><a class="home-urgent-link" href="https://www.joongang.co.kr/article/25425160" target="_blank" rel="noreferrer" aria-label="7년 만에 최대 출생아…정책이 낳았나, 에코세대가 낳았나 | 중앙일보 링크 바로가기"><span class="home-urgent-rank">01</span><div class="home-urgent-text"><strong>7년 만에 최대 출생아…정책이 낳았나, 에코세대가 낳았나 | 중앙일보</strong><span class="home-urgent-meta">중앙SUNDAY · 2026-05-02 00:01 · 서울</span></div></a></article><article class="home-urgent-item"><a class="home-urgent-link" href="https://www.thereport.co.kr/news/articleView.html?idxno=87395" target="_blank" rel="noreferrer" aria-label="GH, 하남교산 통합공공임대 1100세대 공급 본격화 링크 바로가기"><span class="home-urgent-rank">02</span><div class="home-urgent-text"><strong>GH, 하남교산 통합공공임대 1100세대 공급 본격화</strong><span class="home-urgent-meta">더리포트 · 2026-05-01 23:33 · 경기</span></div></a></article><article class="home-urgent-item"><a class="home-urgent-link" href="https://www.wflower.info/news/article.html?no=12143" target="_blank" rel="noreferrer" aria-label="[우먼스플라워] [정책Q&amp;A] 도봉구 청년 사회첫출발 지원금 링크 바로가기"><span class="home-urgent-rank">03</span><div class="home-urgent-text"><strong>[우먼스플라워] [정책Q&amp;A] 도봉구 청년 사회첫출발 지원금</strong><span class="home-urgent-meta">우먼스플라워 · 2026-05-01 23:09 · 서울</span></div></a></article><article class="home-urgent-item"><a class="home-urgent-link" href="https://news.kbs.co.kr/news/view.do?ncd=8551270" target="_blank" rel="noreferrer" aria-label="‘더 나은 일자리’, ‘더 높은 임금’ 찾아…청년 탈강원 심화 링크 바로가기"><span class="home-urgent-rank">04</span><div class="home-urgent-text"><strong>‘더 나은 일자리’, ‘더 높은 임금’ 찾아…청년 탈강원 심화</strong><span class="home-urgent-meta">KBS · 2026-05-01 23:08 · 서울</span></div></a></article><article class="home-urgent-item"><a class="home-urgent-link" href="https://mpmbc.co.kr/NewsArticle/1516880" target="_blank" rel="noreferrer" aria-label="&#x27;전남 청년 희망 일자리 지원사업&#x27; 참여기업 19일까지 모집 링크 바로가기"><span class="home-urgent-rank">05</span><div class="home-urgent-text"><strong>&#x27;전남 청년 희망 일자리 지원사업&#x27; 참여기업 19일까지 모집</strong><span class="home-urgent-meta">목포MBC · 2026-05-01 21:08 · 전남</span></div></a></article></div>
-            </div>
-            <div class="home-briefing-panel" id="home-briefing-panel-policy" role="tabpanel" aria-labelledby="home-briefing-tab-policy" data-home-briefing-panel="policy" hidden>
-              <p class="home-briefing-panel-note">꼭 봐야 하는 정부 정책 발표와 보도자료입니다.</p>
-              <div class="home-urgent-list"><article class="home-urgent-item"><a class="home-urgent-link" href="https://www.korea.kr/news/policyNewsView.do?newsId=148963684" target="_blank" rel="noreferrer" aria-label="&#x27;청년 10만 명&#x27;에 일자리 기회 제공…&#x27;청년뉴딜 추진방안&#x27; 발표 링크 바로가기"><span class="home-urgent-rank">01</span><div class="home-urgent-text"><strong>&#x27;청년 10만 명&#x27;에 일자리 기회 제공…&#x27;청년뉴딜 추진방안&#x27; 발표</strong><span class="home-urgent-meta">정책브리핑 · 2026-04-29 17:15 · 서울</span></div></a></article><article class="home-urgent-item"><a class="home-urgent-link" href="https://www.molit.go.kr/USR/NEWS/m_71/dtl.jsp?lcmspage=1&amp;id=95091966" target="_blank" rel="noreferrer" aria-label="30일 2030청년자문단과 MZ보드 통합발대식··· 청년 자문과 실무혁신 결합 링크 바로가기"><span class="home-urgent-rank">02</span><div class="home-urgent-text"><strong>30일 2030청년자문단과 MZ보드 통합발대식··· 청년 자문과 실무혁신 결합</strong><span class="home-urgent-meta">국토교통부 보도자료 · 2026-04-30</span></div></a></article><article class="home-urgent-item"><a class="home-urgent-link" href="https://www.moe.go.kr/boardCnts/viewRenew.do?boardID=294&amp;boardSeq=106021&amp;lev=0&amp;searchType=null&amp;statusYN=W&amp;page=1&amp;s=moe&amp;m=020402&amp;opType=N" target="_blank" rel="noreferrer" aria-label="2026년 청년도약 인재양성 부트캠프 운영계획 공고 안내 링크 바로가기"><span class="home-urgent-rank">03</span><div class="home-urgent-text"><strong>2026년 청년도약 인재양성 부트캠프 운영계획 공고 안내</strong><span class="home-urgent-meta">교육부 보도자료 · 2026-04-29 · 세종</span></div></a></article><article class="home-urgent-item"><a class="home-urgent-link" href="https://www.fsc.go.kr/no010101/86804?srchCtgry=1&amp;curPage=&amp;srchKey=&amp;srchText=&amp;srchBeginDt=&amp;srchEndDt=" target="_blank" rel="noreferrer" aria-label="보도자료 - 위원회 소식 - 알림마당 - 금융위원회 링크 바로가기"><span class="home-urgent-rank">04</span><div class="home-urgent-text"><strong>보도자료 - 위원회 소식 - 알림마당 - 금융위원회</strong><span class="home-urgent-meta">금융위원회 보도자료 · 2026-04-29 · 서울</span></div></a></article><article class="home-urgent-item"><a class="home-urgent-link" href="https://www.opm.go.kr:443/opm/news/press-release.do" target="_blank" rel="noreferrer" aria-label="국무조정실 국무총리비서실 | 알림·소식 | 보도·설명자료 | 보도자료 게시판읽기([보도자료] 김민석 국무총리, 제18차 청년정책조정위원회 겸 제2차 청년정책... 링크 바로가기"><span class="home-urgent-rank">05</span><div class="home-urgent-text"><strong>국무조정실 국무총리비서실 | 알림·소식 | 보도·설명자료 | 보도자료 게시판읽기([보도자료] 김민석 국무총리, 제18차 청년정책조정위원회 겸 제2차 청년정책...</strong><span class="home-urgent-meta">국무조정실 보도자료 · 2026-04-28 · 서울</span></div></a></article></div>
-            </div>
+            </article>
+            <article class="home-overview-column">
+              <div class="home-overview-column-head">
+                <div>
+                  <span>정부·지자체 동향</span>
+                  <h3>공식 발표와 지역 움직임</h3>
+                </div>
+                <a class="mini-link" href="policies.html">전체 보기</a>
+              </div>
+              <p class="home-briefing-panel-note">중앙정부 발표, 보도자료, 지역 참여·정책 흐름을 함께 봅니다.</p>
+              <div class="home-urgent-list"><article class="home-urgent-item"><a class="home-urgent-link" href="https://www.sidae.com/article/2026042113552138688" target="_blank" rel="noreferrer" aria-label="&quot;취약계층과 함께 간다&quot;…보험업계, 발로 뛰며 포용금융 실천 링크 바로가기"><span class="home-urgent-rank">01</span><div class="home-urgent-text"><strong>&quot;취약계층과 함께 간다&quot;…보험업계, 발로 뛰며 포용금융 실천</strong><span class="home-urgent-meta">동행미디어 시대 · 2026-05-01 05:00 · 서울</span></div></a></article><article class="home-urgent-item"><a class="home-urgent-link" href="https://go.seoul.co.kr/news/newsView.php?id=20260501019002" target="_blank" rel="noreferrer" aria-label="서울, 전세사기 피해자도 ‘청년 월세’ 지원 링크 바로가기"><span class="home-urgent-rank">02</span><div class="home-urgent-text"><strong>서울, 전세사기 피해자도 ‘청년 월세’ 지원</strong><span class="home-urgent-meta">서울신문 · 2026-05-01 00:44 · 서울</span></div></a></article><article class="home-urgent-item"><a class="home-urgent-link" href="https://www.korea.kr/news/policyNewsView.do?newsId=148963684" target="_blank" rel="noreferrer" aria-label="&#x27;청년 10만 명&#x27;에 일자리 기회 제공…&#x27;청년뉴딜 추진방안&#x27; 발표 링크 바로가기"><span class="home-urgent-rank">03</span><div class="home-urgent-text"><strong>&#x27;청년 10만 명&#x27;에 일자리 기회 제공…&#x27;청년뉴딜 추진방안&#x27; 발표</strong><span class="home-urgent-meta">정책브리핑 · 2026-04-29 17:15 · 서울</span></div></a></article><article class="home-urgent-item"><a class="home-urgent-link" href="https://www.molit.go.kr/USR/NEWS/m_71/dtl.jsp?lcmspage=1&amp;id=95091966" target="_blank" rel="noreferrer" aria-label="30일 2030청년자문단과 MZ보드 통합발대식··· 청년 자문과 실무혁신 결합 링크 바로가기"><span class="home-urgent-rank">04</span><div class="home-urgent-text"><strong>30일 2030청년자문단과 MZ보드 통합발대식··· 청년 자문과 실무혁신 결합</strong><span class="home-urgent-meta">국토교통부 보도자료 · 2026-04-30</span></div></a></article><article class="home-urgent-item"><a class="home-urgent-link" href="https://www.moe.go.kr/boardCnts/viewRenew.do?boardID=294&amp;boardSeq=106021&amp;lev=0&amp;searchType=null&amp;statusYN=W&amp;page=1&amp;s=moe&amp;m=020402&amp;opType=N" target="_blank" rel="noreferrer" aria-label="2026년 청년도약 인재양성 부트캠프 운영계획 공고 안내 링크 바로가기"><span class="home-urgent-rank">05</span><div class="home-urgent-text"><strong>2026년 청년도약 인재양성 부트캠프 운영계획 공고 안내</strong><span class="home-urgent-meta">교육부 보도자료 · 2026-04-29 · 세종</span></div></a></article></div>
+            </article>
           </div>
-        </article>
+          <div class="home-keyword-strip"><article class="home-keyword-panel"><div class="home-keyword-heading"><strong>최근 많이 잡힌 카테고리</strong><span>최근 48시간 기준입니다. 누르면 뉴스 탭에서 바로 걸러봅니다.</span></div><div class="home-keyword-list"><a class="home-keyword-chip" href="news.html?topic=%EC%A3%BC%EA%B1%B0">#주거</a><a class="home-keyword-chip" href="news.html?topic=%EC%B7%A8%EC%97%85">#취업</a><a class="home-keyword-chip" href="news.html?topic=%EB%AA%A8%EC%A7%91">#모집</a><a class="home-keyword-chip" href="news.html?topic=%EB%85%B8%EB%8F%99">#노동</a><a class="home-keyword-chip" href="news.html?topic=%EA%B8%88%EC%9C%B5">#금융</a><a class="home-keyword-chip" href="news.html?topic=%EC%B0%BD%EC%97%85">#창업</a><a class="home-keyword-chip" href="news.html?topic=%EB%B3%B5%EC%A7%80">#복지</a></div></article></div>
+        </section>
       </div>
     </section>
     

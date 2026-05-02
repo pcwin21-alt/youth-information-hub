@@ -4016,7 +4016,8 @@ BASE_CSS = """
   }
   .hero[id],
   .section[id],
-  .home-briefing-card[id] {
+  .home-briefing-card[id],
+  .home-overview[id] {
     scroll-margin-top: 96px;
   }
   @media (min-width: 720px) {
@@ -4801,38 +4802,46 @@ DASHBOARD_TONE_CSS = """
   }
   body[data-page="index.html"] .home-briefing-grid {
     display: grid;
-    grid-template-columns: minmax(0, 1.02fr) minmax(360px, 0.78fr);
-    gap: 46px;
-    min-height: 500px;
-    padding: 60px;
+    grid-template-columns: 1fr;
+    gap: 18px;
+    min-height: auto;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+    align-items: stretch;
+  }
+  body[data-page="index.html"] .home-briefing-card.lead {
+    min-width: 0;
+    min-height: 168px;
+    padding: 28px 32px;
     border: 1px solid var(--dashboard-dark-line);
     border-radius: 8px;
     background: var(--dashboard-dark);
     box-shadow: none;
+    display: grid;
     align-items: center;
-  }
-  body[data-page="index.html"] .home-briefing-card.lead,
-  body[data-page="index.html"] .home-briefing-card.digest {
-    border: 0;
-    box-shadow: none;
-    min-width: 0;
-  }
-  body[data-page="index.html"] .home-briefing-card.lead {
-    padding: 0;
-    background: transparent;
-    display: block;
-    grid-template-columns: none;
-    min-height: auto;
+    overflow: hidden;
   }
   body[data-page="index.html"] .home-briefing-card.lead .home-briefing-content {
-    max-width: 650px;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas:
+      "date actions"
+      "title actions"
+      "copy summary";
+    gap: 10px 24px;
+    max-width: none;
+    align-items: center;
   }
   body[data-page="index.html"] .home-briefing-date,
   body[data-page="index.html"] .home-briefing-card.lead-arch .home-briefing-date {
+    grid-area: date;
     display: inline-flex;
     width: fit-content;
-    margin-bottom: 20px;
-    padding: 7px 16px;
+    margin-bottom: 0;
+    padding: 6px 14px;
     border: 1px solid rgba(222, 119, 0, 0.55);
     border-radius: 999px;
     background: rgba(222, 119, 0, 0.16);
@@ -4844,10 +4853,11 @@ DASHBOARD_TONE_CSS = """
   }
   body[data-page="index.html"] .home-briefing-title,
   body[data-page="index.html"] .home-briefing-card.lead-arch .home-briefing-title {
-    max-width: 660px;
+    grid-area: title;
+    max-width: 100%;
     color: #ffffff;
-    font-size: clamp(3.3rem, 4vw, 4.55rem);
-    line-height: 1.1;
+    font-size: clamp(2.05rem, 3vw, 3.05rem);
+    line-height: 1.08;
     letter-spacing: 0;
     text-shadow: 0 2px 0 #111513;
     word-break: keep-all;
@@ -4856,44 +4866,141 @@ DASHBOARD_TONE_CSS = """
   }
   body[data-page="index.html"] .home-briefing-copy,
   body[data-page="index.html"] .home-briefing-card.lead-arch .home-briefing-copy {
-    max-width: 620px;
+    grid-area: copy;
+    max-width: 720px;
     color: rgba(255, 255, 255, 0.76);
-    font-size: 1.28rem;
-    line-height: 1.76;
+    font-size: 1rem;
+    line-height: 1.62;
     white-space: normal;
     word-break: keep-all;
     overflow-wrap: break-word;
   }
   body[data-page="index.html"] .home-briefing-summary {
-    display: none;
+    grid-area: summary;
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    min-width: 0;
+    margin: 0;
+  }
+  body[data-page="index.html"] .home-briefing-summary span {
+    min-width: 92px;
+    padding: 8px 10px;
+    border: 1px solid rgba(255,255,255,0.18);
+    border-radius: 8px;
+    background: rgba(255,255,255,0.08);
+    color: #ffffff;
+  }
+  body[data-page="index.html"] .home-briefing-summary strong {
+    color: #ffffff;
+    font-size: 1.02rem;
+    letter-spacing: 0;
+  }
+  body[data-page="index.html"] .home-briefing-summary em {
+    color: rgba(255,255,255,0.68);
+    font-size: 0.72rem;
+  }
+  body[data-page="index.html"] .home-briefing-card.lead .hero-actions {
+    grid-area: actions;
+    align-self: center;
+    justify-self: end;
+    margin: 0;
+    padding: 0;
   }
   body[data-page="index.html"] .home-briefing-card > .home-illustration-slot {
     display: none;
   }
-  body[data-page="index.html"] .home-briefing-card.digest {
-    min-height: 390px;
-    max-height: 430px;
-    padding: 30px;
-    border: 1px solid #141816;
+  .home-overview {
+    display: grid;
+    gap: 18px;
+    padding: 24px;
+    border: 1px solid #d2cec6;
     border-radius: 8px;
-    background: linear-gradient(145deg, rgba(255,255,255,0.92), rgba(230,229,228,0.84));
-    box-shadow: 0 34px 54px rgba(0, 0, 0, 0.32);
-    overflow: hidden;
+    background: #ffffff;
   }
-  body[data-page="index.html"] .home-briefing-card.digest::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    background: linear-gradient(90deg, rgba(255,255,255,0.12), rgba(255,255,255,0.72) 62%, rgba(255,255,255,0.86));
+  .home-overview-head {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(300px, 0.82fr);
+    gap: 18px;
+    align-items: end;
   }
-  body[data-page="index.html"] .home-briefing-card.digest > * {
-    position: relative;
-    z-index: 1;
+  .home-overview-kicker {
+    display: inline-flex;
+    width: fit-content;
+    margin-bottom: 8px;
+    padding: 6px 12px;
+    border: 1px solid rgba(222, 119, 0, 0.35);
+    border-radius: 999px;
+    background: var(--accent-soft);
+    color: var(--accent);
+    font-size: 0.82rem;
+    font-weight: 900;
   }
-  body[data-page="index.html"] .home-briefing-card.digest h2 {
-    color: #111827;
-    font-size: 1.55rem;
+  .home-overview h2 {
+    margin: 0;
+    color: var(--text);
+    font-size: clamp(1.8rem, 2.3vw, 2.45rem);
+    line-height: 1.12;
+  }
+  .home-overview h3 {
+    margin: 0;
+    color: var(--text);
+    font-size: 1.22rem;
+    line-height: 1.25;
+  }
+  .home-overview p {
+    margin: 8px 0 0;
+    color: var(--muted);
+  }
+  .home-overview .home-glance-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 10px;
+  }
+  .home-overview .home-glance-item {
+    min-height: 86px;
+    padding: 12px 10px;
+  }
+  .home-overview .home-glance-value {
+    font-size: 1.44rem;
+    letter-spacing: 0;
+  }
+  .home-overview-columns {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
+    align-items: start;
+  }
+  .home-overview-column {
+    display: grid;
+    gap: 14px;
+    min-width: 0;
+    padding: 20px;
+    border: 1px solid #dedbd5;
+    border-radius: 8px;
+    background: #fbfbfa;
+  }
+  .home-overview-column-head {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    align-items: start;
+  }
+  .home-overview-column-head span {
+    display: block;
+    margin-bottom: 4px;
+    color: var(--accent);
+    font-size: 0.82rem;
+    font-weight: 900;
+  }
+  .home-overview-column .home-urgent-item {
+    padding: 13px 0;
+  }
+  .home-overview-column .home-urgent-text strong {
+    font-size: 0.98rem;
+    line-height: 1.45;
+  }
+  .home-keyword-strip .home-keyword-panel {
+    min-height: auto;
   }
   .hero-actions {
     gap: 12px;
@@ -5113,7 +5220,25 @@ DASHBOARD_TONE_CSS = """
     }
     body[data-page="index.html"] .home-briefing-grid {
       grid-template-columns: 1fr;
-      padding: 44px;
+      padding: 0;
+    }
+    body[data-page="index.html"] .home-briefing-card.lead .home-briefing-content {
+      grid-template-columns: 1fr;
+      grid-template-areas:
+        "date"
+        "title"
+        "copy"
+        "summary"
+        "actions";
+    }
+    body[data-page="index.html"] .home-briefing-card.lead .hero-actions,
+    body[data-page="index.html"] .home-briefing-summary {
+      justify-self: start;
+      justify-content: flex-start;
+    }
+    .home-overview-head,
+    .home-overview-columns {
+      grid-template-columns: 1fr;
     }
     .youth-metrics-grid {
       grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -5149,8 +5274,8 @@ DASHBOARD_TONE_CSS = """
       width: 100%;
       max-width: 100%;
       min-height: auto;
-      padding: 28px 22px;
-      border-radius: 8px;
+      padding: 0;
+      border-radius: 0;
     }
     body[data-page="index.html"] .home-briefing-card,
     body[data-page="index.html"] .home-briefing-content {
@@ -5175,10 +5300,30 @@ DASHBOARD_TONE_CSS = """
       line-break: anywhere;
       overflow-wrap: anywhere;
     }
-    body[data-page="index.html"] .home-briefing-card.digest {
+    body[data-page="index.html"] .home-briefing-card.lead {
       min-height: auto;
-      max-height: none;
-      padding: 20px;
+      padding: 24px 22px;
+    }
+    body[data-page="index.html"] .home-briefing-summary {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      width: 100%;
+    }
+    body[data-page="index.html"] .home-briefing-summary span {
+      min-width: 0;
+    }
+    .home-overview {
+      padding: 18px;
+    }
+    .home-overview .home-glance-grid {
+      grid-template-columns: 1fr;
+    }
+    .home-overview-column {
+      padding: 18px;
+    }
+    .home-overview-column-head {
+      align-items: start;
+      flex-direction: column;
     }
     .youth-metrics-grid,
     .article-grid,
@@ -5192,6 +5337,84 @@ DASHBOARD_TONE_CSS = """
     }
     .bottom-nav {
       display: grid;
+    }
+  }
+  body[data-page="index.html"] .home-briefing-grid {
+    grid-template-columns: 1fr !important;
+    grid-template-areas: none !important;
+    grid-auto-flow: row;
+    gap: 18px;
+    min-height: auto;
+    padding: 0;
+    border: 0;
+    background: transparent;
+  }
+  body[data-page="index.html"] .home-briefing-card.lead {
+    grid-area: auto !important;
+    min-height: 162px;
+    width: 100%;
+    padding: 28px 32px;
+  }
+  body[data-page="index.html"] .home-overview {
+    grid-area: auto !important;
+    width: 100%;
+  }
+  body[data-page="index.html"] .home-briefing-card.lead .home-briefing-content {
+    width: 100%;
+    max-width: none;
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas:
+      "date summary"
+      "title actions"
+      "copy actions";
+    gap: 10px 24px;
+  }
+  body[data-page="index.html"] .home-briefing-title,
+  body[data-page="index.html"] .home-briefing-card.lead-arch .home-briefing-title {
+    max-width: none;
+    font-size: clamp(2rem, 3vw, 3rem);
+    line-height: 1.08;
+    white-space: normal;
+    word-break: keep-all;
+    overflow-wrap: break-word;
+  }
+  body[data-page="index.html"] .home-briefing-copy,
+  body[data-page="index.html"] .home-briefing-card.lead-arch .home-briefing-copy {
+    max-width: 760px;
+    font-size: 1rem;
+    line-height: 1.62;
+  }
+  @media (max-width: 1180px) {
+    body[data-page="index.html"] .home-briefing-card.lead .home-briefing-content {
+      grid-template-columns: 1fr;
+      grid-template-areas:
+        "date"
+        "title"
+        "copy"
+        "summary"
+        "actions";
+    }
+    body[data-page="index.html"] .home-briefing-summary,
+    body[data-page="index.html"] .home-briefing-card.lead .hero-actions {
+      justify-self: start;
+      justify-content: flex-start;
+    }
+    .home-overview-head,
+    .home-overview-columns {
+      grid-template-columns: 1fr;
+    }
+  }
+  @media (max-width: 900px) {
+    body[data-page="index.html"] .home-briefing-card.lead {
+      padding: 24px 22px;
+    }
+    body[data-page="index.html"] .home-briefing-summary {
+      width: 100%;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+    .home-overview .home-glance-grid {
+      grid-template-columns: 1fr;
     }
   }
 """
@@ -9177,10 +9400,7 @@ def build_home_page(
     home_date_label = format_home_date_label(page_updated_at)
     latest_news_basis = describe_article_basis(recent_news_articles, f"최근 {NEWS_WINDOW_DAYS}일 기사 없음")
     policy_basis = describe_article_basis(official_policy_articles or policy_articles, "최근 정책 없음")
-    lead_message = (
-        "청년에게 닿는 정책과 이슈를 놓치지 않도록 오늘 필요한 기사와 흐름을 한곳에 모았습니다. "
-        "작은 정보 하나가 오늘의 길잡이가 되기를 바랍니다."
-    )
+    lead_message = "최신 뉴스와 정부·지자체 발표를 한 화면에서 빠르게 확인하세요."
     glance_stats_html = "".join(
         f'<article class="{card_class}"><span class="home-glance-label">{label}</span><strong class="home-glance-value">{value}</strong></article>'
         for card_class, label, value in [
@@ -9228,21 +9448,32 @@ def build_home_page(
         '<div class="home-urgent-text"><strong>최근 올라온 청년 뉴스가 아직 없습니다.</strong>'
         '<span class="home-urgent-meta">새 청년 뉴스가 들어오면 이 영역이 먼저 채워집니다.</span></div></div></article>'
     )
-    must_read_policy_articles = sort_articles_by_recency(
-        add_major_policy_watchlist_articles(official_policy_articles or policy_articles)
+    gov_local_trend_articles = sort_articles_by_recency(
+        merge_home_candidate_articles(
+            add_major_policy_watchlist_articles(official_policy_articles or policy_articles),
+            [*government_hub_articles, *regional_hub_articles, *policy_articles],
+        )
     )
     policy_briefing_html = "".join(
         render_home_news_item(index, article)
-        for index, article in enumerate(must_read_policy_articles[:HOME_DAILY_LIMIT], start=1)
+        for index, article in enumerate(gov_local_trend_articles[:HOME_DAILY_LIMIT], start=1)
     ) or (
         '<article class="home-urgent-item"><div class="home-urgent-link"><span class="home-urgent-rank">00</span>'
-        '<div class="home-urgent-text"><strong>확인할 정부 정책 발표가 아직 없습니다.</strong>'
-        '<span class="home-urgent-meta">공식 발표나 보도자료가 들어오면 이 영역이 먼저 채워집니다.</span></div></div></article>'
+        '<div class="home-urgent-text"><strong>확인할 정부·지자체 동향이 아직 없습니다.</strong>'
+        '<span class="home-urgent-meta">공식 발표나 지역 동향이 들어오면 이 영역이 먼저 채워집니다.</span></div></div></article>'
+    )
+    overview_stats_html = "".join(
+        f'<article class="{card_class}"><span class="home-glance-label">{label}</span><strong class="home-glance-value">{value}</strong></article>'
+        for card_class, label, value in [
+            ("home-glance-item warm", "오늘 올라온 기사", f"{today_total_count}건"),
+            ("home-glance-item neutral", "가장 최근 뉴스", f"{min(len(today_articles), HOME_DAILY_LIMIT)}건"),
+            ("home-glance-item teal", "정부·지자체 동향", f"{min(len(gov_local_trend_articles), HOME_DAILY_LIMIT)}건"),
+        ]
     )
     hero_summary_items = [
         ("오늘 기사", f"{today_total_count}건"),
         ("최근 표시", f"{min(len(today_articles), HOME_DAILY_LIMIT)}개"),
-        ("정책 발표", f"{min(len(must_read_policy_articles), HOME_DAILY_LIMIT)}개"),
+        ("정부·지자체", f"{min(len(gov_local_trend_articles), HOME_DAILY_LIMIT)}개"),
     ]
     hero_summary_html = "".join(
         f'<span><strong>{html.escape(value)}</strong><em>{html.escape(label)}</em></span>'
@@ -9298,39 +9529,51 @@ def build_home_page(
         <article class="home-briefing-card lead lead-arch{home_lead_class}" data-media-host="home-lead">
           <div class="home-briefing-content">
             <span class="home-briefing-date">{html.escape(home_date_label)}</span>
-            <h1 class="home-briefing-title">청년의&nbsp;오늘을<br>모아봅니다.</h1>
+            <h1 class="home-briefing-title">오늘 필요한 청년 이슈</h1>
             <p class="home-briefing-copy">{html.escape(lead_message)}</p>
             <div class="home-briefing-summary" aria-label="오늘 운영 요약">{hero_summary_html}</div>
             <div class="hero-actions">
-              <a class="button primary" href="news.html">뉴스 보기</a>
-              <a class="button" href="#youth-metrics">주요 지표 보기</a>
+              <a class="button primary" href="#today-briefing">오늘 한눈에 보기</a>
+              <a class="button" href="news.html">뉴스 탭</a>
             </div>
           </div>
           {home_lead_media}
         </article>
-        <article class="home-briefing-card digest digest-organic home-top-briefing" id="today-briefing">
-          <div class="home-briefing-head">
-            <span class="home-briefing-date">오늘 브리핑</span>
-            <h2>오늘 한눈에 보기</h2>
-            <p>최신 기사와 꼭 봐야 하는 정부 정책 발표를 나눠 봅니다.</p>
-          </div>
-          <div class="home-glance-grid">{glance_stats_html}{home_categories_html}</div>
-          <div class="home-briefing-divider"></div>
-          <div class="home-briefing-tabs" data-home-briefing-tabs>
-            <div class="home-briefing-tablist" role="tablist" aria-label="오늘 브리핑 전환">
-              <button class="home-briefing-tab active" id="home-briefing-tab-latest" type="button" role="tab" aria-selected="true" aria-controls="home-briefing-panel-latest" data-home-briefing-tab="latest">가장 최근에 나온</button>
-              <button class="home-briefing-tab" id="home-briefing-tab-policy" type="button" role="tab" aria-selected="false" aria-controls="home-briefing-panel-policy" data-home-briefing-tab="policy" tabindex="-1">정부 발표·보도자료</button>
+        <section class="home-overview" id="today-briefing" aria-labelledby="today-briefing-title">
+          <div class="home-overview-head">
+            <div>
+              <span class="home-overview-kicker">오늘 브리핑</span>
+              <h2 id="today-briefing-title">오늘 한눈에 보기</h2>
+              <p>첫 화면에서는 가장 최근 뉴스와 정부·지자체 동향을 바로 펼쳐 봅니다.</p>
             </div>
-            <div class="home-briefing-panel active" id="home-briefing-panel-latest" role="tabpanel" aria-labelledby="home-briefing-tab-latest" data-home-briefing-panel="latest">
-              <p class="home-briefing-panel-note">가장 최근에 나온 청년 관련 기사입니다.</p>
+            <div class="home-glance-grid">{overview_stats_html}</div>
+          </div>
+          <div class="home-overview-columns">
+            <article class="home-overview-column">
+              <div class="home-overview-column-head">
+                <div>
+                  <span>가장 최근 뉴스</span>
+                  <h3>지금 새로 들어온 기사</h3>
+                </div>
+                <a class="mini-link" href="news.html">전체 보기</a>
+              </div>
+              <p class="home-briefing-panel-note">언론 기사 중 선거·공약성 기사를 제외한 최신 청년 이슈입니다.</p>
               <div class="home-urgent-list">{today_news_html}</div>
-            </div>
-            <div class="home-briefing-panel" id="home-briefing-panel-policy" role="tabpanel" aria-labelledby="home-briefing-tab-policy" data-home-briefing-panel="policy" hidden>
-              <p class="home-briefing-panel-note">꼭 봐야 하는 정부 정책 발표와 보도자료입니다.</p>
+            </article>
+            <article class="home-overview-column">
+              <div class="home-overview-column-head">
+                <div>
+                  <span>정부·지자체 동향</span>
+                  <h3>공식 발표와 지역 움직임</h3>
+                </div>
+                <a class="mini-link" href="policies.html">전체 보기</a>
+              </div>
+              <p class="home-briefing-panel-note">중앙정부 발표, 보도자료, 지역 참여·정책 흐름을 함께 봅니다.</p>
               <div class="home-urgent-list">{policy_briefing_html}</div>
-            </div>
+            </article>
           </div>
-        </article>
+          <div class="home-keyword-strip">{home_categories_html}</div>
+        </section>
       </div>
     </section>
     {render_youth_metrics()}
