@@ -3991,34 +3991,839 @@
       margin: 4px 0 -6px auto;
     }
   }
+
+  /* YouthPolicy Hub tone: editorial data dashboard inspired by policy analytics tools. */
+  :root {
+    --page-bg: #f5f5f3;
+    --app-bg: #f5f5f3;
+    --panel: #ffffff;
+    --panel-soft: #f3f1ed;
+    --text: #181818;
+    --muted: #6f6962;
+    --line: #dedbd5;
+    --accent: #de7700;
+    --accent-soft: #fff3df;
+    --accent-strong: #8a5f22;
+    --surface: #ffffff;
+    --surface-container-low: #f5f5f3;
+    --surface-container-high: #efede9;
+    --surface-container-highest: #e7e2da;
+    --outline: #6f6962;
+    --outline-variant: #dedbd5;
+    --dashboard-dark: #292d29;
+    --dashboard-dark-line: #111513;
+    --dashboard-gold: #8b6b32;
+    --success: #008a78;
+    --danger: #c80000;
+    --shadow: 0 16px 34px rgba(24, 24, 24, 0.08);
+    --shadow-soft: 0 8px 20px rgba(24, 24, 24, 0.05);
+  }
+  body {
+    background: var(--page-bg);
+    color: var(--text);
+    font-family: "Public Sans", "Noto Sans KR", sans-serif;
+    font-size: 16px;
+    line-height: 1.58;
+  }
+  .topbar {
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 320px;
+    z-index: 60;
+    height: 80px;
+    min-height: 80px;
+    display: flex;
+    align-items: center;
+    gap: 28px;
+    margin: 0;
+    padding: 0 40px;
+    border-bottom: 1px solid var(--line);
+    background: rgba(255, 255, 255, 0.96);
+    color: var(--text);
+    box-shadow: 0 1px 3px rgba(24, 24, 24, 0.04);
+  }
+  .topbar-page-title {
+    flex: 0 0 auto;
+    color: var(--text);
+    font-size: 1.72rem;
+    font-weight: 900;
+    line-height: 1;
+    letter-spacing: 0;
+    white-space: nowrap;
+  }
+  .top-nav {
+    display: flex;
+    align-items: stretch;
+    justify-content: flex-start;
+    gap: 28px;
+    height: 100%;
+    margin: 0;
+    flex: 1 1 auto;
+  }
+  .top-nav-link {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    height: 100%;
+    padding: 0;
+    border: 0;
+    color: #736d66;
+    background: transparent;
+    font-size: 1.05rem;
+    font-weight: 700;
+    letter-spacing: 0;
+    white-space: nowrap;
+  }
+  .top-nav-link:hover,
+  .top-nav-link.active {
+    color: var(--text);
+    background: transparent;
+  }
+  .top-nav-link.active::after {
+    content: "";
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    height: 2px;
+    background: var(--accent);
+  }
+  .topbar-side {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-left: auto;
+    min-width: 0;
+  }
+  .global-search {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: clamp(220px, 24vw, 330px);
+    height: 48px;
+    padding: 0 18px;
+    border: 1px solid transparent;
+    border-radius: 999px;
+    background: #f2f1ef;
+    color: #756f68;
+  }
+  .global-search:focus-within {
+    border-color: #cfc9c0;
+    background: #ffffff;
+  }
+  .global-search-icon {
+    display: inline-grid;
+    place-items: center;
+    width: 18px;
+    height: 18px;
+    color: #8c867e;
+    font-size: 1.1rem;
+    line-height: 1;
+  }
+  .global-search input {
+    width: 100%;
+    border: 0;
+    outline: 0;
+    background: transparent;
+    color: var(--text);
+    font: inherit;
+    font-size: 0.98rem;
+  }
+  .global-search input::placeholder {
+    color: #686f7c;
+  }
+  .topbar-icon,
+  .guide-link,
+  .admin-entry {
+    display: inline-grid;
+    place-items: center;
+    flex: 0 0 auto;
+    width: 36px;
+    height: 36px;
+    min-height: 36px;
+    padding: 0;
+    border: 0;
+    border-radius: 999px;
+    background: transparent;
+    color: #373431;
+    font: inherit;
+    font-size: 1rem;
+    font-weight: 900;
+    cursor: pointer;
+  }
+  .guide-link {
+    font-size: 0;
+  }
+  .guide-link::before {
+    content: "?";
+    font-size: 1rem;
+  }
+  .admin-entry span {
+    display: none;
+  }
+  .admin-entry::before {
+    content: "◎";
+    font-size: 1.18rem;
+    line-height: 1;
+  }
+  .topbar-icon:hover,
+  .guide-link:hover,
+  .guide-link.active,
+  .admin-entry:hover,
+  body.is-admin-authorized .admin-entry {
+    background: #f0efed;
+    color: var(--text);
+  }
+  .header-side {
+    display: none;
+  }
+  .app-layout {
+    min-height: 100vh;
+    padding-top: 80px;
+    background: var(--page-bg);
+  }
+  .shell {
+    width: calc(100% - 320px);
+    max-width: none;
+    min-height: calc(100vh - 80px);
+    margin: 0 0 0 320px;
+    padding: 40px 40px 96px;
+    border: 0;
+    background: var(--page-bg);
+    box-shadow: none;
+  }
+  .shell > .hero,
+  .shell > .section,
+  .shell > .page-intro-card,
+  .shell > .news-intro-card,
+  .shell > .footer-note,
+  .shell > [data-news-filter-root],
+  .shell > [data-policy-filter-root] {
+    max-width: 1220px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .side-nav {
+    position: fixed;
+    inset: 0 auto 0 0;
+    z-index: 70;
+    display: flex;
+    width: 320px;
+    padding: 28px 20px 28px;
+    border-right: 1px solid var(--line);
+    background: #fbfbfa;
+    flex-direction: column;
+    gap: 28px;
+    overflow-y: auto;
+  }
+  .side-brand {
+    display: grid;
+    gap: 6px;
+    padding: 0 20px 22px;
+    color: var(--text);
+  }
+  .side-brand strong {
+    font-size: 1.22rem;
+    font-weight: 900;
+    line-height: 1;
+    letter-spacing: 0;
+  }
+  .side-brand span {
+    color: #6d665f;
+    font-size: 0.86rem;
+    font-weight: 600;
+  }
+  .side-nav-head {
+    display: none;
+  }
+  .side-nav-links {
+    display: grid;
+    gap: 8px;
+  }
+  .side-nav-primary {
+    gap: 10px;
+  }
+  .side-nav-link {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 14px;
+    min-height: 60px;
+    padding: 10px 18px;
+    border: 0;
+    border-radius: 8px;
+    background: transparent;
+    color: #746d66;
+    font: inherit;
+    text-align: left;
+    text-decoration: none;
+  }
+  .side-nav-link:hover,
+  .side-nav-link.active {
+    background: #f0efed;
+    color: var(--text);
+  }
+  .side-nav-link.active {
+    font-weight: 900;
+  }
+  .side-nav-icon {
+    position: relative;
+    display: inline-grid;
+    place-items: center;
+    width: 26px;
+    height: 26px;
+    flex: 0 0 auto;
+    color: currentColor;
+  }
+  .side-nav-icon::before {
+    content: "";
+    width: 19px;
+    height: 19px;
+    border: 2px solid currentColor;
+    border-radius: 3px;
+  }
+  .side-nav-link[data-side-icon="dashboard"] .side-nav-icon::before {
+    box-shadow: 8px 0 0 -5px currentColor, 0 8px 0 -5px currentColor, 8px 8px 0 -5px currentColor;
+  }
+  .side-nav-link[data-side-icon="insights"] .side-nav-icon::before {
+    width: 17px;
+    height: 22px;
+    border-radius: 2px;
+  }
+  .side-nav-link[data-side-icon="explorer"] .side-nav-icon::before {
+    border-radius: 2px;
+    background: linear-gradient(90deg, transparent 25%, currentColor 25% 34%, transparent 34% 58%, currentColor 58% 67%, transparent 67%);
+  }
+  .side-nav-link[data-side-icon="community"] .side-nav-icon::before {
+    width: 7px;
+    height: 7px;
+    border-radius: 999px;
+    box-shadow: -8px 8px 0 -1px currentColor, 8px 8px 0 -1px currentColor;
+  }
+  .side-nav-link[data-side-icon="reports"] .side-nav-icon::before {
+    height: 15px;
+    border-radius: 2px;
+    box-shadow: 0 -7px 0 -3px currentColor;
+  }
+  .side-nav-link[data-side-icon="archives"] .side-nav-icon::before {
+    height: 17px;
+    border-radius: 2px;
+    box-shadow: inset 0 6px 0 -3px currentColor;
+  }
+  .side-nav-text {
+    display: grid;
+    gap: 1px;
+    min-width: 0;
+  }
+  .side-nav-text strong {
+    font-size: 0.96rem;
+    font-weight: 800;
+    line-height: 1.2;
+  }
+  .side-nav-text small {
+    color: #8a837a;
+    font-size: 0.74rem;
+    font-weight: 600;
+  }
+  .side-nav-section {
+    display: grid;
+    gap: 10px;
+    padding: 18px 20px 0;
+    border-top: 1px solid #ebe8e2;
+  }
+  .side-nav-kicker {
+    color: #8a837a;
+    font-size: 0.74rem;
+    font-weight: 900;
+    letter-spacing: 0;
+    text-transform: uppercase;
+  }
+  .side-nav-section .side-nav-link {
+    min-height: 36px;
+    padding: 6px 0;
+    border-radius: 0;
+    color: #746d66;
+    background: transparent;
+    font-size: 0.86rem;
+    font-weight: 700;
+  }
+  .side-nav-section .side-nav-link:hover,
+  .side-nav-section .side-nav-link.active {
+    color: var(--text);
+    background: transparent;
+  }
+  .side-update-card {
+    display: grid;
+    gap: 10px;
+    margin-top: auto;
+    padding: 20px;
+    border: 1px solid #f0ddbd;
+    border-radius: 8px;
+    background: #fff7e8;
+    color: #7b5b2c;
+  }
+  .side-update-card strong {
+    color: #6d4d20;
+    font-size: 0.88rem;
+  }
+  .side-update-card span {
+    color: #8a7252;
+    font-size: 0.82rem;
+    line-height: 1.7;
+  }
+  .side-nav-admin {
+    display: grid;
+    gap: 8px;
+    padding-top: 18px;
+    border-top: 1px solid #ebe8e2;
+  }
+  .side-nav-link.pending {
+    min-height: 42px;
+    opacity: 0.68;
+    cursor: not-allowed;
+  }
+  .side-nav-link.pending em {
+    margin-left: auto;
+    color: #9a938a;
+    font-size: 0.72rem;
+    font-style: normal;
+    font-weight: 800;
+  }
+  .hero {
+    gap: 24px;
+    margin-bottom: 30px;
+  }
+  body[data-page="index.html"] .hero {
+    display: block;
+  }
+  body[data-page="index.html"] .home-briefing-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.02fr) minmax(360px, 0.78fr);
+    gap: 46px;
+    min-height: 500px;
+    padding: 60px;
+    border: 1px solid var(--dashboard-dark-line);
+    border-radius: 8px;
+    background: var(--dashboard-dark);
+    box-shadow: none;
+    align-items: center;
+  }
+  body[data-page="index.html"] .home-briefing-card.lead,
+  body[data-page="index.html"] .home-briefing-card.digest {
+    border: 0;
+    box-shadow: none;
+    min-width: 0;
+  }
+  body[data-page="index.html"] .home-briefing-card.lead {
+    padding: 0;
+    background: transparent;
+    display: block;
+    grid-template-columns: none;
+    min-height: auto;
+  }
+  body[data-page="index.html"] .home-briefing-card.lead .home-briefing-content {
+    max-width: 650px;
+  }
+  body[data-page="index.html"] .home-briefing-date,
+  body[data-page="index.html"] .home-briefing-card.lead-arch .home-briefing-date {
+    display: inline-flex;
+    width: fit-content;
+    margin-bottom: 20px;
+    padding: 7px 16px;
+    border: 1px solid rgba(222, 119, 0, 0.55);
+    border-radius: 999px;
+    background: rgba(222, 119, 0, 0.16);
+    color: #ffa928;
+    font-size: 0.84rem;
+    font-weight: 900;
+    letter-spacing: 0;
+    text-transform: uppercase;
+  }
+  body[data-page="index.html"] .home-briefing-title,
+  body[data-page="index.html"] .home-briefing-card.lead-arch .home-briefing-title {
+    max-width: 660px;
+    color: #ffffff;
+    font-size: clamp(3.3rem, 4vw, 4.55rem);
+    line-height: 1.1;
+    letter-spacing: 0;
+    text-shadow: 0 2px 0 #111513;
+    word-break: keep-all;
+    overflow-wrap: normal;
+    text-wrap: auto;
+  }
+  body[data-page="index.html"] .home-briefing-copy,
+  body[data-page="index.html"] .home-briefing-card.lead-arch .home-briefing-copy {
+    max-width: 620px;
+    color: rgba(255, 255, 255, 0.76);
+    font-size: 1.28rem;
+    line-height: 1.76;
+    white-space: normal;
+    word-break: keep-all;
+    overflow-wrap: break-word;
+  }
+  body[data-page="index.html"] .home-briefing-summary {
+    display: none;
+  }
+  body[data-page="index.html"] .home-briefing-card > .home-illustration-slot {
+    display: none;
+  }
+  body[data-page="index.html"] .home-briefing-card.digest {
+    min-height: 390px;
+    max-height: 430px;
+    padding: 30px;
+    border: 1px solid #141816;
+    border-radius: 8px;
+    background: linear-gradient(145deg, rgba(255,255,255,0.92), rgba(230,229,228,0.84));
+    box-shadow: 0 34px 54px rgba(0, 0, 0, 0.32);
+    overflow: hidden;
+  }
+  body[data-page="index.html"] .home-briefing-card.digest::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: linear-gradient(90deg, rgba(255,255,255,0.12), rgba(255,255,255,0.72) 62%, rgba(255,255,255,0.86));
+  }
+  body[data-page="index.html"] .home-briefing-card.digest > * {
+    position: relative;
+    z-index: 1;
+  }
+  body[data-page="index.html"] .home-briefing-card.digest h2 {
+    color: #111827;
+    font-size: 1.55rem;
+  }
+  .hero-actions {
+    gap: 12px;
+  }
+  .button {
+    min-height: 50px;
+    padding: 0 24px;
+    border-radius: 8px;
+    border-color: #beb9b1;
+    background: #ffffff;
+    color: var(--text);
+    font-weight: 900;
+    box-shadow: none;
+  }
+  .button.primary,
+  .filter-button.active,
+  .meta-pill.primary {
+    border-color: var(--dashboard-gold);
+    background: var(--dashboard-gold);
+    color: #ffffff;
+  }
+  body[data-page="index.html"] .home-briefing-card.lead .button {
+    border-color: rgba(255,255,255,0.24);
+    background: transparent;
+    color: #ffffff;
+  }
+  body[data-page="index.html"] .home-briefing-card.lead .button.primary {
+    border-color: var(--dashboard-gold);
+    background: var(--dashboard-gold);
+  }
+  .hero-card,
+  .status-card,
+  .section-card,
+  .article-card,
+  .info-card,
+  .list-card,
+  .menu-update-card,
+  .filter-panel,
+  .news-intro-card,
+  .page-intro-card,
+  .home-briefing-card,
+  .home-section-card,
+  .youth-metrics-card {
+    border: 1px solid #d2cec6;
+    border-radius: 8px;
+    background: #ffffff;
+    box-shadow: none;
+  }
+  .section {
+    margin-top: 32px;
+  }
+  .section-head {
+    align-items: end;
+    margin-bottom: 18px;
+    padding: 0;
+    border: 0;
+  }
+  .section-head h2,
+  .youth-metrics-head h2,
+  .home-section-head h2,
+  .page-intro-title {
+    color: var(--text);
+    font-size: 1.6rem;
+    font-weight: 900;
+    line-height: 1.25;
+    letter-spacing: 0;
+  }
+  .section-head p,
+  .youth-metrics-head p,
+  .page-intro-copy,
+  .hero-copy,
+  .section-card p,
+  .info-card p,
+  .list-card p,
+  .filter-head p {
+    color: #5f5a54;
+  }
+  .page-intro-card,
+  .news-intro-card {
+    padding: 32px;
+  }
+  .page-intro-badge,
+  .eyebrow {
+    border-radius: 999px;
+    background: #f6ead8;
+    color: #9c5e00;
+    font-size: 0.78rem;
+    letter-spacing: 0;
+    text-transform: uppercase;
+  }
+  .youth-metrics-card {
+    display: block;
+    padding: 0;
+    border: 0;
+    background: transparent;
+  }
+  .youth-metrics-head {
+    display: grid;
+    gap: 6px;
+    margin-bottom: 18px;
+    padding: 0;
+    border: 0;
+  }
+  .youth-metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 30px;
+  }
+  .youth-metric-item {
+    min-height: 218px;
+    padding: 30px;
+    border: 1px solid #d2cec6;
+    border-radius: 8px;
+    background: #ffffff;
+    box-shadow: none;
+  }
+  .youth-metric-label {
+    color: #2c2926;
+    font-size: 0.96rem;
+    font-weight: 800;
+  }
+  .youth-metric-value {
+    margin-top: 8px;
+    color: var(--text);
+    font-size: clamp(1.7rem, 2.3vw, 2.2rem);
+    font-weight: 900;
+    letter-spacing: 0;
+  }
+  .youth-metric-meta {
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid #ebe8e2;
+    color: #3f3a35;
+  }
+  .youth-metric-source {
+    color: #006f63;
+    font-weight: 800;
+  }
+  .youth-metrics-note {
+    color: #716b64;
+  }
+  .article-grid,
+  .feature-grid {
+    gap: 30px;
+  }
+  .article-card,
+  .section-card,
+  .info-card,
+  .list-card,
+  .menu-update-card {
+    border-radius: 8px;
+  }
+  .article-card:hover,
+  .section-card:hover {
+    border-color: #bcb6ac;
+    box-shadow: 0 12px 24px rgba(24, 24, 24, 0.06);
+    transform: translateY(-1px);
+  }
+  .article-card h3,
+  .section-card h3,
+  .info-card h3,
+  .list-card h3 {
+    color: var(--text);
+    letter-spacing: 0;
+  }
+  .filter-panel {
+    padding: 24px;
+  }
+  .filter-button,
+  .date-input-wrap,
+  .filter-search-input,
+  .action-button,
+  .badge,
+  .meta-pill.subtle,
+  .list-item,
+  .home-glance-item,
+  .home-keyword-panel,
+  .home-urgent-link {
+    border-radius: 8px;
+    border-color: #dedbd5;
+    background: #ffffff;
+    box-shadow: none;
+  }
+  .mini-link,
+  .action-button,
+  .youth-metric-source {
+    color: #006f63;
+  }
+  .footer-note {
+    color: #77716a;
+  }
+  .bottom-nav {
+    background: #ffffff;
+  }
+  @media (max-width: 1180px) {
+    .topbar {
+      left: 280px;
+      padding: 0 24px;
+      gap: 20px;
+    }
+    .side-nav {
+      width: 280px;
+    }
+    .shell {
+      width: calc(100% - 280px);
+      margin-left: 280px;
+      padding: 32px 24px 90px;
+    }
+    .global-search {
+      width: 220px;
+    }
+    body[data-page="index.html"] .home-briefing-grid {
+      grid-template-columns: 1fr;
+      padding: 44px;
+    }
+    .youth-metrics-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  @media (max-width: 900px) {
+    .topbar {
+      left: 0;
+      height: 70px;
+      min-height: 70px;
+      padding: 0 16px;
+      gap: 14px;
+    }
+    .topbar-page-title {
+      font-size: 1.18rem;
+    }
+    .top-nav,
+    .global-search,
+    .side-nav {
+      display: none;
+    }
+    .app-layout {
+      padding-top: 70px;
+    }
+    .shell {
+      width: 100%;
+      max-width: 100%;
+      margin-left: 0;
+      padding: 22px 16px 96px;
+      overflow-x: hidden;
+    }
+    body[data-page="index.html"] .home-briefing-grid {
+      width: 100%;
+      max-width: 100%;
+      min-height: auto;
+      padding: 28px 22px;
+      border-radius: 8px;
+    }
+    body[data-page="index.html"] .home-briefing-card,
+    body[data-page="index.html"] .home-briefing-content {
+      width: 100%;
+      max-width: 100%;
+      min-width: 0;
+    }
+    body[data-page="index.html"] .home-briefing-title,
+    body[data-page="index.html"] .home-briefing-card.lead-arch .home-briefing-title {
+      max-width: 100%;
+      font-size: clamp(2.1rem, 8.6vw, 2.75rem);
+      line-height: 1.16;
+      overflow-wrap: anywhere;
+      text-wrap: balance;
+    }
+    body[data-page="index.html"] .home-briefing-copy,
+    body[data-page="index.html"] .home-briefing-card.lead-arch .home-briefing-copy {
+      width: 100%;
+      font-size: 1rem;
+      max-width: 100%;
+      word-break: break-all;
+      line-break: anywhere;
+      overflow-wrap: anywhere;
+    }
+    body[data-page="index.html"] .home-briefing-card.digest {
+      min-height: auto;
+      max-height: none;
+      padding: 20px;
+    }
+    .youth-metrics-grid,
+    .article-grid,
+    .feature-grid {
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+    .youth-metric-item {
+      min-height: 170px;
+      padding: 22px;
+    }
+    .bottom-nav {
+      display: grid;
+    }
+  }
 </style>
 </head>
 <body data-page="election.html">
   <header class="topbar">
-    <a class="brand" href="index.html" aria-label="청년 모아봄 홈으로 이동">
-      <img class="brand-logo" src="assets/branding/youth-together-mark.svg?v=20260501-sunlit-logo-1" alt="">
-      <div class="brand-copy">
-        <span class="brand-title">청년 모아봄</span>
-        <span class="brand-sub">오늘의 청년 정책과 이슈를 모아봅니다</span>
-      </div>
-    </a>
-    <nav class="top-nav" aria-label="주요 메뉴"><a class="top-nav-link " href="index.html">오늘</a><a class="top-nav-link " href="news.html">뉴스</a><a class="top-nav-link active" href="election.html" aria-current="page">선거·공약</a><a class="top-nav-link " href="policies.html">정책</a><a class="top-nav-link " href="plans.html">정책계획</a><a class="top-nav-link " href="hub.html">참여·회의</a><a class="top-nav-link " href="tools.html">자료·도구</a></nav>
+    <div class="topbar-page-title">선거·공약</div>
+    <nav class="top-nav" aria-label="주요 메뉴"><a class="top-nav-link " href="index.html">Main Overview</a><a class="top-nav-link " href="news.html">Trends</a><a class="top-nav-link " href="policies.html">Reports</a><a class="top-nav-link " href="tools.html">Data Room</a></nav>
     <div class="topbar-side">
-      <a class="guide-link" href="guide.html" data-guide-open-link="true">이용방법</a>
+      <form class="global-search" action="news.html" method="get" role="search"><span class="global-search-icon" aria-hidden="true">⌕</span><input type="search" name="q" autocomplete="off" placeholder="Search insights..."></form>
+      <a class="guide-link" href="guide.html" data-guide-open-link="true" aria-label="이용 안내">이용방법</a>
       <div class="header-side"><strong>05.02 00:11</strong><span>최근 반영</span></div>
       <button class="admin-entry" type="button" data-admin-login-open="true" title="임시 관리자 표시 모드 열기"><span data-admin-entry-label>관리 로그인</span></button>
+      <a class="topbar-icon" href="contact.html" aria-label="제보와 문의">○</a>
     </div>
   </header>
   <div class="app-layout">
     <aside class="side-nav" aria-label="섹터와 업무 탐색">
       
+      <a class="side-brand" href="index.html" aria-label="청년 모아봄 홈으로 이동">
+        <strong>YouthPolicy Hub</strong>
+        <span>Policy & Data</span>
+      </a>
+      <nav class="side-nav-links side-nav-primary" aria-label="주요 대시보드 메뉴">
+        <a class="side-nav-link" href="index.html" data-side-icon="dashboard"><span class="side-nav-icon" aria-hidden="true"></span><span class="side-nav-text"><strong>Dashboard</strong><small>오늘의 현황</small></span></a><a class="side-nav-link" href="policies.html" data-side-icon="insights"><span class="side-nav-icon" aria-hidden="true"></span><span class="side-nav-text"><strong>Policy Insights</strong><small>정책·계획</small></span></a><a class="side-nav-link active" href="news.html" data-side-icon="explorer"><span class="side-nav-icon" aria-hidden="true"></span><span class="side-nav-text"><strong>Data Explorer</strong><small>뉴스·공약</small></span></a><a class="side-nav-link" href="hub.html" data-side-icon="community"><span class="side-nav-icon" aria-hidden="true"></span><span class="side-nav-text"><strong>Community</strong><small>참여·회의</small></span></a><a class="side-nav-link" href="tools.html" data-side-icon="reports"><span class="side-nav-icon" aria-hidden="true"></span><span class="side-nav-text"><strong>Reports</strong><small>자료·도구</small></span></a><a class="side-nav-link" href="guide.html" data-side-icon="archives"><span class="side-nav-icon" aria-hidden="true"></span><span class="side-nav-text"><strong>Archives</strong><small>안내·문의</small></span></a>
+      </nav>
       <div class="side-nav-head">
         <strong>선거·공약 탐색</strong>
         <span>청년 공약 흐름</span>
       </div>
-      <nav class="side-nav-links" aria-label="현재 페이지 탐색">
-        <a class="side-nav-link active" href="#filters">필터</a><a class="side-nav-link " href="#main-list">주요 목록</a><a class="side-nav-link " href="news.html">관련 메뉴</a>
-      </nav>
+      <div class="side-nav-section">
+        <span class="side-nav-kicker">On This Page</span>
+        <nav class="side-nav-links" aria-label="현재 페이지 탐색">
+          <a class="side-nav-link active" href="#filters">필터</a><a class="side-nav-link" href="#main-list">주요 목록</a><a class="side-nav-link" href="news.html">관련 메뉴</a>
+        </nav>
+      </div>
+      <a class="side-update-card" href="news.html">
+        <strong>Weekly Update</strong>
+        <span>새로 수집된 청년 정책·뉴스 흐름을 이번 주 단위로 확인하세요.</span>
+      </a>
       <div class="side-nav-admin" data-admin-only="true" hidden>
         <span class="side-nav-kicker">관리 예정</span>
         <button class="side-nav-link pending" type="button" disabled aria-disabled="true"><span>운영 대시보드</span><em>예정</em></button><button class="side-nav-link pending" type="button" disabled aria-disabled="true"><span>기사 큐레이션</span><em>예정</em></button><button class="side-nav-link pending" type="button" disabled aria-disabled="true"><span>수집 상태</span><em>예정</em></button><button class="side-nav-link pending" type="button" disabled aria-disabled="true"><span>배포 상태</span><em>예정</em></button><button class="side-nav-link pending" type="button" disabled aria-disabled="true"><span>문의 관리</span><em>예정</em></button><button class="side-nav-link pending" type="button" disabled aria-disabled="true"><span>설정</span><em>예정</em></button>
@@ -4922,16 +5727,7 @@
 
   const guideOverlay = document.querySelector('[data-guide-overlay]');
   if (guideOverlay && document.body.dataset.page === 'index.html') {
-    let seenGuide = false;
-    try {
-      seenGuide = localStorage.getItem('youthTogetherGuideSeen-v1') === '1';
-    } catch (error) {
-      seenGuide = false;
-    }
-    if (!seenGuide) {
-      guideOverlay.hidden = false;
-      document.body.classList.add('is-guide-open');
-    }
+    guideOverlay.hidden = true;
   }
 })();
 
