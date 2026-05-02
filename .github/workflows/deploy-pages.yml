@@ -5,6 +5,7 @@ on:
     paths:
       - "shared/**"
       - "public-site/**"
+      - "runtime/pipeline/**"
       - ".github/workflows/deploy-pages.yml"
   workflow_dispatch:
     inputs:
