@@ -4029,13 +4029,13 @@
     position: fixed;
     top: 0;
     right: 0;
-    left: 320px;
+    left: 260px;
     z-index: 60;
     height: 80px;
     min-height: 80px;
     display: flex;
     align-items: center;
-    gap: 28px;
+    gap: 22px;
     margin: 0;
     padding: 0 40px;
     border-bottom: 1px solid var(--line);
@@ -4046,7 +4046,7 @@
   .topbar-page-title {
     flex: 0 0 auto;
     color: var(--text);
-    font-size: 1.72rem;
+    font-size: 1.5rem;
     font-weight: 900;
     line-height: 1;
     letter-spacing: 0;
@@ -4056,10 +4056,16 @@
     display: flex;
     align-items: stretch;
     justify-content: flex-start;
-    gap: 28px;
+    gap: 18px;
     height: 100%;
     margin: 0;
     flex: 1 1 auto;
+    min-width: 0;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .top-nav::-webkit-scrollbar {
+    display: none;
   }
   .top-nav-link {
     position: relative;
@@ -4070,7 +4076,7 @@
     border: 0;
     color: #736d66;
     background: transparent;
-    font-size: 1.05rem;
+    font-size: 0.98rem;
     font-weight: 700;
     letter-spacing: 0;
     white-space: nowrap;
@@ -4100,7 +4106,7 @@
     display: flex;
     align-items: center;
     gap: 10px;
-    width: clamp(220px, 24vw, 330px);
+    width: clamp(180px, 18vw, 280px);
     height: 48px;
     padding: 0 18px;
     border: 1px solid transparent;
@@ -4184,10 +4190,10 @@
     background: var(--page-bg);
   }
   .shell {
-    width: calc(100% - 320px);
+    width: calc(100% - 260px);
     max-width: none;
     min-height: calc(100vh - 80px);
-    margin: 0 0 0 320px;
+    margin: 0 0 0 260px;
     padding: 40px 40px 96px;
     border: 0;
     background: var(--page-bg);
@@ -4209,18 +4215,18 @@
     inset: 0 auto 0 0;
     z-index: 70;
     display: flex;
-    width: 320px;
-    padding: 28px 20px 28px;
+    width: 260px;
+    padding: 28px 18px 28px;
     border-right: 1px solid var(--line);
     background: #fbfbfa;
     flex-direction: column;
-    gap: 28px;
+    gap: 26px;
     overflow-y: auto;
   }
   .side-brand {
     display: grid;
     gap: 6px;
-    padding: 0 20px 22px;
+    padding: 0 12px 18px;
     color: var(--text);
   }
   .side-brand strong {
@@ -4235,14 +4241,25 @@
     font-weight: 600;
   }
   .side-nav-head {
-    display: none;
+    display: grid;
+    gap: 6px;
+    padding: 0 12px;
+  }
+  .side-nav-head strong {
+    color: var(--text);
+    font-size: 1.02rem;
+    font-weight: 900;
+    line-height: 1.25;
+  }
+  .side-nav-head span {
+    color: #7a746d;
+    font-size: 0.78rem;
+    font-weight: 650;
+    line-height: 1.55;
   }
   .side-nav-links {
     display: grid;
     gap: 8px;
-  }
-  .side-nav-primary {
-    gap: 10px;
   }
   .side-nav-link {
     display: flex;
@@ -4328,8 +4345,8 @@
   }
   .side-nav-section {
     display: grid;
-    gap: 10px;
-    padding: 18px 20px 0;
+    gap: 14px;
+    padding: 18px 12px 0;
     border-top: 1px solid #ebe8e2;
   }
   .side-nav-kicker {
@@ -4339,22 +4356,64 @@
     letter-spacing: 0;
     text-transform: uppercase;
   }
-  .side-nav-section .side-nav-link {
-    min-height: 36px;
-    padding: 6px 0;
-    border-radius: 0;
-    color: #746d66;
-    background: transparent;
-    font-size: 0.86rem;
-    font-weight: 700;
+  .side-marker-list {
+    position: relative;
+    display: grid;
+    gap: 2px;
+    padding-left: 0;
   }
-  .side-nav-section .side-nav-link:hover,
-  .side-nav-section .side-nav-link.active {
+  .side-marker-list::before {
+    content: "";
+    position: absolute;
+    top: 18px;
+    bottom: 18px;
+    left: 8px;
+    width: 1px;
+    background: #dedbd5;
+  }
+  .side-marker-link {
+    position: relative;
+    display: grid;
+    grid-template-columns: 18px minmax(0, 1fr);
+    align-items: center;
+    gap: 12px;
+    min-height: 42px;
+    padding: 4px 0;
+    color: #746d66;
+    font-size: 0.86rem;
+    font-weight: 750;
+  }
+  .side-marker-dot {
+    position: relative;
+    z-index: 1;
+    display: inline-block;
+    width: 9px;
+    height: 9px;
+    margin-left: 4px;
+    border: 1px solid #9b948b;
+    border-radius: 999px;
+    background: #fbfbfa;
+  }
+  .side-marker-label {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .side-marker-link:hover,
+  .side-marker-link.active {
     color: var(--text);
-    background: transparent;
+  }
+  .side-marker-link.active .side-marker-dot {
+    width: 13px;
+    height: 13px;
+    margin-left: 2px;
+    border-color: var(--accent);
+    background: var(--accent);
+    box-shadow: 0 0 0 4px var(--accent-soft);
   }
   .side-update-card {
-    display: grid;
+    display: none;
     gap: 10px;
     margin-top: auto;
     padding: 20px;
@@ -4688,20 +4747,26 @@
   }
   @media (max-width: 1180px) {
     .topbar {
-      left: 280px;
+      left: 232px;
       padding: 0 24px;
-      gap: 20px;
+      gap: 18px;
     }
     .side-nav {
-      width: 280px;
+      width: 232px;
     }
     .shell {
-      width: calc(100% - 280px);
-      margin-left: 280px;
+      width: calc(100% - 232px);
+      margin-left: 232px;
       padding: 32px 24px 90px;
     }
     .global-search {
-      width: 220px;
+      display: none;
+    }
+    .top-nav {
+      gap: 14px;
+    }
+    .top-nav-link {
+      font-size: 0.92rem;
     }
     body[data-page="index.html"] .home-briefing-grid {
       grid-template-columns: 1fr;
@@ -4791,7 +4856,7 @@
 <body data-page="election.html">
   <header class="topbar">
     <div class="topbar-page-title">선거·공약</div>
-    <nav class="top-nav" aria-label="주요 메뉴"><a class="top-nav-link " href="index.html">Main Overview</a><a class="top-nav-link " href="news.html">Trends</a><a class="top-nav-link " href="policies.html">Reports</a><a class="top-nav-link " href="tools.html">Data Room</a></nav>
+    <nav class="top-nav" aria-label="주요 메뉴"><a class="top-nav-link " href="index.html">오늘</a><a class="top-nav-link " href="news.html">뉴스</a><a class="top-nav-link active" href="election.html" aria-current="page">선거·공약</a><a class="top-nav-link " href="policies.html">정책</a><a class="top-nav-link " href="plans.html">정책계획</a><a class="top-nav-link " href="hub.html">참여·회의</a><a class="top-nav-link " href="tools.html">자료·도구</a></nav>
     <div class="topbar-side">
       <form class="global-search" action="news.html" method="get" role="search"><span class="global-search-icon" aria-hidden="true">⌕</span><input type="search" name="q" autocomplete="off" placeholder="Search insights..."></form>
       <a class="guide-link" href="guide.html" data-guide-open-link="true" aria-label="이용 안내">이용방법</a>
@@ -4801,23 +4866,20 @@
     </div>
   </header>
   <div class="app-layout">
-    <aside class="side-nav" aria-label="섹터와 업무 탐색">
+    <aside class="side-nav" aria-label="현재 페이지 위치 마커">
       
       <a class="side-brand" href="index.html" aria-label="청년 모아봄 홈으로 이동">
         <strong>YouthPolicy Hub</strong>
         <span>Policy & Data</span>
       </a>
-      <nav class="side-nav-links side-nav-primary" aria-label="주요 대시보드 메뉴">
-        <a class="side-nav-link" href="index.html" data-side-icon="dashboard"><span class="side-nav-icon" aria-hidden="true"></span><span class="side-nav-text"><strong>Dashboard</strong><small>오늘의 현황</small></span></a><a class="side-nav-link" href="policies.html" data-side-icon="insights"><span class="side-nav-icon" aria-hidden="true"></span><span class="side-nav-text"><strong>Policy Insights</strong><small>정책·계획</small></span></a><a class="side-nav-link active" href="news.html" data-side-icon="explorer"><span class="side-nav-icon" aria-hidden="true"></span><span class="side-nav-text"><strong>Data Explorer</strong><small>뉴스·공약</small></span></a><a class="side-nav-link" href="hub.html" data-side-icon="community"><span class="side-nav-icon" aria-hidden="true"></span><span class="side-nav-text"><strong>Community</strong><small>참여·회의</small></span></a><a class="side-nav-link" href="tools.html" data-side-icon="reports"><span class="side-nav-icon" aria-hidden="true"></span><span class="side-nav-text"><strong>Reports</strong><small>자료·도구</small></span></a><a class="side-nav-link" href="guide.html" data-side-icon="archives"><span class="side-nav-icon" aria-hidden="true"></span><span class="side-nav-text"><strong>Archives</strong><small>안내·문의</small></span></a>
-      </nav>
       <div class="side-nav-head">
-        <strong>선거·공약 탐색</strong>
-        <span>청년 공약 흐름</span>
+        <strong>선거·공약 위치</strong>
+        <span>필터와 공약 흐름</span>
       </div>
       <div class="side-nav-section">
-        <span class="side-nav-kicker">On This Page</span>
-        <nav class="side-nav-links" aria-label="현재 페이지 탐색">
-          <a class="side-nav-link active" href="#filters">필터</a><a class="side-nav-link" href="#main-list">주요 목록</a><a class="side-nav-link" href="news.html">관련 메뉴</a>
+        <span class="side-nav-kicker">Page Markers</span>
+        <nav class="side-marker-list" aria-label="현재 페이지 위치 마커">
+          <a class="side-marker-link active" href="#page-top" data-marker-link aria-current="location"><span class="side-marker-dot" aria-hidden="true"></span><span class="side-marker-label">상단</span></a><a class="side-marker-link" href="#filters" data-marker-link><span class="side-marker-dot" aria-hidden="true"></span><span class="side-marker-label">필터</span></a><a class="side-marker-link" href="#main-list" data-marker-link><span class="side-marker-dot" aria-hidden="true"></span><span class="side-marker-label">주요 목록</span></a>
         </nav>
       </div>
       <a class="side-update-card" href="news.html">
@@ -4830,7 +4892,7 @@
       </div>
     
     </aside>
-    <div class="shell">
+    <div class="shell" id="page-top">
     
     <div data-news-filter-root="election" data-default-date-start="" data-default-date-end="" data-default-region="all" data-default-topic="all" data-default-search-query="">
       
@@ -5724,6 +5786,74 @@
       closeGuideOverlay(overlay, true);
     }
   });
+
+  function setupPageMarkers() {
+    const markerLinks = Array.from(document.querySelectorAll('[data-marker-link]'));
+    if (markerLinks.length === 0) {
+      return;
+    }
+
+    const markerPairs = markerLinks.map((link) => {
+      const href = link.getAttribute('href') || '';
+      if (!href.startsWith('#')) {
+        return null;
+      }
+      const targetId = decodeURIComponent(href.slice(1));
+      const target = document.getElementById(targetId);
+      return target ? { link, target } : null;
+    }).filter(Boolean);
+
+    if (markerPairs.length === 0) {
+      return;
+    }
+
+    function activateMarker(activeLink) {
+      markerLinks.forEach((link) => {
+        const isActive = link === activeLink;
+        link.classList.toggle('active', isActive);
+        if (isActive) {
+          link.setAttribute('aria-current', 'location');
+        } else {
+          link.removeAttribute('aria-current');
+        }
+      });
+    }
+
+    function activateFromHash() {
+      const hash = window.location.hash || '#page-top';
+      const current = markerPairs.find(({ link }) => link.getAttribute('href') === hash);
+      if (current) {
+        activateMarker(current.link);
+      }
+    }
+
+    if ('IntersectionObserver' in window) {
+      const observer = new IntersectionObserver((entries) => {
+        const visibleEntries = entries
+          .filter((entry) => entry.isIntersecting)
+          .sort((left, right) => Math.abs(left.boundingClientRect.top) - Math.abs(right.boundingClientRect.top));
+        if (visibleEntries.length === 0) {
+          return;
+        }
+        const activePair = markerPairs.find(({ target }) => target === visibleEntries[0].target);
+        if (activePair) {
+          activateMarker(activePair.link);
+        }
+      }, {
+        rootMargin: '-24% 0px -62% 0px',
+        threshold: [0, 0.12, 0.35, 0.7],
+      });
+      markerPairs.forEach(({ target }) => observer.observe(target));
+    }
+
+    markerLinks.forEach((link) => {
+      link.addEventListener('click', () => activateMarker(link));
+    });
+    window.addEventListener('hashchange', activateFromHash);
+    activateFromHash();
+  }
+
+  setupPageMarkers();
 
   const guideOverlay = document.querySelector('[data-guide-overlay]');
   if (guideOverlay && document.body.dataset.page === 'index.html') {

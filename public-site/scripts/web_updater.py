@@ -4372,13 +4372,13 @@ DASHBOARD_TONE_CSS = """
     position: fixed;
     top: 0;
     right: 0;
-    left: 320px;
+    left: 260px;
     z-index: 60;
     height: 80px;
     min-height: 80px;
     display: flex;
     align-items: center;
-    gap: 28px;
+    gap: 22px;
     margin: 0;
     padding: 0 40px;
     border-bottom: 1px solid var(--line);
@@ -4389,7 +4389,7 @@ DASHBOARD_TONE_CSS = """
   .topbar-page-title {
     flex: 0 0 auto;
     color: var(--text);
-    font-size: 1.72rem;
+    font-size: 1.5rem;
     font-weight: 900;
     line-height: 1;
     letter-spacing: 0;
@@ -4399,10 +4399,16 @@ DASHBOARD_TONE_CSS = """
     display: flex;
     align-items: stretch;
     justify-content: flex-start;
-    gap: 28px;
+    gap: 18px;
     height: 100%;
     margin: 0;
     flex: 1 1 auto;
+    min-width: 0;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .top-nav::-webkit-scrollbar {
+    display: none;
   }
   .top-nav-link {
     position: relative;
@@ -4413,7 +4419,7 @@ DASHBOARD_TONE_CSS = """
     border: 0;
     color: #736d66;
     background: transparent;
-    font-size: 1.05rem;
+    font-size: 0.98rem;
     font-weight: 700;
     letter-spacing: 0;
     white-space: nowrap;
@@ -4443,7 +4449,7 @@ DASHBOARD_TONE_CSS = """
     display: flex;
     align-items: center;
     gap: 10px;
-    width: clamp(220px, 24vw, 330px);
+    width: clamp(180px, 18vw, 280px);
     height: 48px;
     padding: 0 18px;
     border: 1px solid transparent;
@@ -4527,10 +4533,10 @@ DASHBOARD_TONE_CSS = """
     background: var(--page-bg);
   }
   .shell {
-    width: calc(100% - 320px);
+    width: calc(100% - 260px);
     max-width: none;
     min-height: calc(100vh - 80px);
-    margin: 0 0 0 320px;
+    margin: 0 0 0 260px;
     padding: 40px 40px 96px;
     border: 0;
     background: var(--page-bg);
@@ -4552,18 +4558,18 @@ DASHBOARD_TONE_CSS = """
     inset: 0 auto 0 0;
     z-index: 70;
     display: flex;
-    width: 320px;
-    padding: 28px 20px 28px;
+    width: 260px;
+    padding: 28px 18px 28px;
     border-right: 1px solid var(--line);
     background: #fbfbfa;
     flex-direction: column;
-    gap: 28px;
+    gap: 26px;
     overflow-y: auto;
   }
   .side-brand {
     display: grid;
     gap: 6px;
-    padding: 0 20px 22px;
+    padding: 0 12px 18px;
     color: var(--text);
   }
   .side-brand strong {
@@ -4578,14 +4584,25 @@ DASHBOARD_TONE_CSS = """
     font-weight: 600;
   }
   .side-nav-head {
-    display: none;
+    display: grid;
+    gap: 6px;
+    padding: 0 12px;
+  }
+  .side-nav-head strong {
+    color: var(--text);
+    font-size: 1.02rem;
+    font-weight: 900;
+    line-height: 1.25;
+  }
+  .side-nav-head span {
+    color: #7a746d;
+    font-size: 0.78rem;
+    font-weight: 650;
+    line-height: 1.55;
   }
   .side-nav-links {
     display: grid;
     gap: 8px;
-  }
-  .side-nav-primary {
-    gap: 10px;
   }
   .side-nav-link {
     display: flex;
@@ -4671,8 +4688,8 @@ DASHBOARD_TONE_CSS = """
   }
   .side-nav-section {
     display: grid;
-    gap: 10px;
-    padding: 18px 20px 0;
+    gap: 14px;
+    padding: 18px 12px 0;
     border-top: 1px solid #ebe8e2;
   }
   .side-nav-kicker {
@@ -4682,22 +4699,64 @@ DASHBOARD_TONE_CSS = """
     letter-spacing: 0;
     text-transform: uppercase;
   }
-  .side-nav-section .side-nav-link {
-    min-height: 36px;
-    padding: 6px 0;
-    border-radius: 0;
-    color: #746d66;
-    background: transparent;
-    font-size: 0.86rem;
-    font-weight: 700;
+  .side-marker-list {
+    position: relative;
+    display: grid;
+    gap: 2px;
+    padding-left: 0;
   }
-  .side-nav-section .side-nav-link:hover,
-  .side-nav-section .side-nav-link.active {
+  .side-marker-list::before {
+    content: "";
+    position: absolute;
+    top: 18px;
+    bottom: 18px;
+    left: 8px;
+    width: 1px;
+    background: #dedbd5;
+  }
+  .side-marker-link {
+    position: relative;
+    display: grid;
+    grid-template-columns: 18px minmax(0, 1fr);
+    align-items: center;
+    gap: 12px;
+    min-height: 42px;
+    padding: 4px 0;
+    color: #746d66;
+    font-size: 0.86rem;
+    font-weight: 750;
+  }
+  .side-marker-dot {
+    position: relative;
+    z-index: 1;
+    display: inline-block;
+    width: 9px;
+    height: 9px;
+    margin-left: 4px;
+    border: 1px solid #9b948b;
+    border-radius: 999px;
+    background: #fbfbfa;
+  }
+  .side-marker-label {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .side-marker-link:hover,
+  .side-marker-link.active {
     color: var(--text);
-    background: transparent;
+  }
+  .side-marker-link.active .side-marker-dot {
+    width: 13px;
+    height: 13px;
+    margin-left: 2px;
+    border-color: var(--accent);
+    background: var(--accent);
+    box-shadow: 0 0 0 4px var(--accent-soft);
   }
   .side-update-card {
-    display: grid;
+    display: none;
     gap: 10px;
     margin-top: auto;
     padding: 20px;
@@ -5031,20 +5090,26 @@ DASHBOARD_TONE_CSS = """
   }
   @media (max-width: 1180px) {
     .topbar {
-      left: 280px;
+      left: 232px;
       padding: 0 24px;
-      gap: 20px;
+      gap: 18px;
     }
     .side-nav {
-      width: 280px;
+      width: 232px;
     }
     .shell {
-      width: calc(100% - 280px);
-      margin-left: 280px;
+      width: calc(100% - 232px);
+      margin-left: 232px;
       padding: 32px 24px 90px;
     }
     .global-search {
-      width: 220px;
+      display: none;
+    }
+    .top-nav {
+      gap: 14px;
+    }
+    .top-nav-link {
+      font-size: 0.92rem;
     }
     body[data-page="index.html"] .home-briefing-grid {
       grid-template-columns: 1fr;
@@ -5157,10 +5222,10 @@ PAGE_TEMPLATE = """<!doctype html>
     </div>
   </header>
   <div class="app-layout">
-    <aside class="side-nav" aria-label="섹터와 업무 탐색">
+    <aside class="side-nav" aria-label="현재 페이지 위치 마커">
       {side_nav}
     </aside>
-    <div class="shell">
+    <div class="shell" id="page-top">
     {content}
     <footer class="footer-note">{footer_note}</footer>
     </div>
@@ -5910,6 +5975,74 @@ BASE_SCRIPT = """
     }
   });
 
+  function setupPageMarkers() {
+    const markerLinks = Array.from(document.querySelectorAll('[data-marker-link]'));
+    if (markerLinks.length === 0) {
+      return;
+    }
+
+    const markerPairs = markerLinks.map((link) => {
+      const href = link.getAttribute('href') || '';
+      if (!href.startsWith('#')) {
+        return null;
+      }
+      const targetId = decodeURIComponent(href.slice(1));
+      const target = document.getElementById(targetId);
+      return target ? { link, target } : null;
+    }).filter(Boolean);
+
+    if (markerPairs.length === 0) {
+      return;
+    }
+
+    function activateMarker(activeLink) {
+      markerLinks.forEach((link) => {
+        const isActive = link === activeLink;
+        link.classList.toggle('active', isActive);
+        if (isActive) {
+          link.setAttribute('aria-current', 'location');
+        } else {
+          link.removeAttribute('aria-current');
+        }
+      });
+    }
+
+    function activateFromHash() {
+      const hash = window.location.hash || '#page-top';
+      const current = markerPairs.find(({ link }) => link.getAttribute('href') === hash);
+      if (current) {
+        activateMarker(current.link);
+      }
+    }
+
+    if ('IntersectionObserver' in window) {
+      const observer = new IntersectionObserver((entries) => {
+        const visibleEntries = entries
+          .filter((entry) => entry.isIntersecting)
+          .sort((left, right) => Math.abs(left.boundingClientRect.top) - Math.abs(right.boundingClientRect.top));
+        if (visibleEntries.length === 0) {
+          return;
+        }
+        const activePair = markerPairs.find(({ target }) => target === visibleEntries[0].target);
+        if (activePair) {
+          activateMarker(activePair.link);
+        }
+      }, {
+        rootMargin: '-24% 0px -62% 0px',
+        threshold: [0, 0.12, 0.35, 0.7],
+      });
+      markerPairs.forEach(({ target }) => observer.observe(target));
+    }
+
+    markerLinks.forEach((link) => {
+      link.addEventListener('click', () => activateMarker(link));
+    });
+    window.addEventListener('hashchange', activateFromHash);
+    activateFromHash();
+  }
+
+  setupPageMarkers();
+
   const guideOverlay = document.querySelector('[data-guide-overlay]');
   if (guideOverlay && document.body.dataset.page === 'index.html') {
     guideOverlay.hidden = true;
@@ -6134,14 +6267,6 @@ def build_page_script() -> str:
     return "\n".join((BASE_SCRIPT, build_admin_access_script(), build_analytics_script()))
 
 
-TOP_NAV_ITEMS = [
-    ("index.html", "Main Overview"),
-    ("news.html", "Trends"),
-    ("policies.html", "Reports"),
-    ("tools.html", "Data Room"),
-]
-
-
 NAV_ITEMS = [
     ("index.html", "오늘"),
     ("news.html", "뉴스"),
@@ -6153,14 +6278,7 @@ NAV_ITEMS = [
 ]
 
 
-SIDE_NAV_ITEMS = [
-    ("index.html", "Dashboard", "오늘의 현황", "dashboard"),
-    ("policies.html", "Policy Insights", "정책·계획", "insights"),
-    ("news.html", "Data Explorer", "뉴스·공약", "explorer"),
-    ("hub.html", "Community", "참여·회의", "community"),
-    ("tools.html", "Reports", "자료·도구", "reports"),
-    ("guide.html", "Archives", "안내·문의", "archives"),
-]
+TOP_NAV_ITEMS = NAV_ITEMS
 
 
 PAGE_HEADINGS = {
@@ -6194,59 +6312,65 @@ NAV_ICONS = {
 
 SIDE_NAV_CONFIG = {
     "index.html": {
-        "title": "오늘의 운영",
-        "description": "청년 모아봄 첫 화면",
+        "title": "오늘의 위치",
+        "description": "첫 화면의 주요 구간",
         "items": [
-            ("#overview", "개요"),
+            ("#page-top", "상단"),
             ("#today-briefing", "오늘 브리핑"),
             ("#youth-metrics", "청년 주요 지표"),
             ("#about-info", "제작자·안내"),
         ],
     },
     "news.html": {
-        "title": "뉴스 탐색",
-        "description": "최근 청년 뉴스",
-        "items": [("#filters", "필터"), ("#main-list", "주요 목록"), ("policies.html", "관련 메뉴")],
+        "title": "뉴스 위치",
+        "description": "필터와 기사 목록",
+        "items": [("#page-top", "상단"), ("#filters", "필터"), ("#main-list", "주요 목록")],
     },
     "election.html": {
-        "title": "선거·공약 탐색",
-        "description": "청년 공약 흐름",
-        "items": [("#filters", "필터"), ("#main-list", "주요 목록"), ("news.html", "관련 메뉴")],
+        "title": "선거·공약 위치",
+        "description": "필터와 공약 흐름",
+        "items": [("#page-top", "상단"), ("#filters", "필터"), ("#main-list", "주요 목록")],
     },
     "policies.html": {
-        "title": "정책 탐색",
-        "description": "공식 발표와 참고 기사",
-        "items": [("#filters", "필터"), ("#main-list", "주요 목록"), ("plans.html", "정책계획")],
+        "title": "정책 위치",
+        "description": "공식 발표와 지역 정책",
+        "items": [("#page-top", "상단"), ("#filters", "필터"), ("#main-list", "공식 발표"), ("#local-policy-updates", "지역 정책")],
     },
     "plans.html": {
-        "title": "정책계획",
-        "description": "기본계획과 시행계획",
+        "title": "정책계획 위치",
+        "description": "계획 자료의 구조",
         "items": [
-            ("#overview", "개요"),
+            ("#page-top", "상단"),
             ("#main-list", "수집 대상"),
             ("#record-schema", "기록 항목"),
-            ("policies.html", "정책 발표"),
         ],
     },
     "hub.html": {
-        "title": "참여·회의 탐색",
+        "title": "참여·회의 위치",
         "description": "자문·위원회·네트워크",
-        "items": [("#filters", "필터"), ("#main-list", "주요 목록"), ("policies.html", "관련 메뉴")],
+        "items": [("#page-top", "상단"), ("#filters", "필터"), ("#main-list", "공식 회의"), ("#public-governance", "참여 채널")],
     },
     "tools.html": {
-        "title": "자료·도구",
-        "description": "운영과 검토 도구",
-        "items": [("#main-list", "주요 목록"), ("guide.html", "이용 안내"), ("index.html#about-info", "연락 채널")],
+        "title": "자료·도구 위치",
+        "description": "통계와 운영 도구",
+        "items": [
+            ("#page-top", "상단"),
+            ("#main-list", "주요 목록"),
+            ("#youth-stat-releases", "통계 발표"),
+            ("#stats-research-links", "연구 링크"),
+            ("#ai-guide", "AI 활용"),
+            ("#review", "검토"),
+        ],
     },
     "contact.html": {
-        "title": "제보·문의",
-        "description": "운영 문의와 협업",
-        "items": [("#main-list", "기본 정보"), ("#ops", "운영 문의"), ("#review", "검토 요청")],
+        "title": "제보·문의 위치",
+        "description": "연락과 요청 구간",
+        "items": [("#page-top", "상단"), ("#main-list", "기본 정보"), ("#ops", "운영 문의"), ("#collab", "협업"), ("#review", "검토 요청")],
     },
     "guide.html": {
-        "title": "이용 안내",
+        "title": "이용 안내 위치",
         "description": "메뉴와 갱신 기준",
-        "items": [("#main-list", "메뉴 안내"), ("index.html", "오늘"), ("index.html#about-info", "연락 채널")],
+        "items": [("#page-top", "상단"), ("#main-list", "메뉴 안내")],
     },
 }
 
@@ -6304,37 +6428,17 @@ def render_admin_entry() -> str:
     )
 
 
-def side_nav_item_is_active(item_href: str, active_page: str) -> bool:
-    if item_href == active_page:
-        return True
-    if item_href == "policies.html" and active_page == "plans.html":
-        return True
-    if item_href == "news.html" and active_page == "election.html":
-        return True
-    if item_href == "guide.html" and active_page == "contact.html":
-        return True
-    return False
-
-
 def render_side_nav(active_page: str) -> str:
     config = SIDE_NAV_CONFIG.get(active_page, SIDE_NAV_CONFIG["news.html"])
-    primary_links: list[str] = []
-    for href, title, subtitle, icon in SIDE_NAV_ITEMS:
-        active = " active" if side_nav_item_is_active(href, active_page) else ""
-        current = ' aria-current="page"' if href == active_page else ""
-        primary_links.append(
-            f'<a class="side-nav-link{active}" href="{html.escape(href)}" '
-            f'data-side-icon="{html.escape(icon)}"{current}>'
-            '<span class="side-nav-icon" aria-hidden="true"></span>'
-            '<span class="side-nav-text">'
-            f'<strong>{html.escape(title)}</strong><small>{html.escape(subtitle)}</small>'
-            '</span></a>'
-        )
-
-    quick_links: list[str] = []
+    marker_links: list[str] = []
     for index, (href, label) in enumerate(config["items"]):
         active = " active" if index == 0 else ""
-        quick_links.append(f'<a class="side-nav-link{active}" href="{html.escape(href)}">{html.escape(label)}</a>')
+        current = ' aria-current="location"' if index == 0 else ""
+        marker_links.append(
+            f'<a class="side-marker-link{active}" href="{html.escape(href)}" data-marker-link{current}>'
+            '<span class="side-marker-dot" aria-hidden="true"></span>'
+            f'<span class="side-marker-label">{html.escape(label)}</span></a>'
+        )
 
     admin_items = "".join(
         f'<button class="side-nav-link pending" type="button" disabled aria-disabled="true">'
@@ -6346,17 +6450,14 @@ def render_side_nav(active_page: str) -> str:
         <strong>YouthPolicy Hub</strong>
         <span>Policy & Data</span>
       </a>
-      <nav class="side-nav-links side-nav-primary" aria-label="주요 대시보드 메뉴">
-        {''.join(primary_links)}
-      </nav>
       <div class="side-nav-head">
         <strong>{html.escape(config["title"])}</strong>
         <span>{html.escape(config["description"])}</span>
       </div>
       <div class="side-nav-section">
-        <span class="side-nav-kicker">On This Page</span>
-        <nav class="side-nav-links" aria-label="현재 페이지 탐색">
-          {''.join(quick_links)}
+        <span class="side-nav-kicker">Page Markers</span>
+        <nav class="side-marker-list" aria-label="현재 페이지 위치 마커">
+          {''.join(marker_links)}
         </nav>
       </div>
       <a class="side-update-card" href="news.html">
