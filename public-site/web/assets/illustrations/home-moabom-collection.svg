@@ -1,76 +1,97 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 250" fill="none" role="img" aria-labelledby="title desc">
-  <title id="title">청년 모아봄 홈 일러스트</title>
-  <desc id="desc">청년들이 함께 웃으며 오늘의 기사와 정책 정보를 살펴보는 일러스트</desc>
+﻿<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 280" fill="none" role="img" aria-labelledby="title desc">
+  <title id="title">Youth Moabom spring briefing illustration</title>
+  <desc id="desc">Young people checking news cards together under a spring flower.</desc>
   <defs>
     <style>
-      .navy { fill: #102747; }
-      .blue { fill: #3278BD; }
-      .blue-soft { fill: #8FB7DF; }
-      .orange { fill: #FB7435; }
-      .green { fill: #8DCAAE; }
-      .skin { fill: #F7E8DB; }
-      .skin-warm { fill: #FFE1C8; }
-      .paper { fill: #FFFDF9; }
-      .paper-blue { fill: #F7FBFF; stroke: #8FB7DF; stroke-width: 4; }
-      .paper-warm { fill: #FFF3E7; stroke: #F0D8C4; stroke-width: 4; }
-      .line { fill: #D9DDE2; }
-      .smile { fill: none; stroke: #102747; stroke-width: 4; stroke-linecap: round; }
-      .sun-ray { fill: none; stroke: #FB7435; stroke-width: 8; stroke-linecap: round; }
+      .ink { fill: #263238; }
+      .line { fill: #E7DDC8; }
+      .paper { fill: #FFFEFD; }
+      .paper-stroke { stroke: #E7DDC8; stroke-width: 4; }
+      .accent { fill: #E7BD52; }
+      .accent-soft { fill: #FFF3CF; }
+      .sky { fill: #BBD7F1; }
+      .sky-deep { fill: #5F8ED5; }
+      .green { fill: #A8D5BA; }
+      .skin { fill: #F8E4D2; }
+      .skin-warm { fill: #FFE0C5; }
+      .petal { fill: #FFF0B8; stroke: #E7BD52; stroke-width: 3; }
+      .flower-center { fill: #F2C66D; }
+      .smile { fill: none; stroke: #263238; stroke-width: 4; stroke-linecap: round; }
+      .stem { fill: none; stroke: #A8D5BA; stroke-width: 6; stroke-linecap: round; }
     </style>
   </defs>
 
-  <ellipse cx="170" cy="218" rx="112" ry="14" fill="#0B1828" opacity=".24"/>
+  <ellipse cx="186" cy="244" rx="128" ry="16" fill="#263238" opacity=".1"/>
+  <path class="stem" d="M274 208c17-29 19-58 4-90"/>
 
-  <g aria-hidden="true" opacity=".96">
-    <line class="sun-ray" x1="242" y1="23" x2="242" y2="36"/>
-    <line class="sun-ray" x1="242" y1="23" x2="242" y2="36" transform="rotate(-45 242 69)"/>
-    <line class="sun-ray" x1="242" y1="23" x2="242" y2="36" transform="rotate(45 242 69)"/>
-    <line class="sun-ray" x1="242" y1="23" x2="242" y2="36" transform="rotate(-90 242 69)"/>
-    <line class="sun-ray" x1="242" y1="23" x2="242" y2="36" transform="rotate(90 242 69)"/>
-  </g>
-  <circle class="orange" cx="242" cy="69" r="34"/>
-
-  <g transform="rotate(-8 82 96)">
-    <rect class="paper-blue" x="39" y="51" width="70" height="86" rx="17"/>
-    <rect class="blue" x="57" y="72" width="16" height="18" rx="4"/>
-    <rect class="navy" x="80" y="76" width="31" height="8" rx="4"/>
-    <rect class="line" x="57" y="103" width="48" height="7" rx="3.5"/>
-    <rect class="line" x="57" y="122" width="34" height="7" rx="3.5"/>
+  <g aria-hidden="true" opacity=".98" transform="translate(285 78) rotate(8)">
+    <ellipse class="petal" cx="0" cy="-32" rx="16" ry="31"/>
+    <ellipse class="petal" cx="31" cy="-10" rx="16" ry="31" transform="rotate(72 31 -10)"/>
+    <ellipse class="petal" cx="19" cy="27" rx="16" ry="31" transform="rotate(144 19 27)"/>
+    <ellipse class="petal" cx="-19" cy="27" rx="16" ry="31" transform="rotate(216 -19 27)"/>
+    <ellipse class="petal" cx="-31" cy="-10" rx="16" ry="31" transform="rotate(288 -31 -10)"/>
+    <circle class="flower-center" cx="0" cy="0" r="10"/>
   </g>
 
-  <g transform="rotate(8 247 103)">
-    <rect class="paper-warm" x="214" y="62" width="62" height="80" rx="16"/>
-    <rect class="orange" x="231" y="82" width="16" height="18" rx="4"/>
-    <rect class="navy" x="253" y="86" width="27" height="8" rx="4"/>
-    <rect class="line" x="231" y="113" width="42" height="7" rx="3.5"/>
-    <rect class="line" x="231" y="131" width="31" height="7" rx="3.5"/>
+  <g transform="rotate(-9 78 94)">
+    <rect class="paper paper-stroke" x="37" y="43" width="82" height="99" rx="20"/>
+    <rect class="sky-deep" x="58" y="67" width="19" height="20" rx="5"/>
+    <rect class="ink" x="84" y="72" width="36" height="9" rx="4.5"/>
+    <rect class="line" x="58" y="107" width="55" height="8" rx="4"/>
+    <rect class="line" x="58" y="128" width="39" height="8" rx="4"/>
   </g>
 
-  <path class="blue-soft" d="M73 179c0-25 19-43 43-43s43 18 43 43v21H73v-21Z"/>
-  <circle class="skin" cx="116" cy="117" r="28"/>
-  <path class="navy" d="M88 111c9-19 31-29 50-19 9 5 15 13 17 23-23-5-42-5-67-4Z"/>
-  <circle class="navy" cx="106" cy="118" r="3.2"/>
-  <circle class="navy" cx="128" cy="118" r="3.2"/>
-  <path class="smile" d="M106 133c7 7 16 7 23 0"/>
+  <g transform="rotate(8 278 117)">
+    <rect class="paper paper-stroke" x="239" y="75" width="75" height="92" rx="19"/>
+    <rect class="accent" x="259" y="100" width="19" height="20" rx="5"/>
+    <rect class="ink" x="285" y="105" width="31" height="9" rx="4.5"/>
+    <rect class="line" x="259" y="137" width="48" height="8" rx="4"/>
+    <rect class="line" x="259" y="158" width="34" height="8" rx="4"/>
+  </g>
 
-  <path class="green" d="M181 179c0-24 18-41 41-41s41 17 41 41v21h-82v-21Z"/>
-  <circle class="skin-warm" cx="222" cy="120" r="27"/>
-  <path class="navy" d="M197 117c4-21 25-34 45-24 9 4 15 12 17 22-21-5-41-4-62 2Z"/>
-  <circle class="navy" cx="213" cy="121" r="3"/>
-  <circle class="navy" cx="234" cy="121" r="3"/>
-  <path class="smile" d="M211 135c7 6 15 6 22 0"/>
+  <g transform="translate(54 86)">
+    <path class="accent-soft" d="M13 59c0-17 14-31 31-31h21c17 0 31 14 31 31s-14 31-31 31H44l-29 22 9-26C17 80 13 70 13 59Z"/>
+    <rect class="ink" x="39" y="50" width="42" height="7" rx="3.5"/>
+    <rect class="accent" x="39" y="67" width="31" height="7" rx="3.5"/>
+  </g>
 
-  <path class="blue" d="M128 187c0-29 22-50 52-50s52 21 52 50v23H128v-23Z"/>
-  <circle class="skin" cx="180" cy="113" r="33"/>
-  <path class="navy" d="M151 104c6-23 31-36 55-25 12 5 20 15 23 27-27-7-50-7-78-2Z"/>
-  <circle class="navy" cx="168" cy="116" r="3.5"/>
-  <circle class="navy" cx="193" cy="116" r="3.5"/>
-  <path class="smile" d="M166 132c8 8 20 8 28 0"/>
+  <g transform="translate(223 63)">
+    <path class="sky" d="M14 47c0-15 12-27 27-27h19c15 0 27 12 27 27S75 74 60 74H44L22 91l7-21c-9-5-15-13-15-23Z" opacity=".78"/>
+    <rect class="ink" x="36" y="39" width="31" height="6" rx="3"/>
+    <rect class="paper" x="36" y="54" width="44" height="6" rx="3"/>
+  </g>
 
-  <rect class="paper" x="145" y="147" width="72" height="44" rx="10"/>
-  <rect class="orange" x="158" y="158" width="13" height="15" rx="3"/>
-  <rect class="navy" x="178" y="161" width="28" height="6" rx="3"/>
-  <rect class="line" x="158" y="178" width="47" height="6" rx="3"/>
-  <path class="smile" d="M102 171c12 9 23 9 35 0"/>
-  <path class="smile" d="M224 171c11 8 21 8 32 0"/>
+  <path class="sky" d="M71 204c0-29 22-51 50-51s50 22 50 51v25H71v-25Z"/>
+  <circle class="skin" cx="121" cy="132" r="31"/>
+  <path class="ink" d="M90 126c8-22 34-34 56-23 11 5 18 15 21 27-27-6-49-7-77-4Z"/>
+  <circle class="ink" cx="110" cy="134" r="3.2"/>
+  <circle class="ink" cx="135" cy="134" r="3.2"/>
+  <path class="smile" d="M109 150c8 7 18 7 26 0"/>
+
+  <path class="green" d="M198 204c0-28 21-49 48-49s48 21 48 49v25h-96v-25Z"/>
+  <circle class="skin-warm" cx="246" cy="135" r="30"/>
+  <path class="ink" d="M216 132c5-22 29-36 52-24 10 5 18 15 20 27-25-6-48-6-72-3Z"/>
+  <circle class="ink" cx="235" cy="137" r="3.1"/>
+  <circle class="ink" cx="258" cy="137" r="3.1"/>
+  <path class="smile" d="M233 152c8 7 17 7 25 0"/>
+
+  <path class="accent" d="M126 215c0-34 26-59 60-59s60 25 60 59v27H126v-27Z"/>
+  <circle class="skin" cx="186" cy="128" r="37"/>
+  <path class="ink" d="M153 121c8-27 36-42 63-29 13 6 23 17 26 31-31-7-58-8-89-2Z"/>
+  <circle class="ink" cx="172" cy="131" r="3.8"/>
+  <circle class="ink" cx="200" cy="131" r="3.8"/>
+  <path class="smile" d="M170 149c9 8 22 8 31 0"/>
+
+  <rect class="paper" x="145" y="170" width="84" height="50" rx="12"/>
+  <rect class="paper-stroke" x="145" y="170" width="84" height="50" rx="12"/>
+  <rect class="sky-deep" x="161" y="184" width="16" height="17" rx="4"/>
+  <rect class="ink" x="185" y="187" width="33" height="7" rx="3.5"/>
+  <rect class="line" x="161" y="207" width="53" height="7" rx="3.5"/>
+
+  <path class="smile" d="M98 197c13 9 26 9 39 0"/>
+  <path class="smile" d="M245 197c12 9 24 9 36 0"/>
+
+  <circle class="accent-soft" cx="67" cy="36" r="6"/>
+  <circle class="green" cx="319" cy="134" r="5"/>
+  <circle class="sky" cx="43" cy="169" r="5"/>
 </svg>

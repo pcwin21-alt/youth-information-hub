@@ -1,18 +1,12 @@
 from __future__ import annotations
 
-import base64
-import hashlib
-import hmac
-import os
 from datetime import datetime
-from pathlib import Path
 
 from youth_info_platform.io_utils import public_site_root, read_json, write_json
 
 
 ROOT = public_site_root()
 CONTACT_SETTINGS_PATH = ROOT / "content" / "contact_settings.json"
-ADMIN_SETTINGS_PATH = ROOT / "config" / "contact_admin.local.json"
 
 DEFAULT_CONTACT_SETTINGS = {
     "organization_name": "유스사이드(Youthside)",
@@ -78,44 +72,3 @@ def save_contact_settings(data: dict | None) -> dict[str, str]:
     settings = validate_contact_settings(data)
     write_json(CONTACT_SETTINGS_PATH, settings)
     return settings
-
-
-def load_admin_settings() -> dict | None:
-    return read_json(ADMIN_SETTINGS_PATH, default=None)
-
-
-def hash_password(password: str, *, salt: bytes | None = None, iterations: int = 250_000) -> dict[str, str | int]:
-    if not password:
-        raise ValueError("password is required")
-
-    salt_bytes = salt or os.urandom(16)
-    digest = hashlib.pbkdf2_hmac("sha256", password.encode("utf-8"), salt_bytes, iterations)
-    return {
-        "algorithm": "pbkdf2_sha256",
-        "iterations": iterations,
-        "password_hash": base64.b64encode(digest).decode("ascii"),
-        "password_salt": base64.b64encode(salt_bytes).decode("ascii"),
-    }
-
-
-def write_admin_settings(password: str, path: Path | None = None) -> Path:
-    admin_path = path or ADMIN_SETTINGS_PATH
-    payload = hash_password(password)
-    write_json(admin_path, payload)
-    return admin_path
-
-
-def verify_password(password: str, settings: dict | None = None) -> bool:
-    admin_settings = settings or load_admin_settings()
-    if not admin_settings:
-        return False
-
-    try:
-        salt = base64.b64decode(admin_settings["password_salt"])
-        iterations = int(admin_settings.get("iterations", 250_000))
-        expected = base64.b64decode(admin_settings["password_hash"])
-    except (KeyError, ValueError, TypeError):
-        return False
-
-    candidate = hashlib.pbkdf2_hmac("sha256", password.encode("utf-8"), salt, iterations)
-    return hmac.compare_digest(candidate, expected)

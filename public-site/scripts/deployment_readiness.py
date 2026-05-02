@@ -114,13 +114,14 @@ def main() -> int:
     print_section("Next steps")
     if not config_path.exists():
         print(
-            "1. Copy deploy/lightsail/staging-config.env.example to deploy/lightsail/staging-config.env"
+            "1. Copy public-site/deploy/lightsail/staging-config.env.example "
+            "to public-site/deploy/lightsail/staging-config.env"
         )
     if missing_required:
         print("2. Fill in the required bootstrap values.")
     else:
         print("2. Bootstrap inputs are ready.")
-        print("3. On the server, run: bash deploy/lightsail/run-staging-setup.sh")
+        print("3. On the server, run: bash public-site/deploy/lightsail/run-staging-setup.sh")
     if not missing_https:
         print("4. HTTPS inputs are ready once DNS is pointing at the server.")
     else:

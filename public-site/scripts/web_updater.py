@@ -1,7 +1,8 @@
-from __future__ import annotations
+﻿from __future__ import annotations
 
 import argparse
 from datetime import datetime, timedelta
+import hashlib
 import html
 import json
 import os
@@ -10,7 +11,7 @@ import urllib.parse
 import urllib.request
 from pathlib import Path
 
-from _bootstrap import PUBLIC_WEB_ROOT, RUNTIME_PIPELINE_ROOT
+from _bootstrap import PUBLIC_CONFIG_ROOT, PUBLIC_WEB_ROOT, RUNTIME_PIPELINE_ROOT
 
 from youth_info_platform.article_metadata import (
     article_identity_key,
@@ -37,10 +38,62 @@ HOME_UPDATE_SNAPSHOT = RUNTIME_PIPELINE_ROOT / "home_update_snapshot.json"
 HOME_HOT_KEYWORD_LIMIT = 8
 REMOTE_TEXT_CACHE: dict[str, str] = {}
 ILLUSTRATION_ROOT = "assets/illustrations"
-ASSET_VERSION = "20260424-visual-refresh-2"
+ASSET_VERSION = "20260501-sunlit-logo-1"
 BRAND_MARK_SRC = f"assets/branding/youth-together-mark.svg?v={ASSET_VERSION}"
 PUBLIC_ANALYTICS_ENDPOINT = os.getenv("PUBLIC_SITE_ANALYTICS_ENDPOINT", "").strip()
 PUBLIC_ANALYTICS_SCOPE = os.getenv("PUBLIC_SITE_ANALYTICS_SCOPE", "public").strip() or "public"
+
+
+def normalize_admin_account(value: str | None) -> str:
+    return " ".join(str(value or "").split()).casefold()
+
+
+def split_admin_account_values(value: str | None) -> list[str]:
+    if not value:
+        return []
+    return [
+        item.strip()
+        for item in re.split(r"[,;\n]+", value)
+        if item.strip()
+    ]
+
+
+def hash_admin_account(value: str) -> str:
+    return hashlib.sha256(normalize_admin_account(value).encode("utf-8")).hexdigest()
+
+
+def load_admin_account_hashes() -> list[str]:
+    accounts: list[str] = []
+    account_hashes: list[str] = []
+
+    accounts.extend(split_admin_account_values(os.getenv("PUBLIC_SITE_ADMIN_ACCOUNTS")))
+    account_hashes.extend(split_admin_account_values(os.getenv("PUBLIC_SITE_ADMIN_ACCOUNT_HASHES")))
+
+    config = read_json(PUBLIC_CONFIG_ROOT / "admin_access.local.json", default={})
+    if isinstance(config, dict):
+        for key in ("allowed_accounts", "accounts"):
+            values = config.get(key, [])
+            if isinstance(values, str):
+                accounts.extend(split_admin_account_values(values))
+            elif isinstance(values, list):
+                accounts.extend(str(value).strip() for value in values if str(value).strip())
+        for key in ("allowed_account_hashes", "account_hashes"):
+            values = config.get(key, [])
+            if isinstance(values, str):
+                account_hashes.extend(split_admin_account_values(values))
+            elif isinstance(values, list):
+                account_hashes.extend(str(value).strip() for value in values if str(value).strip())
+
+    normalized_hashes = {
+        value.lower()
+        for value in account_hashes
+        if re.fullmatch(r"[0-9a-fA-F]{64}", value.strip())
+    }
+    normalized_hashes.update(hash_admin_account(account) for account in accounts)
+    return sorted(normalized_hashes)
+
+
+PUBLIC_ADMIN_ACCOUNT_HASHES = load_admin_account_hashes()
 
 MAJOR_CENTRAL_POLICY_AUTHORITIES = [
     "기획재정부",
@@ -145,7 +198,7 @@ CURATED_MAJOR_POLICY_WATCHLIST = [
 
 HOME_LEAD_ILLUSTRATION = {
     "src": f"{ILLUSTRATION_ROOT}/home-moabom-collection.svg?v={ASSET_VERSION}",
-    "alt": "청년들이 함께 웃으며 오늘의 기사와 정책 정보를 살펴보는 홈 화면 일러스트",
+    "alt": "청년들이 봄꽃 아래에서 오늘의 기사와 정책 정보를 살펴보는 홈 화면 일러스트",
 }
 
 PAGE_INTRO_ILLUSTRATIONS = {
@@ -297,20 +350,20 @@ LOCAL_GOVERNMENT_ACTOR_KEYWORDS = (
 
 BASE_CSS = """
   :root {
-    --page-bg: #e8e1d8;
-    --app-bg: #fcfaf6;
+    --page-bg: #fffaf0;
+    --app-bg: #fffef9;
     --panel: #ffffff;
-    --panel-soft: #f3ede6;
-    --text: #1f2a33;
-    --muted: #66717b;
-    --line: rgba(31, 42, 51, 0.1);
-    --accent: #395677;
-    --accent-soft: rgba(57, 86, 119, 0.12);
-    --accent-strong: #172536;
-    --home-apricot: #dd9367;
-    --home-apricot-soft: rgba(221, 147, 103, 0.14);
-    --home-teal: #7d8e98;
-    --home-teal-soft: rgba(125, 142, 152, 0.12);
+    --panel-soft: #fff3cf;
+    --text: #263238;
+    --muted: #65727a;
+    --line: rgba(38, 50, 56, 0.12);
+    --accent: #e7bd52;
+    --accent-soft: rgba(255, 243, 207, 0.9);
+    --accent-strong: #735b12;
+    --home-apricot: #e7bd52;
+    --home-apricot-soft: rgba(231, 189, 82, 0.24);
+    --home-teal: #a8d5ba;
+    --home-teal-soft: rgba(168, 213, 186, 0.22);
     --shadow: 0 18px 42px rgba(31, 42, 51, 0.08);
     --shadow-soft: 0 8px 20px rgba(31, 42, 51, 0.05);
   }
@@ -320,7 +373,7 @@ BASE_CSS = """
   body {
     margin: 0;
     color: var(--text);
-    background: linear-gradient(180deg, #f2eee8 0%, var(--page-bg) 100%);
+    background: linear-gradient(180deg, #fff7df 0%, var(--page-bg) 100%);
     font-family: "Noto Sans KR", sans-serif;
     overflow-x: hidden;
   }
@@ -535,6 +588,14 @@ BASE_CSS = """
     font-size: 0.78rem;
     font-weight: 800;
     letter-spacing: -0.01em;
+  }
+  .page-intro-title {
+    margin: 0;
+    color: var(--accent-strong);
+    font-size: clamp(1.55rem, 1.28rem + 0.8vw, 2.1rem);
+    line-height: 1.25;
+    font-weight: 900;
+    letter-spacing: 0;
   }
   .page-intro-copy {
     margin: 0;
@@ -889,8 +950,28 @@ BASE_CSS = """
   }
   .filter-controls {
     display: flex;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     gap: 8px;
+    overflow-x: auto;
+    padding-bottom: 4px;
+    scrollbar-width: none;
+  }
+  .filter-controls::-webkit-scrollbar {
+    display: none;
+  }
+  .news-filter-panel .filter-stack {
+    grid-template-columns: 1fr;
+  }
+  .news-filter-panel .filter-group.wide {
+    grid-column: 1 / -1;
+  }
+  .news-filter-panel .filter-controls {
+    flex-wrap: wrap;
+    overflow: visible;
+    padding-bottom: 0;
+  }
+  .news-filter-panel .filter-button {
+    flex: 0 0 auto;
   }
   .filter-button {
     display: inline-flex;
@@ -903,6 +984,8 @@ BASE_CSS = """
     color: var(--accent-strong);
     font-size: 0.8rem;
     font-weight: 700;
+    white-space: nowrap;
+    flex: 0 0 auto;
     cursor: pointer;
   }
   .filter-button.active {
@@ -1206,6 +1289,12 @@ BASE_CSS = """
     line-height: 1.55;
     text-align: center;
   }
+  .footer-note a {
+    color: var(--accent);
+    font-weight: 800;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
   .home-section-card {
     padding: 18px;
     background: var(--panel);
@@ -1396,14 +1485,14 @@ BASE_CSS = """
   }
   .home-briefing-head h2 {
     margin: 0;
-    font-size: 1.16rem;
-    letter-spacing: -0.03em;
+    font-size: 1.32rem;
+    letter-spacing: 0;
   }
   .home-briefing-head p {
     margin: 0;
     color: var(--muted);
-    font-size: 0.88rem;
-    line-height: 1.58;
+    font-size: 1rem;
+    line-height: 1.62;
   }
   .home-glance-grid {
     display: grid;
@@ -1448,7 +1537,7 @@ BASE_CSS = """
   }
   .home-glance-label {
     color: var(--muted);
-    font-size: 0.75rem;
+    font-size: 0.88rem;
     font-weight: 800;
     line-height: 1.3;
   }
@@ -1531,6 +1620,46 @@ BASE_CSS = """
     color: var(--muted);
     font-size: 0.84rem;
     line-height: 1.58;
+  }
+  .home-briefing-tabs {
+    display: grid;
+    gap: 14px;
+  }
+  .home-briefing-tablist {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+  }
+  .home-briefing-tab {
+    min-height: 46px;
+    padding: 10px 12px;
+    border: 1px solid rgba(57, 86, 119, 0.18);
+    border-radius: 8px;
+    background: rgba(241, 245, 250, 0.96);
+    color: var(--accent-strong);
+    font: inherit;
+    font-size: 0.94rem;
+    font-weight: 900;
+    line-height: 1.25;
+    cursor: pointer;
+  }
+  .home-briefing-tab[aria-selected="true"] {
+    border-color: var(--accent-strong);
+    background: var(--accent-strong);
+    color: #ffffff;
+  }
+  .home-briefing-panel {
+    display: grid;
+    gap: 12px;
+  }
+  .home-briefing-panel[hidden] {
+    display: none;
+  }
+  .home-briefing-panel-note {
+    margin: 0;
+    color: var(--muted);
+    font-size: 0.94rem;
+    line-height: 1.55;
   }
   .home-urgent-list {
     display: grid;
@@ -2270,9 +2399,9 @@ BASE_CSS = """
     gap: 5px;
     padding: 4px 0;
     color: var(--muted);
-    font-size: 0.64rem;
+    font-size: 0.72rem;
     font-weight: 700;
-    letter-spacing: -0.02em;
+    letter-spacing: 0;
     min-width: 0;
   }
   .bottom-nav a span {
@@ -2697,20 +2826,20 @@ BASE_CSS = """
 
   /* GovNews-style dashboard skin: keeps the current pages and data contract. */
   :root {
-    --page-bg: #f4f3f8;
-    --app-bg: #f9f9fe;
+    --page-bg: #fffaf0;
+    --app-bg: #fffef9;
     --panel: #ffffff;
-    --panel-soft: #e8e8ed;
-    --text: #1a1c1f;
-    --muted: #43474f;
-    --line: #c3c6d1;
-    --accent: #005cba;
-    --accent-soft: #d7e3ff;
-    --accent-strong: #003366;
-    --surface-container-low: #f4f3f8;
-    --surface-container-high: #e8e8ed;
-    --surface-container-highest: #e2e2e7;
-    --error: #ba1a1a;
+    --panel-soft: #fff3cf;
+    --text: #263238;
+    --muted: #65727a;
+    --line: #e7ddc8;
+    --accent: #e7bd52;
+    --accent-soft: #fff3cf;
+    --accent-strong: #735b12;
+    --surface-container-low: #fffaf0;
+    --surface-container-high: #fff3cf;
+    --surface-container-highest: #ebddad;
+    --error: #a84a34;
     --shadow: none;
     --shadow-soft: none;
   }
@@ -2735,8 +2864,8 @@ BASE_CSS = """
     height: 64px;
     margin: 0;
     padding: 0 20px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    background: #003366;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.14);
+    background: #735b12;
     color: #ffffff;
     box-shadow: none;
     backdrop-filter: none;
@@ -2760,7 +2889,7 @@ BASE_CSS = """
   }
   .brand-sub {
     color: rgba(255, 255, 255, 0.72);
-    font-size: 0.72rem;
+    font-size: 0.78rem;
   }
   .topbar-side {
     gap: 10px;
@@ -2997,7 +3126,7 @@ BASE_CSS = """
       top: 20px;
       left: 24px;
       right: 24px;
-      color: #003366;
+      color: #735b12;
       font-size: 0.72rem;
       font-weight: 900;
       line-height: 1.55;
@@ -3016,12 +3145,12 @@ BASE_CSS = """
     }
     .nav a:hover {
       background: #f4f3f8;
-      color: #003366;
+      color: #735b12;
     }
     .nav a.active {
-      border-right-color: #005cba;
-      background: #f4f3f8;
-      color: #003366;
+      border-right-color: #e7bd52;
+      background: #fffaf0;
+      color: #735b12;
     }
     .hero {
       grid-template-columns: minmax(0, 1.35fr) minmax(300px, 0.65fr);
@@ -3033,6 +3162,12 @@ BASE_CSS = """
     }
     .filter-stack {
       grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .news-filter-panel .filter-stack {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .news-filter-panel .filter-group.wide {
+      grid-column: 1 / -1;
     }
   }
   @media (max-width: 720px) {
@@ -3078,71 +3213,253 @@ BASE_CSS = """
     }
   }
 
-  /* GovNews Insights trial skin: lighter portal chrome and image-forward cards. */
+  /* Civic Dashboard skin: public portal chrome with top and side navigation. */
   :root {
-    --page-bg: #f9f9fe;
-    --app-bg: #f9f9fe;
+    --page-bg: #fffaf0;
+    --app-bg: #fffef9;
     --panel: #ffffff;
-    --panel-soft: #f4f3f8;
-    --text: #1a1c1f;
-    --muted: #43474f;
-    --line: #c3c6d1;
-    --accent: #005cba;
-    --accent-soft: #d7e3ff;
-    --accent-strong: #003366;
-    --surface: #f9f9fe;
-    --surface-container-low: #f4f3f8;
-    --surface-container-high: #e8e8ed;
-    --surface-container-highest: #e2e2e7;
-    --outline: #737780;
-    --outline-variant: #c3c6d1;
+    --panel-soft: #fff3cf;
+    --text: #263238;
+    --muted: #65727a;
+    --line: #e7ddc8;
+    --accent: #e7bd52;
+    --accent-soft: #fff3cf;
+    --accent-strong: #735b12;
+    --surface: #fffef9;
+    --surface-container-low: #fffaf0;
+    --surface-container-high: #fff3cf;
+    --surface-container-highest: #ebddad;
+    --outline: #69757c;
+    --outline-variant: #e7ddc8;
+    --error: #a84a34;
     --shadow: none;
     --shadow-soft: none;
   }
   body {
+    margin: 0;
+    padding: 0;
     background: var(--surface-container-low);
     color: var(--text);
     font-family: "Public Sans", "Noto Sans KR", sans-serif;
+    font-size: 16.5px;
+    line-height: 1.62;
   }
-  .shell {
-    padding-top: 80px;
-    background: var(--surface-container-low);
+  html {
+    scroll-padding-top: 96px;
   }
   .topbar {
-    min-height: 64px;
-    border-bottom: 1px solid #d1d5db;
+    position: fixed;
+    inset: 0 0 auto 0;
+    z-index: 60;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    height: 72px;
+    min-height: 72px;
+    margin: 0;
+    padding: 0 18px;
+    border-bottom: 1px solid var(--outline-variant);
     background: rgba(255, 255, 255, 0.98);
     color: var(--text);
     box-shadow: none;
+    backdrop-filter: none;
   }
   .brand {
+    display: grid;
+    grid-template-columns: 40px minmax(0, 1fr);
+    align-items: center;
+    column-gap: 12px;
+    flex: 0 1 320px;
+    min-width: 0;
+    max-width: min(58vw, 360px);
     color: var(--accent-strong);
   }
   .brand-logo {
+    width: 44px;
     background: var(--surface-container-low);
     box-shadow: 0 0 0 1px var(--outline-variant);
   }
   .brand-title {
     color: var(--accent-strong);
     font-weight: 900;
+    font-size: 1.28rem;
   }
   .brand-sub,
   .header-side span {
     color: var(--muted);
   }
+  .header-side span {
+    font-size: 0.82rem;
+  }
+  .brand-sub {
+    font-size: 0.82rem;
+    line-height: 1.35;
+  }
+  .top-nav {
+    display: none;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 4px;
+    margin-left: auto;
+    min-width: 0;
+    flex: 1 1 auto;
+    height: 100%;
+  }
+  .top-nav-link {
+    display: inline-flex;
+    align-items: center;
+    height: 100%;
+    padding: 0 10px;
+    border-bottom: 2px solid transparent;
+    color: #4d565f;
+    font-size: 0.96rem;
+    font-weight: 800;
+    white-space: nowrap;
+  }
+  .top-nav-link:hover {
+    color: var(--accent-strong);
+    background: var(--surface-container-low);
+  }
+  .top-nav-link.active {
+    border-bottom-color: var(--accent);
+    color: var(--accent-strong);
+  }
+  .app-layout {
+    min-height: 100vh;
+    padding-top: 72px;
+    background: var(--surface-container-low);
+  }
+  .shell {
+    max-width: none;
+    width: 100%;
+    min-height: calc(100vh - 72px);
+    margin: 0;
+    padding: 20px 14px 104px;
+    border: 0;
+    background: var(--surface-container-low);
+    box-shadow: none;
+  }
+  .side-nav {
+    display: none;
+  }
+  .topbar-side {
+    gap: 10px;
+    margin-left: 0;
+  }
   .header-side strong {
     color: var(--accent-strong);
+    font-size: 0.96rem;
+  }
+  .admin-entry {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    min-height: 34px;
+    padding: 0 12px;
+    border: 1px solid var(--outline-variant);
+    border-radius: 4px;
+    background: var(--surface);
+    color: var(--accent-strong);
+    font: inherit;
+    font-size: 0.88rem;
+    font-weight: 800;
+    cursor: pointer;
+  }
+  .admin-entry:hover {
+    border-color: var(--accent);
+    color: var(--accent-strong);
+  }
+  body.is-admin-authorized .admin-entry {
+    border-color: var(--accent-strong);
+    background: var(--accent-strong);
+    color: #ffffff;
+  }
+  .admin-login-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 95;
+    display: grid;
+    place-items: center;
+    padding: 18px;
+    background: rgba(26, 28, 31, 0.42);
+  }
+  .admin-login-dialog {
+    width: min(100%, 440px);
+    display: grid;
+    gap: 16px;
+    padding: 24px;
+    border: 1px solid var(--outline-variant);
+    border-radius: 8px;
+    background: #ffffff;
+    box-shadow: 0 18px 44px rgba(26, 28, 31, 0.18);
+  }
+  .admin-login-head {
+    display: flex;
+    align-items: start;
+    justify-content: space-between;
+    gap: 16px;
+  }
+  .admin-login-head h2 {
+    margin: 0;
+    color: var(--accent-strong);
+    font-size: 1.2rem;
+  }
+  .admin-login-head p,
+  .admin-login-warning,
+  .admin-login-feedback {
+    margin: 0;
+    color: var(--muted);
+    font-size: 0.86rem;
+    line-height: 1.55;
+  }
+  .admin-login-close {
+    border: 0;
+    background: transparent;
+    color: var(--outline);
+    font: inherit;
+    font-size: 1.2rem;
+    cursor: pointer;
+  }
+  .admin-login-form {
+    display: grid;
+    gap: 12px;
+  }
+  .admin-login-form label {
+    display: grid;
+    gap: 7px;
+    color: var(--accent-strong);
+    font-size: 0.8rem;
+    font-weight: 900;
+  }
+  .admin-login-input {
+    width: 100%;
+    min-height: 44px;
+    padding: 10px 12px;
+    border: 1px solid var(--outline-variant);
+    border-radius: 4px;
+    background: var(--surface);
+    color: var(--text);
+    font: inherit;
+  }
+  .admin-login-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .admin-login-feedback.error {
+    color: var(--error);
   }
   .guide-link {
     border-radius: 4px;
     border-color: var(--outline-variant);
     background: var(--surface);
-    color: var(--accent);
+    color: var(--accent-strong);
+    font-size: 0.88rem;
   }
   .guide-link:hover,
   .guide-link.active {
     border-color: var(--accent);
-    background: var(--accent);
+    background: var(--accent-strong);
     color: #ffffff;
   }
   .hero-card,
@@ -3180,10 +3497,13 @@ BASE_CSS = """
   .eyebrow {
     border-radius: 4px;
     background: var(--surface-container-highest);
-    color: var(--accent);
-    font-size: 0.75rem;
+    color: var(--accent-strong);
+    font-size: 0.86rem;
     letter-spacing: 0;
     text-transform: none;
+  }
+  .page-intro-title {
+    color: var(--accent-strong);
   }
   .page-intro-copy,
   .hero-copy,
@@ -3217,9 +3537,9 @@ BASE_CSS = """
   }
   .filter-group-label {
     color: var(--accent-strong);
-    font-size: 0.74rem;
+    font-size: 0.9rem;
     letter-spacing: 0;
-    text-transform: uppercase;
+    text-transform: none;
   }
   .filter-button,
   .date-input-wrap,
@@ -3233,6 +3553,18 @@ BASE_CSS = """
     border-color: var(--outline-variant);
     background: var(--surface);
     box-shadow: none;
+  }
+  .filter-button {
+    min-height: 44px;
+    padding: 10px 16px;
+    font-size: 0.98rem;
+    line-height: 1.35;
+  }
+  .button,
+  .action-button {
+    min-height: 42px;
+    font-size: 0.98rem;
+    line-height: 1.35;
   }
   .filter-button.active,
   .button.primary,
@@ -3264,6 +3596,28 @@ BASE_CSS = """
   }
   .article-card::before {
     display: none;
+  }
+  .article-card::after {
+    content: "";
+    position: absolute;
+    right: 14px;
+    bottom: 14px;
+    z-index: 0;
+    width: 58px;
+    height: 58px;
+    pointer-events: none;
+    opacity: 0.12;
+    background:
+      radial-gradient(ellipse at 50% 16%, #fff3cf 0 15%, transparent 16%),
+      radial-gradient(ellipse at 84% 45%, #fff3cf 0 15%, transparent 16%),
+      radial-gradient(ellipse at 68% 86%, #fff3cf 0 15%, transparent 16%),
+      radial-gradient(ellipse at 30% 84%, #fff3cf 0 15%, transparent 16%),
+      radial-gradient(ellipse at 16% 43%, #fff3cf 0 15%, transparent 16%),
+      radial-gradient(circle at 50% 51%, #f2c66d 0 9%, transparent 10%);
+    transform: rotate(-12deg);
+  }
+  .article-card.no-media::after {
+    opacity: 0.18;
   }
   .article-card > * {
     position: relative;
@@ -3301,13 +3655,13 @@ BASE_CSS = """
   .badge {
     padding: 5px 8px;
     border-radius: 4px;
-    font-size: 0.68rem;
+    font-size: 0.78rem;
     letter-spacing: 0;
     text-transform: none;
   }
   .meta-pill.primary {
     background: transparent;
-    color: var(--accent);
+    color: var(--accent-strong);
     padding-left: 0;
     padding-right: 0;
     font-weight: 900;
@@ -3315,7 +3669,7 @@ BASE_CSS = """
   .article-byline {
     gap: 8px;
     color: var(--outline);
-    font-size: 0.8rem;
+    font-size: 0.9rem;
   }
   .publisher-icon {
     width: 18px;
@@ -3325,7 +3679,7 @@ BASE_CSS = """
   .article-card h3 {
     margin-top: 10px;
     color: var(--accent-strong);
-    font-size: 1.12rem;
+    font-size: 1.2rem;
     line-height: 1.42;
   }
   .badge-row {
@@ -3341,7 +3695,7 @@ BASE_CSS = """
     overflow: hidden;
     margin-top: 10px;
     color: var(--muted);
-    font-size: 0.94rem;
+    font-size: 1rem;
     line-height: 1.6;
     white-space: normal;
     -webkit-line-clamp: 3;
@@ -3369,7 +3723,7 @@ BASE_CSS = """
   }
   .article-card.no-media h3 {
     margin-top: 12px;
-    font-size: 1.16rem;
+    font-size: 1.24rem;
   }
   .article-card.no-media .article-summary {
     -webkit-line-clamp: 4;
@@ -3382,11 +3736,14 @@ BASE_CSS = """
   }
   .action-button,
   .mini-link {
-    color: var(--accent);
+    color: var(--accent-strong);
   }
   .home-briefing-grid {
     gap: 20px;
     margin-top: 0;
+  }
+  .civic-hero {
+    display: block;
   }
   .home-briefing-card {
     gap: 16px;
@@ -3408,35 +3765,81 @@ BASE_CSS = """
   }
   .home-briefing-card.lead-arch .home-briefing-date,
   .home-briefing-date {
-    color: var(--accent);
-    font-size: 0.75rem;
+    color: var(--accent-strong);
+    font-size: 0.9rem;
+    font-weight: 900;
     letter-spacing: 0;
     text-transform: none;
   }
   .home-briefing-card.lead-arch .home-briefing-title,
   .home-briefing-title {
     color: var(--accent-strong);
-    font-size: clamp(2rem, 1.72rem + 1vw, 2.5rem);
+    max-width: 13em;
+    font-size: clamp(2.05rem, 1.55rem + 2vw, 3.3rem);
+    line-height: 1.08;
     letter-spacing: 0;
   }
   .home-briefing-card.lead-arch .home-briefing-copy,
   .home-briefing-copy {
     color: var(--muted);
+    font-size: 1.08rem;
+    line-height: 1.78;
   }
   .home-briefing-card.lead-arch.has-media {
-    padding-right: 22px;
+    padding-right: 26px;
+  }
+  .home-briefing-card.lead {
+    align-content: stretch;
+  }
+  .home-briefing-card.lead .home-briefing-content {
+    align-self: stretch;
+    display: flex;
+    flex-direction: column;
+  }
+  .home-briefing-card.lead .hero-actions {
+    margin-top: auto;
+    padding-top: 14px;
+  }
+  .home-briefing-summary {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(128px, 1fr));
+    gap: 10px;
+    margin-top: 4px;
+    padding-top: 2px;
+  }
+  .home-briefing-summary span {
+    display: grid;
+    gap: 4px;
+    min-width: 0;
+    padding: 12px;
+    border: 1px solid var(--outline-variant);
+    border-radius: 4px;
+    background: var(--surface);
+  }
+  .home-briefing-summary strong {
+    color: var(--accent-strong);
+    font-size: 1.22rem;
+    font-weight: 900;
+    line-height: 1.1;
+  }
+  .home-briefing-summary em {
+    color: var(--muted);
+    font-style: normal;
+    font-size: 0.76rem;
+    font-weight: 800;
+    line-height: 1.25;
   }
   .home-briefing-card > .home-illustration-slot {
     position: relative;
     right: auto;
     bottom: auto;
-    width: min(260px, 100%);
-    margin: 0 0 0 auto;
+    width: min(342px, 100%);
+    margin: 8px 0 -10px auto;
     align-self: end;
     justify-self: end;
   }
   .home-illustration-img {
-    filter: none;
+    filter: drop-shadow(0 20px 30px rgba(47, 41, 37, 0.14));
   }
   .home-glance-item,
   .home-keyword-panel,
@@ -3450,20 +3853,185 @@ BASE_CSS = """
   }
   .home-urgent-rank {
     border-radius: 999px;
-    background: #fff5ef;
+    background: #fff3cf;
     color: var(--accent-strong);
+    font-size: 0.92rem;
   }
   .home-support-footer {
     padding: 20px;
+  }
+  .youth-metrics-card {
+    display: grid;
+    gap: 18px;
+    padding: 22px;
+    border: 1px solid var(--outline-variant);
+    border-radius: 8px;
+    background: var(--panel);
+    box-shadow: none;
+  }
+  .youth-metrics-head {
+    display: grid;
+    gap: 8px;
+    margin: 0;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--surface-container-highest);
+  }
+  .youth-metrics-head h2 {
+    margin: 0;
+    color: var(--accent-strong);
+    font-size: 1.5rem;
+    line-height: 1.35;
+    letter-spacing: 0;
+  }
+  .youth-metrics-head p {
+    margin: 0;
+    color: var(--muted);
+    font-size: 1rem;
+    line-height: 1.62;
+  }
+  .youth-metrics-grid {
+    display: grid;
+    gap: 14px;
+    grid-template-columns: 1fr;
+  }
+  .youth-metric-item {
+    min-height: 150px;
+    padding: 18px;
+    border: 1px solid var(--outline-variant);
+    border-radius: 8px;
+    background: var(--surface);
+    box-shadow: none;
+  }
+  .youth-metric-label {
+    color: var(--muted);
+    font-size: 0.92rem;
+    font-weight: 900;
+  }
+  .youth-metric-value {
+    color: var(--accent-strong);
+    font-size: 1.95rem;
+    font-weight: 900;
+    letter-spacing: 0;
+  }
+  .youth-metric-meta {
+    color: var(--muted);
+  }
+  .youth-metric-source {
+    color: var(--accent-strong);
+  }
+  .youth-metrics-note {
+    margin: 0;
+    color: var(--outline);
+  }
+  .civic-flow-card {
+    display: grid;
+    gap: 12px;
+  }
+  .civic-flow-card h2 {
+    margin: 0;
+    color: var(--accent-strong);
+    font-size: 1.2rem;
+    line-height: 1.45;
+  }
+  .civic-flow-card .hero-actions {
+    margin-top: 4px;
+  }
+  .home-maker-grid {
+    display: grid;
+    gap: 18px;
+  }
+  .home-maker-panel {
+    grid-column: 1 / -1;
+  }
+  .home-maker-columns {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 18px;
+  }
+  .home-maker-column {
+    display: grid;
+    gap: 10px;
+    align-content: start;
+  }
+  .home-maker-column h3 {
+    margin: 0;
+    color: var(--accent-strong);
+    font-size: 1.08rem;
+    line-height: 1.45;
+  }
+  .home-maker-column p {
+    margin: 0;
+  }
+  .home-maker-panel .home-support-meta {
+    margin-top: 4px;
+  }
+  .home-top-briefing .home-keyword-panel {
+    display: none;
+  }
+  .home-top-briefing .home-glance-grid {
+    grid-template-columns: 1fr;
+  }
+  .home-top-briefing .home-glance-item {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    min-height: auto;
+    padding: 10px 12px;
+    text-align: left;
+  }
+  .home-top-briefing .home-glance-label {
+    font-size: 0.86rem;
+  }
+  .home-top-briefing .home-glance-value {
+    font-size: 1.24rem;
+    letter-spacing: 0;
+  }
+  .home-top-briefing .home-briefing-tabs {
+    gap: 10px;
+  }
+  .home-top-briefing .home-briefing-tab {
+    min-height: 42px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+  }
+  .home-top-briefing .home-briefing-panel-note {
+    font-size: 0.88rem;
+  }
+  .home-top-briefing .home-urgent-list {
+    max-height: none;
+    overflow: visible;
+  }
+  .home-top-briefing .home-urgent-item {
+    padding: 11px 0;
+  }
+  .home-top-briefing .home-urgent-link {
+    gap: 12px;
+  }
+  .home-top-briefing .home-urgent-text strong {
+    font-size: 0.94rem;
+    line-height: 1.42;
+  }
+  .home-top-briefing .home-urgent-meta {
+    font-size: 0.8rem;
+  }
+  .hero[id],
+  .section[id],
+  .home-briefing-card[id] {
+    scroll-margin-top: 96px;
   }
   @media (min-width: 720px) {
     .article-grid {
       grid-template-columns: repeat(2, minmax(0, 1fr));
     }
+    .youth-metrics-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
   }
   @media (min-width: 980px) {
     .shell {
-      padding: 88px 32px 48px 288px;
+      width: calc(100% - 256px);
+      margin-left: 256px;
+      padding: 32px;
       background: var(--surface-container-low);
     }
     .shell > .hero,
@@ -3478,56 +4046,101 @@ BASE_CSS = """
       margin-right: auto;
     }
     .topbar {
-      padding: 0 24px;
+      padding: 0 32px;
       background: #ffffff;
       color: var(--text);
     }
     .brand {
       max-width: 360px;
     }
+    .top-nav {
+      display: flex;
+    }
+    .admin-entry {
+      display: inline-flex;
+    }
     .nav {
-      top: 0;
+      display: none;
+    }
+    .side-nav {
+      position: fixed;
+      left: 0;
+      top: 72px;
       bottom: 0;
+      z-index: 45;
+      display: flex;
       width: 256px;
-      padding: 96px 12px 24px;
-      border-right: 1px solid #d1d5db;
-      background: #f2f2f2;
+      padding: 22px 12px 18px;
+      border-right: 1px solid var(--outline-variant);
+      background: #fff3cf;
+      flex-direction: column;
+      gap: 18px;
+      overflow-y: auto;
+    }
+    .side-nav-head {
+      display: grid;
+      gap: 4px;
+      padding: 0 12px 14px;
+      border-bottom: 1px solid rgba(115, 119, 128, 0.22);
+    }
+    .side-nav-head strong {
+      color: var(--accent-strong);
+      font-size: 1.08rem;
+      font-weight: 900;
+    }
+    .side-nav-head span,
+    .side-nav-kicker {
+      color: var(--muted);
+      font-size: 0.88rem;
+      line-height: 1.45;
+    }
+    .side-nav-links,
+    .side-nav-admin {
+      display: grid;
       gap: 4px;
     }
-    .nav::before {
-      content: "Navigation\\A청년 모아봄";
-      top: 22px;
-      left: 24px;
-      right: 24px;
-      color: var(--accent-strong);
-      font-size: 0.72rem;
-      font-weight: 900;
-      line-height: 1.55;
-      letter-spacing: 0;
-      white-space: pre;
-      text-transform: uppercase;
-    }
-    .nav a {
-      justify-content: flex-start;
-      padding: 12px 14px;
+    .side-nav-link {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      min-height: 42px;
+      padding: 10px 14px;
       border: 0;
       border-left: 4px solid transparent;
-      border-radius: 0;
       background: transparent;
-      color: #374151;
-      font-size: 0.9rem;
-      font-weight: 700;
-      transition: background 0.16s ease, color 0.16s ease, transform 0.16s ease;
+      color: #4d565f;
+      font: inherit;
+      font-size: 0.96rem;
+      font-weight: 900;
+      letter-spacing: 0;
+      text-align: left;
+      text-transform: none;
     }
-    .nav a:hover {
-      background: #e8e8ed;
+    .side-nav-link:hover {
+      background: #ffffff;
       color: var(--accent-strong);
-      transform: translateX(3px);
     }
-    .nav a.active {
+    .side-nav-link.active {
       border-left-color: var(--accent);
       background: #ffffff;
-      color: var(--accent);
+      color: var(--accent-strong);
+    }
+    .side-nav-admin {
+      margin-top: auto;
+      padding-top: 14px;
+      border-top: 1px solid rgba(115, 119, 128, 0.22);
+    }
+    .side-nav-link.pending {
+      color: #64748b;
+      cursor: not-allowed;
+      opacity: 0.78;
+    }
+    .side-nav-link.pending em {
+      color: var(--outline);
+      font-size: 0.78rem;
+      font-style: normal;
+      font-weight: 800;
     }
     .hero {
       grid-template-columns: minmax(0, 1.35fr) minmax(300px, 0.65fr);
@@ -3593,12 +4206,13 @@ BASE_CSS = """
     }
     body[data-page="index.html"] .home-briefing-grid {
       grid-template-columns: repeat(3, minmax(0, 1fr));
+      grid-template-areas: none;
       gap: 24px;
     }
     body[data-page="index.html"] .home-briefing-card.lead {
       grid-column: span 2;
-      min-height: 340px;
-      grid-template-columns: minmax(0, 1fr) minmax(220px, 0.44fr);
+      min-height: 380px;
+      grid-template-columns: minmax(0, 1fr) minmax(300px, 0.52fr);
       align-items: end;
     }
     body[data-page="index.html"] .home-briefing-card.digest {
@@ -3610,19 +4224,58 @@ BASE_CSS = """
     body[data-page="index.html"] .home-briefing-card.footer {
       grid-column: 1 / -1;
     }
+    body[data-page="index.html"] .civic-hero .home-briefing-grid {
+      grid-template-columns: minmax(0, 1.15fr) minmax(360px, 0.85fr);
+      grid-template-areas: "lead digest";
+    }
+    body[data-page="index.html"] .civic-hero .home-briefing-card.lead {
+      grid-area: lead;
+      grid-column: auto;
+      grid-row: auto;
+      align-items: end;
+    }
+    body[data-page="index.html"] .home-briefing-card.lead .home-illustration-slot {
+      width: min(360px, 100%);
+    }
+    body[data-page="index.html"] .civic-hero .home-briefing-card.digest {
+      grid-area: digest;
+      grid-column: auto;
+      grid-row: auto;
+    }
+    .youth-metrics-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+    .home-maker-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
     .filter-stack {
       grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .news-filter-panel .filter-stack {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .news-filter-panel .filter-group.wide {
+      grid-column: 1 / -1;
     }
   }
   @media (max-width: 720px) {
     .shell {
-      padding-top: 76px;
+      padding-top: 18px;
       background: var(--surface-container-low);
     }
     .topbar {
-      min-height: 64px;
+      min-height: 68px;
+      padding: 8px 14px;
       background: #ffffff;
       color: var(--text);
+    }
+    .topbar-side {
+      gap: 8px;
+    }
+    .top-nav,
+    .side-nav,
+    .admin-entry {
+      display: none;
     }
     .brand-logo {
       width: 38px;
@@ -3657,6 +4310,26 @@ BASE_CSS = """
     .home-briefing-card {
       padding: 18px;
     }
+    .home-briefing-title {
+      font-size: clamp(1.9rem, 1.2rem + 8vw, 2.75rem);
+    }
+    .home-briefing-summary {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 8px;
+    }
+    .home-briefing-summary span {
+      padding: 10px 8px;
+    }
+    .home-briefing-summary strong {
+      font-size: 1.04rem;
+    }
+    .home-briefing-summary em {
+      font-size: 0.68rem;
+    }
+    .home-briefing-card > .home-illustration-slot {
+      width: min(224px, 58vw);
+      margin: 4px 0 -6px auto;
+    }
   }
 """
 
@@ -3674,26 +4347,33 @@ PAGE_TEMPLATE = """<!doctype html>
   <style>{styles}</style>
 </head>
 <body data-page="{active_page}">
-  <div class="shell">
-    <header class="topbar">
-<a class="brand" href="index.html" aria-label="청년 모아봄 홈으로 이동">
-        <img class="brand-logo" src="{brand_mark_src}" alt="">
-        <div class="brand-copy">
-          <span class="brand-title">청년 모아봄</span>
-          <span class="brand-sub">오늘의 청년 정책과 이슈를 모아봅니다</span>
-        </div>
-      </a>
-      <div class="topbar-side">
-        {guide_link}
-        {header_meta}
-        <nav class="nav">{nav}</nav>
+  <header class="topbar">
+    <a class="brand" href="index.html" aria-label="청년 모아봄 홈으로 이동">
+      <img class="brand-logo" src="{brand_mark_src}" alt="">
+      <div class="brand-copy">
+        <span class="brand-title">청년 모아봄</span>
+        <span class="brand-sub">오늘의 청년 정책과 이슈를 모아봅니다</span>
       </div>
-    </header>
+    </a>
+    <nav class="top-nav" aria-label="주요 메뉴">{top_nav}</nav>
+    <div class="topbar-side">
+      {guide_link}
+      {header_meta}
+      {admin_entry}
+    </div>
+  </header>
+  <div class="app-layout">
+    <aside class="side-nav" aria-label="섹터와 업무 탐색">
+      {side_nav}
+    </aside>
+    <div class="shell">
     {content}
     <footer class="footer-note">{footer_note}</footer>
+    </div>
   </div>
   <nav class="bottom-nav" style="--bottom-nav-count: {bottom_nav_count};">{bottom_nav}</nav>
   {guide_overlay}
+  {admin_login_overlay}
   <script>{script}</script>
 </body>
 </html>
@@ -4206,6 +4886,27 @@ BASE_SCRIPT = """
       return;
     }
 
+    const homeBriefingTab = event.target.closest('[data-home-briefing-tab]');
+    if (homeBriefingTab) {
+      event.preventDefault();
+      const root = homeBriefingTab.closest('[data-home-briefing-tabs]');
+      const target = homeBriefingTab.getAttribute('data-home-briefing-tab') || '';
+      if (root && target) {
+        root.querySelectorAll('[data-home-briefing-tab]').forEach((tab) => {
+          const isActive = tab === homeBriefingTab;
+          tab.classList.toggle('active', isActive);
+          tab.setAttribute('aria-selected', isActive ? 'true' : 'false');
+          tab.tabIndex = isActive ? 0 : -1;
+        });
+        root.querySelectorAll('[data-home-briefing-panel]').forEach((panel) => {
+          const isActive = panel.getAttribute('data-home-briefing-panel') === target;
+          panel.hidden = !isActive;
+          panel.classList.toggle('active', isActive);
+        });
+      }
+      return;
+    }
+
     const guideOpenLink = event.target.closest('[data-guide-open-link]');
     if (guideOpenLink) {
       markGuideSeen();
@@ -4481,30 +5182,270 @@ def build_analytics_script() -> str:
 """
 
 
+def build_admin_access_script() -> str:
+    allowed_hashes = json.dumps(PUBLIC_ADMIN_ACCOUNT_HASHES, ensure_ascii=False)
+    return f"""
+(() => {{
+  const allowedHashes = new Set({allowed_hashes});
+  const storageKey = "youthMoabomAdminAccount-v1";
+  const overlay = document.querySelector("[data-admin-login-overlay]");
+  if (!overlay) {{
+    return;
+  }}
+  const form = overlay.querySelector("[data-admin-login-form]");
+  const input = overlay.querySelector("[data-admin-account-input]");
+  const feedback = overlay.querySelector("[data-admin-login-feedback]");
+  const logoutButtons = document.querySelectorAll("[data-admin-logout]");
+
+  function normalizeAccount(value) {{
+    return String(value || "").trim().replace(/\\s+/g, " ").toLocaleLowerCase();
+  }}
+
+  async function hashAccount(account) {{
+    if (!window.crypto || !window.crypto.subtle || !window.TextEncoder) {{
+      throw new Error("crypto_unavailable");
+    }}
+    const digest = await window.crypto.subtle.digest("SHA-256", new TextEncoder().encode(normalizeAccount(account)));
+    return Array.from(new Uint8Array(digest)).map((byte) => byte.toString(16).padStart(2, "0")).join("");
+  }}
+
+  function setFeedback(message, isError) {{
+    if (!feedback) {{
+      return;
+    }}
+    feedback.textContent = message || "";
+    feedback.classList.toggle("error", Boolean(isError));
+  }}
+
+  function setAuthorized(account) {{
+    const isAuthorized = Boolean(account);
+    document.body.classList.toggle("is-admin-authorized", isAuthorized);
+    document.querySelectorAll("[data-admin-only]").forEach((element) => {{
+      element.hidden = !isAuthorized;
+    }});
+    document.querySelectorAll("[data-admin-entry-label]").forEach((label) => {{
+      label.textContent = isAuthorized ? "관리 모드" : "관리 로그인";
+    }});
+    document.querySelectorAll("[data-admin-logout]").forEach((button) => {{
+      button.hidden = !isAuthorized;
+    }});
+  }}
+
+  function openDialog() {{
+    overlay.hidden = false;
+    setFeedback(allowedHashes.size ? "" : "허용 계정이 아직 설정되지 않았습니다.", !allowedHashes.size);
+    window.setTimeout(() => {{
+      if (input) {{
+        input.focus();
+      }}
+    }}, 0);
+  }}
+
+  function closeDialog() {{
+    overlay.hidden = true;
+  }}
+
+  async function verifyAccount(account) {{
+    if (!allowedHashes.size || !account) {{
+      return false;
+    }}
+    const accountHash = await hashAccount(account);
+    return allowedHashes.has(accountHash);
+  }}
+
+  document.addEventListener("click", (event) => {{
+    const openButton = event.target.closest("[data-admin-login-open]");
+    if (openButton) {{
+      event.preventDefault();
+      openDialog();
+      return;
+    }}
+
+    if (event.target.closest("[data-admin-login-close]") || event.target === overlay) {{
+      event.preventDefault();
+      closeDialog();
+      return;
+    }}
+
+    if (event.target.closest("[data-admin-logout]")) {{
+      event.preventDefault();
+      try {{
+        localStorage.removeItem(storageKey);
+      }} catch (error) {{
+        // ignore storage errors
+      }}
+      setAuthorized("");
+      setFeedback("관리 표시 모드를 해제했습니다.", false);
+      closeDialog();
+    }}
+  }});
+
+  document.addEventListener("keydown", (event) => {{
+    if (event.key === "Escape" && !overlay.hidden) {{
+      closeDialog();
+    }}
+  }});
+
+  if (form) {{
+    form.addEventListener("submit", async (event) => {{
+      event.preventDefault();
+      const account = input ? normalizeAccount(input.value) : "";
+      if (!allowedHashes.size) {{
+        setFeedback("허용 계정이 설정되지 않았습니다. 배포 환경변수나 로컬 설정 파일을 확인해 주세요.", true);
+        return;
+      }}
+      if (!account) {{
+        setFeedback("계정을 입력해 주세요.", true);
+        return;
+      }}
+      try {{
+        const isAllowed = await verifyAccount(account);
+        if (!isAllowed) {{
+          try {{
+            localStorage.removeItem(storageKey);
+          }} catch (error) {{
+            // ignore storage errors
+          }}
+          setAuthorized("");
+          setFeedback("허용된 계정이 아닙니다.", true);
+          return;
+        }}
+        try {{
+          localStorage.setItem(storageKey, account);
+        }} catch (error) {{
+          // ignore storage errors
+        }}
+        setAuthorized(account);
+        setFeedback("관리 예정 메뉴를 표시했습니다.", false);
+        window.setTimeout(closeDialog, 450);
+      }} catch (error) {{
+        setFeedback("이 브라우저에서 임시 로그인 확인을 사용할 수 없습니다.", true);
+      }}
+    }});
+  }}
+
+  try {{
+    const savedAccount = localStorage.getItem(storageKey);
+    if (savedAccount) {{
+      verifyAccount(savedAccount).then((isAllowed) => {{
+        if (isAllowed) {{
+          setAuthorized(savedAccount);
+        }} else {{
+          localStorage.removeItem(storageKey);
+          setAuthorized("");
+        }}
+      }}).catch(() => setAuthorized(""));
+    }} else {{
+      setAuthorized("");
+    }}
+  }} catch (error) {{
+    setAuthorized("");
+  }}
+}})();
+"""
+
+
 def build_page_script() -> str:
-    return "\n".join((BASE_SCRIPT, build_analytics_script()))
+    return "\n".join((BASE_SCRIPT, build_admin_access_script(), build_analytics_script()))
 
 
-NAV_ITEMS = [
-    ("index.html", "홈"),
+TOP_NAV_ITEMS = [
+    ("index.html", "오늘"),
     ("news.html", "뉴스"),
     ("election.html", "선거·공약"),
     ("policies.html", "정책"),
+    ("plans.html", "정책계획"),
     ("hub.html", "참여·회의"),
-    ("tools.html", "자료도구"),
-    ("contact.html", "제보·문의"),
+    ("tools.html", "자료·도구"),
 ]
 
 
+NAV_ITEMS = TOP_NAV_ITEMS
+
+
+CREATOR_CONTACT_URL = "https://litt.ly/spectac1e"
+CREATOR_CONTACT_LABEL = "제작자 연락 채널"
+
+
 NAV_ICONS = {
-    "index.html": "홈",
-    "news.html": "뉴",
-    "election.html": "선",
-    "policies.html": "정",
-    "hub.html": "참",
-    "tools.html": "자",
-    "contact.html": "문",
+    "index.html": "오늘",
+    "news.html": "뉴스",
+    "election.html": "선거",
+    "policies.html": "정책",
+    "plans.html": "계획",
+    "hub.html": "참여",
+    "tools.html": "도구",
+    "contact.html": "문의",
 }
+
+
+SIDE_NAV_CONFIG = {
+    "index.html": {
+        "title": "오늘의 운영",
+        "description": "청년 모아봄 첫 화면",
+        "items": [
+            ("#overview", "개요"),
+            ("#today-briefing", "오늘 브리핑"),
+            ("#youth-metrics", "청년 주요 지표"),
+            ("#about-info", "제작자·안내"),
+        ],
+    },
+    "news.html": {
+        "title": "뉴스 탐색",
+        "description": "최근 청년 뉴스",
+        "items": [("#filters", "필터"), ("#main-list", "주요 목록"), ("policies.html", "관련 메뉴")],
+    },
+    "election.html": {
+        "title": "선거·공약 탐색",
+        "description": "청년 공약 흐름",
+        "items": [("#filters", "필터"), ("#main-list", "주요 목록"), ("news.html", "관련 메뉴")],
+    },
+    "policies.html": {
+        "title": "정책 탐색",
+        "description": "공식 발표와 참고 기사",
+        "items": [("#filters", "필터"), ("#main-list", "주요 목록"), ("plans.html", "정책계획")],
+    },
+    "plans.html": {
+        "title": "정책계획",
+        "description": "기본계획과 시행계획",
+        "items": [
+            ("#overview", "개요"),
+            ("#main-list", "수집 대상"),
+            ("#record-schema", "기록 항목"),
+            ("policies.html", "정책 발표"),
+        ],
+    },
+    "hub.html": {
+        "title": "참여·회의 탐색",
+        "description": "자문·위원회·네트워크",
+        "items": [("#filters", "필터"), ("#main-list", "주요 목록"), ("policies.html", "관련 메뉴")],
+    },
+    "tools.html": {
+        "title": "자료·도구",
+        "description": "운영과 검토 도구",
+        "items": [("#main-list", "주요 목록"), ("guide.html", "이용 안내"), ("index.html#about-info", "연락 채널")],
+    },
+    "contact.html": {
+        "title": "제보·문의",
+        "description": "운영 문의와 협업",
+        "items": [("#main-list", "기본 정보"), ("#ops", "운영 문의"), ("#review", "검토 요청")],
+    },
+    "guide.html": {
+        "title": "이용 안내",
+        "description": "메뉴와 갱신 기준",
+        "items": [("#main-list", "메뉴 안내"), ("index.html", "오늘"), ("index.html#about-info", "연락 채널")],
+    },
+}
+
+
+ADMIN_NAV_PLACEHOLDERS = [
+    "운영 대시보드",
+    "기사 큐레이션",
+    "수집 상태",
+    "배포 상태",
+    "문의 관리",
+    "설정",
+]
 
 
 def nav_label(active_page: str) -> str:
@@ -4520,12 +5461,81 @@ def render_guide_link(active_page: str) -> str:
     return f'<a class="guide-link{active}" href="guide.html" data-guide-open-link="true"{current}>이용방법</a>'
 
 
-def render_nav(active_page: str) -> str:
+def render_top_nav(active_page: str) -> str:
     items = []
-    for href, label in NAV_ITEMS:
+    for href, label in TOP_NAV_ITEMS:
         active = "active" if href == active_page else ""
-        items.append(f'<a class="{active}" href="{href}">{html.escape(label)}</a>')
+        current = ' aria-current="page"' if active else ""
+        items.append(f'<a class="top-nav-link {active}" href="{href}"{current}>{html.escape(label)}</a>')
     return "".join(items)
+
+
+def render_admin_entry() -> str:
+    return (
+        '<button class="admin-entry" type="button" data-admin-login-open="true" '
+        'title="임시 관리자 표시 모드 열기">'
+        '<span data-admin-entry-label>관리 로그인</span></button>'
+    )
+
+
+def render_side_nav(active_page: str) -> str:
+    config = SIDE_NAV_CONFIG.get(active_page, SIDE_NAV_CONFIG["news.html"])
+    links: list[str] = []
+    for index, (href, label) in enumerate(config["items"]):
+        active = "active" if index == 0 else ""
+        links.append(f'<a class="side-nav-link {active}" href="{html.escape(href)}">{html.escape(label)}</a>')
+
+    admin_items = "".join(
+        f'<button class="side-nav-link pending" type="button" disabled aria-disabled="true">'
+        f'<span>{html.escape(label)}</span><em>예정</em></button>'
+        for label in ADMIN_NAV_PLACEHOLDERS
+    )
+    return f"""
+      <div class="side-nav-head">
+        <strong>{html.escape(config["title"])}</strong>
+        <span>{html.escape(config["description"])}</span>
+      </div>
+      <nav class="side-nav-links" aria-label="현재 페이지 탐색">
+        {''.join(links)}
+      </nav>
+      <div class="side-nav-admin" data-admin-only="true" hidden>
+        <span class="side-nav-kicker">관리 예정</span>
+        {admin_items}
+      </div>
+    """
+
+
+def render_admin_login_overlay() -> str:
+    configured_note = (
+        "허용된 계정을 입력하면 이 브라우저에서 관리 예정 메뉴가 표시됩니다."
+        if PUBLIC_ADMIN_ACCOUNT_HASHES
+        else "아직 허용 계정이 설정되지 않았습니다. 로컬 설정 또는 배포 환경변수에 계정을 추가해야 합니다."
+    )
+    return f"""
+  <div class="admin-login-overlay" data-admin-login-overlay hidden>
+    <section class="admin-login-dialog" role="dialog" aria-modal="true" aria-labelledby="admin-login-title">
+      <div class="admin-login-head">
+        <div>
+          <h2 id="admin-login-title">관리자 임시 로그인</h2>
+          <p>{html.escape(configured_note)}</p>
+        </div>
+        <button class="admin-login-close" type="button" data-admin-login-close="true" aria-label="닫기">×</button>
+      </div>
+      <p class="admin-login-warning">보안 안내: 공개 정적 사이트의 임시 로그인은 실제 권한 보호가 아닙니다. 민감한 관리 작업은 서버 인증이 붙은 운영 콘솔에서만 처리해야 합니다.</p>
+      <form class="admin-login-form" data-admin-login-form="true">
+        <label>
+          계정
+          <input class="admin-login-input" type="text" name="admin_account" autocomplete="username" placeholder="허용된 계정 입력" data-admin-account-input="true">
+        </label>
+        <div class="admin-login-actions">
+          <button class="button primary" type="submit">확인</button>
+          <button class="button" type="button" data-admin-logout="true" hidden>로그아웃</button>
+        </div>
+        <p class="admin-login-feedback" data-admin-login-feedback></p>
+      </form>
+    </section>
+  </div>
+    """
 
 
 def render_bottom_nav(active_page: str) -> str:
@@ -4550,6 +5560,7 @@ def render_guide_overlay(active_page: str) -> str:
       <div class="list">
         <div class="list-item"><strong>홈</strong><span>가장 먼저 볼 기사와 오늘 집계를 한 번에 봅니다.</span></div>
         <div class="list-item"><strong>정책</strong><span>정부 원문 중심의 공식 발표를 확인합니다.</span></div>
+        <div class="list-item"><strong>정책계획</strong><span>기본계획과 시행계획을 따로 모아 기준 문서로 확인합니다.</span></div>
         <div class="list-item"><strong>선거·공약</strong><span>지방선거 시기에는 청년 공약과 선거 기사를 따로 모아 봅니다.</span></div>
         <div class="list-item"><strong>참여·회의</strong><span>정부 회의와 지역 네트워크 움직임을 나눠서 봅니다.</span></div>
       </div>
@@ -4948,7 +5959,13 @@ def render_card_illustration(
     )
 
 
-def render_compact_intro(kicker: str, description: str, media_key: str | None = None) -> str:
+def render_compact_intro(
+    kicker: str,
+    description: str,
+    media_key: str | None = None,
+    *,
+    title: str = "",
+) -> str:
     media_config = PAGE_INTRO_ILLUSTRATIONS.get(media_key) if media_key else None
     media_html = render_card_illustration(
         media_config,
@@ -4956,12 +5973,14 @@ def render_compact_intro(kicker: str, description: str, media_key: str | None = 
         img_class="page-intro-media-img",
     )
     media_class = " has-media" if media_html else ""
+    title_html = f'<h1 class="page-intro-title">{html.escape(title)}</h1>' if title else ""
     return f"""
     <article class="page-intro-card{media_class}" data-media-host="page-intro">
       <div class="page-intro-content">
         <div class="page-intro-top">
           <span class="page-intro-badge">{html.escape(kicker)}</span>
         </div>
+        {title_html}
         <p class="page-intro-copy">{html.escape(description)}</p>
       </div>
       {media_html}
@@ -5427,7 +6446,7 @@ def render_policy_filter_panel(official_policies: list[dict], reference_policies
     date_input_attrs_text = " ".join(date_input_attrs)
 
     return f"""
-    <section class="section">
+    <section class="section" id="filters">
       <article class="section-card filter-panel">
         <div class="filter-head">
           <h3>구분 · 세부 · 유형 · 검색 · 기간</h3>
@@ -5543,7 +6562,7 @@ def render_hub_filter_panel(
     date_input_attrs_text = " ".join(date_input_attrs)
 
     return f"""
-    <section class="section">
+    <section class="section" id="filters">
       <article class="section-card filter-panel">
         <div class="filter-head">
           <h3>구분 · 세부 · 활동 · 검색 · 기간</h3>
@@ -5673,18 +6692,18 @@ def render_news_filter_panel(regions: list[str], topics: list[str], dates: list[
     date_input_attrs_text = " ".join(date_input_attrs)
 
     return f"""
-    <section class="section">
-      <article class="section-card filter-panel">
+    <section class="section" id="filters">
+      <article class="section-card filter-panel news-filter-panel">
         <div class="filter-head">
           <h3>지역 · 검색 · 날짜별로 보기</h3>
           <p>지역은 바로 누르고, 검색어와 날짜를 함께 써서 필요한 기사만 빠르게 찾을 수 있습니다.</p>
         </div>
         <div class="filter-stack">
-          <div class="filter-group">
+          <div class="filter-group wide">
             <span class="filter-group-label">지역</span>
             <div class="filter-controls">{''.join(region_buttons)}</div>
           </div>
-          <div class="filter-group">
+          <div class="filter-group wide">
             <span class="filter-group-label">주제</span>
             <div class="filter-controls">{''.join(topic_buttons)}</div>
           </div>
@@ -7087,21 +8106,6 @@ def build_menu_updates(articles: list[dict], classified_articles: list[dict], st
             ],
             "link_label": "도구 보기",
         },
-        {
-            "eyebrow": "05 연락",
-            "title": "운영자 연락하기",
-            "href": "contact.html",
-            "description": "문의, 제보, 협업, 검토 요청 유형을 확인할 수 있습니다.",
-            "article_basis_label": "연락 구조 기준",
-            "article_basis_time": page_updated_at,
-            "page_basis_label": "페이지 반영",
-            "page_basis_time": page_updated_at,
-            "items": [
-                ("운영 문의", "서비스 이용과 오류 관련 문의"),
-                ("제보 / 협업", "유용한 소스와 활동 소식 제보"),
-            ],
-            "link_label": "연락 보기",
-        },
     ]
 
 
@@ -7208,10 +8212,8 @@ def build_home_page(
     latest_news_basis = describe_article_basis(recent_news_articles, f"최근 {NEWS_WINDOW_DAYS}일 기사 없음")
     policy_basis = describe_article_basis(official_policy_articles or policy_articles, "최근 정책 없음")
     lead_message = (
-        "혼자 챙기기엔 너무 많은 하루에도,\n"
-        "청년에게 닿는 정책과 이슈는 놓치지 않도록.\n\n"
-        "오늘 필요한 기사와 흐름을\n"
-        "한곳에 차분히 모아두었습니다.\n\n"
+        "청년에게 닿는 정책과 이슈를 놓치지 않도록,\n"
+        "오늘 필요한 기사와 흐름을 한곳에 모았습니다.\n\n"
         "작은 정보 하나가 오늘의 길잡이가 되기를 바랍니다."
     )
     glance_stats_html = "".join(
@@ -7261,6 +8263,26 @@ def build_home_page(
         '<div class="home-urgent-text"><strong>최근 올라온 청년 뉴스가 아직 없습니다.</strong>'
         '<span class="home-urgent-meta">새 청년 뉴스가 들어오면 이 영역이 먼저 채워집니다.</span></div></div></article>'
     )
+    must_read_policy_articles = sort_articles_by_recency(
+        add_major_policy_watchlist_articles(official_policy_articles or policy_articles)
+    )
+    policy_briefing_html = "".join(
+        render_home_news_item(index, article)
+        for index, article in enumerate(must_read_policy_articles[:HOME_DAILY_LIMIT], start=1)
+    ) or (
+        '<article class="home-urgent-item"><div class="home-urgent-link"><span class="home-urgent-rank">00</span>'
+        '<div class="home-urgent-text"><strong>확인할 정부 정책 발표가 아직 없습니다.</strong>'
+        '<span class="home-urgent-meta">공식 발표나 보도자료가 들어오면 이 영역이 먼저 채워집니다.</span></div></div></article>'
+    )
+    hero_summary_items = [
+        ("오늘 기사", f"{today_total_count}건"),
+        ("최근 표시", f"{min(len(today_articles), HOME_DAILY_LIMIT)}개"),
+        ("정책 발표", f"{min(len(must_read_policy_articles), HOME_DAILY_LIMIT)}개"),
+    ]
+    hero_summary_html = "".join(
+        f'<span><strong>{html.escape(value)}</strong><em>{html.escape(label)}</em></span>'
+        for label, value in hero_summary_items
+    )
     def render_home_highlight_card(article: dict | None) -> str:
         if not article:
             return ""
@@ -7306,47 +8328,77 @@ def build_home_page(
     )
     home_lead_class = " has-media" if home_lead_media else ""
     return f"""
-    <section class="hero home-hero">
+    <section class="hero home-hero civic-hero" id="overview">
       <div class="home-briefing-grid">
         <article class="home-briefing-card lead lead-arch{home_lead_class}" data-media-host="home-lead">
           <div class="home-briefing-content">
             <span class="home-briefing-date">{html.escape(home_date_label)}</span>
-            <h1 class="home-briefing-title"><span class="home-briefing-title-line">청년의 오늘을</span><span class="home-briefing-title-line">모아봅니다.</span></h1>
+            <h1 class="home-briefing-title">청년의 오늘을 모아봅니다.</h1>
             <p class="home-briefing-copy">{html.escape(lead_message)}</p>
+            <div class="home-briefing-summary" aria-label="오늘 운영 요약">{hero_summary_html}</div>
+            <div class="hero-actions">
+              <a class="button primary" href="news.html">뉴스 보기</a>
+              <a class="button" href="#youth-metrics">주요 지표 보기</a>
+            </div>
           </div>
           {home_lead_media}
         </article>
-        <article class="home-briefing-card digest digest-organic">
+        <article class="home-briefing-card digest digest-organic home-top-briefing" id="today-briefing">
           <div class="home-briefing-head">
+            <span class="home-briefing-date">오늘 브리핑</span>
             <h2>오늘 한눈에 보기</h2>
-            <p>오늘 날짜로 올라온 기사 수와 최근 48시간 많이 잡힌 카테고리를 함께 봅니다.</p>
+            <p>최신 기사와 꼭 봐야 하는 정부 정책 발표를 나눠 봅니다.</p>
           </div>
           <div class="home-glance-grid">{glance_stats_html}{home_categories_html}</div>
           <div class="home-briefing-divider"></div>
-          <div class="home-briefing-subhead">
-            <h3>최근 올라온 청년 뉴스 5개</h3>
-            <p>기본 필터를 통과한 청년 기사 중 게시시각이 최신인 순서입니다.</p>
+          <div class="home-briefing-tabs" data-home-briefing-tabs>
+            <div class="home-briefing-tablist" role="tablist" aria-label="오늘 브리핑 전환">
+              <button class="home-briefing-tab active" id="home-briefing-tab-latest" type="button" role="tab" aria-selected="true" aria-controls="home-briefing-panel-latest" data-home-briefing-tab="latest">가장 최근에 나온</button>
+              <button class="home-briefing-tab" id="home-briefing-tab-policy" type="button" role="tab" aria-selected="false" aria-controls="home-briefing-panel-policy" data-home-briefing-tab="policy" tabindex="-1">정부 발표·보도자료</button>
+            </div>
+            <div class="home-briefing-panel active" id="home-briefing-panel-latest" role="tabpanel" aria-labelledby="home-briefing-tab-latest" data-home-briefing-panel="latest">
+              <p class="home-briefing-panel-note">가장 최근에 나온 청년 관련 기사입니다.</p>
+              <div class="home-urgent-list">{today_news_html}</div>
+            </div>
+            <div class="home-briefing-panel" id="home-briefing-panel-policy" role="tabpanel" aria-labelledby="home-briefing-tab-policy" data-home-briefing-panel="policy" hidden>
+              <p class="home-briefing-panel-note">꼭 봐야 하는 정부 정책 발표와 보도자료입니다.</p>
+              <div class="home-urgent-list">{policy_briefing_html}</div>
+            </div>
           </div>
-          <div class="home-urgent-list">{today_news_html}</div>
         </article>
-        {highlight_card_html}
-        <article class="home-briefing-card support support-pill">
-          {render_support_metrics()}
-        </article>
-        <article class="home-briefing-card footer footer-warm">
-          <div class="home-support-footer">
-            <p class="home-support-copy">이 사이트는 무료로 운영됩니다. 청년들을 응원하기 위해 만들어졌습니다.</p>
-            <p class="home-support-copy secondary">기사 한 줄과 정책 한 항목이 필요한 순간에 제때 닿기를 바라는 마음으로, 오늘의 흐름을 조용히 모아두고 있습니다.</p>
-            <div class="home-support-meta">
-              <span>페이지 반영 {format_display_datetime(page_updated_at)}</span>
-              <span>정책 기준 {html.escape(policy_basis)}</span>
-              <span>기사 기준 {html.escape(latest_news_basis)}</span>
-              <span>{status_meta["update_frequency"]}</span>
+      </div>
+    </section>
+    {render_youth_metrics()}
+    <section class="section" id="about-info">
+      <div class="section-head">
+        <div>
+          <h2>제작자와 안내사항</h2>
+          <p>운영 취지와 이용 기준만 간단히 남겼습니다.</p>
+        </div>
+      </div>
+      <div class="home-maker-grid">
+        <article class="section-card civic-flow-card home-maker-panel">
+          <div class="home-maker-columns">
+            <div class="home-maker-column">
+              <span class="eyebrow">제작자</span>
+              <h3>청년에게 필요한 기사와 정책 흐름을 한곳에 모으기 위해 만들었습니다.</h3>
+              <p>무료로 운영하며, 공개 기사와 공식 발표를 보기 쉽게 정리합니다.</p>
             </div>
-            <div class="home-support-links">
-              <a href="guide.html">사이트 소개</a>
-              <a href="contact.html">제보·문의</a>
+            <div class="home-maker-column">
+              <span class="eyebrow">이용 안내</span>
+              <h3>자동 수집과 분류를 거친 공개 정보 모니터입니다.</h3>
+              <p>중요한 결정에는 반드시 원문 링크와 공식 발표를 함께 확인해 주세요.</p>
             </div>
+          </div>
+          <div class="home-support-meta">
+            <span>페이지 반영 {format_display_datetime(page_updated_at)}</span>
+            <span>정책 기준 {html.escape(policy_basis)}</span>
+            <span>기사 기준 {html.escape(latest_news_basis)}</span>
+            <span>{status_meta["update_frequency"]}</span>
+          </div>
+          <div class="hero-actions">
+            <a class="button primary" href="{html.escape(CREATOR_CONTACT_URL, quote=True)}" target="_blank" rel="noopener noreferrer">제작자 연락</a>
+            <a class="button" href="guide.html">사이트 소개</a>
           </div>
         </article>
       </div>
@@ -7363,8 +8415,9 @@ def build_guide_page(status: dict) -> str:
             render_feature_card("뉴스", f"최근 {NEWS_WINDOW_DAYS}일 청년 뉴스를 날짜별로 빠르게 훑어봅니다.", "news.html", "최근 기사"),
             render_feature_card("선거·공약", f"최근 {ELECTION_WINDOW_DAYS}일 선거 기사와 청년 공약 흐름을 일반 뉴스와 분리해 봅니다.", "election.html", "선거 흐름"),
             render_feature_card("정책", "정부 공식 발표와 행정성 높은 참고 기사를 구분해 원문 흐름을 확인합니다.", "policies.html", "공식 발표"),
+            render_feature_card("정책계획", "청년정책 기본계획과 시행계획을 중앙정부·지자체 기준 문서로 모아 봅니다.", "plans.html", "기준 문서"),
             render_feature_card("참여·회의", "정부 회의와 지역 참여·네트워크 움직임을 한데 모아 봅니다.", "hub.html", "참여 흐름"),
-            render_feature_card("자료도구", "자료 찾기, 초안 정리, 제보·문의로 이어지는 실무 동선을 정리했습니다.", "tools.html", "실무 도구"),
+            render_feature_card("자료도구", "자료 찾기와 초안 정리처럼 검토에 필요한 실무 동선을 정리했습니다.", "tools.html", "실무 도구"),
         ]
     )
     update_guide = render_list_block(
@@ -7382,8 +8435,9 @@ def build_guide_page(status: dict) -> str:
         [
             ("1. 홈", "오늘 바로 볼 기사와 집계를 먼저 확인합니다."),
             ("2. 정책", "정부 공식 발표 원문과 정책브리핑을 바로 확인합니다."),
-            ("3. 참여·회의", "위원회, 회의, 네트워크 소식이 이어지는지 살펴봅니다."),
-            ("4. 자료도구·제보", "필요한 자료를 찾거나 운영팀에 제보·문의합니다."),
+            ("3. 정책계획", "기본계획과 시행계획으로 정책의 기준 문서를 확인합니다."),
+            ("4. 참여·회의", "위원회, 회의, 네트워크 소식이 이어지는지 살펴봅니다."),
+            ("5. 자료도구", "필요한 자료를 찾고 초안 정리 흐름을 확인합니다."),
         ],
     )
     return f"""
@@ -7403,12 +8457,13 @@ def build_guide_page(status: dict) -> str:
         <div class="list">
           <div class="list-item"><strong>홈</strong><span>첫 화면에서 오늘 바로 볼 기사와 업데이트 요약을 먼저 확인합니다.</span></div>
           <div class="list-item"><strong>정책</strong><span>정부 공식 발표와 참고 기사 구분이 가장 분명한 메뉴입니다.</span></div>
+          <div class="list-item"><strong>정책계획</strong><span>기본계획과 시행계획처럼 오래 참고할 기준 문서를 모읍니다.</span></div>
           <div class="list-item"><strong>참여·회의</strong><span>위원회, 회의, 지역 네트워크 움직임을 추적할 때 유용합니다.</span></div>
-          <div class="list-item"><strong>제보·문의</strong><span>누락 기사, 협업 제안, 운영 문의를 바로 남길 수 있습니다.</span></div>
+          <div class="list-item"><strong>제작자 연락</strong><span>누락 기사나 협업 제안은 하단의 제작자 연락 채널로 전달할 수 있습니다.</span></div>
         </div>
       </aside>
     </section>
-    <section class="section">
+    <section class="section" id="main-list">
       <div class="section-head">
         <div>
           <h2>메뉴별 안내</h2>
@@ -7436,9 +8491,10 @@ def build_news_page(articles: list[dict], status: dict) -> str:
     region_options = collect_news_regions(recent_news_articles)
     topic_options = collect_news_topics(recent_news_articles)
     page_intro = render_compact_intro(
-        "01 뉴스",
-        "지역과 날짜 기준으로 최근 청년 뉴스를 빠르게 훑고, 선거·공약 성격이 강한 기사는 별도 탭으로 분리했습니다.",
+        "뉴스",
+        "지역, 주제, 검색어, 날짜를 함께 써서 필요한 기사만 빠르게 찾습니다. 선거·공약 성격이 강한 기사는 별도 메뉴로 분리했습니다.",
         media_key="news",
+        title="청년 뉴스",
     )
     news_filter_panel = render_news_filter_panel(region_options, topic_options, date_options, len(recent_news_articles))
     cards_html = "".join(render_article_card(article) for article in recent_news_articles)
@@ -7446,7 +8502,7 @@ def build_news_page(articles: list[dict], status: dict) -> str:
     <div data-news-filter-root="news" data-default-date-start="" data-default-date-end="" data-default-region="all" data-default-topic="all" data-default-search-query="">
       {page_intro}
       {news_filter_panel}
-      <section class="section">
+      <section class="section" id="main-list">
         <div class="article-grid">
           {cards_html or '<article class="info-card" data-news-empty-state="true"><h3>최근 뉴스가 없습니다</h3><p>새 청년 뉴스가 수집되면 이 영역에 표시됩니다.</p></article>'}
         </div>
@@ -7471,8 +8527,9 @@ def build_election_page(articles: list[dict], status: dict) -> str:
     region_options = collect_news_regions(recent_election_articles)
     topic_options = collect_news_topics(recent_election_articles)
     page_intro = render_compact_intro(
-        "02 선거·공약",
-        "지방선거 시기에는 청년 공약과 선거성 기사를 이 탭으로 분리해, 일반 뉴스와 정책 흐름을 더 또렷하게 보이게 했습니다.",
+        "선거·공약",
+        "청년 공약, 후보 동정, 선거성 기사를 일반 뉴스와 분리해서 봅니다. 공약 흐름과 정책 기사를 섞지 않기 위한 메뉴입니다.",
+        title="선거·공약 뉴스",
     )
     election_filter_panel = render_news_filter_panel(region_options, topic_options, date_options, len(recent_election_articles))
     cards_html = "".join(render_article_card(article) for article in recent_election_articles)
@@ -7486,7 +8543,7 @@ def build_election_page(articles: list[dict], status: dict) -> str:
         </article>
       </section>
       {election_filter_panel}
-      <section class="section">
+      <section class="section" id="main-list">
         <div class="article-grid">
           {cards_html or '<article class="info-card" data-news-empty-state="true"><h3>최근 선거·공약 기사가 없습니다</h3><p>청년 관련 선거 기사와 공약 기사가 수집되면 이 영역에 표시됩니다.</p></article>'}
         </div>
@@ -7496,6 +8553,97 @@ def build_election_page(articles: list[dict], status: dict) -> str:
         </article>
       </section>
     </div>
+    """
+
+
+def build_policy_plans_page(status: dict) -> str:
+    page_updated_at = status.get("finished_at") or status.get("updated_at")
+    page_intro = render_compact_intro(
+        "정책계획",
+        "청년정책 기본계획과 시행계획을 뉴스와 분리해 기준 문서로 모아두는 아카이브입니다.",
+        media_key="policies",
+        title="청년정책 기본·시행계획",
+    )
+    overview_cards = "".join(
+        [
+            render_feature_card(
+                "기본계획",
+                "국가와 지자체가 몇 년 단위로 세우는 청년정책의 큰 방향과 과제를 확인합니다.",
+                "#main-list",
+                "중장기 기준",
+            ),
+            render_feature_card(
+                "시행계획",
+                "연도별로 실제 추진 과제와 예산, 담당 부서를 확인할 수 있는 실행 문서입니다.",
+                "#record-schema",
+                "연도별 실행",
+            ),
+            render_feature_card(
+                "원문 아카이브",
+                "PDF, 게시판 원문, 확인일을 함께 남겨 기사와 정책 발표의 기준점으로 씁니다.",
+                "#record-schema",
+                "원문 중심",
+            ),
+        ]
+    )
+    target_groups = [
+        ("국가", "중앙정부", "청년정책 기본계획, 연도별 시행계획, 청년정책조정위원회 기준 문서"),
+        ("광역", "서울", "기본계획·시행계획·청년정책 종합계획"),
+        ("광역", "부산", "기본계획·시행계획·청년정책 종합계획"),
+        ("광역", "대구", "기본계획·시행계획·청년정책 종합계획"),
+        ("광역", "인천", "기본계획·시행계획·청년정책 종합계획"),
+        ("광역", "광주", "기본계획·시행계획·청년정책 종합계획"),
+        ("광역", "대전", "기본계획·시행계획·청년정책 종합계획"),
+        ("광역", "울산", "기본계획·시행계획·청년정책 종합계획"),
+        ("광역", "세종", "기본계획·시행계획·청년정책 종합계획"),
+        ("광역", "경기", "기본계획·시행계획·청년정책 종합계획"),
+        ("광역", "강원", "기본계획·시행계획·청년정책 종합계획"),
+        ("광역", "충북", "기본계획·시행계획·청년정책 종합계획"),
+        ("광역", "충남", "기본계획·시행계획·청년정책 종합계획"),
+        ("광역", "전북", "기본계획·시행계획·청년정책 종합계획"),
+        ("광역", "전남", "기본계획·시행계획·청년정책 종합계획"),
+        ("광역", "경북", "기본계획·시행계획·청년정책 종합계획"),
+        ("광역", "경남", "기본계획·시행계획·청년정책 종합계획"),
+        ("광역", "제주", "기본계획·시행계획·청년정책 종합계획"),
+    ]
+    target_cards = "".join(
+        f"""
+        <article class="section-card">
+          <div class="article-meta">{html.escape(scope)}</div>
+          <h3>{html.escape(name)}</h3>
+          <p>{html.escape(description)}</p>
+          <span class="mini-link" aria-disabled="true">원문 등록 예정</span>
+        </article>
+        """
+        for scope, name, description in target_groups
+    )
+    return f"""
+    {page_intro}
+    <section class="section" id="overview">
+      <div class="section-head">
+        <div>
+          <h2>정책계획을 따로 보는 이유</h2>
+          <p>뉴스는 흐름을 보여주고, 기본계획과 시행계획은 정책의 기준 문서를 보여줍니다.</p>
+        </div>
+      </div>
+      <div class="feature-grid">{overview_cards}</div>
+    </section>
+    <section class="section" id="main-list">
+      <div class="section-head">
+        <div>
+          <h2>수집 대상</h2>
+          <p>1차는 중앙정부와 17개 광역지자체를 기준으로 잡고, 이후 기초지자체를 확인된 곳부터 확장합니다.</p>
+        </div>
+        <span class="mini-link" aria-disabled="true">페이지 반영 {html.escape(format_display_datetime(page_updated_at))}</span>
+      </div>
+      <div class="feature-grid">{target_cards}</div>
+    </section>
+    <section class="section" id="record-schema">
+      {render_list_block("문서별 기록 항목", "정책계획 문서는 아래 항목을 기준으로 정리할 예정입니다.", [("지역·기관", "중앙정부, 광역지자체, 이후 기초지자체까지 구분"), ("문서 유형", "기본계획, 시행계획, 종합계획, 연차별 계획"), ("적용 기간", "예: 2024~2028, 2026년 시행계획처럼 기간과 기준 연도 표시"), ("원문 링크", "PDF, 게시판, 보도자료 원문 링크와 최근 확인일"), ("핵심 키워드", "일자리, 주거, 교육, 복지, 참여, 금융 등 주요 분야 태그")])}
+    </section>
+    <section class="section">
+      {render_list_block("등록 순서", "처음부터 모든 기초지자체까지 넣기보다, 기준 문서부터 안정적으로 쌓습니다.", [("1차", "중앙정부와 17개 광역지자체 기본계획·시행계획"), ("2차", "각 광역지자체의 청년포털·고시공고·보도자료 게시판 원문 연결"), ("3차", "기초지자체 계획은 확인된 지역부터 점진적으로 추가")])}
+    </section>
     """
 
 
@@ -7526,7 +8674,7 @@ def build_policies_page(articles: list[dict], status: dict) -> str:
         </div>
       </aside>
     </section>
-    <section class="section">
+    <section class="section" id="main-list">
       <div class="section-head">
         <div>
           <h2>정부 공식 발표</h2>
@@ -7558,9 +8706,10 @@ def build_policies_page_compact(articles: list[dict], status: dict) -> str:
         if is_local_policy_update(article) and not is_election_promise_article(article)
     ]
     page_intro = render_compact_intro(
-        "03 정책",
-        "중앙정부 정책 자료와 지자체 발표 소식을 나눠 보고, 선거성 기사는 별도 탭으로 분리해 정책 흐름을 더 선명하게 봅니다.",
+        "정책",
+        "중앙정부 정책 자료와 지자체 발표 소식을 나눠 봅니다. 선거성 기사는 별도 메뉴로 분리해 정책 흐름을 더 선명하게 봅니다.",
         media_key="policies",
+        title="정책 발표와 참고 기사",
     )
     official_cards = "".join(
         render_article_card(
@@ -7590,7 +8739,7 @@ def build_policies_page_compact(articles: list[dict], status: dict) -> str:
     <div data-policy-filter-root="policies" data-policy-scope-mode="authority-region" data-default-policy-group="all" data-default-policy-region="all" data-default-policy-scope="all" data-default-policy-type="all" data-default-date-start="" data-default-date-end="" data-default-search-query="">
       {page_intro}
       {policy_filter_panel}
-      <section class="section" id="official-policies" data-policy-section="official">
+      <section class="section" id="main-list" data-policy-section="official">
         <div class="section-head">
           <div>
             <h2>중앙정부 정책 자료</h2>
@@ -7624,9 +8773,10 @@ def build_hub_page(classified_articles: list[dict]) -> str:
     regional_records = filter_hub_articles(classified_articles, "지자체")
     public_records = filter_hub_articles(classified_articles, "공공기관")
     page_intro = render_compact_intro(
-        "04 참여·회의",
+        "참여·회의",
         "뉴스와는 별도로, 중앙부처 자문·회의와 지역 청년정책 네트워크, 공공기관 참여·협의 기록만 구조화해 모았습니다.",
         media_key="hub",
+        title="청년 참여와 회의 기록",
     )
     hub_filter_panel = render_hub_filter_panel(government_records, regional_records, public_records)
     government_cards = "".join(render_hub_record_card(article) for article in government_records)
@@ -7636,7 +8786,7 @@ def build_hub_page(classified_articles: list[dict]) -> str:
     <div data-policy-filter-root="hub" data-policy-scope-mode="hub-detail" data-keep-empty-sections="true" data-default-policy-group="all" data-default-policy-region="all" data-default-policy-scope="all" data-default-policy-type="all" data-default-date-start="" data-default-date-end="" data-default-search-query="">
       {page_intro}
       {hub_filter_panel}
-      <section class="section" data-policy-section="official">
+      <section class="section" id="main-list" data-policy-section="official">
         <div class="section-head">
           <div>
             <h2>{HUB_GROUP_CONFIG["official"]["title"]}</h2>
@@ -7676,9 +8826,10 @@ def build_hub_page(classified_articles: list[dict]) -> str:
 
 def build_tools_page(articles: list[dict], status: dict) -> str:
     page_intro = render_compact_intro(
-        "04 자료도구",
+        "자료·도구",
         "정책 조사와 제안서 초안을 준비할 때 필요한 자료를 짧은 흐름으로 따라볼 수 있습니다.",
         media_key="tools",
+        title="자료와 검토 도구",
     )
     page_updated_at = status.get("updated_at") or status.get("finished_at")
     tools_check_badge = f'<span class="mini-link" aria-disabled="true">자동 확인 {html.escape(format_display_datetime(page_updated_at))}</span>'
@@ -7838,7 +8989,7 @@ def build_tools_page(articles: list[dict], status: dict) -> str:
     )
     return f"""
     {page_intro}
-    <section class="section">
+    <section class="section" id="main-list">
       {render_list_block("빠른 시작", "처음이면 아래 세 단계부터 보면 가장 빠릅니다.", [("정부 원문 확인", "정책브리핑과 부처 자료로 기준점을 먼저 잡기"), ("AI로 질문 정리", "조사 범위와 논점을 짧게 정리하기"), ("검토 요청 준비", "문서 상태와 요청 포인트 적어두기")])}
     </section>
     <section class="section" id="youth-stat-releases">
@@ -7873,9 +9024,10 @@ def build_contact_page(contact_settings: dict[str, str]) -> str:
     contact_email = html.escape(contact_settings.get("email", ""))
     contact_updated_at = format_display_datetime(contact_settings.get("updated_at"))
     page_intro = render_compact_intro(
-        "05 제보·문의",
+        "제보·문의",
         "빠진 기사 제보, 운영 문의, 검토 요청을 한곳에서 남기고 바로 이어서 확인할 수 있습니다.",
         media_key="contact",
+        title="제보와 운영 문의",
     )
     contact_overview = "".join(
         [
@@ -7908,7 +9060,7 @@ def build_contact_page(contact_settings: dict[str, str]) -> str:
     """
     return f"""
     {page_intro}
-    <section class="section">
+    <section class="section" id="main-list">
       <article class="list-card">
         <h3>기본 연락 정보</h3>
         <p>문의 전에 확인해두면 연결이 조금 더 빠릅니다.</p>
@@ -7948,10 +9100,16 @@ def build_footer_note(contact_settings: dict[str, str]) -> str:
     copyright_text = (contact_settings.get("copyright_text") or "").strip()
     organization_name = (contact_settings.get("organization_name") or "").strip()
     if copyright_text:
-        return html.escape(copyright_text)
-    if organization_name:
-        return html.escape(f"운영: {organization_name}")
-    return "운영: 유스사이드(Youthside)"
+        base_text = copyright_text
+    elif organization_name:
+        base_text = f"운영: {organization_name}"
+    else:
+        base_text = "운영: 유스사이드(Youthside)"
+    contact_link = (
+        f'<a href="{html.escape(CREATOR_CONTACT_URL, quote=True)}" '
+        f'target="_blank" rel="noopener noreferrer">{html.escape(CREATOR_CONTACT_LABEL)}</a>'
+    )
+    return f"{html.escape(base_text)} · 연락: {contact_link}"
 
 
 def write_page(
@@ -7969,12 +9127,15 @@ def write_page(
             styles=BASE_CSS,
             brand_mark_src=html.escape(BRAND_MARK_SRC),
             script=build_page_script(),
+            top_nav=render_top_nav(active_page),
+            side_nav=render_side_nav(active_page),
             guide_link=render_guide_link(active_page),
             header_meta=render_header_meta(active_page, status),
-            nav=render_nav(active_page),
+            admin_entry=render_admin_entry(),
             bottom_nav=render_bottom_nav(active_page),
             bottom_nav_count=len(NAV_ITEMS),
             guide_overlay=render_guide_overlay(active_page),
+            admin_login_overlay=render_admin_login_overlay(),
             footer_note=build_footer_note(contact_settings),
             content=content,
         ),
@@ -8029,6 +9190,14 @@ def main() -> int:
         "청년 정책",
         "policies.html",
         build_policies_page_compact(classified_articles, status),
+        status,
+        contact_settings,
+    )
+    write_page(
+        web_root / "plans.html",
+        "청년 정책계획",
+        "plans.html",
+        build_policy_plans_page(status),
         status,
         contact_settings,
     )

@@ -453,6 +453,54 @@ GitHub Pages는 `public-site/web/`를 직접 배포하지 않는다.
   3. `home_update_snapshot.json`의 `today_entries`
   4. `is_home_today_candidate()`, `is_home_today_fill_candidate()`의 날짜 문턱
 
+### Incident 09. `403 Forbidden` 오류 페이지 제목이 기사 제목으로 오염된 문제
+
+날짜:
+
+- 2026-04-29
+
+증상:
+
+- 공개 사이트 기사 카드 제목에 실제 기사 제목 대신 `403 Forbidden`이 노출됨
+- 예시 화면에서 `서울경제 · 2026-04-28 21:00` 기사 제목이 `403 Forbidden`으로 표시됨
+
+확인 결과:
+
+- 최신 `runtime/pipeline/*.json`과 `public-site/web/news.html`의 같은 서울경제 기사는 정상 제목을 가지고 있었음
+- 원문 URL은 실행 시점과 접근 방식에 따라 정상 `200 OK`를 주기도 하고, `403 Forbidden` HTML을 줄 수 있었음
+- 문제가 생기는 흐름은 원문 보강 단계에서 오류 페이지의 `<title>`을 정상 기사 메타데이터처럼 읽어 기존 제목을 덮는 경우였음
+
+원인:
+
+- `fetch_url()`의 `curl` fallback이 HTTP 4xx/5xx를 실패로 보지 않고 본문을 반환할 수 있었음
+- `parse_generic_article_page()`와 `resolve_article_metadata()`가 `403 Forbidden` 같은 오류 페이지 제목을 기사 제목 후보에서 제외하지 않았음
+
+조치:
+
+- `shared/src/youth_info_platform/collect.py`
+  - `curl` fallback에 `--fail --show-error`를 추가해 HTTP 오류 응답을 실패로 처리
+- `shared/src/youth_info_platform/article_metadata.py`
+  - `401/403/404/429/5xx`, `access denied`, `forbidden` 등 오류 페이지 제목을 감지
+  - 오류 페이지 제목은 새 기사 제목으로 병합하지 않도록 방어
+- `shared/tests/test_collect.py`, `shared/tests/test_article_metadata.py`
+  - `curl --fail` 사용 여부와 오류 제목 병합 방지 회귀 테스트 추가
+
+검증:
+
+- `python -m unittest shared.tests.test_collect shared.tests.test_article_metadata`
+- `python public-site/scripts/article_debug.py --url "https://www.sedaily.com/article/20038288" --limit 3`
+
+재발 방지:
+
+- HTTP 오류 페이지의 본문이 HTML처럼 보여도 기사 본문/제목으로 신뢰하지 않는다.
+- 외부 기사 제목이 갑자기 `403`, `404`, `Access Denied`, `Forbidden` 계열로 바뀌면 원문 접근성보다 먼저 메타데이터 병합 방어를 확인한다.
+- 비슷한 제목 오염은 아래 순서로 본다.
+  1. `runtime/pipeline/step1_raw_articles.json`의 원 수집 제목
+  2. `runtime/pipeline/step2_filtered.json`의 정규화 제목
+  3. `runtime/pipeline/step3_classified.json`의 `resolved_at`, `publisher_url`, `body_text`, `title`
+  4. `runtime/pipeline/article_funnel.json`의 `pipeline_flags.resolved_url`, `body_enriched`
+  5. `public-site/web/news.html`와 `public-site/dist/news.html`
+
 ## 7. 문제 발생 시 진단 순서
 
 ### 7-1. 기사 수집/선정 문제
@@ -475,7 +523,7 @@ GitHub Pages는 `public-site/web/`를 직접 배포하지 않는다.
 - `step1`은 있는데 `step2`에서 사라지면 필터 문제
 - `step3`에서 이상하면 메타데이터/분류 문제
 - `step4/5`에서 사라지면 selection 문제
-- `web/dist`만 이상하면 렌더링 또는 packaging 문제
+- `public-site/web/` 또는 `public-site/dist/`만 이상하면 렌더링 또는 packaging 문제
 
 ### 7-2. 관리자 화면 문제
 
@@ -560,4 +608,5 @@ GitHub Pages는 `public-site/web/`를 직접 배포하지 않는다.
 - 정치성 기사 처리는 `완전 배제`보다 `홈 위치 조정`이 현재 원칙이다.
 - 자동 반영은 상시 서버가 아니라 `노트북 러너 기반 best effort`다.
 - 작은 기사 1건 수정 때문에 전체 큐레이션을 흔들지 말 것.
+- `403 Forbidden` 같은 HTTP 오류 페이지 제목은 기사 제목으로 병합하면 안 된다.
 - 이 문서는 메모가 아니라 운영 기준서다. 작업이 바뀌면 같이 바뀌어야 한다.

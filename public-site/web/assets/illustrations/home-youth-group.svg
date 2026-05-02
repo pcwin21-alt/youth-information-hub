@@ -1,20 +1,21 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 250" fill="none" role="img" aria-labelledby="title desc">
+﻿<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 250" fill="none" role="img" aria-labelledby="title desc">
   <title id="title">청년 모아봄 홈 일러스트</title>
-  <desc id="desc">여러 기사와 정책 카드가 해가 비추는 파란 모음함 안으로 모이는 일러스트</desc>
+  <desc id="desc">여러 기사와 정책 카드가 봄꽃 아래 모음함 안으로 모이는 일러스트</desc>
   <defs>
     <style>
-      .navy { fill: #102747; }
-      .blue { fill: #3278BD; }
-      .blue-dark { fill: #2268AD; }
-      .blue-soft { fill: #8FB7DF; }
-      .sun { fill: #FB7435; }
-      .sun-ray { fill: none; stroke: #FB7435; stroke-width: 8; stroke-linecap: round; }
-      .paper { fill: #FFFDF9; }
-      .paper-blue { fill: #F7FBFF; stroke: #8FB7DF; stroke-width: 4; }
-      .paper-warm { fill: #FFF3E7; stroke: #F0D8C4; stroke-width: 4; }
-      .paper-main { fill: #FFFDF9; stroke: #102747; stroke-width: 5; }
-      .line { fill: #9CA6AF; }
-      .line-soft { fill: #D9DDE2; }
+      .navy { fill: #263238; }
+      .blue { fill: #5F8ED5; }
+      .blue-dark { fill: #4A78C2; }
+      .blue-soft { fill: #BBD7F1; }
+      .sun { fill: #F0D789; }
+      .petal { fill: #FFF0B8; stroke: #E7BD52; stroke-width: 3; }
+      .flower-center { fill: #F2C66D; }
+      .paper { fill: #FFFEFD; }
+      .paper-blue { fill: #F8FCFF; stroke: #BBD7F1; stroke-width: 4; }
+      .paper-warm { fill: #FFFAF0; stroke: #EBDDAD; stroke-width: 4; }
+      .paper-main { fill: #FFFEFD; stroke: #263238; stroke-width: 5; }
+      .line { fill: #9AA8AE; }
+      .line-soft { fill: #E7DDC8; }
       .label {
         fill: #FFFFFF;
         font-family: "Noto Sans KR", "Pretendard", "Apple SD Gothic Neo", sans-serif;
@@ -23,12 +24,12 @@
         letter-spacing: 0;
       }
       .chip {
-        fill: #FFF8F1;
-        stroke: #F0D8C4;
+        fill: #FFFAF0;
+        stroke: #EBDDAD;
         stroke-width: 2;
       }
       .chip-text {
-        fill: #102747;
+        fill: #263238;
         font-family: "Noto Sans KR", "Pretendard", "Apple SD Gothic Neo", sans-serif;
         font-size: 11px;
         font-weight: 800;
@@ -37,16 +38,16 @@
     </style>
   </defs>
 
-  <ellipse cx="160" cy="219" rx="104" ry="13" fill="#0B1828" opacity=".24"/>
+  <ellipse cx="160" cy="219" rx="104" ry="13" fill="#263238" opacity=".1"/>
 
-  <g aria-hidden="true">
-    <line class="sun-ray" x1="223" y1="22" x2="223" y2="36"/>
-    <line class="sun-ray" x1="223" y1="22" x2="223" y2="36" transform="rotate(-45 223 67)"/>
-    <line class="sun-ray" x1="223" y1="22" x2="223" y2="36" transform="rotate(45 223 67)"/>
-    <line class="sun-ray" x1="223" y1="22" x2="223" y2="36" transform="rotate(-90 223 67)"/>
-    <line class="sun-ray" x1="223" y1="22" x2="223" y2="36" transform="rotate(90 223 67)"/>
+  <g aria-hidden="true" transform="translate(223 67) rotate(8)">
+    <ellipse class="petal" cx="0" cy="-24" rx="13" ry="23"/>
+    <ellipse class="petal" cx="23" cy="-7" rx="13" ry="23" transform="rotate(72 23 -7)"/>
+    <ellipse class="petal" cx="14" cy="20" rx="13" ry="23" transform="rotate(144 14 20)"/>
+    <ellipse class="petal" cx="-14" cy="20" rx="13" ry="23" transform="rotate(216 -14 20)"/>
+    <ellipse class="petal" cx="-23" cy="-7" rx="13" ry="23" transform="rotate(288 -23 -7)"/>
+    <circle class="flower-center" cx="0" cy="0" r="8"/>
   </g>
-  <circle class="sun" cx="223" cy="67" r="33"/>
 
   <rect class="chip" x="53" y="42" width="62" height="30" rx="15"/>
   <text class="chip-text" x="84" y="61" text-anchor="middle">뉴스</text>

@@ -62,6 +62,7 @@ Register-ScheduledTask `
     -Description "Youth Together crawler auto-update at fixed daily times." | Out-Null
 
 $taskInfo = Get-ScheduledTaskInfo -TaskName $TaskName -TaskPath $TaskPath
+$frequency = if ($Times.Count -eq 1) { "daily_1x" } else { "daily_$($Times.Count)x" }
 $payload = @{
     task_name = $TaskName
     task_path = $TaskPath
@@ -75,7 +76,7 @@ $payload = @{
     wake_to_run = [bool]$WakeToRun
     schedule = @{
         timezone = "Asia/Seoul"
-        frequency = "daily_3x"
+        frequency = $frequency
         times = $Times
     }
     last_run_time = if ($taskInfo.LastRunTime -gt [datetime]::MinValue) { $taskInfo.LastRunTime.ToString("o") } else { $null }

@@ -1,59 +1,65 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 610 160" width="610" height="160" role="img" aria-labelledby="title desc">
-  <title id="title">청년 모아봄 로고</title>
-  <desc id="desc">해가 비추는 기사들이 옅은 바닥 위에 모이고, 옆에 청년 모아봄 이름이 놓인 로고</desc>
+  <title id="title">청년 모아봄 뉴스 꽃 로고</title>
+  <desc id="desc">봄꽃 안에 오늘의 정보 카드가 놓이고 옆에 청년 모아봄 이름이 놓인 로고</desc>
   <defs>
+    <linearGradient id="petalGold" x1="45" y1="16" x2="116" y2="126" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#fffef7"/>
+      <stop offset="0.6" stop-color="#fff3cf"/>
+      <stop offset="1" stop-color="#e7bd52"/>
+    </linearGradient>
+    <linearGradient id="petalCream" x1="46" y1="20" x2="112" y2="126" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#fffef9"/>
+      <stop offset="0.72" stop-color="#fff8dc"/>
+      <stop offset="1" stop-color="#f0d789"/>
+    </linearGradient>
+    <linearGradient id="leafGradient" x1="42" y1="116" x2="118" y2="140" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#d8ecd4"/>
+      <stop offset="1" stop-color="#90c7a0"/>
+    </linearGradient>
     <style>
       .wordmark {
-        fill: #102747;
+        fill: #263238;
         font-family: "Noto Sans KR", "Pretendard", "Apple SD Gothic Neo", sans-serif;
         font-size: 72px;
         font-weight: 800;
         letter-spacing: 0;
       }
-      .ground { fill: #d9e1e8; opacity: .78; }
-      .ground-line { fill: #aebbc7; opacity: .75; }
-      .sun { fill: #ff7436; }
-      .sun-ray { fill: none; stroke: #ff7436; stroke-width: 8; stroke-linecap: round; }
-      .paper { fill: #fffdf9; }
-      .paper-stroke { stroke: #102747; }
-      .paper-side-blue { fill: #f7fbff; stroke: #8fb7df; stroke-width: 4; }
-      .paper-side-warm { fill: #fff3e7; stroke: #f0d8c4; stroke-width: 4; }
-      .detail-blue { fill: #8fb7df; }
-      .line { fill: #9ca6af; }
-      .line-soft { fill: #d9dde2; }
+      .bg { fill: #fffaf0; }
+      .bg-line { fill: none; stroke: #ebddad; stroke-width: 3; }
+      .petal { stroke: #735b12; stroke-width: 2.5; }
+      .petal-a { fill: url(#petalGold); }
+      .petal-b { fill: url(#petalCream); }
+      .leaf { fill: url(#leafGradient); }
+      .stem { fill: none; stroke: #90c7a0; stroke-width: 5; stroke-linecap: round; }
+      .card { fill: #fffef9; stroke: #263238; stroke-width: 4.5; }
+      .card-top { fill: #e7bd52; }
+      .line { fill: #69757c; opacity: .76; }
+      .line-soft { fill: #e7ddc8; }
+      .dot { fill: #90c7a0; }
     </style>
   </defs>
+
   <g>
-    <g aria-hidden="true">
-      <line class="sun-ray" x1="82" y1="6" x2="82" y2="19"/>
-      <line class="sun-ray" x1="82" y1="6" x2="82" y2="19" transform="rotate(-45 82 45)"/>
-      <line class="sun-ray" x1="82" y1="6" x2="82" y2="19" transform="rotate(45 82 45)"/>
-      <line class="sun-ray" x1="82" y1="6" x2="82" y2="19" transform="rotate(-90 82 45)"/>
-      <line class="sun-ray" x1="82" y1="6" x2="82" y2="19" transform="rotate(90 82 45)"/>
-    </g>
-    <circle class="sun" cx="82" cy="45" r="29"/>
+    <circle class="bg" cx="80" cy="78" r="61"/>
+    <circle class="bg-line" cx="80" cy="78" r="61"/>
 
-    <g opacity=".92" transform="rotate(-8 47 82)">
-      <rect class="paper-side-blue" x="32" y="54" width="32" height="58" rx="8"/>
-      <rect class="detail-blue" x="42" y="67" width="10" height="13" rx="2"/>
-      <rect class="line-soft" x="55" y="69" width="8" height="5" rx="2.5"/>
-      <rect class="line-soft" x="42" y="91" width="20" height="5" rx="2.5"/>
+    <g aria-hidden="true" transform="translate(80 76)">
+      <rect class="petal petal-a" x="-15" y="-58" width="30" height="52" rx="12"/>
+      <rect class="petal petal-b" x="-15" y="-58" width="30" height="52" rx="12" transform="rotate(72)"/>
+      <rect class="petal petal-a" x="-15" y="-58" width="30" height="52" rx="12" transform="rotate(144)"/>
+      <rect class="petal petal-b" x="-15" y="-58" width="30" height="52" rx="12" transform="rotate(216)"/>
+      <rect class="petal petal-a" x="-15" y="-58" width="30" height="52" rx="12" transform="rotate(288)"/>
     </g>
-    <g opacity=".92" transform="rotate(8 116 82)">
-      <rect class="paper-side-warm" x="96" y="54" width="32" height="58" rx="8"/>
-      <rect class="sun" x="106" y="67" width="10" height="13" rx="2"/>
-      <rect class="line-soft" x="119" y="69" width="8" height="5" rx="2.5"/>
-      <rect class="line-soft" x="106" y="91" width="20" height="5" rx="2.5"/>
-    </g>
-    <rect class="paper paper-stroke" x="55" y="39" width="52" height="77" rx="12" stroke-width="5"/>
-    <rect class="sun" x="67" y="55" width="15" height="17" rx="3"/>
-    <rect class="line" x="90" y="58" width="14" height="6" rx="3"/>
-    <rect class="line-soft" x="90" y="72" width="11" height="5" rx="2.5"/>
-    <rect class="line-soft" x="68" y="89" width="34" height="5" rx="2.5"/>
-    <rect class="line-soft" x="68" y="102" width="27" height="5" rx="2.5"/>
 
-    <ellipse class="ground" cx="81" cy="123" rx="47" ry="9"/>
-    <rect class="ground-line" x="56" y="119" width="50" height="5" rx="2.5"/>
+    <path class="stem" d="M80 101c-1 11-6 22-15 32"/>
+    <path class="leaf" d="M34 128c15-10 31-12 47-6-9 14-22 20-38 18-5-.7-8-5-9-12Z"/>
+    <path class="leaf" d="M126 128c-15-10-31-12-47-6 9 14 22 20 38 18 5-.7 8-5 9-12Z"/>
+
+    <rect class="card" x="48" y="55" width="64" height="58" rx="16"/>
+    <rect class="card-top" x="63" y="69" width="34" height="9" rx="4.5"/>
+    <rect class="line" x="61" y="86" width="38" height="6" rx="3"/>
+    <rect class="line-soft" x="67" y="99" width="26" height="6" rx="3"/>
+    <circle class="dot" cx="103" cy="99" r="4"/>
   </g>
   <text class="wordmark" x="178" y="96">청년 모아봄</text>
 </svg>

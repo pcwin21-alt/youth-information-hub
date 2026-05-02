@@ -1,6 +1,7 @@
 param(
     [string]$PythonExe = "",
-    [switch]$UseSampleData
+    [switch]$UseSampleData,
+    [switch]$SendOutboundNotifications
 )
 
 $ErrorActionPreference = "Stop"
@@ -59,12 +60,16 @@ try {
     if ($UseSampleData) {
         $commandArgs += "--use-sample-data"
     }
+    if (-not $SendOutboundNotifications) {
+        $commandArgs += "--skip-outbound-notifications"
+    }
 
     Write-Log "[$((Get-Date).ToString('o'))] scheduled_run_started"
     Write-Log "repo_root=$repoRoot"
     Write-Log "public_site_root=$publicSiteRoot"
     Write-Log "python_exe=$($python.Exe)"
     Write-Log "log_path=$logPath"
+    Write-Log "send_outbound_notifications=$([bool]$SendOutboundNotifications)"
 
     & $python.Exe @commandArgs 2>&1 | ForEach-Object {
         $line = ($_ | Out-String).TrimEnd()
