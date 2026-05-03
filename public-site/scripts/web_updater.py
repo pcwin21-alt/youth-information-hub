@@ -4953,7 +4953,7 @@ DASHBOARD_TONE_CSS = """
     color: var(--muted);
   }
   .home-overview .home-glance-grid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 10px;
   }
   .home-overview .home-glance-item {
@@ -5351,9 +5351,9 @@ DASHBOARD_TONE_CSS = """
   }
   body[data-page="index.html"] .home-briefing-card.lead {
     grid-area: auto !important;
-    min-height: 142px;
+    min-height: 124px;
     width: 100%;
-    padding: 22px 32px;
+    padding: 22px 30px;
   }
   body[data-page="index.html"] .home-briefing-card.lead-arch.has-media {
     padding-right: 32px !important;
@@ -5366,17 +5366,21 @@ DASHBOARD_TONE_CSS = """
     width: 100%;
     max-width: none;
     display: grid !important;
-    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-columns: auto minmax(0, 1fr);
     grid-template-areas:
-      "date actions"
-      "title actions"
-      "copy actions";
-    gap: 8px 24px;
+      "date copy"
+      "title copy";
+    gap: 8px 28px;
+    align-items: center;
+  }
+  body[data-page="index.html"] .home-briefing-date,
+  body[data-page="index.html"] .home-briefing-card.lead-arch .home-briefing-date {
+    align-self: end;
   }
   body[data-page="index.html"] .home-briefing-title,
   body[data-page="index.html"] .home-briefing-card.lead-arch .home-briefing-title {
     max-width: none;
-    font-size: clamp(1.65rem, 2.15vw, 2.18rem);
+    font-size: clamp(2rem, 3vw, 3.15rem);
     line-height: 1.06;
     white-space: nowrap;
     word-break: keep-all;
@@ -5384,11 +5388,15 @@ DASHBOARD_TONE_CSS = """
   }
   body[data-page="index.html"] .home-briefing-copy,
   body[data-page="index.html"] .home-briefing-card.lead-arch .home-briefing-copy {
-    max-width: 620px;
+    justify-self: end;
+    max-width: 560px;
     font-size: 0.96rem;
     line-height: 1.56;
   }
   body[data-page="index.html"] .home-briefing-summary {
+    display: none !important;
+  }
+  body[data-page="index.html"] .home-briefing-card.lead .hero-actions {
     display: none !important;
   }
   body[data-page="index.html"] .home-briefing-card.lead .button {
@@ -5401,9 +5409,7 @@ DASHBOARD_TONE_CSS = """
       grid-template-areas:
         "date"
         "title"
-        "copy"
-        "summary"
-        "actions";
+        "copy";
     }
     body[data-page="index.html"] .home-briefing-summary,
     body[data-page="index.html"] .home-briefing-card.lead .hero-actions {
@@ -5413,6 +5419,11 @@ DASHBOARD_TONE_CSS = """
     body[data-page="index.html"] .home-briefing-title,
     body[data-page="index.html"] .home-briefing-card.lead-arch .home-briefing-title {
       white-space: normal;
+    }
+    body[data-page="index.html"] .home-briefing-copy,
+    body[data-page="index.html"] .home-briefing-card.lead-arch .home-briefing-copy {
+      justify-self: start;
+      max-width: 680px;
     }
     .home-overview-head,
     .home-overview-columns {
@@ -9502,18 +9513,11 @@ def build_home_page(
         page_updated_at,
         24 * 90,
     )
-    today_total_count = count_articles_on_reference_day(all_articles, page_updated_at)
     home_topic_categories = build_home_topic_categories(latest_home_news_candidates, page_updated_at)
     home_date_label = format_home_date_label(page_updated_at)
     latest_news_basis = describe_article_basis(recent_news_articles, f"최근 {NEWS_WINDOW_DAYS}일 기사 없음")
     policy_basis = describe_article_basis(official_policy_articles or policy_articles, "최근 정책 없음")
     lead_message = "최신 뉴스와 정부·지자체 발표를 한 화면에서 빠르게 확인하세요."
-    glance_stats_html = "".join(
-        f'<article class="{card_class}"><span class="home-glance-label">{label}</span><strong class="home-glance-value">{value}</strong></article>'
-        for card_class, label, value in [
-            ("home-glance-item warm full", "오늘 올라온 기사", f"{today_total_count}건"),
-        ]
-    )
     home_category_links = "".join(
         f'<a class="home-keyword-chip" href="{html.escape(home_topic_category_href(topic))}">#{html.escape(topic)}</a>'
         for topic, _ in home_topic_categories
@@ -9572,19 +9576,9 @@ def build_home_page(
     overview_stats_html = "".join(
         f'<article class="{card_class}"><span class="home-glance-label">{label}</span><strong class="home-glance-value">{value}</strong></article>'
         for card_class, label, value in [
-            ("home-glance-item warm", "오늘 올라온 기사", f"{today_total_count}건"),
             ("home-glance-item neutral", "가장 최근 뉴스", f"{min(len(today_articles), HOME_DAILY_LIMIT)}건"),
             ("home-glance-item teal", "정부·지자체 동향", f"{min(len(gov_local_trend_articles), HOME_DAILY_LIMIT)}건"),
         ]
-    )
-    hero_summary_items = [
-        ("오늘 기사", f"{today_total_count}건"),
-        ("최근 표시", f"{min(len(today_articles), HOME_DAILY_LIMIT)}개"),
-        ("정부·지자체", f"{min(len(gov_local_trend_articles), HOME_DAILY_LIMIT)}개"),
-    ]
-    hero_summary_html = "".join(
-        f'<span><strong>{html.escape(value)}</strong><em>{html.escape(label)}</em></span>'
-        for label, value in hero_summary_items
     )
     def render_home_highlight_card(article: dict | None) -> str:
         if not article:
@@ -9638,11 +9632,6 @@ def build_home_page(
             <span class="home-briefing-date">{html.escape(home_date_label)}</span>
             <h1 class="home-briefing-title">오늘 필요한 청년 이슈</h1>
             <p class="home-briefing-copy">{html.escape(lead_message)}</p>
-            <div class="home-briefing-summary" aria-label="오늘 운영 요약">{hero_summary_html}</div>
-            <div class="hero-actions">
-              <a class="button primary" href="#today-briefing">오늘 한눈에 보기</a>
-              <a class="button" href="news.html">뉴스 탭</a>
-            </div>
           </div>
           {home_lead_media}
         </article>
@@ -9662,7 +9651,6 @@ def build_home_page(
                   <span>가장 최근 뉴스</span>
                   <h3>지금 새로 들어온 기사</h3>
                 </div>
-                <a class="mini-link" href="news.html">전체 보기</a>
               </div>
               <p class="home-briefing-panel-note">언론 기사 중 선거·공약성 기사를 제외한 최신 청년 이슈입니다.</p>
               <div class="home-urgent-list">{today_news_html}</div>
@@ -9673,7 +9661,6 @@ def build_home_page(
                   <span>정부·지자체 동향</span>
                   <h3>공식 발표와 지역 움직임</h3>
                 </div>
-                <a class="mini-link" href="policies.html">전체 보기</a>
               </div>
               <p class="home-briefing-panel-note">중앙정부 발표, 보도자료, 지역 참여·정책 흐름을 함께 봅니다.</p>
               <div class="home-urgent-list">{policy_briefing_html}</div>

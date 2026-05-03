@@ -4610,7 +4610,7 @@
     color: var(--muted);
   }
   .home-overview .home-glance-grid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 10px;
   }
   .home-overview .home-glance-item {
@@ -5008,9 +5008,9 @@
   }
   body[data-page="index.html"] .home-briefing-card.lead {
     grid-area: auto !important;
-    min-height: 142px;
+    min-height: 124px;
     width: 100%;
-    padding: 22px 32px;
+    padding: 22px 30px;
   }
   body[data-page="index.html"] .home-briefing-card.lead-arch.has-media {
     padding-right: 32px !important;
@@ -5023,17 +5023,21 @@
     width: 100%;
     max-width: none;
     display: grid !important;
-    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-columns: auto minmax(0, 1fr);
     grid-template-areas:
-      "date actions"
-      "title actions"
-      "copy actions";
-    gap: 8px 24px;
+      "date copy"
+      "title copy";
+    gap: 8px 28px;
+    align-items: center;
+  }
+  body[data-page="index.html"] .home-briefing-date,
+  body[data-page="index.html"] .home-briefing-card.lead-arch .home-briefing-date {
+    align-self: end;
   }
   body[data-page="index.html"] .home-briefing-title,
   body[data-page="index.html"] .home-briefing-card.lead-arch .home-briefing-title {
     max-width: none;
-    font-size: clamp(1.65rem, 2.15vw, 2.18rem);
+    font-size: clamp(2rem, 3vw, 3.15rem);
     line-height: 1.06;
     white-space: nowrap;
     word-break: keep-all;
@@ -5041,11 +5045,15 @@
   }
   body[data-page="index.html"] .home-briefing-copy,
   body[data-page="index.html"] .home-briefing-card.lead-arch .home-briefing-copy {
-    max-width: 620px;
+    justify-self: end;
+    max-width: 560px;
     font-size: 0.96rem;
     line-height: 1.56;
   }
   body[data-page="index.html"] .home-briefing-summary {
+    display: none !important;
+  }
+  body[data-page="index.html"] .home-briefing-card.lead .hero-actions {
     display: none !important;
   }
   body[data-page="index.html"] .home-briefing-card.lead .button {
@@ -5058,9 +5066,7 @@
       grid-template-areas:
         "date"
         "title"
-        "copy"
-        "summary"
-        "actions";
+        "copy";
     }
     body[data-page="index.html"] .home-briefing-summary,
     body[data-page="index.html"] .home-briefing-card.lead .hero-actions {
@@ -5070,6 +5076,11 @@
     body[data-page="index.html"] .home-briefing-title,
     body[data-page="index.html"] .home-briefing-card.lead-arch .home-briefing-title {
       white-space: normal;
+    }
+    body[data-page="index.html"] .home-briefing-copy,
+    body[data-page="index.html"] .home-briefing-card.lead-arch .home-briefing-copy {
+      justify-self: start;
+      max-width: 680px;
     }
     .home-overview-head,
     .home-overview-columns {

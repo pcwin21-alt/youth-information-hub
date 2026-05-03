@@ -4610,7 +4610,7 @@
     color: var(--muted);
   }
   .home-overview .home-glance-grid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 10px;
   }
   .home-overview .home-glance-item {
@@ -5008,9 +5008,9 @@
   }
   body[data-page="index.html"] .home-briefing-card.lead {
     grid-area: auto !important;
-    min-height: 142px;
+    min-height: 124px;
     width: 100%;
-    padding: 22px 32px;
+    padding: 22px 30px;
   }
   body[data-page="index.html"] .home-briefing-card.lead-arch.has-media {
     padding-right: 32px !important;
@@ -5023,17 +5023,21 @@
     width: 100%;
     max-width: none;
     display: grid !important;
-    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-columns: auto minmax(0, 1fr);
     grid-template-areas:
-      "date actions"
-      "title actions"
-      "copy actions";
-    gap: 8px 24px;
+      "date copy"
+      "title copy";
+    gap: 8px 28px;
+    align-items: center;
+  }
+  body[data-page="index.html"] .home-briefing-date,
+  body[data-page="index.html"] .home-briefing-card.lead-arch .home-briefing-date {
+    align-self: end;
   }
   body[data-page="index.html"] .home-briefing-title,
   body[data-page="index.html"] .home-briefing-card.lead-arch .home-briefing-title {
     max-width: none;
-    font-size: clamp(1.65rem, 2.15vw, 2.18rem);
+    font-size: clamp(2rem, 3vw, 3.15rem);
     line-height: 1.06;
     white-space: nowrap;
     word-break: keep-all;
@@ -5041,11 +5045,15 @@
   }
   body[data-page="index.html"] .home-briefing-copy,
   body[data-page="index.html"] .home-briefing-card.lead-arch .home-briefing-copy {
-    max-width: 620px;
+    justify-self: end;
+    max-width: 560px;
     font-size: 0.96rem;
     line-height: 1.56;
   }
   body[data-page="index.html"] .home-briefing-summary {
+    display: none !important;
+  }
+  body[data-page="index.html"] .home-briefing-card.lead .hero-actions {
     display: none !important;
   }
   body[data-page="index.html"] .home-briefing-card.lead .button {
@@ -5058,9 +5066,7 @@
       grid-template-areas:
         "date"
         "title"
-        "copy"
-        "summary"
-        "actions";
+        "copy";
     }
     body[data-page="index.html"] .home-briefing-summary,
     body[data-page="index.html"] .home-briefing-card.lead .hero-actions {
@@ -5070,6 +5076,11 @@
     body[data-page="index.html"] .home-briefing-title,
     body[data-page="index.html"] .home-briefing-card.lead-arch .home-briefing-title {
       white-space: normal;
+    }
+    body[data-page="index.html"] .home-briefing-copy,
+    body[data-page="index.html"] .home-briefing-card.lead-arch .home-briefing-copy {
+      justify-self: start;
+      max-width: 680px;
     }
     .home-overview-head,
     .home-overview-columns {
@@ -5231,11 +5242,6 @@
             <span class="home-briefing-date">2026.05.03 (일)</span>
             <h1 class="home-briefing-title">오늘 필요한 청년 이슈</h1>
             <p class="home-briefing-copy">최신 뉴스와 정부·지자체 발표를 한 화면에서 빠르게 확인하세요.</p>
-            <div class="home-briefing-summary" aria-label="오늘 운영 요약"><span><strong>20건</strong><em>오늘 기사</em></span><span><strong>5개</strong><em>최근 표시</em></span><span><strong>5개</strong><em>정부·지자체</em></span></div>
-            <div class="hero-actions">
-              <a class="button primary" href="#today-briefing">오늘 한눈에 보기</a>
-              <a class="button" href="news.html">뉴스 탭</a>
-            </div>
           </div>
           <div class="home-illustration-slot"><img class="home-illustration-img" src="assets/illustrations/home-moabom-collection.svg?v=20260501-sunlit-logo-1" alt="청년들이 봄꽃 아래에서 오늘의 기사와 정책 정보를 살펴보는 홈 화면 일러스트" decoding="async" loading="eager" onerror="const host=this.closest('[data-media-host]');if(host){host.classList.remove('has-media');}this.parentElement.remove();"></div>
         </article>
@@ -5246,7 +5252,7 @@
               <h2 id="today-briefing-title">오늘 한눈에 보기</h2>
               <p>첫 화면에서는 가장 최근 뉴스와 정부·지자체 동향을 바로 펼쳐 봅니다.</p>
             </div>
-            <div class="home-glance-grid"><article class="home-glance-item warm"><span class="home-glance-label">오늘 올라온 기사</span><strong class="home-glance-value">20건</strong></article><article class="home-glance-item neutral"><span class="home-glance-label">가장 최근 뉴스</span><strong class="home-glance-value">5건</strong></article><article class="home-glance-item teal"><span class="home-glance-label">정부·지자체 동향</span><strong class="home-glance-value">5건</strong></article></div>
+            <div class="home-glance-grid"><article class="home-glance-item neutral"><span class="home-glance-label">가장 최근 뉴스</span><strong class="home-glance-value">5건</strong></article><article class="home-glance-item teal"><span class="home-glance-label">정부·지자체 동향</span><strong class="home-glance-value">5건</strong></article></div>
           </div>
           <div class="home-overview-columns">
             <article class="home-overview-column">
@@ -5255,7 +5261,6 @@
                   <span>가장 최근 뉴스</span>
                   <h3>지금 새로 들어온 기사</h3>
                 </div>
-                <a class="mini-link" href="news.html">전체 보기</a>
               </div>
               <p class="home-briefing-panel-note">언론 기사 중 선거·공약성 기사를 제외한 최신 청년 이슈입니다.</p>
               <div class="home-urgent-list"><article class="home-urgent-item"><a class="home-urgent-link" href="https://www.hani.co.kr/arti/politics/politics_general/1256916.html" target="_blank" rel="noreferrer" aria-label="김정은, 청년동맹 만나 애국심 강조…“청년 전투력 국력의 상징” 링크 바로가기"><span class="home-urgent-rank">01</span><div class="home-urgent-text"><strong>김정은, 청년동맹 만나 애국심 강조…“청년 전투력 국력의 상징”</strong><span class="home-urgent-meta">한겨레 · 2026-05-03 10:48</span></div></a></article><article class="home-urgent-item"><a class="home-urgent-link" href="https://www.slist.kr/news/articleView.html?idxno=736527" target="_blank" rel="noreferrer" aria-label="[은행가] 국민銀, 청년창업가 육성 &#x27;KB유니콘클럽&#x27; 6기 발대식 外 링크 바로가기"><span class="home-urgent-rank">02</span><div class="home-urgent-text"><strong>[은행가] 국민銀, 청년창업가 육성 &#x27;KB유니콘클럽&#x27; 6기 발대식 外</strong><span class="home-urgent-meta">싱글리스트 · 2026-05-03 10:15 · 경기</span></div></a></article><article class="home-urgent-item"><a class="home-urgent-link" href="https://www.businesskorea.co.kr/news/articleView.html?idxno=268886" target="_blank" rel="noreferrer" aria-label="KB국민은행, KB유니콘클럽 6기 발대식 개최 링크 바로가기"><span class="home-urgent-rank">03</span><div class="home-urgent-text"><strong>KB국민은행, KB유니콘클럽 6기 발대식 개최</strong><span class="home-urgent-meta">비지니스코리아 · 2026-05-03 10:06 · 경기</span></div></a></article><article class="home-urgent-item"><a class="home-urgent-link" href="https://www.edaily.co.kr/News/Read?newsId=01325126645445312&amp;mediaCodeNo=257" target="_blank" rel="noreferrer" aria-label="“월세 100만원인데도 줄 선다”…전월세난 속 코리빙 부상[르포] 링크 바로가기"><span class="home-urgent-rank">04</span><div class="home-urgent-text"><strong>“월세 100만원인데도 줄 선다”…전월세난 속 코리빙 부상[르포]</strong><span class="home-urgent-meta">이데일리 · 2026-05-03 09:59 · 서울</span></div></a></article><article class="home-urgent-item"><a class="home-urgent-link" href="https://www.ytn.co.kr/_ln/0101_202605030955095497" target="_blank" rel="noreferrer" aria-label="북, &#x27;청년동맹&#x27; 개최...김정은 &quot;투쟁과업 적극 진출&quot; 링크 바로가기"><span class="home-urgent-rank">05</span><div class="home-urgent-text"><strong>북, &#x27;청년동맹&#x27; 개최...김정은 &quot;투쟁과업 적극 진출&quot;</strong><span class="home-urgent-meta">YTN · 2026-05-03 09:55</span></div></a></article></div>
@@ -5266,7 +5271,6 @@
                   <span>정부·지자체 동향</span>
                   <h3>공식 발표와 지역 움직임</h3>
                 </div>
-                <a class="mini-link" href="policies.html">전체 보기</a>
               </div>
               <p class="home-briefing-panel-note">중앙정부 발표, 보도자료, 지역 참여·정책 흐름을 함께 봅니다.</p>
               <div class="home-urgent-list"><article class="home-urgent-item"><a class="home-urgent-link" href="https://m.ekn.kr/view.php?key=20260503022321853" target="_blank" rel="noreferrer" aria-label="[패트롤]경주시- 영천시- 대구 달서구- 경북문화관광공사 링크 바로가기"><span class="home-urgent-rank">01</span><div class="home-urgent-text"><strong>[패트롤]경주시- 영천시- 대구 달서구- 경북문화관광공사</strong><span class="home-urgent-meta">에너지경제 · 2026-05-03 10:33 · 서울</span></div></a></article><article class="home-urgent-item"><a class="home-urgent-link" href="https://www.korea.kr/news/policyNewsView.do?newsId=148963684" target="_blank" rel="noreferrer" aria-label="&#x27;청년 10만 명&#x27;에 일자리 기회 제공…&#x27;청년뉴딜 추진방안&#x27; 발표 링크 바로가기"><span class="home-urgent-rank">02</span><div class="home-urgent-text"><strong>&#x27;청년 10만 명&#x27;에 일자리 기회 제공…&#x27;청년뉴딜 추진방안&#x27; 발표</strong><span class="home-urgent-meta">정책브리핑 · 2026-04-29 17:15 · 서울</span></div></a></article><article class="home-urgent-item"><a class="home-urgent-link" href="https://www.molit.go.kr/USR/NEWS/m_71/dtl.jsp?lcmspage=1&amp;id=95091966" target="_blank" rel="noreferrer" aria-label="30일 2030청년자문단과 MZ보드 통합발대식··· 청년 자문과 실무혁신 결합 링크 바로가기"><span class="home-urgent-rank">03</span><div class="home-urgent-text"><strong>30일 2030청년자문단과 MZ보드 통합발대식··· 청년 자문과 실무혁신 결합</strong><span class="home-urgent-meta">국토교통부 보도자료 · 2026-04-30</span></div></a></article><article class="home-urgent-item"><a class="home-urgent-link" href="https://www.moe.go.kr/boardCnts/viewRenew.do?boardID=294&amp;boardSeq=106021&amp;lev=0&amp;searchType=null&amp;statusYN=W&amp;page=1&amp;s=moe&amp;m=020402&amp;opType=N" target="_blank" rel="noreferrer" aria-label="2026년 청년도약 인재양성 부트캠프 운영계획 공고 안내 링크 바로가기"><span class="home-urgent-rank">04</span><div class="home-urgent-text"><strong>2026년 청년도약 인재양성 부트캠프 운영계획 공고 안내</strong><span class="home-urgent-meta">교육부 보도자료 · 2026-04-29 · 세종</span></div></a></article><article class="home-urgent-item"><a class="home-urgent-link" href="https://www.fsc.go.kr/no010101/86804?srchCtgry=1&amp;curPage=&amp;srchKey=&amp;srchText=&amp;srchBeginDt=&amp;srchEndDt=" target="_blank" rel="noreferrer" aria-label="보도자료 - 위원회 소식 - 알림마당 - 금융위원회 링크 바로가기"><span class="home-urgent-rank">05</span><div class="home-urgent-text"><strong>보도자료 - 위원회 소식 - 알림마당 - 금융위원회</strong><span class="home-urgent-meta">금융위원회 보도자료 · 2026-04-29 · 서울</span></div></a></article></div>
