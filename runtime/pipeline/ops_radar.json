@@ -1,35 +1,126 @@
 {
-  "generated_at": "2026-05-02T00:10:55.108473+09:00",
+  "generated_at": "2026-05-03T10:54:12.560778+09:00",
   "summary": {
-    "total_matched": 106,
-    "visible_items": 106,
-    "overlooked_count": 97,
-    "selected_count": 9,
+    "total_matched": 111,
+    "visible_items": 111,
+    "overlooked_count": 103,
+    "selected_count": 8,
     "lane_counts": [
       {
         "lane": "institution_program",
         "label": "기관·사업 공고",
-        "count": 72
+        "count": 66
       },
       {
         "lane": "governance_personnel",
         "label": "거버넌스·인사",
-        "count": 18
+        "count": 21
       },
       {
         "lane": "political_commitment",
         "label": "정치·공약",
-        "count": 26
-      },
-      {
-        "lane": "risk_alert",
-        "label": "리스크·논란",
-        "count": 2
+        "count": 36
       }
     ],
     "top_overlooked_count": 8
   },
   "items": [
+    {
+      "article_key": "https://www.newscj.com/news/articleView.html?idxno=3398002",
+      "title": "오세훈, ‘청년 월세 부담 완화’ 공약… 관리비·이사비 포함, 지원 2배 확대",
+      "preferred_url": "https://www.newscj.com/news/articleView.html?idxno=3398002",
+      "source": "천지일보",
+      "source_name": "네이버뉴스 청년 주거·생활(1주)",
+      "source_kind": "news",
+      "publisher_domain": "www.newscj.com",
+      "published_at": "2026-05-02T19:00:55+09:00",
+      "region": "서울",
+      "selection_bucket": "regional_issue",
+      "drop_reason": "selection_cutoff:지역 이슈:score=38",
+      "importance_score": 38,
+      "ops_radar_score": 32,
+      "ops_radar_priority": "critical",
+      "ops_radar_overlooked": true,
+      "ops_radar_labels": [
+        "기관·사업 공고",
+        "정치·공약"
+      ],
+      "ops_radar_lanes": [
+        "institution_program",
+        "political_commitment"
+      ],
+      "ops_radar_matches": [
+        {
+          "lane": "institution_program",
+          "label": "기관·사업 공고",
+          "description": "실무자가 챙겨야 할 모집, 접수, 선정, 프로그램 공고형 기사를 찾습니다.",
+          "matched_keywords": [
+            "청년",
+            "확대"
+          ],
+          "score": 7
+        },
+        {
+          "lane": "political_commitment",
+          "label": "정치·공약",
+          "description": "청년 공약, 후보, 비례대표, 선거 의제를 별도 레이더로 남깁니다.",
+          "matched_keywords": [
+            "청년",
+            "공약"
+          ],
+          "score": 7
+        }
+      ],
+      "ops_radar_note": "기관·사업 공고 (청년, 확대) / 정치·공약 (청년, 공약)"
+    },
+    {
+      "article_key": "https://www.newsis.com/view/NISX20260503_0003615067",
+      "title": "[6·3안산]국힘 이민근, 청년위원회 발대",
+      "preferred_url": "https://www.newsis.com/view/NISX20260503_0003615067",
+      "source": "뉴시스",
+      "source_name": "네이버뉴스 청년 광역(1주)",
+      "source_kind": "news",
+      "publisher_domain": "www.newsis.com",
+      "published_at": "2026-05-03T08:50:10+09:00",
+      "region": "서울",
+      "selection_bucket": "governance",
+      "drop_reason": "public_relevance_filtered",
+      "importance_score": 29,
+      "ops_radar_score": 31,
+      "ops_radar_priority": "critical",
+      "ops_radar_overlooked": true,
+      "ops_radar_labels": [
+        "거버넌스·인사",
+        "정치·공약"
+      ],
+      "ops_radar_lanes": [
+        "governance_personnel",
+        "political_commitment"
+      ],
+      "ops_radar_matches": [
+        {
+          "lane": "governance_personnel",
+          "label": "거버넌스·인사",
+          "description": "위원회, 정책네트워크, 참여기구, 임명·위촉 기사 등을 묶습니다.",
+          "matched_keywords": [
+            "청년위원회",
+            "위원회"
+          ],
+          "score": 7
+        },
+        {
+          "lane": "political_commitment",
+          "label": "정치·공약",
+          "description": "청년 공약, 후보, 비례대표, 선거 의제를 별도 레이더로 남깁니다.",
+          "matched_keywords": [
+            "청년",
+            "공약"
+          ],
+          "score": 7
+        }
+      ],
+      "ops_radar_note": "거버넌스·인사 (청년위원회, 위원회) / 정치·공약 (청년, 공약)"
+    },
     {
       "article_key": "https://www.incheontoday.com/news/articleView.html?idxno=318414",
       "title": "이병래 “청년이 머무는 남동 만들겠다” 남동구 주거·일자리·자치 공약 발표",
@@ -79,163 +170,19 @@
       "ops_radar_note": "기관·사업 공고 (청년, 확대) / 정치·공약 (청년, 공약)"
     },
     {
-      "article_key": "https://busanmbc.co.kr/01_new/new01_view.asp?idx=284968",
-      "title": "NEWS > 상세",
-      "preferred_url": "https://busanmbc.co.kr/01_new/new01_view.asp?idx=284968",
-      "source": "부산MBC",
-      "source_name": "네이버뉴스 청년정책(1주)",
+      "article_key": "https://www.inews24.com/view/1965262",
+      "title": "[2026 지선] 오세훈 \"'월세 지옥' 앞에 선 청년들 지킬 것\"",
+      "preferred_url": "https://www.inews24.com/view/1965262",
+      "source": "아이뉴스24",
+      "source_name": "네이버뉴스 청년 부채·금융(1주)",
       "source_kind": "news",
-      "publisher_domain": "busanmbc.co.kr",
-      "published_at": "2026-05-01T21:08:44.347697+09:00",
-      "region": "부산",
-      "selection_bucket": "regional_issue",
-      "drop_reason": "public_relevance_filtered",
-      "importance_score": 2,
-      "ops_radar_score": 29,
-      "ops_radar_priority": "critical",
-      "ops_radar_overlooked": true,
-      "ops_radar_labels": [
-        "정치·공약",
-        "리스크·논란"
-      ],
-      "ops_radar_lanes": [
-        "political_commitment",
-        "risk_alert"
-      ],
-      "ops_radar_matches": [
-        {
-          "lane": "political_commitment",
-          "label": "정치·공약",
-          "description": "청년 공약, 후보, 비례대표, 선거 의제를 별도 레이더로 남깁니다.",
-          "matched_keywords": [
-            "청년",
-            "후보"
-          ],
-          "score": 7
-        },
-        {
-          "lane": "risk_alert",
-          "label": "리스크·논란",
-          "description": "갈등, 감사, 갑질, 예산 삭감, 폐지 같은 운영 리스크를 우선 경보합니다.",
-          "matched_keywords": [
-            "청년",
-            "중단"
-          ],
-          "score": 9
-        }
-      ],
-      "ops_radar_note": "정치·공약 (청년, 후보) / 리스크·논란 (청년, 중단)"
-    },
-    {
-      "article_key": "https://www.yeongnam.com/web/view.php?key=20260501022121487",
-      "title": "“일자리에 달린 대구의 미래” 김부겸-추경호의 ‘노동절’ 메시지는? | 영남일보 | 노진실 기자 | 정치",
-      "preferred_url": "https://www.yeongnam.com/web/view.php?key=20260501022121487",
-      "source": "영남일보",
-      "source_name": "네이버뉴스 청년 노동·권리(1주)",
-      "source_kind": "news",
-      "publisher_domain": "www.yeongnam.com",
-      "published_at": "2026-05-01T18:35:20+09:00",
-      "region": "대구",
-      "selection_bucket": "regional_issue",
-      "drop_reason": "public_relevance_filtered",
-      "importance_score": 10,
-      "ops_radar_score": 29,
-      "ops_radar_priority": "critical",
-      "ops_radar_overlooked": true,
-      "ops_radar_labels": [
-        "정치·공약",
-        "리스크·논란"
-      ],
-      "ops_radar_lanes": [
-        "political_commitment",
-        "risk_alert"
-      ],
-      "ops_radar_matches": [
-        {
-          "lane": "political_commitment",
-          "label": "정치·공약",
-          "description": "청년 공약, 후보, 비례대표, 선거 의제를 별도 레이더로 남깁니다.",
-          "matched_keywords": [
-            "청년",
-            "선거"
-          ],
-          "score": 7
-        },
-        {
-          "lane": "risk_alert",
-          "label": "리스크·논란",
-          "description": "갈등, 감사, 갑질, 예산 삭감, 폐지 같은 운영 리스크를 우선 경보합니다.",
-          "matched_keywords": [
-            "청년",
-            "감사"
-          ],
-          "score": 9
-        }
-      ],
-      "ops_radar_note": "정치·공약 (청년, 선거) / 리스크·논란 (청년, 감사)"
-    },
-    {
-      "article_key": "https://news.google.com/rss/articles/CBMiYkFVX3lxTE1NTkNIblE4U2h3S09vRkZUaHlTMnc3b0FHUk95bGZnNklfQmZreXJQa0d5a3Fxc3YyakVBc0oycWxRY1NJcUltaVN5SkZPQWlMa3BuSVBfRGFCeWhWQmdWbWVR?oc=5",
-      "title": "공정거래위원회 전문임기제 다급(청년보좌역) 경력경쟁채용시험 최종합격자 공고",
-      "preferred_url": "https://news.google.com/rss/articles/CBMiYkFVX3lxTE1NTkNIblE4U2h3S09vRkZUaHlTMnc3b0FHUk95bGZnNklfQmZreXJQa0d5a3Fxc3YyakVBc0oycWxRY1NJcUltaVN5SkZPQWlMa3BuSVBfRGFCeWhWQmdWbWVR?oc=5",
-      "source": "서울Pn",
-      "source_name": "구글뉴스 거버넌스(30일)",
-      "source_kind": "news",
-      "publisher_domain": "go.seoul.co.kr",
-      "published_at": "2026-04-30T03:06:21+00:00",
+      "publisher_domain": "www.inews24.com",
+      "published_at": "2026-05-02T15:36:22+09:00",
       "region": "서울",
       "selection_bucket": "regional_issue",
-      "drop_reason": "selection_cutoff:지역 이슈:score=24",
-      "importance_score": 24,
-      "ops_radar_score": 26,
-      "ops_radar_priority": "critical",
-      "ops_radar_overlooked": true,
-      "ops_radar_labels": [
-        "기관·사업 공고",
-        "거버넌스·인사"
-      ],
-      "ops_radar_lanes": [
-        "institution_program",
-        "governance_personnel"
-      ],
-      "ops_radar_matches": [
-        {
-          "lane": "institution_program",
-          "label": "기관·사업 공고",
-          "description": "실무자가 챙겨야 할 모집, 접수, 선정, 프로그램 공고형 기사를 찾습니다.",
-          "matched_keywords": [
-            "청년",
-            "공고"
-          ],
-          "score": 7
-        },
-        {
-          "lane": "governance_personnel",
-          "label": "거버넌스·인사",
-          "description": "위원회, 정책네트워크, 참여기구, 임명·위촉 기사 등을 묶습니다.",
-          "matched_keywords": [
-            "청년보좌역",
-            "위원회"
-          ],
-          "score": 7
-        }
-      ],
-      "ops_radar_note": "기관·사업 공고 (청년, 공고) / 거버넌스·인사 (청년보좌역, 위원회)"
-    },
-    {
-      "article_key": "http://www.paxetv.com/news/articleView.html?idxno=271134",
-      "title": "이권재 오산시장 후보 \"일로 평가 받는 시장 될 것\"",
-      "preferred_url": "http://www.paxetv.com/news/articleView.html?idxno=271134",
-      "source": "팍스경제TV",
-      "source_name": "네이버뉴스 청년정책(1주)",
-      "source_kind": "news",
-      "publisher_domain": "www.paxetv.com",
-      "published_at": "2026-05-01T23:08:43.974088+09:00",
-      "region": "경기",
-      "selection_bucket": "regional_issue",
       "drop_reason": "public_relevance_filtered",
-      "importance_score": 10,
-      "ops_radar_score": 25,
+      "importance_score": 18,
+      "ops_radar_score": 29,
       "ops_radar_priority": "critical",
       "ops_radar_overlooked": true,
       "ops_radar_labels": [
@@ -253,7 +200,7 @@
           "description": "실무자가 챙겨야 할 모집, 접수, 선정, 프로그램 공고형 기사를 찾습니다.",
           "matched_keywords": [
             "청년",
-            "개소"
+            "확대"
           ],
           "score": 7
         },
@@ -263,22 +210,118 @@
           "description": "청년 공약, 후보, 비례대표, 선거 의제를 별도 레이더로 남깁니다.",
           "matched_keywords": [
             "청년",
-            "후보"
+            "공약"
           ],
           "score": 7
         }
       ],
-      "ops_radar_note": "기관·사업 공고 (청년, 개소) / 정치·공약 (청년, 후보)"
+      "ops_radar_note": "기관·사업 공고 (청년, 확대) / 정치·공약 (청년, 공약)"
     },
     {
-      "article_key": "https://www.viva100.com/article/20260501500062",
-      "title": "대구시 군위군, 청년월세 지원 “주거 안정 앞장선다”",
-      "preferred_url": "https://www.viva100.com/article/20260501500062",
-      "source": "브릿지경제",
+      "article_key": "https://www.cbci.co.kr/news/articleView.html?idxno=571874",
+      "title": "오세훈, 청년 주거공약 발표…“정부 부동산 정책 실패, 청년에 전가”",
+      "preferred_url": "https://www.cbci.co.kr/news/articleView.html?idxno=571874",
+      "source": "CBC뉴스",
       "source_name": "네이버뉴스 청년 주거·생활(1주)",
       "source_kind": "news",
-      "publisher_domain": "www.viva100.com",
-      "published_at": "2026-05-01T10:08:48.147153+09:00",
+      "publisher_domain": "www.cbci.co.kr",
+      "published_at": "2026-05-03T06:05:00+09:00",
+      "region": "서울",
+      "selection_bucket": "regional_issue",
+      "drop_reason": "public_relevance_filtered",
+      "importance_score": 15,
+      "ops_radar_score": 27,
+      "ops_radar_priority": "critical",
+      "ops_radar_overlooked": true,
+      "ops_radar_labels": [
+        "기관·사업 공고",
+        "정치·공약"
+      ],
+      "ops_radar_lanes": [
+        "institution_program",
+        "political_commitment"
+      ],
+      "ops_radar_matches": [
+        {
+          "lane": "institution_program",
+          "label": "기관·사업 공고",
+          "description": "실무자가 챙겨야 할 모집, 접수, 선정, 프로그램 공고형 기사를 찾습니다.",
+          "matched_keywords": [
+            "청년",
+            "확대"
+          ],
+          "score": 7
+        },
+        {
+          "lane": "political_commitment",
+          "label": "정치·공약",
+          "description": "청년 공약, 후보, 비례대표, 선거 의제를 별도 레이더로 남깁니다.",
+          "matched_keywords": [
+            "청년",
+            "공약"
+          ],
+          "score": 7
+        }
+      ],
+      "ops_radar_note": "기관·사업 공고 (청년, 확대) / 정치·공약 (청년, 공약)"
+    },
+    {
+      "article_key": "https://www.gokorea.kr/news/articleView.html?idxno=865331",
+      "title": "오세훈, 청년 주거지원 전략으로 민주당 부동산 정책 직격",
+      "preferred_url": "https://www.gokorea.kr/news/articleView.html?idxno=865331",
+      "source": "공감신문",
+      "source_name": "네이버뉴스 청년 주거·생활(1주)",
+      "source_kind": "news",
+      "publisher_domain": "www.gokorea.kr",
+      "published_at": "2026-05-02T13:58:50+09:00",
+      "region": "서울",
+      "selection_bucket": "regional_issue",
+      "drop_reason": "public_relevance_filtered",
+      "importance_score": 15,
+      "ops_radar_score": 27,
+      "ops_radar_priority": "critical",
+      "ops_radar_overlooked": true,
+      "ops_radar_labels": [
+        "기관·사업 공고",
+        "정치·공약"
+      ],
+      "ops_radar_lanes": [
+        "institution_program",
+        "political_commitment"
+      ],
+      "ops_radar_matches": [
+        {
+          "lane": "institution_program",
+          "label": "기관·사업 공고",
+          "description": "실무자가 챙겨야 할 모집, 접수, 선정, 프로그램 공고형 기사를 찾습니다.",
+          "matched_keywords": [
+            "청년",
+            "확대"
+          ],
+          "score": 7
+        },
+        {
+          "lane": "political_commitment",
+          "label": "정치·공약",
+          "description": "청년 공약, 후보, 비례대표, 선거 의제를 별도 레이더로 남깁니다.",
+          "matched_keywords": [
+            "청년",
+            "공약"
+          ],
+          "score": 7
+        }
+      ],
+      "ops_radar_note": "기관·사업 공고 (청년, 확대) / 정치·공약 (청년, 공약)"
+    },
+    {
+      "article_key": "https://www.youthdaily.co.kr/news/article.html?no=218485",
+      "title": "[청년일보] 비용 부담에도 계열사 성장에...iM금융지주, 올 1분기 실적 '선방'",
+      "preferred_url": "https://www.youthdaily.co.kr/news/article.html?no=218485",
+      "source": "청년일보",
+      "source_name": "네이버뉴스 청년 부채·금융(1주)",
+      "source_kind": "news",
+      "publisher_domain": "www.youthdaily.co.kr",
+      "published_at": "2026-05-03T08:00:02+09:00",
       "region": "서울",
       "selection_bucket": "regional_issue",
       "drop_reason": "selection_cutoff:지역 이슈:score=38",
@@ -299,12 +342,12 @@
           "description": "실무자가 챙겨야 할 모집, 접수, 선정, 프로그램 공고형 기사를 찾습니다.",
           "matched_keywords": [
             "청년",
-            "신청"
+            "확대"
           ],
           "score": 7
         }
       ],
-      "ops_radar_note": "기관·사업 공고 (청년, 신청)"
+      "ops_radar_note": "기관·사업 공고 (청년, 확대)"
     },
     {
       "article_key": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE5qUW11TmJQa2tPN2ZlNFhsLW5OVUo0aVJBNFNFVDFRalA0TEZ3OTdvMGIyLUh3ek5Ga0xKeTFqT0xkZmVndkc2aGZEVUlyazlhUFQ3Szg3ZUY0dGlq?oc=5",
@@ -403,15 +446,159 @@
       "ops_radar_note": "기관·사업 공고 (청년, 오픈) / 거버넌스·인사 (청년보좌역, 간담회)"
     },
     {
-      "article_key": "https://www.wflower.info/news/article.html?no=12143",
-      "title": "[우먼스플라워] [정책Q&A] 도봉구 청년 사회첫출발 지원금",
-      "preferred_url": "https://www.wflower.info/news/article.html?no=12143",
-      "source": "우먼스플라워",
-      "source_name": "네이버뉴스 청년정책(1주)",
+      "article_key": "https://www.slist.kr/news/articleView.html?idxno=736527",
+      "title": "[은행가] 국민銀, 청년창업가 육성 'KB유니콘클럽' 6기 발대식 外",
+      "preferred_url": "https://www.slist.kr/news/articleView.html?idxno=736527",
+      "source": "싱글리스트",
+      "source_name": "네이버뉴스 청년센터·활동(1주)",
       "source_kind": "news",
-      "publisher_domain": "www.wflower.info",
-      "published_at": "2026-05-01T23:09:57+09:00",
-      "region": "서울",
+      "publisher_domain": "www.slist.kr",
+      "published_at": "2026-05-03T10:15:27+09:00",
+      "region": "경기",
+      "selection_bucket": "regional_issue",
+      "drop_reason": "selection_cutoff:지역 이슈:score=35",
+      "importance_score": 35,
+      "ops_radar_score": 23,
+      "ops_radar_priority": "critical",
+      "ops_radar_overlooked": true,
+      "ops_radar_labels": [
+        "기관·사업 공고"
+      ],
+      "ops_radar_lanes": [
+        "institution_program"
+      ],
+      "ops_radar_matches": [
+        {
+          "lane": "institution_program",
+          "label": "기관·사업 공고",
+          "description": "실무자가 챙겨야 할 모집, 접수, 선정, 프로그램 공고형 기사를 찾습니다.",
+          "matched_keywords": [
+            "청년",
+            "프로그램"
+          ],
+          "score": 7
+        }
+      ],
+      "ops_radar_note": "기관·사업 공고 (청년, 프로그램)"
+    },
+    {
+      "article_key": "https://www.ziksir.com/news/articleView.html?idxno=132756",
+      "title": "KB국민은행, 청년 스타트업 육성 프로그램 ‘KB유니콘클럽’ 6기 발대식 진행",
+      "preferred_url": "https://www.ziksir.com/news/articleView.html?idxno=132756",
+      "source": "직썰",
+      "source_name": "네이버뉴스 청년센터·활동(1주)",
+      "source_kind": "news",
+      "publisher_domain": "www.ziksir.com",
+      "published_at": "2026-05-03T09:50:24+09:00",
+      "region": "경기",
+      "selection_bucket": "regional_issue",
+      "drop_reason": "selection_cutoff:지역 이슈:score=35",
+      "importance_score": 35,
+      "ops_radar_score": 23,
+      "ops_radar_priority": "critical",
+      "ops_radar_overlooked": true,
+      "ops_radar_labels": [
+        "기관·사업 공고"
+      ],
+      "ops_radar_lanes": [
+        "institution_program"
+      ],
+      "ops_radar_matches": [
+        {
+          "lane": "institution_program",
+          "label": "기관·사업 공고",
+          "description": "실무자가 챙겨야 할 모집, 접수, 선정, 프로그램 공고형 기사를 찾습니다.",
+          "matched_keywords": [
+            "청년",
+            "프로그램"
+          ],
+          "score": 7
+        }
+      ],
+      "ops_radar_note": "기관·사업 공고 (청년, 프로그램)"
+    },
+    {
+      "article_key": "http://www.efnews.co.kr/news/articleView.html?idxno=129544",
+      "title": "KB국민은행, 'KB유니콘클럽' 6기 발대식 개최...청년 창업가 육성",
+      "preferred_url": "http://www.efnews.co.kr/news/articleView.html?idxno=129544",
+      "source": "파이낸셜신문",
+      "source_name": "네이버뉴스 청년센터·활동(1주)",
+      "source_kind": "news",
+      "publisher_domain": "www.efnews.co.kr",
+      "published_at": "2026-05-03T09:40:27+09:00",
+      "region": "경기",
+      "selection_bucket": "regional_issue",
+      "drop_reason": "selection_cutoff:지역 이슈:score=35",
+      "importance_score": 35,
+      "ops_radar_score": 23,
+      "ops_radar_priority": "critical",
+      "ops_radar_overlooked": true,
+      "ops_radar_labels": [
+        "기관·사업 공고"
+      ],
+      "ops_radar_lanes": [
+        "institution_program"
+      ],
+      "ops_radar_matches": [
+        {
+          "lane": "institution_program",
+          "label": "기관·사업 공고",
+          "description": "실무자가 챙겨야 할 모집, 접수, 선정, 프로그램 공고형 기사를 찾습니다.",
+          "matched_keywords": [
+            "청년",
+            "프로그램"
+          ],
+          "score": 7
+        }
+      ],
+      "ops_radar_note": "기관·사업 공고 (청년, 프로그램)"
+    },
+    {
+      "article_key": "https://www.ccreview.co.kr/news/articleView.html?idxno=347606",
+      "title": "세종시, ‘바이오 등 광역이음 프로젝트’ 선정",
+      "preferred_url": "https://www.ccreview.co.kr/news/articleView.html?idxno=347606",
+      "source": "충청리뷰",
+      "source_name": "네이버뉴스 청년 고용·쉬었음(1주)",
+      "source_kind": "news",
+      "publisher_domain": "www.ccreview.co.kr",
+      "published_at": "2026-05-03T08:18:38+09:00",
+      "region": "대전",
+      "selection_bucket": "regional_issue",
+      "drop_reason": "selection_cutoff:지역 이슈:score=35",
+      "importance_score": 35,
+      "ops_radar_score": 23,
+      "ops_radar_priority": "critical",
+      "ops_radar_overlooked": true,
+      "ops_radar_labels": [
+        "기관·사업 공고"
+      ],
+      "ops_radar_lanes": [
+        "institution_program"
+      ],
+      "ops_radar_matches": [
+        {
+          "lane": "institution_program",
+          "label": "기관·사업 공고",
+          "description": "실무자가 챙겨야 할 모집, 접수, 선정, 프로그램 공고형 기사를 찾습니다.",
+          "matched_keywords": [
+            "청년",
+            "선정"
+          ],
+          "score": 7
+        }
+      ],
+      "ops_radar_note": "기관·사업 공고 (청년, 선정)"
+    },
+    {
+      "article_key": "http://www.breaknews.com/1204666",
+      "title": "≪브레이크뉴스≫ 전남도, ‘청년 희망일자리 지원사업’ 참여 기업 모집… 인건비 최대 60% 지원",
+      "preferred_url": "http://www.breaknews.com/1204666",
+      "source": "브레이크뉴스",
+      "source_name": "네이버뉴스 청년 고용·쉬었음(1주)",
+      "source_kind": "news",
+      "publisher_domain": "www.breaknews.com",
+      "published_at": "2026-05-02T18:58:00+09:00",
+      "region": "전남",
       "selection_bucket": "regional_issue",
       "drop_reason": "selection_cutoff:지역 이슈:score=39",
       "importance_score": 39,
@@ -431,78 +618,6 @@
           "description": "실무자가 챙겨야 할 모집, 접수, 선정, 프로그램 공고형 기사를 찾습니다.",
           "matched_keywords": [
             "청년",
-            "신청"
-          ],
-          "score": 7
-        }
-      ],
-      "ops_radar_note": "기관·사업 공고 (청년, 신청)"
-    },
-    {
-      "article_key": "https://www.daejonilbo.com/news/articleView.html?idxno=2272627",
-      "title": "이장우, '더 위대한 대전' 선대위 출범...1차 인선 792명",
-      "preferred_url": "https://www.daejonilbo.com/news/articleView.html?idxno=2272627",
-      "source": "대전일보",
-      "source_name": "네이버뉴스 청년정책(1주)",
-      "source_kind": "news",
-      "publisher_domain": "www.daejonilbo.com",
-      "published_at": "2026-05-01T21:51:00+09:00",
-      "region": "대전",
-      "selection_bucket": "governance",
-      "drop_reason": "selection_cutoff:거버넌스:score=29",
-      "importance_score": 29,
-      "ops_radar_score": 23,
-      "ops_radar_priority": "critical",
-      "ops_radar_overlooked": true,
-      "ops_radar_labels": [
-        "정치·공약"
-      ],
-      "ops_radar_lanes": [
-        "political_commitment"
-      ],
-      "ops_radar_matches": [
-        {
-          "lane": "political_commitment",
-          "label": "정치·공약",
-          "description": "청년 공약, 후보, 비례대표, 선거 의제를 별도 레이더로 남깁니다.",
-          "matched_keywords": [
-            "청년",
-            "후보"
-          ],
-          "score": 7
-        }
-      ],
-      "ops_radar_note": "정치·공약 (청년, 후보)"
-    },
-    {
-      "article_key": "https://mpmbc.co.kr/NewsArticle/1516880",
-      "title": "'전남 청년 희망 일자리 지원사업' 참여기업 19일까지 모집",
-      "preferred_url": "https://mpmbc.co.kr/NewsArticle/1516880",
-      "source": "목포MBC",
-      "source_name": "네이버뉴스 청년 고용·쉬었음(1주)",
-      "source_kind": "news",
-      "publisher_domain": "www.mpmbc.co.kr",
-      "published_at": "2026-05-01T21:08:45.413719+09:00",
-      "region": "전남",
-      "selection_bucket": "regional_issue",
-      "drop_reason": "selection_cutoff:지역 이슈:score=34",
-      "importance_score": 34,
-      "ops_radar_score": 23,
-      "ops_radar_priority": "critical",
-      "ops_radar_overlooked": true,
-      "ops_radar_labels": [
-        "기관·사업 공고"
-      ],
-      "ops_radar_lanes": [
-        "institution_program"
-      ],
-      "ops_radar_matches": [
-        {
-          "lane": "institution_program",
-          "label": "기관·사업 공고",
-          "description": "실무자가 챙겨야 할 모집, 접수, 선정, 프로그램 공고형 기사를 찾습니다.",
-          "matched_keywords": [
-            "청년",
             "모집"
           ],
           "score": 7
@@ -511,15 +626,15 @@
       "ops_radar_note": "기관·사업 공고 (청년, 모집)"
     },
     {
-      "article_key": "https://www.kgnews.co.kr/news/article.html?no=894049",
-      "title": "국힘 경기도당, 수원 포함 5곳 광역의원 단수공천 결과 발표",
-      "preferred_url": "https://www.kgnews.co.kr/news/article.html?no=894049",
-      "source": "경기신문",
-      "source_name": "네이버뉴스 청년센터·활동(1주)",
+      "article_key": "https://weekly.hankooki.com/news/articleView.html?idxno=7162518",
+      "title": "오세훈 “李·정원오, 공급빙하 복식조” vs 정원오 “서울시, 전월세 불안 책임”",
+      "preferred_url": "https://weekly.hankooki.com/news/articleView.html?idxno=7162518",
+      "source": "주간한국",
+      "source_name": "네이버뉴스 청년 주거·생활(1주)",
       "source_kind": "news",
-      "publisher_domain": "www.kgnews.co.kr",
-      "published_at": "2026-05-01T19:47:27+09:00",
-      "region": "인천",
+      "publisher_domain": "weekly.hankooki.com",
+      "published_at": "2026-05-02T16:47:53+09:00",
+      "region": "서울",
       "selection_bucket": "regional_issue",
       "drop_reason": "selection_cutoff:지역 이슈:score=35",
       "importance_score": 35,
@@ -539,228 +654,12 @@
           "description": "청년 공약, 후보, 비례대표, 선거 의제를 별도 레이더로 남깁니다.",
           "matched_keywords": [
             "청년",
-            "후보"
+            "공약"
           ],
           "score": 7
         }
       ],
-      "ops_radar_note": "정치·공약 (청년, 후보)"
-    },
-    {
-      "article_key": "https://www.sedaily.com/article/20039440",
-      "title": "영상 “매달 20만 원씩 드려요”…한숨 나오는 월세값 보태주는 ‘청년월세’ 뭐길래",
-      "preferred_url": "https://www.sedaily.com/article/20039440",
-      "source": "서울경제",
-      "source_name": "네이버뉴스 청년 주거·생활(1주)",
-      "source_kind": "news",
-      "publisher_domain": "www.sedaily.com",
-      "published_at": "2026-05-01T11:13:51+09:00",
-      "region": "서울",
-      "selection_bucket": "regional_issue",
-      "drop_reason": "selection_cutoff:지역 이슈:score=35",
-      "importance_score": 35,
-      "ops_radar_score": 23,
-      "ops_radar_priority": "critical",
-      "ops_radar_overlooked": true,
-      "ops_radar_labels": [
-        "기관·사업 공고"
-      ],
-      "ops_radar_lanes": [
-        "institution_program"
-      ],
-      "ops_radar_matches": [
-        {
-          "lane": "institution_program",
-          "label": "기관·사업 공고",
-          "description": "실무자가 챙겨야 할 모집, 접수, 선정, 프로그램 공고형 기사를 찾습니다.",
-          "matched_keywords": [
-            "청년",
-            "확대"
-          ],
-          "score": 7
-        }
-      ],
-      "ops_radar_note": "기관·사업 공고 (청년, 확대)"
-    },
-    {
-      "article_key": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE5pTUxYcDhCdUViYllmQzJadFBTLS1GckFMTGpsRU5kMUhVMmt4Q3BKbHNpSzNySXVCY0FlLWEzeExBR282N2FlWDMycGhPQXhQSlFFam1tdmo3dmZxUmdCctIBYEFVX3lxTE5pTUxYcDhCdUViYllmQzJadFBTLS1GckFMTGpsRU5kMUhVMmt4Q3BKbHNpSzNySXVCY0FlLWEzeExBR282N2FlWDMycGhPQXhQSlFFam1tdmo3dmZxUmdCcg?oc=5",
-      "title": "전남도, 청년 희망일자리 지원사업 참여기업 모집",
-      "preferred_url": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE5pTUxYcDhCdUViYllmQzJadFBTLS1GckFMTGpsRU5kMUhVMmt4Q3BKbHNpSzNySXVCY0FlLWEzeExBR282N2FlWDMycGhPQXhQSlFFam1tdmo3dmZxUmdCctIBYEFVX3lxTE5pTUxYcDhCdUViYllmQzJadFBTLS1GckFMTGpsRU5kMUhVMmt4Q3BKbHNpSzNySXVCY0FlLWEzeExBR282N2FlWDMycGhPQXhQSlFFam1tdmo3dmZxUmdCcg?oc=5",
-      "source": "연합뉴스",
-      "source_name": "구글뉴스 청년 고용·쉬었음(7일)",
-      "source_kind": "news",
-      "publisher_domain": "www.yna.co.kr",
-      "published_at": "2026-05-01T02:00:01+00:00",
-      "region": "전남",
-      "selection_bucket": "regional_issue",
-      "drop_reason": "selection_cutoff:지역 이슈:score=34",
-      "importance_score": 34,
-      "ops_radar_score": 23,
-      "ops_radar_priority": "critical",
-      "ops_radar_overlooked": true,
-      "ops_radar_labels": [
-        "기관·사업 공고"
-      ],
-      "ops_radar_lanes": [
-        "institution_program"
-      ],
-      "ops_radar_matches": [
-        {
-          "lane": "institution_program",
-          "label": "기관·사업 공고",
-          "description": "실무자가 챙겨야 할 모집, 접수, 선정, 프로그램 공고형 기사를 찾습니다.",
-          "matched_keywords": [
-            "청년",
-            "모집"
-          ],
-          "score": 7
-        }
-      ],
-      "ops_radar_note": "기관·사업 공고 (청년, 모집)"
-    },
-    {
-      "article_key": "https://www.viva100.com/article/20260501500049",
-      "title": "통영시, 청년월세 지원사업 신청·접수",
-      "preferred_url": "https://www.viva100.com/article/20260501500049",
-      "source": "브릿지경제",
-      "source_name": "네이버뉴스 청년 주거·생활(1주)",
-      "source_kind": "news",
-      "publisher_domain": "www.viva100.com",
-      "published_at": "2026-05-01T10:08:48.147153+09:00",
-      "region": "서울",
-      "selection_bucket": "regional_issue",
-      "drop_reason": "selection_cutoff:지역 이슈:score=35",
-      "importance_score": 35,
-      "ops_radar_score": 23,
-      "ops_radar_priority": "critical",
-      "ops_radar_overlooked": true,
-      "ops_radar_labels": [
-        "기관·사업 공고"
-      ],
-      "ops_radar_lanes": [
-        "institution_program"
-      ],
-      "ops_radar_matches": [
-        {
-          "lane": "institution_program",
-          "label": "기관·사업 공고",
-          "description": "실무자가 챙겨야 할 모집, 접수, 선정, 프로그램 공고형 기사를 찾습니다.",
-          "matched_keywords": [
-            "청년",
-            "신청"
-          ],
-          "score": 7
-        }
-      ],
-      "ops_radar_note": "기관·사업 공고 (청년, 신청)"
-    },
-    {
-      "article_key": "https://www.segye.com/newsView/20260430521142",
-      "title": "서울시 ‘무주택 청년 월세 지원’ 대상 확대",
-      "preferred_url": "https://www.segye.com/newsView/20260430521142",
-      "source": "세계일보",
-      "source_name": "네이버뉴스 청년 주거·생활(1주)",
-      "source_kind": "news",
-      "publisher_domain": "www.segye.com",
-      "published_at": "2026-05-01T06:00:00+09:00",
-      "region": "서울",
-      "selection_bucket": "regional_issue",
-      "drop_reason": "selection_cutoff:지역 이슈:score=35",
-      "importance_score": 35,
-      "ops_radar_score": 23,
-      "ops_radar_priority": "critical",
-      "ops_radar_overlooked": true,
-      "ops_radar_labels": [
-        "기관·사업 공고"
-      ],
-      "ops_radar_lanes": [
-        "institution_program"
-      ],
-      "ops_radar_matches": [
-        {
-          "lane": "institution_program",
-          "label": "기관·사업 공고",
-          "description": "실무자가 챙겨야 할 모집, 접수, 선정, 프로그램 공고형 기사를 찾습니다.",
-          "matched_keywords": [
-            "청년",
-            "신청"
-          ],
-          "score": 7
-        }
-      ],
-      "ops_radar_note": "기관·사업 공고 (청년, 신청)"
-    },
-    {
-      "article_key": "https://www.factin.co.kr/news/articleView.html?idxno=6211",
-      "title": "청년들의 내일을 위한 30조 원의 약속, 정부와 여야가 손을 맞잡았다",
-      "preferred_url": "https://www.factin.co.kr/news/articleView.html?idxno=6211",
-      "source": "여론과뉴스",
-      "source_name": "네이버뉴스 거버넌스(1개월)",
-      "source_kind": "news",
-      "publisher_domain": "www.factin.co.kr",
-      "published_at": "2026-04-29T11:39:35+09:00",
-      "region": "서울",
-      "selection_bucket": "regional_issue",
-      "drop_reason": "selection_cutoff:지역 이슈:score=38",
-      "importance_score": 38,
-      "ops_radar_score": 23,
-      "ops_radar_priority": "critical",
-      "ops_radar_overlooked": true,
-      "ops_radar_labels": [
-        "거버넌스·인사"
-      ],
-      "ops_radar_lanes": [
-        "governance_personnel"
-      ],
-      "ops_radar_matches": [
-        {
-          "lane": "governance_personnel",
-          "label": "거버넌스·인사",
-          "description": "위원회, 정책네트워크, 참여기구, 임명·위촉 기사 등을 묶습니다.",
-          "matched_keywords": [
-            "청년정책조정위원회",
-            "회의"
-          ],
-          "score": 7
-        }
-      ],
-      "ops_radar_note": "거버넌스·인사 (청년정책조정위원회, 회의)"
-    },
-    {
-      "article_key": "https://www.newscammp.co.kr/news/articleView.html?idxno=6124",
-      "title": "\"청년 체감 정책 만든다\" 김민석 총리, 30조 원 규모 청년정책 시행계획 발표",
-      "preferred_url": "https://www.newscammp.co.kr/news/articleView.html?idxno=6124",
-      "source": "뉴스캠프",
-      "source_name": "네이버뉴스 거버넌스(1개월)",
-      "source_kind": "news",
-      "publisher_domain": "www.newscammp.co.kr",
-      "published_at": "2026-04-29T11:05:02+09:00",
-      "region": "서울",
-      "selection_bucket": "regional_issue",
-      "drop_reason": "selection_cutoff:지역 이슈:score=40",
-      "importance_score": 40,
-      "ops_radar_score": 23,
-      "ops_radar_priority": "critical",
-      "ops_radar_overlooked": true,
-      "ops_radar_labels": [
-        "거버넌스·인사"
-      ],
-      "ops_radar_lanes": [
-        "governance_personnel"
-      ],
-      "ops_radar_matches": [
-        {
-          "lane": "governance_personnel",
-          "label": "거버넌스·인사",
-          "description": "위원회, 정책네트워크, 참여기구, 임명·위촉 기사 등을 묶습니다.",
-          "matched_keywords": [
-            "청년정책조정위원회",
-            "회의"
-          ],
-          "score": 7
-        }
-      ],
-      "ops_radar_note": "거버넌스·인사 (청년정책조정위원회, 회의)"
+      "ops_radar_note": "정치·공약 (청년, 공약)"
     },
     {
       "article_key": "https://news.google.com/rss/articles/CBMiYkFVX3lxTE5rZ25EQkxnSzBEQjBQaUQ2d1ZJcTBLaFQwTjhlWHU5eFE4ck80bjlHRE02UkRaM3NvVEFKWGt1V1RrRVJELXdub3ZnVnBZQjJ5Mjk2blhVYm1jbk9yYURkX2RR?oc=5",
@@ -811,15 +710,123 @@
       "ops_radar_note": "기관·사업 공고 (청년, 모집) / 거버넌스·인사 (청년보좌역, 자문)"
     },
     {
-      "article_key": "https://www.newsclaim.co.kr/news/articleView.html?idxno=3062504",
-      "title": "[단독인터뷰] 이용우 부여군수 예비후보… 부여 대전환으로 소멸 위기 정면 돌파",
-      "preferred_url": "https://www.newsclaim.co.kr/news/articleView.html?idxno=3062504",
-      "source": "뉴스클레임",
+      "article_key": "https://www.mt.co.kr/politics/2026/05/03/2026050309423781396",
+      "title": "정원오 캠프 \"진짜 '부동산 지옥'은 오세훈이 만든 청년안심주택\"",
+      "preferred_url": "https://www.mt.co.kr/politics/2026/05/03/2026050309423781396",
+      "source": "머니투데이",
+      "source_name": "네이버뉴스 청년정책(1주)",
+      "source_kind": "news",
+      "publisher_domain": "www.mt.co.kr",
+      "published_at": "2026-05-03T10:36:25+09:00",
+      "region": "서울",
+      "selection_bucket": "opinion",
+      "drop_reason": "public_relevance_filtered",
+      "importance_score": 21,
+      "ops_radar_score": 22,
+      "ops_radar_priority": "critical",
+      "ops_radar_overlooked": true,
+      "ops_radar_labels": [
+        "정치·공약"
+      ],
+      "ops_radar_lanes": [
+        "political_commitment"
+      ],
+      "ops_radar_matches": [
+        {
+          "lane": "political_commitment",
+          "label": "정치·공약",
+          "description": "청년 공약, 후보, 비례대표, 선거 의제를 별도 레이더로 남깁니다.",
+          "matched_keywords": [
+            "청년",
+            "후보"
+          ],
+          "score": 7
+        }
+      ],
+      "ops_radar_note": "정치·공약 (청년, 후보)"
+    },
+    {
+      "article_key": "https://www.mcnews.co.kr/86104",
+      "title": "[매일건설신문] 오세훈 “청년 월세 지옥” 공세… 정원오 “시장이 누구였는데”",
+      "preferred_url": "https://www.mcnews.co.kr/86104",
+      "source": "매일건설신문",
       "source_name": "네이버뉴스 청년 광역(1주)",
       "source_kind": "news",
-      "publisher_domain": "www.newsclaim.co.kr",
-      "published_at": "2026-05-01T18:57:46+09:00",
-      "region": "대전",
+      "publisher_domain": "www.mcnews.co.kr",
+      "published_at": "2026-05-03T08:57:00+09:00",
+      "region": "서울",
+      "selection_bucket": "official_policy",
+      "drop_reason": "public_relevance_filtered",
+      "importance_score": 17,
+      "ops_radar_score": 22,
+      "ops_radar_priority": "critical",
+      "ops_radar_overlooked": true,
+      "ops_radar_labels": [
+        "정치·공약"
+      ],
+      "ops_radar_lanes": [
+        "political_commitment"
+      ],
+      "ops_radar_matches": [
+        {
+          "lane": "political_commitment",
+          "label": "정치·공약",
+          "description": "청년 공약, 후보, 비례대표, 선거 의제를 별도 레이더로 남깁니다.",
+          "matched_keywords": [
+            "청년",
+            "후보"
+          ],
+          "score": 7
+        }
+      ],
+      "ops_radar_note": "정치·공약 (청년, 후보)"
+    },
+    {
+      "article_key": "https://www.newsis.com/view/NISX20260502_0003614971",
+      "title": "오세훈 \"정원오, 서울 부동산 지옥 만들 것…공소취소 시도에 입장 밝혀라\"(종합)",
+      "preferred_url": "https://www.newsis.com/view/NISX20260502_0003614971",
+      "source": "뉴시스",
+      "source_name": "네이버뉴스 청년 부채·금융(1주)",
+      "source_kind": "news",
+      "publisher_domain": "www.newsis.com",
+      "published_at": "2026-05-02T23:55:49+09:00",
+      "region": "서울",
+      "selection_bucket": "regional_issue",
+      "drop_reason": "public_relevance_filtered",
+      "importance_score": 9,
+      "ops_radar_score": 22,
+      "ops_radar_priority": "critical",
+      "ops_radar_overlooked": true,
+      "ops_radar_labels": [
+        "정치·공약"
+      ],
+      "ops_radar_lanes": [
+        "political_commitment"
+      ],
+      "ops_radar_matches": [
+        {
+          "lane": "political_commitment",
+          "label": "정치·공약",
+          "description": "청년 공약, 후보, 비례대표, 선거 의제를 별도 레이더로 남깁니다.",
+          "matched_keywords": [
+            "청년",
+            "공약"
+          ],
+          "score": 7
+        }
+      ],
+      "ops_radar_note": "정치·공약 (청년, 공약)"
+    },
+    {
+      "article_key": "https://weekly.hankooki.com/news/articleView.html?idxno=7162524",
+      "title": "서울 주택 책임론 격화…오세훈 “부동산 지옥” vs 정원오 “적반하장”",
+      "preferred_url": "https://weekly.hankooki.com/news/articleView.html?idxno=7162524",
+      "source": "주간한국",
+      "source_name": "네이버뉴스 청년 주거·생활(1주)",
+      "source_kind": "news",
+      "publisher_domain": "weekly.hankooki.com",
+      "published_at": "2026-05-02T19:46:45+09:00",
+      "region": "서울",
       "selection_bucket": "regional_issue",
       "drop_reason": "public_relevance_filtered",
       "importance_score": 18,
@@ -847,54 +854,126 @@
       "ops_radar_note": "정치·공약 (청년, 후보)"
     },
     {
-      "article_key": "https://www.newsis.com/view/NISX20260430_0003613896",
-      "title": "서울 자치구들, 위기 청년들 위한 정책 속속 내놔[구청25]",
-      "preferred_url": "https://www.newsis.com/view/NISX20260430_0003613896",
-      "source": "뉴시스",
-      "source_name": "네이버뉴스 청년 주거·생활(1주)",
+      "article_key": "https://www.newscj.com/news/articleView.html?idxno=3398004",
+      "title": "오세훈 “정원오, 정부 부동산정책·공소취소 특검법 등 다른 목소리 못내… 한계 뚜렷”",
+      "preferred_url": "https://www.newscj.com/news/articleView.html?idxno=3398004",
+      "source": "천지일보",
+      "source_name": "네이버뉴스 청년 부채·금융(1주)",
       "source_kind": "news",
-      "publisher_domain": "www.newsis.com",
-      "published_at": "2026-05-01T09:06:23+09:00",
+      "publisher_domain": "www.newscj.com",
+      "published_at": "2026-05-02T19:14:35+09:00",
       "region": "서울",
       "selection_bucket": "regional_issue",
       "drop_reason": "public_relevance_filtered",
-      "importance_score": 28,
+      "importance_score": -1,
       "ops_radar_score": 22,
       "ops_radar_priority": "critical",
       "ops_radar_overlooked": true,
       "ops_radar_labels": [
-        "기관·사업 공고"
+        "정치·공약"
       ],
       "ops_radar_lanes": [
-        "institution_program"
+        "political_commitment"
       ],
       "ops_radar_matches": [
         {
-          "lane": "institution_program",
-          "label": "기관·사업 공고",
-          "description": "실무자가 챙겨야 할 모집, 접수, 선정, 프로그램 공고형 기사를 찾습니다.",
+          "lane": "political_commitment",
+          "label": "정치·공약",
+          "description": "청년 공약, 후보, 비례대표, 선거 의제를 별도 레이더로 남깁니다.",
           "matched_keywords": [
             "청년",
-            "지원사업"
+            "후보"
           ],
           "score": 7
         }
       ],
-      "ops_radar_note": "기관·사업 공고 (청년, 지원사업)"
+      "ops_radar_note": "정치·공약 (청년, 후보)"
     },
     {
-      "article_key": "https://news.google.com/rss/articles/CBMickFVX3lxTFBxb0JVdlVPbWk5Si1KTXZoME1KcHI0aUVlUnl2U01Gbi1MRUhCeE5vWWdLWHQ1WmE2X1BPWlREUG9zal93VXlGeVJUQVkwa0Z4cFRKdlNYNzh3SVF1Sl9mNWtacjY0SlhIQzh3YUE3RnRCZw?oc=5",
-      "title": "금융 사각지대 청년을 위한 사다리, 청년 미래이음 대출 신청 후기",
-      "preferred_url": "https://news.google.com/rss/articles/CBMickFVX3lxTFBxb0JVdlVPbWk5Si1KTXZoME1KcHI0aUVlUnl2U01Gbi1MRUhCeE5vWWdLWHQ1WmE2X1BPWlREUG9zal93VXlGeVJUQVkwa0Z4cFRKdlNYNzh3SVF1Sl9mNWtacjY0SlhIQzh3YUE3RnRCZw?oc=5",
-      "source": "대한민국 정책브리핑",
+      "article_key": "http://www.incheonnews.com/news/articleView.html?idxno=436038",
+      "title": "[6·3 지방선거] 강창훈, “청년 떠나는 강화 변해야” … 농업·에너지로 ‘구조 전환’ 승부수",
+      "preferred_url": "http://www.incheonnews.com/news/articleView.html?idxno=436038",
+      "source": "인천뉴스",
+      "source_name": "네이버뉴스 청년 주거·생활(1주)",
+      "source_kind": "news",
+      "publisher_domain": "www.incheonnews.com",
+      "published_at": "2026-05-02T17:37:08+09:00",
+      "region": "부산",
+      "selection_bucket": "regional_issue",
+      "drop_reason": "public_relevance_filtered",
+      "importance_score": 20,
+      "ops_radar_score": 22,
+      "ops_radar_priority": "critical",
+      "ops_radar_overlooked": true,
+      "ops_radar_labels": [
+        "정치·공약"
+      ],
+      "ops_radar_lanes": [
+        "political_commitment"
+      ],
+      "ops_radar_matches": [
+        {
+          "lane": "political_commitment",
+          "label": "정치·공약",
+          "description": "청년 공약, 후보, 비례대표, 선거 의제를 별도 레이더로 남깁니다.",
+          "matched_keywords": [
+            "청년",
+            "후보"
+          ],
+          "score": 7
+        }
+      ],
+      "ops_radar_note": "정치·공약 (청년, 후보)"
+    },
+    {
+      "article_key": "https://www.inews24.com/view/1965257",
+      "title": "[2026 지선] 오세훈 \"정원오 당선, 서울 부동산 지옥 초래할 것\"",
+      "preferred_url": "https://www.inews24.com/view/1965257",
+      "source": "아이뉴스24",
+      "source_name": "네이버뉴스 청년 부채·금융(1주)",
+      "source_kind": "news",
+      "publisher_domain": "www.inews24.com",
+      "published_at": "2026-05-02T14:23:19+09:00",
+      "region": "서울",
+      "selection_bucket": "regional_issue",
+      "drop_reason": "public_relevance_filtered",
+      "importance_score": 9,
+      "ops_radar_score": 22,
+      "ops_radar_priority": "critical",
+      "ops_radar_overlooked": true,
+      "ops_radar_labels": [
+        "정치·공약"
+      ],
+      "ops_radar_lanes": [
+        "political_commitment"
+      ],
+      "ops_radar_matches": [
+        {
+          "lane": "political_commitment",
+          "label": "정치·공약",
+          "description": "청년 공약, 후보, 비례대표, 선거 의제를 별도 레이더로 남깁니다.",
+          "matched_keywords": [
+            "청년",
+            "공약"
+          ],
+          "score": 7
+        }
+      ],
+      "ops_radar_note": "정치·공약 (청년, 공약)"
+    },
+    {
+      "article_key": "https://news.google.com/rss/articles/CBMiV0FVX3lxTFBjbFE2dk1reDUxVzJqLUhPZWpFMTh4U1Z0Ri1CSG1xaUwwOEYwcHM3MlRQRnBCek9ZOS1DdHk1TjF5X1lEbWtTeVFjcmhiR0J6WEZEN2Y1TdIBXEFVX3lxTFBCczBhSjJ2Q0NzM1YwVU1la2NLUDZNcEdVeTF3RGZJT0J1ZXBzeGFoRDY3eWV1WWpCLURjT1NwNFpLcDQ3bi12S0tSM3d4NXIzdFlxdGZyWDFFSHQt?oc=5",
+      "title": "청년 주거안정자금 신청 실전…자격·금리·절차 총정리",
+      "preferred_url": "https://news.google.com/rss/articles/CBMiV0FVX3lxTFBjbFE2dk1reDUxVzJqLUhPZWpFMTh4U1Z0Ri1CSG1xaUwwOEYwcHM3MlRQRnBCek9ZOS1DdHk1TjF5X1lEbWtTeVFjcmhiR0J6WEZEN2Y1TdIBXEFVX3lxTFBCczBhSjJ2Q0NzM1YwVU1la2NLUDZNcEdVeTF3RGZJT0J1ZXBzeGFoRDY3eWV1WWpCLURjT1NwNFpLcDQ3bi12S0tSM3d4NXIzdFlxdGZyWDFFSHQt?oc=5",
+      "source": "christiandaily.co.kr",
       "source_name": "구글뉴스 청년 부채·금융(7일)",
       "source_kind": "news",
-      "publisher_domain": "www.korea.kr",
-      "published_at": "2026-04-30T15:40:09+00:00",
+      "publisher_domain": "www.christiandaily.co.kr",
+      "published_at": "2026-05-02T04:49:24+00:00",
       "region": "전국",
       "selection_bucket": "youth_issue",
-      "drop_reason": "selection_cutoff:청년 현안:score=30",
-      "importance_score": 30,
+      "drop_reason": "selection_cutoff:청년 현안:score=26",
+      "importance_score": 26,
       "ops_radar_score": 22,
       "ops_radar_priority": "critical",
       "ops_radar_overlooked": true,
@@ -919,40 +998,64 @@
       "ops_radar_note": "기관·사업 공고 (청년, 신청)"
     },
     {
-      "article_key": "https://news.google.com/rss/articles/CBMibkFVX3lxTFBQUWdyN3F6VFUzTmVwWndhd2tGenVTU0MyYzVYR2xhMU9LSW4xWWJzT1RJQnNkTWl6YklKcFA0M0VpVG1ZUGpVa2RHZnI3SGllb1Q3V0hubVZrUmVRYk91Sjh4UEo4OVpSTHNWekRn?oc=5",
-      "title": "우승희 영암군수 예비후보, 청년단체 간담회 개최",
-      "preferred_url": "https://news.google.com/rss/articles/CBMibkFVX3lxTFBQUWdyN3F6VFUzTmVwWndhd2tGenVTU0MyYzVYR2xhMU9LSW4xWWJzT1RJQnNkTWl6YklKcFA0M0VpVG1ZUGpVa2RHZnI3SGllb1Q3V0hubVZrUmVRYk91Sjh4UEo4OVpSTHNWekRn?oc=5",
-      "source": "전국매일신문",
-      "source_name": "구글뉴스 청년단체(7일)",
+      "article_key": "https://www.khan.co.kr/article/202605021339001",
+      "title": "오세훈 “이재명·정원오 조합, 문재인·박원순 복식조보다 더 부동산 지옥 초래” 주장",
+      "preferred_url": "https://www.khan.co.kr/article/202605021339001",
+      "source": "경향신문",
+      "source_name": "네이버뉴스 청년 부채·금융(1주)",
       "source_kind": "news",
-      "publisher_domain": "www.jeonmae.co.kr",
-      "published_at": "2026-04-29T06:28:30+00:00",
-      "region": "전국",
-      "selection_bucket": "youth_issue",
+      "publisher_domain": "www.khan.co.kr",
+      "published_at": "2026-05-02T13:39:00+09:00",
+      "region": "서울",
+      "selection_bucket": "regional_issue",
       "drop_reason": "public_relevance_filtered",
-      "importance_score": -6,
+      "importance_score": 9,
       "ops_radar_score": 22,
       "ops_radar_priority": "critical",
       "ops_radar_overlooked": true,
       "ops_radar_labels": [
-        "거버넌스·인사",
         "정치·공약"
       ],
       "ops_radar_lanes": [
-        "governance_personnel",
         "political_commitment"
       ],
       "ops_radar_matches": [
         {
-          "lane": "governance_personnel",
-          "label": "거버넌스·인사",
-          "description": "위원회, 정책네트워크, 참여기구, 임명·위촉 기사 등을 묶습니다.",
+          "lane": "political_commitment",
+          "label": "정치·공약",
+          "description": "청년 공약, 후보, 비례대표, 선거 의제를 별도 레이더로 남깁니다.",
           "matched_keywords": [
-            "청년단체",
-            "간담회"
+            "청년",
+            "공약"
           ],
           "score": 7
-        },
+        }
+      ],
+      "ops_radar_note": "정치·공약 (청년, 공약)"
+    },
+    {
+      "article_key": "https://news.tvchosun.com/site/data/html_dir/2026/05/02/2026050290041.html",
+      "title": "오세훈 \"李 부동산 폭정에 청년은 '월세 지옥'…정원오는 묵묵부답\"",
+      "preferred_url": "https://news.tvchosun.com/site/data/html_dir/2026/05/02/2026050290041.html",
+      "source": "TV조선",
+      "source_name": "네이버뉴스 청년 부채·금융(1주)",
+      "source_kind": "news",
+      "publisher_domain": "news.tvchosun.com",
+      "published_at": "2026-05-02T11:10:59+09:00",
+      "region": "서울",
+      "selection_bucket": "regional_issue",
+      "drop_reason": "public_relevance_filtered",
+      "importance_score": 5,
+      "ops_radar_score": 22,
+      "ops_radar_priority": "critical",
+      "ops_radar_overlooked": true,
+      "ops_radar_labels": [
+        "정치·공약"
+      ],
+      "ops_radar_lanes": [
+        "political_commitment"
+      ],
+      "ops_radar_matches": [
         {
           "lane": "political_commitment",
           "label": "정치·공약",
@@ -964,7 +1067,7 @@
           "score": 7
         }
       ],
-      "ops_radar_note": "거버넌스·인사 (청년단체, 간담회) / 정치·공약 (청년, 후보)"
+      "ops_radar_note": "정치·공약 (청년, 후보)"
     },
     {
       "article_key": "https://www.molit.go.kr/USR/NEWS/m_71/dtl.jsp?lcmspage=1&id=95091954",
@@ -1003,9 +1106,9 @@
       "ops_radar_note": "기관·사업 공고 (청년, 확대)"
     },
     {
-      "article_key": "https://news.google.com/rss/articles/CBMiVEFVX3lxTFBmd2dTTTMxQWFWZDRqcWF1QW9vaFluYlBVeHF4Nnk0cldHMVVTT2tKMnpCQ0NGa2lNZVFmSTBfWUNham0tOVVwOWJxNjlBdmVVVDk5Zg?oc=5",
+      "article_key": "https://news.google.com/rss/articles/CBMiRkFVX3lxTE5LOTlTWnctZ3VHM3Y3enVxNElGOXdlU0g3elhDNXRtUGw1aUx5Y0ZHRkZ6LUc2aWV1SkVLckJycF9OSWpUanc?oc=5",
       "title": "기획처, 청년보좌역·자문단·인턴 동시 모집…정책 참여 확대",
-      "preferred_url": "https://news.google.com/rss/articles/CBMiVEFVX3lxTFBmd2dTTTMxQWFWZDRqcWF1QW9vaFluYlBVeHF4Nnk0cldHMVVTT2tKMnpCQ0NGa2lNZVFmSTBfWUNham0tOVVwOWJxNjlBdmVVVDk5Zg?oc=5",
+      "preferred_url": "https://news.google.com/rss/articles/CBMiRkFVX3lxTE5LOTlTWnctZ3VHM3Y3enVxNElGOXdlU0g3elhDNXRtUGw1aUx5Y0ZHRkZ6LUc2aWV1SkVLckJycF9OSWpUanc?oc=5",
       "source": "v.daum.net",
       "source_name": "구글뉴스 거버넌스(30일)",
       "source_kind": "news",
@@ -1099,54 +1202,54 @@
       "ops_radar_note": "기관·사업 공고 (청년, 모집) / 거버넌스·인사 (청년보좌역, 자문)"
     },
     {
-      "article_key": "https://www.s-journal.co.kr/news/articleView.html?idxno=41026",
-      "title": "캠코, 충남대 건축학과와 지역 청년 참여 기반 ‘나라On’ 사업 협약 체결 - S저널",
-      "preferred_url": "https://www.s-journal.co.kr/news/articleView.html?idxno=41026",
-      "source": "S-저널",
-      "source_name": "네이버뉴스 청년센터·활동(1주)",
+      "article_key": "https://www.kgnews.co.kr/news/article.html?no=894049",
+      "title": "국힘 경기도당, 수원 포함 5곳 광역의원 단수공천 결과 발표",
+      "preferred_url": "https://www.kgnews.co.kr/news/article.html?no=894049",
+      "source": "경기신문",
+      "source_name": "네이버뉴스 청년 후보·비례대표(1주)",
       "source_kind": "news",
-      "publisher_domain": "www.s-journal.co.kr",
-      "published_at": "2026-05-01T20:59:12+09:00",
-      "region": "대전",
+      "publisher_domain": "www.kgnews.co.kr",
+      "published_at": "2026-05-01T19:47:27+09:00",
+      "region": "인천",
       "selection_bucket": "regional_issue",
-      "drop_reason": "selection_cutoff:지역 이슈:score=27",
-      "importance_score": 27,
+      "drop_reason": "selection_cutoff:지역 이슈:score=33",
+      "importance_score": 33,
       "ops_radar_score": 21,
       "ops_radar_priority": "critical",
       "ops_radar_overlooked": true,
       "ops_radar_labels": [
-        "기관·사업 공고"
+        "정치·공약"
       ],
       "ops_radar_lanes": [
-        "institution_program"
+        "political_commitment"
       ],
       "ops_radar_matches": [
         {
-          "lane": "institution_program",
-          "label": "기관·사업 공고",
-          "description": "실무자가 챙겨야 할 모집, 접수, 선정, 프로그램 공고형 기사를 찾습니다.",
+          "lane": "political_commitment",
+          "label": "정치·공약",
+          "description": "청년 공약, 후보, 비례대표, 선거 의제를 별도 레이더로 남깁니다.",
           "matched_keywords": [
             "청년",
-            "확대"
+            "후보"
           ],
           "score": 7
         }
       ],
-      "ops_radar_note": "기관·사업 공고 (청년, 확대)"
+      "ops_radar_note": "정치·공약 (청년, 후보)"
     },
     {
-      "article_key": "http://www.econonews.co.kr/news/articleView.html?idxno=437292",
-      "title": "농식품부, 스마트팜 창업 교육 9기 모집...청년 농업인력 확보·스마트농업 확산",
-      "preferred_url": "http://www.econonews.co.kr/news/articleView.html?idxno=437292",
-      "source": "이코노뉴스",
-      "source_name": "네이버뉴스 청년센터·활동(1주)",
+      "article_key": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE5pTUxYcDhCdUViYllmQzJadFBTLS1GckFMTGpsRU5kMUhVMmt4Q3BKbHNpSzNySXVCY0FlLWEzeExBR282N2FlWDMycGhPQXhQSlFFam1tdmo3dmZxUmdCctIBYEFVX3lxTE5pTUxYcDhCdUViYllmQzJadFBTLS1GckFMTGpsRU5kMUhVMmt4Q3BKbHNpSzNySXVCY0FlLWEzeExBR282N2FlWDMycGhPQXhQSlFFam1tdmo3dmZxUmdCcg?oc=5",
+      "title": "전남도, 청년 희망일자리 지원사업 참여기업 모집",
+      "preferred_url": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE5pTUxYcDhCdUViYllmQzJadFBTLS1GckFMTGpsRU5kMUhVMmt4Q3BKbHNpSzNySXVCY0FlLWEzeExBR282N2FlWDMycGhPQXhQSlFFam1tdmo3dmZxUmdCctIBYEFVX3lxTE5pTUxYcDhCdUViYllmQzJadFBTLS1GckFMTGpsRU5kMUhVMmt4Q3BKbHNpSzNySXVCY0FlLWEzeExBR282N2FlWDMycGhPQXhQSlFFam1tdmo3dmZxUmdCcg?oc=5",
+      "source": "연합뉴스",
+      "source_name": "구글뉴스 청년 고용·쉬었음(7일)",
       "source_kind": "news",
-      "publisher_domain": "www.econonews.co.kr",
-      "published_at": "2026-05-01T18:47:30+09:00",
-      "region": "전북",
+      "publisher_domain": "www.yna.co.kr",
+      "published_at": "2026-05-01T02:00:01+00:00",
+      "region": "전남",
       "selection_bucket": "regional_issue",
-      "drop_reason": "selection_cutoff:지역 이슈:score=27",
-      "importance_score": 27,
+      "drop_reason": "selection_cutoff:지역 이슈:score=32",
+      "importance_score": 32,
       "ops_radar_score": 21,
       "ops_radar_priority": "critical",
       "ops_radar_overlooked": true,
@@ -1169,150 +1272,6 @@
         }
       ],
       "ops_radar_note": "기관·사업 공고 (청년, 모집)"
-    },
-    {
-      "article_key": "https://www.khan.co.kr/article/202604302120005",
-      "title": "전세사기 피해 청년도 서울시 월세 지원 대상",
-      "preferred_url": "https://www.khan.co.kr/article/202604302120005",
-      "source": "경향신문",
-      "source_name": "네이버뉴스 청년 주거·생활(1주)",
-      "source_kind": "news",
-      "publisher_domain": "www.khan.co.kr",
-      "published_at": "2026-04-30T21:20:00+09:00",
-      "region": "서울",
-      "selection_bucket": "regional_issue",
-      "drop_reason": "selection_cutoff:지역 이슈:score=33",
-      "importance_score": 33,
-      "ops_radar_score": 21,
-      "ops_radar_priority": "critical",
-      "ops_radar_overlooked": true,
-      "ops_radar_labels": [
-        "기관·사업 공고"
-      ],
-      "ops_radar_lanes": [
-        "institution_program"
-      ],
-      "ops_radar_matches": [
-        {
-          "lane": "institution_program",
-          "label": "기관·사업 공고",
-          "description": "실무자가 챙겨야 할 모집, 접수, 선정, 프로그램 공고형 기사를 찾습니다.",
-          "matched_keywords": [
-            "청년",
-            "신청"
-          ],
-          "score": 7
-        }
-      ],
-      "ops_radar_note": "기관·사업 공고 (청년, 신청)"
-    },
-    {
-      "article_key": "https://www.hankookilbo.com/news/article/A2026043017220000256",
-      "title": "\"전세사기 피해자까지 품는다\" 서울시, 청년 월세 지원 확대-지역ㅣ한국일보",
-      "preferred_url": "https://www.hankookilbo.com/news/article/A2026043017220000256",
-      "source": "한국일보",
-      "source_name": "네이버뉴스 청년 주거·생활(1주)",
-      "source_kind": "news",
-      "publisher_domain": "www.hankookilbo.com",
-      "published_at": "2026-04-30T20:11:00+09:00",
-      "region": "서울",
-      "selection_bucket": "regional_issue",
-      "drop_reason": "selection_cutoff:지역 이슈:score=28",
-      "importance_score": 28,
-      "ops_radar_score": 21,
-      "ops_radar_priority": "critical",
-      "ops_radar_overlooked": true,
-      "ops_radar_labels": [
-        "기관·사업 공고"
-      ],
-      "ops_radar_lanes": [
-        "institution_program"
-      ],
-      "ops_radar_matches": [
-        {
-          "lane": "institution_program",
-          "label": "기관·사업 공고",
-          "description": "실무자가 챙겨야 할 모집, 접수, 선정, 프로그램 공고형 기사를 찾습니다.",
-          "matched_keywords": [
-            "청년",
-            "신청"
-          ],
-          "score": 7
-        }
-      ],
-      "ops_radar_note": "기관·사업 공고 (청년, 신청)"
-    },
-    {
-      "article_key": "https://news.google.com/rss/articles/CBMic0FVX3lxTE1QMDJhM0oxNXRxbm9tYWdPYVMtWndKT1JNcWJlMmp4MjFiSGEyemVMNjlRenphVXhfeGliRjFCWmZLUGRIUVBBVG9oeE9tUXI2bDFZcFFRekg1WFJBWE1fRmRlNTdIRlFPcm9qV2RRbU9yY1nSAXNBVV95cUxNUDAyYTNKMTV0cW5vbWFnT2FTLVp3Sk9STXFiZTJqeDIxYkhhMnplTDY5UXp6YVV4X3hpYkYxQlpmS1BkSFFQQVRvaHhPbVFyNmwxWXBRUXpINVhSQVhNX0ZkZTU3SEZRT3JvaldkUW1PcmNZ?oc=5",
-      "title": "\"전세사기 피해자까지 품는다\" 서울시, 청년 월세 지원 확대",
-      "preferred_url": "https://news.google.com/rss/articles/CBMic0FVX3lxTE1QMDJhM0oxNXRxbm9tYWdPYVMtWndKT1JNcWJlMmp4MjFiSGEyemVMNjlRenphVXhfeGliRjFCWmZLUGRIUVBBVG9oeE9tUXI2bDFZcFFRekg1WFJBWE1fRmRlNTdIRlFPcm9qV2RRbU9yY1nSAXNBVV95cUxNUDAyYTNKMTV0cW5vbWFnT2FTLVp3Sk9STXFiZTJqeDIxYkhhMnplTDY5UXp6YVV4X3hpYkYxQlpmS1BkSFFQQVRvaHhPbVFyNmwxWXBRUXpINVhSQVhNX0ZkZTU3SEZRT3JvaldkUW1PcmNZ?oc=5",
-      "source": "한국일보",
-      "source_name": "구글뉴스 청년 주거·생활(7일)",
-      "source_kind": "news",
-      "publisher_domain": "www.hankookilbo.com",
-      "published_at": "2026-04-30T11:11:00+00:00",
-      "region": "서울",
-      "selection_bucket": "regional_issue",
-      "drop_reason": "selection_cutoff:지역 이슈:score=28",
-      "importance_score": 28,
-      "ops_radar_score": 21,
-      "ops_radar_priority": "critical",
-      "ops_radar_overlooked": true,
-      "ops_radar_labels": [
-        "기관·사업 공고"
-      ],
-      "ops_radar_lanes": [
-        "institution_program"
-      ],
-      "ops_radar_matches": [
-        {
-          "lane": "institution_program",
-          "label": "기관·사업 공고",
-          "description": "실무자가 챙겨야 할 모집, 접수, 선정, 프로그램 공고형 기사를 찾습니다.",
-          "matched_keywords": [
-            "청년",
-            "확대"
-          ],
-          "score": 7
-        }
-      ],
-      "ops_radar_note": "기관·사업 공고 (청년, 확대)"
-    },
-    {
-      "article_key": "https://swtvnews.com/news/newsview.php?ncode=1065605524425593",
-      "title": "SWTV - 서울시, ‘청년 월세지원’ 대상·연령 대폭 확대…1.5만명에 연 240만원 지원",
-      "preferred_url": "https://swtvnews.com/news/newsview.php?ncode=1065605524425593",
-      "source": "SWTV",
-      "source_name": "네이버뉴스 청년 주거·생활(1주)",
-      "source_kind": "news",
-      "publisher_domain": "swtvnews.com",
-      "published_at": "2026-04-30T19:02:46+09:00",
-      "region": "서울",
-      "selection_bucket": "regional_issue",
-      "drop_reason": "selection_cutoff:지역 이슈:score=37",
-      "importance_score": 37,
-      "ops_radar_score": 21,
-      "ops_radar_priority": "critical",
-      "ops_radar_overlooked": true,
-      "ops_radar_labels": [
-        "기관·사업 공고"
-      ],
-      "ops_radar_lanes": [
-        "institution_program"
-      ],
-      "ops_radar_matches": [
-        {
-          "lane": "institution_program",
-          "label": "기관·사업 공고",
-          "description": "실무자가 챙겨야 할 모집, 접수, 선정, 프로그램 공고형 기사를 찾습니다.",
-          "matched_keywords": [
-            "청년",
-            "확대"
-          ],
-          "score": 7
-        }
-      ],
-      "ops_radar_note": "기관·사업 공고 (청년, 확대)"
     },
     {
       "article_key": "https://news.google.com/rss/articles/CBMiZEFVX3lxTFBvQzdGeVhqcUZSS1hGMEp6Q1h3YVRHVnAtRzd6cFNwbUF6a2RFNjZ3U09zR245aDVtQXFYVFh5TDJIeE9vMlpCRE9xYlBNdEVybWF3NHVKSVVOaDllemZsazJhdnQ?oc=5",
@@ -1351,580 +1310,76 @@
       "ops_radar_note": "기관·사업 공고 (청년, 신청)"
     },
     {
-      "article_key": "https://biz.sbs.co.kr/article/20000307724",
-      "title": "20만원씩 지원 1.5만명 희소식…나도 받을 수 있나?",
-      "preferred_url": "https://biz.sbs.co.kr/article/20000307724",
-      "source": "SBS Biz",
-      "source_name": "네이버뉴스 청년 주거·생활(1주)",
+      "article_key": "https://www.factin.co.kr/news/articleView.html?idxno=6211",
+      "title": "청년들의 내일을 위한 30조 원의 약속, 정부와 여야가 손을 맞잡았다",
+      "preferred_url": "https://www.factin.co.kr/news/articleView.html?idxno=6211",
+      "source": "여론과뉴스",
+      "source_name": "네이버뉴스 거버넌스(1개월)",
       "source_kind": "news",
-      "publisher_domain": "biz.sbs.co.kr",
-      "published_at": "2026-04-30T11:11:00+09:00",
+      "publisher_domain": "www.factin.co.kr",
+      "published_at": "2026-04-29T11:39:35+09:00",
       "region": "서울",
       "selection_bucket": "regional_issue",
-      "drop_reason": "selection_cutoff:지역 이슈:score=28",
-      "importance_score": 28,
+      "drop_reason": "selection_cutoff:지역 이슈:score=36",
+      "importance_score": 36,
       "ops_radar_score": 21,
       "ops_radar_priority": "critical",
       "ops_radar_overlooked": true,
       "ops_radar_labels": [
-        "기관·사업 공고"
+        "거버넌스·인사"
       ],
       "ops_radar_lanes": [
-        "institution_program"
+        "governance_personnel"
       ],
       "ops_radar_matches": [
         {
-          "lane": "institution_program",
-          "label": "기관·사업 공고",
-          "description": "실무자가 챙겨야 할 모집, 접수, 선정, 프로그램 공고형 기사를 찾습니다.",
+          "lane": "governance_personnel",
+          "label": "거버넌스·인사",
+          "description": "위원회, 정책네트워크, 참여기구, 임명·위촉 기사 등을 묶습니다.",
           "matched_keywords": [
-            "청년",
-            "선정"
+            "청년정책조정위원회",
+            "회의"
           ],
           "score": 7
         }
       ],
-      "ops_radar_note": "기관·사업 공고 (청년, 선정)"
+      "ops_radar_note": "거버넌스·인사 (청년정책조정위원회, 회의)"
     },
     {
-      "article_key": "https://news.google.com/rss/articles/CBMicEFVX3lxTE0tRVRZVXFwSXprS3ZHcXlKYk5vZXlKeDBDNEV0R3pjTnlXcXdpcjhxV3J1d0pCLVd2cUo2LUFib3NreDhFd3NIbWtkZThGNGNVVkhHbVVXcG1oTm14OEEtTmZZb19XTGxBYzFxdmdQUTbSAXBBVV95cUxNLUVUWVVxcEl6a0t2R3F5SmJOb2V5SngwQzRFdEd6Y055V3F3aXI4cVdydXdKQi1XdnFKNi1BYm9za3g4RXdzSG1rZGU4RjRjVVZIR21VV3BtaE5teDhBLU5mWW9fV0xsQWMxcXZnUFE2?oc=5",
-      "title": "서울시 ‘청년 월세지원’ 확대 - 주거 사각지대 해소 위한 구조적 개편 단행",
-      "preferred_url": "https://news.google.com/rss/articles/CBMicEFVX3lxTE0tRVRZVXFwSXprS3ZHcXlKYk5vZXlKeDBDNEV0R3pjTnlXcXdpcjhxV3J1d0pCLVd2cUo2LUFib3NreDhFd3NIbWtkZThGNGNVVkhHbVVXcG1oTm14OEEtTmZZb19XTGxBYzFxdmdQUTbSAXBBVV95cUxNLUVUWVVxcEl6a0t2R3F5SmJOb2V5SngwQzRFdEd6Y055V3F3aXI4cVdydXdKQi1XdnFKNi1BYm9za3g4RXdzSG1rZGU4RjRjVVZIR21VV3BtaE5teDhBLU5mWW9fV0xsQWMxcXZnUFE2?oc=5",
-      "source": "한국도시환경헤럴드",
-      "source_name": "구글뉴스 청년 주거·생활(7일)",
+      "article_key": "https://www.newscammp.co.kr/news/articleView.html?idxno=6124",
+      "title": "\"청년 체감 정책 만든다\" 김민석 총리, 30조 원 규모 청년정책 시행계획 발표",
+      "preferred_url": "https://www.newscammp.co.kr/news/articleView.html?idxno=6124",
+      "source": "뉴스캠프",
+      "source_name": "네이버뉴스 거버넌스(1개월)",
       "source_kind": "news",
-      "publisher_domain": "www.kueherald.co.kr",
-      "published_at": "2026-04-30T01:54:12+00:00",
+      "publisher_domain": "www.newscammp.co.kr",
+      "published_at": "2026-04-29T11:05:02+09:00",
       "region": "서울",
       "selection_bucket": "regional_issue",
-      "drop_reason": "selection_cutoff:지역 이슈:score=28",
-      "importance_score": 28,
+      "drop_reason": "selection_cutoff:지역 이슈:score=38",
+      "importance_score": 38,
       "ops_radar_score": 21,
       "ops_radar_priority": "critical",
       "ops_radar_overlooked": true,
       "ops_radar_labels": [
-        "기관·사업 공고"
+        "거버넌스·인사"
       ],
       "ops_radar_lanes": [
-        "institution_program"
+        "governance_personnel"
       ],
       "ops_radar_matches": [
         {
-          "lane": "institution_program",
-          "label": "기관·사업 공고",
-          "description": "실무자가 챙겨야 할 모집, 접수, 선정, 프로그램 공고형 기사를 찾습니다.",
+          "lane": "governance_personnel",
+          "label": "거버넌스·인사",
+          "description": "위원회, 정책네트워크, 참여기구, 임명·위촉 기사 등을 묶습니다.",
           "matched_keywords": [
-            "청년",
-            "확대"
+            "청년정책조정위원회",
+            "회의"
           ],
           "score": 7
         }
       ],
-      "ops_radar_note": "기관·사업 공고 (청년, 확대)"
-    },
-    {
-      "article_key": "https://news.google.com/rss/articles/CBMibkFVX3lxTFA0R3Q5SmFBZnptaHlyRFF2SVd4N3Z0VjJvUTM1LWdTTEFIb205UkNVZ01vRGIxaFNQckVkYTdOX1M0X2U5dEV1NFFpTUZKazRxV25mWmh4dDhaek1fWjhtNEhWMXRwZVVIblZScy1R?oc=5",
-      "title": "서울시, ‘청년 월세’ 확대…전세피해자·신혼부부 포함 1만 5000명 지원",
-      "preferred_url": "https://news.google.com/rss/articles/CBMibkFVX3lxTFA0R3Q5SmFBZnptaHlyRFF2SVd4N3Z0VjJvUTM1LWdTTEFIb205UkNVZ01vRGIxaFNQckVkYTdOX1M0X2U5dEV1NFFpTUZKazRxV25mWmh4dDhaek1fWjhtNEhWMXRwZVVIblZScy1R?oc=5",
-      "source": "아시아투데이",
-      "source_name": "구글뉴스 청년 주거·생활(7일)",
-      "source_kind": "news",
-      "publisher_domain": "www.asiatoday.co.kr",
-      "published_at": "2026-04-30T01:34:21+00:00",
-      "region": "서울",
-      "selection_bucket": "regional_issue",
-      "drop_reason": "selection_cutoff:지역 이슈:score=28",
-      "importance_score": 28,
-      "ops_radar_score": 21,
-      "ops_radar_priority": "critical",
-      "ops_radar_overlooked": true,
-      "ops_radar_labels": [
-        "기관·사업 공고"
-      ],
-      "ops_radar_lanes": [
-        "institution_program"
-      ],
-      "ops_radar_matches": [
-        {
-          "lane": "institution_program",
-          "label": "기관·사업 공고",
-          "description": "실무자가 챙겨야 할 모집, 접수, 선정, 프로그램 공고형 기사를 찾습니다.",
-          "matched_keywords": [
-            "청년",
-            "확대"
-          ],
-          "score": 7
-        }
-      ],
-      "ops_radar_note": "기관·사업 공고 (청년, 확대)"
-    },
-    {
-      "article_key": "https://news.google.com/rss/articles/CBMicEFVX3lxTFBPRDMwWmxpSHdDX1NaQmFkR1dfUHFma1NMb1hfY1d1WHQxRVZDclUzd1g3c3RmdEpjRUdoaEVZdjhtV1VxMDJPSUFwNlctZk15MWtUS1UzQ01sZGlMdXNBdW5uWFgyakN4T3VNUUVIV0w?oc=5",
-      "title": "서울시, '청년 월세 지원' 확대… 1만5천 명 대상",
-      "preferred_url": "https://news.google.com/rss/articles/CBMicEFVX3lxTFBPRDMwWmxpSHdDX1NaQmFkR1dfUHFma1NMb1hfY1d1WHQxRVZDclUzd1g3c3RmdEpjRUdoaEVZdjhtV1VxMDJPSUFwNlctZk15MWtUS1UzQ01sZGlMdXNBdW5uWFgyakN4T3VNUUVIV0w?oc=5",
-      "source": "B world",
-      "source_name": "구글뉴스 청년 주거·생활(7일)",
-      "source_kind": "news",
-      "publisher_domain": "news.skbroadband.com",
-      "published_at": "2026-04-30T01:01:17+00:00",
-      "region": "서울",
-      "selection_bucket": "regional_issue",
-      "drop_reason": "selection_cutoff:지역 이슈:score=28",
-      "importance_score": 28,
-      "ops_radar_score": 21,
-      "ops_radar_priority": "critical",
-      "ops_radar_overlooked": true,
-      "ops_radar_labels": [
-        "기관·사업 공고"
-      ],
-      "ops_radar_lanes": [
-        "institution_program"
-      ],
-      "ops_radar_matches": [
-        {
-          "lane": "institution_program",
-          "label": "기관·사업 공고",
-          "description": "실무자가 챙겨야 할 모집, 접수, 선정, 프로그램 공고형 기사를 찾습니다.",
-          "matched_keywords": [
-            "청년",
-            "확대"
-          ],
-          "score": 7
-        }
-      ],
-      "ops_radar_note": "기관·사업 공고 (청년, 확대)"
-    },
-    {
-      "article_key": "https://news.google.com/rss/articles/CBMiWEFVX3lxTFBJQmFIdTVNMjBOVWdUYk5MQjFGdGU1TmFnY3RsNk5hOGxHa2hPcXFkMnJoMVFVWjhKY0oyN1gtYVNQMUtoU1N1dXQ4YTFsSnFJVm1HdUkzVljSAVhBVV95cUxQSUJhSHU1TTIwTlVnVGJOTEIxRnRlNU5hZ2N0bDZOYThsR2toT3FxZDJyaDFRVVo4SmNKMjdYLWFTUDFLaFNTdXV0OGExbEpxSVZtR3VJM1ZY?oc=5",
-      "title": "서울시, 청년 월세 확대…전세피해자·신혼부부 포함 1만5000명 지원",
-      "preferred_url": "https://news.google.com/rss/articles/CBMiWEFVX3lxTFBJQmFIdTVNMjBOVWdUYk5MQjFGdGU1TmFnY3RsNk5hOGxHa2hPcXFkMnJoMVFVWjhKY0oyN1gtYVNQMUtoU1N1dXQ4YTFsSnFJVm1HdUkzVljSAVhBVV95cUxQSUJhSHU1TTIwTlVnVGJOTEIxRnRlNU5hZ2N0bDZOYThsR2toT3FxZDJyaDFRVVo4SmNKMjdYLWFTUDFLaFNTdXV0OGExbEpxSVZtR3VJM1ZY?oc=5",
-      "source": "아주경제",
-      "source_name": "구글뉴스 청년 주거·생활(7일)",
-      "source_kind": "news",
-      "publisher_domain": "www.ajunews.com",
-      "published_at": "2026-04-30T00:38:19+00:00",
-      "region": "서울",
-      "selection_bucket": "regional_issue",
-      "drop_reason": "selection_cutoff:지역 이슈:score=28",
-      "importance_score": 28,
-      "ops_radar_score": 21,
-      "ops_radar_priority": "critical",
-      "ops_radar_overlooked": true,
-      "ops_radar_labels": [
-        "기관·사업 공고"
-      ],
-      "ops_radar_lanes": [
-        "institution_program"
-      ],
-      "ops_radar_matches": [
-        {
-          "lane": "institution_program",
-          "label": "기관·사업 공고",
-          "description": "실무자가 챙겨야 할 모집, 접수, 선정, 프로그램 공고형 기사를 찾습니다.",
-          "matched_keywords": [
-            "청년",
-            "확대"
-          ],
-          "score": 7
-        }
-      ],
-      "ops_radar_note": "기관·사업 공고 (청년, 확대)"
-    },
-    {
-      "article_key": "https://news.google.com/rss/articles/CBMiakFVX3lxTE5NcHlRNklDS0Q5R3RqbGo1RmVIZXcxZ250eE93VC1vVzNFUW9MaWJ6c2RfYnJ4QjRrQXdtTW03QXZ0Ynh6bXhubkRtVFRta291S0p1cXBxV0FkTkVlZF9MN1NrZldIVjJCZkE?oc=5",
-      "title": "서울시 청년월세 지원 확대… 주거안정 위해 1.5만명 지원",
-      "preferred_url": "https://news.google.com/rss/articles/CBMiakFVX3lxTE5NcHlRNklDS0Q5R3RqbGo1RmVIZXcxZ250eE93VC1vVzNFUW9MaWJ6c2RfYnJ4QjRrQXdtTW03QXZ0Ynh6bXhubkRtVFRta291S0p1cXBxV0FkTkVlZF9MN1NrZldIVjJCZkE?oc=5",
-      "source": "천지일보",
-      "source_name": "구글뉴스 청년 주거·생활(7일)",
-      "source_kind": "news",
-      "publisher_domain": "www.newscj.com",
-      "published_at": "2026-04-30T00:32:26+00:00",
-      "region": "서울",
-      "selection_bucket": "regional_issue",
-      "drop_reason": "selection_cutoff:지역 이슈:score=28",
-      "importance_score": 28,
-      "ops_radar_score": 21,
-      "ops_radar_priority": "critical",
-      "ops_radar_overlooked": true,
-      "ops_radar_labels": [
-        "기관·사업 공고"
-      ],
-      "ops_radar_lanes": [
-        "institution_program"
-      ],
-      "ops_radar_matches": [
-        {
-          "lane": "institution_program",
-          "label": "기관·사업 공고",
-          "description": "실무자가 챙겨야 할 모집, 접수, 선정, 프로그램 공고형 기사를 찾습니다.",
-          "matched_keywords": [
-            "청년",
-            "확대"
-          ],
-          "score": 7
-        }
-      ],
-      "ops_radar_note": "기관·사업 공고 (청년, 확대)"
-    },
-    {
-      "article_key": "https://news.google.com/rss/articles/CBMidEFVX3lxTFBmdVJCN1V1TzdNRC1VcGRBVlJITk1NVEdfUGFNUm54cmF6Q2ZUVTNJUDlzYUZiN3VfSklOQzVxa3FZUlVjczA3UTNHWUROaTFxTllwMkg2UVZDMU00cXl4UDdGTzRVejVlOWxPRFFnanVnSFFq?oc=5",
-      "title": "서울시, 청년 월세지원 1만5천 명으로 확대…한부모·전세사기 피해 청년도 포함!",
-      "preferred_url": "https://news.google.com/rss/articles/CBMidEFVX3lxTFBmdVJCN1V1TzdNRC1VcGRBVlJITk1NVEdfUGFNUm54cmF6Q2ZUVTNJUDlzYUZiN3VfSklOQzVxa3FZUlVjczA3UTNHWUROaTFxTllwMkg2UVZDMU00cXl4UDdGTzRVejVlOWxPRFFnanVnSFFq?oc=5",
-      "source": "경기종합뉴스",
-      "source_name": "구글뉴스 청년 주거·생활(7일)",
-      "source_kind": "news",
-      "publisher_domain": "www.ggoverallnews.co.kr",
-      "published_at": "2026-04-29T23:22:12+00:00",
-      "region": "서울",
-      "selection_bucket": "regional_issue",
-      "drop_reason": "selection_cutoff:지역 이슈:score=28",
-      "importance_score": 28,
-      "ops_radar_score": 21,
-      "ops_radar_priority": "critical",
-      "ops_radar_overlooked": true,
-      "ops_radar_labels": [
-        "기관·사업 공고"
-      ],
-      "ops_radar_lanes": [
-        "institution_program"
-      ],
-      "ops_radar_matches": [
-        {
-          "lane": "institution_program",
-          "label": "기관·사업 공고",
-          "description": "실무자가 챙겨야 할 모집, 접수, 선정, 프로그램 공고형 기사를 찾습니다.",
-          "matched_keywords": [
-            "청년",
-            "확대"
-          ],
-          "score": 7
-        }
-      ],
-      "ops_radar_note": "기관·사업 공고 (청년, 확대)"
-    },
-    {
-      "article_key": "https://news.google.com/rss/articles/CBMib0FVX3lxTFBMYjY3LVBQeEF1VlBYZWM5RGdUWGJmMm5lV0E4aW5CUERkTkJ3RklXdm96blQxVUdpOTlZTkpmMEw4N0ZRQ1hIZ2k2VWd2dEZpMEZMZlZTeGI0cnVObVNoSjFFR2JLRTVXSlZiSkRlMA?oc=5",
-      "title": "서울시 청년월세지원, 5월 6일부터 신청…기준은?",
-      "preferred_url": "https://news.google.com/rss/articles/CBMib0FVX3lxTFBMYjY3LVBQeEF1VlBYZWM5RGdUWGJmMm5lV0E4aW5CUERkTkJ3RklXdm96blQxVUdpOTlZTkpmMEw4N0ZRQ1hIZ2k2VWd2dEZpMEZMZlZTeGI0cnVObVNoSjFFR2JLRTVXSlZiSkRlMA?oc=5",
-      "source": "bntnews.co.kr",
-      "source_name": "구글뉴스 청년 주거·생활(7일)",
-      "source_kind": "news",
-      "publisher_domain": "www.bntnews.co.kr",
-      "published_at": "2026-04-29T22:08:15+00:00",
-      "region": "서울",
-      "selection_bucket": "regional_issue",
-      "drop_reason": "selection_cutoff:지역 이슈:score=28",
-      "importance_score": 28,
-      "ops_radar_score": 21,
-      "ops_radar_priority": "critical",
-      "ops_radar_overlooked": true,
-      "ops_radar_labels": [
-        "기관·사업 공고"
-      ],
-      "ops_radar_lanes": [
-        "institution_program"
-      ],
-      "ops_radar_matches": [
-        {
-          "lane": "institution_program",
-          "label": "기관·사업 공고",
-          "description": "실무자가 챙겨야 할 모집, 접수, 선정, 프로그램 공고형 기사를 찾습니다.",
-          "matched_keywords": [
-            "청년",
-            "신청"
-          ],
-          "score": 7
-        }
-      ],
-      "ops_radar_note": "기관·사업 공고 (청년, 신청)"
-    },
-    {
-      "article_key": "https://news.google.com/rss/articles/CBMiUEFVX3lxTFBDVloySXlEM0JSMXF0OXZHQ0lrenctUUVhdE9YdTVnVWlQcEpyNzdvUWdHdlo4clllNFZDTU9qQ0hxSnB1UE1teEVWeUplbGJ0?oc=5",
-      "title": "양천구, 무주택 청년 대상 ‘월세 지원사업’ 추진…“최대 480만 원”",
-      "preferred_url": "https://news.google.com/rss/articles/CBMiUEFVX3lxTFBDVloySXlEM0JSMXF0OXZHQ0lrenctUUVhdE9YdTVnVWlQcEpyNzdvUWdHdlo4clllNFZDTU9qQ0hxSnB1UE1teEVWeUplbGJ0?oc=5",
-      "source": "문화일보",
-      "source_name": "구글뉴스 청년 주거·생활(7일)",
-      "source_kind": "news",
-      "publisher_domain": "www.munhwa.com",
-      "published_at": "2026-04-29T22:08:00+00:00",
-      "region": "서울",
-      "selection_bucket": "regional_issue",
-      "drop_reason": "selection_cutoff:지역 이슈:score=32",
-      "importance_score": 32,
-      "ops_radar_score": 21,
-      "ops_radar_priority": "critical",
-      "ops_radar_overlooked": true,
-      "ops_radar_labels": [
-        "기관·사업 공고"
-      ],
-      "ops_radar_lanes": [
-        "institution_program"
-      ],
-      "ops_radar_matches": [
-        {
-          "lane": "institution_program",
-          "label": "기관·사업 공고",
-          "description": "실무자가 챙겨야 할 모집, 접수, 선정, 프로그램 공고형 기사를 찾습니다.",
-          "matched_keywords": [
-            "청년",
-            "지원사업"
-          ],
-          "score": 7
-        }
-      ],
-      "ops_radar_note": "기관·사업 공고 (청년, 지원사업)"
-    },
-    {
-      "article_key": "https://news.google.com/rss/articles/CBMiVEFVX3lxTE1VX2NXV25UblhnaGlqckY1M3dsNFZ1bWQ5VHFuSjQ0U0U1aDZqY3BOb2Znd1ZVd3VtbmZkb0s2Z1ZleW5zdHBHSDN6clMyT3Q3bXhveA?oc=5",
-      "title": "서울시, 청년 월세 지원 대상 전세 사기 피해자·신혼부부로 확대",
-      "preferred_url": "https://news.google.com/rss/articles/CBMiVEFVX3lxTE1VX2NXV25UblhnaGlqckY1M3dsNFZ1bWQ5VHFuSjQ0U0U1aDZqY3BOb2Znd1ZVd3VtbmZkb0s2Z1ZleW5zdHBHSDN6clMyT3Q3bXhveA?oc=5",
-      "source": "v.daum.net",
-      "source_name": "구글뉴스 청년 주거·생활(7일)",
-      "source_kind": "news",
-      "publisher_domain": "v.daum.net",
-      "published_at": "2026-04-29T21:03:05+00:00",
-      "region": "서울",
-      "selection_bucket": "regional_issue",
-      "drop_reason": "selection_cutoff:지역 이슈:score=28",
-      "importance_score": 28,
-      "ops_radar_score": 21,
-      "ops_radar_priority": "critical",
-      "ops_radar_overlooked": true,
-      "ops_radar_labels": [
-        "기관·사업 공고"
-      ],
-      "ops_radar_lanes": [
-        "institution_program"
-      ],
-      "ops_radar_matches": [
-        {
-          "lane": "institution_program",
-          "label": "기관·사업 공고",
-          "description": "실무자가 챙겨야 할 모집, 접수, 선정, 프로그램 공고형 기사를 찾습니다.",
-          "matched_keywords": [
-            "청년",
-            "확대"
-          ],
-          "score": 7
-        }
-      ],
-      "ops_radar_note": "기관·사업 공고 (청년, 확대)"
-    },
-    {
-      "article_key": "https://news.google.com/rss/articles/CBMiS0FVX3lxTE9OWXMtSVFvSmkzUlVsOHducmJRTy1td0YtMTdDRnNTa0U1UEs3NnRWWXNSb3VzOFA5SkNDTWFwZ2tiVHoyRHlvc3dpcw?oc=5",
-      "title": "서울시 '청년 월세 지원' 전세피해자·신혼부부까지 확대...1.5만명에 월 최대 20만원",
-      "preferred_url": "https://news.google.com/rss/articles/CBMiS0FVX3lxTE9OWXMtSVFvSmkzUlVsOHducmJRTy1td0YtMTdDRnNTa0U1UEs3NnRWWXNSb3VzOFA5SkNDTWFwZ2tiVHoyRHlvc3dpcw?oc=5",
-      "source": "v.daum.net",
-      "source_name": "구글뉴스 청년 주거·생활(7일)",
-      "source_kind": "news",
-      "publisher_domain": "v.daum.net",
-      "published_at": "2026-04-29T21:02:38+00:00",
-      "region": "서울",
-      "selection_bucket": "regional_issue",
-      "drop_reason": "selection_cutoff:지역 이슈:score=28",
-      "importance_score": 28,
-      "ops_radar_score": 21,
-      "ops_radar_priority": "critical",
-      "ops_radar_overlooked": true,
-      "ops_radar_labels": [
-        "기관·사업 공고"
-      ],
-      "ops_radar_lanes": [
-        "institution_program"
-      ],
-      "ops_radar_matches": [
-        {
-          "lane": "institution_program",
-          "label": "기관·사업 공고",
-          "description": "실무자가 챙겨야 할 모집, 접수, 선정, 프로그램 공고형 기사를 찾습니다.",
-          "matched_keywords": [
-            "청년",
-            "확대"
-          ],
-          "score": 7
-        }
-      ],
-      "ops_radar_note": "기관·사업 공고 (청년, 확대)"
-    },
-    {
-      "article_key": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE1Zb3JETHhxSkVkYUl2MnBmTjNiWUZucjZaTlllVm1vMVJpLTF3SHppS2FXNTdiSDJxMzUtUUFHMVdHLUZpd0w4UlQ4Y2YxeWpEMF9udXVlUkYtYmNkd0NjMNIBYEFVX3lxTE1Zb3JETHhxSkVkYUl2MnBmTjNiWUZucjZaTlllVm1vMVJpLTF3SHppS2FXNTdiSDJxMzUtUUFHMVdHLUZpd0w4UlQ4Y2YxeWpEMF9udXVlUkYtYmNkd0NjMA?oc=5",
-      "title": "서울시, 청년 월세 지원 확대…\"전세 사기 피해자 우선 선발\"",
-      "preferred_url": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE1Zb3JETHhxSkVkYUl2MnBmTjNiWUZucjZaTlllVm1vMVJpLTF3SHppS2FXNTdiSDJxMzUtUUFHMVdHLUZpd0w4UlQ4Y2YxeWpEMF9udXVlUkYtYmNkd0NjMNIBYEFVX3lxTE1Zb3JETHhxSkVkYUl2MnBmTjNiWUZucjZaTlllVm1vMVJpLTF3SHppS2FXNTdiSDJxMzUtUUFHMVdHLUZpd0w4UlQ4Y2YxeWpEMF9udXVlUkYtYmNkd0NjMA?oc=5",
-      "source": "연합뉴스",
-      "source_name": "구글뉴스 청년 주거·생활(7일)",
-      "source_kind": "news",
-      "publisher_domain": "www.yna.co.kr",
-      "published_at": "2026-04-29T21:00:30+00:00",
-      "region": "서울",
-      "selection_bucket": "regional_issue",
-      "drop_reason": "selection_cutoff:지역 이슈:score=28",
-      "importance_score": 28,
-      "ops_radar_score": 21,
-      "ops_radar_priority": "critical",
-      "ops_radar_overlooked": true,
-      "ops_radar_labels": [
-        "기관·사업 공고"
-      ],
-      "ops_radar_lanes": [
-        "institution_program"
-      ],
-      "ops_radar_matches": [
-        {
-          "lane": "institution_program",
-          "label": "기관·사업 공고",
-          "description": "실무자가 챙겨야 할 모집, 접수, 선정, 프로그램 공고형 기사를 찾습니다.",
-          "matched_keywords": [
-            "청년",
-            "확대"
-          ],
-          "score": 7
-        }
-      ],
-      "ops_radar_note": "기관·사업 공고 (청년, 확대)"
-    },
-    {
-      "article_key": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE5NNkpsMURlU3NHdmQ5Q0lRMjlYMzZHYnkwdEpxMVc1alFUZnJSSmxQMDhPakx5eXFYMVk3dzIyN0tRbExSbFN4MDdvaW9ubTlhSWhNMjBFYTh4d9IBX0FVX3lxTE1JTDJlcGFoME80UDdvN2ExVnRSOXAwX2FfSnlxR3U2eUxTOXFESE5LeXo2MnlFcVRLbGpLdExxOU9YYnBrakdaeHQwdDVrOVg0YmduQXlESU1GZW1HWWNr?oc=5",
-      "title": "서울시 ‘청년 월세지원’ 대상자 확대···신혼부부·전세사기 피해자도 받는다",
-      "preferred_url": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE5NNkpsMURlU3NHdmQ5Q0lRMjlYMzZHYnkwdEpxMVc1alFUZnJSSmxQMDhPakx5eXFYMVk3dzIyN0tRbExSbFN4MDdvaW9ubTlhSWhNMjBFYTh4d9IBX0FVX3lxTE1JTDJlcGFoME80UDdvN2ExVnRSOXAwX2FfSnlxR3U2eUxTOXFESE5LeXo2MnlFcVRLbGpLdExxOU9YYnBrakdaeHQwdDVrOVg0YmduQXlESU1GZW1HWWNr?oc=5",
-      "source": "경향신문",
-      "source_name": "구글뉴스 청년 주거·생활(7일)",
-      "source_kind": "news",
-      "publisher_domain": "www.khan.co.kr",
-      "published_at": "2026-04-29T21:00:00+00:00",
-      "region": "서울",
-      "selection_bucket": "regional_issue",
-      "drop_reason": "selection_cutoff:지역 이슈:score=28",
-      "importance_score": 28,
-      "ops_radar_score": 21,
-      "ops_radar_priority": "critical",
-      "ops_radar_overlooked": true,
-      "ops_radar_labels": [
-        "기관·사업 공고"
-      ],
-      "ops_radar_lanes": [
-        "institution_program"
-      ],
-      "ops_radar_matches": [
-        {
-          "lane": "institution_program",
-          "label": "기관·사업 공고",
-          "description": "실무자가 챙겨야 할 모집, 접수, 선정, 프로그램 공고형 기사를 찾습니다.",
-          "matched_keywords": [
-            "청년",
-            "확대"
-          ],
-          "score": 7
-        }
-      ],
-      "ops_radar_note": "기관·사업 공고 (청년, 확대)"
-    },
-    {
-      "article_key": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE9xS1diWW5sdjlYb3N2Q0o5bkFZcG1rVmdQejVuU3V6QmlHNlZiTjM3YmRqWlYzeTZDbGl0bUJJeWRYNzdwRVZuQWpqaS11cmM3bFdGY24wVERieW8?oc=5",
-      "title": "서울시, 청년 월세지원 1.5만명 확대…월 최대 20만원 지원",
-      "preferred_url": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE9xS1diWW5sdjlYb3N2Q0o5bkFZcG1rVmdQejVuU3V6QmlHNlZiTjM3YmRqWlYzeTZDbGl0bUJJeWRYNzdwRVZuQWpqaS11cmM3bFdGY24wVERieW8?oc=5",
-      "source": "뉴스1",
-      "source_name": "구글뉴스 청년 주거·생활(7일)",
-      "source_kind": "news",
-      "publisher_domain": "www.news1.kr",
-      "published_at": "2026-04-29T21:00:00+00:00",
-      "region": "서울",
-      "selection_bucket": "regional_issue",
-      "drop_reason": "selection_cutoff:지역 이슈:score=28",
-      "importance_score": 28,
-      "ops_radar_score": 21,
-      "ops_radar_priority": "critical",
-      "ops_radar_overlooked": true,
-      "ops_radar_labels": [
-        "기관·사업 공고"
-      ],
-      "ops_radar_lanes": [
-        "institution_program"
-      ],
-      "ops_radar_matches": [
-        {
-          "lane": "institution_program",
-          "label": "기관·사업 공고",
-          "description": "실무자가 챙겨야 할 모집, 접수, 선정, 프로그램 공고형 기사를 찾습니다.",
-          "matched_keywords": [
-            "청년",
-            "확대"
-          ],
-          "score": 7
-        }
-      ],
-      "ops_radar_note": "기관·사업 공고 (청년, 확대)"
-    },
-    {
-      "article_key": "https://news.google.com/rss/articles/CBMie0FVX3lxTE5kQWFwdjk2S1FCY1hScTh3Vm83eUk4UEl2VTF5N0ZXN1NRQ3BRenhKdnVDa3V1Z2hjZERkRXBoMnJGTlBMMHltYUt1eTAxa2tDYjFxMjltODFNMmx6MHB4QWwweEdSRVpVcnk2WkF0MElTN0prYkR5dGppQQ?oc=5",
-      "title": "서울시, 청년 월세 지원 대상 전세 사기 피해자·신혼부부로 확대",
-      "preferred_url": "https://news.google.com/rss/articles/CBMie0FVX3lxTE5kQWFwdjk2S1FCY1hScTh3Vm83eUk4UEl2VTF5N0ZXN1NRQ3BRenhKdnVDa3V1Z2hjZERkRXBoMnJGTlBMMHltYUt1eTAxa2tDYjFxMjltODFNMmx6MHB4QWwweEdSRVpVcnk2WkF0MElTN0prYkR5dGppQQ?oc=5",
-      "source": "아시아경제",
-      "source_name": "구글뉴스 청년 주거·생활(7일)",
-      "source_kind": "news",
-      "publisher_domain": "www.asiae.co.kr",
-      "published_at": "2026-04-29T21:00:00+00:00",
-      "region": "서울",
-      "selection_bucket": "regional_issue",
-      "drop_reason": "selection_cutoff:지역 이슈:score=28",
-      "importance_score": 28,
-      "ops_radar_score": 21,
-      "ops_radar_priority": "critical",
-      "ops_radar_overlooked": true,
-      "ops_radar_labels": [
-        "기관·사업 공고"
-      ],
-      "ops_radar_lanes": [
-        "institution_program"
-      ],
-      "ops_radar_matches": [
-        {
-          "lane": "institution_program",
-          "label": "기관·사업 공고",
-          "description": "실무자가 챙겨야 할 모집, 접수, 선정, 프로그램 공고형 기사를 찾습니다.",
-          "matched_keywords": [
-            "청년",
-            "확대"
-          ],
-          "score": 7
-        }
-      ],
-      "ops_radar_note": "기관·사업 공고 (청년, 확대)"
-    },
-    {
-      "article_key": "https://news.google.com/rss/articles/CBMijgJBVV95cUxQclBSR1RaT2JnM1VhZXFlV1BDY25oa2U5bVBTMlFpTzlOUnVCTFhVWXFlVkIzZkNrTjdrWWJBdEI2YjJMVWJPWEVjNlNPdV9XZEdnX014MVlKZ0Q0SzlRS3FoVXUtNFpsOVJFcHh0NDZFNFJjbThXQU8xU0dKbXh0bzB6SFB0ZzlfN05yZmNYcUdKOEwza0xKRUo5cnIxbUw1ZWxzR1JXNzVFdDZLVmpqVjJIN1FCbl9ZWGIwYVU2TW92djhXNFIxYnJHWlBacmdGbkR3TEUtUk1wZTlhWGd3bUxPZmMtWGxOVlpGdUhGdU1tb2lfQ2JiYThtWG41Wk5oMkVLZGFrZVdCTzVZUEHSAZACQVVfeXFMTVREcnZyVUV4aE0xeDRzdmtOTlM4RXI1SmNKZHNRemJFYlpVQ0NsRS0yQ0pVdC1vRHVZM0E0ZnhxR2hkdUtFOFBvWWkwMG1KelNIZE1hZ3JjS0NWcWpuTTJZdnotOEkyZlVhSGZoc3hudmdUVi03X3Y0SVpxV0dJNk5xb1hmeFdCZlB3VHB4Nkl1SjBacjFhRDlMRl82OXJrQl9Wak0teXJCdy1zN04xd3p5YmhFcTQwTmJ2TXg2UHhTaFNnWTJYM3pfTEJRcDRMcHpLM1dXSjBQejFkMTFQY1ZrQk5xenAwVzhyMUNJVDAtX0xtWlVmSnNpcEpxQ1hiazNuT3BfVGo4bHp0RjlxUmg?oc=5",
-      "title": "서울시, 청년 월세지원 확대…1.5만명에게 매월 20만원",
-      "preferred_url": "https://news.google.com/rss/articles/CBMijgJBVV95cUxQclBSR1RaT2JnM1VhZXFlV1BDY25oa2U5bVBTMlFpTzlOUnVCTFhVWXFlVkIzZkNrTjdrWWJBdEI2YjJMVWJPWEVjNlNPdV9XZEdnX014MVlKZ0Q0SzlRS3FoVXUtNFpsOVJFcHh0NDZFNFJjbThXQU8xU0dKbXh0bzB6SFB0ZzlfN05yZmNYcUdKOEwza0xKRUo5cnIxbUw1ZWxzR1JXNzVFdDZLVmpqVjJIN1FCbl9ZWGIwYVU2TW92djhXNFIxYnJHWlBacmdGbkR3TEUtUk1wZTlhWGd3bUxPZmMtWGxOVlpGdUhGdU1tb2lfQ2JiYThtWG41Wk5oMkVLZGFrZVdCTzVZUEHSAZACQVVfeXFMTVREcnZyVUV4aE0xeDRzdmtOTlM4RXI1SmNKZHNRemJFYlpVQ0NsRS0yQ0pVdC1vRHVZM0E0ZnhxR2hkdUtFOFBvWWkwMG1KelNIZE1hZ3JjS0NWcWpuTTJZdnotOEkyZlVhSGZoc3hudmdUVi03X3Y0SVpxV0dJNk5xb1hmeFdCZlB3VHB4Nkl1SjBacjFhRDlMRl82OXJrQl9Wak0teXJCdy1zN04xd3p5YmhFcTQwTmJ2TXg2UHhTaFNnWTJYM3pfTEJRcDRMcHpLM1dXSjBQejFkMTFQY1ZrQk5xenAwVzhyMUNJVDAtX0xtWlVmSnNpcEpxQ1hiazNuT3BfVGo4bHp0RjlxUmg?oc=5",
-      "source": "데일리안",
-      "source_name": "구글뉴스 청년 주거·생활(7일)",
-      "source_kind": "news",
-      "publisher_domain": "www.dailian.co.kr",
-      "published_at": "2026-04-29T21:00:00+00:00",
-      "region": "서울",
-      "selection_bucket": "regional_issue",
-      "drop_reason": "selection_cutoff:지역 이슈:score=28",
-      "importance_score": 28,
-      "ops_radar_score": 21,
-      "ops_radar_priority": "critical",
-      "ops_radar_overlooked": true,
-      "ops_radar_labels": [
-        "기관·사업 공고"
-      ],
-      "ops_radar_lanes": [
-        "institution_program"
-      ],
-      "ops_radar_matches": [
-        {
-          "lane": "institution_program",
-          "label": "기관·사업 공고",
-          "description": "실무자가 챙겨야 할 모집, 접수, 선정, 프로그램 공고형 기사를 찾습니다.",
-          "matched_keywords": [
-            "청년",
-            "확대"
-          ],
-          "score": 7
-        }
-      ],
-      "ops_radar_note": "기관·사업 공고 (청년, 확대)"
+      "ops_radar_note": "거버넌스·인사 (청년정책조정위원회, 회의)"
     },
     {
       "article_key": "https://www.moe.go.kr/boardCnts/viewRenew.do?boardID=294&boardSeq=106021&lev=0&searchType=null&statusYN=W&page=1&s=moe&m=020402&opType=N",
@@ -2035,18 +1490,270 @@
       "ops_radar_note": "기관·사업 공고 (청년, 확대)"
     },
     {
-      "article_key": "https://www.siminilbo.co.kr/news/newsview.php?ncode=1160313800875204",
-      "title": "양천구, 무주택청년에 ‘최대 480만원’ 월세 지원",
-      "preferred_url": "https://www.siminilbo.co.kr/news/newsview.php?ncode=1160313800875204",
-      "source": "시민일보",
-      "source_name": "네이버뉴스 청년 주거·생활(1주)",
+      "article_key": "https://www.pressian.com/pages/articles/2026050310451210570",
+      "title": "한창화, 국힘 탈당 후 무소속 출마 선언…“주민 선택으로 정치 바로 세우겠다”",
+      "preferred_url": "https://www.pressian.com/pages/articles/2026050310451210570",
+      "source": "프레시안",
+      "source_name": "네이버뉴스 청년 고용·쉬었음(1주)",
       "source_kind": "news",
-      "publisher_domain": "www.siminilbo.co.kr",
-      "published_at": "2026-04-30T22:23:22+09:00",
-      "region": "경기",
+      "publisher_domain": "www.pressian.com",
+      "published_at": "2026-05-03T10:45:41+09:00",
+      "region": "서울",
       "selection_bucket": "regional_issue",
       "drop_reason": "public_relevance_filtered",
-      "importance_score": 20,
+      "importance_score": 9,
+      "ops_radar_score": 20,
+      "ops_radar_priority": "critical",
+      "ops_radar_overlooked": true,
+      "ops_radar_labels": [
+        "정치·공약"
+      ],
+      "ops_radar_lanes": [
+        "political_commitment"
+      ],
+      "ops_radar_matches": [
+        {
+          "lane": "political_commitment",
+          "label": "정치·공약",
+          "description": "청년 공약, 후보, 비례대표, 선거 의제를 별도 레이더로 남깁니다.",
+          "matched_keywords": [
+            "청년",
+            "선거"
+          ],
+          "score": 7
+        }
+      ],
+      "ops_radar_note": "정치·공약 (청년, 선거)"
+    },
+    {
+      "article_key": "https://www.ytn.co.kr/_ln/0101_202605030955095497",
+      "title": "북, '청년동맹' 개최...김정은 \"투쟁과업 적극 진출\"",
+      "preferred_url": "https://www.ytn.co.kr/_ln/0101_202605030955095497",
+      "source": "YTN",
+      "source_name": "네이버뉴스 청년단체(1주)",
+      "source_kind": "news",
+      "publisher_domain": "www.ytn.co.kr",
+      "published_at": "2026-05-03T09:55:00+09:00",
+      "region": "전국",
+      "selection_bucket": "youth_issue",
+      "drop_reason": "selection_cutoff:청년 현안:score=23",
+      "importance_score": 23,
+      "ops_radar_score": 20,
+      "ops_radar_priority": "critical",
+      "ops_radar_overlooked": true,
+      "ops_radar_labels": [
+        "기관·사업 공고"
+      ],
+      "ops_radar_lanes": [
+        "institution_program"
+      ],
+      "ops_radar_matches": [
+        {
+          "lane": "institution_program",
+          "label": "기관·사업 공고",
+          "description": "실무자가 챙겨야 할 모집, 접수, 선정, 프로그램 공고형 기사를 찾습니다.",
+          "matched_keywords": [
+            "청년",
+            "참가자"
+          ],
+          "score": 7
+        }
+      ],
+      "ops_radar_note": "기관·사업 공고 (청년, 참가자)"
+    },
+    {
+      "article_key": "http://www.tongilnews.com/news/articleView.html?idxno=216387",
+      "title": "김정은, 청년동맹 11차대회 참가자들과 기념촬영...\"용기 충천한 역할\" 당부",
+      "preferred_url": "http://www.tongilnews.com/news/articleView.html?idxno=216387",
+      "source": "통일뉴스",
+      "source_name": "네이버뉴스 청년 노동·권리(1주)",
+      "source_kind": "news",
+      "publisher_domain": "www.tongilnews.com",
+      "published_at": "2026-05-03T09:36:42+09:00",
+      "region": "전국",
+      "selection_bucket": "youth_issue",
+      "drop_reason": "selection_cutoff:청년 현안:score=24",
+      "importance_score": 24,
+      "ops_radar_score": 20,
+      "ops_radar_priority": "critical",
+      "ops_radar_overlooked": true,
+      "ops_radar_labels": [
+        "기관·사업 공고"
+      ],
+      "ops_radar_lanes": [
+        "institution_program"
+      ],
+      "ops_radar_matches": [
+        {
+          "lane": "institution_program",
+          "label": "기관·사업 공고",
+          "description": "실무자가 챙겨야 할 모집, 접수, 선정, 프로그램 공고형 기사를 찾습니다.",
+          "matched_keywords": [
+            "청년",
+            "참가자"
+          ],
+          "score": 7
+        }
+      ],
+      "ops_radar_note": "기관·사업 공고 (청년, 참가자)"
+    },
+    {
+      "article_key": "https://www.munhwa.com/article/11586474",
+      "title": "오세훈 “서울 부동산 지옥될 것” vs 정원오 “박원순 그림자와 싸우나”",
+      "preferred_url": "https://www.munhwa.com/article/11586474",
+      "source": "문화일보",
+      "source_name": "네이버뉴스 청년 주거·생활(1주)",
+      "source_kind": "news",
+      "publisher_domain": "www.munhwa.com",
+      "published_at": "2026-05-02T17:48:18+09:00",
+      "region": "서울",
+      "selection_bucket": "regional_issue",
+      "drop_reason": "public_relevance_filtered",
+      "importance_score": 6,
+      "ops_radar_score": 20,
+      "ops_radar_priority": "critical",
+      "ops_radar_overlooked": true,
+      "ops_radar_labels": [
+        "정치·공약"
+      ],
+      "ops_radar_lanes": [
+        "political_commitment"
+      ],
+      "ops_radar_matches": [
+        {
+          "lane": "political_commitment",
+          "label": "정치·공약",
+          "description": "청년 공약, 후보, 비례대표, 선거 의제를 별도 레이더로 남깁니다.",
+          "matched_keywords": [
+            "청년",
+            "후보"
+          ],
+          "score": 7
+        }
+      ],
+      "ops_radar_note": "정치·공약 (청년, 후보)"
+    },
+    {
+      "article_key": "http://www.sisafocus.co.kr/news/articleView.html?idxno=359540",
+      "title": "오세훈 “이재명·정원오 조합, 문재인·박원순 복식조보다 더 위험”",
+      "preferred_url": "http://www.sisafocus.co.kr/news/articleView.html?idxno=359540",
+      "source": "시사포커스",
+      "source_name": "네이버뉴스 청년 주거·생활(1주)",
+      "source_kind": "news",
+      "publisher_domain": "www.sisafocus.co.kr",
+      "published_at": "2026-05-02T17:44:30+09:00",
+      "region": "서울",
+      "selection_bucket": "regional_issue",
+      "drop_reason": "public_relevance_filtered",
+      "importance_score": 15,
+      "ops_radar_score": 20,
+      "ops_radar_priority": "critical",
+      "ops_radar_overlooked": true,
+      "ops_radar_labels": [
+        "정치·공약"
+      ],
+      "ops_radar_lanes": [
+        "political_commitment"
+      ],
+      "ops_radar_matches": [
+        {
+          "lane": "political_commitment",
+          "label": "정치·공약",
+          "description": "청년 공약, 후보, 비례대표, 선거 의제를 별도 레이더로 남깁니다.",
+          "matched_keywords": [
+            "청년",
+            "공약"
+          ],
+          "score": 7
+        }
+      ],
+      "ops_radar_note": "정치·공약 (청년, 공약)"
+    },
+    {
+      "article_key": "https://www.newsis.com/view/NISX20260502_0003614933",
+      "title": "오세훈 \"정원오, 공소취소 시도에 입장 밝혀야\" 정원오 측 \"尹어게인 공천 동의하나\"",
+      "preferred_url": "https://www.newsis.com/view/NISX20260502_0003614933",
+      "source": "뉴시스",
+      "source_name": "네이버뉴스 청년 주거·생활(1주)",
+      "source_kind": "news",
+      "publisher_domain": "www.newsis.com",
+      "published_at": "2026-05-02T17:10:35+09:00",
+      "region": "서울",
+      "selection_bucket": "regional_issue",
+      "drop_reason": "public_relevance_filtered",
+      "importance_score": 6,
+      "ops_radar_score": 20,
+      "ops_radar_priority": "critical",
+      "ops_radar_overlooked": true,
+      "ops_radar_labels": [
+        "정치·공약"
+      ],
+      "ops_radar_lanes": [
+        "political_commitment"
+      ],
+      "ops_radar_matches": [
+        {
+          "lane": "political_commitment",
+          "label": "정치·공약",
+          "description": "청년 공약, 후보, 비례대표, 선거 의제를 별도 레이더로 남깁니다.",
+          "matched_keywords": [
+            "청년",
+            "공약"
+          ],
+          "score": 7
+        }
+      ],
+      "ops_radar_note": "정치·공약 (청년, 공약)"
+    },
+    {
+      "article_key": "https://www.yonhapnewstv.co.kr/news/AKR20260502140521UJu",
+      "title": "오세훈 \"이재명-정원오 조합, 부동산 지옥 초래\"",
+      "preferred_url": "https://www.yonhapnewstv.co.kr/news/AKR20260502140521UJu",
+      "source": "연합뉴스TV",
+      "source_name": "네이버뉴스 청년 주거·생활(1주)",
+      "source_kind": "news",
+      "publisher_domain": "www.yonhapnewstv.co.kr",
+      "published_at": "2026-05-02T05:05:22+00:00",
+      "region": "서울",
+      "selection_bucket": "regional_issue",
+      "drop_reason": "public_relevance_filtered",
+      "importance_score": 14,
+      "ops_radar_score": 20,
+      "ops_radar_priority": "critical",
+      "ops_radar_overlooked": true,
+      "ops_radar_labels": [
+        "정치·공약"
+      ],
+      "ops_radar_lanes": [
+        "political_commitment"
+      ],
+      "ops_radar_matches": [
+        {
+          "lane": "political_commitment",
+          "label": "정치·공약",
+          "description": "청년 공약, 후보, 비례대표, 선거 의제를 별도 레이더로 남깁니다.",
+          "matched_keywords": [
+            "청년",
+            "공약"
+          ],
+          "score": 7
+        }
+      ],
+      "ops_radar_note": "정치·공약 (청년, 공약)"
+    },
+    {
+      "article_key": "https://news.google.com/rss/articles/CBMickFVX3lxTFBxb0JVdlVPbWk5Si1KTXZoME1KcHI0aUVlUnl2U01Gbi1MRUhCeE5vWWdLWHQ1WmE2X1BPWlREUG9zal93VXlGeVJUQVkwa0Z4cFRKdlNYNzh3SVF1Sl9mNWtacjY0SlhIQzh3YUE3RnRCZw?oc=5",
+      "title": "금융 사각지대 청년을 위한 사다리, 청년 미래이음 대출 신청 후기",
+      "preferred_url": "https://news.google.com/rss/articles/CBMickFVX3lxTFBxb0JVdlVPbWk5Si1KTXZoME1KcHI0aUVlUnl2U01Gbi1MRUhCeE5vWWdLWHQ1WmE2X1BPWlREUG9zal93VXlGeVJUQVkwa0Z4cFRKdlNYNzh3SVF1Sl9mNWtacjY0SlhIQzh3YUE3RnRCZw?oc=5",
+      "source": "대한민국 정책브리핑",
+      "source_name": "구글뉴스 청년 부채·금융(7일)",
+      "source_kind": "news",
+      "publisher_domain": "www.korea.kr",
+      "published_at": "2026-04-30T15:40:09+00:00",
+      "region": "전국",
+      "selection_bucket": "youth_issue",
+      "drop_reason": "selection_cutoff:청년 현안:score=28",
+      "importance_score": 28,
       "ops_radar_score": 20,
       "ops_radar_priority": "critical",
       "ops_radar_overlooked": true,
@@ -2107,90 +1814,18 @@
       "ops_radar_note": "기관·사업 공고 (청년, 신청)"
     },
     {
-      "article_key": "https://news.google.com/rss/articles/CBMiVEFVX3lxTE5tQlBnWktRME9BaTZQNWxmVGRmMUV1TnZoYzJKY2hhNzJteVNxbGxyc3hkcjlHd2o2bVljS04xeWxnb2JnTk9OSDFXN3NTMUlpYzZVTg?oc=5",
-      "title": "공공 일경험 확대, 청년 취업 지원… 일각 “단기 일자리 양산”",
-      "preferred_url": "https://news.google.com/rss/articles/CBMiVEFVX3lxTE5tQlBnWktRME9BaTZQNWxmVGRmMUV1TnZoYzJKY2hhNzJteVNxbGxyc3hkcjlHd2o2bVljS04xeWxnb2JnTk9OSDFXN3NTMUlpYzZVTg?oc=5",
-      "source": "v.daum.net",
-      "source_name": "구글뉴스 청년 고용·쉬었음(7일)",
+      "article_key": "https://news.google.com/rss/articles/CBMiTkFVX3lxTE9lb1RKSi1xeHlFQnE5cmhDRmp5enB3VWs4bURZYXRnQ0J1a0dPWVFoU1ZoTGhDMWZROW9iYkpTZjZRQ3hsX3k5QTdJeGdvZw?oc=5",
+      "title": "오세훈 “월세 지옥 막겠다”…청년 주거 공약으로 부동산 공세 강화",
+      "preferred_url": "https://news.google.com/rss/articles/CBMiTkFVX3lxTE9lb1RKSi1xeHlFQnE5cmhDRmp5enB3VWs4bURZYXRnQ0J1a0dPWVFoU1ZoTGhDMWZROW9iYkpTZjZRQ3hsX3k5QTdJeGdvZw?oc=5",
+      "source": "dt.co.kr",
+      "source_name": "구글뉴스 청년 공약(7일)",
       "source_kind": "news",
-      "publisher_domain": "v.daum.net",
-      "published_at": "2026-04-29T10:07:02+00:00",
+      "publisher_domain": "www.dt.co.kr",
+      "published_at": "2026-05-02T03:42:00+00:00",
       "region": "전국",
       "selection_bucket": "youth_issue",
-      "drop_reason": "selection_cutoff:청년 현안:score=24",
-      "importance_score": 24,
-      "ops_radar_score": 20,
-      "ops_radar_priority": "critical",
-      "ops_radar_overlooked": true,
-      "ops_radar_labels": [
-        "기관·사업 공고"
-      ],
-      "ops_radar_lanes": [
-        "institution_program"
-      ],
-      "ops_radar_matches": [
-        {
-          "lane": "institution_program",
-          "label": "기관·사업 공고",
-          "description": "실무자가 챙겨야 할 모집, 접수, 선정, 프로그램 공고형 기사를 찾습니다.",
-          "matched_keywords": [
-            "청년",
-            "확대"
-          ],
-          "score": 7
-        }
-      ],
-      "ops_radar_note": "기관·사업 공고 (청년, 확대)"
-    },
-    {
-      "article_key": "https://news.google.com/rss/articles/CBMiRkFVX3lxTFBmZUpMaHVoLUhRNlJjY2l1ZzNlbGZSNlJKMEg2Njk0T2xab1d1M1ZLZFprNjdrcmpOUTU2ZTlKWERkRFlDTHc?oc=5",
-      "title": "고용노동부 양산지청, 제3기 청년정책 엠버서더 출범",
-      "preferred_url": "https://news.google.com/rss/articles/CBMiRkFVX3lxTFBmZUpMaHVoLUhRNlJjY2l1ZzNlbGZSNlJKMEg2Njk0T2xab1d1M1ZLZFprNjdrcmpOUTU2ZTlKWERkRFlDTHc?oc=5",
-      "source": "v.daum.net",
-      "source_name": "구글뉴스 청년정책(7일)",
-      "source_kind": "news",
-      "publisher_domain": "v.daum.net",
-      "published_at": "2026-04-29T07:18:00+00:00",
-      "region": "전국",
-      "selection_bucket": "youth_issue",
-      "drop_reason": "selection_cutoff:청년 현안:score=24",
-      "importance_score": 24,
-      "ops_radar_score": 20,
-      "ops_radar_priority": "critical",
-      "ops_radar_overlooked": true,
-      "ops_radar_labels": [
-        "거버넌스·인사"
-      ],
-      "ops_radar_lanes": [
-        "governance_personnel"
-      ],
-      "ops_radar_matches": [
-        {
-          "lane": "governance_personnel",
-          "label": "거버넌스·인사",
-          "description": "위원회, 정책네트워크, 참여기구, 임명·위촉 기사 등을 묶습니다.",
-          "matched_keywords": [
-            "청년정책",
-            "출범"
-          ],
-          "score": 7
-        }
-      ],
-      "ops_radar_note": "거버넌스·인사 (청년정책, 출범)"
-    },
-    {
-      "article_key": "https://www.ubc.co.kr/wp/archives/127304",
-      "title": "단일화 촉각..’4파전’ 남구청장 공약은?",
-      "preferred_url": "https://www.ubc.co.kr/wp/archives/127304",
-      "source": "ubc울산방송",
-      "source_name": "네이버뉴스 청년 광역(1주)",
-      "source_kind": "news",
-      "publisher_domain": "www.ubc.co.kr",
-      "published_at": "2026-05-01T20:41:08+00:00",
-      "region": "대전",
-      "selection_bucket": "regional_issue",
-      "drop_reason": "selection_cutoff:지역 이슈:score=28",
-      "importance_score": 28,
+      "drop_reason": "public_relevance_filtered",
+      "importance_score": -3,
       "ops_radar_score": 19,
       "ops_radar_priority": "critical",
       "ops_radar_overlooked": true,
@@ -2215,18 +1850,558 @@
       "ops_radar_note": "정치·공약 (청년, 공약)"
     },
     {
-      "article_key": "https://news.google.com/rss/articles/CBMiT0FVX3lxTFBLMzBtUkZMZl9MQ1luWDBxU2dJa2xxQ0JrNk95ZEVwRU5XUXB3ZnJVeWhVU0lpeWlBN0Zjd0RBSHZPWHdxZms4WDZjclpFdUU?oc=5",
-      "title": "울산 청년정책, 청년 시선으로 알린다, 서포터즈 참여자 모집",
-      "preferred_url": "https://news.google.com/rss/articles/CBMiT0FVX3lxTFBLMzBtUkZMZl9MQ1luWDBxU2dJa2xxQ0JrNk95ZEVwRU5XUXB3ZnJVeWhVU0lpeWlBN0Zjd0RBSHZPWHdxZms4WDZjclpFdUU?oc=5",
+      "article_key": "https://news.google.com/rss/articles/CBMibkFVX3lxTFA0R3Q5SmFBZnptaHlyRFF2SVd4N3Z0VjJvUTM1LWdTTEFIb205UkNVZ01vRGIxaFNQckVkYTdOX1M0X2U5dEV1NFFpTUZKazRxV25mWmh4dDhaek1fWjhtNEhWMXRwZVVIblZScy1R?oc=5",
+      "title": "서울시, ‘청년 월세’ 확대…전세피해자·신혼부부 포함 1만 5000명 지원",
+      "preferred_url": "https://news.google.com/rss/articles/CBMibkFVX3lxTFA0R3Q5SmFBZnptaHlyRFF2SVd4N3Z0VjJvUTM1LWdTTEFIb205UkNVZ01vRGIxaFNQckVkYTdOX1M0X2U5dEV1NFFpTUZKazRxV25mWmh4dDhaek1fWjhtNEhWMXRwZVVIblZScy1R?oc=5",
+      "source": "아시아투데이",
+      "source_name": "구글뉴스 청년 주거·생활(7일)",
+      "source_kind": "news",
+      "publisher_domain": "www.asiatoday.co.kr",
+      "published_at": "2026-04-30T01:34:21+00:00",
+      "region": "서울",
+      "selection_bucket": "regional_issue",
+      "drop_reason": "selection_cutoff:지역 이슈:score=26",
+      "importance_score": 26,
+      "ops_radar_score": 19,
+      "ops_radar_priority": "critical",
+      "ops_radar_overlooked": true,
+      "ops_radar_labels": [
+        "기관·사업 공고"
+      ],
+      "ops_radar_lanes": [
+        "institution_program"
+      ],
+      "ops_radar_matches": [
+        {
+          "lane": "institution_program",
+          "label": "기관·사업 공고",
+          "description": "실무자가 챙겨야 할 모집, 접수, 선정, 프로그램 공고형 기사를 찾습니다.",
+          "matched_keywords": [
+            "청년",
+            "확대"
+          ],
+          "score": 7
+        }
+      ],
+      "ops_radar_note": "기관·사업 공고 (청년, 확대)"
+    },
+    {
+      "article_key": "https://news.google.com/rss/articles/CBMicEFVX3lxTFBPRDMwWmxpSHdDX1NaQmFkR1dfUHFma1NMb1hfY1d1WHQxRVZDclUzd1g3c3RmdEpjRUdoaEVZdjhtV1VxMDJPSUFwNlctZk15MWtUS1UzQ01sZGlMdXNBdW5uWFgyakN4T3VNUUVIV0w?oc=5",
+      "title": "서울시, '청년 월세 지원' 확대… 1만5천 명 대상",
+      "preferred_url": "https://news.google.com/rss/articles/CBMicEFVX3lxTFBPRDMwWmxpSHdDX1NaQmFkR1dfUHFma1NMb1hfY1d1WHQxRVZDclUzd1g3c3RmdEpjRUdoaEVZdjhtV1VxMDJPSUFwNlctZk15MWtUS1UzQ01sZGlMdXNBdW5uWFgyakN4T3VNUUVIV0w?oc=5",
+      "source": "B world",
+      "source_name": "구글뉴스 청년 주거·생활(7일)",
+      "source_kind": "news",
+      "publisher_domain": "news.skbroadband.com",
+      "published_at": "2026-04-30T01:01:17+00:00",
+      "region": "서울",
+      "selection_bucket": "regional_issue",
+      "drop_reason": "selection_cutoff:지역 이슈:score=26",
+      "importance_score": 26,
+      "ops_radar_score": 19,
+      "ops_radar_priority": "critical",
+      "ops_radar_overlooked": true,
+      "ops_radar_labels": [
+        "기관·사업 공고"
+      ],
+      "ops_radar_lanes": [
+        "institution_program"
+      ],
+      "ops_radar_matches": [
+        {
+          "lane": "institution_program",
+          "label": "기관·사업 공고",
+          "description": "실무자가 챙겨야 할 모집, 접수, 선정, 프로그램 공고형 기사를 찾습니다.",
+          "matched_keywords": [
+            "청년",
+            "확대"
+          ],
+          "score": 7
+        }
+      ],
+      "ops_radar_note": "기관·사업 공고 (청년, 확대)"
+    },
+    {
+      "article_key": "https://news.google.com/rss/articles/CBMibEFVX3lxTE5TaDk4SkJSUkswQzBWME9sWUdnZzFZZFBkYkdCQmtvZ213ckdoQU9qbmdKdjNVMkNoSWtmaUJHZG5NdFhMdVFpTGFFOFpTU2RCSmlkYkl0UHM4WnAyQTdpRmhYMkljcEpqQk5VVtIBcEFVX3lxTE0tRVRZVXFwSXprS3ZHcXlKYk5vZXlKeDBDNEV0R3pjTnlXcXdpcjhxV3J1d0pCLVd2cUo2LUFib3NreDhFd3NIbWtkZThGNGNVVkhHbVVXcG1oTm14OEEtTmZZb19XTGxBYzFxdmdQUTY?oc=5",
+      "title": "서울시 ‘청년 월세지원’ 확대 - 주거 사각지대 해소 위한 구조적 개편 단행",
+      "preferred_url": "https://news.google.com/rss/articles/CBMibEFVX3lxTE5TaDk4SkJSUkswQzBWME9sWUdnZzFZZFBkYkdCQmtvZ213ckdoQU9qbmdKdjNVMkNoSWtmaUJHZG5NdFhMdVFpTGFFOFpTU2RCSmlkYkl0UHM4WnAyQTdpRmhYMkljcEpqQk5VVtIBcEFVX3lxTE0tRVRZVXFwSXprS3ZHcXlKYk5vZXlKeDBDNEV0R3pjTnlXcXdpcjhxV3J1d0pCLVd2cUo2LUFib3NreDhFd3NIbWtkZThGNGNVVkhHbVVXcG1oTm14OEEtTmZZb19XTGxBYzFxdmdQUTY?oc=5",
+      "source": "한국도시환경헤럴드",
+      "source_name": "구글뉴스 청년 주거·생활(7일)",
+      "source_kind": "news",
+      "publisher_domain": "www.kueherald.co.kr",
+      "published_at": "2026-04-30T01:00:11+00:00",
+      "region": "서울",
+      "selection_bucket": "regional_issue",
+      "drop_reason": "selection_cutoff:지역 이슈:score=26",
+      "importance_score": 26,
+      "ops_radar_score": 19,
+      "ops_radar_priority": "critical",
+      "ops_radar_overlooked": true,
+      "ops_radar_labels": [
+        "기관·사업 공고"
+      ],
+      "ops_radar_lanes": [
+        "institution_program"
+      ],
+      "ops_radar_matches": [
+        {
+          "lane": "institution_program",
+          "label": "기관·사업 공고",
+          "description": "실무자가 챙겨야 할 모집, 접수, 선정, 프로그램 공고형 기사를 찾습니다.",
+          "matched_keywords": [
+            "청년",
+            "확대"
+          ],
+          "score": 7
+        }
+      ],
+      "ops_radar_note": "기관·사업 공고 (청년, 확대)"
+    },
+    {
+      "article_key": "https://news.google.com/rss/articles/CBMiakFVX3lxTE5NcHlRNklDS0Q5R3RqbGo1RmVIZXcxZ250eE93VC1vVzNFUW9MaWJ6c2RfYnJ4QjRrQXdtTW03QXZ0Ynh6bXhubkRtVFRta291S0p1cXBxV0FkTkVlZF9MN1NrZldIVjJCZkE?oc=5",
+      "title": "서울시 청년월세 지원 확대… 주거안정 위해 1.5만명 지원",
+      "preferred_url": "https://news.google.com/rss/articles/CBMiakFVX3lxTE5NcHlRNklDS0Q5R3RqbGo1RmVIZXcxZ250eE93VC1vVzNFUW9MaWJ6c2RfYnJ4QjRrQXdtTW03QXZ0Ynh6bXhubkRtVFRta291S0p1cXBxV0FkTkVlZF9MN1NrZldIVjJCZkE?oc=5",
+      "source": "천지일보",
+      "source_name": "구글뉴스 청년 주거·생활(7일)",
+      "source_kind": "news",
+      "publisher_domain": "www.newscj.com",
+      "published_at": "2026-04-30T00:32:26+00:00",
+      "region": "서울",
+      "selection_bucket": "regional_issue",
+      "drop_reason": "selection_cutoff:지역 이슈:score=26",
+      "importance_score": 26,
+      "ops_radar_score": 19,
+      "ops_radar_priority": "critical",
+      "ops_radar_overlooked": true,
+      "ops_radar_labels": [
+        "기관·사업 공고"
+      ],
+      "ops_radar_lanes": [
+        "institution_program"
+      ],
+      "ops_radar_matches": [
+        {
+          "lane": "institution_program",
+          "label": "기관·사업 공고",
+          "description": "실무자가 챙겨야 할 모집, 접수, 선정, 프로그램 공고형 기사를 찾습니다.",
+          "matched_keywords": [
+            "청년",
+            "확대"
+          ],
+          "score": 7
+        }
+      ],
+      "ops_radar_note": "기관·사업 공고 (청년, 확대)"
+    },
+    {
+      "article_key": "https://news.google.com/rss/articles/CBMidEFVX3lxTFBmdVJCN1V1TzdNRC1VcGRBVlJITk1NVEdfUGFNUm54cmF6Q2ZUVTNJUDlzYUZiN3VfSklOQzVxa3FZUlVjczA3UTNHWUROaTFxTllwMkg2UVZDMU00cXl4UDdGTzRVejVlOWxPRFFnanVnSFFq?oc=5",
+      "title": "서울시, 청년 월세지원 1만5천 명으로 확대…한부모·전세사기 피해 청년도 포함!",
+      "preferred_url": "https://news.google.com/rss/articles/CBMidEFVX3lxTFBmdVJCN1V1TzdNRC1VcGRBVlJITk1NVEdfUGFNUm54cmF6Q2ZUVTNJUDlzYUZiN3VfSklOQzVxa3FZUlVjczA3UTNHWUROaTFxTllwMkg2UVZDMU00cXl4UDdGTzRVejVlOWxPRFFnanVnSFFq?oc=5",
+      "source": "경기종합뉴스",
+      "source_name": "구글뉴스 청년 주거·생활(7일)",
+      "source_kind": "news",
+      "publisher_domain": "www.ggoverallnews.co.kr",
+      "published_at": "2026-04-29T23:22:12+00:00",
+      "region": "서울",
+      "selection_bucket": "regional_issue",
+      "drop_reason": "selection_cutoff:지역 이슈:score=26",
+      "importance_score": 26,
+      "ops_radar_score": 19,
+      "ops_radar_priority": "critical",
+      "ops_radar_overlooked": true,
+      "ops_radar_labels": [
+        "기관·사업 공고"
+      ],
+      "ops_radar_lanes": [
+        "institution_program"
+      ],
+      "ops_radar_matches": [
+        {
+          "lane": "institution_program",
+          "label": "기관·사업 공고",
+          "description": "실무자가 챙겨야 할 모집, 접수, 선정, 프로그램 공고형 기사를 찾습니다.",
+          "matched_keywords": [
+            "청년",
+            "확대"
+          ],
+          "score": 7
+        }
+      ],
+      "ops_radar_note": "기관·사업 공고 (청년, 확대)"
+    },
+    {
+      "article_key": "https://news.google.com/rss/articles/CBMib0FVX3lxTFBMYjY3LVBQeEF1VlBYZWM5RGdUWGJmMm5lV0E4aW5CUERkTkJ3RklXdm96blQxVUdpOTlZTkpmMEw4N0ZRQ1hIZ2k2VWd2dEZpMEZMZlZTeGI0cnVObVNoSjFFR2JLRTVXSlZiSkRlMA?oc=5",
+      "title": "서울시 청년월세지원, 5월 6일부터 신청…기준은?",
+      "preferred_url": "https://news.google.com/rss/articles/CBMib0FVX3lxTFBMYjY3LVBQeEF1VlBYZWM5RGdUWGJmMm5lV0E4aW5CUERkTkJ3RklXdm96blQxVUdpOTlZTkpmMEw4N0ZRQ1hIZ2k2VWd2dEZpMEZMZlZTeGI0cnVObVNoSjFFR2JLRTVXSlZiSkRlMA?oc=5",
+      "source": "bntnews.co.kr",
+      "source_name": "구글뉴스 청년 주거·생활(7일)",
+      "source_kind": "news",
+      "publisher_domain": "www.bntnews.co.kr",
+      "published_at": "2026-04-29T22:08:15+00:00",
+      "region": "서울",
+      "selection_bucket": "regional_issue",
+      "drop_reason": "selection_cutoff:지역 이슈:score=26",
+      "importance_score": 26,
+      "ops_radar_score": 19,
+      "ops_radar_priority": "critical",
+      "ops_radar_overlooked": true,
+      "ops_radar_labels": [
+        "기관·사업 공고"
+      ],
+      "ops_radar_lanes": [
+        "institution_program"
+      ],
+      "ops_radar_matches": [
+        {
+          "lane": "institution_program",
+          "label": "기관·사업 공고",
+          "description": "실무자가 챙겨야 할 모집, 접수, 선정, 프로그램 공고형 기사를 찾습니다.",
+          "matched_keywords": [
+            "청년",
+            "신청"
+          ],
+          "score": 7
+        }
+      ],
+      "ops_radar_note": "기관·사업 공고 (청년, 신청)"
+    },
+    {
+      "article_key": "https://news.google.com/rss/articles/CBMiUEFVX3lxTFBDVloySXlEM0JSMXF0OXZHQ0lrenctUUVhdE9YdTVnVWlQcEpyNzdvUWdHdlo4clllNFZDTU9qQ0hxSnB1UE1teEVWeUplbGJ0?oc=5",
+      "title": "양천구, 무주택 청년 대상 ‘월세 지원사업’ 추진…“최대 480만 원”",
+      "preferred_url": "https://news.google.com/rss/articles/CBMiUEFVX3lxTFBDVloySXlEM0JSMXF0OXZHQ0lrenctUUVhdE9YdTVnVWlQcEpyNzdvUWdHdlo4clllNFZDTU9qQ0hxSnB1UE1teEVWeUplbGJ0?oc=5",
+      "source": "문화일보",
+      "source_name": "구글뉴스 청년 주거·생활(7일)",
+      "source_kind": "news",
+      "publisher_domain": "www.munhwa.com",
+      "published_at": "2026-04-29T22:08:00+00:00",
+      "region": "서울",
+      "selection_bucket": "regional_issue",
+      "drop_reason": "selection_cutoff:지역 이슈:score=30",
+      "importance_score": 30,
+      "ops_radar_score": 19,
+      "ops_radar_priority": "critical",
+      "ops_radar_overlooked": true,
+      "ops_radar_labels": [
+        "기관·사업 공고"
+      ],
+      "ops_radar_lanes": [
+        "institution_program"
+      ],
+      "ops_radar_matches": [
+        {
+          "lane": "institution_program",
+          "label": "기관·사업 공고",
+          "description": "실무자가 챙겨야 할 모집, 접수, 선정, 프로그램 공고형 기사를 찾습니다.",
+          "matched_keywords": [
+            "청년",
+            "지원사업"
+          ],
+          "score": 7
+        }
+      ],
+      "ops_radar_note": "기관·사업 공고 (청년, 지원사업)"
+    },
+    {
+      "article_key": "https://news.google.com/rss/articles/CBMiRkFVX3lxTE1hUk4ySUF4RWRYRjA3OXZqNXdDSDZ4S25uWmY0dzF6aU1PbTlZYWpmaUljTXBiaXpfeVlHYnFySmhUMjYtRkE?oc=5",
+      "title": "서울시, 청년 월세 지원 대상 전세 사기 피해자·신혼부부로 확대",
+      "preferred_url": "https://news.google.com/rss/articles/CBMiRkFVX3lxTE1hUk4ySUF4RWRYRjA3OXZqNXdDSDZ4S25uWmY0dzF6aU1PbTlZYWpmaUljTXBiaXpfeVlHYnFySmhUMjYtRkE?oc=5",
       "source": "v.daum.net",
-      "source_name": "구글뉴스 청년정책(7일)",
+      "source_name": "구글뉴스 청년 주거·생활(7일)",
       "source_kind": "news",
       "publisher_domain": "v.daum.net",
-      "published_at": "2026-04-29T01:40:44+00:00",
-      "region": "울산",
+      "published_at": "2026-04-29T21:03:05+00:00",
+      "region": "서울",
       "selection_bucket": "regional_issue",
-      "drop_reason": "selection_cutoff:지역 이슈:score=24",
-      "importance_score": 24,
+      "drop_reason": "selection_cutoff:지역 이슈:score=26",
+      "importance_score": 26,
+      "ops_radar_score": 19,
+      "ops_radar_priority": "critical",
+      "ops_radar_overlooked": true,
+      "ops_radar_labels": [
+        "기관·사업 공고"
+      ],
+      "ops_radar_lanes": [
+        "institution_program"
+      ],
+      "ops_radar_matches": [
+        {
+          "lane": "institution_program",
+          "label": "기관·사업 공고",
+          "description": "실무자가 챙겨야 할 모집, 접수, 선정, 프로그램 공고형 기사를 찾습니다.",
+          "matched_keywords": [
+            "청년",
+            "확대"
+          ],
+          "score": 7
+        }
+      ],
+      "ops_radar_note": "기관·사업 공고 (청년, 확대)"
+    },
+    {
+      "article_key": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE1YUVVRaFpBdTBLZ2tWN2loMHZHZ05ua1hpa0xwcWlmYXBkaTlBUVFhLXlSdFVQS3VKaWpzNFdhTi1JYnZyTFdpSGtDSkpubVVnMGZjN0t6TTlGa28?oc=5",
+      "title": "서울시, 청년 월세 지원 확대…최대 240만 원 지원",
+      "preferred_url": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE1YUVVRaFpBdTBLZ2tWN2loMHZHZ05ua1hpa0xwcWlmYXBkaTlBUVFhLXlSdFVQS3VKaWpzNFdhTi1JYnZyTFdpSGtDSkpubVVnMGZjN0t6TTlGa28?oc=5",
+      "source": "KBS 뉴스",
+      "source_name": "구글뉴스 청년 주거·생활(7일)",
+      "source_kind": "news",
+      "publisher_domain": "news.kbs.co.kr",
+      "published_at": "2026-04-29T21:02:57+00:00",
+      "region": "서울",
+      "selection_bucket": "regional_issue",
+      "drop_reason": "selection_cutoff:지역 이슈:score=26",
+      "importance_score": 26,
+      "ops_radar_score": 19,
+      "ops_radar_priority": "critical",
+      "ops_radar_overlooked": true,
+      "ops_radar_labels": [
+        "기관·사업 공고"
+      ],
+      "ops_radar_lanes": [
+        "institution_program"
+      ],
+      "ops_radar_matches": [
+        {
+          "lane": "institution_program",
+          "label": "기관·사업 공고",
+          "description": "실무자가 챙겨야 할 모집, 접수, 선정, 프로그램 공고형 기사를 찾습니다.",
+          "matched_keywords": [
+            "청년",
+            "확대"
+          ],
+          "score": 7
+        }
+      ],
+      "ops_radar_note": "기관·사업 공고 (청년, 확대)"
+    },
+    {
+      "article_key": "https://news.google.com/rss/articles/CBMiS0FVX3lxTE9OWXMtSVFvSmkzUlVsOHducmJRTy1td0YtMTdDRnNTa0U1UEs3NnRWWXNSb3VzOFA5SkNDTWFwZ2tiVHoyRHlvc3dpcw?oc=5",
+      "title": "서울시 '청년 월세 지원' 전세피해자·신혼부부까지 확대...1.5만명에 월 최대 20만원",
+      "preferred_url": "https://news.google.com/rss/articles/CBMiS0FVX3lxTE9OWXMtSVFvSmkzUlVsOHducmJRTy1td0YtMTdDRnNTa0U1UEs3NnRWWXNSb3VzOFA5SkNDTWFwZ2tiVHoyRHlvc3dpcw?oc=5",
+      "source": "v.daum.net",
+      "source_name": "구글뉴스 청년 주거·생활(7일)",
+      "source_kind": "news",
+      "publisher_domain": "v.daum.net",
+      "published_at": "2026-04-29T21:02:38+00:00",
+      "region": "서울",
+      "selection_bucket": "regional_issue",
+      "drop_reason": "selection_cutoff:지역 이슈:score=26",
+      "importance_score": 26,
+      "ops_radar_score": 19,
+      "ops_radar_priority": "critical",
+      "ops_radar_overlooked": true,
+      "ops_radar_labels": [
+        "기관·사업 공고"
+      ],
+      "ops_radar_lanes": [
+        "institution_program"
+      ],
+      "ops_radar_matches": [
+        {
+          "lane": "institution_program",
+          "label": "기관·사업 공고",
+          "description": "실무자가 챙겨야 할 모집, 접수, 선정, 프로그램 공고형 기사를 찾습니다.",
+          "matched_keywords": [
+            "청년",
+            "확대"
+          ],
+          "score": 7
+        }
+      ],
+      "ops_radar_note": "기관·사업 공고 (청년, 확대)"
+    },
+    {
+      "article_key": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE5DVGFoQ1hydmRsWURxRENtZVF0VlExYm5PaDd6V1RodDNEN2o3emJoOXA4SjJBc3J3cFJFQVdsX3BHUlNSU3d4WGJuTlBGaURBUDU3MkxtdUFhTGfSAWBBVV95cUxNWW9yREx4cUpFZGFJdjJwZk4zYllGbnI2Wk5ZZVZtbzFSaS0xd0h6aUthVzU3YkgycTM1LVFBRzFXRy1GaXdMOFJUOGNmMXlqRDBfbnV1ZVJGLWJjZHdDYzA?oc=5",
+      "title": "서울시, 청년 월세 지원 확대…\"전세 사기 피해자 우선 선발\"",
+      "preferred_url": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE5DVGFoQ1hydmRsWURxRENtZVF0VlExYm5PaDd6V1RodDNEN2o3emJoOXA4SjJBc3J3cFJFQVdsX3BHUlNSU3d4WGJuTlBGaURBUDU3MkxtdUFhTGfSAWBBVV95cUxNWW9yREx4cUpFZGFJdjJwZk4zYllGbnI2Wk5ZZVZtbzFSaS0xd0h6aUthVzU3YkgycTM1LVFBRzFXRy1GaXdMOFJUOGNmMXlqRDBfbnV1ZVJGLWJjZHdDYzA?oc=5",
+      "source": "연합뉴스",
+      "source_name": "구글뉴스 청년 주거·생활(7일)",
+      "source_kind": "news",
+      "publisher_domain": "www.yna.co.kr",
+      "published_at": "2026-04-29T21:00:30+00:00",
+      "region": "서울",
+      "selection_bucket": "regional_issue",
+      "drop_reason": "selection_cutoff:지역 이슈:score=26",
+      "importance_score": 26,
+      "ops_radar_score": 19,
+      "ops_radar_priority": "critical",
+      "ops_radar_overlooked": true,
+      "ops_radar_labels": [
+        "기관·사업 공고"
+      ],
+      "ops_radar_lanes": [
+        "institution_program"
+      ],
+      "ops_radar_matches": [
+        {
+          "lane": "institution_program",
+          "label": "기관·사업 공고",
+          "description": "실무자가 챙겨야 할 모집, 접수, 선정, 프로그램 공고형 기사를 찾습니다.",
+          "matched_keywords": [
+            "청년",
+            "확대"
+          ],
+          "score": 7
+        }
+      ],
+      "ops_radar_note": "기관·사업 공고 (청년, 확대)"
+    },
+    {
+      "article_key": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE5NNkpsMURlU3NHdmQ5Q0lRMjlYMzZHYnkwdEpxMVc1alFUZnJSSmxQMDhPakx5eXFYMVk3dzIyN0tRbExSbFN4MDdvaW9ubTlhSWhNMjBFYTh4d9IBX0FVX3lxTE1JTDJlcGFoME80UDdvN2ExVnRSOXAwX2FfSnlxR3U2eUxTOXFESE5LeXo2MnlFcVRLbGpLdExxOU9YYnBrakdaeHQwdDVrOVg0YmduQXlESU1GZW1HWWNr?oc=5",
+      "title": "서울시 ‘청년 월세지원’ 대상자 확대···신혼부부·전세사기 피해자도 받는다",
+      "preferred_url": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE5NNkpsMURlU3NHdmQ5Q0lRMjlYMzZHYnkwdEpxMVc1alFUZnJSSmxQMDhPakx5eXFYMVk3dzIyN0tRbExSbFN4MDdvaW9ubTlhSWhNMjBFYTh4d9IBX0FVX3lxTE1JTDJlcGFoME80UDdvN2ExVnRSOXAwX2FfSnlxR3U2eUxTOXFESE5LeXo2MnlFcVRLbGpLdExxOU9YYnBrakdaeHQwdDVrOVg0YmduQXlESU1GZW1HWWNr?oc=5",
+      "source": "경향신문",
+      "source_name": "구글뉴스 청년 주거·생활(7일)",
+      "source_kind": "news",
+      "publisher_domain": "www.khan.co.kr",
+      "published_at": "2026-04-29T21:00:00+00:00",
+      "region": "서울",
+      "selection_bucket": "regional_issue",
+      "drop_reason": "selection_cutoff:지역 이슈:score=26",
+      "importance_score": 26,
+      "ops_radar_score": 19,
+      "ops_radar_priority": "critical",
+      "ops_radar_overlooked": true,
+      "ops_radar_labels": [
+        "기관·사업 공고"
+      ],
+      "ops_radar_lanes": [
+        "institution_program"
+      ],
+      "ops_radar_matches": [
+        {
+          "lane": "institution_program",
+          "label": "기관·사업 공고",
+          "description": "실무자가 챙겨야 할 모집, 접수, 선정, 프로그램 공고형 기사를 찾습니다.",
+          "matched_keywords": [
+            "청년",
+            "확대"
+          ],
+          "score": 7
+        }
+      ],
+      "ops_radar_note": "기관·사업 공고 (청년, 확대)"
+    },
+    {
+      "article_key": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE9xS1diWW5sdjlYb3N2Q0o5bkFZcG1rVmdQejVuU3V6QmlHNlZiTjM3YmRqWlYzeTZDbGl0bUJJeWRYNzdwRVZuQWpqaS11cmM3bFdGY24wVERieW8?oc=5",
+      "title": "서울시, 청년 월세지원 1.5만명 확대…월 최대 20만원 지원",
+      "preferred_url": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE9xS1diWW5sdjlYb3N2Q0o5bkFZcG1rVmdQejVuU3V6QmlHNlZiTjM3YmRqWlYzeTZDbGl0bUJJeWRYNzdwRVZuQWpqaS11cmM3bFdGY24wVERieW8?oc=5",
+      "source": "뉴스1",
+      "source_name": "구글뉴스 청년 주거·생활(7일)",
+      "source_kind": "news",
+      "publisher_domain": "www.news1.kr",
+      "published_at": "2026-04-29T21:00:00+00:00",
+      "region": "서울",
+      "selection_bucket": "regional_issue",
+      "drop_reason": "selection_cutoff:지역 이슈:score=26",
+      "importance_score": 26,
+      "ops_radar_score": 19,
+      "ops_radar_priority": "critical",
+      "ops_radar_overlooked": true,
+      "ops_radar_labels": [
+        "기관·사업 공고"
+      ],
+      "ops_radar_lanes": [
+        "institution_program"
+      ],
+      "ops_radar_matches": [
+        {
+          "lane": "institution_program",
+          "label": "기관·사업 공고",
+          "description": "실무자가 챙겨야 할 모집, 접수, 선정, 프로그램 공고형 기사를 찾습니다.",
+          "matched_keywords": [
+            "청년",
+            "확대"
+          ],
+          "score": 7
+        }
+      ],
+      "ops_radar_note": "기관·사업 공고 (청년, 확대)"
+    },
+    {
+      "article_key": "https://news.google.com/rss/articles/CBMie0FVX3lxTE5kQWFwdjk2S1FCY1hScTh3Vm83eUk4UEl2VTF5N0ZXN1NRQ3BRenhKdnVDa3V1Z2hjZERkRXBoMnJGTlBMMHltYUt1eTAxa2tDYjFxMjltODFNMmx6MHB4QWwweEdSRVpVcnk2WkF0MElTN0prYkR5dGppQQ?oc=5",
+      "title": "서울시, 청년 월세 지원 대상 전세 사기 피해자·신혼부부로 확대",
+      "preferred_url": "https://news.google.com/rss/articles/CBMie0FVX3lxTE5kQWFwdjk2S1FCY1hScTh3Vm83eUk4UEl2VTF5N0ZXN1NRQ3BRenhKdnVDa3V1Z2hjZERkRXBoMnJGTlBMMHltYUt1eTAxa2tDYjFxMjltODFNMmx6MHB4QWwweEdSRVpVcnk2WkF0MElTN0prYkR5dGppQQ?oc=5",
+      "source": "아시아경제",
+      "source_name": "구글뉴스 청년 주거·생활(7일)",
+      "source_kind": "news",
+      "publisher_domain": "www.asiae.co.kr",
+      "published_at": "2026-04-29T21:00:00+00:00",
+      "region": "서울",
+      "selection_bucket": "regional_issue",
+      "drop_reason": "selection_cutoff:지역 이슈:score=26",
+      "importance_score": 26,
+      "ops_radar_score": 19,
+      "ops_radar_priority": "critical",
+      "ops_radar_overlooked": true,
+      "ops_radar_labels": [
+        "기관·사업 공고"
+      ],
+      "ops_radar_lanes": [
+        "institution_program"
+      ],
+      "ops_radar_matches": [
+        {
+          "lane": "institution_program",
+          "label": "기관·사업 공고",
+          "description": "실무자가 챙겨야 할 모집, 접수, 선정, 프로그램 공고형 기사를 찾습니다.",
+          "matched_keywords": [
+            "청년",
+            "확대"
+          ],
+          "score": 7
+        }
+      ],
+      "ops_radar_note": "기관·사업 공고 (청년, 확대)"
+    },
+    {
+      "article_key": "https://news.google.com/rss/articles/CBMijgJBVV95cUxQclBSR1RaT2JnM1VhZXFlV1BDY25oa2U5bVBTMlFpTzlOUnVCTFhVWXFlVkIzZkNrTjdrWWJBdEI2YjJMVWJPWEVjNlNPdV9XZEdnX014MVlKZ0Q0SzlRS3FoVXUtNFpsOVJFcHh0NDZFNFJjbThXQU8xU0dKbXh0bzB6SFB0ZzlfN05yZmNYcUdKOEwza0xKRUo5cnIxbUw1ZWxzR1JXNzVFdDZLVmpqVjJIN1FCbl9ZWGIwYVU2TW92djhXNFIxYnJHWlBacmdGbkR3TEUtUk1wZTlhWGd3bUxPZmMtWGxOVlpGdUhGdU1tb2lfQ2JiYThtWG41Wk5oMkVLZGFrZVdCTzVZUEHSAZACQVVfeXFMTVREcnZyVUV4aE0xeDRzdmtOTlM4RXI1SmNKZHNRemJFYlpVQ0NsRS0yQ0pVdC1vRHVZM0E0ZnhxR2hkdUtFOFBvWWkwMG1KelNIZE1hZ3JjS0NWcWpuTTJZdnotOEkyZlVhSGZoc3hudmdUVi03X3Y0SVpxV0dJNk5xb1hmeFdCZlB3VHB4Nkl1SjBacjFhRDlMRl82OXJrQl9Wak0teXJCdy1zN04xd3p5YmhFcTQwTmJ2TXg2UHhTaFNnWTJYM3pfTEJRcDRMcHpLM1dXSjBQejFkMTFQY1ZrQk5xenAwVzhyMUNJVDAtX0xtWlVmSnNpcEpxQ1hiazNuT3BfVGo4bHp0RjlxUmg?oc=5",
+      "title": "서울시, 청년 월세지원 확대…1.5만명에게 매월 20만원",
+      "preferred_url": "https://news.google.com/rss/articles/CBMijgJBVV95cUxQclBSR1RaT2JnM1VhZXFlV1BDY25oa2U5bVBTMlFpTzlOUnVCTFhVWXFlVkIzZkNrTjdrWWJBdEI2YjJMVWJPWEVjNlNPdV9XZEdnX014MVlKZ0Q0SzlRS3FoVXUtNFpsOVJFcHh0NDZFNFJjbThXQU8xU0dKbXh0bzB6SFB0ZzlfN05yZmNYcUdKOEwza0xKRUo5cnIxbUw1ZWxzR1JXNzVFdDZLVmpqVjJIN1FCbl9ZWGIwYVU2TW92djhXNFIxYnJHWlBacmdGbkR3TEUtUk1wZTlhWGd3bUxPZmMtWGxOVlpGdUhGdU1tb2lfQ2JiYThtWG41Wk5oMkVLZGFrZVdCTzVZUEHSAZACQVVfeXFMTVREcnZyVUV4aE0xeDRzdmtOTlM4RXI1SmNKZHNRemJFYlpVQ0NsRS0yQ0pVdC1vRHVZM0E0ZnhxR2hkdUtFOFBvWWkwMG1KelNIZE1hZ3JjS0NWcWpuTTJZdnotOEkyZlVhSGZoc3hudmdUVi03X3Y0SVpxV0dJNk5xb1hmeFdCZlB3VHB4Nkl1SjBacjFhRDlMRl82OXJrQl9Wak0teXJCdy1zN04xd3p5YmhFcTQwTmJ2TXg2UHhTaFNnWTJYM3pfTEJRcDRMcHpLM1dXSjBQejFkMTFQY1ZrQk5xenAwVzhyMUNJVDAtX0xtWlVmSnNpcEpxQ1hiazNuT3BfVGo4bHp0RjlxUmg?oc=5",
+      "source": "데일리안",
+      "source_name": "구글뉴스 청년 주거·생활(7일)",
+      "source_kind": "news",
+      "publisher_domain": "www.dailian.co.kr",
+      "published_at": "2026-04-29T21:00:00+00:00",
+      "region": "서울",
+      "selection_bucket": "regional_issue",
+      "drop_reason": "selection_cutoff:지역 이슈:score=26",
+      "importance_score": 26,
+      "ops_radar_score": 19,
+      "ops_radar_priority": "critical",
+      "ops_radar_overlooked": true,
+      "ops_radar_labels": [
+        "기관·사업 공고"
+      ],
+      "ops_radar_lanes": [
+        "institution_program"
+      ],
+      "ops_radar_matches": [
+        {
+          "lane": "institution_program",
+          "label": "기관·사업 공고",
+          "description": "실무자가 챙겨야 할 모집, 접수, 선정, 프로그램 공고형 기사를 찾습니다.",
+          "matched_keywords": [
+            "청년",
+            "확대"
+          ],
+          "score": 7
+        }
+      ],
+      "ops_radar_note": "기관·사업 공고 (청년, 확대)"
+    },
+    {
+      "article_key": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE5xQjhMaUF5RDFBa3duTEQ3UnEtUk9uRVFDU1Z1QUp6QzZuX1JfSEh1TU5KNWlMc2NjaFo1aVk0VjdqbHQ3c0tOcHRDV0plTVFJektyWmZJWlFqdDA?oc=5",
+      "title": "경기도일자리재단, 청년 엔지니어 인턴십 모집…전공 살려 실무 경험·취업 경쟁력 강화",
+      "preferred_url": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE5xQjhMaUF5RDFBa3duTEQ3UnEtUk9uRVFDU1Z1QUp6QzZuX1JfSEh1TU5KNWlMc2NjaFo1aVk0VjdqbHQ3c0tOcHRDV0plTVFJektyWmZJWlFqdDA?oc=5",
+      "source": "경기일보",
+      "source_name": "구글뉴스 청년 고용·쉬었음(7일)",
+      "source_kind": "news",
+      "publisher_domain": "www.kyeonggi.com",
+      "published_at": "2026-04-27T06:53:00+00:00",
+      "region": "경기",
+      "selection_bucket": "regional_issue",
+      "drop_reason": "selection_cutoff:지역 이슈:score=30",
+      "importance_score": 30,
       "ops_radar_score": 19,
       "ops_radar_priority": "critical",
       "ops_radar_overlooked": true,
@@ -2249,114 +2424,6 @@
         }
       ],
       "ops_radar_note": "기관·사업 공고 (청년, 모집)"
-    },
-    {
-      "article_key": "https://news.google.com/rss/articles/CBMickFVX3lxTFA4eUNuTGVGTHZZVmZ0bExvM2Y3Rk1JUndzbHhIUzBMUWx0SHdsMTlmSXluWWt1bFBlX3U5OTRLcVhSc3FPN204V3diSy1KMGhTTDNLcUhaQm1zc1pxTE9tNy11MVkxR1RRY1pjbXhFSkNrQQ?oc=5",
-      "title": "대전시, 청년단체 대상 창업공간 운영단체 29일까지 모집",
-      "preferred_url": "https://news.google.com/rss/articles/CBMickFVX3lxTFA4eUNuTGVGTHZZVmZ0bExvM2Y3Rk1JUndzbHhIUzBMUWx0SHdsMTlmSXluWWt1bFBlX3U5OTRLcVhSc3FPN204V3diSy1KMGhTTDNLcUhaQm1zc1pxTE9tNy11MVkxR1RRY1pjbXhFSkNrQQ?oc=5",
-      "source": "투데이플러스",
-      "source_name": "구글뉴스 청년단체(7일)",
-      "source_kind": "news",
-      "publisher_domain": "www.todayplusnews.com",
-      "published_at": "2026-04-28T21:36:50+00:00",
-      "region": "대전",
-      "selection_bucket": "regional_issue",
-      "drop_reason": "selection_cutoff:지역 이슈:score=24",
-      "importance_score": 24,
-      "ops_radar_score": 19,
-      "ops_radar_priority": "critical",
-      "ops_radar_overlooked": true,
-      "ops_radar_labels": [
-        "기관·사업 공고"
-      ],
-      "ops_radar_lanes": [
-        "institution_program"
-      ],
-      "ops_radar_matches": [
-        {
-          "lane": "institution_program",
-          "label": "기관·사업 공고",
-          "description": "실무자가 챙겨야 할 모집, 접수, 선정, 프로그램 공고형 기사를 찾습니다.",
-          "matched_keywords": [
-            "청년",
-            "모집"
-          ],
-          "score": 7
-        }
-      ],
-      "ops_radar_note": "기관·사업 공고 (청년, 모집)"
-    },
-    {
-      "article_key": "https://www.newsis.com/view/NISX20260418_0003596465",
-      "title": "[오늘의 주요일정]정치(4월18일 토요일)",
-      "preferred_url": "https://www.newsis.com/view/NISX20260418_0003596465",
-      "source": "뉴시스",
-      "source_name": "네이버뉴스 거버넌스(1개월)",
-      "source_kind": "news",
-      "publisher_domain": "www.newsis.com",
-      "published_at": "2026-04-19T05:00:00+09:00",
-      "region": "서울",
-      "selection_bucket": "governance",
-      "drop_reason": "public_relevance_filtered",
-      "importance_score": 24,
-      "ops_radar_score": 19,
-      "ops_radar_priority": "critical",
-      "ops_radar_overlooked": true,
-      "ops_radar_labels": [
-        "기관·사업 공고"
-      ],
-      "ops_radar_lanes": [
-        "institution_program"
-      ],
-      "ops_radar_matches": [
-        {
-          "lane": "institution_program",
-          "label": "기관·사업 공고",
-          "description": "실무자가 챙겨야 할 모집, 접수, 선정, 프로그램 공고형 기사를 찾습니다.",
-          "matched_keywords": [
-            "청년",
-            "오픈"
-          ],
-          "score": 7
-        }
-      ],
-      "ops_radar_note": "기관·사업 공고 (청년, 오픈)"
-    },
-    {
-      "article_key": "https://www.newsis.com/view/NISX20260418_0003596702",
-      "title": "김 총리, 신임 청년보좌역들과 소통…\"참신한 청년정책 만들어달라\"",
-      "preferred_url": "https://www.newsis.com/view/NISX20260418_0003596702",
-      "source": "뉴시스",
-      "source_name": "네이버뉴스 거버넌스(1개월)",
-      "source_kind": "news",
-      "publisher_domain": "www.newsis.com",
-      "published_at": "2026-04-18T18:56:23+09:00",
-      "region": "서울",
-      "selection_bucket": "official_policy",
-      "drop_reason": "public_relevance_filtered",
-      "importance_score": 28,
-      "ops_radar_score": 19,
-      "ops_radar_priority": "critical",
-      "ops_radar_overlooked": true,
-      "ops_radar_labels": [
-        "거버넌스·인사"
-      ],
-      "ops_radar_lanes": [
-        "governance_personnel"
-      ],
-      "ops_radar_matches": [
-        {
-          "lane": "governance_personnel",
-          "label": "거버넌스·인사",
-          "description": "위원회, 정책네트워크, 참여기구, 임명·위촉 기사 등을 묶습니다.",
-          "matched_keywords": [
-            "청년정책",
-            "간담회"
-          ],
-          "score": 7
-        }
-      ],
-      "ops_radar_note": "거버넌스·인사 (청년정책, 간담회)"
     },
     {
       "article_key": "https://www.korea.kr/news/policyNewsView.do?newsId=148939202",
@@ -2431,40 +2498,40 @@
       "ops_radar_note": "기관·사업 공고 (청년, 모집)"
     },
     {
-      "article_key": "https://news.kbs.co.kr/news/view.do?ncd=8551188",
-      "title": "‘현역-지역 정치인-청년’ 3자 구도…연동을",
-      "preferred_url": "https://news.kbs.co.kr/news/view.do?ncd=8551188",
-      "source": "KBS",
-      "source_name": "네이버뉴스 청년 광역(1주)",
+      "article_key": "https://kor.theasian.asia/archives/404874",
+      "title": "[북한 브리핑 4.26~5.2] 경제 총력·청년 결속·북러 밀착 - 아시아엔 THE AsiaN",
+      "preferred_url": "https://kor.theasian.asia/archives/404874",
+      "source": "아시아엔",
+      "source_name": "네이버뉴스 청년 노동·권리(1주)",
       "source_kind": "news",
-      "publisher_domain": "news.kbs.co.kr",
-      "published_at": "2026-05-01T22:08:41.120958+09:00",
+      "publisher_domain": "kor.theasian.asia",
+      "published_at": "2026-05-02T21:47:22+00:00",
       "region": "서울",
-      "selection_bucket": "regional_issue",
+      "selection_bucket": "opinion",
       "drop_reason": "public_relevance_filtered",
-      "importance_score": 5,
+      "importance_score": 18,
       "ops_radar_score": 18,
       "ops_radar_priority": "critical",
       "ops_radar_overlooked": true,
       "ops_radar_labels": [
-        "정치·공약"
+        "기관·사업 공고"
       ],
       "ops_radar_lanes": [
-        "political_commitment"
+        "institution_program"
       ],
       "ops_radar_matches": [
         {
-          "lane": "political_commitment",
-          "label": "정치·공약",
-          "description": "청년 공약, 후보, 비례대표, 선거 의제를 별도 레이더로 남깁니다.",
+          "lane": "institution_program",
+          "label": "기관·사업 공고",
+          "description": "실무자가 챙겨야 할 모집, 접수, 선정, 프로그램 공고형 기사를 찾습니다.",
           "matched_keywords": [
             "청년",
-            "선거"
+            "확대"
           ],
           "score": 7
         }
       ],
-      "ops_radar_note": "정치·공약 (청년, 선거)"
+      "ops_radar_note": "기관·사업 공고 (청년, 확대)"
     },
     {
       "article_key": "https://news.google.com/rss/articles/CBMiT0FVX3lxTE1Ka29KRmNpbllvMDMxTUhsTEpOLWR5dHlfOWpER0pPOWtRdEZQU3l1SnBONUZtU09DejBMWGlEWTliWnZhNEN0dUNacS1ibUE?oc=5",
@@ -2503,54 +2570,18 @@
       "ops_radar_note": "정치·공약 (청년, 공약)"
     },
     {
-      "article_key": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE1Fdnh4U2lyR1lZTlg3Rlk1SzE3bjNCYnE5MXp4UU0zLThRZ0lVa2E2RDF1eUJLalowZGlwdTZuWU9NNC12ZVkzNmJiNWZqanJhVTNXc25Yb2JjYlE?oc=5",
-      "title": "대기업이 ‘취준생 교육’ 나선다…청년 정책 발표",
-      "preferred_url": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE1Fdnh4U2lyR1lZTlg3Rlk1SzE3bjNCYnE5MXp4UU0zLThRZ0lVa2E2RDF1eUJLalowZGlwdTZuWU9NNC12ZVkzNmJiNWZqanJhVTNXc25Yb2JjYlE?oc=5",
-      "source": "KBS 뉴스",
-      "source_name": "구글뉴스 청년정책(7일)",
-      "source_kind": "news",
-      "publisher_domain": "news.kbs.co.kr",
-      "published_at": "2026-04-29T10:36:00+00:00",
-      "region": "전국",
-      "selection_bucket": "youth_issue",
-      "drop_reason": "selection_cutoff:청년 현안:score=20",
-      "importance_score": 20,
-      "ops_radar_score": 18,
-      "ops_radar_priority": "critical",
-      "ops_radar_overlooked": true,
-      "ops_radar_labels": [
-        "기관·사업 공고"
-      ],
-      "ops_radar_lanes": [
-        "institution_program"
-      ],
-      "ops_radar_matches": [
-        {
-          "lane": "institution_program",
-          "label": "기관·사업 공고",
-          "description": "실무자가 챙겨야 할 모집, 접수, 선정, 프로그램 공고형 기사를 찾습니다.",
-          "matched_keywords": [
-            "청년",
-            "교육"
-          ],
-          "score": 7
-        }
-      ],
-      "ops_radar_note": "기관·사업 공고 (청년, 교육)"
-    },
-    {
-      "article_key": "https://news.google.com/rss/articles/CBMiRkFVX3lxTE9yY2ttUE5WQWlXSXhnLXByNnRxSEFTaWdUbWFfbUYwZDZpSGpzQmlZWllRMDdkaUQzemZJbGhKdUNDbGtwYmc?oc=5",
-      "title": "문체부, 청년정책 평가 1위…문화·예술 기반 지원 확대",
-      "preferred_url": "https://news.google.com/rss/articles/CBMiRkFVX3lxTE9yY2ttUE5WQWlXSXhnLXByNnRxSEFTaWdUbWFfbUYwZDZpSGpzQmlZWllRMDdkaUQzemZJbGhKdUNDbGtwYmc?oc=5",
+      "article_key": "https://news.google.com/rss/articles/CBMiVEFVX3lxTE5tQlBnWktRME9BaTZQNWxmVGRmMUV1TnZoYzJKY2hhNzJteVNxbGxyc3hkcjlHd2o2bVljS04xeWxnb2JnTk9OSDFXN3NTMUlpYzZVTg?oc=5",
+      "title": "공공 일경험 확대, 청년 취업 지원… 일각 “단기 일자리 양산”",
+      "preferred_url": "https://news.google.com/rss/articles/CBMiVEFVX3lxTE5tQlBnWktRME9BaTZQNWxmVGRmMUV1TnZoYzJKY2hhNzJteVNxbGxyc3hkcjlHd2o2bVljS04xeWxnb2JnTk9OSDFXN3NTMUlpYzZVTg?oc=5",
       "source": "v.daum.net",
-      "source_name": "구글뉴스 청년정책(7일)",
+      "source_name": "구글뉴스 청년 고용·쉬었음(7일)",
       "source_kind": "news",
       "publisher_domain": "v.daum.net",
-      "published_at": "2026-04-28T23:02:00+00:00",
+      "published_at": "2026-04-29T10:07:02+00:00",
       "region": "전국",
       "selection_bucket": "youth_issue",
-      "drop_reason": "selection_cutoff:청년 현안:score=21",
-      "importance_score": 21,
+      "drop_reason": "selection_cutoff:청년 현안:score=22",
+      "importance_score": 22,
       "ops_radar_score": 18,
       "ops_radar_priority": "critical",
       "ops_radar_overlooked": true,
@@ -2573,6 +2604,42 @@
         }
       ],
       "ops_radar_note": "기관·사업 공고 (청년, 확대)"
+    },
+    {
+      "article_key": "https://news.google.com/rss/articles/CBMiRkFVX3lxTFBmZUpMaHVoLUhRNlJjY2l1ZzNlbGZSNlJKMEg2Njk0T2xab1d1M1ZLZFprNjdrcmpOUTU2ZTlKWERkRFlDTHc?oc=5",
+      "title": "고용노동부 양산지청, 제3기 청년정책 엠버서더 출범",
+      "preferred_url": "https://news.google.com/rss/articles/CBMiRkFVX3lxTFBmZUpMaHVoLUhRNlJjY2l1ZzNlbGZSNlJKMEg2Njk0T2xab1d1M1ZLZFprNjdrcmpOUTU2ZTlKWERkRFlDTHc?oc=5",
+      "source": "v.daum.net",
+      "source_name": "구글뉴스 청년정책(7일)",
+      "source_kind": "news",
+      "publisher_domain": "v.daum.net",
+      "published_at": "2026-04-29T07:18:08+00:00",
+      "region": "전국",
+      "selection_bucket": "youth_issue",
+      "drop_reason": "selection_cutoff:청년 현안:score=22",
+      "importance_score": 22,
+      "ops_radar_score": 18,
+      "ops_radar_priority": "critical",
+      "ops_radar_overlooked": true,
+      "ops_radar_labels": [
+        "거버넌스·인사"
+      ],
+      "ops_radar_lanes": [
+        "governance_personnel"
+      ],
+      "ops_radar_matches": [
+        {
+          "lane": "governance_personnel",
+          "label": "거버넌스·인사",
+          "description": "위원회, 정책네트워크, 참여기구, 임명·위촉 기사 등을 묶습니다.",
+          "matched_keywords": [
+            "청년정책",
+            "출범"
+          ],
+          "score": 7
+        }
+      ],
+      "ops_radar_note": "거버넌스·인사 (청년정책, 출범)"
     },
     {
       "article_key": "https://news.google.com/rss/articles/CBMiakFVX3lxTE91WExJN3l1RVZ2MTFSbXpyeTYyTURjcGpTeW5DTEJEcTdPLUpZbFNrcXFZNTBXVk14bmpacWt0QVl5WlhPRFdKMFExTDZjZFAxX3JwaV9IWVpiMVYtaFlRMEtnek01LXBIMmc?oc=5",
@@ -2611,90 +2678,18 @@
       "ops_radar_note": "거버넌스·인사 (청년정책조정위원회, 회의)"
     },
     {
-      "article_key": "https://news.google.com/rss/articles/CBMieEFVX3lxTE5rb2pxbHBkSl9LQko1TWJlb2tXU2dIZGxobTVyWDk2aDhGcVRobVpBOUwzMmJsbDdBTXVTN3RMc1BGWWp0dmhkZWdWa3FEWEFtU09hM2x0VnZDVmJOQkRhY2lTUkxaX202QlZPc0tNWnNFRmdqOFdjTNIBeEFVX3lxTE5rb2pxbHBkSl9LQko1TWJlb2tXU2dIZGxobTVyWDk2aDhGcVRobVpBOUwzMmJsbDdBTXVTN3RMc1BGWWp0dmhkZWdWa3FEWEFtU09hM2x0VnZDVmJOQkRhY2lTUkxaX202QlZPc0tNWnNFRmdqOFdjTA?oc=5",
-      "title": "청년정책조정위원회 겸 청년정책관계장관회의",
-      "preferred_url": "https://news.google.com/rss/articles/CBMieEFVX3lxTE5rb2pxbHBkSl9LQko1TWJlb2tXU2dIZGxobTVyWDk2aDhGcVRobVpBOUwzMmJsbDdBTXVTN3RMc1BGWWp0dmhkZWdWa3FEWEFtU09hM2x0VnZDVmJOQkRhY2lTUkxaX202QlZPc0tNWnNFRmdqOFdjTNIBeEFVX3lxTE5rb2pxbHBkSl9LQko1TWJlb2tXU2dIZGxobTVyWDk2aDhGcVRobVpBOUwzMmJsbDdBTXVTN3RMc1BGWWp0dmhkZWdWa3FEWEFtU09hM2x0VnZDVmJOQkRhY2lTUkxaX202QlZPc0tNWnNFRmdqOFdjTA?oc=5",
-      "source": "뉴시스",
-      "source_name": "구글뉴스 청년정책(7일)",
+      "article_key": "https://news.google.com/rss/articles/CBMifEFVX3lxTE9DUDBMd1U5TmZteHJSblZBSHdQTG51TXE5c0xtcjF6V1Z6NG4yMVdVOUpsczNsemZ6YmFqREZZQ3BOOUc5Mkt3YmZmc0p3MlRVMk04emk0ODJIT0FCaUFHdXd2SUxPVjh6OWJNWW9zSGhjRlFsQm5oSFd4bXQ?oc=5",
+      "title": "안성상공회의소, 청년일자리도약장려금 사업신청 개시",
+      "preferred_url": "https://news.google.com/rss/articles/CBMifEFVX3lxTE9DUDBMd1U5TmZteHJSblZBSHdQTG51TXE5c0xtcjF6V1Z6NG4yMVdVOUpsczNsemZ6YmFqREZZQ3BOOUc5Mkt3YmZmc0p3MlRVMk04emk0ODJIT0FCaUFHdXd2SUxPVjh6OWJNWW9zSGhjRlFsQm5oSFd4bXQ?oc=5",
+      "source": "자치안성신문",
+      "source_name": "구글뉴스 청년 고용·쉬었음(7일)",
       "source_kind": "news",
-      "publisher_domain": "mobile.newsis.com",
-      "published_at": "2026-04-28T05:40:27+00:00",
-      "region": "전국",
-      "selection_bucket": "governance",
-      "drop_reason": "selection_cutoff:거버넌스:score=25",
-      "importance_score": 25,
-      "ops_radar_score": 18,
-      "ops_radar_priority": "critical",
-      "ops_radar_overlooked": true,
-      "ops_radar_labels": [
-        "거버넌스·인사"
-      ],
-      "ops_radar_lanes": [
-        "governance_personnel"
-      ],
-      "ops_radar_matches": [
-        {
-          "lane": "governance_personnel",
-          "label": "거버넌스·인사",
-          "description": "위원회, 정책네트워크, 참여기구, 임명·위촉 기사 등을 묶습니다.",
-          "matched_keywords": [
-            "청년정책조정위원회",
-            "회의"
-          ],
-          "score": 7
-        }
-      ],
-      "ops_radar_note": "거버넌스·인사 (청년정책조정위원회, 회의)"
-    },
-    {
-      "article_key": "https://news.google.com/rss/articles/CBMickFVX3lxTE12LURGa3dqM0txeWg3cVhULUxIa0xjZlFVYU03Y3RTUGh0bUh1dTMyRU5MZ0hyZ0hpQkYxVmRZLW1iRVNyUXFtNnJvWmZQc1ExOUJCQkRKNHVlZDJvSGpLVVZzMU96U015Z1FFcUZPSDRsQQ?oc=5",
-      "title": "3월 30일부터 '청년월세 지원사업' 신규 신청 시작!",
-      "preferred_url": "https://news.google.com/rss/articles/CBMickFVX3lxTE12LURGa3dqM0txeWg3cVhULUxIa0xjZlFVYU03Y3RTUGh0bUh1dTMyRU5MZ0hyZ0hpQkYxVmRZLW1iRVNyUXFtNnJvWmZQc1ExOUJCQkRKNHVlZDJvSGpLVVZzMU96U015Z1FFcUZPSDRsQQ?oc=5",
-      "source": "대한민국 정책브리핑",
-      "source_name": "구글뉴스 청년 주거·생활(7일)",
-      "source_kind": "news",
-      "publisher_domain": "www.korea.kr",
-      "published_at": "2026-04-25T03:45:00+00:00",
+      "publisher_domain": "www.anseongnews.com",
+      "published_at": "2026-04-28T09:10:34+00:00",
       "region": "전국",
       "selection_bucket": "youth_issue",
-      "drop_reason": "selection_cutoff:청년 현안:score=30",
-      "importance_score": 30,
-      "ops_radar_score": 18,
-      "ops_radar_priority": "critical",
-      "ops_radar_overlooked": true,
-      "ops_radar_labels": [
-        "기관·사업 공고"
-      ],
-      "ops_radar_lanes": [
-        "institution_program"
-      ],
-      "ops_radar_matches": [
-        {
-          "lane": "institution_program",
-          "label": "기관·사업 공고",
-          "description": "실무자가 챙겨야 할 모집, 접수, 선정, 프로그램 공고형 기사를 찾습니다.",
-          "matched_keywords": [
-            "청년",
-            "신청"
-          ],
-          "score": 7
-        }
-      ],
-      "ops_radar_note": "기관·사업 공고 (청년, 신청)"
-    },
-    {
-      "article_key": "https://news.google.com/rss/articles/CBMiTkFVX3lxTE1uMldIOXhuUUNRWlp0WHJEM2kwUlJrZHF1a3VRa3VSWVAyc21HQ19ORExHamZRUDIwdEFSZlJuVFA1Z0tSdUM4MEwwZUFzUQ?oc=5",
-      "title": "김포시, '청년월세 지원사업' 5월 29일까지 신청 접수",
-      "preferred_url": "https://news.google.com/rss/articles/CBMiTkFVX3lxTE1uMldIOXhuUUNRWlp0WHJEM2kwUlJrZHF1a3VRa3VSWVAyc21HQ19ORExHamZRUDIwdEFSZlJuVFA1Z0tSdUM4MEwwZUFzUQ?oc=5",
-      "source": "Tn.edu.tw",
-      "source_name": "구글뉴스 청년 주거·생활(7일)",
-      "source_kind": "news",
-      "publisher_domain": "2we.co.kr",
-      "published_at": "2026-04-25T01:07:38+00:00",
-      "region": "전국",
-      "selection_bucket": "youth_issue",
-      "drop_reason": "selection_cutoff:청년 현안:score=26",
-      "importance_score": 26,
+      "drop_reason": "selection_cutoff:청년 현안:score=22",
+      "importance_score": 22,
       "ops_radar_score": 18,
       "ops_radar_priority": "critical",
       "ops_radar_overlooked": true,
@@ -2791,6 +2786,42 @@
       "ops_radar_note": "기관·사업 공고 (청년, 확대)"
     },
     {
+      "article_key": "https://news.google.com/rss/articles/CBMiT0FVX3lxTFBLMzBtUkZMZl9MQ1luWDBxU2dJa2xxQ0JrNk95ZEVwRU5XUXB3ZnJVeWhVU0lpeWlBN0Zjd0RBSHZPWHdxZms4WDZjclpFdUU?oc=5",
+      "title": "울산 청년정책, 청년 시선으로 알린다, 서포터즈 참여자 모집",
+      "preferred_url": "https://news.google.com/rss/articles/CBMiT0FVX3lxTFBLMzBtUkZMZl9MQ1luWDBxU2dJa2xxQ0JrNk95ZEVwRU5XUXB3ZnJVeWhVU0lpeWlBN0Zjd0RBSHZPWHdxZms4WDZjclpFdUU?oc=5",
+      "source": "v.daum.net",
+      "source_name": "구글뉴스 청년정책(7일)",
+      "source_kind": "news",
+      "publisher_domain": "v.daum.net",
+      "published_at": "2026-04-29T01:40:44+00:00",
+      "region": "울산",
+      "selection_bucket": "regional_issue",
+      "drop_reason": "selection_cutoff:지역 이슈:score=22",
+      "importance_score": 22,
+      "ops_radar_score": 17,
+      "ops_radar_priority": "high",
+      "ops_radar_overlooked": true,
+      "ops_radar_labels": [
+        "기관·사업 공고"
+      ],
+      "ops_radar_lanes": [
+        "institution_program"
+      ],
+      "ops_radar_matches": [
+        {
+          "lane": "institution_program",
+          "label": "기관·사업 공고",
+          "description": "실무자가 챙겨야 할 모집, 접수, 선정, 프로그램 공고형 기사를 찾습니다.",
+          "matched_keywords": [
+            "청년",
+            "모집"
+          ],
+          "score": 7
+        }
+      ],
+      "ops_radar_note": "기관·사업 공고 (청년, 모집)"
+    },
+    {
       "article_key": "https://news.google.com/rss/articles/CBMiT0FVX3lxTE40WTVMSWx1bzFyVlB0RkttQ1hRYm85Z1d3RFU4cFdfR0pOZzZ1SW1JV3NfSkhTUlVTcDBuVk03eFh4R1F3cXdkWlVSamVTdTg?oc=5",
       "title": "부산시, 국무조정실 청년정책 평가서 4년 연속 우수기관 선정",
       "preferred_url": "https://news.google.com/rss/articles/CBMiT0FVX3lxTE40WTVMSWx1bzFyVlB0RkttQ1hRYm85Z1d3RFU4cFdfR0pOZzZ1SW1JV3NfSkhTUlVTcDBuVk03eFh4R1F3cXdkWlVSamVTdTg?oc=5",
@@ -2825,6 +2856,222 @@
         }
       ],
       "ops_radar_note": "기관·사업 공고 (청년, 선정)"
+    },
+    {
+      "article_key": "https://www.newsis.com/view/NISX20260418_0003596465",
+      "title": "[오늘의 주요일정]정치(4월18일 토요일)",
+      "preferred_url": "https://www.newsis.com/view/NISX20260418_0003596465",
+      "source": "뉴시스",
+      "source_name": "네이버뉴스 거버넌스(1개월)",
+      "source_kind": "news",
+      "publisher_domain": "www.newsis.com",
+      "published_at": "2026-04-19T05:00:00+09:00",
+      "region": "서울",
+      "selection_bucket": "governance",
+      "drop_reason": "public_relevance_filtered",
+      "importance_score": 16,
+      "ops_radar_score": 17,
+      "ops_radar_priority": "high",
+      "ops_radar_overlooked": true,
+      "ops_radar_labels": [
+        "기관·사업 공고"
+      ],
+      "ops_radar_lanes": [
+        "institution_program"
+      ],
+      "ops_radar_matches": [
+        {
+          "lane": "institution_program",
+          "label": "기관·사업 공고",
+          "description": "실무자가 챙겨야 할 모집, 접수, 선정, 프로그램 공고형 기사를 찾습니다.",
+          "matched_keywords": [
+            "청년",
+            "오픈"
+          ],
+          "score": 7
+        }
+      ],
+      "ops_radar_note": "기관·사업 공고 (청년, 오픈)"
+    },
+    {
+      "article_key": "https://www.newsis.com/view/NISX20260418_0003596702",
+      "title": "김 총리, 신임 청년보좌역들과 소통…\"참신한 청년정책 만들어달라\"",
+      "preferred_url": "https://www.newsis.com/view/NISX20260418_0003596702",
+      "source": "뉴시스",
+      "source_name": "네이버뉴스 거버넌스(1개월)",
+      "source_kind": "news",
+      "publisher_domain": "www.newsis.com",
+      "published_at": "2026-04-18T18:56:23+09:00",
+      "region": "서울",
+      "selection_bucket": "official_policy",
+      "drop_reason": "public_relevance_filtered",
+      "importance_score": 22,
+      "ops_radar_score": 17,
+      "ops_radar_priority": "high",
+      "ops_radar_overlooked": true,
+      "ops_radar_labels": [
+        "거버넌스·인사"
+      ],
+      "ops_radar_lanes": [
+        "governance_personnel"
+      ],
+      "ops_radar_matches": [
+        {
+          "lane": "governance_personnel",
+          "label": "거버넌스·인사",
+          "description": "위원회, 정책네트워크, 참여기구, 임명·위촉 기사 등을 묶습니다.",
+          "matched_keywords": [
+            "청년정책",
+            "간담회"
+          ],
+          "score": 7
+        }
+      ],
+      "ops_radar_note": "거버넌스·인사 (청년정책, 간담회)"
+    },
+    {
+      "article_key": "https://www.yna.co.kr/view/PYH20260418031200013",
+      "title": "인사말하는 김민석 총리",
+      "preferred_url": "https://www.yna.co.kr/view/PYH20260418031200013",
+      "source": "연합뉴스",
+      "source_name": "네이버뉴스 거버넌스(1개월)",
+      "source_kind": "news",
+      "publisher_domain": "www.yna.co.kr",
+      "published_at": "2026-04-18T16:47:06+09:00",
+      "region": "서울",
+      "selection_bucket": "governance",
+      "drop_reason": "public_relevance_filtered",
+      "importance_score": 3,
+      "ops_radar_score": 17,
+      "ops_radar_priority": "high",
+      "ops_radar_overlooked": true,
+      "ops_radar_labels": [
+        "거버넌스·인사"
+      ],
+      "ops_radar_lanes": [
+        "governance_personnel"
+      ],
+      "ops_radar_matches": [
+        {
+          "lane": "governance_personnel",
+          "label": "거버넌스·인사",
+          "description": "위원회, 정책네트워크, 참여기구, 임명·위촉 기사 등을 묶습니다.",
+          "matched_keywords": [
+            "청년보좌역",
+            "간담회"
+          ],
+          "score": 7
+        }
+      ],
+      "ops_radar_note": "거버넌스·인사 (청년보좌역, 간담회)"
+    },
+    {
+      "article_key": "https://www.yna.co.kr/view/PYH20260418030700013",
+      "title": "청년 보좌역 간담회 가지는 김민석 총리",
+      "preferred_url": "https://www.yna.co.kr/view/PYH20260418030700013",
+      "source": "연합뉴스",
+      "source_name": "네이버뉴스 거버넌스(1개월)",
+      "source_kind": "news",
+      "publisher_domain": "www.yna.co.kr",
+      "published_at": "2026-04-18T16:46:05+09:00",
+      "region": "서울",
+      "selection_bucket": "governance",
+      "drop_reason": "public_relevance_filtered",
+      "importance_score": 3,
+      "ops_radar_score": 17,
+      "ops_radar_priority": "high",
+      "ops_radar_overlooked": true,
+      "ops_radar_labels": [
+        "거버넌스·인사"
+      ],
+      "ops_radar_lanes": [
+        "governance_personnel"
+      ],
+      "ops_radar_matches": [
+        {
+          "lane": "governance_personnel",
+          "label": "거버넌스·인사",
+          "description": "위원회, 정책네트워크, 참여기구, 임명·위촉 기사 등을 묶습니다.",
+          "matched_keywords": [
+            "청년보좌역",
+            "간담회"
+          ],
+          "score": 7
+        }
+      ],
+      "ops_radar_note": "거버넌스·인사 (청년보좌역, 간담회)"
+    },
+    {
+      "article_key": "https://www.yna.co.kr/view/PYH20260418030200013",
+      "title": "청년 보좌역 만난 김민석 총리",
+      "preferred_url": "https://www.yna.co.kr/view/PYH20260418030200013",
+      "source": "연합뉴스",
+      "source_name": "네이버뉴스 거버넌스(1개월)",
+      "source_kind": "news",
+      "publisher_domain": "www.yna.co.kr",
+      "published_at": "2026-04-18T16:45:43+09:00",
+      "region": "서울",
+      "selection_bucket": "governance",
+      "drop_reason": "public_relevance_filtered",
+      "importance_score": 3,
+      "ops_radar_score": 17,
+      "ops_radar_priority": "high",
+      "ops_radar_overlooked": true,
+      "ops_radar_labels": [
+        "거버넌스·인사"
+      ],
+      "ops_radar_lanes": [
+        "governance_personnel"
+      ],
+      "ops_radar_matches": [
+        {
+          "lane": "governance_personnel",
+          "label": "거버넌스·인사",
+          "description": "위원회, 정책네트워크, 참여기구, 임명·위촉 기사 등을 묶습니다.",
+          "matched_keywords": [
+            "청년보좌역",
+            "간담회"
+          ],
+          "score": 7
+        }
+      ],
+      "ops_radar_note": "거버넌스·인사 (청년보좌역, 간담회)"
+    },
+    {
+      "article_key": "https://www.yna.co.kr/view/PYH20260418029900013",
+      "title": "국무총리-청년 보좌역 간담회",
+      "preferred_url": "https://www.yna.co.kr/view/PYH20260418029900013",
+      "source": "연합뉴스",
+      "source_name": "네이버뉴스 거버넌스(1개월)",
+      "source_kind": "news",
+      "publisher_domain": "www.yna.co.kr",
+      "published_at": "2026-04-18T16:45:37+09:00",
+      "region": "서울",
+      "selection_bucket": "governance",
+      "drop_reason": "public_relevance_filtered",
+      "importance_score": 3,
+      "ops_radar_score": 17,
+      "ops_radar_priority": "high",
+      "ops_radar_overlooked": true,
+      "ops_radar_labels": [
+        "거버넌스·인사"
+      ],
+      "ops_radar_lanes": [
+        "governance_personnel"
+      ],
+      "ops_radar_matches": [
+        {
+          "lane": "governance_personnel",
+          "label": "거버넌스·인사",
+          "description": "위원회, 정책네트워크, 참여기구, 임명·위촉 기사 등을 묶습니다.",
+          "matched_keywords": [
+            "청년보좌역",
+            "간담회"
+          ],
+          "score": 7
+        }
+      ],
+      "ops_radar_note": "거버넌스·인사 (청년보좌역, 간담회)"
     },
     {
       "article_key": "https://www.korea.kr/news/policyNewsView.do?newsId=148940328",
@@ -2935,76 +3182,76 @@
       "ops_radar_note": "기관·사업 공고 (청년, 선정)"
     },
     {
-      "article_key": "https://www.inews24.com/view/1964863",
-      "title": "고기철 국힘 제주도당 위원장직 사퇴... 서귀포 보궐선거 출마",
-      "preferred_url": "https://www.inews24.com/view/1964863",
-      "source": "아이뉴스24",
-      "source_name": "네이버뉴스 청년 후보·비례대표(1주)",
+      "article_key": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE1Fdnh4U2lyR1lZTlg3Rlk1SzE3bjNCYnE5MXp4UU0zLThRZ0lVa2E2RDF1eUJLalowZGlwdTZuWU9NNC12ZVkzNmJiNWZqanJhVTNXc25Yb2JjYlE?oc=5",
+      "title": "대기업이 ‘취준생 교육’ 나선다…청년 정책 발표",
+      "preferred_url": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE1Fdnh4U2lyR1lZTlg3Rlk1SzE3bjNCYnE5MXp4UU0zLThRZ0lVa2E2RDF1eUJLalowZGlwdTZuWU9NNC12ZVkzNmJiNWZqanJhVTNXc25Yb2JjYlE?oc=5",
+      "source": "KBS 뉴스",
+      "source_name": "구글뉴스 청년정책(7일)",
       "source_kind": "news",
-      "publisher_domain": "www.inews24.com",
-      "published_at": "2026-04-30T10:24:20+09:00",
-      "region": "제주",
-      "selection_bucket": "regional_issue",
-      "drop_reason": "public_relevance_filtered",
-      "importance_score": 4,
+      "publisher_domain": "news.kbs.co.kr",
+      "published_at": "2026-04-29T10:36:00+00:00",
+      "region": "전국",
+      "selection_bucket": "youth_issue",
+      "drop_reason": "selection_cutoff:청년 현안:score=18",
+      "importance_score": 18,
       "ops_radar_score": 16,
       "ops_radar_priority": "high",
       "ops_radar_overlooked": true,
       "ops_radar_labels": [
-        "정치·공약"
+        "기관·사업 공고"
       ],
       "ops_radar_lanes": [
-        "political_commitment"
+        "institution_program"
       ],
       "ops_radar_matches": [
         {
-          "lane": "political_commitment",
-          "label": "정치·공약",
-          "description": "청년 공약, 후보, 비례대표, 선거 의제를 별도 레이더로 남깁니다.",
+          "lane": "institution_program",
+          "label": "기관·사업 공고",
+          "description": "실무자가 챙겨야 할 모집, 접수, 선정, 프로그램 공고형 기사를 찾습니다.",
           "matched_keywords": [
             "청년",
-            "선거"
+            "교육"
           ],
           "score": 7
         }
       ],
-      "ops_radar_note": "정치·공약 (청년, 선거)"
+      "ops_radar_note": "기관·사업 공고 (청년, 교육)"
     },
     {
-      "article_key": "https://www.newscj.com/news/articleView.html?idxno=3397382",
-      "title": "민주당 광주광역시당, 청년 비례대표 경선 착수… 권리당원 투표로 선출",
-      "preferred_url": "https://www.newscj.com/news/articleView.html?idxno=3397382",
-      "source": "천지일보",
-      "source_name": "네이버뉴스 청년 후보·비례대표(1주)",
+      "article_key": "https://news.google.com/rss/articles/CBMieEFVX3lxTE5DdXFUV0hmdDV3WV8xcnFKN3JncmVRX3k4MnhtcWtNS3N4WVJRUWowaktONld6NUpBU01MVmdfZ3FYRHhmS2t5d3YwVWZvb3c4WUUyOFE4SW9faEJCX1hDb3Y5UlRoZFhOOTJiVmlUdzNuX3lLdG0zX9IBeEFVX3lxTE5DdXFUV0hmdDV3WV8xcnFKN3JncmVRX3k4MnhtcWtNS3N4WVJRUWowaktONld6NUpBU01MVmdfZ3FYRHhmS2t5d3YwVWZvb3c4WUUyOFE4SW9faEJCX1hDb3Y5UlRoZFhOOTJiVmlUdzNuX3lLdG0zXw?oc=5",
+      "title": "김민석 총리, 청년정책조정위 및 청년정책관계장관회의 주재",
+      "preferred_url": "https://news.google.com/rss/articles/CBMieEFVX3lxTE5DdXFUV0hmdDV3WV8xcnFKN3JncmVRX3k4MnhtcWtNS3N4WVJRUWowaktONld6NUpBU01MVmdfZ3FYRHhmS2t5d3YwVWZvb3c4WUUyOFE4SW9faEJCX1hDb3Y5UlRoZFhOOTJiVmlUdzNuX3lLdG0zX9IBeEFVX3lxTE5DdXFUV0hmdDV3WV8xcnFKN3JncmVRX3k4MnhtcWtNS3N4WVJRUWowaktONld6NUpBU01MVmdfZ3FYRHhmS2t5d3YwVWZvb3c4WUUyOFE4SW9faEJCX1hDb3Y5UlRoZFhOOTJiVmlUdzNuX3lLdG0zXw?oc=5",
+      "source": "뉴시스",
+      "source_name": "구글뉴스 청년정책(7일)",
       "source_kind": "news",
-      "publisher_domain": "www.newscj.com",
-      "published_at": "2026-04-29T19:24:59+09:00",
-      "region": "광주",
-      "selection_bucket": "regional_issue",
-      "drop_reason": "public_relevance_filtered",
-      "importance_score": 12,
+      "publisher_domain": "mobile.newsis.com",
+      "published_at": "2026-04-28T05:40:27+00:00",
+      "region": "전국",
+      "selection_bucket": "youth_issue",
+      "drop_reason": "selection_cutoff:청년 현안:score=17",
+      "importance_score": 17,
       "ops_radar_score": 16,
       "ops_radar_priority": "high",
       "ops_radar_overlooked": true,
       "ops_radar_labels": [
-        "정치·공약"
+        "거버넌스·인사"
       ],
       "ops_radar_lanes": [
-        "political_commitment"
+        "governance_personnel"
       ],
       "ops_radar_matches": [
         {
-          "lane": "political_commitment",
-          "label": "정치·공약",
-          "description": "청년 공약, 후보, 비례대표, 선거 의제를 별도 레이더로 남깁니다.",
+          "lane": "governance_personnel",
+          "label": "거버넌스·인사",
+          "description": "위원회, 정책네트워크, 참여기구, 임명·위촉 기사 등을 묶습니다.",
           "matched_keywords": [
-            "청년",
-            "후보"
+            "청년정책",
+            "회의"
           ],
           "score": 7
         }
       ],
-      "ops_radar_note": "정치·공약 (청년, 후보)"
+      "ops_radar_note": "거버넌스·인사 (청년정책, 회의)"
     },
     {
       "article_key": "https://news.google.com/rss/articles/CBMicEFVX3lxTE1BMFpXYUN2SWtlX2x6dDB2eldYQ2U4cFVXMjRNbUFJa29YeHpCQnM1ZEpWUjRZRjdiVlpVRzdweUUzdW0xS0FNbTdHelJOS3gtaF9QdENOVUlQOXg4RXNlNXNFdzhYaWxuVTRvOUlsSlg?oc=5",
@@ -3043,14 +3290,14 @@
       "ops_radar_note": "정치·공약 (청년, 공약)"
     },
     {
-      "article_key": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE5rOXhsbWx5VENMbFE1ZWxMb3RlNHJaeW5hcnQ4Z0FjWnBOMjRIWXFqMHd5ZjdJaWp5M0NCTjd3RVRnQUt6a1hSN2RMYUlCYTU0TGlTcWdMa0Y4bnYyYWgzdNIBYEFVX3lxTE5rOXhsbWx5VENMbFE1ZWxMb3RlNHJaeW5hcnQ4Z0FjWnBOMjRIWXFqMHd5ZjdJaWp5M0NCTjd3RVRnQUt6a1hSN2RMYUlCYTU0TGlTcWdMa0Y4bnYyYWgzdA?oc=5",
+      "article_key": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE9IYzF6WUxHdmRaSm5QZkV1RVBDNU5GM01mc3RCS0VxV1FTb0x3ZWdOZmRoSGpleU1vaEJEbTdNVjJIakJOcmxtSmxveks3cDlrVk84bTY1cGRRMzVteXVIdtIBYEFVX3lxTE9IYzF6WUxHdmRaSm5QZkV1RVBDNU5GM01mc3RCS0VxV1FTb0x3ZWdOZmRoSGpleU1vaEJEbTdNVjJIakJOcmxtSmxveks3cDlrVk84bTY1cGRRMzVteXVIdg?oc=5",
       "title": "청년정책 회의 주재하는 김민석 국무총리",
-      "preferred_url": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE5rOXhsbWx5VENMbFE1ZWxMb3RlNHJaeW5hcnQ4Z0FjWnBOMjRIWXFqMHd5ZjdJaWp5M0NCTjd3RVRnQUt6a1hSN2RMYUlCYTU0TGlTcWdMa0Y4bnYyYWgzdNIBYEFVX3lxTE5rOXhsbWx5VENMbFE1ZWxMb3RlNHJaeW5hcnQ4Z0FjWnBOMjRIWXFqMHd5ZjdJaWp5M0NCTjd3RVRnQUt6a1hSN2RMYUlCYTU0TGlTcWdMa0Y4bnYyYWgzdA?oc=5",
+      "preferred_url": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE9IYzF6WUxHdmRaSm5QZkV1RVBDNU5GM01mc3RCS0VxV1FTb0x3ZWdOZmRoSGpleU1vaEJEbTdNVjJIakJOcmxtSmxveks3cDlrVk84bTY1cGRRMzVteXVIdtIBYEFVX3lxTE9IYzF6WUxHdmRaSm5QZkV1RVBDNU5GM01mc3RCS0VxV1FTb0x3ZWdOZmRoSGpleU1vaEJEbTdNVjJIakJOcmxtSmxveks3cDlrVk84bTY1cGRRMzVteXVIdg?oc=5",
       "source": "연합뉴스",
       "source_name": "구글뉴스 청년정책(7일)",
       "source_kind": "news",
       "publisher_domain": "www.yna.co.kr",
-      "published_at": "2026-04-28T05:28:01+00:00",
+      "published_at": "2026-04-28T05:10:27+00:00",
       "region": "전국",
       "selection_bucket": "youth_issue",
       "drop_reason": "selection_cutoff:청년 현안:score=17",
@@ -3115,90 +3362,18 @@
       "ops_radar_note": "기관·사업 공고 (청년, 선정)"
     },
     {
-      "article_key": "https://news.google.com/rss/articles/CBMieEFVX3lxTE9HN1R1bHhXZVVpWXNwRlA4S01XRXVUUjlEQzEzV1V6WWt2UFktc1BCV3prdWZOYjZUcVJpMFhQS3RFWVhSRURleVpGSVhRb0ozTUZEVHhqWjdFRWNBTVJIcHZGZ0RqSHVzRjJkdjJsUG9VcFVXaVRieNIBeEFVX3lxTE9HN1R1bHhXZVVpWXNwRlA4S01XRXVUUjlEQzEzV1V6WWt2UFktc1BCV3prdWZOYjZUcVJpMFhQS3RFWVhSRURleVpGSVhRb0ozTUZEVHhqWjdFRWNBTVJIcHZGZ0RqSHVzRjJkdjJsUG9VcFVXaVRieA?oc=5",
+      "article_key": "https://news.google.com/rss/articles/CBMiYEFVX3lxTFA2M241cGVhRC1HZUEzWVlqeEZOODJsRzExX2RvcXo5RENfanMwZU10YTdIQmhGd2o1WXFiRFM4OTFIdGpaTktBTC1xanhNQnd0YkkzRU1pMWliOHozQmdjStIBeEFVX3lxTE9HN1R1bHhXZVVpWXNwRlA4S01XRXVUUjlEQzEzV1V6WWt2UFktc1BCV3prdWZOYjZUcVJpMFhQS3RFWVhSRURleVpGSVhRb0ozTUZEVHhqWjdFRWNBTVJIcHZGZ0RqSHVzRjJkdjJsUG9VcFVXaVRieA?oc=5",
       "title": "與 6·3 지선 청년 공약 잇따라 발표…지자체장 직속 청년전담부처 신설 등",
-      "preferred_url": "https://news.google.com/rss/articles/CBMieEFVX3lxTE9HN1R1bHhXZVVpWXNwRlA4S01XRXVUUjlEQzEzV1V6WWt2UFktc1BCV3prdWZOYjZUcVJpMFhQS3RFWVhSRURleVpGSVhRb0ozTUZEVHhqWjdFRWNBTVJIcHZGZ0RqSHVzRjJkdjJsUG9VcFVXaVRieNIBeEFVX3lxTE9HN1R1bHhXZVVpWXNwRlA4S01XRXVUUjlEQzEzV1V6WWt2UFktc1BCV3prdWZOYjZUcVJpMFhQS3RFWVhSRURleVpGSVhRb0ozTUZEVHhqWjdFRWNBTVJIcHZGZ0RqSHVzRjJkdjJsUG9VcFVXaVRieA?oc=5",
+      "preferred_url": "https://news.google.com/rss/articles/CBMiYEFVX3lxTFA2M241cGVhRC1HZUEzWVlqeEZOODJsRzExX2RvcXo5RENfanMwZU10YTdIQmhGd2o1WXFiRFM4OTFIdGpaTktBTC1xanhNQnd0YkkzRU1pMWliOHozQmdjStIBeEFVX3lxTE9HN1R1bHhXZVVpWXNwRlA4S01XRXVUUjlEQzEzV1V6WWt2UFktc1BCV3prdWZOYjZUcVJpMFhQS3RFWVhSRURleVpGSVhRb0ozTUZEVHhqWjdFRWNBTVJIcHZGZ0RqSHVzRjJkdjJsUG9VcFVXaVRieA?oc=5",
       "source": "뉴시스",
       "source_name": "구글뉴스 청년 공약(7일)",
       "source_kind": "news",
-      "publisher_domain": "mobile.newsis.com",
+      "publisher_domain": "www.newsis.com",
       "published_at": "2026-04-30T07:47:33+00:00",
       "region": "전국",
       "selection_bucket": "youth_issue",
       "drop_reason": "public_relevance_filtered",
       "importance_score": 3,
-      "ops_radar_score": 15,
-      "ops_radar_priority": "high",
-      "ops_radar_overlooked": true,
-      "ops_radar_labels": [
-        "정치·공약"
-      ],
-      "ops_radar_lanes": [
-        "political_commitment"
-      ],
-      "ops_radar_matches": [
-        {
-          "lane": "political_commitment",
-          "label": "정치·공약",
-          "description": "청년 공약, 후보, 비례대표, 선거 의제를 별도 레이더로 남깁니다.",
-          "matched_keywords": [
-            "청년",
-            "공약"
-          ],
-          "score": 7
-        }
-      ],
-      "ops_radar_note": "정치·공약 (청년, 공약)"
-    },
-    {
-      "article_key": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE5VMVc4Z3djMmJrOFEwdkJ6NS1sNGpEenRtc29CUmQ4MElxcWx0UlFuTkpFMGlnVFZ0eWhUaW8yUTJGX3A4ay1aYWdXMVhscWxFNzlady1xTkhGUnc?oc=5",
-      "title": "장동혁 “오세훈이 조성한 홍제천 폭포카페”…청년 공약 발표하며 우회지원",
-      "preferred_url": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE5VMVc4Z3djMmJrOFEwdkJ6NS1sNGpEenRtc29CUmQ4MElxcWx0UlFuTkpFMGlnVFZ0eWhUaW8yUTJGX3A4ay1aYWdXMVhscWxFNzlady1xTkhGUnc?oc=5",
-      "source": "KBS 뉴스",
-      "source_name": "구글뉴스 청년 공약(7일)",
-      "source_kind": "news",
-      "publisher_domain": "news.kbs.co.kr",
-      "published_at": "2026-04-29T09:41:00+00:00",
-      "region": "전국",
-      "selection_bucket": "youth_issue",
-      "drop_reason": "public_relevance_filtered",
-      "importance_score": -1,
-      "ops_radar_score": 15,
-      "ops_radar_priority": "high",
-      "ops_radar_overlooked": true,
-      "ops_radar_labels": [
-        "정치·공약"
-      ],
-      "ops_radar_lanes": [
-        "political_commitment"
-      ],
-      "ops_radar_matches": [
-        {
-          "lane": "political_commitment",
-          "label": "정치·공약",
-          "description": "청년 공약, 후보, 비례대표, 선거 의제를 별도 레이더로 남깁니다.",
-          "matched_keywords": [
-            "청년",
-            "공약"
-          ],
-          "score": 7
-        }
-      ],
-      "ops_radar_note": "정치·공약 (청년, 공약)"
-    },
-    {
-      "article_key": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE1LZUR6SVl0eE1ETVV1ZkdUUHJyN2ZQOGxKTEh0VVV2ckItYU0yUHJuS2Q2TzBkSW42MEJKaFprWUJfNE9tZ19nYXNkSmFwY1JJckhJWkh5NnBCWlnSAWBBVV95cUxPbzdGMlowbDZRTU84N3R6bktHX3NEZHNRd09TTFNLQldYLUhYTHA3bWFyMElPeUs4WV9VNi1XTjBJekd0dDNXZzdHXzU0NVloV00wTVhFR1p2RmRuWmpsTnE?oc=5",
-      "title": "장동혁, 청년 공약발표하며 오세훈 지원…\"청년정당 될 것\"",
-      "preferred_url": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE1LZUR6SVl0eE1ETVV1ZkdUUHJyN2ZQOGxKTEh0VVV2ckItYU0yUHJuS2Q2TzBkSW42MEJKaFprWUJfNE9tZ19nYXNkSmFwY1JJckhJWkh5NnBCWlnSAWBBVV95cUxPbzdGMlowbDZRTU84N3R6bktHX3NEZHNRd09TTFNLQldYLUhYTHA3bWFyMElPeUs4WV9VNi1XTjBJekd0dDNXZzdHXzU0NVloV00wTVhFR1p2RmRuWmpsTnE?oc=5",
-      "source": "연합뉴스",
-      "source_name": "구글뉴스 청년 공약(7일)",
-      "source_kind": "news",
-      "publisher_domain": "www.yna.co.kr",
-      "published_at": "2026-04-29T07:10:19+00:00",
-      "region": "전국",
-      "selection_bucket": "youth_issue",
-      "drop_reason": "public_relevance_filtered",
-      "importance_score": -1,
       "ops_radar_score": 15,
       "ops_radar_priority": "high",
       "ops_radar_overlooked": true,
@@ -3230,7 +3405,7 @@
       "source_name": "구글뉴스 청년 공약(7일)",
       "source_kind": "news",
       "publisher_domain": "v.daum.net",
-      "published_at": "2026-04-28T05:35:03+00:00",
+      "published_at": "2026-04-28T05:35:00+00:00",
       "region": "전국",
       "selection_bucket": "youth_issue",
       "drop_reason": "public_relevance_filtered",
@@ -3267,42 +3442,6 @@
       "source_kind": "news",
       "publisher_domain": "v.daum.net",
       "published_at": "2026-04-28T05:33:09+00:00",
-      "region": "전국",
-      "selection_bucket": "youth_issue",
-      "drop_reason": "public_relevance_filtered",
-      "importance_score": 1,
-      "ops_radar_score": 15,
-      "ops_radar_priority": "high",
-      "ops_radar_overlooked": true,
-      "ops_radar_labels": [
-        "정치·공약"
-      ],
-      "ops_radar_lanes": [
-        "political_commitment"
-      ],
-      "ops_radar_matches": [
-        {
-          "lane": "political_commitment",
-          "label": "정치·공약",
-          "description": "청년 공약, 후보, 비례대표, 선거 의제를 별도 레이더로 남깁니다.",
-          "matched_keywords": [
-            "청년",
-            "공약"
-          ],
-          "score": 7
-        }
-      ],
-      "ops_radar_note": "정치·공약 (청년, 공약)"
-    },
-    {
-      "article_key": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE1YZlVmNEJuY25jc1gyMHF6YlpIR0g0OVpPTmdCSG1ORDg2RVZaWFYwd1NadU4xSWNkUkFUNV8tNlpNWHhIa0t1RXhCdE9OVnR0b1E?oc=5",
-      "title": "김부겸, 청년 일자리 공약 공개…\"청년창업펀드 1천억 원 조성\"",
-      "preferred_url": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE1YZlVmNEJuY25jc1gyMHF6YlpIR0g0OVpPTmdCSG1ORDg2RVZaWFYwd1NadU4xSWNkUkFUNV8tNlpNWHhIa0t1RXhCdE9OVnR0b1E?oc=5",
-      "source": "노컷뉴스",
-      "source_name": "구글뉴스 청년 부채·금융(7일)",
-      "source_kind": "news",
-      "publisher_domain": "www.nocutnews.co.kr",
-      "published_at": "2026-04-28T05:31:00+00:00",
       "region": "전국",
       "selection_bucket": "youth_issue",
       "drop_reason": "public_relevance_filtered",
@@ -3475,6 +3614,42 @@
       "ops_radar_note": "거버넌스·인사 (청년보좌역, 자문)"
     },
     {
+      "article_key": "https://www.inews24.com/view/1964863",
+      "title": "고기철 국힘 제주도당 위원장직 사퇴... 서귀포 보궐선거 출마",
+      "preferred_url": "https://www.inews24.com/view/1964863",
+      "source": "아이뉴스24",
+      "source_name": "네이버뉴스 청년 후보·비례대표(1주)",
+      "source_kind": "news",
+      "publisher_domain": "www.inews24.com",
+      "published_at": "2026-04-30T10:24:20+09:00",
+      "region": "제주",
+      "selection_bucket": "regional_issue",
+      "drop_reason": "public_relevance_filtered",
+      "importance_score": 2,
+      "ops_radar_score": 14,
+      "ops_radar_priority": "high",
+      "ops_radar_overlooked": true,
+      "ops_radar_labels": [
+        "정치·공약"
+      ],
+      "ops_radar_lanes": [
+        "political_commitment"
+      ],
+      "ops_radar_matches": [
+        {
+          "lane": "political_commitment",
+          "label": "정치·공약",
+          "description": "청년 공약, 후보, 비례대표, 선거 의제를 별도 레이더로 남깁니다.",
+          "matched_keywords": [
+            "청년",
+            "선거"
+          ],
+          "score": 7
+        }
+      ],
+      "ops_radar_note": "정치·공약 (청년, 선거)"
+    },
+    {
       "article_key": "https://news.google.com/rss/articles/CBMiW0FVX3lxTFBRM01tU1Z4cFFQTFU3dU9DNzlXeUgxaHFfZEF3cGI1ckZYa0lkMFk1SmE5Tll5M21MOS1sVG1vNHl0dWZITFlPbzAxS1NYR25hckVOaW00c2xuZVE?oc=5",
       "title": "모경종 “청년 정책 컨트롤타워 필요”…수도권 청년 원팀 4대 공약 발표",
       "preferred_url": "https://news.google.com/rss/articles/CBMiW0FVX3lxTFBRM01tU1Z4cFFQTFU3dU9DNzlXeUgxaHFfZEF3cGI1ckZYa0lkMFk1SmE5Tll5M21MOS1sVG1vNHl0dWZITFlPbzAxS1NYR25hckVOaW00c2xuZVE?oc=5",
@@ -3511,13 +3686,13 @@
       "ops_radar_note": "정치·공약 (청년, 공약)"
     },
     {
-      "article_key": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE5ZbUNKWjRYeVFaQjFIbEZ5ZE5YcHU0a0tFX1MtZUhxRHJ5SWhqSk1EUmg0NExZbkYwdzR6NUlIUjRvT1FjOFV2eFB3b0JsRDRtckt3MUpya1VYYjdJNVZyYw?oc=5",
+      "article_key": "https://news.google.com/rss/articles/CBMieEFVX3lxTE1EZXJBNHBFMWVMazZsVEF1cm0xeFVnZFJqWk4teW85YW5qbHdlU18wNnN6OWs3eU5RWFQyeGJMVF9GdERyVml5ZlZ1dHVjSHFwM1hoSENZYUhBSjUwM0drUG0zU2Y5aGxvV0Vwbk5uM2trR29ZdlVOatIBeEFVX3lxTE1EZXJBNHBFMWVMazZsVEF1cm0xeFVnZFJqWk4teW85YW5qbHdlU18wNnN6OWs3eU5RWFQyeGJMVF9GdERyVml5ZlZ1dHVjSHFwM1hoSENZYUhBSjUwM0drUG0zU2Y5aGxvV0Vwbk5uM2trR29ZdlVOag?oc=5",
       "title": "청년공약 발표하는 정원오 민주당 서울시장 후보",
-      "preferred_url": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE5ZbUNKWjRYeVFaQjFIbEZ5ZE5YcHU0a0tFX1MtZUhxRHJ5SWhqSk1EUmg0NExZbkYwdzR6NUlIUjRvT1FjOFV2eFB3b0JsRDRtckt3MUpya1VYYjdJNVZyYw?oc=5",
+      "preferred_url": "https://news.google.com/rss/articles/CBMieEFVX3lxTE1EZXJBNHBFMWVMazZsVEF1cm0xeFVnZFJqWk4teW85YW5qbHdlU18wNnN6OWs3eU5RWFQyeGJMVF9GdERyVml5ZlZ1dHVjSHFwM1hoSENZYUhBSjUwM0drUG0zU2Y5aGxvV0Vwbk5uM2trR29ZdlVOatIBeEFVX3lxTE1EZXJBNHBFMWVMazZsVEF1cm0xeFVnZFJqWk4teW85YW5qbHdlU18wNnN6OWs3eU5RWFQyeGJMVF9GdERyVml5ZlZ1dHVjSHFwM1hoSENZYUhBSjUwM0drUG0zU2Y5aGxvV0Vwbk5uM2trR29ZdlVOag?oc=5",
       "source": "뉴시스",
       "source_name": "구글뉴스 청년 공약(7일)",
       "source_kind": "news",
-      "publisher_domain": "www.newsis.com",
+      "publisher_domain": "mobile.newsis.com",
       "published_at": "2026-04-28T03:37:54+00:00",
       "region": "서울",
       "selection_bucket": "regional_issue",
@@ -3583,18 +3758,18 @@
       "ops_radar_note": "정치·공약 (청년, 공약)"
     },
     {
-      "article_key": "https://news.google.com/rss/articles/CBMicEFVX3lxTE1oV1RJdU9TTVVyMDdEWUNsMm9jeGhpbW52bWVIQ2NFLWFEdWNBRE5NMTdaQi0zNC1TMy1WYTZsSVFzLUNFcGFRQVQxbzIyRkhPOS1GZElnRWtLOGRwT216blRra2YtNHlsNHZUM0ZxQlQ?oc=5",
-      "title": "김부겸, 청년창업펀드 1천억 원 조성…청년공약 발표",
-      "preferred_url": "https://news.google.com/rss/articles/CBMicEFVX3lxTE1oV1RJdU9TTVVyMDdEWUNsMm9jeGhpbW52bWVIQ2NFLWFEdWNBRE5NMTdaQi0zNC1TMy1WYTZsSVFzLUNFcGFRQVQxbzIyRkhPOS1GZElnRWtLOGRwT216blRra2YtNHlsNHZUM0ZxQlQ?oc=5",
-      "source": "B world",
-      "source_name": "구글뉴스 청년 부채·금융(7일)",
+      "article_key": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE5VMVc4Z3djMmJrOFEwdkJ6NS1sNGpEenRtc29CUmQ4MElxcWx0UlFuTkpFMGlnVFZ0eWhUaW8yUTJGX3A4ay1aYWdXMVhscWxFNzlady1xTkhGUnc?oc=5",
+      "title": "장동혁 “오세훈이 조성한 홍제천 폭포카페”…청년 공약 발표하며 우회지원",
+      "preferred_url": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE5VMVc4Z3djMmJrOFEwdkJ6NS1sNGpEenRtc29CUmQ4MElxcWx0UlFuTkpFMGlnVFZ0eWhUaW8yUTJGX3A4ay1aYWdXMVhscWxFNzlady1xTkhGUnc?oc=5",
+      "source": "KBS 뉴스",
+      "source_name": "구글뉴스 청년 공약(7일)",
       "source_kind": "news",
-      "publisher_domain": "news.skbroadband.com",
-      "published_at": "2026-04-28T08:05:41+00:00",
+      "publisher_domain": "news.kbs.co.kr",
+      "published_at": "2026-04-29T09:41:00+00:00",
       "region": "전국",
       "selection_bucket": "youth_issue",
       "drop_reason": "public_relevance_filtered",
-      "importance_score": 2,
+      "importance_score": -3,
       "ops_radar_score": 13,
       "ops_radar_priority": "high",
       "ops_radar_overlooked": true,
@@ -3619,14 +3794,50 @@
       "ops_radar_note": "정치·공약 (청년, 공약)"
     },
     {
-      "article_key": "https://news.google.com/rss/articles/CBMiT0FVX3lxTE9IM3ZGZUhTMFBqd1RrVmdGTUhGYU5lLUpGNW1pdldVcmNJamlDWS01YVl0ZDFtREdFbWZBVHdnTERIUUlmbkFLT1pjdEkyWVU?oc=5",
-      "title": "신동화 구리시장 예비후보, 청년의 정착과 성장 위한 종합 청년 공약 발표",
-      "preferred_url": "https://news.google.com/rss/articles/CBMiT0FVX3lxTE9IM3ZGZUhTMFBqd1RrVmdGTUhGYU5lLUpGNW1pdldVcmNJamlDWS01YVl0ZDFtREdFbWZBVHdnTERIUUlmbkFLT1pjdEkyWVU?oc=5",
-      "source": "v.daum.net",
+      "article_key": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE1LZUR6SVl0eE1ETVV1ZkdUUHJyN2ZQOGxKTEh0VVV2ckItYU0yUHJuS2Q2TzBkSW42MEJKaFprWUJfNE9tZ19nYXNkSmFwY1JJckhJWkh5NnBCWlnSAWBBVV95cUxPbzdGMlowbDZRTU84N3R6bktHX3NEZHNRd09TTFNLQldYLUhYTHA3bWFyMElPeUs4WV9VNi1XTjBJekd0dDNXZzdHXzU0NVloV00wTVhFR1p2RmRuWmpsTnE?oc=5",
+      "title": "장동혁, 청년 공약발표하며 오세훈 지원…\"청년정당 될 것\"",
+      "preferred_url": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE1LZUR6SVl0eE1ETVV1ZkdUUHJyN2ZQOGxKTEh0VVV2ckItYU0yUHJuS2Q2TzBkSW42MEJKaFprWUJfNE9tZ19nYXNkSmFwY1JJckhJWkh5NnBCWlnSAWBBVV95cUxPbzdGMlowbDZRTU84N3R6bktHX3NEZHNRd09TTFNLQldYLUhYTHA3bWFyMElPeUs4WV9VNi1XTjBJekd0dDNXZzdHXzU0NVloV00wTVhFR1p2RmRuWmpsTnE?oc=5",
+      "source": "연합뉴스",
       "source_name": "구글뉴스 청년 공약(7일)",
       "source_kind": "news",
-      "publisher_domain": "v.daum.net",
-      "published_at": "2026-04-28T05:27:46+00:00",
+      "publisher_domain": "www.yna.co.kr",
+      "published_at": "2026-04-29T07:10:19+00:00",
+      "region": "전국",
+      "selection_bucket": "youth_issue",
+      "drop_reason": "public_relevance_filtered",
+      "importance_score": -3,
+      "ops_radar_score": 13,
+      "ops_radar_priority": "high",
+      "ops_radar_overlooked": true,
+      "ops_radar_labels": [
+        "정치·공약"
+      ],
+      "ops_radar_lanes": [
+        "political_commitment"
+      ],
+      "ops_radar_matches": [
+        {
+          "lane": "political_commitment",
+          "label": "정치·공약",
+          "description": "청년 공약, 후보, 비례대표, 선거 의제를 별도 레이더로 남깁니다.",
+          "matched_keywords": [
+            "청년",
+            "공약"
+          ],
+          "score": 7
+        }
+      ],
+      "ops_radar_note": "정치·공약 (청년, 공약)"
+    },
+    {
+      "article_key": "https://news.google.com/rss/articles/CBMib0FVX3lxTE9lMlFqZy0zZ214bG1pMW5ObGo5eEpQX3BTWGlrRmw0NWNTYmRzMEdER1NQR05RUTU2LUx5LWE4R0RTM1RSbksyalBfRzNkdkViTWNrYWs0b3QxSFd2UlFfMVpGaXBaY3NRYks5eEp0VQ?oc=5",
+      "title": "신동화 구리시장 예비후보, 청년의 정착과 성장 위한 종합 청년 공약 발표",
+      "preferred_url": "https://news.google.com/rss/articles/CBMib0FVX3lxTE9lMlFqZy0zZ214bG1pMW5ObGo5eEpQX3BTWGlrRmw0NWNTYmRzMEdER1NQR05RUTU2LUx5LWE4R0RTM1RSbksyalBfRzNkdkViTWNrYWs0b3QxSFd2UlFfMVpGaXBaY3NRYks5eEp0VQ?oc=5",
+      "source": "기호일보",
+      "source_name": "구글뉴스 청년 공약(7일)",
+      "source_kind": "news",
+      "publisher_domain": "www.kihoilbo.co.kr",
+      "published_at": "2026-04-28T05:26:00+00:00",
       "region": "전국",
       "selection_bucket": "youth_issue",
       "drop_reason": "public_relevance_filtered",
@@ -3703,54 +3914,18 @@
       "ops_radar_note": "기관·사업 공고 (청년, 교육) / 거버넌스·인사 (청년정책조정위원회, 회의)"
     },
     {
-      "article_key": "https://www.edaily.co.kr/News/Read?newsId=01876166645444656&mediaCodeNo=257",
-      "title": "주택자금·고용수당…출산 지원보다 '결혼 장려' 방점",
-      "preferred_url": "https://www.edaily.co.kr/News/Read?newsId=01876166645444656&mediaCodeNo=257",
-      "source": "이데일리",
-      "source_name": "네이버뉴스 청년 부채·금융(1주)",
+      "article_key": "http://www.jeonmae.co.kr/news/articleView.html?idxno=1253076",
+      "title": "전남도 \"청년 임금 높이고 기업 채용 부담 낮춘다\"",
+      "preferred_url": "http://www.jeonmae.co.kr/news/articleView.html?idxno=1253076",
+      "source": "전국매일신문",
+      "source_name": "네이버뉴스 청년 고용·쉬었음(1주)",
       "source_kind": "news",
-      "publisher_domain": "www.edaily.co.kr",
-      "published_at": "2026-05-01T05:02:03+09:00",
-      "region": "서울",
+      "publisher_domain": "www.jeonmae.co.kr",
+      "published_at": "2026-05-03T09:10:00+09:00",
+      "region": "전남",
       "selection_bucket": "regional_issue",
       "drop_reason": null,
-      "importance_score": 40,
-      "ops_radar_score": 18,
-      "ops_radar_priority": "critical",
-      "ops_radar_overlooked": false,
-      "ops_radar_labels": [
-        "기관·사업 공고"
-      ],
-      "ops_radar_lanes": [
-        "institution_program"
-      ],
-      "ops_radar_matches": [
-        {
-          "lane": "institution_program",
-          "label": "기관·사업 공고",
-          "description": "실무자가 챙겨야 할 모집, 접수, 선정, 프로그램 공고형 기사를 찾습니다.",
-          "matched_keywords": [
-            "청년",
-            "확대"
-          ],
-          "score": 7
-        }
-      ],
-      "ops_radar_note": "기관·사업 공고 (청년, 확대)"
-    },
-    {
-      "article_key": "https://go.seoul.co.kr/news/newsView.php?id=20260501019002",
-      "title": "서울, 전세사기 피해자도 ‘청년 월세’ 지원",
-      "preferred_url": "https://go.seoul.co.kr/news/newsView.php?id=20260501019002",
-      "source": "서울신문",
-      "source_name": "네이버뉴스 청년 주거·생활(1주)",
-      "source_kind": "news",
-      "publisher_domain": "go.seoul.co.kr",
-      "published_at": "2026-05-01T00:44:22+09:00",
-      "region": "서울",
-      "selection_bucket": "official_policy",
-      "drop_reason": null,
-      "importance_score": 43,
+      "importance_score": 39,
       "ops_radar_score": 16,
       "ops_radar_priority": "high",
       "ops_radar_overlooked": false,
@@ -3767,27 +3942,27 @@
           "description": "실무자가 챙겨야 할 모집, 접수, 선정, 프로그램 공고형 기사를 찾습니다.",
           "matched_keywords": [
             "청년",
-            "확대"
+            "모집"
           ],
           "score": 7
         }
       ],
-      "ops_radar_note": "기관·사업 공고 (청년, 확대)"
+      "ops_radar_note": "기관·사업 공고 (청년, 모집)"
     },
     {
-      "article_key": "https://www.cjb.co.kr/home/sub.php?menukey=61&mod=view&P_NO=260429020&PRO_CODE=4",
-      "title": "CJB 청주방송",
-      "preferred_url": "https://www.cjb.co.kr/home/sub.php?menukey=61&mod=view&P_NO=260429020&PRO_CODE=4",
-      "source": "CJB청주방송",
-      "source_name": "네이버뉴스 청년정책(1주)",
+      "article_key": "https://www.hani.co.kr/arti/politics/politics_general/1256916.html",
+      "title": "김정은, 청년동맹 만나 애국심 강조…“청년 전투력 국력의 상징”",
+      "preferred_url": "https://www.hani.co.kr/arti/politics/politics_general/1256916.html",
+      "source": "한겨레",
+      "source_name": "네이버뉴스 청년 노동·권리(1주)",
       "source_kind": "news",
-      "publisher_domain": "www.cjb.co.kr",
-      "published_at": "2026-05-01T21:08:44.347697+09:00",
+      "publisher_domain": "www.hani.co.kr",
+      "published_at": "2026-05-03T10:48:07.514776+09:00",
       "region": "전국",
       "selection_bucket": "youth_issue",
       "drop_reason": null,
-      "importance_score": 35,
-      "ops_radar_score": 15,
+      "importance_score": 28,
+      "ops_radar_score": 13,
       "ops_radar_priority": "high",
       "ops_radar_overlooked": false,
       "ops_radar_labels": [
@@ -3803,12 +3978,12 @@
           "description": "실무자가 챙겨야 할 모집, 접수, 선정, 프로그램 공고형 기사를 찾습니다.",
           "matched_keywords": [
             "청년",
-            "프로그램"
+            "참가자"
           ],
           "score": 7
         }
       ],
-      "ops_radar_note": "기관·사업 공고 (청년, 프로그램)"
+      "ops_radar_note": "기관·사업 공고 (청년, 참가자)"
     },
     {
       "article_key": "https://www.opm.go.kr:443/opm/news/press-release.do",

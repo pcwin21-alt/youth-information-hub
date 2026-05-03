@@ -1,23 +1,23 @@
 {
-  "run_id": "0af8a647-4c05-4642-9001-44969f31f622",
+  "run_id": "c5b44ced-3b46-4cda-b1e8-8c387f5a553b",
   "state": "completed",
-  "started_at": "2026-05-02T00:08:12.877038+09:00",
-  "updated_at": "2026-05-02T00:11:06.202127+09:00",
-  "finished_at": "2026-05-02T00:11:06.202127+09:00",
+  "started_at": "2026-05-03T10:51:20.611597+09:00",
+  "updated_at": "2026-05-03T10:54:25.108280+09:00",
+  "finished_at": "2026-05-03T10:54:25.108280+09:00",
   "current_step": null,
   "steps": [
     {
       "name": "collect_news",
       "state": "completed",
-      "updated_at": "2026-05-02T00:09:09.287497+09:00",
+      "updated_at": "2026-05-03T10:52:28.300601+09:00",
       "details": {
-        "stdout": "collected_articles=494"
+        "stdout": "collected_articles=467"
       }
     },
     {
       "name": "collect_youtube",
       "state": "completed",
-      "updated_at": "2026-05-02T00:09:09.587629+09:00",
+      "updated_at": "2026-05-03T10:52:28.865294+09:00",
       "details": {
         "stdout": "collected_videos=1"
       }
@@ -25,39 +25,39 @@
     {
       "name": "dedup_filter",
       "state": "completed",
-      "updated_at": "2026-05-02T00:09:10.932967+09:00",
+      "updated_at": "2026-05-03T10:52:31.317028+09:00",
       "details": {
-        "stdout": "filtered_articles=299"
+        "stdout": "filtered_articles=293"
       }
     },
     {
       "name": "content_curator",
       "state": "completed",
-      "updated_at": "2026-05-02T00:11:04.092498+09:00",
+      "updated_at": "2026-05-03T10:54:21.764132+09:00",
       "details": {
-        "stdout": "enriched=299 classified=299 selected=18 summarized=18 funnel=291 ops_radar=106"
+        "stdout": "enriched=293 classified=293 selected=19 summarized=19 funnel=284 ops_radar=111"
       }
     },
     {
       "name": "audit_article_dates",
       "state": "completed",
-      "updated_at": "2026-05-02T00:11:04.480420+09:00",
+      "updated_at": "2026-05-03T10:54:22.554888+09:00",
       "details": {
-        "stdout": "date_audit_report=C:\\★_VIBE CODING\\1  개발 단계\\외부_#07_26-03_청년 투게더\\runtime\\pipeline\\article_date_audit.json\ndate_audit_articles=714\ndate_audit_errors=0\ndate_audit_warnings=198"
+        "stdout": "date_audit_report=C:\\★_VIBE CODING\\1  개발 단계\\외부_#07_26-03_청년 투게더\\runtime\\pipeline\\article_date_audit.json\ndate_audit_articles=707\ndate_audit_errors=0\ndate_audit_warnings=197"
       }
     },
     {
       "name": "publish_db",
       "state": "completed",
-      "updated_at": "2026-05-02T00:11:04.830912+09:00",
+      "updated_at": "2026-05-03T10:54:23.313625+09:00",
       "details": {
-        "stdout": "db_upserted=18 archive_inserted=138 archive_updated=161 archive_total=1104"
+        "stdout": "db_upserted=19 archive_inserted=149 archive_updated=144 archive_total=1253"
       }
     },
     {
       "name": "publish_web",
       "state": "completed",
-      "updated_at": "2026-05-02T00:11:06.193126+09:00",
+      "updated_at": "2026-05-03T10:54:25.088940+09:00",
       "details": {
         "stdout": "web_output=C:\\★_VIBE CODING\\1  개발 단계\\외부_#07_26-03_청년 투게더\\public-site\\web\\index.html"
       }
