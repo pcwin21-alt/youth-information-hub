@@ -5008,9 +5008,12 @@
   }
   body[data-page="index.html"] .home-briefing-card.lead {
     grid-area: auto !important;
-    min-height: 162px;
+    min-height: 142px;
     width: 100%;
-    padding: 28px 32px;
+    padding: 22px 32px;
+  }
+  body[data-page="index.html"] .home-briefing-card.lead-arch.has-media {
+    padding-right: 32px !important;
   }
   body[data-page="index.html"] .home-overview {
     grid-area: auto !important;
@@ -5022,25 +5025,32 @@
     display: grid !important;
     grid-template-columns: minmax(0, 1fr) auto;
     grid-template-areas:
-      "date summary"
+      "date actions"
       "title actions"
       "copy actions";
-    gap: 10px 24px;
+    gap: 8px 24px;
   }
   body[data-page="index.html"] .home-briefing-title,
   body[data-page="index.html"] .home-briefing-card.lead-arch .home-briefing-title {
     max-width: none;
-    font-size: clamp(2rem, 3vw, 3rem);
-    line-height: 1.08;
-    white-space: normal;
+    font-size: clamp(1.65rem, 2.15vw, 2.18rem);
+    line-height: 1.06;
+    white-space: nowrap;
     word-break: keep-all;
     overflow-wrap: break-word;
   }
   body[data-page="index.html"] .home-briefing-copy,
   body[data-page="index.html"] .home-briefing-card.lead-arch .home-briefing-copy {
-    max-width: 760px;
-    font-size: 1rem;
-    line-height: 1.62;
+    max-width: 620px;
+    font-size: 0.96rem;
+    line-height: 1.56;
+  }
+  body[data-page="index.html"] .home-briefing-summary {
+    display: none !important;
+  }
+  body[data-page="index.html"] .home-briefing-card.lead .button {
+    min-height: 44px;
+    padding: 0 18px;
   }
   @media (max-width: 1180px) {
     body[data-page="index.html"] .home-briefing-card.lead .home-briefing-content {
@@ -5057,6 +5067,10 @@
       justify-self: start;
       justify-content: flex-start;
     }
+    body[data-page="index.html"] .home-briefing-title,
+    body[data-page="index.html"] .home-briefing-card.lead-arch .home-briefing-title {
+      white-space: normal;
+    }
     .home-overview-head,
     .home-overview-columns {
       grid-template-columns: 1fr;
@@ -5072,6 +5086,99 @@
     }
     .home-overview .home-glance-grid {
       grid-template-columns: 1fr;
+    }
+  }
+  body:not([data-page="index.html"]) .page-intro-card,
+  body:not([data-page="index.html"]) .news-intro-card,
+  body:not([data-page="index.html"]) .hero-card {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 20px;
+    align-items: center;
+    min-height: auto;
+    padding: 24px 28px;
+    border-radius: 8px;
+  }
+  body:not([data-page="index.html"]) .page-intro-card.has-media {
+    grid-template-columns: minmax(0, 1fr) 112px;
+  }
+  body:not([data-page="index.html"]) .page-intro-content {
+    gap: 10px;
+  }
+  body:not([data-page="index.html"]) .page-intro-badge,
+  body:not([data-page="index.html"]) .eyebrow {
+    min-height: 32px;
+    padding: 6px 12px;
+    border-radius: 999px;
+    font-size: 0.8rem;
+  }
+  body:not([data-page="index.html"]) .page-intro-title,
+  body:not([data-page="index.html"]) .hero-card h1 {
+    max-width: 980px;
+    font-size: clamp(1.7rem, 2.2vw, 2.28rem);
+    line-height: 1.16;
+  }
+  body:not([data-page="index.html"]) .page-intro-copy,
+  body:not([data-page="index.html"]) .hero-copy {
+    max-width: 980px;
+    font-size: 1rem;
+    line-height: 1.62;
+  }
+  body:not([data-page="index.html"]) .page-intro-media {
+    width: 112px;
+    margin: 0;
+  }
+  body:not([data-page="index.html"]) .hero {
+    gap: 16px;
+    margin-bottom: 22px;
+  }
+  body:not([data-page="index.html"]) .section {
+    margin-top: 24px;
+  }
+  body:not([data-page="index.html"]) .section#filters {
+    margin-top: 18px;
+  }
+  body:not([data-page="index.html"]) .section#main-list {
+    margin-top: 24px;
+  }
+  body:not([data-page="index.html"]) .filter-panel {
+    padding: 20px;
+  }
+  body:not([data-page="index.html"]) .filter-head {
+    margin-bottom: 16px;
+  }
+  body:not([data-page="index.html"]) .filter-head h3 {
+    font-size: 1.08rem;
+  }
+  body:not([data-page="index.html"]) .filter-head p {
+    max-width: 760px;
+    font-size: 0.9rem;
+  }
+  body:not([data-page="index.html"]) .filter-stack {
+    gap: 14px;
+  }
+  body:not([data-page="index.html"]) .article-grid,
+  body:not([data-page="index.html"]) .feature-grid {
+    gap: 18px;
+  }
+  body:not([data-page="index.html"]) .article-card,
+  body:not([data-page="index.html"]) .section-card,
+  body:not([data-page="index.html"]) .info-card {
+    min-width: 0;
+  }
+  @media (max-width: 900px) {
+    body:not([data-page="index.html"]) .page-intro-card,
+    body:not([data-page="index.html"]) .news-intro-card,
+    body:not([data-page="index.html"]) .hero-card {
+      grid-template-columns: 1fr;
+      padding: 20px;
+    }
+    body:not([data-page="index.html"]) .page-intro-card.has-media {
+      grid-template-columns: 1fr;
+    }
+    body:not([data-page="index.html"]) .page-intro-media {
+      width: 88px;
+      justify-self: end;
     }
   }
 </style>
