@@ -5192,6 +5192,217 @@
       justify-self: end;
     }
   }
+  body[data-page="index.html"] .youth-metrics-grid {
+    grid-template-columns: minmax(0, 1.35fr) repeat(3, minmax(0, 0.78fr));
+    gap: 22px;
+    align-items: stretch;
+  }
+  body[data-page="index.html"] .youth-metric-item {
+    min-height: 194px;
+    display: grid;
+    align-content: space-between;
+    gap: 14px;
+    padding: 24px;
+  }
+  body[data-page="index.html"] .youth-metric-primary {
+    min-height: 224px;
+    padding: 28px 30px;
+    background: #ffffff;
+  }
+  body[data-page="index.html"] .youth-metric-primary .youth-metric-value {
+    font-size: clamp(2.35rem, 3.4vw, 3.35rem);
+    line-height: 1.04;
+  }
+  body[data-page="index.html"] .youth-metric-compact .youth-metric-value {
+    font-size: clamp(1.7rem, 2vw, 2.08rem);
+  }
+  .youth-metric-scale {
+    width: 100%;
+    height: 6px;
+    border-radius: 999px;
+    background: #ece9e4;
+    overflow: hidden;
+  }
+  .youth-metric-scale span {
+    display: block;
+    width: 74%;
+    height: 100%;
+    border-radius: inherit;
+    background: var(--text);
+  }
+  .home-data-board-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 2fr) minmax(320px, 0.92fr);
+    gap: 30px;
+    align-items: start;
+  }
+  .home-region-block,
+  .home-research-block {
+    min-width: 0;
+  }
+  .home-region-table-wrap {
+    overflow-x: auto;
+    border-top: 1px solid #d2cec6;
+  }
+  .home-region-table {
+    width: 100%;
+    min-width: 680px;
+    border-collapse: collapse;
+    font-size: 0.94rem;
+  }
+  .home-region-table th,
+  .home-region-table td {
+    padding: 18px 14px;
+    border-bottom: 1px solid #ebe8e2;
+    text-align: left;
+    vertical-align: top;
+  }
+  .home-region-table thead th {
+    color: #756f68;
+    font-size: 0.78rem;
+    font-weight: 900;
+    text-transform: uppercase;
+  }
+  .home-region-table tbody th {
+    color: var(--text);
+    font-size: 1rem;
+    font-weight: 900;
+    white-space: nowrap;
+  }
+  .home-region-table td strong,
+  .home-region-table td span,
+  .home-region-table td small {
+    display: block;
+  }
+  .home-region-table td strong {
+    color: var(--text);
+    font-size: 1.02rem;
+  }
+  .home-region-table td span,
+  .home-region-table td small {
+    color: #6f6962;
+    line-height: 1.45;
+  }
+  .home-region-table td small {
+    max-width: 320px;
+    margin-top: 4px;
+    font-size: 0.82rem;
+  }
+  .home-region-focus,
+  .home-report-tag {
+    display: inline-flex;
+    width: fit-content;
+    min-height: 28px;
+    align-items: center;
+    padding: 4px 10px;
+    border-radius: 999px;
+    background: #fff3df;
+    color: #9c5e00;
+    font-size: 0.78rem;
+    font-weight: 900;
+  }
+  .home-region-link {
+    color: #006f63;
+    font-weight: 900;
+  }
+  .home-region-empty {
+    padding: 24px 0;
+    border-top: 1px solid #d2cec6;
+    border-bottom: 1px solid #ebe8e2;
+  }
+  .home-region-empty h3 {
+    margin: 0;
+    color: var(--text);
+    font-size: 1.1rem;
+  }
+  .home-region-empty p {
+    margin: 8px 0 0;
+    color: var(--muted);
+  }
+  .home-research-block {
+    display: grid;
+    gap: 18px;
+  }
+  .home-research-head {
+    display: grid;
+    gap: 8px;
+  }
+  .home-research-head h2 {
+    margin: 0;
+    color: var(--text);
+    font-size: 1.45rem;
+    line-height: 1.22;
+  }
+  .home-research-head p {
+    margin: 0;
+    color: var(--muted);
+  }
+  .home-report-list {
+    display: grid;
+    gap: 12px;
+  }
+  .home-report-row {
+    display: grid;
+    gap: 7px;
+    min-width: 0;
+    padding: 18px;
+    border: 1px solid #d2cec6;
+    border-radius: 8px;
+    background: #ffffff;
+  }
+  .home-report-row:hover {
+    border-color: #bcb6ac;
+    box-shadow: 0 10px 20px rgba(24, 24, 24, 0.05);
+    transform: translateY(-1px);
+  }
+  .home-report-row strong {
+    color: var(--text);
+    font-size: 1rem;
+    line-height: 1.38;
+  }
+  .home-report-meta,
+  .home-report-row p {
+    color: #6f6962;
+    font-size: 0.84rem;
+    line-height: 1.55;
+  }
+  .home-report-row p {
+    margin: 0;
+  }
+  .home-research-block .button {
+    width: 100%;
+    justify-content: center;
+  }
+  @media (max-width: 1180px) {
+    body[data-page="index.html"] .youth-metrics-grid,
+    .home-data-board-grid {
+      grid-template-columns: 1fr;
+    }
+    body[data-page="index.html"] .youth-metric-primary {
+      min-height: 200px;
+    }
+  }
+  @media (max-width: 900px) {
+    body[data-page="index.html"] .youth-metrics-grid {
+      grid-template-columns: 1fr;
+      gap: 14px;
+    }
+    body[data-page="index.html"] .youth-metric-item {
+      min-height: auto;
+      padding: 20px;
+    }
+    .home-data-board-grid {
+      gap: 22px;
+    }
+    .home-region-table {
+      min-width: 620px;
+      font-size: 0.88rem;
+    }
+    .home-region-table th,
+    .home-region-table td {
+      padding: 14px 10px;
+    }
+  }
 </style>
 </head>
 <body data-page="index.html">
@@ -5201,7 +5412,7 @@
     <div class="topbar-side">
       <form class="global-search" action="news.html" method="get" role="search"><span class="global-search-icon" aria-hidden="true">⌕</span><input type="search" name="q" autocomplete="off" placeholder="Search insights..."></form>
       <a class="guide-link" href="guide.html" data-guide-open-link="true" aria-label="이용 안내">이용방법</a>
-      <div class="header-side"><strong>05.03 10:54</strong><span>최근 반영</span></div>
+      <div class="header-side"><strong>05.03 23:32</strong><span>최근 반영</span></div>
       <button class="admin-entry" type="button" data-admin-login-open="true" title="임시 관리자 표시 모드 열기"><span data-admin-entry-label>관리 로그인</span></button>
       <a class="topbar-icon" href="contact.html" aria-label="제보와 문의">○</a>
     </div>
@@ -5220,7 +5431,7 @@
       <div class="side-nav-section">
         <span class="side-nav-kicker">Page Markers</span>
         <nav class="side-marker-list" aria-label="현재 페이지 위치 마커">
-          <a class="side-marker-link active" href="#page-top" data-marker-link aria-current="location"><span class="side-marker-dot" aria-hidden="true"></span><span class="side-marker-label">상단</span></a><a class="side-marker-link" href="#today-briefing" data-marker-link><span class="side-marker-dot" aria-hidden="true"></span><span class="side-marker-label">오늘 브리핑</span></a><a class="side-marker-link" href="#youth-metrics" data-marker-link><span class="side-marker-dot" aria-hidden="true"></span><span class="side-marker-label">청년 주요 지표</span></a><a class="side-marker-link" href="#about-info" data-marker-link><span class="side-marker-dot" aria-hidden="true"></span><span class="side-marker-label">제작자·안내</span></a>
+          <a class="side-marker-link active" href="#page-top" data-marker-link aria-current="location"><span class="side-marker-dot" aria-hidden="true"></span><span class="side-marker-label">상단</span></a><a class="side-marker-link" href="#today-briefing" data-marker-link><span class="side-marker-dot" aria-hidden="true"></span><span class="side-marker-label">오늘 브리핑</span></a><a class="side-marker-link" href="#youth-metrics" data-marker-link><span class="side-marker-dot" aria-hidden="true"></span><span class="side-marker-label">핵심 지표</span></a><a class="side-marker-link" href="#regional-policy-status" data-marker-link><span class="side-marker-dot" aria-hidden="true"></span><span class="side-marker-label">지역 정책 현황</span></a><a class="side-marker-link" href="#research-resources" data-marker-link><span class="side-marker-dot" aria-hidden="true"></span><span class="side-marker-label">연구·통계 자료</span></a><a class="side-marker-link" href="#about-info" data-marker-link><span class="side-marker-dot" aria-hidden="true"></span><span class="side-marker-label">제작자·안내</span></a>
         </nav>
       </div>
       <a class="side-update-card" href="news.html">
@@ -5240,8 +5451,8 @@
         <article class="home-briefing-card lead lead-arch has-media" data-media-host="home-lead">
           <div class="home-briefing-content">
             <span class="home-briefing-date">2026.05.03 (일)</span>
-            <h1 class="home-briefing-title">오늘 필요한 청년 이슈</h1>
-            <p class="home-briefing-copy">최신 뉴스와 정부·지자체 발표를 한 화면에서 빠르게 확인하세요.</p>
+            <h1 class="home-briefing-title">청년의 오늘</h1>
+            <p class="home-briefing-copy">청년의 오늘이 조금 더 선명해지도록, 꼭 봐야 할 뉴스와 정부·지자체 정책 흐름을 한곳에 모았습니다.</p>
           </div>
           <div class="home-illustration-slot"><img class="home-illustration-img" src="assets/illustrations/home-moabom-collection.svg?v=20260501-sunlit-logo-1" alt="청년들이 봄꽃 아래에서 오늘의 기사와 정책 정보를 살펴보는 홈 화면 일러스트" decoding="async" loading="eager" onerror="const host=this.closest('[data-media-host]');if(host){host.classList.remove('has-media');}this.parentElement.remove();"></div>
         </article>
@@ -5263,7 +5474,7 @@
                 </div>
               </div>
               <p class="home-briefing-panel-note">언론 기사 중 선거·공약성 기사를 제외한 최신 청년 이슈입니다.</p>
-              <div class="home-urgent-list"><article class="home-urgent-item"><a class="home-urgent-link" href="https://www.hani.co.kr/arti/politics/politics_general/1256916.html" target="_blank" rel="noreferrer" aria-label="김정은, 청년동맹 만나 애국심 강조…“청년 전투력 국력의 상징” 링크 바로가기"><span class="home-urgent-rank">01</span><div class="home-urgent-text"><strong>김정은, 청년동맹 만나 애국심 강조…“청년 전투력 국력의 상징”</strong><span class="home-urgent-meta">한겨레 · 2026-05-03 10:48</span></div></a></article><article class="home-urgent-item"><a class="home-urgent-link" href="https://www.slist.kr/news/articleView.html?idxno=736527" target="_blank" rel="noreferrer" aria-label="[은행가] 국민銀, 청년창업가 육성 &#x27;KB유니콘클럽&#x27; 6기 발대식 外 링크 바로가기"><span class="home-urgent-rank">02</span><div class="home-urgent-text"><strong>[은행가] 국민銀, 청년창업가 육성 &#x27;KB유니콘클럽&#x27; 6기 발대식 外</strong><span class="home-urgent-meta">싱글리스트 · 2026-05-03 10:15 · 경기</span></div></a></article><article class="home-urgent-item"><a class="home-urgent-link" href="https://www.businesskorea.co.kr/news/articleView.html?idxno=268886" target="_blank" rel="noreferrer" aria-label="KB국민은행, KB유니콘클럽 6기 발대식 개최 링크 바로가기"><span class="home-urgent-rank">03</span><div class="home-urgent-text"><strong>KB국민은행, KB유니콘클럽 6기 발대식 개최</strong><span class="home-urgent-meta">비지니스코리아 · 2026-05-03 10:06 · 경기</span></div></a></article><article class="home-urgent-item"><a class="home-urgent-link" href="https://www.edaily.co.kr/News/Read?newsId=01325126645445312&amp;mediaCodeNo=257" target="_blank" rel="noreferrer" aria-label="“월세 100만원인데도 줄 선다”…전월세난 속 코리빙 부상[르포] 링크 바로가기"><span class="home-urgent-rank">04</span><div class="home-urgent-text"><strong>“월세 100만원인데도 줄 선다”…전월세난 속 코리빙 부상[르포]</strong><span class="home-urgent-meta">이데일리 · 2026-05-03 09:59 · 서울</span></div></a></article><article class="home-urgent-item"><a class="home-urgent-link" href="https://www.ytn.co.kr/_ln/0101_202605030955095497" target="_blank" rel="noreferrer" aria-label="북, &#x27;청년동맹&#x27; 개최...김정은 &quot;투쟁과업 적극 진출&quot; 링크 바로가기"><span class="home-urgent-rank">05</span><div class="home-urgent-text"><strong>북, &#x27;청년동맹&#x27; 개최...김정은 &quot;투쟁과업 적극 진출&quot;</strong><span class="home-urgent-meta">YTN · 2026-05-03 09:55</span></div></a></article></div>
+              <div class="home-urgent-list"><article class="home-urgent-item"><a class="home-urgent-link" href="http://www.gnmaeil.com/news/articleView.html?idxno=585834" target="_blank" rel="noreferrer" aria-label="하동군, 청년 참여형 간판 개선사업 추진 링크 바로가기"><span class="home-urgent-rank">01</span><div class="home-urgent-text"><strong>하동군, 청년 참여형 간판 개선사업 추진</strong><span class="home-urgent-meta">경남매일신문 · 2026-05-03 22:38</span></div></a></article><article class="home-urgent-item"><a class="home-urgent-link" href="https://www.hidomin.com/news/articleView.html?idxno=703894" target="_blank" rel="noreferrer" aria-label="김천 청년센터·메타버스 스테이션, 청년 혁신역량 강화 ‘맞손’ 링크 바로가기"><span class="home-urgent-rank">02</span><div class="home-urgent-text"><strong>김천 청년센터·메타버스 스테이션, 청년 혁신역량 강화 ‘맞손’</strong><span class="home-urgent-meta">경북도민일보 · 2026-05-03 19:35 · 경북</span></div></a></article><article class="home-urgent-item"><a class="home-urgent-link" href="https://www.m-i.kr/news/articleView.html?idxno=1369625" target="_blank" rel="noreferrer" aria-label="구미시, 소상공인 위기 대응 종합 지원 총력 링크 바로가기"><span class="home-urgent-rank">03</span><div class="home-urgent-text"><strong>구미시, 소상공인 위기 대응 종합 지원 총력</strong><span class="home-urgent-meta">매일일보 · 2026-05-03 19:09 · 대구</span></div></a></article><article class="home-urgent-item"><a class="home-urgent-link" href="http://www.ujeil.com/news/articleView.html?idxno=385138" target="_blank" rel="noreferrer" aria-label="동구, 옥상 달빛 영화제 링크 바로가기"><span class="home-urgent-rank">04</span><div class="home-urgent-text"><strong>동구, 옥상 달빛 영화제</strong><span class="home-urgent-meta">울산제일일보 · 2026-05-03 18:15 · 울산</span></div></a></article><article class="home-urgent-item"><a class="home-urgent-link" href="https://www.dkilbo.com/news/articleView.html?idxno=543302" target="_blank" rel="noreferrer" aria-label="포항시, AI 스타트업 육성 ‘SW 성장기업 지원’ 착수 링크 바로가기"><span class="home-urgent-rank">05</span><div class="home-urgent-text"><strong>포항시, AI 스타트업 육성 ‘SW 성장기업 지원’ 착수</strong><span class="home-urgent-meta">대경일보 · 2026-05-03 18:01 · 경북</span></div></a></article></div>
             </article>
             <article class="home-overview-column">
               <div class="home-overview-column-head">
@@ -5273,10 +5484,10 @@
                 </div>
               </div>
               <p class="home-briefing-panel-note">중앙정부 발표, 보도자료, 지역 참여·정책 흐름을 함께 봅니다.</p>
-              <div class="home-urgent-list"><article class="home-urgent-item"><a class="home-urgent-link" href="https://m.ekn.kr/view.php?key=20260503022321853" target="_blank" rel="noreferrer" aria-label="[패트롤]경주시- 영천시- 대구 달서구- 경북문화관광공사 링크 바로가기"><span class="home-urgent-rank">01</span><div class="home-urgent-text"><strong>[패트롤]경주시- 영천시- 대구 달서구- 경북문화관광공사</strong><span class="home-urgent-meta">에너지경제 · 2026-05-03 10:33 · 서울</span></div></a></article><article class="home-urgent-item"><a class="home-urgent-link" href="https://www.korea.kr/news/policyNewsView.do?newsId=148963684" target="_blank" rel="noreferrer" aria-label="&#x27;청년 10만 명&#x27;에 일자리 기회 제공…&#x27;청년뉴딜 추진방안&#x27; 발표 링크 바로가기"><span class="home-urgent-rank">02</span><div class="home-urgent-text"><strong>&#x27;청년 10만 명&#x27;에 일자리 기회 제공…&#x27;청년뉴딜 추진방안&#x27; 발표</strong><span class="home-urgent-meta">정책브리핑 · 2026-04-29 17:15 · 서울</span></div></a></article><article class="home-urgent-item"><a class="home-urgent-link" href="https://www.molit.go.kr/USR/NEWS/m_71/dtl.jsp?lcmspage=1&amp;id=95091966" target="_blank" rel="noreferrer" aria-label="30일 2030청년자문단과 MZ보드 통합발대식··· 청년 자문과 실무혁신 결합 링크 바로가기"><span class="home-urgent-rank">03</span><div class="home-urgent-text"><strong>30일 2030청년자문단과 MZ보드 통합발대식··· 청년 자문과 실무혁신 결합</strong><span class="home-urgent-meta">국토교통부 보도자료 · 2026-04-30</span></div></a></article><article class="home-urgent-item"><a class="home-urgent-link" href="https://www.moe.go.kr/boardCnts/viewRenew.do?boardID=294&amp;boardSeq=106021&amp;lev=0&amp;searchType=null&amp;statusYN=W&amp;page=1&amp;s=moe&amp;m=020402&amp;opType=N" target="_blank" rel="noreferrer" aria-label="2026년 청년도약 인재양성 부트캠프 운영계획 공고 안내 링크 바로가기"><span class="home-urgent-rank">04</span><div class="home-urgent-text"><strong>2026년 청년도약 인재양성 부트캠프 운영계획 공고 안내</strong><span class="home-urgent-meta">교육부 보도자료 · 2026-04-29 · 세종</span></div></a></article><article class="home-urgent-item"><a class="home-urgent-link" href="https://www.fsc.go.kr/no010101/86804?srchCtgry=1&amp;curPage=&amp;srchKey=&amp;srchText=&amp;srchBeginDt=&amp;srchEndDt=" target="_blank" rel="noreferrer" aria-label="보도자료 - 위원회 소식 - 알림마당 - 금융위원회 링크 바로가기"><span class="home-urgent-rank">05</span><div class="home-urgent-text"><strong>보도자료 - 위원회 소식 - 알림마당 - 금융위원회</strong><span class="home-urgent-meta">금융위원회 보도자료 · 2026-04-29 · 서울</span></div></a></article></div>
+              <div class="home-urgent-list"><article class="home-urgent-item"><a class="home-urgent-link" href="http://www.gnmaeil.com/news/articleView.html?idxno=585754" target="_blank" rel="noreferrer" aria-label="박완수 &#x27;창원대→ 경남과기원 전환&#x27; 링크 바로가기"><span class="home-urgent-rank">01</span><div class="home-urgent-text"><strong>박완수 &#x27;창원대→ 경남과기원 전환&#x27;</strong><span class="home-urgent-meta">경남매일신문 · 2026-05-03 22:43 · 대구</span></div></a></article><article class="home-urgent-item"><a class="home-urgent-link" href="https://www.dkilbo.com/news/articleView.html?idxno=543302" target="_blank" rel="noreferrer" aria-label="포항시, AI 스타트업 육성 ‘SW 성장기업 지원’ 착수 링크 바로가기"><span class="home-urgent-rank">02</span><div class="home-urgent-text"><strong>포항시, AI 스타트업 육성 ‘SW 성장기업 지원’ 착수</strong><span class="home-urgent-meta">대경일보 · 2026-05-03 18:01 · 경북</span></div></a></article><article class="home-urgent-item"><a class="home-urgent-link" href="http://www.gndomin.com/news/articleView.html?idxno=474277" target="_blank" rel="noreferrer" aria-label="경남도, 미래농업 이끌 스마트팜 청년 교육생 모집 링크 바로가기"><span class="home-urgent-rank">03</span><div class="home-urgent-text"><strong>경남도, 미래농업 이끌 스마트팜 청년 교육생 모집</strong><span class="home-urgent-meta">경남도민신문 · 2026-05-03 15:57 · 경남</span></div></a></article><article class="home-urgent-item"><a class="home-urgent-link" href="http://www.jeonmin.co.kr/news/articleView.html?idxno=439168" target="_blank" rel="noreferrer" aria-label="이주현 조국혁신당 군산시장 후보, 방치된 서해대 부지 활용 해법 제시 링크 바로가기"><span class="home-urgent-rank">04</span><div class="home-urgent-text"><strong>이주현 조국혁신당 군산시장 후보, 방치된 서해대 부지 활용 해법 제시</strong><span class="home-urgent-meta">전민일보 · 2026-05-03 12:46</span></div></a></article><article class="home-urgent-item"><a class="home-urgent-link" href="https://www.newsgn.com/news/articleView.html?idxno=550069" target="_blank" rel="noreferrer" aria-label="경남도, 미래농업 이끌 스마트팜 청년 교육생 모집 링크 바로가기"><span class="home-urgent-rank">05</span><div class="home-urgent-text"><strong>경남도, 미래농업 이끌 스마트팜 청년 교육생 모집</strong><span class="home-urgent-meta">뉴스경남 · 2026-05-03 10:05 · 경남</span></div></a></article></div>
             </article>
           </div>
-          <div class="home-keyword-strip"><article class="home-keyword-panel"><div class="home-keyword-heading"><strong>최근 많이 잡힌 카테고리</strong><span>최근 48시간 기준입니다. 누르면 뉴스 탭에서 바로 걸러봅니다.</span></div><div class="home-keyword-list"><a class="home-keyword-chip" href="news.html?topic=%EA%B8%88%EC%9C%B5">#금융</a><a class="home-keyword-chip" href="news.html?topic=%EB%85%B8%EB%8F%99">#노동</a><a class="home-keyword-chip" href="news.html?topic=%EC%B7%A8%EC%97%85">#취업</a><a class="home-keyword-chip" href="news.html?topic=%EC%A3%BC%EA%B1%B0">#주거</a><a class="home-keyword-chip" href="news.html?topic=%EC%B0%BD%EC%97%85">#창업</a><a class="home-keyword-chip" href="news.html?topic=%EB%AA%A8%EC%A7%91">#모집</a><a class="home-keyword-chip" href="news.html?topic=%EC%A7%80%EC%97%AD%EC%A0%95%EC%B0%A9">#지역정착</a><a class="home-keyword-chip" href="news.html?topic=%EC%B2%AD%EB%85%84%EC%84%BC%ED%84%B0">#청년센터</a></div></article></div>
+          <div class="home-keyword-strip"><article class="home-keyword-panel"><div class="home-keyword-heading"><strong>최근 많이 잡힌 카테고리</strong><span>최근 48시간 기준입니다. 누르면 뉴스 탭에서 바로 걸러봅니다.</span></div><div class="home-keyword-list"><a class="home-keyword-chip" href="news.html?topic=%EC%A3%BC%EA%B1%B0">#주거</a><a class="home-keyword-chip" href="news.html?topic=%EB%AA%A8%EC%A7%91">#모집</a><a class="home-keyword-chip" href="news.html?topic=%EA%B8%88%EC%9C%B5">#금융</a><a class="home-keyword-chip" href="news.html?topic=%EB%85%B8%EB%8F%99">#노동</a><a class="home-keyword-chip" href="news.html?topic=%EC%B0%BD%EC%97%85">#창업</a><a class="home-keyword-chip" href="news.html?topic=%EC%B2%AD%EB%85%84%EC%84%BC%ED%84%B0">#청년센터</a><a class="home-keyword-chip" href="news.html?topic=%EC%B7%A8%EC%97%85">#취업</a></div></article></div>
         </section>
       </div>
     </section>
@@ -5284,58 +5495,44 @@
     <section class="section" id="youth-metrics">
       <article class="youth-metrics-card">
         <div class="youth-metrics-head">
-          <h2>청년 주요 지표</h2>
-          <p>정책과 기사 흐름을 볼 때 함께 참고할 수 있도록, 최근 공식 통계와 공공 발표 기준 숫자를 함께 놓았습니다.</p>
+          <h2>핵심 지표 요약</h2>
+          <p>오늘의 정책·뉴스 흐름을 볼 때 함께 확인할 공식 통계 기준값만 추려 놓았습니다.</p>
         </div>
         <div class="youth-metrics-grid">
-            <article class="youth-metric-item">
+            <article class="youth-metric-item youth-metric-primary">
               <span class="youth-metric-label">청년 인구</span>
               <strong class="youth-metric-value">1,040.4만명</strong>
+              <div class="youth-metric-scale" aria-hidden="true"><span></span></div>
               <div class="youth-metric-meta">
                 <span>2024 · 19~34세</span>
                 <a class="youth-metric-source" href="https://mods.go.kr/board.es?act=view&amp;bid=246&amp;list_no=442421&amp;mainXml=Y&amp;mid=a10301010000" target="_blank" rel="noreferrer">청년 삶의 질 2025</a>
               </div>
             </article>
             
-            <article class="youth-metric-item">
-              <span class="youth-metric-label">전체 인구 비중</span>
-              <strong class="youth-metric-value">20.1%</strong>
-              <div class="youth-metric-meta">
-                <span>2024 · 19~34세</span>
-                <a class="youth-metric-source" href="https://mods.go.kr/board.es?act=view&amp;bid=246&amp;list_no=442421&amp;mainXml=Y&amp;mid=a10301010000" target="_blank" rel="noreferrer">청년 삶의 질 2025</a>
-              </div>
-            </article>
-            
-            <article class="youth-metric-item">
-              <span class="youth-metric-label">삶의 만족도</span>
-              <strong class="youth-metric-value">6.7점</strong>
-              <div class="youth-metric-meta">
-                <span>2024 · 19~34세</span>
-                <a class="youth-metric-source" href="https://mods.go.kr/board.es?act=view&amp;bid=12316&amp;list_no=442459&amp;mid=a90106000000&amp;nPage=1&amp;ref_bid=&amp;tag=" target="_blank" rel="noreferrer">청년 삶의 질 2025</a>
-              </div>
-            </article>
-            
-            <article class="youth-metric-item">
+            <article class="youth-metric-item youth-metric-compact">
               <span class="youth-metric-label">청년 실업률</span>
               <strong class="youth-metric-value">7.7%</strong>
+              
               <div class="youth-metric-meta">
                 <span>2026.02 · 15~29세</span>
                 <a class="youth-metric-source" href="https://sri.kostat.go.kr/board.es?act=view&amp;bid=210&amp;list_no=444083&amp;mid=a10301030200&amp;ref_bid=&amp;tag=" target="_blank" rel="noreferrer">2026년 2월 고용동향</a>
               </div>
             </article>
             
-            <article class="youth-metric-item">
-              <span class="youth-metric-label">쉬었음 청년</span>
-              <strong class="youth-metric-value">40.2만명</strong>
+            <article class="youth-metric-item youth-metric-compact">
+              <span class="youth-metric-label">삶의 만족도</span>
+              <strong class="youth-metric-value">6.7점</strong>
+              
               <div class="youth-metric-meta">
-                <span>2023.07 · 15~29세</span>
-                <a class="youth-metric-source" href="https://www.mohw.go.kr/board.es?act=view&amp;bid=0027&amp;list_no=1479278&amp;mid=a10503000000&amp;nPage=112&amp;tag=" target="_blank" rel="noreferrer">복지부 지원방안</a>
+                <span>2024 · 19~34세</span>
+                <a class="youth-metric-source" href="https://mods.go.kr/board.es?act=view&amp;bid=12316&amp;list_no=442459&amp;mid=a90106000000&amp;nPage=1&amp;ref_bid=&amp;tag=" target="_blank" rel="noreferrer">청년 삶의 질 2025</a>
               </div>
             </article>
             
-            <article class="youth-metric-item">
+            <article class="youth-metric-item youth-metric-compact">
               <span class="youth-metric-label">고립·은둔 위기청년</span>
               <strong class="youth-metric-value">최대 54만명</strong>
+              
               <div class="youth-metric-meta">
                 <span>2022 조사 기반 · 19~34세</span>
                 <a class="youth-metric-source" href="https://www.mohw.go.kr/board.es?act=view&amp;bid=0027&amp;list_no=1479278&amp;mid=a10503000000&amp;nPage=112&amp;tag=" target="_blank" rel="noreferrer">복지부·보사연 추정</a>
@@ -5344,6 +5541,61 @@
             </div>
         <p class="youth-metrics-note">지표마다 연령 기준과 기준 시점이 다르므로, 카드 아래 표기를 함께 확인해 주세요.</p>
       </article>
+    </section>
+    
+    
+    <section class="section home-data-board" id="regional-policy-status">
+      <div class="section-head">
+        <div>
+          <h2>지역별 청년 정책 지원 현황</h2>
+          <p>현재 수집 데이터에서 지역이 분리되는 정책·동향만 묶었습니다. 예산과 추진 상태는 공식 구조화 데이터가 생기기 전까지 표시하지 않습니다.</p>
+        </div>
+        <a class="mini-link" href="policies.html#local-policy-updates">지역 정책 더 보기</a>
+      </div>
+      <div class="home-data-board-grid">
+        <div class="home-region-block">
+          <div class="home-region-table-wrap"><table class="home-region-table"><thead><tr><th scope="col">지역</th><th scope="col">항목 수</th><th scope="col">주요 분야</th><th scope="col">최신 업데이트</th><th scope="col">상세</th></tr></thead><tbody><tr><th scope="row">경남</th><td><strong>2건</strong><span>최근 120일</span></td><td><span class="home-region-focus">모집</span></td><td><span>2026-05-03</span><small>경남도, 미래농업 이끌 스마트팜 청년 교육생 모집</small></td><td><a class="home-region-link" href="http://www.gndomin.com/news/articleView.html?idxno=474277" target="_blank" rel="noreferrer">원문</a></td></tr><tr><th scope="row">대구</th><td><strong>1건</strong><span>최근 120일</span></td><td><span class="home-region-focus">공약</span></td><td><span>2026-05-03</span><small>박완수 &#x27;창원대→ 경남과기원 전환&#x27;</small></td><td><a class="home-region-link" href="http://www.gnmaeil.com/news/articleView.html?idxno=585754" target="_blank" rel="noreferrer">원문</a></td></tr><tr><th scope="row">경북</th><td><strong>1건</strong><span>최근 120일</span></td><td><span class="home-region-focus">지원사업</span></td><td><span>2026-05-03</span><small>포항시, AI 스타트업 육성 ‘SW 성장기업 지원’ 착수</small></td><td><a class="home-region-link" href="https://www.dkilbo.com/news/articleView.html?idxno=543302" target="_blank" rel="noreferrer">원문</a></td></tr><tr><th scope="row">강원</th><td><strong>1건</strong><span>최근 120일</span></td><td><span class="home-region-focus">모집</span></td><td><span>2026-05-03</span><small>2026년 청년창업대출 1억원 지원, 지금 신청할까 기다릴까?</small></td><td><a class="home-region-link" href="https://www.cwtr.co.kr/news/articleView.html?idxno=17065" target="_blank" rel="noreferrer">원문</a></td></tr></tbody></table></div>
+        </div>
+        <aside class="home-research-block" id="research-resources" aria-labelledby="research-resources-title">
+          <div class="home-research-head">
+            <span class="home-overview-kicker">공식 자료</span>
+            <h2 id="research-resources-title">주요 연구·통계 자료</h2>
+            <p>썸네일이 없어도 기관, 기준일, 활용 맥락이 보이도록 문서형 목록으로 정리했습니다.</p>
+          </div>
+          <div class="home-report-list">
+            
+            <a class="home-report-row" href="https://www.opm.go.kr/opm/news/press1.do?articleNo=158583&amp;attachNo=146521&amp;mode=download" target="_blank" rel="noreferrer">
+              <span class="home-report-tag">정부 조사</span>
+              <strong>2024년 청년의 삶 실태조사</strong>
+              <span class="home-report-meta">2025-03-11 발표 · 국무조정실</span>
+              <p>노동, 주거, 건강, 관계 등 청년 삶 전반을 확인할 수 있는 대표 조사입니다.</p>
+            </a>
+            
+            <a class="home-report-row" href="https://sgis.kostat.go.kr/view/syrStats/main" target="_blank" rel="noreferrer">
+              <span class="home-report-tag">공식 통계</span>
+              <strong>청년통계지도</strong>
+              <span class="home-report-meta">지역 지표 서비스 · 통계청 SGIS</span>
+              <p>청년 인구, 주거, 취업활동 지표를 지역별로 비교할 때 가장 먼저 열어볼 자료입니다.</p>
+            </a>
+            
+            <a class="home-report-row" href="https://www.nypi.re.kr/" target="_blank" rel="noreferrer">
+              <span class="home-report-tag">정책 연구</span>
+              <strong>한국청소년정책연구원</strong>
+              <span class="home-report-meta">연구보고서·데이터 · NYPI</span>
+              <p>청년·청소년 정책 연구보고서와 데이터아카이브를 함께 확인할 수 있습니다.</p>
+            </a>
+            
+            <a class="home-report-row" href="https://www.nkis.re.kr/" target="_blank" rel="noreferrer">
+              <span class="home-report-tag">국책연구</span>
+              <strong>NKIS 국가정책연구포털</strong>
+              <span class="home-report-meta">국책연구 통합검색 · 국가정책연구포털</span>
+              <p>국책연구기관의 정책·연구자료를 주제별로 확장 검색할 때 유용합니다.</p>
+            </a>
+            
+          </div>
+          <a class="button" href="tools.html#stats-research-links">모든 자료 보기</a>
+        </aside>
+      </div>
     </section>
     
     <section class="section" id="about-info">
@@ -5368,9 +5620,9 @@
             </div>
           </div>
           <div class="home-support-meta">
-            <span>페이지 반영 2026-05-03 10:54</span>
+            <span>페이지 반영 2026-05-03 23:32</span>
             <span>정책 기준 2026-04-29 17:15</span>
-            <span>기사 기준 2026-05-03 10:48</span>
+            <span>기사 기준 2026-05-03 17:01</span>
             <span>매일 09:00, 15:00, 21:00 (Asia/Seoul)</span>
           </div>
           <div class="hero-actions">

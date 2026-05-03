@@ -5192,6 +5192,217 @@
       justify-self: end;
     }
   }
+  body[data-page="index.html"] .youth-metrics-grid {
+    grid-template-columns: minmax(0, 1.35fr) repeat(3, minmax(0, 0.78fr));
+    gap: 22px;
+    align-items: stretch;
+  }
+  body[data-page="index.html"] .youth-metric-item {
+    min-height: 194px;
+    display: grid;
+    align-content: space-between;
+    gap: 14px;
+    padding: 24px;
+  }
+  body[data-page="index.html"] .youth-metric-primary {
+    min-height: 224px;
+    padding: 28px 30px;
+    background: #ffffff;
+  }
+  body[data-page="index.html"] .youth-metric-primary .youth-metric-value {
+    font-size: clamp(2.35rem, 3.4vw, 3.35rem);
+    line-height: 1.04;
+  }
+  body[data-page="index.html"] .youth-metric-compact .youth-metric-value {
+    font-size: clamp(1.7rem, 2vw, 2.08rem);
+  }
+  .youth-metric-scale {
+    width: 100%;
+    height: 6px;
+    border-radius: 999px;
+    background: #ece9e4;
+    overflow: hidden;
+  }
+  .youth-metric-scale span {
+    display: block;
+    width: 74%;
+    height: 100%;
+    border-radius: inherit;
+    background: var(--text);
+  }
+  .home-data-board-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 2fr) minmax(320px, 0.92fr);
+    gap: 30px;
+    align-items: start;
+  }
+  .home-region-block,
+  .home-research-block {
+    min-width: 0;
+  }
+  .home-region-table-wrap {
+    overflow-x: auto;
+    border-top: 1px solid #d2cec6;
+  }
+  .home-region-table {
+    width: 100%;
+    min-width: 680px;
+    border-collapse: collapse;
+    font-size: 0.94rem;
+  }
+  .home-region-table th,
+  .home-region-table td {
+    padding: 18px 14px;
+    border-bottom: 1px solid #ebe8e2;
+    text-align: left;
+    vertical-align: top;
+  }
+  .home-region-table thead th {
+    color: #756f68;
+    font-size: 0.78rem;
+    font-weight: 900;
+    text-transform: uppercase;
+  }
+  .home-region-table tbody th {
+    color: var(--text);
+    font-size: 1rem;
+    font-weight: 900;
+    white-space: nowrap;
+  }
+  .home-region-table td strong,
+  .home-region-table td span,
+  .home-region-table td small {
+    display: block;
+  }
+  .home-region-table td strong {
+    color: var(--text);
+    font-size: 1.02rem;
+  }
+  .home-region-table td span,
+  .home-region-table td small {
+    color: #6f6962;
+    line-height: 1.45;
+  }
+  .home-region-table td small {
+    max-width: 320px;
+    margin-top: 4px;
+    font-size: 0.82rem;
+  }
+  .home-region-focus,
+  .home-report-tag {
+    display: inline-flex;
+    width: fit-content;
+    min-height: 28px;
+    align-items: center;
+    padding: 4px 10px;
+    border-radius: 999px;
+    background: #fff3df;
+    color: #9c5e00;
+    font-size: 0.78rem;
+    font-weight: 900;
+  }
+  .home-region-link {
+    color: #006f63;
+    font-weight: 900;
+  }
+  .home-region-empty {
+    padding: 24px 0;
+    border-top: 1px solid #d2cec6;
+    border-bottom: 1px solid #ebe8e2;
+  }
+  .home-region-empty h3 {
+    margin: 0;
+    color: var(--text);
+    font-size: 1.1rem;
+  }
+  .home-region-empty p {
+    margin: 8px 0 0;
+    color: var(--muted);
+  }
+  .home-research-block {
+    display: grid;
+    gap: 18px;
+  }
+  .home-research-head {
+    display: grid;
+    gap: 8px;
+  }
+  .home-research-head h2 {
+    margin: 0;
+    color: var(--text);
+    font-size: 1.45rem;
+    line-height: 1.22;
+  }
+  .home-research-head p {
+    margin: 0;
+    color: var(--muted);
+  }
+  .home-report-list {
+    display: grid;
+    gap: 12px;
+  }
+  .home-report-row {
+    display: grid;
+    gap: 7px;
+    min-width: 0;
+    padding: 18px;
+    border: 1px solid #d2cec6;
+    border-radius: 8px;
+    background: #ffffff;
+  }
+  .home-report-row:hover {
+    border-color: #bcb6ac;
+    box-shadow: 0 10px 20px rgba(24, 24, 24, 0.05);
+    transform: translateY(-1px);
+  }
+  .home-report-row strong {
+    color: var(--text);
+    font-size: 1rem;
+    line-height: 1.38;
+  }
+  .home-report-meta,
+  .home-report-row p {
+    color: #6f6962;
+    font-size: 0.84rem;
+    line-height: 1.55;
+  }
+  .home-report-row p {
+    margin: 0;
+  }
+  .home-research-block .button {
+    width: 100%;
+    justify-content: center;
+  }
+  @media (max-width: 1180px) {
+    body[data-page="index.html"] .youth-metrics-grid,
+    .home-data-board-grid {
+      grid-template-columns: 1fr;
+    }
+    body[data-page="index.html"] .youth-metric-primary {
+      min-height: 200px;
+    }
+  }
+  @media (max-width: 900px) {
+    body[data-page="index.html"] .youth-metrics-grid {
+      grid-template-columns: 1fr;
+      gap: 14px;
+    }
+    body[data-page="index.html"] .youth-metric-item {
+      min-height: auto;
+      padding: 20px;
+    }
+    .home-data-board-grid {
+      gap: 22px;
+    }
+    .home-region-table {
+      min-width: 620px;
+      font-size: 0.88rem;
+    }
+    .home-region-table th,
+    .home-region-table td {
+      padding: 14px 10px;
+    }
+  }
 </style>
 </head>
 <body data-page="election.html">
@@ -5201,7 +5412,7 @@
     <div class="topbar-side">
       <form class="global-search" action="news.html" method="get" role="search"><span class="global-search-icon" aria-hidden="true">⌕</span><input type="search" name="q" autocomplete="off" placeholder="Search insights..."></form>
       <a class="guide-link" href="guide.html" data-guide-open-link="true" aria-label="이용 안내">이용방법</a>
-      <div class="header-side"><strong>05.03 10:54</strong><span>최근 반영</span></div>
+      <div class="header-side"><strong>05.03 23:32</strong><span>최근 반영</span></div>
       <button class="admin-entry" type="button" data-admin-login-open="true" title="임시 관리자 표시 모드 열기"><span data-admin-entry-label>관리 로그인</span></button>
       <a class="topbar-icon" href="contact.html" aria-label="제보와 문의">○</a>
     </div>
@@ -5264,11 +5475,11 @@
         <div class="filter-stack">
           <div class="filter-group wide">
             <span class="filter-group-label">지역</span>
-            <div class="filter-controls"><button class="filter-button active" type="button" data-news-filter="true" data-filter-group="region" data-filter-value="all" aria-pressed="true">전체</button><button class="filter-button" type="button" data-news-filter="true" data-filter-group="region" data-filter-value="중앙" aria-pressed="false">중앙</button><button class="filter-button" type="button" data-news-filter="true" data-filter-group="region" data-filter-value="강원" aria-pressed="false">강원</button><button class="filter-button" type="button" data-news-filter="true" data-filter-group="region" data-filter-value="서울" aria-pressed="false">서울</button><button class="filter-button" type="button" data-news-filter="true" data-filter-group="region" data-filter-value="인천" aria-pressed="false">인천</button></div>
+            <div class="filter-controls"><button class="filter-button active" type="button" data-news-filter="true" data-filter-group="region" data-filter-value="all" aria-pressed="true">전체</button><button class="filter-button" type="button" data-news-filter="true" data-filter-group="region" data-filter-value="중앙" aria-pressed="false">중앙</button><button class="filter-button" type="button" data-news-filter="true" data-filter-group="region" data-filter-value="경기" aria-pressed="false">경기</button><button class="filter-button" type="button" data-news-filter="true" data-filter-group="region" data-filter-value="경남" aria-pressed="false">경남</button><button class="filter-button" type="button" data-news-filter="true" data-filter-group="region" data-filter-value="대전" aria-pressed="false">대전</button><button class="filter-button" type="button" data-news-filter="true" data-filter-group="region" data-filter-value="서울" aria-pressed="false">서울</button><button class="filter-button" type="button" data-news-filter="true" data-filter-group="region" data-filter-value="인천" aria-pressed="false">인천</button><button class="filter-button" type="button" data-news-filter="true" data-filter-group="region" data-filter-value="제주" aria-pressed="false">제주</button></div>
           </div>
           <div class="filter-group wide">
             <span class="filter-group-label">주제</span>
-            <div class="filter-controls"><button class="filter-button active" type="button" data-news-filter="true" data-filter-group="topic" data-filter-value="all" aria-pressed="true">전체</button><button class="filter-button" type="button" data-news-filter="true" data-filter-group="topic" data-filter-value="주거" aria-pressed="false">#주거</button><button class="filter-button" type="button" data-news-filter="true" data-filter-group="topic" data-filter-value="노동" aria-pressed="false">#노동</button><button class="filter-button" type="button" data-news-filter="true" data-filter-group="topic" data-filter-value="취업" aria-pressed="false">#취업</button><button class="filter-button" type="button" data-news-filter="true" data-filter-group="topic" data-filter-value="복지" aria-pressed="false">#복지</button></div>
+            <div class="filter-controls"><button class="filter-button active" type="button" data-news-filter="true" data-filter-group="topic" data-filter-value="all" aria-pressed="true">전체</button><button class="filter-button" type="button" data-news-filter="true" data-filter-group="topic" data-filter-value="취업" aria-pressed="false">#취업</button><button class="filter-button" type="button" data-news-filter="true" data-filter-group="topic" data-filter-value="주거" aria-pressed="false">#주거</button><button class="filter-button" type="button" data-news-filter="true" data-filter-group="topic" data-filter-value="노동" aria-pressed="false">#노동</button><button class="filter-button" type="button" data-news-filter="true" data-filter-group="topic" data-filter-value="복지" aria-pressed="false">#복지</button><button class="filter-button" type="button" data-news-filter="true" data-filter-group="topic" data-filter-value="창업" aria-pressed="false">#창업</button></div>
           </div>
           <div class="filter-group">
             <span class="filter-group-label">검색</span>
@@ -5293,38 +5504,83 @@
             </div>
           </div>
         </div>
-        <div class="filter-status" data-news-filter-status>전체 7건을 보고 있습니다.</div>
+        <div class="filter-status" data-news-filter-status>전체 11건을 보고 있습니다.</div>
       </article>
     </section>
     
       <section class="section" id="main-list">
         <div class="article-grid">
           
-    <article class="article-card has-media" data-article-card="true" data-article-url="https://www.kyeonggi.com/article/20260503580022" data-article-title="김종천 과천시장 예비후보, ‘노동 존중 과천’ 50대 공약 발표" data-article-date="2026-05-03" data-article-region="서울" data-article-topics="취업|노동" data-article-search="김종천 과천시장 예비후보, ‘노동 존중 과천’ 50대 공약 발표 더불어민주당 김종천 과천시장 예비후보가 노동절을 맞아 “노동의 가치가 빛나는 과천시를 만들겠다”며 노동·일자리 분야 50대 공약을 발표하고 본격적인 정책 행보에 나섰다. 김 예비후보는 “노동이 존중받는 도시는 시민의 삶이 안정되고 지역경제가 살아나는 도시”라며 “과천을 경기일보 네이버뉴스 청년 광역(1주) 경기일보(Kyeonggi Daily News) 주거 고용 취업 노동 서울 인천 세종 경기 중구 도시 반드시 수원시 인천광역시 서울특별시 서울 정책 공약 ...com 기자페이지 아파트 노동자 처우 개선부터 청년·여성·노인 일자리 확대까지 더불어민주당 김종천 과천시장 예비후보가 노동절을 맞아 노동·일자리분야 50대 공약을 발표하고 본격적인 정책 행보에 나...">
-      <a class="article-media" href="https://www.kyeonggi.com/article/20260503580022" target="_blank" rel="noreferrer" aria-label="김종천 과천시장 예비후보, ‘노동 존중 과천’ 50대 공약 발표 이미지와 기사 링크 바로가기"><img class="article-thumbnail" src="https://ypzxxdrj8709.edge.naverncp.com/data2/content/image/2026/05/03/.cache/512/20260503580023.jpg?v=20260503105309" alt="김종천 과천시장 예비후보, ‘노동 존중 과천’ 50대 공약 발표" loading="lazy" decoding="async" referrerpolicy="no-referrer"  onerror="this.parentElement.hidden=true;var c=this.closest('.article-card');if(c){c.classList.remove('has-media');c.classList.add('no-media');}"></a>
-      <div class="article-meta"><div class="article-meta-tags"><span class="meta-pill primary">취업</span><span class="meta-pill subtle">노동</span><span class="meta-pill subtle">서울</span></div><div class="article-byline"><span class="meta-item"><img class="publisher-icon" src="https://ypzxxdrj8709.edge.naverncp.com/data1/resources/pc/common/images/favicon/favicon.png" alt="경기일보 아이콘" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.hidden=true">경기일보</span><span class="meta-divider" aria-hidden="true">•</span><span class="meta-item">2026-05-03 09:51</span></div></div>
-      <h3><a class="article-title-link" href="https://www.kyeonggi.com/article/20260503580022" target="_blank" rel="noreferrer" aria-label="김종천 과천시장 예비후보, ‘노동 존중 과천’ 50대 공약 발표 링크 바로가기">김종천 과천시장 예비후보, ‘노동 존중 과천’ 50대 공약 발표</a></h3>
+    <article class="article-card has-media" data-article-card="true" data-article-url="https://www.gukjenews.com/news/articleView.html?idxno=3572367" data-article-title="정현철 &quot;청년 떠나는 제주 바꾼다&quot;…&#x27;좋은 일자리&#x27; 기준 제시" data-article-date="2026-05-03" data-article-region="제주" data-article-topics="취업|노동" data-article-search="정현철 &quot;청년 떠나는 제주 바꾼다&quot;…&#x27;좋은 일자리&#x27; 기준 제시 (제주=국제뉴스) 문서현 기자 = 정현철 제주시 아라동(을) 도의원 후보가 청년 인구 유출의 원인을 열악한 노동환경으로 진단하고, 국제노동기구(ILO) 기준을 반영한 &#x27;제주형 좋은 일자리&#x27; 도입을 핵심 공약으로 제시했다.제9회 전국동시지방선거 제주시 아라동(을)에 출마한 정현철 더불어민주당 후보가 노동환경 개선을 중심으로 한 청년 정주 정책을 발표했다.정 후보는 &quot;제주는 저임금과 높은 비정규직 비율, 장시간 노동이라는 구조적 문제로 청년들이 지역을 떠나고 있다&quot;며 &quot;단순 취업률이 아니라 일자리의 질을 높이는 정책이 필요하다&quot;고 밝혔 전국 &gt; 제주 국제뉴스 네이버뉴스 청년정책(1주) 문서현 기자 고용 취업 노동 제주 제시 제주시 인구 제주 정책 공약 (제주=국제뉴스) 문서현 기자 = 정현철 제주시 아라동(을) 도의원 후보가 청년 인구 유출의 원인을 열악한 노동환경으로 진단하고, 국제노동기구(ILO) 기준을 반영한 &#x27;제주형 좋은 일자리&#x27; 도입을 핵심...">
+      <a class="article-media" href="https://www.gukjenews.com/news/articleView.html?idxno=3572367" target="_blank" rel="noreferrer" aria-label="정현철 &quot;청년 떠나는 제주 바꾼다&quot;…&#x27;좋은 일자리&#x27; 기준 제시 이미지와 기사 링크 바로가기"><img class="article-thumbnail" src="https://cdn.gukjenews.com/news/thumbnail/202605/3572367_3726226_173_v150.jpg" alt="정현철 &quot;청년 떠나는 제주 바꾼다&quot;…&#x27;좋은 일자리&#x27; 기준 제시" loading="lazy" decoding="async" referrerpolicy="no-referrer"  onerror="this.parentElement.hidden=true;var c=this.closest('.article-card');if(c){c.classList.remove('has-media');c.classList.add('no-media');}"></a>
+      <div class="article-meta"><div class="article-meta-tags"><span class="meta-pill primary">취업</span><span class="meta-pill subtle">노동</span><span class="meta-pill subtle">제주</span></div><div class="article-byline"><span class="meta-item"><img class="publisher-icon" src="https://cdn.gukjenews.com/image/logo/favicon_20200518103900.ico" alt="국제뉴스 아이콘" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.hidden=true">국제뉴스</span><span class="meta-divider" aria-hidden="true">•</span><span class="meta-item">2026-05-03 22:18</span></div></div>
+      <h3><a class="article-title-link" href="https://www.gukjenews.com/news/articleView.html?idxno=3572367" target="_blank" rel="noreferrer" aria-label="정현철 &quot;청년 떠나는 제주 바꾼다&quot;…&#x27;좋은 일자리&#x27; 기준 제시 링크 바로가기">정현철 &quot;청년 떠나는 제주 바꾼다&quot;…&#x27;좋은 일자리&#x27; 기준 제시</a></h3>
       <div class="badge-row"><span class="badge">취업</span><span class="badge">노동</span><span class="badge">정책 공약</span></div>
-      <p class="article-summary"><a class="article-summary-link" href="https://www.kyeonggi.com/article/20260503580022" target="_blank" rel="noreferrer" aria-label="김종천 과천시장 예비후보, ‘노동 존중 과천’ 50대 공약 발표 링크 바로가기">...com 기자페이지 아파트 노동자 처우 개선부터 청년·여성·노인 일자리 확대까지 더불어민주당 김종천 과천시장 예비후보가 노동절을 맞아 노동·일자리분야 50대 공약을 발표하고 본격적인 정책 행보에 나...</a></p>
-      <div class="article-actions"><a class="mini-link article-link-action" href="https://www.kyeonggi.com/article/20260503580022" target="_blank" rel="noreferrer" aria-label="김종천 과천시장 예비후보, ‘노동 존중 과천’ 50대 공약 발표 링크 바로가기">링크 바로가기</a><button class="action-button" type="button" data-article-action="share" data-article-url="https://www.kyeonggi.com/article/20260503580022" data-share-title="김종천 과천시장 예비후보, ‘노동 존중 과천’ 50대 공약 발표" aria-label="김종천 과천시장 예비후보, ‘노동 존중 과천’ 50대 공약 발표 공유하기">공유하기</button><button class="action-button" type="button" data-article-action="copy" data-article-url="https://www.kyeonggi.com/article/20260503580022" data-share-title="김종천 과천시장 예비후보, ‘노동 존중 과천’ 50대 공약 발표" aria-label="김종천 과천시장 예비후보, ‘노동 존중 과천’ 50대 공약 발표 링크 복사">링크 복사</button></div><div class="article-feedback" data-article-feedback aria-live="polite"></div>
+      <p class="article-summary"><a class="article-summary-link" href="https://www.gukjenews.com/news/articleView.html?idxno=3572367" target="_blank" rel="noreferrer" aria-label="정현철 &quot;청년 떠나는 제주 바꾼다&quot;…&#x27;좋은 일자리&#x27; 기준 제시 링크 바로가기">(제주=국제뉴스) 문서현 기자 = 정현철 제주시 아라동(을) 도의원 후보가 청년 인구 유출의 원인을 열악한 노동환경으로 진단하고, 국제노동기구(ILO) 기준을 반영한 &#x27;제주형 좋은 일자리&#x27; 도입을 핵심...</a></p>
+      <div class="article-actions"><a class="mini-link article-link-action" href="https://www.gukjenews.com/news/articleView.html?idxno=3572367" target="_blank" rel="noreferrer" aria-label="정현철 &quot;청년 떠나는 제주 바꾼다&quot;…&#x27;좋은 일자리&#x27; 기준 제시 링크 바로가기">링크 바로가기</a><button class="action-button" type="button" data-article-action="share" data-article-url="https://www.gukjenews.com/news/articleView.html?idxno=3572367" data-share-title="정현철 &quot;청년 떠나는 제주 바꾼다&quot;…&#x27;좋은 일자리&#x27; 기준 제시" aria-label="정현철 &quot;청년 떠나는 제주 바꾼다&quot;…&#x27;좋은 일자리&#x27; 기준 제시 공유하기">공유하기</button><button class="action-button" type="button" data-article-action="copy" data-article-url="https://www.gukjenews.com/news/articleView.html?idxno=3572367" data-share-title="정현철 &quot;청년 떠나는 제주 바꾼다&quot;…&#x27;좋은 일자리&#x27; 기준 제시" aria-label="정현철 &quot;청년 떠나는 제주 바꾼다&quot;…&#x27;좋은 일자리&#x27; 기준 제시 링크 복사">링크 복사</button></div><div class="article-feedback" data-article-feedback aria-live="polite"></div>
     </article>
     
-    <article class="article-card has-media" data-article-card="true" data-article-url="https://www.gukjenews.com/news/articleView.html?idxno=3572044" data-article-title="더불어민주당, 강동구청장 후보 경선 주목" data-article-date="2026-05-03" data-article-region="서울" data-article-topics="취업|주거" data-article-search="더불어민주당, 강동구청장 후보 경선 주목 (서울=국제뉴스) 김서중 기자 = 6월 지방선거를 앞두고 더불어민주당 강동구청장 후보 경선이 김종무·강경량 두 후보의 정면 대결로 압축되면서 강동구 정치권의 이목이 집중되고 있다. 강동구는 민주당이 수차례 구청장직을 수성해 온 핵심 지지 기반인 만큼 이번 경선이 사실상 본선을 결정짓는 관문으로 여겨지고 있다.김종무 후보는 지역 밀착형 활동을 통해 쌓아온 풀뿌리 지지 기반을 강점으로 내세우고 있다. 강동구 현안에 대한 깊은 이해와 구민과의 오랜 신뢰 관계를 바탕으로 안정적이고 실질적인 구정 운영이 가능하다는 점을 부각시키는 전략을 펼 전국 &gt; 서울 &gt; 정치 국제뉴스 네이버뉴스 청년 광역(1주) 김서중 기자 주거 고용 취업 주거 서울 강동 강동구 지구 서울 정책 공약 ...도시재생, 청년 일자리, 강동구의 미래 성장 동력 발굴 등을 핵심 어젠다로 제시하며 젊은 유권자층과 변화를 원하는 구민들의 지지를 이끌어내는 데 집중하고 있다...">
-      <a class="article-media" href="https://www.gukjenews.com/news/articleView.html?idxno=3572044" target="_blank" rel="noreferrer" aria-label="더불어민주당, 강동구청장 후보 경선 주목 이미지와 기사 링크 바로가기"><img class="article-thumbnail" src="https://cdn.gukjenews.com/news/thumbnail/202605/3572044_3725790_3539_v150.jpg" alt="더불어민주당, 강동구청장 후보 경선 주목" loading="lazy" decoding="async" referrerpolicy="no-referrer"  onerror="this.parentElement.hidden=true;var c=this.closest('.article-card');if(c){c.classList.remove('has-media');c.classList.add('no-media');}"></a>
-      <div class="article-meta"><div class="article-meta-tags"><span class="meta-pill primary">취업</span><span class="meta-pill subtle">주거</span><span class="meta-pill subtle">서울</span></div><div class="article-byline"><span class="meta-item"><img class="publisher-icon" src="https://cdn.gukjenews.com/image/logo/favicon_20200518103900.ico" alt="국제뉴스 아이콘" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.hidden=true">국제뉴스</span><span class="meta-divider" aria-hidden="true">•</span><span class="meta-item">2026-05-03 09:20</span></div></div>
-      <h3><a class="article-title-link" href="https://www.gukjenews.com/news/articleView.html?idxno=3572044" target="_blank" rel="noreferrer" aria-label="더불어민주당, 강동구청장 후보 경선 주목 링크 바로가기">더불어민주당, 강동구청장 후보 경선 주목</a></h3>
+    <article class="article-card has-media" data-article-card="true" data-article-url="https://www.gukjenews.com/news/articleView.html?idxno=3572347" data-article-title="&quot;정치는 더 젊게&quot;…강순아,일도이동 출사표" data-article-date="2026-05-03" data-article-region="제주" data-article-topics="취업|주거" data-article-search="&quot;정치는 더 젊게&quot;…강순아,일도이동 출사표 (제주=국제뉴스) 문서현 기자 = 정의당 강순아 제주도의원 일도이동 후보가 개소식 겸 정책 기자회견을 열고 &quot;무너진 민주주의를 바로 세우고 주민이 주인인 마을을 만들겠다&quot;며 본격적인 선거전에 돌입했다.정의당 강순아 제주도의원 일도이동 후보가 지난 2일 선거사무소에서 개소식과 함께 정책 기자회견을 열고 민주주의 회복과 생활밀착형 지역정치 실현을 핵심 기조로 제시했다.이날 강 후보는 &quot;정치가 제대로 작동하려면 민초들의 삶이 나아져야 한다&quot;며 &quot;이번 선거는 무너진 민주주의를 바로 세우는 선거&quot;라고 강조했다.특히 최근 정치 상황과 관련해 전국 &gt; 제주 국제뉴스 네이버뉴스 청년정책(1주) 문서현 기자 고용 취업 주거 제주 제주 정책 공약 ...[사진=강순아 후보 선거사무소] 주요 공약으로는 △주민 참여형 &#x27;고마로 정치광장&#x27; 운영 △공정임대료위원회 도입을 통한 골목상권 안정 △통합돌봄지원센터 구축 △청년창업 지원 및 일자리 연계 △생태공...">
+      <a class="article-media" href="https://www.gukjenews.com/news/articleView.html?idxno=3572347" target="_blank" rel="noreferrer" aria-label="&quot;정치는 더 젊게&quot;…강순아,일도이동 출사표 이미지와 기사 링크 바로가기"><img class="article-thumbnail" src="https://cdn.gukjenews.com/news/thumbnail/202605/3572347_3726199_143_v150.jpg" alt="&quot;정치는 더 젊게&quot;…강순아,일도이동 출사표" loading="lazy" decoding="async" referrerpolicy="no-referrer"  onerror="this.parentElement.hidden=true;var c=this.closest('.article-card');if(c){c.classList.remove('has-media');c.classList.add('no-media');}"></a>
+      <div class="article-meta"><div class="article-meta-tags"><span class="meta-pill primary">취업</span><span class="meta-pill subtle">주거</span><span class="meta-pill subtle">제주</span></div><div class="article-byline"><span class="meta-item"><img class="publisher-icon" src="https://cdn.gukjenews.com/image/logo/favicon_20200518103900.ico" alt="국제뉴스 아이콘" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.hidden=true">국제뉴스</span><span class="meta-divider" aria-hidden="true">•</span><span class="meta-item">2026-05-03 21:11</span></div></div>
+      <h3><a class="article-title-link" href="https://www.gukjenews.com/news/articleView.html?idxno=3572347" target="_blank" rel="noreferrer" aria-label="&quot;정치는 더 젊게&quot;…강순아,일도이동 출사표 링크 바로가기">&quot;정치는 더 젊게&quot;…강순아,일도이동 출사표</a></h3>
       <div class="badge-row"><span class="badge">취업</span><span class="badge">주거</span><span class="badge">정책 공약</span></div>
-      <p class="article-summary"><a class="article-summary-link" href="https://www.gukjenews.com/news/articleView.html?idxno=3572044" target="_blank" rel="noreferrer" aria-label="더불어민주당, 강동구청장 후보 경선 주목 링크 바로가기">...도시재생, 청년 일자리, 강동구의 미래 성장 동력 발굴 등을 핵심 어젠다로 제시하며 젊은 유권자층과 변화를 원하는 구민들의 지지를 이끌어내는 데 집중하고 있다...</a></p>
-      <div class="article-actions"><a class="mini-link article-link-action" href="https://www.gukjenews.com/news/articleView.html?idxno=3572044" target="_blank" rel="noreferrer" aria-label="더불어민주당, 강동구청장 후보 경선 주목 링크 바로가기">링크 바로가기</a><button class="action-button" type="button" data-article-action="share" data-article-url="https://www.gukjenews.com/news/articleView.html?idxno=3572044" data-share-title="더불어민주당, 강동구청장 후보 경선 주목" aria-label="더불어민주당, 강동구청장 후보 경선 주목 공유하기">공유하기</button><button class="action-button" type="button" data-article-action="copy" data-article-url="https://www.gukjenews.com/news/articleView.html?idxno=3572044" data-share-title="더불어민주당, 강동구청장 후보 경선 주목" aria-label="더불어민주당, 강동구청장 후보 경선 주목 링크 복사">링크 복사</button></div><div class="article-feedback" data-article-feedback aria-live="polite"></div>
+      <p class="article-summary"><a class="article-summary-link" href="https://www.gukjenews.com/news/articleView.html?idxno=3572347" target="_blank" rel="noreferrer" aria-label="&quot;정치는 더 젊게&quot;…강순아,일도이동 출사표 링크 바로가기">...[사진=강순아 후보 선거사무소] 주요 공약으로는 △주민 참여형 &#x27;고마로 정치광장&#x27; 운영 △공정임대료위원회 도입을 통한 골목상권 안정 △통합돌봄지원센터 구축 △청년창업 지원 및 일자리 연계 △생태공...</a></p>
+      <div class="article-actions"><a class="mini-link article-link-action" href="https://www.gukjenews.com/news/articleView.html?idxno=3572347" target="_blank" rel="noreferrer" aria-label="&quot;정치는 더 젊게&quot;…강순아,일도이동 출사표 링크 바로가기">링크 바로가기</a><button class="action-button" type="button" data-article-action="share" data-article-url="https://www.gukjenews.com/news/articleView.html?idxno=3572347" data-share-title="&quot;정치는 더 젊게&quot;…강순아,일도이동 출사표" aria-label="&quot;정치는 더 젊게&quot;…강순아,일도이동 출사표 공유하기">공유하기</button><button class="action-button" type="button" data-article-action="copy" data-article-url="https://www.gukjenews.com/news/articleView.html?idxno=3572347" data-share-title="&quot;정치는 더 젊게&quot;…강순아,일도이동 출사표" aria-label="&quot;정치는 더 젊게&quot;…강순아,일도이동 출사표 링크 복사">링크 복사</button></div><div class="article-feedback" data-article-feedback aria-live="polite"></div>
     </article>
     
-    <article class="article-card has-media" data-article-card="true" data-article-url="https://www.shinailbo.co.kr/news/articleView.html?idxno=5016989" data-article-title="한금석 철원군수 후보 &quot;군민 삶 바꾸는 철원 만들겠다&quot; 본격 선거행보" data-article-date="2026-05-03" data-article-region="강원" data-article-topics="" data-article-search="한금석 철원군수 후보 &quot;군민 삶 바꾸는 철원 만들겠다&quot; 본격 선거행보 더불어민주당 공천을 받은 한금석 강원 철원군수 후보가 선거사무소 개소식을 열고 본격적인 선거전에 돌입했다.한 후보는 지난 1일 갈말읍 군탄리 선거사무소에서 민주당 로컬+ &gt; 강원 &gt; 2026 지선 지역 풍향 신아일보 네이버뉴스 청년정책(1주) 최문한 기자 강원 철원평화경제특구 강원 정책 공약 ...그는 ‘내일이 기다려지는 철원’을 슬로건으로 내걸고 △아이 키우기 걱정 없는 지역 △청년이 머무는 지역 △농민이 정당한 보상을 받는 지역 △어르신이 안심하는 지역 △소상공인이 활력을 찾는 지역 등...">
-      <a class="article-media" href="https://www.shinailbo.co.kr/news/articleView.html?idxno=5016989" target="_blank" rel="noreferrer" aria-label="한금석 철원군수 후보 &quot;군민 삶 바꾸는 철원 만들겠다&quot; 본격 선거행보 이미지와 기사 링크 바로가기"><img class="article-thumbnail" src="https://cdn.shinailbo.co.kr/news/photo/202605/5016989_2015732_267.jpg" alt="한금석 철원군수 후보 &quot;군민 삶 바꾸는 철원 만들겠다&quot; 본격 선거행보 - 신아일보" loading="lazy" decoding="async" referrerpolicy="no-referrer"  onerror="this.parentElement.hidden=true;var c=this.closest('.article-card');if(c){c.classList.remove('has-media');c.classList.add('no-media');}"></a>
-      <div class="article-meta"><div class="article-meta-tags"><span class="meta-pill primary">지역 움직임</span><span class="meta-pill subtle">강원</span></div><div class="article-byline"><span class="meta-item"><img class="publisher-icon" src="https://cdn.shinailbo.co.kr/favicon.ico" alt="신아일보 아이콘" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.hidden=true">신아일보</span><span class="meta-divider" aria-hidden="true">•</span><span class="meta-item">2026-05-03 08:27</span></div></div>
-      <h3><a class="article-title-link" href="https://www.shinailbo.co.kr/news/articleView.html?idxno=5016989" target="_blank" rel="noreferrer" aria-label="한금석 철원군수 후보 &quot;군민 삶 바꾸는 철원 만들겠다&quot; 본격 선거행보 링크 바로가기">한금석 철원군수 후보 &quot;군민 삶 바꾸는 철원 만들겠다&quot; 본격 선거행보</a></h3>
-      <div class="badge-row"><span class="badge">정책 공약</span></div>
-      <p class="article-summary"><a class="article-summary-link" href="https://www.shinailbo.co.kr/news/articleView.html?idxno=5016989" target="_blank" rel="noreferrer" aria-label="한금석 철원군수 후보 &quot;군민 삶 바꾸는 철원 만들겠다&quot; 본격 선거행보 링크 바로가기">...그는 ‘내일이 기다려지는 철원’을 슬로건으로 내걸고 △아이 키우기 걱정 없는 지역 △청년이 머무는 지역 △농민이 정당한 보상을 받는 지역 △어르신이 안심하는 지역 △소상공인이 활력을 찾는 지역 등...</a></p>
-      <div class="article-actions"><a class="mini-link article-link-action" href="https://www.shinailbo.co.kr/news/articleView.html?idxno=5016989" target="_blank" rel="noreferrer" aria-label="한금석 철원군수 후보 &quot;군민 삶 바꾸는 철원 만들겠다&quot; 본격 선거행보 링크 바로가기">링크 바로가기</a><button class="action-button" type="button" data-article-action="share" data-article-url="https://www.shinailbo.co.kr/news/articleView.html?idxno=5016989" data-share-title="한금석 철원군수 후보 &quot;군민 삶 바꾸는 철원 만들겠다&quot; 본격 선거행보" aria-label="한금석 철원군수 후보 &quot;군민 삶 바꾸는 철원 만들겠다&quot; 본격 선거행보 공유하기">공유하기</button><button class="action-button" type="button" data-article-action="copy" data-article-url="https://www.shinailbo.co.kr/news/articleView.html?idxno=5016989" data-share-title="한금석 철원군수 후보 &quot;군민 삶 바꾸는 철원 만들겠다&quot; 본격 선거행보" aria-label="한금석 철원군수 후보 &quot;군민 삶 바꾸는 철원 만들겠다&quot; 본격 선거행보 링크 복사">링크 복사</button></div><div class="article-feedback" data-article-feedback aria-live="polite"></div>
+    <article class="article-card has-media" data-article-card="true" data-article-url="https://www.jemin.com/news/articleView.html?idxno=837000" data-article-title="문성유 “일자리 숫자보다 월급과 안정 먼저”" data-article-date="2026-05-03" data-article-region="경기" data-article-topics="노동|취업" data-article-search="문성유 “일자리 숫자보다 월급과 안정 먼저” 문성유 제주도지사 후보는 25일 “높은 고용률 뒤에 숨겨진 낮은 임금과 불안정 노동 구조를 반드시 바꾸겠다”며 ‘제주형 고용안정 패키지 및 일자리 질 개선’ 공약을 발표했다.문 후보는 “제주는 고용률은 높지만 임금 수준은 전국 최저권이고, 비정규직 비율도 매우 높아 도민들이 체감하는 삶은 팍팍하다”며 “이제는 일자리 숫자를 늘리는 정책에서 벗어나, 제대로 벌고 안정적으로 일할 수 있는 질적 성장으로 전환해야 한다”고 밝혔다.이어 “제주 청년들이 낮은 월급 때문에 고향을 떠나고, 중장년층은 불안정 고용에 미래를 걱정하는 현실을 더 이 정치 &gt; 2026 지방선거 제민일보 네이버뉴스 청년정책(1주) 김두영 기자 노동권 고용 노동 취업 경기 제주 반드시 경기 정책 공약 ...이어 “제주 청년들이 낮은 월급 때문에 고향을 떠나고, 중장년층은 불안정 고용에 미래를 걱정하는 현실을 더 이">
+      <a class="article-media" href="https://www.jemin.com/news/articleView.html?idxno=837000" target="_blank" rel="noreferrer" aria-label="문성유 “일자리 숫자보다 월급과 안정 먼저” 이미지와 기사 링크 바로가기"><img class="article-thumbnail" src="https://cdn.jemin.com/news/thumbnail/202605/837000_424359_612_v150.jpg" alt="문성유 “일자리 숫자보다 월급과 안정 먼저”" loading="lazy" decoding="async" referrerpolicy="no-referrer"  onerror="this.parentElement.hidden=true;var c=this.closest('.article-card');if(c){c.classList.remove('has-media');c.classList.add('no-media');}"></a>
+      <div class="article-meta"><div class="article-meta-tags"><span class="meta-pill primary">노동</span><span class="meta-pill subtle">취업</span><span class="meta-pill subtle">경기</span></div><div class="article-byline"><span class="meta-item"><img class="publisher-icon" src="https://cdn.jemin.com/image/logo/favicon.ico" alt="제민일보 아이콘" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.hidden=true">제민일보</span><span class="meta-divider" aria-hidden="true">•</span><span class="meta-item">2026-05-03 20:06</span></div></div>
+      <h3><a class="article-title-link" href="https://www.jemin.com/news/articleView.html?idxno=837000" target="_blank" rel="noreferrer" aria-label="문성유 “일자리 숫자보다 월급과 안정 먼저” 링크 바로가기">문성유 “일자리 숫자보다 월급과 안정 먼저”</a></h3>
+      <div class="badge-row"><span class="badge">노동</span><span class="badge">취업</span><span class="badge">정책 공약</span></div>
+      <p class="article-summary"><a class="article-summary-link" href="https://www.jemin.com/news/articleView.html?idxno=837000" target="_blank" rel="noreferrer" aria-label="문성유 “일자리 숫자보다 월급과 안정 먼저” 링크 바로가기">...이어 “제주 청년들이 낮은 월급 때문에 고향을 떠나고, 중장년층은 불안정 고용에 미래를 걱정하는 현실을 더 이</a></p>
+      <div class="article-actions"><a class="mini-link article-link-action" href="https://www.jemin.com/news/articleView.html?idxno=837000" target="_blank" rel="noreferrer" aria-label="문성유 “일자리 숫자보다 월급과 안정 먼저” 링크 바로가기">링크 바로가기</a><button class="action-button" type="button" data-article-action="share" data-article-url="https://www.jemin.com/news/articleView.html?idxno=837000" data-share-title="문성유 “일자리 숫자보다 월급과 안정 먼저”" aria-label="문성유 “일자리 숫자보다 월급과 안정 먼저” 공유하기">공유하기</button><button class="action-button" type="button" data-article-action="copy" data-article-url="https://www.jemin.com/news/articleView.html?idxno=837000" data-share-title="문성유 “일자리 숫자보다 월급과 안정 먼저”" aria-label="문성유 “일자리 숫자보다 월급과 안정 먼저” 링크 복사">링크 복사</button></div><div class="article-feedback" data-article-feedback aria-live="polite"></div>
+    </article>
+    
+    <article class="article-card has-media" data-article-card="true" data-article-url="https://www.dkilbo.com/news/articleView.html?idxno=543369" data-article-title="“봉화, 개혁 수준 변화 필요” 최기영 후보, 선거전 본격화" data-article-date="2026-05-03" data-article-region="중앙" data-article-topics="복지|취업" data-article-search="“봉화, 개혁 수준 변화 필요” 최기영 후보, 선거전 본격화 봉화군수 선거에 출마한 최기영 예비후보가 2일 선거사무소 개소식을 열고 본격적인 선거전에 돌입했다. 최 후보는 개소식에 앞서 진행된 인터뷰에서 “지금 봉화는 단순한 개선으로는 부족하다”며 “개혁 수준의 변화로 지역의 미래를 책임지겠다”고 밝혔다. 현 군정에 대해서는 “박현국 군수의 그간 성과에 감사드린다”며 “좋은 정책은 계승하고 행정의 연속성은 지역뉴스 &gt; 봉화 대경일보 네이버뉴스 청년 광역(1주) 안효창 기자 주거 고용 복지 취업 인구 중앙 정책 공약 ...인구 정책과 관련해서는 “일자리·주거·교육 부족이 인구 유출의 근본 원인”이라며 “청년 주거·일자리 패키지와 귀농귀촌 전담부서를 통해 유입부터 정착까지 책임지는 시스템을 구축하겠다”고 말했다...">
+      <a class="article-media" href="https://www.dkilbo.com/news/articleView.html?idxno=543369" target="_blank" rel="noreferrer" aria-label="“봉화, 개혁 수준 변화 필요” 최기영 후보, 선거전 본격화 이미지와 기사 링크 바로가기"><img class="article-thumbnail" src="https://cdn.dkilbo.com/news/thumbnail/202605/543369_427943_3159_v150.jpg" alt="“봉화, 개혁 수준 변화 필요” 최기영 후보, 선거전 본격화" loading="lazy" decoding="async" referrerpolicy="no-referrer"  onerror="this.parentElement.hidden=true;var c=this.closest('.article-card');if(c){c.classList.remove('has-media');c.classList.add('no-media');}"></a>
+      <div class="article-meta"><div class="article-meta-tags"><span class="meta-pill primary">복지</span><span class="meta-pill subtle">취업</span><span class="meta-pill subtle">중앙</span></div><div class="article-byline"><span class="meta-item"><img class="publisher-icon" src="https://cdn.dkilbo.com/image/logo/favicon.ico" alt="대경일보 아이콘" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.hidden=true">대경일보</span><span class="meta-divider" aria-hidden="true">•</span><span class="meta-item">2026-05-03 19:13</span></div></div>
+      <h3><a class="article-title-link" href="https://www.dkilbo.com/news/articleView.html?idxno=543369" target="_blank" rel="noreferrer" aria-label="“봉화, 개혁 수준 변화 필요” 최기영 후보, 선거전 본격화 링크 바로가기">“봉화, 개혁 수준 변화 필요” 최기영 후보, 선거전 본격화</a></h3>
+      <div class="badge-row"><span class="badge">복지</span><span class="badge">취업</span><span class="badge">정책 공약</span></div>
+      <p class="article-summary"><a class="article-summary-link" href="https://www.dkilbo.com/news/articleView.html?idxno=543369" target="_blank" rel="noreferrer" aria-label="“봉화, 개혁 수준 변화 필요” 최기영 후보, 선거전 본격화 링크 바로가기">...인구 정책과 관련해서는 “일자리·주거·교육 부족이 인구 유출의 근본 원인”이라며 “청년 주거·일자리 패키지와 귀농귀촌 전담부서를 통해 유입부터 정착까지 책임지는 시스템을 구축하겠다”고 말했다...</a></p>
+      <div class="article-actions"><a class="mini-link article-link-action" href="https://www.dkilbo.com/news/articleView.html?idxno=543369" target="_blank" rel="noreferrer" aria-label="“봉화, 개혁 수준 변화 필요” 최기영 후보, 선거전 본격화 링크 바로가기">링크 바로가기</a><button class="action-button" type="button" data-article-action="share" data-article-url="https://www.dkilbo.com/news/articleView.html?idxno=543369" data-share-title="“봉화, 개혁 수준 변화 필요” 최기영 후보, 선거전 본격화" aria-label="“봉화, 개혁 수준 변화 필요” 최기영 후보, 선거전 본격화 공유하기">공유하기</button><button class="action-button" type="button" data-article-action="copy" data-article-url="https://www.dkilbo.com/news/articleView.html?idxno=543369" data-share-title="“봉화, 개혁 수준 변화 필요” 최기영 후보, 선거전 본격화" aria-label="“봉화, 개혁 수준 변화 필요” 최기영 후보, 선거전 본격화 링크 복사">링크 복사</button></div><div class="article-feedback" data-article-feedback aria-live="polite"></div>
+    </article>
+    
+    <article class="article-card has-media" data-article-card="true" data-article-url="https://www.dkilbo.com/news/articleView.html?idxno=543375" data-article-title="김하수 청도군수 예비후보, 농업부문 공약 제시" data-article-date="2026-05-03" data-article-region="대전" data-article-topics="창업|취업" data-article-search="김하수 청도군수 예비후보, 농업부문 공약 제시 김하수 청도군수 예비후보는 “농업대전환 사업의 중단없는 군정으로 농업생산성 두 배·농가소득 두 배의 결실을 얻는 시기로 만들겠다”며 농업부문 공약을 제시했다. 김 예비후보는 스마트 농업과 수익구조 전환을 목표로 한 ‘혁신농업타운 조성’을 가장 핵심사업으로 밝혔다. 혁신농업타운 조성 사업은 각북면 80㏊, 풍각면 30㏊ 규모의 농지를 규모화·기계화 지역뉴스 &gt; 청도 대경일보 네이버뉴스 청년 고용·쉬었음(1주) 노진규 기자 고용 창업 취업 대전 제시 대전 정책 공약 ...특히 임대형 스마트팜은 청년농업인의 진입장벽을 낮춰 청년유입을 확대하고, 농업인구의 세대전환을 촉진할 것으로 기대하고 있다고 했다. 또한 농기자재 스마트공장, AI기반 농업데이터 기업 등을 유치해...">
+      <a class="article-media" href="https://www.dkilbo.com/news/articleView.html?idxno=543375" target="_blank" rel="noreferrer" aria-label="김하수 청도군수 예비후보, 농업부문 공약 제시 이미지와 기사 링크 바로가기"><img class="article-thumbnail" src="https://cdn.dkilbo.com/news/thumbnail/202605/543375_427949_3202_v150.jpg" alt="김하수 청도군수 예비후보, 농업부문 공약 제시" loading="lazy" decoding="async" referrerpolicy="no-referrer"  onerror="this.parentElement.hidden=true;var c=this.closest('.article-card');if(c){c.classList.remove('has-media');c.classList.add('no-media');}"></a>
+      <div class="article-meta"><div class="article-meta-tags"><span class="meta-pill primary">창업</span><span class="meta-pill subtle">취업</span><span class="meta-pill subtle">대전</span></div><div class="article-byline"><span class="meta-item"><img class="publisher-icon" src="https://cdn.dkilbo.com/image/logo/favicon.ico" alt="대경일보 아이콘" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.hidden=true">대경일보</span><span class="meta-divider" aria-hidden="true">•</span><span class="meta-item">2026-05-03 18:51</span></div></div>
+      <h3><a class="article-title-link" href="https://www.dkilbo.com/news/articleView.html?idxno=543375" target="_blank" rel="noreferrer" aria-label="김하수 청도군수 예비후보, 농업부문 공약 제시 링크 바로가기">김하수 청도군수 예비후보, 농업부문 공약 제시</a></h3>
+      <div class="badge-row"><span class="badge">창업</span><span class="badge">취업</span><span class="badge">정책 공약</span></div>
+      <p class="article-summary"><a class="article-summary-link" href="https://www.dkilbo.com/news/articleView.html?idxno=543375" target="_blank" rel="noreferrer" aria-label="김하수 청도군수 예비후보, 농업부문 공약 제시 링크 바로가기">...특히 임대형 스마트팜은 청년농업인의 진입장벽을 낮춰 청년유입을 확대하고, 농업인구의 세대전환을 촉진할 것으로 기대하고 있다고 했다. 또한 농기자재 스마트공장, AI기반 농업데이터 기업 등을 유치해...</a></p>
+      <div class="article-actions"><a class="mini-link article-link-action" href="https://www.dkilbo.com/news/articleView.html?idxno=543375" target="_blank" rel="noreferrer" aria-label="김하수 청도군수 예비후보, 농업부문 공약 제시 링크 바로가기">링크 바로가기</a><button class="action-button" type="button" data-article-action="share" data-article-url="https://www.dkilbo.com/news/articleView.html?idxno=543375" data-share-title="김하수 청도군수 예비후보, 농업부문 공약 제시" aria-label="김하수 청도군수 예비후보, 농업부문 공약 제시 공유하기">공유하기</button><button class="action-button" type="button" data-article-action="copy" data-article-url="https://www.dkilbo.com/news/articleView.html?idxno=543375" data-share-title="김하수 청도군수 예비후보, 농업부문 공약 제시" aria-label="김하수 청도군수 예비후보, 농업부문 공약 제시 링크 복사">링크 복사</button></div><div class="article-feedback" data-article-feedback aria-live="polite"></div>
+    </article>
+    
+    <article class="article-card has-media" data-article-card="true" data-article-url="http://www.dynews.co.kr/news/articleView.html?idxno=848904" data-article-title="김기재 당진시장 후보, &#x27;산업·일자리 혁신 프로젝트&#x27; 발표" data-article-date="2026-05-03" data-article-region="대전" data-article-topics="취업|노동" data-article-search="김기재 당진시장 후보, &#x27;산업·일자리 혁신 프로젝트&#x27; 발표 김기재(52·더불어민주당) 후보는 2일 자신의 선거캠프에서 ‘당진시 대전환 11대 프로젝트’중 산업·일자리 공약을 발표했다.김 후보는 이번 공약을 통해 당진을 ‘기업-산업-인재-일자리’가 선순환하는 산업생태계를 구축하겠다고 밝혔다.5대 핵심 과제로 △당진형 AI·데이터 기반 제조혁신 허브 구축 △수소·그린스틸 산업클러스터 조성 △충남경제자유구역 송산지구 지정 관철 △기업유치–지역기업–지역인재 상생 협력체계 구축 △석탄화력발전소 폐지 대응과 정의로운 전환 가속화를 제시했다.첫 번째 과제는 ‘당진형 AI·데이터 기반 제조혁신 허브 구축 정치 &gt; 선거 &gt; 대전·충남 동양일보 네이버뉴스 청년 노동·권리(1주) 오동연 기자 고용 취업 노동 대전 충남 송산지구 전환특구 대전 정책 공약 ...기업 유치와 지역기업·지역인재가 함께 성장하는 구조를 통해 ‘기업이 오고, 청년이 머무는 당진’을 실현하겠다는 구상이다. 마지막은 ‘석탄화력발전소 폐지 대응과 정의로운 전환 가속화’다. 당진은 2...">
+      <a class="article-media" href="http://www.dynews.co.kr/news/articleView.html?idxno=848904" target="_blank" rel="noreferrer" aria-label="김기재 당진시장 후보, &#x27;산업·일자리 혁신 프로젝트&#x27; 발표 이미지와 기사 링크 바로가기"><img class="article-thumbnail" src="https://cdn.dynews.co.kr/news/thumbnail/202605/848904_385813_1517_v150.jpg" alt="김기재 당진시장 후보, &#x27;산업·일자리 혁신 프로젝트&#x27; 발표" loading="lazy" decoding="async" referrerpolicy="no-referrer"  onerror="this.parentElement.hidden=true;var c=this.closest('.article-card');if(c){c.classList.remove('has-media');c.classList.add('no-media');}"></a>
+      <div class="article-meta"><div class="article-meta-tags"><span class="meta-pill primary">취업</span><span class="meta-pill subtle">노동</span><span class="meta-pill subtle">대전</span></div><div class="article-byline"><span class="meta-item"><img class="publisher-icon" src="https://cdn.dynews.co.kr/image/logo/favicon.ico" alt="동양일보 아이콘" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.hidden=true">동양일보</span><span class="meta-divider" aria-hidden="true">•</span><span class="meta-item">2026-05-03 18:15</span></div></div>
+      <h3><a class="article-title-link" href="http://www.dynews.co.kr/news/articleView.html?idxno=848904" target="_blank" rel="noreferrer" aria-label="김기재 당진시장 후보, &#x27;산업·일자리 혁신 프로젝트&#x27; 발표 링크 바로가기">김기재 당진시장 후보, &#x27;산업·일자리 혁신 프로젝트&#x27; 발표</a></h3>
+      <div class="badge-row"><span class="badge">취업</span><span class="badge">노동</span><span class="badge">정책 공약</span></div>
+      <p class="article-summary"><a class="article-summary-link" href="http://www.dynews.co.kr/news/articleView.html?idxno=848904" target="_blank" rel="noreferrer" aria-label="김기재 당진시장 후보, &#x27;산업·일자리 혁신 프로젝트&#x27; 발표 링크 바로가기">...기업 유치와 지역기업·지역인재가 함께 성장하는 구조를 통해 ‘기업이 오고, 청년이 머무는 당진’을 실현하겠다는 구상이다. 마지막은 ‘석탄화력발전소 폐지 대응과 정의로운 전환 가속화’다. 당진은 2...</a></p>
+      <div class="article-actions"><a class="mini-link article-link-action" href="http://www.dynews.co.kr/news/articleView.html?idxno=848904" target="_blank" rel="noreferrer" aria-label="김기재 당진시장 후보, &#x27;산업·일자리 혁신 프로젝트&#x27; 발표 링크 바로가기">링크 바로가기</a><button class="action-button" type="button" data-article-action="share" data-article-url="http://www.dynews.co.kr/news/articleView.html?idxno=848904" data-share-title="김기재 당진시장 후보, &#x27;산업·일자리 혁신 프로젝트&#x27; 발표" aria-label="김기재 당진시장 후보, &#x27;산업·일자리 혁신 프로젝트&#x27; 발표 공유하기">공유하기</button><button class="action-button" type="button" data-article-action="copy" data-article-url="http://www.dynews.co.kr/news/articleView.html?idxno=848904" data-share-title="김기재 당진시장 후보, &#x27;산업·일자리 혁신 프로젝트&#x27; 발표" aria-label="김기재 당진시장 후보, &#x27;산업·일자리 혁신 프로젝트&#x27; 발표 링크 복사">링크 복사</button></div><div class="article-feedback" data-article-feedback aria-live="polite"></div>
+    </article>
+    
+    <article class="article-card has-media" data-article-card="true" data-article-url="https://www.gnnews.co.kr/news/articleView.html?idxno=636080" data-article-title="정금효 민주당 함안군수 후보, 선거사무소 개소" data-article-date="2026-05-03" data-article-region="경남" data-article-topics="취업|복지" data-article-search="정금효 민주당 함안군수 후보, 선거사무소 개소 정금효 (더불어민주당) 함안군수 후보는 지난달 30일 함안군 가야읍에 선거사무소 개소식을 열고 “함안의 미래를 함께 열어주시길 부탁드린다”면서“ 작은 목소리 하나 정치 &gt; 제9회 전국동시지방선거 경남일보 네이버뉴스 청년정책(1주) 여선동 고용 취업 복지 경남 함안군 반드시 도군 경남 정책 공약 ...복원 세계적 관광명소 △삼칠권 거점형 종합복지타운 건설 균형발전△ 함안형 농업인 기본소득 삶의 질 향상△ 아이키우기 좋은 함안△ 청년이 머물고 싶은 함안 조성으로 주권이 실현되는 함안을 만들겠다고...">
+      <a class="article-media" href="https://www.gnnews.co.kr/news/articleView.html?idxno=636080" target="_blank" rel="noreferrer" aria-label="정금효 민주당 함안군수 후보, 선거사무소 개소 이미지와 기사 링크 바로가기"><img class="article-thumbnail" src="https://cdn.gnnews.co.kr/news/photo/202605/636080_436511_5538.jpg" alt="정금효 민주당 함안군수 후보, 선거사무소 개소 - 경남일보" loading="lazy" decoding="async" referrerpolicy="no-referrer"  onerror="this.parentElement.hidden=true;var c=this.closest('.article-card');if(c){c.classList.remove('has-media');c.classList.add('no-media');}"></a>
+      <div class="article-meta"><div class="article-meta-tags"><span class="meta-pill primary">취업</span><span class="meta-pill subtle">복지</span><span class="meta-pill subtle">경남</span></div><div class="article-byline"><span class="meta-item"><img class="publisher-icon" src="https://cdn.gnnews.co.kr/image/logo/favicon.ico" alt="경남일보 아이콘" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.hidden=true">경남일보</span><span class="meta-divider" aria-hidden="true">•</span><span class="meta-item">2026-05-03 15:55</span></div></div>
+      <h3><a class="article-title-link" href="https://www.gnnews.co.kr/news/articleView.html?idxno=636080" target="_blank" rel="noreferrer" aria-label="정금효 민주당 함안군수 후보, 선거사무소 개소 링크 바로가기">정금효 민주당 함안군수 후보, 선거사무소 개소</a></h3>
+      <div class="badge-row"><span class="badge">취업</span><span class="badge">복지</span><span class="badge">정책 공약</span></div>
+      <p class="article-summary"><a class="article-summary-link" href="https://www.gnnews.co.kr/news/articleView.html?idxno=636080" target="_blank" rel="noreferrer" aria-label="정금효 민주당 함안군수 후보, 선거사무소 개소 링크 바로가기">...복원 세계적 관광명소 △삼칠권 거점형 종합복지타운 건설 균형발전△ 함안형 농업인 기본소득 삶의 질 향상△ 아이키우기 좋은 함안△ 청년이 머물고 싶은 함안 조성으로 주권이 실현되는 함안을 만들겠다고...</a></p>
+      <div class="article-actions"><a class="mini-link article-link-action" href="https://www.gnnews.co.kr/news/articleView.html?idxno=636080" target="_blank" rel="noreferrer" aria-label="정금효 민주당 함안군수 후보, 선거사무소 개소 링크 바로가기">링크 바로가기</a><button class="action-button" type="button" data-article-action="share" data-article-url="https://www.gnnews.co.kr/news/articleView.html?idxno=636080" data-share-title="정금효 민주당 함안군수 후보, 선거사무소 개소" aria-label="정금효 민주당 함안군수 후보, 선거사무소 개소 공유하기">공유하기</button><button class="action-button" type="button" data-article-action="copy" data-article-url="https://www.gnnews.co.kr/news/articleView.html?idxno=636080" data-share-title="정금효 민주당 함안군수 후보, 선거사무소 개소" aria-label="정금효 민주당 함안군수 후보, 선거사무소 개소 링크 복사">링크 복사</button></div><div class="article-feedback" data-article-feedback aria-live="polite"></div>
+    </article>
+    
+    <article class="article-card has-media" data-article-card="true" data-article-url="https://www.newsgn.com/news/articleView.html?idxno=550135" data-article-title="거제시장 변광용 후보, 대학생·청년 정책 발표" data-article-date="2026-05-03" data-article-region="중앙" data-article-topics="취업|주거" data-article-search="거제시장 변광용 후보, 대학생·청년 정책 발표 더불어민주당 거제시장 변광용 후보가 ‘청년 창업 펀드 50억 조성, 양대조선 정규직 지역인재 채용 확대, 방학기간 시간선택형 일자리 150개’등 대학생·청년 정책을 발표했다.이 자리에서 변 후보는 “청년이 거제를 떠나지 않고, 다시 몰려오는 도시로 나아가겠다”면서, “도전과 기회의 공 6.3지방선거 뉴스경남 네이버뉴스 청년 주거·생활(1주) 박준하 기자 주거 고용 취업 주거 반드시 중앙 정책 공약 더불어민주당 거제시장 변광용 후보가 ‘청년 창업 펀드 50억 조성, 양대조선 정규직 지역인재 채용 확대, 방학기간 시간선택형 일자리 150개’등 대학생·청년 정책을 발표했다...">
+      <a class="article-media" href="https://www.newsgn.com/news/articleView.html?idxno=550135" target="_blank" rel="noreferrer" aria-label="거제시장 변광용 후보, 대학생·청년 정책 발표 이미지와 기사 링크 바로가기"><img class="article-thumbnail" src="https://cdn.newsgn.com/news/thumbnail/202605/550135_356639_2910_v150.jpg" alt="거제시장 변광용 후보, 대학생·청년 정책 발표" loading="lazy" decoding="async" referrerpolicy="no-referrer"  onerror="this.parentElement.hidden=true;var c=this.closest('.article-card');if(c){c.classList.remove('has-media');c.classList.add('no-media');}"></a>
+      <div class="article-meta"><div class="article-meta-tags"><span class="meta-pill primary">취업</span><span class="meta-pill subtle">주거</span><span class="meta-pill subtle">중앙</span></div><div class="article-byline"><span class="meta-item"><img class="publisher-icon" src="https://cdn.newsgn.com/image/logo/favicon.ico" alt="뉴스경남 아이콘" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.hidden=true">뉴스경남</span><span class="meta-divider" aria-hidden="true">•</span><span class="meta-item">2026-05-03 11:16</span></div></div>
+      <h3><a class="article-title-link" href="https://www.newsgn.com/news/articleView.html?idxno=550135" target="_blank" rel="noreferrer" aria-label="거제시장 변광용 후보, 대학생·청년 정책 발표 링크 바로가기">거제시장 변광용 후보, 대학생·청년 정책 발표</a></h3>
+      <div class="badge-row"><span class="badge">취업</span><span class="badge">주거</span><span class="badge">정책 공약</span></div>
+      <p class="article-summary"><a class="article-summary-link" href="https://www.newsgn.com/news/articleView.html?idxno=550135" target="_blank" rel="noreferrer" aria-label="거제시장 변광용 후보, 대학생·청년 정책 발표 링크 바로가기">더불어민주당 거제시장 변광용 후보가 ‘청년 창업 펀드 50억 조성, 양대조선 정규직 지역인재 채용 확대, 방학기간 시간선택형 일자리 150개’등 대학생·청년 정책을 발표했다...</a></p>
+      <div class="article-actions"><a class="mini-link article-link-action" href="https://www.newsgn.com/news/articleView.html?idxno=550135" target="_blank" rel="noreferrer" aria-label="거제시장 변광용 후보, 대학생·청년 정책 발표 링크 바로가기">링크 바로가기</a><button class="action-button" type="button" data-article-action="share" data-article-url="https://www.newsgn.com/news/articleView.html?idxno=550135" data-share-title="거제시장 변광용 후보, 대학생·청년 정책 발표" aria-label="거제시장 변광용 후보, 대학생·청년 정책 발표 공유하기">공유하기</button><button class="action-button" type="button" data-article-action="copy" data-article-url="https://www.newsgn.com/news/articleView.html?idxno=550135" data-share-title="거제시장 변광용 후보, 대학생·청년 정책 발표" aria-label="거제시장 변광용 후보, 대학생·청년 정책 발표 링크 복사">링크 복사</button></div><div class="article-feedback" data-article-feedback aria-live="polite"></div>
     </article>
     
     <article class="article-card has-media" data-article-card="true" data-article-url="https://www.newscj.com/news/articleView.html?idxno=3398002" data-article-title="오세훈, ‘청년 월세 부담 완화’ 공약… 관리비·이사비 포함, 지원 2배 확대" data-article-date="2026-05-02" data-article-region="서울" data-article-topics="주거|노동" data-article-search="오세훈, ‘청년 월세 부담 완화’ 공약… 관리비·이사비 포함, 지원 2배 확대 [천지일보=이문성 기자] 오세훈 후보가 청년층의 월세 부담을 낮추기 위한 지원 확대 방안을 제시했다.오 후보는 2일 서울 신림동 원룸촌을 찾아 청년들과 간담회를 갖고 “최근 월세가 급등하면서 청년들이 큰 부담을 느끼고 있다”며 “월세 지원을 확대해 주거 부담을 덜겠다”고 밝혔다.이번 전국 &gt; 서울 천지일보 네이버뉴스 청년 주거·생활(1주) 이문성 기자 주거 부채 주거 노동 서울 서울 정책 공약 [천지일보=이문성 기자] 오세훈 후보가 청년층의 월세 부담을 낮추기 위한 지원 확대 방안을 제시했다.오 후보는 2일 서울 신림동 원룸촌을 찾아 청년들과 간담회를 갖고 “최근 월세가 급등하면서 청년들이...">
@@ -5334,15 +5590,6 @@
       <div class="badge-row"><span class="badge">주거</span><span class="badge">노동</span><span class="badge">정책 공약</span></div>
       <p class="article-summary"><a class="article-summary-link" href="https://www.newscj.com/news/articleView.html?idxno=3398002" target="_blank" rel="noreferrer" aria-label="오세훈, ‘청년 월세 부담 완화’ 공약… 관리비·이사비 포함, 지원 2배 확대 링크 바로가기">[천지일보=이문성 기자] 오세훈 후보가 청년층의 월세 부담을 낮추기 위한 지원 확대 방안을 제시했다.오 후보는 2일 서울 신림동 원룸촌을 찾아 청년들과 간담회를 갖고 “최근 월세가 급등하면서 청년들이...</a></p>
       <div class="article-actions"><a class="mini-link article-link-action" href="https://www.newscj.com/news/articleView.html?idxno=3398002" target="_blank" rel="noreferrer" aria-label="오세훈, ‘청년 월세 부담 완화’ 공약… 관리비·이사비 포함, 지원 2배 확대 링크 바로가기">링크 바로가기</a><button class="action-button" type="button" data-article-action="share" data-article-url="https://www.newscj.com/news/articleView.html?idxno=3398002" data-share-title="오세훈, ‘청년 월세 부담 완화’ 공약… 관리비·이사비 포함, 지원 2배 확대" aria-label="오세훈, ‘청년 월세 부담 완화’ 공약… 관리비·이사비 포함, 지원 2배 확대 공유하기">공유하기</button><button class="action-button" type="button" data-article-action="copy" data-article-url="https://www.newscj.com/news/articleView.html?idxno=3398002" data-share-title="오세훈, ‘청년 월세 부담 완화’ 공약… 관리비·이사비 포함, 지원 2배 확대" aria-label="오세훈, ‘청년 월세 부담 완화’ 공약… 관리비·이사비 포함, 지원 2배 확대 링크 복사">링크 복사</button></div><div class="article-feedback" data-article-feedback aria-live="polite"></div>
-    </article>
-    
-    <article class="article-card has-media" data-article-card="true" data-article-url="https://weekly.hankooki.com/news/articleView.html?idxno=7162518" data-article-title="오세훈 “李·정원오, 공급빙하 복식조” vs 정원오 “서울시, 전월세 불안 책임”" data-article-date="2026-05-02" data-article-region="서울" data-article-topics="주거|노동" data-article-search="오세훈 “李·정원오, 공급빙하 복식조” vs 정원오 “서울시, 전월세 불안 책임” [주간한국 강민혜 기자] 국민의힘 오세훈 서울시장 후보가 2일 청년 주거지원 공약을 발표하며 더불어민주당 정원오 후보에게 날을 세웠다.오 후보는 2일 서울 관악구 신림동 주택가를 방문해 “월세 지옥”이라며 “최근 들어서 아주 급등하는 월세 때문에 많은 청년들이 좌절하고 있다. 이미 청년들 월세 보증을 연간 한 2만명가량 지원하고 있었는데 이걸 4만2000명까지 늘리겠다”며 주거 정책을 발표했다.이어 “지원 기간도 현행 10개월에서 12개월까지 늘리겠다”며 “지금까지는 중위소득 150% 이하 청년들에게 지원을 했는데 지금부터는 한부모 정치 &gt; 선거 주간한국 네이버뉴스 청년 주거·생활(1주) 강민혜 기자 주거 주거 노동 서울 부산 대구 관악 마포 관악구 마포구 서울 정책 공약 [주간한국 강민혜 기자] 국민의힘 오세훈 서울시장 후보가 2일 청년 주거지원 공약을 발표하며 더불어민주당 정원오 후보에게 날을 세웠다.오 후보는 2일 서울 관악구 신림동 주택가를 방문해 “월세 지옥”이...">
-      <a class="article-media" href="https://weekly.hankooki.com/news/articleView.html?idxno=7162518" target="_blank" rel="noreferrer" aria-label="오세훈 “李·정원오, 공급빙하 복식조” vs 정원오 “서울시, 전월세 불안 책임” 이미지와 기사 링크 바로가기"><img class="article-thumbnail" src="https://cdn.weekly.hankooki.com/news/thumbnail/202605/7162518_232842_4620_v150.jpg" alt="오세훈 “李·정원오, 공급빙하 복식조” vs 정원오 “서울시, 전월세 불안 책임”" loading="lazy" decoding="async" referrerpolicy="no-referrer"  onerror="this.parentElement.hidden=true;var c=this.closest('.article-card');if(c){c.classList.remove('has-media');c.classList.add('no-media');}"></a>
-      <div class="article-meta"><div class="article-meta-tags"><span class="meta-pill primary">주거</span><span class="meta-pill subtle">노동</span><span class="meta-pill subtle">서울</span></div><div class="article-byline"><span class="meta-item"><img class="publisher-icon" src="https://cdn.weekly.hankooki.com/image/logo/favicon.ico" alt="주간한국 아이콘" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.hidden=true">주간한국</span><span class="meta-divider" aria-hidden="true">•</span><span class="meta-item">2026-05-02 16:47</span></div></div>
-      <h3><a class="article-title-link" href="https://weekly.hankooki.com/news/articleView.html?idxno=7162518" target="_blank" rel="noreferrer" aria-label="오세훈 “李·정원오, 공급빙하 복식조” vs 정원오 “서울시, 전월세 불안 책임” 링크 바로가기">오세훈 “李·정원오, 공급빙하 복식조” vs 정원오 “서울시, 전월세 불안 책임”</a></h3>
-      <div class="badge-row"><span class="badge">주거</span><span class="badge">노동</span><span class="badge">정책 공약</span></div>
-      <p class="article-summary"><a class="article-summary-link" href="https://weekly.hankooki.com/news/articleView.html?idxno=7162518" target="_blank" rel="noreferrer" aria-label="오세훈 “李·정원오, 공급빙하 복식조” vs 정원오 “서울시, 전월세 불안 책임” 링크 바로가기">[주간한국 강민혜 기자] 국민의힘 오세훈 서울시장 후보가 2일 청년 주거지원 공약을 발표하며 더불어민주당 정원오 후보에게 날을 세웠다.오 후보는 2일 서울 관악구 신림동 주택가를 방문해 “월세 지옥”이...</a></p>
-      <div class="article-actions"><a class="mini-link article-link-action" href="https://weekly.hankooki.com/news/articleView.html?idxno=7162518" target="_blank" rel="noreferrer" aria-label="오세훈 “李·정원오, 공급빙하 복식조” vs 정원오 “서울시, 전월세 불안 책임” 링크 바로가기">링크 바로가기</a><button class="action-button" type="button" data-article-action="share" data-article-url="https://weekly.hankooki.com/news/articleView.html?idxno=7162518" data-share-title="오세훈 “李·정원오, 공급빙하 복식조” vs 정원오 “서울시, 전월세 불안 책임”" aria-label="오세훈 “李·정원오, 공급빙하 복식조” vs 정원오 “서울시, 전월세 불안 책임” 공유하기">공유하기</button><button class="action-button" type="button" data-article-action="copy" data-article-url="https://weekly.hankooki.com/news/articleView.html?idxno=7162518" data-share-title="오세훈 “李·정원오, 공급빙하 복식조” vs 정원오 “서울시, 전월세 불안 책임”" aria-label="오세훈 “李·정원오, 공급빙하 복식조” vs 정원오 “서울시, 전월세 불안 책임” 링크 복사">링크 복사</button></div><div class="article-feedback" data-article-feedback aria-live="polite"></div>
     </article>
     
     <article class="article-card has-media" data-article-card="true" data-article-url="https://www.kgnews.co.kr/news/article.html?no=894049" data-article-title="국힘 경기도당, 수원 포함 5곳 광역의원 단수공천 결과 발표" data-article-date="2026-05-01" data-article-region="인천" data-article-topics="주거|복지" data-article-search="국힘 경기도당, 수원 포함 5곳 광역의원 단수공천 결과 발표 국민의힘 경기도당 공천관리위원회는 1일 제2차 회의 결과를 발표하며 수원·부천·화성·하남·용인 등 5개 선거구에서 광역의원 후보를 확정했다고 밝혔다. 해당 지역구의 광역의원 후보는 아래와 같다. ▲수원4 조정근 ▲부천4 예승현 전 부천고 총동문회 사무국장 ▲화성2 심용진 매송면 송전탑지중화 추진위원장 ▲하남1 이상원 전 경기지구청년회의소 수석 대표 ▲용인8 경기신문 네이버뉴스 청년 후보·비례대표(1주) 주거 주거 복지 인천 경기 지역구 상비군 구리시 화성시 용인시 수지구 수원시 인천광역시 표명구 인천 정책 공약 ...▲수원4 조정근 ▲부천4 예승현 전 부천고 총동문회 사무국장 ▲화성2 심용진 매송면 송전탑지중화 추진위원장 ▲하남1 이상원 전 경기지구청년회의소 수석 대표 ▲용인8">

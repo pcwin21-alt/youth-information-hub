@@ -5192,6 +5192,217 @@
       justify-self: end;
     }
   }
+  body[data-page="index.html"] .youth-metrics-grid {
+    grid-template-columns: minmax(0, 1.35fr) repeat(3, minmax(0, 0.78fr));
+    gap: 22px;
+    align-items: stretch;
+  }
+  body[data-page="index.html"] .youth-metric-item {
+    min-height: 194px;
+    display: grid;
+    align-content: space-between;
+    gap: 14px;
+    padding: 24px;
+  }
+  body[data-page="index.html"] .youth-metric-primary {
+    min-height: 224px;
+    padding: 28px 30px;
+    background: #ffffff;
+  }
+  body[data-page="index.html"] .youth-metric-primary .youth-metric-value {
+    font-size: clamp(2.35rem, 3.4vw, 3.35rem);
+    line-height: 1.04;
+  }
+  body[data-page="index.html"] .youth-metric-compact .youth-metric-value {
+    font-size: clamp(1.7rem, 2vw, 2.08rem);
+  }
+  .youth-metric-scale {
+    width: 100%;
+    height: 6px;
+    border-radius: 999px;
+    background: #ece9e4;
+    overflow: hidden;
+  }
+  .youth-metric-scale span {
+    display: block;
+    width: 74%;
+    height: 100%;
+    border-radius: inherit;
+    background: var(--text);
+  }
+  .home-data-board-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 2fr) minmax(320px, 0.92fr);
+    gap: 30px;
+    align-items: start;
+  }
+  .home-region-block,
+  .home-research-block {
+    min-width: 0;
+  }
+  .home-region-table-wrap {
+    overflow-x: auto;
+    border-top: 1px solid #d2cec6;
+  }
+  .home-region-table {
+    width: 100%;
+    min-width: 680px;
+    border-collapse: collapse;
+    font-size: 0.94rem;
+  }
+  .home-region-table th,
+  .home-region-table td {
+    padding: 18px 14px;
+    border-bottom: 1px solid #ebe8e2;
+    text-align: left;
+    vertical-align: top;
+  }
+  .home-region-table thead th {
+    color: #756f68;
+    font-size: 0.78rem;
+    font-weight: 900;
+    text-transform: uppercase;
+  }
+  .home-region-table tbody th {
+    color: var(--text);
+    font-size: 1rem;
+    font-weight: 900;
+    white-space: nowrap;
+  }
+  .home-region-table td strong,
+  .home-region-table td span,
+  .home-region-table td small {
+    display: block;
+  }
+  .home-region-table td strong {
+    color: var(--text);
+    font-size: 1.02rem;
+  }
+  .home-region-table td span,
+  .home-region-table td small {
+    color: #6f6962;
+    line-height: 1.45;
+  }
+  .home-region-table td small {
+    max-width: 320px;
+    margin-top: 4px;
+    font-size: 0.82rem;
+  }
+  .home-region-focus,
+  .home-report-tag {
+    display: inline-flex;
+    width: fit-content;
+    min-height: 28px;
+    align-items: center;
+    padding: 4px 10px;
+    border-radius: 999px;
+    background: #fff3df;
+    color: #9c5e00;
+    font-size: 0.78rem;
+    font-weight: 900;
+  }
+  .home-region-link {
+    color: #006f63;
+    font-weight: 900;
+  }
+  .home-region-empty {
+    padding: 24px 0;
+    border-top: 1px solid #d2cec6;
+    border-bottom: 1px solid #ebe8e2;
+  }
+  .home-region-empty h3 {
+    margin: 0;
+    color: var(--text);
+    font-size: 1.1rem;
+  }
+  .home-region-empty p {
+    margin: 8px 0 0;
+    color: var(--muted);
+  }
+  .home-research-block {
+    display: grid;
+    gap: 18px;
+  }
+  .home-research-head {
+    display: grid;
+    gap: 8px;
+  }
+  .home-research-head h2 {
+    margin: 0;
+    color: var(--text);
+    font-size: 1.45rem;
+    line-height: 1.22;
+  }
+  .home-research-head p {
+    margin: 0;
+    color: var(--muted);
+  }
+  .home-report-list {
+    display: grid;
+    gap: 12px;
+  }
+  .home-report-row {
+    display: grid;
+    gap: 7px;
+    min-width: 0;
+    padding: 18px;
+    border: 1px solid #d2cec6;
+    border-radius: 8px;
+    background: #ffffff;
+  }
+  .home-report-row:hover {
+    border-color: #bcb6ac;
+    box-shadow: 0 10px 20px rgba(24, 24, 24, 0.05);
+    transform: translateY(-1px);
+  }
+  .home-report-row strong {
+    color: var(--text);
+    font-size: 1rem;
+    line-height: 1.38;
+  }
+  .home-report-meta,
+  .home-report-row p {
+    color: #6f6962;
+    font-size: 0.84rem;
+    line-height: 1.55;
+  }
+  .home-report-row p {
+    margin: 0;
+  }
+  .home-research-block .button {
+    width: 100%;
+    justify-content: center;
+  }
+  @media (max-width: 1180px) {
+    body[data-page="index.html"] .youth-metrics-grid,
+    .home-data-board-grid {
+      grid-template-columns: 1fr;
+    }
+    body[data-page="index.html"] .youth-metric-primary {
+      min-height: 200px;
+    }
+  }
+  @media (max-width: 900px) {
+    body[data-page="index.html"] .youth-metrics-grid {
+      grid-template-columns: 1fr;
+      gap: 14px;
+    }
+    body[data-page="index.html"] .youth-metric-item {
+      min-height: auto;
+      padding: 20px;
+    }
+    .home-data-board-grid {
+      gap: 22px;
+    }
+    .home-region-table {
+      min-width: 620px;
+      font-size: 0.88rem;
+    }
+    .home-region-table th,
+    .home-region-table td {
+      padding: 14px 10px;
+    }
+  }
 </style>
 </head>
 <body data-page="tools.html">
@@ -5201,7 +5412,7 @@
     <div class="topbar-side">
       <form class="global-search" action="news.html" method="get" role="search"><span class="global-search-icon" aria-hidden="true">⌕</span><input type="search" name="q" autocomplete="off" placeholder="Search insights..."></form>
       <a class="guide-link" href="guide.html" data-guide-open-link="true" aria-label="이용 안내">이용방법</a>
-      <div class="header-side"><strong>05.03 10:54</strong><span>최근 반영</span></div>
+      <div class="header-side"><strong>05.03 23:32</strong><span>최근 반영</span></div>
       <button class="admin-entry" type="button" data-admin-login-open="true" title="임시 관리자 표시 모드 열기"><span data-admin-entry-label>관리 로그인</span></button>
       <a class="topbar-icon" href="contact.html" aria-label="제보와 문의">○</a>
     </div>
@@ -5262,7 +5473,7 @@
           <h2>청년 조사·통계 발표 모음</h2>
           <p>청년을 직접 대상으로 조사하거나, 청년만 따로 떼어 발표한 공식 통계를 건별로 모았습니다.</p>
         </div>
-        <span class="mini-link" aria-disabled="true">자동 확인 2026-05-03 10:54</span>
+        <span class="mini-link" aria-disabled="true">자동 확인 2026-05-03 23:32</span>
       </div>
       <div class="article-grid tools-survey-grid">
     <article class="section-card resource-card resource-card--navy">

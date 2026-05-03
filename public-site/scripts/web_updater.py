@@ -269,6 +269,44 @@ YOUTH_METRICS = [
     },
 ]
 
+HOME_RESEARCH_RESOURCES = [
+    {
+        "title": "2024년 청년의 삶 실태조사",
+        "organization": "국무조정실",
+        "basis": "2025-03-11 발표",
+        "description": "노동, 주거, 건강, 관계 등 청년 삶 전반을 확인할 수 있는 대표 조사입니다.",
+        "href": "https://www.opm.go.kr/opm/news/press1.do?articleNo=158583&attachNo=146521&mode=download",
+        "tag": "정부 조사",
+    },
+    {
+        "title": "청년통계지도",
+        "organization": "통계청 SGIS",
+        "basis": "지역 지표 서비스",
+        "description": "청년 인구, 주거, 취업활동 지표를 지역별로 비교할 때 가장 먼저 열어볼 자료입니다.",
+        "href": "https://sgis.kostat.go.kr/view/syrStats/main",
+        "tag": "공식 통계",
+    },
+    {
+        "title": "한국청소년정책연구원",
+        "organization": "NYPI",
+        "basis": "연구보고서·데이터",
+        "description": "청년·청소년 정책 연구보고서와 데이터아카이브를 함께 확인할 수 있습니다.",
+        "href": "https://www.nypi.re.kr/",
+        "tag": "정책 연구",
+    },
+    {
+        "title": "NKIS 국가정책연구포털",
+        "organization": "국가정책연구포털",
+        "basis": "국책연구 통합검색",
+        "description": "국책연구기관의 정책·연구자료를 주제별로 확장 검색할 때 유용합니다.",
+        "href": "https://www.nkis.re.kr/",
+        "tag": "국책연구",
+    },
+]
+
+HOME_REGIONAL_POLICY_MAX_AGE_HOURS = 24 * 120
+HOME_REGIONAL_POLICY_LIMIT = 5
+
 LOCAL_POLICY_CORE_KEYWORDS = (
     "청년정책",
     "정책 발표",
@@ -5535,6 +5573,217 @@ DASHBOARD_TONE_CSS = """
       justify-self: end;
     }
   }
+  body[data-page="index.html"] .youth-metrics-grid {
+    grid-template-columns: minmax(0, 1.35fr) repeat(3, minmax(0, 0.78fr));
+    gap: 22px;
+    align-items: stretch;
+  }
+  body[data-page="index.html"] .youth-metric-item {
+    min-height: 194px;
+    display: grid;
+    align-content: space-between;
+    gap: 14px;
+    padding: 24px;
+  }
+  body[data-page="index.html"] .youth-metric-primary {
+    min-height: 224px;
+    padding: 28px 30px;
+    background: #ffffff;
+  }
+  body[data-page="index.html"] .youth-metric-primary .youth-metric-value {
+    font-size: clamp(2.35rem, 3.4vw, 3.35rem);
+    line-height: 1.04;
+  }
+  body[data-page="index.html"] .youth-metric-compact .youth-metric-value {
+    font-size: clamp(1.7rem, 2vw, 2.08rem);
+  }
+  .youth-metric-scale {
+    width: 100%;
+    height: 6px;
+    border-radius: 999px;
+    background: #ece9e4;
+    overflow: hidden;
+  }
+  .youth-metric-scale span {
+    display: block;
+    width: 74%;
+    height: 100%;
+    border-radius: inherit;
+    background: var(--text);
+  }
+  .home-data-board-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 2fr) minmax(320px, 0.92fr);
+    gap: 30px;
+    align-items: start;
+  }
+  .home-region-block,
+  .home-research-block {
+    min-width: 0;
+  }
+  .home-region-table-wrap {
+    overflow-x: auto;
+    border-top: 1px solid #d2cec6;
+  }
+  .home-region-table {
+    width: 100%;
+    min-width: 680px;
+    border-collapse: collapse;
+    font-size: 0.94rem;
+  }
+  .home-region-table th,
+  .home-region-table td {
+    padding: 18px 14px;
+    border-bottom: 1px solid #ebe8e2;
+    text-align: left;
+    vertical-align: top;
+  }
+  .home-region-table thead th {
+    color: #756f68;
+    font-size: 0.78rem;
+    font-weight: 900;
+    text-transform: uppercase;
+  }
+  .home-region-table tbody th {
+    color: var(--text);
+    font-size: 1rem;
+    font-weight: 900;
+    white-space: nowrap;
+  }
+  .home-region-table td strong,
+  .home-region-table td span,
+  .home-region-table td small {
+    display: block;
+  }
+  .home-region-table td strong {
+    color: var(--text);
+    font-size: 1.02rem;
+  }
+  .home-region-table td span,
+  .home-region-table td small {
+    color: #6f6962;
+    line-height: 1.45;
+  }
+  .home-region-table td small {
+    max-width: 320px;
+    margin-top: 4px;
+    font-size: 0.82rem;
+  }
+  .home-region-focus,
+  .home-report-tag {
+    display: inline-flex;
+    width: fit-content;
+    min-height: 28px;
+    align-items: center;
+    padding: 4px 10px;
+    border-radius: 999px;
+    background: #fff3df;
+    color: #9c5e00;
+    font-size: 0.78rem;
+    font-weight: 900;
+  }
+  .home-region-link {
+    color: #006f63;
+    font-weight: 900;
+  }
+  .home-region-empty {
+    padding: 24px 0;
+    border-top: 1px solid #d2cec6;
+    border-bottom: 1px solid #ebe8e2;
+  }
+  .home-region-empty h3 {
+    margin: 0;
+    color: var(--text);
+    font-size: 1.1rem;
+  }
+  .home-region-empty p {
+    margin: 8px 0 0;
+    color: var(--muted);
+  }
+  .home-research-block {
+    display: grid;
+    gap: 18px;
+  }
+  .home-research-head {
+    display: grid;
+    gap: 8px;
+  }
+  .home-research-head h2 {
+    margin: 0;
+    color: var(--text);
+    font-size: 1.45rem;
+    line-height: 1.22;
+  }
+  .home-research-head p {
+    margin: 0;
+    color: var(--muted);
+  }
+  .home-report-list {
+    display: grid;
+    gap: 12px;
+  }
+  .home-report-row {
+    display: grid;
+    gap: 7px;
+    min-width: 0;
+    padding: 18px;
+    border: 1px solid #d2cec6;
+    border-radius: 8px;
+    background: #ffffff;
+  }
+  .home-report-row:hover {
+    border-color: #bcb6ac;
+    box-shadow: 0 10px 20px rgba(24, 24, 24, 0.05);
+    transform: translateY(-1px);
+  }
+  .home-report-row strong {
+    color: var(--text);
+    font-size: 1rem;
+    line-height: 1.38;
+  }
+  .home-report-meta,
+  .home-report-row p {
+    color: #6f6962;
+    font-size: 0.84rem;
+    line-height: 1.55;
+  }
+  .home-report-row p {
+    margin: 0;
+  }
+  .home-research-block .button {
+    width: 100%;
+    justify-content: center;
+  }
+  @media (max-width: 1180px) {
+    body[data-page="index.html"] .youth-metrics-grid,
+    .home-data-board-grid {
+      grid-template-columns: 1fr;
+    }
+    body[data-page="index.html"] .youth-metric-primary {
+      min-height: 200px;
+    }
+  }
+  @media (max-width: 900px) {
+    body[data-page="index.html"] .youth-metrics-grid {
+      grid-template-columns: 1fr;
+      gap: 14px;
+    }
+    body[data-page="index.html"] .youth-metric-item {
+      min-height: auto;
+      padding: 20px;
+    }
+    .home-data-board-grid {
+      gap: 22px;
+    }
+    .home-region-table {
+      min-width: 620px;
+      font-size: 0.88rem;
+    }
+    .home-region-table th,
+    .home-region-table td {
+      padding: 14px 10px;
+    }
+  }
 """
 
 
@@ -6658,7 +6907,9 @@ SIDE_NAV_CONFIG = {
         "items": [
             ("#page-top", "상단"),
             ("#today-briefing", "오늘 브리핑"),
-            ("#youth-metrics", "청년 주요 지표"),
+            ("#youth-metrics", "핵심 지표"),
+            ("#regional-policy-status", "지역 정책 현황"),
+            ("#research-resources", "연구·통계 자료"),
             ("#about-info", "제작자·안내"),
         ],
     },
@@ -7311,13 +7562,27 @@ def render_list_block(title: str, intro: str, items: list[tuple[str, str]]) -> s
 
 
 def render_youth_metrics() -> str:
+    preferred_labels = ["청년 인구", "청년 실업률", "삶의 만족도", "고립·은둔 위기청년"]
+    metric_by_label = {metric["label"]: metric for metric in YOUTH_METRICS}
+    display_metrics = [metric_by_label[label] for label in preferred_labels if label in metric_by_label]
+    if len(display_metrics) < 4:
+        display_metrics.extend(metric for metric in YOUTH_METRICS if metric not in display_metrics)
+    display_metrics = display_metrics[:4]
+
     metric_items = []
-    for metric in YOUTH_METRICS:
+    for index, metric in enumerate(display_metrics):
+        item_class = "youth-metric-item youth-metric-primary" if index == 0 else "youth-metric-item youth-metric-compact"
+        primary_detail = (
+            '<div class="youth-metric-scale" aria-hidden="true"><span></span></div>'
+            if index == 0
+            else ""
+        )
         metric_items.append(
             f"""
-            <article class="youth-metric-item">
+            <article class="{item_class}">
               <span class="youth-metric-label">{html.escape(metric["label"])}</span>
               <strong class="youth-metric-value">{html.escape(metric["value"])}</strong>
+              {primary_detail}
               <div class="youth-metric-meta">
                 <span>{html.escape(metric["basis"])}</span>
                 <a class="youth-metric-source" href="{html.escape(metric["url"])}" target="_blank" rel="noreferrer">{html.escape(metric["source"])}</a>
@@ -7329,8 +7594,8 @@ def render_youth_metrics() -> str:
     <section class="section" id="youth-metrics">
       <article class="youth-metrics-card">
         <div class="youth-metrics-head">
-          <h2>청년 주요 지표</h2>
-          <p>정책과 기사 흐름을 볼 때 함께 참고할 수 있도록, 최근 공식 통계와 공공 발표 기준 숫자를 함께 놓았습니다.</p>
+          <h2>핵심 지표 요약</h2>
+          <p>오늘의 정책·뉴스 흐름을 볼 때 함께 확인할 공식 통계 기준값만 추려 놓았습니다.</p>
         </div>
         <div class="youth-metrics-grid">{''.join(metric_items)}</div>
         <p class="youth-metrics-note">지표마다 연령 기준과 기준 시점이 다르므로, 카드 아래 표기를 함께 확인해 주세요.</p>
@@ -9349,6 +9614,242 @@ def build_hub_menu_items(classified_articles: list[dict]) -> list[tuple[str, str
     return items[:3]
 
 
+def home_regional_policy_region(article: dict) -> str:
+    region = news_region_label(article)
+    if not region or region in {"전국", "중앙"}:
+        return ""
+    return region
+
+
+def home_regional_policy_focus(article: dict) -> str:
+    policy_type = policy_type_label(article)
+    if policy_type and policy_type != "기타":
+        return policy_type
+    tags = article_topic_tags(article, limit=1)
+    if tags:
+        return tags[0]
+    if article.get("is_hub_candidate"):
+        return "참여·회의"
+    return "정책 동향"
+
+
+def home_regional_policy_text(article: dict) -> str:
+    return normalize_inline_text(
+        " ".join(
+            str(value or "")
+            for value in [
+                article.get("title"),
+                article.get("summary"),
+                article.get("lead_text"),
+                article.get("source"),
+                article.get("hub_owner_label"),
+            ]
+        )
+    )
+
+
+def home_has_regional_public_actor(article: dict) -> bool:
+    text = home_regional_policy_text(article)
+    actor_keywords = (
+        *LOCAL_GOVERNMENT_ACTOR_KEYWORDS,
+        "서울시",
+        "부산시",
+        "대구시",
+        "인천시",
+        "광주시",
+        "대전시",
+        "울산시",
+        "세종시",
+        "강원도",
+        "충북도",
+        "충남도",
+        "전북도",
+        "전남도",
+        "경북도",
+        "경남도",
+        "제주도",
+        "경제진흥원",
+        "문화재단",
+        "문화관광공사",
+        "일자리재단",
+        "청년센터",
+    )
+    return any(keyword in text for keyword in actor_keywords)
+
+
+def home_has_youth_regional_signal(article: dict) -> bool:
+    if article.get("has_direct_helpful_youth_signal") or article.get("has_youth_content_signal"):
+        return True
+    if article_topic_tags(article, limit=3) or article.get("issue_tags"):
+        return True
+    return "청년" in home_regional_policy_text(article)
+
+
+def home_is_regional_roundup_article(article: dict) -> bool:
+    title = clean_article_title(article.get("title"))
+    return any(marker in title for marker in ("[패트롤]", "[은행가]", " 外", "외]"))
+
+
+def home_is_central_policy_source(article: dict) -> bool:
+    authority = policy_authority_label(article)
+    source_text = home_regional_policy_text(article)
+    central_keywords = (*MAJOR_CENTRAL_POLICY_AUTHORITIES, "국무조정실", "국무총리비서실", "정책브리핑")
+    return any(keyword in authority or keyword in source_text for keyword in central_keywords)
+
+
+def is_home_regional_policy_candidate(article: dict) -> bool:
+    if not home_regional_policy_region(article):
+        return False
+    if is_election_promise_article(article):
+        return False
+    if home_is_regional_roundup_article(article):
+        return False
+    if not home_has_youth_regional_signal(article):
+        return False
+    if article.get("governance_scope") == "지자체" or article.get("is_regional_governance"):
+        return True
+    if article.get("is_official_source") and home_is_central_policy_source(article):
+        return False
+    if not home_has_regional_public_actor(article):
+        return False
+    if article.get("is_official_source") or article.get("is_hub_candidate") or policy_type_label(article) != "기타":
+        return True
+
+    text = home_regional_policy_text(article)
+    return any(keyword in text for keyword in LOCAL_POLICY_CORE_KEYWORDS)
+
+
+def build_home_regional_policy_candidates(articles: list[dict], reference_time: str | None) -> list[dict]:
+    candidates = [article for article in articles if is_home_regional_policy_candidate(article)]
+    return filter_recent_articles(candidates, reference_time, HOME_REGIONAL_POLICY_MAX_AGE_HOURS)
+
+
+def build_home_regional_policy_summaries(
+    articles: list[dict],
+    reference_time: str | None,
+    *,
+    limit: int = HOME_REGIONAL_POLICY_LIMIT,
+) -> list[dict]:
+    grouped: dict[str, list[dict]] = {}
+    seen_keys: set[str] = set()
+    for article in build_home_regional_policy_candidates(articles, reference_time):
+        key = article_identity_key(article)
+        if key in seen_keys:
+            continue
+        seen_keys.add(key)
+        region = home_regional_policy_region(article)
+        if not region:
+            continue
+        grouped.setdefault(region, []).append(article)
+
+    summaries: list[dict] = []
+    for region, region_articles in grouped.items():
+        sorted_region_articles = sort_articles_by_recency(region_articles)
+        latest = sorted_region_articles[0]
+        focus_counts: dict[str, int] = {}
+        for article in sorted_region_articles:
+            focus = home_regional_policy_focus(article)
+            focus_counts[focus] = focus_counts.get(focus, 0) + 1
+        focus_label = sorted(focus_counts, key=lambda label: (-focus_counts[label], label))[0]
+        summaries.append(
+            {
+                "region": region,
+                "count": len(sorted_region_articles),
+                "focus": focus_label,
+                "latest_date": article_date_value(latest) or "날짜 미상",
+                "latest_title": display_article_title(latest, limit=52),
+                "latest_url": article_target_url(latest),
+                "sort_key": article_sort_key(latest),
+            }
+        )
+
+    return sorted(summaries, key=lambda item: (item["count"], item["sort_key"]), reverse=True)[:limit]
+
+
+def render_home_regional_policy_status(articles: list[dict], reference_time: str | None) -> str:
+    summaries = build_home_regional_policy_summaries(articles, reference_time)
+    if not summaries:
+        return (
+            '<article class="home-region-empty">'
+            '<h3>지역별로 분리할 정책·동향 데이터가 아직 없습니다.</h3>'
+            '<p>지자체 발표나 지역 기사 수집량이 늘어나면 이 영역이 자동으로 채워집니다.</p>'
+            '</article>'
+        )
+
+    rows = []
+    for summary in summaries:
+        detail = "원문"
+        if summary["latest_url"]:
+            detail = (
+                f'<a class="home-region-link" href="{html.escape(summary["latest_url"], quote=True)}" '
+                f'target="_blank" rel="noreferrer">원문</a>'
+            )
+        rows.append(
+            "<tr>"
+            f'<th scope="row">{html.escape(summary["region"])}</th>'
+            f'<td><strong>{summary["count"]}건</strong><span>최근 120일</span></td>'
+            f'<td><span class="home-region-focus">{html.escape(summary["focus"])}</span></td>'
+            f'<td><span>{html.escape(summary["latest_date"])}</span><small>{html.escape(summary["latest_title"])}</small></td>'
+            f"<td>{detail}</td>"
+            "</tr>"
+        )
+
+    return (
+        '<div class="home-region-table-wrap">'
+        '<table class="home-region-table">'
+        '<thead><tr><th scope="col">지역</th><th scope="col">항목 수</th><th scope="col">주요 분야</th><th scope="col">최신 업데이트</th><th scope="col">상세</th></tr></thead>'
+        f'<tbody>{"".join(rows)}</tbody>'
+        '</table>'
+        '</div>'
+    )
+
+
+def render_home_research_resources() -> str:
+    items = []
+    for resource in HOME_RESEARCH_RESOURCES:
+        items.append(
+            f"""
+            <a class="home-report-row" href="{html.escape(resource["href"], quote=True)}" target="_blank" rel="noreferrer">
+              <span class="home-report-tag">{html.escape(resource["tag"])}</span>
+              <strong>{html.escape(resource["title"])}</strong>
+              <span class="home-report-meta">{html.escape(resource["basis"])} · {html.escape(resource["organization"])}</span>
+              <p>{html.escape(resource["description"])}</p>
+            </a>
+            """
+        )
+    return "".join(items)
+
+
+def render_home_policy_research_board(articles: list[dict], reference_time: str | None) -> str:
+    return f"""
+    <section class="section home-data-board" id="regional-policy-status">
+      <div class="section-head">
+        <div>
+          <h2>지역별 청년 정책 지원 현황</h2>
+          <p>현재 수집 데이터에서 지역이 분리되는 정책·동향만 묶었습니다. 예산과 추진 상태는 공식 구조화 데이터가 생기기 전까지 표시하지 않습니다.</p>
+        </div>
+        <a class="mini-link" href="policies.html#local-policy-updates">지역 정책 더 보기</a>
+      </div>
+      <div class="home-data-board-grid">
+        <div class="home-region-block">
+          {render_home_regional_policy_status(articles, reference_time)}
+        </div>
+        <aside class="home-research-block" id="research-resources" aria-labelledby="research-resources-title">
+          <div class="home-research-head">
+            <span class="home-overview-kicker">공식 자료</span>
+            <h2 id="research-resources-title">주요 연구·통계 자료</h2>
+            <p>썸네일이 없어도 기관, 기준일, 활용 맥락이 보이도록 문서형 목록으로 정리했습니다.</p>
+          </div>
+          <div class="home-report-list">
+            {render_home_research_resources()}
+          </div>
+          <a class="button" href="tools.html#stats-research-links">모든 자료 보기</a>
+        </aside>
+      </div>
+    </section>
+    """
+
+
 def build_menu_updates(articles: list[dict], classified_articles: list[dict], status: dict) -> list[dict]:
     page_updated_at = status.get("finished_at") or status.get("updated_at") or ""
     news_articles = [article for article in articles if not article.get("is_official_source")] or list(articles)
@@ -9509,15 +10010,16 @@ def build_home_page(
         24 * 90,
     )
     regional_hub_articles = filter_recent_articles(
-        filter_hub_articles(classified_articles, "지역"),
+        filter_hub_articles(classified_articles, "지자체"),
         page_updated_at,
         24 * 90,
     )
+    regional_policy_articles = build_home_regional_policy_candidates(all_articles, page_updated_at)
     home_topic_categories = build_home_topic_categories(latest_home_news_candidates, page_updated_at)
     home_date_label = format_home_date_label(page_updated_at)
     latest_news_basis = describe_article_basis(recent_news_articles, f"최근 {NEWS_WINDOW_DAYS}일 기사 없음")
     policy_basis = describe_article_basis(official_policy_articles or policy_articles, "최근 정책 없음")
-    lead_message = "최신 뉴스와 정부·지자체 발표를 한 화면에서 빠르게 확인하세요."
+    lead_message = "청년의 오늘이 조금 더 선명해지도록, 꼭 봐야 할 뉴스와 정부·지자체 정책 흐름을 한곳에 모았습니다."
     home_category_links = "".join(
         f'<a class="home-keyword-chip" href="{html.escape(home_topic_category_href(topic))}">#{html.escape(topic)}</a>'
         for topic, _ in home_topic_categories
@@ -9562,7 +10064,7 @@ def build_home_page(
     gov_local_trend_articles = sort_articles_by_recency(
         merge_home_candidate_articles(
             add_major_policy_watchlist_articles(official_policy_articles or policy_articles),
-            [*government_hub_articles, *regional_hub_articles, *policy_articles],
+            [*government_hub_articles, *regional_hub_articles, *regional_policy_articles, *policy_articles],
         )
     )
     policy_briefing_html = "".join(
@@ -9630,7 +10132,7 @@ def build_home_page(
         <article class="home-briefing-card lead lead-arch{home_lead_class}" data-media-host="home-lead">
           <div class="home-briefing-content">
             <span class="home-briefing-date">{html.escape(home_date_label)}</span>
-            <h1 class="home-briefing-title">오늘 필요한 청년 이슈</h1>
+            <h1 class="home-briefing-title">청년의 오늘</h1>
             <p class="home-briefing-copy">{html.escape(lead_message)}</p>
           </div>
           {home_lead_media}
@@ -9671,6 +10173,7 @@ def build_home_page(
       </div>
     </section>
     {render_youth_metrics()}
+    {render_home_policy_research_board(all_articles, page_updated_at)}
     <section class="section" id="about-info">
       <div class="section-head">
         <div>
