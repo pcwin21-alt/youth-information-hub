@@ -191,8 +191,10 @@ class HomeSelectionTests(unittest.TestCase):
             },
         )
 
-        self.assertIn("오늘 올라온 기사", page_html)
-        self.assertIn(">2건<", page_html)
+        self.assertIn("오늘 올라온 청년 기사", page_html)
+        self.assertIn("가장 최근 뉴스", page_html)
+        self.assertIn("정부·지자체 동향", page_html)
+        self.assertIn("지금 모집 중인 청년정책", page_html)
         self.assertNotIn("오늘 메인", page_html)
         self.assertNotIn('<span class="home-glance-label">정책</span>', page_html)
         self.assertNotIn('<span class="home-glance-label">참여·회의</span>', page_html)
@@ -232,10 +234,39 @@ class HomeSelectionTests(unittest.TestCase):
             },
         )
 
-        self.assertIn("최근 올라온 청년 뉴스 5개", page_html)
+        self.assertIn("지금 새로 들어온 기사", page_html)
+        self.assertIn("가장 최근 뉴스", page_html)
         self.assertNotIn("오늘 놓치면 안되는 뉴스 5가지", page_html)
         self.assertLess(page_html.index(newest_low_score["title"]), page_html.index(middle_article["title"]))
         self.assertLess(page_html.index(middle_article["title"]), page_html.index(older_high_score["title"]))
+
+    def test_home_glance_counts_total_latest_news_candidates(self) -> None:
+        articles = [
+            make_article(
+                title=f"청년 뉴스 {index}",
+                lead_text="청년 정책과 생활 이슈를 다룬 기사입니다.",
+                url=f"https://example.com/total-news-{index}",
+                published_date=f"2026-04-22T09:{index:02d}:00+09:00",
+            )
+            for index in range(6)
+        ]
+
+        page_html = web_updater.build_home_page(
+            articles,
+            articles,
+            {"finished_at": self.reference_time},
+            {
+                "organization_name": "유스사이드(Youthside)",
+                "copyright_text": "© 2026 유스사이드 · 박진감",
+                "version_text": "v0.3",
+                "email": "hello@example.com",
+            },
+        )
+
+        self.assertIn(
+            '<span class="home-glance-label">가장 최근 뉴스</span><strong class="home-glance-value">6건</strong>',
+            page_html,
+        )
 
     def test_home_latest_news_excludes_non_news_candidates(self) -> None:
         visible_news = make_article(
@@ -280,13 +311,114 @@ class HomeSelectionTests(unittest.TestCase):
             },
         )
 
-        self.assertIn(visible_news["title"], page_html)
-        self.assertNotIn(official["title"], page_html)
-        self.assertNotIn(noisy["title"], page_html)
-        self.assertNotIn(opinion["title"], page_html)
-        self.assertNotIn(campaign["title"], page_html)
+        latest_news_column = page_html.split("<span>가장 최근 뉴스</span>", 1)[1].split(
+            "<span>정부·지자체 동향</span>",
+            1,
+        )[0]
 
-    def test_home_categories_use_recent_48_hour_topic_tags(self) -> None:
+        self.assertIn(visible_news["title"], latest_news_column)
+        self.assertNotIn(official["title"], latest_news_column)
+        self.assertNotIn(noisy["title"], latest_news_column)
+        self.assertNotIn(opinion["title"], latest_news_column)
+        self.assertNotIn(campaign["title"], latest_news_column)
+        self.assertNotIn(official["title"], page_html)
+
+    def test_home_government_local_trends_use_only_official_sources(self) -> None:
+        central_press = make_article(
+            title="OFFICIAL CENTRAL PRESS RELEASE",
+            lead_text="Central ministry official youth policy release.",
+            url="https://www.moel.go.kr/news/enews/report/enewsView.do?news_seq=1",
+            source_kind="official",
+        )
+        central_press["is_official_source"] = True
+        central_press["source"] = "고용노동부 보도자료"
+        central_press["source_name"] = "고용노동부 보도자료"
+
+        central_policy_news = make_article(
+            title="OFFICIAL CENTRAL POLICY NEWS",
+            lead_text="Central official youth policy news without notice or press release marker.",
+            url="https://www.korea.kr/news/policyNewsView.do?newsId=1",
+            source_kind="official",
+        )
+        central_policy_news["is_official_source"] = True
+        central_policy_news["source"] = "Policy Briefing RSS"
+        central_policy_news["source_name"] = "Policy Briefing RSS"
+
+        local_press = make_article(
+            title="OFFICIAL LOCAL PRESS RELEASE",
+            lead_text="Local government youth support press release.",
+            url="https://www.busan.go.kr/nbtnewsBU/1",
+            source_kind="local",
+            region="부산",
+        )
+        local_press["source"] = "부산광역시 보도자료"
+        local_press["source_name"] = "부산광역시 보도자료"
+        local_press["source_channel"] = "press_release"
+
+        local_notice = make_article(
+            title="OFFICIAL LOCAL WEBSITE NOTICE",
+            lead_text="Local government youth program uploaded notice.",
+            url="https://www.gg.go.kr/bbs/boardView.do?bsIdx=1",
+            source_kind="local",
+            region="경기",
+        )
+        local_notice["source"] = "경기도 공고"
+        local_notice["source_name"] = "경기도 공고"
+        local_notice["source_channel"] = "announcement"
+
+        government_hub_news = make_article(
+            title="GENERAL GOVERNMENT HUB NEWS",
+            lead_text="Youth committee coverage from a news outlet.",
+            url="https://example.com/government-hub-news",
+        )
+        government_hub_news["is_hub_candidate"] = True
+        government_hub_news["governance_scope"] = "정부"
+        government_hub_news["hub_topics"] = ["청년자문단"]
+        government_hub_news["governance_activity_types"] = ["회의"]
+
+        regional_hub_news = make_article(
+            title="GENERAL REGIONAL HUB NEWS",
+            lead_text="Local youth network coverage from a news outlet.",
+            url="https://example.com/regional-hub-news",
+            region="대구",
+        )
+        regional_hub_news["is_hub_candidate"] = True
+        regional_hub_news["governance_scope"] = "지자체"
+        regional_hub_news["hub_topics"] = ["청년네트워크"]
+        regional_hub_news["governance_activity_types"] = ["회의"]
+
+        articles = [
+            central_press,
+            central_policy_news,
+            local_press,
+            local_notice,
+            government_hub_news,
+            regional_hub_news,
+        ]
+        page_html = web_updater.build_home_page(
+            articles,
+            articles,
+            {"finished_at": self.reference_time},
+            {
+                "organization_name": "Youthside",
+                "copyright_text": "Copyright",
+                "version_text": "v0.3",
+                "email": "hello@example.com",
+            },
+        )
+
+        gov_start = page_html.index("<span>정부·지자체 동향</span>")
+        gov_local_column = page_html[gov_start:page_html.index("</section>", gov_start)]
+
+        self.assertIn("정부기관 공식 보도자료와 지자체 홈페이지 보도자료·공고 기준으로만 봅니다.", page_html)
+        self.assertIn(central_press["title"], gov_local_column)
+        self.assertIn(local_press["title"], gov_local_column)
+        self.assertIn(local_notice["title"], gov_local_column)
+        self.assertNotIn(central_policy_news["title"], gov_local_column)
+        self.assertNotIn(government_hub_news["title"], gov_local_column)
+        self.assertNotIn(regional_hub_news["title"], gov_local_column)
+
+    def test_home_categories_use_public_archive_topic_tags(self) -> None:
         recent_housing = make_article(
             title="청년 월세 신청자 모집",
             lead_text="청년 월세 신청자를 모집한다.",
@@ -328,12 +460,13 @@ class HomeSelectionTests(unittest.TestCase):
             },
         )
 
-        self.assertIn("최근 많이 잡힌 카테고리", page_html)
-        self.assertIn("최근 48시간 기준입니다.", page_html)
+        self.assertIn('aria-label="최근 많이 잡힌 카테고리"', page_html)
+        self.assertNotIn("최근 48시간 기준입니다.", page_html)
+        self.assertNotIn("home-keyword-panel", page_html)
         self.assertNotIn("오늘 많이 잡힌 키워드", page_html)
         self.assertIn("news.html?topic=%EC%A3%BC%EA%B1%B0", page_html)
         self.assertIn("news.html?topic=%EC%B7%A8%EC%97%85", page_html)
-        self.assertNotIn("news.html?topic=%EA%B8%88%EC%9C%B5", page_html)
+        self.assertIn("news.html?topic=%EA%B8%88%EC%9C%B5", page_html)
 
 
     def test_home_page_omits_weekly_section_and_uses_support_credit_badge(self) -> None:
@@ -361,8 +494,48 @@ class HomeSelectionTests(unittest.TestCase):
         )
 
         self.assertNotIn("이번 주 계속 볼 기사", page_html)
-        self.assertIn("이 사이트는 무료로 운영됩니다. 청년들을 응원하기 위해 만들어졌습니다.", page_html)
+        self.assertNotIn('id="about-info"', page_html)
+        self.assertNotIn("사이트 소개 보기", page_html)
+        self.assertNotIn("무료로 운영하며", page_html)
+        self.assertNotIn('>이용 안내</span>', page_html)
+        self.assertNotIn('>제작자 연락</a>', page_html)
         self.assertNotIn("유스사이드 preview", page_html)
+
+        footer_html = web_updater.build_footer_note(
+            {
+                "organization_name": "유스사이드(Youthside)",
+                "copyright_text": "© 2026 유스사이드 · 박진감",
+                "version_text": "v0.3",
+                "email": "hello@example.com",
+            }
+        )
+        self.assertIn("유스사이드 · 박진감", footer_html)
+        self.assertIn("청년정책 활동가, 관련 업무 종사자, 그리고 모든 청년을 위한 정책 정보 안내 서비스입니다.", footer_html)
+        self.assertIn("관련 사이트", footer_html)
+
+        self.assertIn("청년정책 모아봄", footer_html)
+        self.assertIn("by YOUTHSIDE", footer_html)
+        self.assertIn("운영 목적 :", footer_html)
+        self.assertIn("정보 기준 :", footer_html)
+        self.assertIn("확인 안내 :", footer_html)
+        self.assertNotIn("v0.3", footer_html)
+
+        self.assertNotIn("youthside-lockup.svg", footer_html)
+        self.assertNotIn("youthside-mark.svg", footer_html)
+        self.assertNotIn("youthside-wordmark-compass.svg", footer_html)
+
+        original_candidates = web_updater.YOUTHSIDE_FOOTER_IMAGE_CANDIDATES
+        try:
+            web_updater.YOUTHSIDE_FOOTER_IMAGE_CANDIDATES = ("assets/branding/youth-together-mark.svg",)
+            footer_with_image = web_updater.build_footer_note({})
+        finally:
+            web_updater.YOUTHSIDE_FOOTER_IMAGE_CANDIDATES = original_candidates
+        self.assertIn("site-footer-body has-brand-image", footer_with_image)
+        self.assertIn("assets/branding/youth-together-mark.svg?v=", footer_with_image)
+        self.assertLess(
+            footer_with_image.index("site-footer-brand-image"),
+            footer_with_image.index("site-footer-info"),
+        )
 
     def test_news_policy_and_election_pages_are_split_by_campaign_signal(self) -> None:
         general_news = make_article(
@@ -387,6 +560,7 @@ class HomeSelectionTests(unittest.TestCase):
             title="부산시 청년정책 시행계획 발표",
             lead_text="부산시가 청년정책 시행계획과 청년센터 운영 확대 방안을 발표했다.",
             url="https://example.com/local-policy",
+            source_kind="local",
             region="부산",
         )
         official_policy = make_article(
@@ -409,6 +583,10 @@ class HomeSelectionTests(unittest.TestCase):
             [general_news, pure_campaign, substantive_promise, local_policy, official_policy],
             status,
         )
+        plans_html = web_updater.build_local_government_trends_page(
+            [general_news, pure_campaign, substantive_promise, local_policy, official_policy],
+            status,
+        )
         election_html = web_updater.build_election_page(
             [general_news, pure_campaign, substantive_promise, local_policy],
             status,
@@ -420,16 +598,81 @@ class HomeSelectionTests(unittest.TestCase):
         self.assertNotIn(substantive_promise["title"], news_html)
 
         self.assertIn(official_policy["title"], policies_html)
-        self.assertIn(local_policy["title"], policies_html)
+        self.assertNotIn(local_policy["title"], policies_html)
         self.assertNotIn(pure_campaign["title"], policies_html)
         self.assertNotIn(substantive_promise["title"], policies_html)
-        self.assertIn("선거·공약성 기사는 별도 탭에서 봅니다.", policies_html)
+        self.assertIn("지자체 발표와 일반 언론 기사는 다른 메뉴로 분리합니다.", policies_html)
+
+        self.assertIn(local_policy["title"], plans_html)
+        self.assertNotIn(official_policy["title"], plans_html)
+        self.assertNotIn(pure_campaign["title"], plans_html)
+        self.assertNotIn(substantive_promise["title"], plans_html)
 
         self.assertIn(pure_campaign["title"], election_html)
         self.assertIn(substantive_promise["title"], election_html)
         self.assertIn("선거 기사", election_html)
         self.assertIn("정책 공약", election_html)
+        self.assertIn("<h3>선거·공약 필터</h3>", election_html)
+        self.assertIn('class="filter-stack filter-stack-map"', election_html)
+        self.assertIn('class="filter-control-column"', election_html)
+        self.assertIn('class="filter-region-map-svg"', election_html)
+        self.assertEqual(election_html.count('class="filter-region-map-region"'), len(web_updater.LOCAL_YOUTH_PLAN_REGIONS))
         self.assertNotIn(general_news["title"], election_html)
+
+    def test_government_trends_includes_all_central_ministries(self) -> None:
+        page_html = web_updater.build_policies_page_compact([], {"finished_at": self.reference_time})
+
+        self.assertEqual(len(web_updater.CENTRAL_MINISTRY_AUTHORITIES), 19)
+        for authority in web_updater.CENTRAL_MINISTRY_AUTHORITIES:
+            self.assertIn(f'data-policy-authority="{authority}"', page_html)
+            self.assertIn(f'data-filter-group="scope" data-filter-value="{authority}"', page_html)
+
+        self.assertIn('data-policy-authority="금융위원회"', page_html)
+        self.assertIn("19개 중앙부처 원문과 공식 자료", page_html)
+
+    def test_local_government_trends_page_has_submenus_and_plan_map(self) -> None:
+        local_announcement = make_article(
+            title="서울시, 청년 주거 지원 정책 발표",
+            lead_text="서울시가 청년 주거 안정을 위한 월세 지원 정책을 발표했다.",
+            url="https://example.com/news/youth-policy",
+            source_kind="news",
+            region="서울",
+        )
+
+        local_plan = make_article(
+            title=f"Seoul youth policy {web_updater.LOCAL_POLICY_PLAN_KEYWORDS[0]}",
+            lead_text="Seoul city published a youth policy plan document.",
+            url="https://www.seoul.go.kr/plan/youth-policy",
+            source_kind="local",
+        )
+        local_plan["source"] = "Seoul Metropolitan Government"
+        local_plan["source_name"] = "Seoul Metropolitan Government"
+        local_plan["region"] = "서울"
+
+        central_policy = make_article(
+            title="Central ministry youth policy official announcement",
+            lead_text="A central ministry published a youth policy announcement.",
+            url="https://www.moel.go.kr/news/youth-policy",
+            source_kind="official",
+        )
+        central_policy["is_official_source"] = True
+        central_policy["source"] = "Ministry of Employment and Labor"
+        central_policy["source_name"] = "Ministry of Employment and Labor"
+
+        page_html = web_updater.build_local_government_trends_page(
+            [local_announcement, local_plan, central_policy],
+            {"finished_at": self.reference_time},
+        )
+
+        self.assertIn(local_announcement["title"], page_html)
+        self.assertIn(local_plan["title"], page_html)
+        self.assertNotIn(central_policy["title"], page_html)
+        self.assertIn('href="#main-list"', page_html)
+        self.assertIn('href="#local-press-releases"', page_html)
+        self.assertIn('href="#local-policy-map"', page_html)
+        self.assertEqual(page_html.count('class="local-map-region"'), len(web_updater.LOCAL_YOUTH_PLAN_REGIONS))
+        self.assertEqual(page_html.count('class="local-map-marker"'), len(web_updater.LOCAL_YOUTH_PLAN_REGIONS))
+        self.assertNotIn('class="local-plan-card"', page_html)
 
     def test_filter_public_articles_drops_low_value_business_story_but_keeps_manual_include(self) -> None:
         weak_business_story = make_article(
@@ -465,7 +708,18 @@ class HomeSelectionTests(unittest.TestCase):
 
         page_html = web_updater.build_news_page([article], {"finished_at": self.reference_time})
 
+        self.assertIn('class="filter-stack filter-stack-map"', page_html)
+        self.assertIn('class="filter-control-column"', page_html)
+        self.assertIn('class="filter-region-map-svg"', page_html)
+        self.assertEqual(page_html.count('class="filter-region-map-region"'), len(web_updater.LOCAL_YOUTH_PLAN_REGIONS))
+        self.assertIn('class="filter-region-map-hit-target"', page_html)
+        self.assertIn('aria-label="경기도 1건 선택"', page_html)
+        self.assertIn('aria-label="서울특별시 0건 선택"', page_html)
+        self.assertIn('data-region-map-count="true">1건</tspan>', page_html)
+        self.assertNotIn("<title>서울특별시", page_html)
         self.assertIn('data-filter-group="topic" data-filter-value="주거"', page_html)
+        for region in ["서울", "강원", "세종", "울산", "전북", "제주"]:
+            self.assertIn(f'data-filter-group="region" data-filter-value="{region}"', page_html)
         self.assertIn('data-article-topics="주거|모집"', page_html)
         self.assertIn(">#주거</button>", page_html)
         self.assertIn(">주거</span>", page_html)

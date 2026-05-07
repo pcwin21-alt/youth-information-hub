@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>청년 참여·회의</title>
+  <title>참여기구</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700;900&family=Noto+Sans+KR:wght@400;500;700;800&display=swap" rel="stylesheet">
@@ -1255,6 +1255,16 @@
     border-color: var(--home-apricot-soft);
     background: rgba(251, 235, 224, 0.94);
   }
+  .home-keyword-strip {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    min-width: 0;
+  }
+  .home-keyword-strip .home-keyword-list {
+    gap: 8px;
+  }
   .home-briefing-divider {
     height: 1px;
     background: rgba(23, 33, 49, 0.08);
@@ -2067,8 +2077,7 @@
   .bottom-nav a span {
     white-space: nowrap;
   }
-  .bottom-nav a::before {
-    content: attr(data-icon);
+  .bottom-nav-icon {
     display: grid;
     place-items: center;
     width: 28px;
@@ -2076,13 +2085,20 @@
     border-radius: 999px;
     background: var(--panel-soft);
     color: var(--accent-strong);
-    font-size: 0.72rem;
-    font-weight: 800;
+  }
+  .bottom-nav-icon svg {
+    width: 17px;
+    height: 17px;
+    stroke: currentColor;
+    stroke-width: 2.2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    fill: none;
   }
   .bottom-nav a.active {
     color: var(--accent-strong);
   }
-  .bottom-nav a.active::before {
+  .bottom-nav a.active .bottom-nav-icon {
     background: var(--accent-strong);
     color: white;
   }
@@ -2477,10 +2493,13 @@
     .bottom-nav a {
       font-size: 0.58rem;
     }
-    .bottom-nav a::before {
+    .bottom-nav-icon {
       width: 24px;
       height: 24px;
-      font-size: 0.64rem;
+    }
+    .bottom-nav-icon svg {
+      width: 15px;
+      height: 15px;
     }
   }
 
@@ -2781,7 +2800,7 @@
       gap: 4px;
     }
     .nav::before {
-      content: "Navigation\A청년 모아봄";
+      content: "Navigation\A청년정책 모아봄";
       position: absolute;
       top: 20px;
       left: 24px;
@@ -3993,7 +4012,7 @@
     }
   }
 
-  /* YouthPolicy Hub tone: editorial data dashboard inspired by policy analytics tools. */
+  /* Youth policy dashboard tone: editorial data dashboard inspired by policy analytics tools. */
   :root {
     --page-bg: #f5f5f3;
     --app-bg: #f5f5f3;
@@ -4036,6 +4055,7 @@
     min-height: 80px;
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: 22px;
     margin: 0;
     padding: 0 40px;
@@ -4043,15 +4063,6 @@
     background: rgba(255, 255, 255, 0.96);
     color: var(--text);
     box-shadow: 0 1px 3px rgba(24, 24, 24, 0.04);
-  }
-  .topbar-page-title {
-    flex: 0 0 auto;
-    color: var(--text);
-    font-size: 1.5rem;
-    font-weight: 900;
-    line-height: 1;
-    letter-spacing: 0;
-    white-space: nowrap;
   }
   .top-nav {
     display: flex;
@@ -4099,9 +4110,18 @@
   .topbar-side {
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: 14px;
-    margin-left: auto;
+    width: min(720px, 100%);
+    margin: 0 auto;
     min-width: 0;
+  }
+  .live-clock {
+    color: var(--text);
+    text-decoration: none;
+  }
+  .topbar-clock {
+    display: none;
   }
   .global-search {
     display: flex;
@@ -4141,8 +4161,7 @@
     color: #686f7c;
   }
   .topbar-icon,
-  .guide-link,
-  .admin-entry {
+  .guide-link {
     display: inline-grid;
     place-items: center;
     flex: 0 0 auto;
@@ -4166,19 +4185,27 @@
     content: "?";
     font-size: 1rem;
   }
-  .admin-entry span {
-    display: none;
-  }
-  .admin-entry::before {
-    content: "◎";
-    font-size: 1.18rem;
+  .topbar-top-link {
+    font-size: 1.05rem;
     line-height: 1;
+  }
+  .topbar-home-link {
+    width: 32px;
+    height: 32px;
+    min-height: 32px;
+  }
+  .topbar-home-link svg {
+    width: 18px;
+    height: 18px;
+    stroke: currentColor;
+    stroke-width: 2.1;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    fill: none;
   }
   .topbar-icon:hover,
   .guide-link:hover,
-  .guide-link.active,
-  .admin-entry:hover,
-  body.is-admin-authorized .admin-entry {
+  .guide-link.active {
     background: #f0efed;
     color: var(--text);
   }
@@ -4217,11 +4244,11 @@
     z-index: 70;
     display: flex;
     width: 260px;
-    padding: 28px 18px 28px;
+    padding: 28px 18px 96px;
     border-right: 1px solid var(--line);
     background: #fbfbfa;
     flex-direction: column;
-    gap: 26px;
+    gap: 20px;
     overflow-y: auto;
   }
   .side-brand {
@@ -4240,6 +4267,46 @@
     color: #6d665f;
     font-size: 0.86rem;
     font-weight: 600;
+  }
+  .side-clock {
+    display: grid;
+    gap: 7px;
+    margin: -10px 2px -4px;
+    padding: 15px 16px;
+    border: 1px solid rgba(65, 61, 56, 0.16);
+    border-radius: 12px;
+    background: #f5f3ef;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  }
+  .side-menu-section {
+    display: grid;
+    gap: 10px;
+    padding: 2px 0 0;
+  }
+  .live-clock-kicker {
+    color: #6d665f;
+    font-size: 0.68rem;
+    font-weight: 900;
+    line-height: 1;
+    letter-spacing: 0;
+  }
+  .live-clock-date {
+    color: #4f4942;
+    font-size: 0.86rem;
+    font-weight: 800;
+    line-height: 1;
+    white-space: nowrap;
+  }
+  .live-clock-date-short {
+    display: none;
+  }
+  .live-clock-time {
+    color: #2f2c29;
+    font-size: 1.58rem;
+    font-weight: 900;
+    line-height: 1;
+    letter-spacing: 0;
+    white-space: nowrap;
   }
   .side-nav-head {
     display: grid;
@@ -4260,7 +4327,7 @@
   }
   .side-nav-links {
     display: grid;
-    gap: 8px;
+    gap: 6px;
   }
   .side-nav-link {
     display: flex;
@@ -4285,49 +4352,37 @@
   .side-nav-link.active {
     font-weight: 900;
   }
+  .side-nav-link.primary-menu-link {
+    min-height: 40px;
+    padding: 6px 12px;
+    border-radius: 10px;
+  }
+  .side-nav-link.primary-menu-link.active {
+    background: #f0efed;
+    color: #151515;
+    box-shadow: inset 3px 0 0 var(--accent);
+  }
   .side-nav-icon {
     position: relative;
     display: inline-grid;
     place-items: center;
-    width: 26px;
-    height: 26px;
+    width: 30px;
+    height: 30px;
     flex: 0 0 auto;
     color: currentColor;
   }
-  .side-nav-icon::before {
-    content: "";
-    width: 19px;
-    height: 19px;
-    border: 2px solid currentColor;
-    border-radius: 3px;
+  .side-nav-icon svg {
+    width: 24px;
+    height: 24px;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    fill: none;
   }
-  .side-nav-link[data-side-icon="dashboard"] .side-nav-icon::before {
-    box-shadow: 8px 0 0 -5px currentColor, 0 8px 0 -5px currentColor, 8px 8px 0 -5px currentColor;
-  }
-  .side-nav-link[data-side-icon="insights"] .side-nav-icon::before {
-    width: 17px;
-    height: 22px;
-    border-radius: 2px;
-  }
-  .side-nav-link[data-side-icon="explorer"] .side-nav-icon::before {
-    border-radius: 2px;
-    background: linear-gradient(90deg, transparent 25%, currentColor 25% 34%, transparent 34% 58%, currentColor 58% 67%, transparent 67%);
-  }
-  .side-nav-link[data-side-icon="community"] .side-nav-icon::before {
-    width: 7px;
-    height: 7px;
-    border-radius: 999px;
-    box-shadow: -8px 8px 0 -1px currentColor, 8px 8px 0 -1px currentColor;
-  }
-  .side-nav-link[data-side-icon="reports"] .side-nav-icon::before {
-    height: 15px;
-    border-radius: 2px;
-    box-shadow: 0 -7px 0 -3px currentColor;
-  }
-  .side-nav-link[data-side-icon="archives"] .side-nav-icon::before {
-    height: 17px;
-    border-radius: 2px;
-    box-shadow: inset 0 6px 0 -3px currentColor;
+  .side-nav-link:hover .side-nav-icon,
+  .side-nav-link.active .side-nav-icon {
+    color: #0f0f0f;
   }
   .side-nav-text {
     display: grid;
@@ -4347,7 +4402,7 @@
   .side-nav-section {
     display: grid;
     gap: 14px;
-    padding: 18px 12px 0;
+    padding: 20px 12px 4px;
     border-top: 1px solid #ebe8e2;
   }
   .side-nav-kicker {
@@ -4360,7 +4415,7 @@
   .side-marker-list {
     position: relative;
     display: grid;
-    gap: 2px;
+    gap: 8px;
     padding-left: 0;
   }
   .side-marker-list::before {
@@ -4379,7 +4434,7 @@
     align-items: center;
     gap: 12px;
     min-height: 42px;
-    padding: 4px 0;
+    padding: 5px 0;
     color: #746d66;
     font-size: 0.86rem;
     font-weight: 750;
@@ -4418,17 +4473,17 @@
     gap: 10px;
     margin-top: auto;
     padding: 20px;
-    border: 1px solid #f0ddbd;
+    border: 1px solid #ded8cf;
     border-radius: 8px;
-    background: #fff7e8;
-    color: #7b5b2c;
+    background: #f4f2ef;
+    color: #5f5851;
   }
   .side-update-card strong {
-    color: #6d4d20;
+    color: #2f2c29;
     font-size: 0.88rem;
   }
   .side-update-card span {
-    color: #8a7252;
+    color: #6d665f;
     font-size: 0.82rem;
     line-height: 1.7;
   }
@@ -4437,6 +4492,48 @@
     gap: 8px;
     padding-top: 18px;
     border-top: 1px solid #ebe8e2;
+  }
+  .side-utility-section {
+    display: grid;
+    gap: 8px;
+    position: fixed;
+    right: auto;
+    bottom: 18px;
+    left: 18px;
+    z-index: 72;
+    width: 224px;
+    padding-top: 10px;
+    border-top: 1px solid #ebe8e2;
+    background: linear-gradient(180deg, rgba(251, 251, 250, 0.72), #fbfbfa 38%);
+  }
+  .side-admin-entry {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    min-height: 42px;
+    padding: 10px 12px;
+    border: 1px solid #ebe8e2;
+    border-radius: 8px;
+    background: #ffffff;
+    color: #7a746d;
+    font: inherit;
+    font-size: 0.82rem;
+    font-weight: 800;
+    text-align: left;
+    cursor: pointer;
+  }
+  .side-admin-entry em {
+    color: #9a938a;
+    font-size: 0.72rem;
+    font-style: normal;
+    font-weight: 800;
+  }
+  .side-admin-entry:hover,
+  body.is-admin-authorized .side-admin-entry {
+    border-color: #d7d0c5;
+    background: #f6f4f0;
+    color: var(--text);
   }
   .side-nav-link.pending {
     min-height: 42px;
@@ -4498,15 +4595,16 @@
     display: inline-flex;
     width: fit-content;
     margin-bottom: 0;
-    padding: 6px 14px;
-    border: 1px solid rgba(222, 119, 0, 0.55);
-    border-radius: 999px;
-    background: rgba(222, 119, 0, 0.16);
-    color: #ffa928;
-    font-size: 0.84rem;
-    font-weight: 900;
+    padding: 0 0 6px;
+    border: 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 0;
+    background: transparent;
+    color: rgba(255, 242, 222, 0.82);
+    font-size: 0.82rem;
+    font-weight: 800;
     letter-spacing: 0;
-    text-transform: uppercase;
+    text-transform: none;
   }
   body[data-page="index.html"] .home-briefing-title,
   body[data-page="index.html"] .home-briefing-card.lead-arch .home-briefing-title {
@@ -4569,17 +4667,17 @@
   }
   .home-overview {
     display: grid;
-    gap: 18px;
-    padding: 24px;
+    gap: 20px;
+    padding: 28px 24px 24px;
     border: 1px solid #d2cec6;
     border-radius: 8px;
     background: #ffffff;
   }
   .home-overview-head {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(300px, 0.82fr);
+    grid-template-columns: minmax(0, 1fr) minmax(320px, 0.9fr);
     gap: 18px;
-    align-items: end;
+    align-items: center;
   }
   .home-overview-kicker {
     display: inline-flex;
@@ -4596,8 +4694,8 @@
   .home-overview h2 {
     margin: 0;
     color: var(--text);
-    font-size: clamp(1.8rem, 2.3vw, 2.45rem);
-    line-height: 1.12;
+    font-size: clamp(1.7rem, 2.25vw, 2.42rem);
+    line-height: 1.08;
   }
   .home-overview h3 {
     margin: 0;
@@ -4618,7 +4716,7 @@
     padding: 12px 10px;
   }
   .home-overview .home-glance-value {
-    font-size: 1.44rem;
+    font-size: 1.28rem;
     letter-spacing: 0;
   }
   .home-overview-columns {
@@ -4656,8 +4754,191 @@
     font-size: 0.98rem;
     line-height: 1.45;
   }
-  .home-keyword-strip .home-keyword-panel {
-    min-height: auto;
+  .home-keyword-strip {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    min-width: 0;
+    margin-top: -2px;
+    padding: 0 2px 4px;
+  }
+  .home-keyword-strip .home-keyword-list {
+    gap: 8px;
+  }
+  .home-keyword-strip .home-keyword-chip {
+    min-height: 32px;
+    padding: 6px 11px;
+    border-radius: 999px;
+    background: #fff7e8;
+    box-shadow: none;
+  }
+  .home-application-panel {
+    display: grid;
+    gap: 18px;
+    min-width: 0;
+    padding: 24px;
+    border: 1px solid #d2cec6;
+    border-radius: 8px;
+    background: #fffefb;
+  }
+  .home-application-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+  }
+  .home-application-head h2 {
+    margin: 0;
+    color: var(--text);
+    font-size: clamp(1.45rem, 1.8vw, 2.02rem);
+    line-height: 1.12;
+    letter-spacing: 0;
+  }
+  .home-application-head-links {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 8px;
+  }
+  .home-application-head .mini-link {
+    min-height: 38px;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    margin-top: 0;
+    padding: 9px 14px;
+    border: 1px solid rgba(0, 111, 99, 0.22);
+    border-radius: 999px;
+    background: #f5fbf8;
+    color: #006f63;
+    font-size: 0.82rem;
+    font-weight: 900;
+    line-height: 1;
+    text-decoration: none;
+  }
+  .home-application-head .mini-link::after {
+    content: "→";
+    font-size: 0.9rem;
+    line-height: 1;
+  }
+  .home-application-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+  }
+  .home-application-card {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(150px, 0.34fr);
+    gap: 18px;
+    min-width: 0;
+    padding: 18px;
+    border: 1px solid #dedbd5;
+    border-radius: 8px;
+    background: #ffffff;
+  }
+  .home-application-card:first-child {
+    grid-column: 1 / -1;
+    padding: 20px;
+    background: linear-gradient(135deg, #fffaf0 0%, #ffffff 48%, #f5fbf8 100%);
+  }
+  .home-application-main {
+    display: grid;
+    gap: 10px;
+    min-width: 0;
+  }
+  .home-application-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .home-application-tags span {
+    display: inline-flex;
+    min-height: 26px;
+    align-items: center;
+    padding: 4px 9px;
+    border: 1px solid #ead7b8;
+    border-radius: 999px;
+    background: #fff7e8;
+    color: #8b5b18;
+    font-size: 0.74rem;
+    font-weight: 900;
+  }
+  .home-application-card h4 {
+    margin: 0;
+    color: var(--text);
+    font-size: 1.08rem;
+    line-height: 1.42;
+    word-break: keep-all;
+    overflow-wrap: anywhere;
+  }
+  .home-application-card:first-child h4 {
+    font-size: clamp(1.22rem, 1.8vw, 1.62rem);
+    line-height: 1.34;
+  }
+  .home-application-card p {
+    margin: 0;
+    color: #5f5a54;
+    font-size: 0.9rem;
+    line-height: 1.6;
+  }
+  .home-application-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 12px;
+    color: #786f66;
+    font-size: 0.8rem;
+    font-weight: 700;
+  }
+  .home-application-period {
+    display: grid;
+    align-content: space-between;
+    gap: 12px;
+    min-width: 0;
+    padding-left: 18px;
+    border-left: 1px solid #ebe8e2;
+  }
+  .home-application-period span {
+    color: #7a746d;
+    font-size: 0.78rem;
+    font-weight: 900;
+  }
+  .home-application-period strong {
+    color: #006f63;
+    font-size: 1.06rem;
+    line-height: 1.35;
+    word-break: keep-all;
+    overflow-wrap: anywhere;
+  }
+  .home-application-link {
+    display: inline-flex;
+    min-height: 42px;
+    align-items: center;
+    justify-content: center;
+    padding: 0 14px;
+    border: 1px solid #006f63;
+    border-radius: 8px;
+    background: #006f63;
+    color: #ffffff;
+    font-size: 0.86rem;
+    font-weight: 900;
+    text-align: center;
+  }
+  .home-application-empty {
+    display: grid;
+    gap: 6px;
+    padding: 20px;
+    border: 1px dashed #d2cec6;
+    border-radius: 8px;
+    background: #fbfbfa;
+  }
+  .home-application-empty strong {
+    color: var(--text);
+    font-size: 1rem;
+  }
+  .home-application-empty span {
+    color: #6f6962;
+    line-height: 1.55;
   }
   .hero-actions {
     gap: 12px;
@@ -4803,6 +5084,281 @@
   .feature-grid {
     gap: 30px;
   }
+  .local-menu-nav {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+  }
+  .local-menu-card {
+    display: grid;
+    gap: 10px;
+    min-height: 150px;
+    padding: 22px;
+    border: 1px solid #d2cec6;
+    border-radius: 8px;
+    background: #ffffff;
+    color: inherit;
+    text-decoration: none;
+    transition: border-color 0.16s ease, box-shadow 0.16s ease, transform 0.16s ease;
+  }
+  .local-menu-card:hover {
+    border-color: #bcb6ac;
+    box-shadow: 0 12px 24px rgba(24, 24, 24, 0.06);
+    transform: translateY(-1px);
+  }
+  .local-menu-card span {
+    color: #9c5e00;
+    font-size: 0.78rem;
+    font-weight: 900;
+  }
+  .local-menu-card strong {
+    color: var(--text);
+    font-size: 1.18rem;
+    line-height: 1.28;
+  }
+  .local-menu-card small {
+    color: #5f5a54;
+    font-size: 0.9rem;
+    line-height: 1.55;
+  }
+  .local-plan-board {
+    display: flex;
+    justify-content: center;
+  }
+  .local-map-panel {
+    width: min(100%, 760px);
+    padding: 26px;
+    border: 1px solid #d2cec6;
+    border-radius: 8px;
+    background:
+      radial-gradient(circle at 60% 18%, rgba(0, 111, 99, 0.08), transparent 34%),
+      linear-gradient(180deg, #fffefb 0%, #f8f6f1 100%);
+  }
+  .local-map-canvas {
+    position: relative;
+    margin: 0 auto;
+    overflow: visible;
+    border-radius: 8px;
+    background: #f5f1e9;
+  }
+  .local-map-canvas::before {
+    content: none;
+  }
+  .local-map-canvas::after {
+    content: none;
+  }
+  .local-map-region {
+    color: #006f63;
+    text-decoration: none;
+  }
+  .local-map-region:focus-visible {
+    outline: 0;
+  }
+  .local-map-stage {
+    position: relative;
+    width: min(100%, 540px);
+    margin: 0 auto;
+    aspect-ratio: 860 / 1059.63;
+  }
+  .local-map-svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+  .local-map-path {
+    fill: #fffaf0;
+    stroke: rgba(0, 111, 99, 0.68);
+    stroke-width: 2.2;
+    stroke-linejoin: round;
+    vector-effect: non-scaling-stroke;
+    transition: fill 0.16s ease, stroke 0.16s ease, stroke-width 0.16s ease, filter 0.16s ease;
+  }
+  .local-map-path.status-confirmed {
+    fill: #d9f0ea;
+  }
+  .local-map-path.status-candidate {
+    fill: #f7e5b3;
+  }
+  .local-map-path.status-missing {
+    fill: #f7f3eb;
+  }
+  .local-map-hit-target {
+    fill: rgba(0, 0, 0, 0);
+    stroke: transparent;
+    pointer-events: all;
+  }
+  .local-map-region:hover .local-map-path,
+  .local-map-region:focus-visible .local-map-path {
+    fill: #006f63;
+    stroke: #004c45;
+    stroke-width: 2.8;
+    filter: drop-shadow(0 8px 14px rgba(24, 24, 24, 0.16));
+  }
+  .local-map-region:hover,
+  .local-map-region:focus-visible {
+    color: #ffffff;
+  }
+  .local-map-source {
+    margin: 12px 0 0;
+    color: #6b655e;
+    font-size: 0.78rem;
+    line-height: 1.5;
+    text-align: center;
+  }
+  .local-map-label-layer {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+  .local-map-marker {
+    position: absolute;
+    z-index: 4;
+    transform: translate(-50%, -50%);
+    pointer-events: auto;
+  }
+  .local-map-label {
+    display: inline-flex;
+    min-width: 38px;
+    min-height: 26px;
+    align-items: center;
+    justify-content: center;
+    padding: 4px 8px;
+    border: 1px solid rgba(0, 111, 99, 0.28);
+    border-radius: 999px;
+    background: rgba(255, 254, 251, 0.92);
+    color: #004c45;
+    font-size: 0.78rem;
+    font-weight: 900;
+    box-shadow: 0 8px 18px rgba(24, 24, 24, 0.08);
+    cursor: default;
+  }
+  .local-map-popover {
+    position: absolute;
+    left: 50%;
+    bottom: calc(100% + 9px);
+    display: grid;
+    min-width: 210px;
+    gap: 9px;
+    padding: 12px;
+    border: 1px solid #d2cec6;
+    border-radius: 8px;
+    background: #ffffff;
+    color: var(--text);
+    box-shadow: 0 18px 36px rgba(24, 24, 24, 0.15);
+    opacity: 0;
+    pointer-events: none;
+    transform: translate(-50%, 6px);
+    transition: opacity 0.14s ease, transform 0.14s ease;
+  }
+  .local-map-popover::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    bottom: -7px;
+    width: 12px;
+    height: 12px;
+    border-right: 1px solid #d2cec6;
+    border-bottom: 1px solid #d2cec6;
+    background: #ffffff;
+    transform: translateX(-50%) rotate(45deg);
+  }
+  .local-map-popover strong {
+    color: #2c2926;
+    font-size: 0.9rem;
+    line-height: 1.3;
+  }
+  .local-map-popover-count {
+    color: #6b655e;
+    font-size: 0.78rem;
+    font-weight: 800;
+  }
+  .local-map-popover a {
+    position: relative;
+    z-index: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    min-height: 30px;
+    padding: 6px 9px;
+    border-radius: 6px;
+    background: #e6f2ef;
+    color: #006f63;
+    font-size: 0.82rem;
+    font-weight: 900;
+  }
+  .local-map-popover a::after {
+    content: "↗";
+    font-size: 0.74rem;
+  }
+  .local-map-popover-empty {
+    color: #6b655e;
+    font-size: 0.82rem;
+    font-weight: 800;
+  }
+  .local-map-marker:hover,
+  .local-map-marker:focus-within {
+    z-index: 20;
+  }
+  .local-map-marker:hover .local-map-label,
+  .local-map-marker:focus-within .local-map-label {
+    background: #006f63;
+    color: #ffffff;
+  }
+  .local-map-marker:hover .local-map-popover,
+  .local-map-marker:focus-within .local-map-popover {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translate(-50%, 0);
+  }
+  .local-plan-status {
+    background: #e6f2ef !important;
+    color: #006f63 !important;
+  }
+  .local-plan-grid {
+    display: grid;
+    gap: 14px;
+  }
+  .local-plan-card {
+    display: grid;
+    gap: 12px;
+    padding: 20px;
+    border: 1px solid #d2cec6;
+    border-radius: 8px;
+    background: #ffffff;
+  }
+  .local-plan-card h3 {
+    margin: 0;
+    color: var(--text);
+    font-size: 1.08rem;
+    letter-spacing: 0;
+  }
+  .local-plan-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .local-plan-meta span {
+    display: inline-flex;
+    min-height: 26px;
+    align-items: center;
+    padding: 4px 9px;
+    border-radius: 999px;
+    background: #f6ead8;
+    color: #8b5b18;
+    font-size: 0.74rem;
+    font-weight: 900;
+  }
+  .local-plan-card p {
+    margin: 0;
+    color: #5f5a54;
+    line-height: 1.62;
+  }
+  .local-plan-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
   .article-card,
   .section-card,
   .info-card,
@@ -4849,6 +5405,218 @@
   .footer-note {
     color: #77716a;
   }
+  .site-footer {
+    display: block;
+    margin: 56px -40px -96px;
+    padding: 0;
+    border: 0;
+    background: #2f302e;
+    color: #f7f6f2;
+  }
+  .site-footer a {
+    color: inherit;
+    text-decoration: none;
+  }
+  .site-footer-top {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(220px, 300px);
+    align-items: stretch;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.18);
+  }
+  .site-footer-links {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0;
+    min-height: 64px;
+    padding: 0 36px;
+  }
+  .site-footer-links a {
+    display: inline-flex;
+    min-height: 44px;
+    align-items: center;
+    padding: 0 18px 0 0;
+    margin-right: 28px;
+    color: rgba(255, 255, 255, 0.92);
+    font-size: 0.95rem;
+    font-weight: 900;
+    white-space: nowrap;
+  }
+  .site-footer-links a:hover {
+    color: #ffd08a;
+  }
+  .site-footer-related {
+    position: relative;
+    border-left: 1px solid rgba(255, 255, 255, 0.18);
+  }
+  .site-footer-related summary {
+    display: flex;
+    min-height: 64px;
+    align-items: center;
+    justify-content: space-between;
+    gap: 18px;
+    padding: 0 36px;
+    color: rgba(255, 255, 255, 0.92);
+    font-size: 0.95rem;
+    font-weight: 900;
+    cursor: pointer;
+    list-style: none;
+  }
+  .site-footer-related summary::-webkit-details-marker {
+    display: none;
+  }
+  .site-footer-related summary::after {
+    content: "⌄";
+    font-size: 1.35rem;
+    line-height: 1;
+  }
+  .site-footer-related[open] summary::after {
+    transform: rotate(180deg);
+  }
+  .site-footer-related-list {
+    position: absolute;
+    right: 18px;
+    bottom: calc(100% + 10px);
+    z-index: 4;
+    display: grid;
+    min-width: 240px;
+    padding: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 8px;
+    background: #242522;
+    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.24);
+  }
+  .site-footer-related-list a {
+    display: flex;
+    align-items: center;
+    min-height: 38px;
+    padding: 8px 10px;
+    border-radius: 6px;
+    color: rgba(255, 255, 255, 0.86);
+    font-size: 0.86rem;
+    font-weight: 800;
+  }
+  .site-footer-related-list a:hover {
+    background: rgba(255, 255, 255, 0.08);
+    color: #ffd08a;
+  }
+  .site-footer-body {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    align-items: start;
+    gap: 36px;
+    padding: 44px 40px 46px;
+  }
+  .site-footer-body.has-brand-image {
+    grid-template-columns: minmax(360px, 0.46fr) minmax(360px, 1fr);
+    align-items: center;
+  }
+  .site-footer-brand {
+    display: grid;
+    align-content: start;
+    gap: 10px;
+    min-width: 0;
+  }
+  .site-footer-brand strong {
+    color: #ffffff;
+    font-size: 1.42rem;
+    font-weight: 900;
+    line-height: 1.08;
+    letter-spacing: 0;
+  }
+  .site-footer-brand span {
+    color: #ffd08a;
+    font-size: 0.86rem;
+    font-weight: 900;
+    letter-spacing: 0.08em;
+  }
+  .site-footer-brand small {
+    color: rgba(255, 255, 255, 0.64);
+    font-size: 0.86rem;
+    font-weight: 800;
+  }
+  .site-footer-brand-image {
+    display: grid;
+    align-items: center;
+    min-width: 0;
+  }
+  .site-footer-brand-image-frame {
+    display: grid;
+    min-height: 0;
+    align-items: center;
+    width: fit-content;
+    max-width: 100%;
+    padding: 0;
+    border-radius: 18px;
+    overflow: hidden;
+    background: #ffffff;
+    box-shadow: 0 18px 34px rgba(0, 0, 0, 0.16);
+  }
+  .site-footer-brand-image img {
+    display: block;
+    width: min(100%, 500px);
+    height: auto;
+    justify-self: start;
+    border-radius: inherit;
+  }
+  .site-footer-site-head {
+    display: grid;
+    gap: 6px;
+    margin-bottom: 6px;
+  }
+  .site-footer-site-head strong {
+    color: #ffffff;
+    font-size: 1.36rem;
+    font-weight: 900;
+    line-height: 1.12;
+    letter-spacing: 0;
+  }
+  .site-footer-site-head span {
+    color: #ffd08a;
+    font-size: 0.82rem;
+    font-weight: 900;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .site-footer-info {
+    display: grid;
+    gap: 12px;
+    min-width: 0;
+    color: rgba(255, 255, 255, 0.78);
+    font-size: 0.93rem;
+    line-height: 1.7;
+  }
+  .site-footer-info p {
+    margin: 0;
+  }
+  .site-footer-info strong {
+    color: #ffffff;
+    font-weight: 900;
+  }
+  .site-footer-info-list {
+    display: grid;
+    gap: 8px;
+  }
+  .site-footer-info-list p {
+    display: grid;
+    grid-template-columns: 84px minmax(0, 1fr);
+    gap: 10px;
+    align-items: start;
+  }
+  .site-footer-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 18px;
+    margin-top: 8px;
+    color: rgba(255, 255, 255, 0.64);
+    font-size: 0.84rem;
+  }
+  .site-footer-meta a {
+    color: #ffd08a;
+    font-weight: 900;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
   .bottom-nav {
     background: #ffffff;
   }
@@ -4860,14 +5628,35 @@
     }
     .side-nav {
       width: 232px;
+      padding-bottom: 96px;
+    }
+    .side-utility-section {
+      width: 196px;
     }
     .shell {
       width: calc(100% - 232px);
       margin-left: 232px;
       padding: 32px 24px 90px;
     }
+    .site-footer {
+      margin: 52px -24px -90px;
+    }
+    .site-footer-top {
+      grid-template-columns: 1fr;
+    }
+    .site-footer-body {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .site-footer-body.has-brand-image {
+      grid-template-columns: minmax(300px, 0.42fr) minmax(0, 1fr);
+    }
+    .site-footer-related {
+      border-top: 1px solid rgba(255, 255, 255, 0.18);
+      border-left: 0;
+    }
     .global-search {
-      display: none;
+      display: flex;
+      width: clamp(220px, 36vw, 360px);
     }
     .top-nav {
       gap: 14px;
@@ -4909,8 +5698,50 @@
       padding: 0 16px;
       gap: 14px;
     }
-    .topbar-page-title {
-      font-size: 1.18rem;
+    .topbar-side {
+      width: 100%;
+      margin: 0;
+      justify-content: center;
+      gap: 8px;
+    }
+    .topbar-home-link {
+      width: 30px;
+      height: 30px;
+      min-height: 30px;
+    }
+    .topbar-home-link svg {
+      width: 16px;
+      height: 16px;
+    }
+    .topbar-clock {
+      display: inline-grid;
+      place-items: center;
+      flex: 0 0 auto;
+      width: 74px;
+      min-height: 42px;
+      padding: 6px 8px;
+      border: 1px solid rgba(65, 61, 56, 0.14);
+      border-radius: 999px;
+      background: #f2f1ef;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.86);
+    }
+    .topbar-clock .live-clock-kicker,
+    .topbar-clock .live-clock-date {
+      display: none;
+    }
+    .topbar-clock .live-clock-date-short {
+      display: block;
+      color: #6d665f;
+      font-size: 0.66rem;
+      font-weight: 900;
+      line-height: 1;
+      white-space: nowrap;
+    }
+    .topbar-clock .live-clock-time {
+      color: #373431;
+      font-size: 0.9rem;
+      font-weight: 900;
+      line-height: 1.05;
     }
     .top-nav,
     .global-search,
@@ -4926,6 +5757,59 @@
       margin-left: 0;
       padding: 22px 16px 96px;
       overflow-x: hidden;
+    }
+    .site-footer {
+      margin: 42px -16px -96px;
+    }
+    .site-footer-links {
+      align-items: flex-start;
+      flex-direction: column;
+      min-height: auto;
+      padding: 16px 22px;
+    }
+    .site-footer-links a {
+      min-height: 34px;
+      margin-right: 0;
+      padding-right: 0;
+      font-size: 0.9rem;
+    }
+    .site-footer-related summary {
+      min-height: 54px;
+      padding: 0 22px;
+      font-size: 0.9rem;
+    }
+    .site-footer-related-list {
+      position: static;
+      min-width: 0;
+      margin: 0 16px 16px;
+      box-shadow: none;
+    }
+    .site-footer-body {
+      grid-template-columns: 1fr;
+      gap: 22px;
+      padding: 32px 22px 118px;
+    }
+    .site-footer-body.has-brand-image {
+      grid-template-columns: 1fr;
+    }
+    .site-footer-brand-image img {
+      width: min(100%, 360px);
+    }
+    .site-footer-brand-image-frame {
+      border-radius: 14px;
+    }
+    .site-footer-brand strong {
+      font-size: 1.24rem;
+    }
+    .site-footer-site-head strong {
+      font-size: 1.22rem;
+    }
+    .site-footer-info-list p {
+      grid-template-columns: 1fr;
+      gap: 2px;
+    }
+    .site-footer-info {
+      font-size: 0.88rem;
     }
     body[data-page="index.html"] .home-briefing-grid {
       width: 100%;
@@ -4982,6 +5866,30 @@
       align-items: start;
       flex-direction: column;
     }
+    .home-application-panel {
+      padding: 18px;
+    }
+    .home-application-head {
+      align-items: start;
+      flex-direction: column;
+    }
+    .home-application-head-links {
+      justify-content: flex-start;
+    }
+    .home-application-grid {
+      grid-template-columns: 1fr;
+    }
+    .home-application-card,
+    .home-application-card:first-child {
+      grid-column: auto;
+      grid-template-columns: 1fr;
+      padding: 18px;
+    }
+    .home-application-period {
+      padding: 14px 0 0;
+      border-top: 1px solid #ebe8e2;
+      border-left: 0;
+    }
     .youth-metrics-grid,
     .article-grid,
     .feature-grid {
@@ -5008,12 +5916,17 @@
   }
   body[data-page="index.html"] .home-briefing-card.lead {
     grid-area: auto !important;
-    min-height: 124px;
+    min-height: 172px;
     width: 100%;
-    padding: 22px 30px;
+    padding: 26px 34px 28px;
+    grid-template-columns: 1fr !important;
+    justify-items: center;
   }
   body[data-page="index.html"] .home-briefing-card.lead-arch.has-media {
-    padding-right: 32px !important;
+    padding-right: 34px !important;
+  }
+  body[data-page="index.html"] .home-briefing-card.lead .home-illustration-slot {
+    display: none !important;
   }
   body[data-page="index.html"] .home-overview {
     grid-area: auto !important;
@@ -5021,34 +5934,81 @@
   }
   body[data-page="index.html"] .home-briefing-card.lead .home-briefing-content {
     width: 100%;
+    min-height: 100%;
     max-width: none;
     display: grid !important;
-    grid-template-columns: auto minmax(0, 1fr);
+    grid-template-columns: minmax(0, 1fr);
     grid-template-areas:
-      "date copy"
-      "title copy";
-    gap: 8px 28px;
-    align-items: center;
+      "date"
+      "title"
+      "copy";
+    gap: 18px;
+    place-items: center;
+    align-content: center;
+    justify-content: center;
+    text-align: center;
   }
   body[data-page="index.html"] .home-briefing-date,
   body[data-page="index.html"] .home-briefing-card.lead-arch .home-briefing-date {
-    align-self: end;
+    align-self: center;
+    justify-self: center;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    min-height: auto;
+    width: fit-content;
+    max-width: 100%;
+    padding: 0 0 7px;
+    border: 0;
+    border-bottom: 1px solid rgba(255, 238, 213, 0.22);
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+    color: rgba(255, 239, 214, 0.84);
+    font-size: clamp(0.82rem, 0.72vw, 0.94rem);
+    line-height: 1.2;
+  }
+  body[data-page="index.html"] .home-briefing-date-label {
+    display: inline-flex;
+    align-items: center;
+    color: rgba(255, 208, 138, 0.86);
+    font-size: 0.78rem;
+    font-weight: 800;
+    white-space: nowrap;
+  }
+  body[data-page="index.html"] .home-briefing-date-day {
+    display: inline-flex;
+    align-items: center;
+    white-space: nowrap;
+  }
+  body[data-page="index.html"] .home-briefing-date-time {
+    display: inline-flex;
+    align-items: center;
+    color: rgba(255, 239, 214, 0.9);
+    font-size: inherit;
+    font-weight: 800;
+    white-space: nowrap;
   }
   body[data-page="index.html"] .home-briefing-title,
   body[data-page="index.html"] .home-briefing-card.lead-arch .home-briefing-title {
+    align-self: center;
+    justify-self: center;
     max-width: none;
-    font-size: clamp(2rem, 3vw, 3.15rem);
-    line-height: 1.06;
+    font-size: clamp(2.3rem, 3.4vw, 3.85rem);
+    line-height: 0.96;
     white-space: nowrap;
     word-break: keep-all;
     overflow-wrap: break-word;
   }
   body[data-page="index.html"] .home-briefing-copy,
   body[data-page="index.html"] .home-briefing-card.lead-arch .home-briefing-copy {
-    justify-self: end;
-    max-width: 560px;
-    font-size: 0.96rem;
-    line-height: 1.56;
+    justify-self: center;
+    align-self: center;
+    max-width: 760px;
+    color: rgba(238, 241, 236, 0.78);
+    font-size: clamp(0.98rem, 1.03vw, 1.12rem);
+    line-height: 1.6;
   }
   body[data-page="index.html"] .home-briefing-summary {
     display: none !important;
@@ -5061,12 +6021,19 @@
     padding: 0 18px;
   }
   @media (max-width: 1180px) {
+    body[data-page="index.html"] .home-briefing-card.lead {
+      min-height: auto;
+    }
     body[data-page="index.html"] .home-briefing-card.lead .home-briefing-content {
       grid-template-columns: 1fr;
       grid-template-areas:
         "date"
         "title"
         "copy";
+      gap: 14px;
+      place-items: center;
+      align-content: center;
+      text-align: center;
     }
     body[data-page="index.html"] .home-briefing-summary,
     body[data-page="index.html"] .home-briefing-card.lead .hero-actions {
@@ -5075,12 +6042,13 @@
     }
     body[data-page="index.html"] .home-briefing-title,
     body[data-page="index.html"] .home-briefing-card.lead-arch .home-briefing-title {
+      font-size: clamp(2rem, 6.8vw, 2.85rem);
       white-space: normal;
     }
     body[data-page="index.html"] .home-briefing-copy,
     body[data-page="index.html"] .home-briefing-card.lead-arch .home-briefing-copy {
-      justify-self: start;
-      max-width: 680px;
+      justify-self: center;
+      max-width: 780px;
     }
     .home-overview-head,
     .home-overview-columns {
@@ -5089,7 +6057,28 @@
   }
   @media (max-width: 900px) {
     body[data-page="index.html"] .home-briefing-card.lead {
-      padding: 24px 22px;
+      padding: 24px 22px 26px;
+    }
+    body[data-page="index.html"] .home-briefing-card.lead-arch.has-media {
+      padding-right: 22px !important;
+    }
+    body[data-page="index.html"] .home-briefing-date,
+    body[data-page="index.html"] .home-briefing-card.lead-arch .home-briefing-date {
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px 12px;
+      min-height: auto;
+      padding: 0 0 7px;
+      border-radius: 0;
+      font-size: 0.8rem;
+    }
+    body[data-page="index.html"] .home-briefing-date-time {
+      font-size: inherit;
+    }
+    body[data-page="index.html"] .home-briefing-copy,
+    body[data-page="index.html"] .home-briefing-card.lead-arch .home-briefing-copy {
+      font-size: 0.96rem;
+      line-height: 1.62;
     }
     body[data-page="index.html"] .home-briefing-summary {
       width: 100%;
@@ -5148,6 +6137,7 @@
   }
   body:not([data-page="index.html"]) .section#filters {
     margin-top: 18px;
+    scroll-margin-top: 96px;
   }
   body:not([data-page="index.html"]) .section#main-list {
     margin-top: 24px;
@@ -5161,12 +6151,209 @@
   body:not([data-page="index.html"]) .filter-head h3 {
     font-size: 1.08rem;
   }
+  body:not([data-page="index.html"]) .filter-panel.has-region-map .filter-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    margin-bottom: 0;
+    padding-bottom: 14px;
+    border-bottom: 1px solid #ebe8e2;
+  }
+  body:not([data-page="index.html"]) .filter-panel.has-region-map .filter-head .filter-status {
+    display: inline-flex;
+    min-height: 30px;
+    align-items: center;
+    padding: 0 11px;
+    border: 1px solid #dedbd5;
+    border-radius: 999px;
+    background: #f8f6f1;
+    color: #5f5a54;
+    font-size: 0.8rem;
+    font-weight: 800;
+    white-space: nowrap;
+  }
   body:not([data-page="index.html"]) .filter-head p {
     max-width: 760px;
     font-size: 0.9rem;
   }
   body:not([data-page="index.html"]) .filter-stack {
-    gap: 14px;
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: 18px 16px;
+    align-items: start;
+  }
+  body:not([data-page="index.html"]) .filter-group {
+    min-width: 0;
+  }
+  body:not([data-page="index.html"]) .filter-group.wide,
+  body:not([data-page="index.html"]) .filter-group-group,
+  body:not([data-page="index.html"]) .filter-group-region,
+  body:not([data-page="index.html"]) .filter-group-topic,
+  body:not([data-page="index.html"]) .filter-group-scope,
+  body:not([data-page="index.html"]) .filter-group-type {
+    grid-column: 1 / -1;
+  }
+  body:not([data-page="index.html"]) .filter-group-search {
+    grid-column: 1 / span 6;
+  }
+  body:not([data-page="index.html"]) .filter-group-date {
+    grid-column: 7 / span 6;
+  }
+  body:not([data-page="index.html"]) .filter-button {
+    min-height: 42px;
+    padding: 0 16px;
+  }
+  body:not([data-page="index.html"]) .filter-search-input {
+    min-height: 56px;
+    padding: 0 16px;
+  }
+  body:not([data-page="index.html"]) .date-picker-row {
+    grid-template-columns: minmax(104px, 132px) minmax(0, 1fr);
+    gap: 12px;
+    align-items: stretch;
+  }
+  body:not([data-page="index.html"]) .date-picker-row > .filter-button {
+    width: 100%;
+    min-height: 56px;
+  }
+  body:not([data-page="index.html"]) .date-range-fields {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
+  body:not([data-page="index.html"]) .date-input-wrap {
+    min-width: 0;
+    min-height: 56px;
+    padding: 10px 14px;
+  }
+  body:not([data-page="index.html"]) .filter-panel.has-region-map .filter-stack-map {
+    grid-template-columns: minmax(260px, 360px) minmax(0, 1fr);
+    gap: 0 28px;
+    align-items: stretch;
+  }
+  body:not([data-page="index.html"]) .filter-panel.has-region-map .filter-map-column,
+  body:not([data-page="index.html"]) .filter-panel.has-region-map .filter-control-column {
+    display: grid;
+    min-width: 0;
+    align-content: start;
+  }
+  body:not([data-page="index.html"]) .filter-panel.has-region-map .filter-map-column {
+    padding-right: 24px;
+    border-right: 1px solid #ebe8e2;
+  }
+  body:not([data-page="index.html"]) .filter-panel.has-region-map .filter-control-column {
+    gap: 18px;
+  }
+  body:not([data-page="index.html"]) .filter-panel.has-region-map .filter-group-region-map,
+  body:not([data-page="index.html"]) .filter-panel.has-region-map .filter-group-topic,
+  body:not([data-page="index.html"]) .filter-panel.has-region-map .filter-group-type,
+  body:not([data-page="index.html"]) .filter-panel.has-region-map .filter-group-search,
+  body:not([data-page="index.html"]) .filter-panel.has-region-map .filter-group-date {
+    grid-column: auto;
+    grid-row: auto;
+  }
+  .filter-region-picker {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+  .filter-region-quick {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .filter-region-map {
+    width: min(100%, 320px);
+    justify-self: center;
+    align-self: start;
+  }
+  .filter-region-map-svg {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+  .filter-region-map-region {
+    color: #006f63;
+    cursor: pointer;
+  }
+  .filter-region-map-region:focus-visible {
+    outline: 0;
+  }
+  .filter-region-map-path {
+    fill: #f7f3eb;
+    stroke: rgba(0, 111, 99, 0.5);
+    stroke-width: 1.55;
+    stroke-linejoin: round;
+    vector-effect: non-scaling-stroke;
+    transition: fill 0.16s ease, stroke 0.16s ease, stroke-width 0.16s ease, filter 0.16s ease;
+  }
+  .filter-region-map-hit-target {
+    fill: rgba(0, 0, 0, 0);
+    stroke: transparent;
+    pointer-events: all;
+  }
+  .filter-region-map-tooltip-layer {
+    pointer-events: none;
+  }
+  .filter-region-map-tooltip {
+    opacity: 0;
+    pointer-events: none;
+    transform-box: fill-box;
+    transform-origin: center;
+    transition: opacity 0.14s ease, transform 0.14s ease;
+  }
+  .filter-region-map-tooltip rect {
+    fill: #ffffff;
+    stroke: #d2cec6;
+    stroke-width: 1.5;
+    filter: drop-shadow(0 10px 18px rgba(24, 24, 24, 0.16));
+  }
+  .filter-region-map-tooltip text {
+    fill: #2c2926;
+    font-size: 28px;
+    font-weight: 900;
+    letter-spacing: 0;
+  }
+  .filter-region-map-tooltip .filter-region-map-count {
+    fill: #006f63;
+  }
+  .filter-region-map-region:hover .filter-region-map-path,
+  .filter-region-map-region:focus-visible .filter-region-map-path {
+    fill: #d9f0ea;
+    stroke: #006f63;
+    stroke-width: 2.25;
+  }
+  .filter-region-map-tooltip.is-visible {
+    opacity: 1;
+  }
+  .filter-region-map-region.active .filter-region-map-path {
+    fill: #8b6b32;
+    stroke: #5c4318;
+    stroke-width: 2.45;
+    filter: drop-shadow(0 8px 12px rgba(24, 24, 24, 0.16));
+  }
+  .filter-region-map-region.is-empty:not(.active) .filter-region-map-path {
+    fill: #fbfaf5;
+    stroke: rgba(107, 101, 94, 0.3);
+    stroke-width: 1.05;
+  }
+  .filter-region-map-region.is-empty:not(.active):hover .filter-region-map-path,
+  .filter-region-map-region.is-empty:not(.active):focus-visible .filter-region-map-path {
+    fill: #f4f1ea;
+    stroke: rgba(107, 101, 94, 0.54);
+    stroke-width: 1.45;
+  }
+  .filter-region-map-tooltip.is-empty:not(.active) .filter-region-map-count {
+    fill: #8a837a;
+  }
+  .filter-region-map-tooltip.active .filter-region-map-count {
+    fill: #8b6b32;
+  }
+  body:not([data-page="index.html"]) .filter-controls {
+    flex-wrap: wrap;
+    overflow: visible;
+    padding-bottom: 0;
   }
   body:not([data-page="index.html"]) .article-grid,
   body:not([data-page="index.html"]) .feature-grid {
@@ -5176,6 +6363,105 @@
   body:not([data-page="index.html"]) .section-card,
   body:not([data-page="index.html"]) .info-card {
     min-width: 0;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .top-nav-link,
+    .bottom-nav a,
+    .side-marker-link,
+    .button,
+    .mini-link,
+    .action-button,
+    .filter-button,
+    .article-card,
+    .section-card,
+    .info-card,
+    .list-card,
+    .page-intro-card,
+    .home-overview-column,
+    .home-application-card,
+    .home-application-link,
+    .home-urgent-link,
+    .home-glance-item,
+    .side-clock,
+    .side-update-card,
+    .article-media,
+    .article-thumbnail {
+      transition:
+        background-color 180ms ease,
+        border-color 180ms ease,
+        box-shadow 180ms ease,
+        color 180ms ease,
+        opacity 180ms ease,
+        transform 180ms ease;
+      will-change: transform;
+    }
+    .top-nav-link:hover {
+      transform: translateY(-1px);
+    }
+    .top-nav-link.active::after {
+      transition: transform 180ms ease, opacity 180ms ease;
+      transform-origin: center;
+    }
+    .bottom-nav a:hover {
+      transform: translateY(-2px);
+    }
+    .side-marker-link:hover {
+      transform: translateX(3px);
+    }
+    .side-clock:hover,
+    .side-update-card:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 12px 24px rgba(31, 42, 51, 0.08);
+    }
+    .button:hover,
+    .mini-link:hover,
+    .action-button:hover,
+    .filter-button:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 8px 18px rgba(31, 42, 51, 0.08);
+    }
+    .filter-button:hover:not(.active) {
+      border-color: rgba(156, 110, 43, 0.32);
+      background: #fffaf0;
+    }
+    .article-card:hover,
+    .feature-grid > .section-card:hover,
+    .home-maker-panel:hover,
+    .info-card:hover,
+    .list-card:hover,
+    .page-intro-card:hover,
+    .home-overview-column:hover,
+    .home-application-card:hover,
+    .home-glance-item:hover {
+      transform: translateY(-2px);
+      border-color: rgba(156, 110, 43, 0.24);
+      box-shadow: 0 16px 36px rgba(31, 42, 51, 0.1);
+    }
+    .home-application-link:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 10px 18px rgba(0, 111, 99, 0.16);
+    }
+    .home-urgent-item:hover .home-urgent-link {
+      transform: translateX(3px);
+      background: rgba(156, 110, 43, 0.06);
+    }
+    .article-media {
+      overflow: hidden;
+    }
+    .article-card:hover .article-thumbnail,
+    .article-media:hover .article-thumbnail {
+      transform: scale(1.025);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      transition-duration: 0.01ms !important;
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      scroll-behavior: auto !important;
+    }
   }
   @media (max-width: 900px) {
     body:not([data-page="index.html"]) .page-intro-card,
@@ -5190,6 +6476,74 @@
     body:not([data-page="index.html"]) .page-intro-media {
       width: 88px;
       justify-self: end;
+    }
+    body:not([data-page="index.html"]) .filter-stack {
+      grid-template-columns: 1fr;
+    }
+    body:not([data-page="index.html"]) .section#filters {
+      scroll-margin-top: 82px;
+    }
+    body:not([data-page="index.html"]) .filter-panel.has-region-map .filter-head {
+      align-items: flex-start;
+      flex-direction: column;
+    }
+    body:not([data-page="index.html"]) .filter-panel.has-region-map .filter-stack-map {
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+    body:not([data-page="index.html"]) .filter-panel.has-region-map .filter-map-column {
+      padding-right: 0;
+      padding-bottom: 16px;
+      border-right: 0;
+      border-bottom: 1px solid #ebe8e2;
+    }
+    body:not([data-page="index.html"]) .filter-group.wide,
+    body:not([data-page="index.html"]) .filter-group-group,
+    body:not([data-page="index.html"]) .filter-group-region,
+    body:not([data-page="index.html"]) .filter-group-topic,
+    body:not([data-page="index.html"]) .filter-group-scope,
+    body:not([data-page="index.html"]) .filter-group-type,
+    body:not([data-page="index.html"]) .filter-group-search,
+    body:not([data-page="index.html"]) .filter-group-date {
+      grid-column: 1 / -1;
+    }
+    body:not([data-page="index.html"]) .filter-panel.has-region-map .filter-group-region-map,
+    body:not([data-page="index.html"]) .filter-panel.has-region-map .filter-group-topic,
+    body:not([data-page="index.html"]) .filter-panel.has-region-map .filter-group-type,
+    body:not([data-page="index.html"]) .filter-panel.has-region-map .filter-group-search,
+    body:not([data-page="index.html"]) .filter-panel.has-region-map .filter-group-date {
+      grid-column: 1 / -1;
+      grid-row: auto;
+    }
+    body:not([data-page="index.html"]) .date-picker-row,
+    body:not([data-page="index.html"]) .date-range-fields {
+      grid-template-columns: 1fr;
+    }
+    .filter-region-map {
+      width: min(100%, 320px);
+    }
+    .local-menu-nav {
+      grid-template-columns: 1fr;
+    }
+    .local-map-panel {
+      min-height: auto;
+      padding: 16px;
+    }
+    .local-map-canvas {
+      min-height: auto;
+    }
+    .local-map-stage {
+      width: min(100%, 360px);
+    }
+    .local-map-label {
+      min-width: 32px;
+      min-height: 24px;
+      padding: 3px 7px;
+      font-size: 0.7rem;
+    }
+    .local-map-popover {
+      min-width: 176px;
+      padding: 10px;
     }
   }
   body[data-page="index.html"] .youth-metrics-grid {
@@ -5235,6 +6589,9 @@
     grid-template-columns: minmax(0, 2fr) minmax(320px, 0.92fr);
     gap: 30px;
     align-items: start;
+  }
+  .home-research-only-grid {
+    grid-template-columns: 1fr;
   }
   .home-region-block,
   .home-research-block {
@@ -5341,6 +6698,9 @@
     display: grid;
     gap: 12px;
   }
+  .home-research-section .home-report-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
   .home-report-row {
     display: grid;
     gap: 7px;
@@ -5394,6 +6754,9 @@
     .home-data-board-grid {
       gap: 22px;
     }
+    .home-research-section .home-report-list {
+      grid-template-columns: 1fr;
+    }
     .home-region-table {
       min-width: 620px;
       font-size: 0.88rem;
@@ -5407,30 +6770,86 @@
 </head>
 <body data-page="hub.html">
   <header class="topbar">
-    <div class="topbar-page-title">커뮤니티 펄스</div>
-    <nav class="top-nav" aria-label="주요 메뉴"><a class="top-nav-link " href="index.html">오늘</a><a class="top-nav-link " href="news.html">뉴스</a><a class="top-nav-link " href="election.html">선거·공약</a><a class="top-nav-link " href="policies.html">정책</a><a class="top-nav-link " href="plans.html">정책계획</a><a class="top-nav-link active" href="hub.html" aria-current="page">참여·회의</a><a class="top-nav-link " href="tools.html">자료·도구</a></nav>
     <div class="topbar-side">
       <form class="global-search" action="news.html" method="get" role="search"><span class="global-search-icon" aria-hidden="true">⌕</span><input type="search" name="q" autocomplete="off" placeholder="Search insights..."></form>
+      <a class="topbar-icon topbar-home-link" href="index.html" aria-label="홈">
+        <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+          <path d="M4 11.5 12 5l8 6.5"></path>
+          <path d="M6.5 10.5V20h11V10.5"></path>
+          <path d="M10 20v-5h4v5"></path>
+        </svg>
+      </a>
+      
+      <time class="live-clock topbar-clock" data-live-clock aria-label="한국시간 현재 시각">
+        <span class="live-clock-kicker">한국시간</span>
+        <span class="live-clock-date" data-live-clock-date>오늘</span>
+        <span class="live-clock-date-short" data-live-clock-date-short>오늘</span>
+        <span class="live-clock-time" data-live-clock-time>--:--</span>
+      </time>
+    
       <a class="guide-link" href="guide.html" data-guide-open-link="true" aria-label="이용 안내">이용방법</a>
-      <div class="header-side"><strong>05.03 23:32</strong><span>최근 반영</span></div>
-      <button class="admin-entry" type="button" data-admin-login-open="true" title="임시 관리자 표시 모드 열기"><span data-admin-entry-label>관리 로그인</span></button>
-      <a class="topbar-icon" href="contact.html" aria-label="제보와 문의">○</a>
+      <a class="topbar-icon topbar-top-link" href="#page-top" aria-label="맨 위로">↑</a>
     </div>
   </header>
   <div class="app-layout">
     <aside class="side-nav" aria-label="현재 페이지 위치 마커">
       
-      <a class="side-brand" href="index.html" aria-label="청년 모아봄 홈으로 이동">
-        <strong>YouthPolicy Hub</strong>
-        <span>Policy & Data</span>
+      <a class="side-brand" href="index.html" aria-label="청년정책 모아봄 홈으로 이동">
+        <strong>청년정책 모아봄</strong>
+        <span>by YOUTHSIDE</span>
       </a>
-      <div class="side-nav-head">
-        <strong>참여·회의 위치</strong>
-        <span>자문·위원회·네트워크</span>
+      
+      <time class="live-clock side-clock" data-live-clock aria-label="한국시간 현재 시각">
+        <span class="live-clock-kicker">한국시간</span>
+        <span class="live-clock-date" data-live-clock-date>오늘</span>
+        <span class="live-clock-date-short" data-live-clock-date-short>오늘</span>
+        <span class="live-clock-time" data-live-clock-time>--:--</span>
+      </time>
+    
+      <div class="side-menu-section">
+        <span class="side-nav-kicker">주요 메뉴</span>
+        <nav class="side-nav-links" aria-label="주요 메뉴">
+          <a class="side-nav-link primary-menu-link" href="index.html" data-side-icon="home"><span class="side-nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false">
+          <path d="M4 11.5 12 5l8 6.5"></path>
+          <path d="M6.5 10.5V20h11V10.5"></path>
+          <path d="M10 20v-5h4v5"></path>
+        </svg></span><span class="side-nav-text"><strong>홈</strong></span></a><a class="side-nav-link primary-menu-link" href="news.html" data-side-icon="news"><span class="side-nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false">
+          <path d="M6 5.5h9.5L19 9v9.5H6z"></path>
+          <path d="M15.5 5.5V9H19"></path>
+          <path d="M9 12h6"></path>
+          <path d="M9 15h6"></path>
+          <path d="M9 18h4"></path>
+        </svg></span><span class="side-nav-text"><strong>뉴스 모음</strong></span></a><a class="side-nav-link primary-menu-link" href="election.html" data-side-icon="ballot"><span class="side-nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false">
+          <path d="M6 10h12v10H6z"></path>
+          <path d="M8.5 10 12 5l3.5 5"></path>
+          <path d="m9.5 15 2 2 4-4"></path>
+        </svg></span><span class="side-nav-text"><strong>선거·공약</strong></span></a><a class="side-nav-link primary-menu-link" href="policies.html" data-side-icon="government"><span class="side-nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false">
+          <path d="M4 9.5 12 5l8 4.5"></path>
+          <path d="M5.5 19h13"></path>
+          <path d="M7 10.5V17"></path>
+          <path d="M12 10.5V17"></path>
+          <path d="M17 10.5V17"></path>
+        </svg></span><span class="side-nav-text"><strong>정부 동향</strong></span></a><a class="side-nav-link primary-menu-link" href="plans.html" data-side-icon="map"><span class="side-nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false">
+          <path d="M5 6.5 10 5l4 1.5 5-1.5v12.5L14 19l-4-1.5L5 19z"></path>
+          <path d="M10 5v12.5"></path>
+          <path d="M14 6.5V19"></path>
+          <path d="M16.5 10.5h.01"></path>
+        </svg></span><span class="side-nav-text"><strong>지자체 동향</strong></span></a><a class="side-nav-link primary-menu-link active" href="hub.html" data-side-icon="meeting" aria-current="page"><span class="side-nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false">
+          <path d="M8.5 10a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z"></path>
+          <path d="M15.5 10a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z"></path>
+          <path d="M4.5 19c.5-3 2-5 4-5s3.5 2 4 5"></path>
+          <path d="M11.5 15c.8-.7 1.9-1 3-1 2 0 3.5 2 4 5"></path>
+        </svg></span><span class="side-nav-text"><strong>참여기구</strong></span></a><a class="side-nav-link primary-menu-link" href="tools.html" data-side-icon="book"><span class="side-nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false">
+          <path d="M5.5 5.5h5A3.5 3.5 0 0 1 14 9v10a3.5 3.5 0 0 0-3.5-3.5h-5z"></path>
+          <path d="M18.5 5.5h-4A3.5 3.5 0 0 0 11 9v10a3.5 3.5 0 0 1 3.5-3.5h4z"></path>
+          <path d="M14 9h2.5"></path>
+          <path d="M14 12h2.5"></path>
+        </svg></span><span class="side-nav-text"><strong>연구·문헌</strong></span></a>
+        </nav>
       </div>
       <div class="side-nav-section">
-        <span class="side-nav-kicker">Page Markers</span>
-        <nav class="side-marker-list" aria-label="현재 페이지 위치 마커">
+        <span class="side-nav-kicker">스크롤 바로가기</span>
+        <nav class="side-marker-list" aria-label="스크롤 바로가기">
           <a class="side-marker-link active" href="#page-top" data-marker-link aria-current="location"><span class="side-marker-dot" aria-hidden="true"></span><span class="side-marker-label">상단</span></a><a class="side-marker-link" href="#filters" data-marker-link><span class="side-marker-dot" aria-hidden="true"></span><span class="side-marker-label">필터</span></a><a class="side-marker-link" href="#main-list" data-marker-link><span class="side-marker-dot" aria-hidden="true"></span><span class="side-marker-label">공식 회의</span></a><a class="side-marker-link" href="#public-governance" data-marker-link><span class="side-marker-dot" aria-hidden="true"></span><span class="side-marker-label">참여 채널</span></a>
         </nav>
       </div>
@@ -5442,6 +6861,9 @@
         <span class="side-nav-kicker">관리 예정</span>
         <button class="side-nav-link pending" type="button" disabled aria-disabled="true"><span>운영 대시보드</span><em>예정</em></button><button class="side-nav-link pending" type="button" disabled aria-disabled="true"><span>기사 큐레이션</span><em>예정</em></button><button class="side-nav-link pending" type="button" disabled aria-disabled="true"><span>수집 상태</span><em>예정</em></button><button class="side-nav-link pending" type="button" disabled aria-disabled="true"><span>배포 상태</span><em>예정</em></button><button class="side-nav-link pending" type="button" disabled aria-disabled="true"><span>문의 관리</span><em>예정</em></button><button class="side-nav-link pending" type="button" disabled aria-disabled="true"><span>설정</span><em>예정</em></button>
       </div>
+      <div class="side-utility-section">
+        <button class="side-admin-entry" type="button" data-admin-login-open="true" title="임시 관리자 표시 모드 열기"><span data-admin-entry-label>관리 로그인</span><em>임시</em></button>
+      </div>
     
     </aside>
     <div class="shell" id="page-top">
@@ -5451,9 +6873,9 @@
     <article class="page-intro-card has-media" data-media-host="page-intro">
       <div class="page-intro-content">
         <div class="page-intro-top">
-          <span class="page-intro-badge">참여·회의</span>
+          <span class="page-intro-badge">참여기구</span>
         </div>
-        <h1 class="page-intro-title">청년 참여와 회의 기록</h1>
+        <h1 class="page-intro-title">청년 참여기구 기록</h1>
         <p class="page-intro-copy">뉴스와는 별도로, 중앙부처 자문·회의와 지역 청년정책 네트워크, 공공기관 참여·협의 기록만 구조화해 모았습니다.</p>
       </div>
       <div class="page-intro-media"><img class="page-intro-media-img" src="assets/illustrations/intro-hub.svg" alt="대화와 연결을 나타내는 말풍선 모티프 일러스트" decoding="async" loading="lazy" onerror="const host=this.closest('[data-media-host]');if(host){host.classList.remove('has-media');}this.parentElement.remove();"></div>
@@ -5463,46 +6885,45 @@
     <section class="section" id="filters">
       <article class="section-card filter-panel">
         <div class="filter-head">
-          <h3>구분 · 세부 · 활동 · 검색 · 기간</h3>
-          <p>뉴스와 별도로, 중앙부처 자문·회의와 지역 청년정책 네트워크, 공공기관 참여 기록만 구조화해 봅니다.</p>
+          <h3>활동 필터</h3>
         </div>
         <div class="filter-stack">
-          <div class="filter-group">
+          <div class="filter-group filter-group-group wide">
             <span class="filter-group-label">구분</span>
             <div class="filter-controls"><button class="filter-button active" type="button" data-policy-filter="true" data-filter-group="group" data-filter-value="all" aria-pressed="true">전체</button><button class="filter-button" type="button" data-policy-filter="true" data-filter-group="group" data-filter-value="official" aria-pressed="false">중앙부처 자문·회의</button><button class="filter-button" type="button" data-policy-filter="true" data-filter-group="group" data-filter-value="local" aria-pressed="false">지역 청년정책 네트워크</button><button class="filter-button" type="button" data-policy-filter="true" data-filter-group="group" data-filter-value="public" aria-pressed="false">공공기관 참여·협의</button></div>
           </div>
-          <div class="filter-group">
+          <div class="filter-group filter-group-scope wide">
             <span class="filter-group-label" data-policy-scope-label="true">세부 구분</span>
-            <div class="filter-controls"><button class="filter-button active" type="button" data-policy-filter="true" data-filter-group="scope" data-filter-value="all" data-policy-scope-button="true" data-scope-kind="all" aria-pressed="true">전체</button><button class="filter-button" type="button" data-policy-filter="true" data-filter-group="scope" data-filter-value="국무조정실" data-policy-scope-button="true" data-scope-kind="official" aria-pressed="false" hidden>국무조정실</button><button class="filter-button" type="button" data-policy-filter="true" data-filter-group="scope" data-filter-value="정책브리핑" data-policy-scope-button="true" data-scope-kind="official" aria-pressed="false" hidden>정책브리핑</button></div>
+            <div class="filter-controls"><button class="filter-button active" type="button" data-policy-filter="true" data-filter-group="scope" data-filter-value="all" data-policy-scope-button="true" data-scope-kind="all" aria-pressed="true">전체</button><button class="filter-button" type="button" data-policy-filter="true" data-filter-group="scope" data-filter-value="국무조정실" data-policy-scope-button="true" data-scope-kind="official" aria-pressed="false" hidden>국무조정실</button><button class="filter-button" type="button" data-policy-filter="true" data-filter-group="scope" data-filter-value="BBS NEWS" data-policy-scope-button="true" data-scope-kind="official" aria-pressed="false" hidden>BBS NEWS</button><button class="filter-button" type="button" data-policy-filter="true" data-filter-group="scope" data-filter-value="국방일보" data-policy-scope-button="true" data-scope-kind="official" aria-pressed="false" hidden>국방일보</button><button class="filter-button" type="button" data-policy-filter="true" data-filter-group="scope" data-filter-value="뉴스핌" data-policy-scope-button="true" data-scope-kind="official" aria-pressed="false" hidden>뉴스핌</button><button class="filter-button" type="button" data-policy-filter="true" data-filter-group="scope" data-filter-value="문화일보" data-policy-scope-button="true" data-scope-kind="official" aria-pressed="false" hidden>문화일보</button><button class="filter-button" type="button" data-policy-filter="true" data-filter-group="scope" data-filter-value="울주군" data-policy-scope-button="true" data-scope-kind="local" aria-pressed="false" hidden>울주군</button></div>
           </div>
-          <div class="filter-group">
+          <div class="filter-group filter-group-type wide">
             <span class="filter-group-label">활동</span>
-            <div class="filter-controls"><button class="filter-button active" type="button" data-policy-filter="true" data-filter-group="type" data-filter-value="all" aria-pressed="true">전체</button><button class="filter-button" type="button" data-policy-filter="true" data-filter-group="type" data-filter-value="회의" aria-pressed="false">회의</button><button class="filter-button" type="button" data-policy-filter="true" data-filter-group="type" data-filter-value="간담회" aria-pressed="false">간담회</button></div>
+            <div class="filter-controls"><button class="filter-button active" type="button" data-policy-filter="true" data-filter-group="type" data-filter-value="all" aria-pressed="true">전체</button><button class="filter-button" type="button" data-policy-filter="true" data-filter-group="type" data-filter-value="회의" aria-pressed="false">회의</button><button class="filter-button" type="button" data-policy-filter="true" data-filter-group="type" data-filter-value="모집" aria-pressed="false">모집</button><button class="filter-button" type="button" data-policy-filter="true" data-filter-group="type" data-filter-value="간담회" aria-pressed="false">간담회</button></div>
           </div>
-          <div class="filter-group">
+          <div class="filter-group filter-group-search">
             <span class="filter-group-label">검색</span>
             <label class="filter-search-wrap">
               <input class="filter-search-input" type="search" data-policy-search-input="true" placeholder="기사 제목, 요약, 출처 검색">
             </label>
           </div>
-          <div class="filter-group">
+          <div class="filter-group filter-group-date">
             <span class="filter-group-label">기간</span>
             <div class="date-picker-row">
               <button class="filter-button active" type="button" data-policy-filter="true" data-filter-group="date" data-filter-value="all" aria-pressed="true">전체</button>
               <div class="date-range-fields">
                 <label class="date-input-wrap" data-policy-date-launch="true">
                   <span class="date-picker-label">시작일</span>
-                  <input class="date-input" type="date" data-policy-date-input="true" data-date-role="start" min="2026-04-13" max="2026-04-28">
+                  <input class="date-input" type="date" data-policy-date-input="true" data-date-role="start" min="2026-04-13" max="2026-05-07">
                 </label>
                 <label class="date-input-wrap" data-policy-date-launch="true">
                   <span class="date-picker-label">종료일</span>
-                  <input class="date-input" type="date" data-policy-date-input="true" data-date-role="end" min="2026-04-13" max="2026-04-28">
+                  <input class="date-input" type="date" data-policy-date-input="true" data-date-role="end" min="2026-04-13" max="2026-05-07">
                 </label>
               </div>
             </div>
           </div>
         </div>
-        <div class="filter-status" data-policy-filter-status>전체 5건을 보고 있습니다.</div>
+        <div class="filter-status" data-policy-filter-status>전체 9건을 보고 있습니다.</div>
       </article>
     </section>
     
@@ -5512,9 +6933,45 @@
             <h2>중앙부처 자문·회의</h2>
             <p>국무조정실과 중앙부처의 청년 관계장관회의, 자문단, 보좌역, 위원회 기록을 모았습니다.</p>
           </div>
-          <span class="mini-link" aria-disabled="true" data-policy-section-count>5건</span>
+          <span class="mini-link" aria-disabled="true" data-policy-section-count>8건</span>
         </div>
         <div class="article-grid">
+    <article class="article-card has-media" data-article-card="true" data-policy-card="true" data-policy-group="official" data-policy-scope="국방일보" data-policy-type="간담회" data-article-url="https://kookbang.dema.mil.kr/newsWeb/20260508/7/ATCE_CTGR_0010010000/view.do" data-article-title="“국방 향한 청년 제언 귀담아듣고 활동도 적극 지원”" data-article-date="2026-05-07" data-article-region="서울" data-article-search="“국방 향한 청년 제언 귀담아듣고 활동도 적극 지원” 혁신어벤져스&amp;middot;청년자문단 합동 발대식 안규백 장관, 특별강연서 도전정신 강조 소통간담회선 고민 공감하며 조언 건네 &amp;nbsp; 혁신어벤져스&amp;middot;청년자문단 합동 발대식&amp;hellip;소통하는 軍 안규백(맨 앞줄 오른쪽 다섯째) 국방부 장관이 7일 서울 용산구 국방컨벤션에서 열린 &amp;lsquo;제7기 혁신어벤져스&amp;rsquo;와 &amp;lsquo;제3기 2030청년자문단&amp;rsquo; 합동 발대식에서 참석자들과 기념촬영을 하고 있다. &amp;nbsp; 안규백 국방부 장관이 청년들을 만나 &amp;ldquo;어떤 실수나 과오도 다시 바로잡고 새롭게 시작할 수 있는 것이 청년의 특권&amp;rdquo;이라며 끊임없는 도전정신을 가지라고 당부했다. 안 장관은 7일 서울 용산구 국방컨벤션에서 국방부 청년 공무원으로 구성된 &amp;lsquo;제7기 혁신어벤져스&amp;rsquo;와 국방 분야에 관심 있는 청년 국민들로 꾸려진 &amp;lsquo;2030청년자문단&amp;rsquo;을 대상으로 특별강연을 열고 이같이 밝혔다. &amp;lsquo;청년에게 전하는 안부&amp;rsquo;를 주제로 강연에 나선 안 장관은 &amp;ldquo;청년들은 사람과의 만남에서, 책 속의 지혜에서, 그리고 낯선 곳으로의 여행에서 인생을 배운다&amp;rdquo;며 &amp;ldquo;꿈과 목표를 갖고 다양한 경험을 통해 자신만의 길을 찾아가길 바란다&amp;rdquo;고 말했다. 이어 &amp;ldquo;역사학자 아놀드 토인비가 인류의 역사를 &amp;lsquo;도전과 응전의 역사&amp;rsquo;라고 말한 것처럼 실패를 두려워하지 말고 끊임없이 도전해 달라&amp;rdquo;고 강조했다. &amp;nbsp; &amp;nbsp; 7일 열린 제7기 혁신어벤져스 및 제3기 2030청년자문단 합동 발대식에서 안규백 국방부 장관이 참석자들과 소통하고 있다. 한재호 기자 강연 뒤에는 소통간담회 &amp;lsquo;장관님, 궁금해요!&amp;rsquo;가 이어졌다. 안 장관은 형식과 주제에 구애받지 않고 자유롭게 대화를 나눴다. 참석한 청년들은 진로와 조직문화, 공직생활 등에 대한 고민을 털어놨고, 안 장관은 이에 공감하며 조언을 건넸다. 안 장관은 &amp;ldquo;청년들의 미래에 대해 함께 고민하고 이야기를 나눌 수 있었던 뜻깊은 시간이었다&amp;rdquo;며 &amp;ldquo;국방을 향한 청년들의 제언을 귀담아듣고, 청년 단원들의 활동도 적극 지원하겠다&amp;rdquo;고 전했다. 김수혁 국방부 청년보좌역은 &amp;ldquo;청년들이 국방부의 일원으로서 자긍심과 소속감을 느끼고 장관과 더욱 가까이 소통할 수 있었던 의미 있는 자리였다&amp;rdquo;며 &amp;ldquo;이들의 생생한 목소리가 국방정책과 조직문화에 실질적으로 반영될 수 있도록 가교 역할에 최선을 다하겠다&amp;rdquo;고 했다. 특별강연과 소통간담회에 앞서 안 장관은 &amp;lsquo;제7기 혁신어벤져스&amp;rsquo;와 &amp;lsquo;제3기 2030청년자문단&amp;rsquo; 합동 발대식을 주관했다. 혁신어벤져스는 조직문화 개선과 자유로운 소통문화 확산을 위한 활동을 해오고 있다. 청년자문단은 주요 국방정책에 대한 의견 제시와 정책 제언 역할을 맡는다. 두 조직은 긴밀한 협업을 통해 청년세대의 목소리를 국방 정책과 조직문화에 반영해 나갈 방침이다. 김해령 기자 국방일보 네이버뉴스 거버넌스(1개월) 서울 용산 용산구 서울 혁신어벤져스·청년자문단 합동 발대식 안규백 장관, 특별강연서 도전정신 강조 소통간담회선 고민 공감하며 조언 건네 혁신어벤져스·청년자문단 합동 발대식…소통하는 軍 안규백(맨 앞줄 오른쪽 다섯째) 국방부... 정부 간담회, 자문 청년보좌역, 2030청년자문단, 청년자문단 국방일보">
+      <a class="article-media" href="https://kookbang.dema.mil.kr/newsWeb/20260508/7/ATCE_CTGR_0010010000/view.do" target="_blank" rel="noreferrer" aria-label="“국방 향한 청년 제언 귀담아듣고 활동도 적극 지원” 이미지와 기사 링크 바로가기"><img class="article-thumbnail" src="https://kookbang.dema.mil.kr/newspaper/tmplat/upload/20260507/thumb1/BBS_202605070516217210.jpg" alt="“국방 향한 청년 제언 귀담아듣고 활동도 적극 지원”" loading="lazy" decoding="async" referrerpolicy="no-referrer"  onerror="this.parentElement.hidden=true;var c=this.closest('.article-card');if(c){c.classList.remove('has-media');c.classList.add('no-media');}"></a>
+      <div class="article-meta"><div class="article-meta-tags"><span class="meta-pill primary">정부</span><span class="meta-pill subtle">국방일보</span></div><div class="article-byline"><span class="meta-item"><img class="publisher-icon" src="https://kookbang.dema.mil.kr/newspaper/2022/images/icon/favicon.ico" alt="국방일보 아이콘" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.hidden=true">국방일보</span><span class="meta-divider" aria-hidden="true">•</span><span class="meta-item">2026-05-07 18:00</span></div></div>
+      <h3><a class="article-title-link" href="https://kookbang.dema.mil.kr/newsWeb/20260508/7/ATCE_CTGR_0010010000/view.do" target="_blank" rel="noreferrer" aria-label="“국방 향한 청년 제언 귀담아듣고 활동도 적극 지원” 링크 바로가기">“국방 향한 청년 제언 귀담아듣고 활동도 적극 지원”</a></h3>
+      <div class="badge-row"><span class="badge">간담회, 자문</span><span class="badge">청년보좌역, 2030청년자문단, 청년자문단</span></div>
+      <p class="article-summary"><a class="article-summary-link" href="https://kookbang.dema.mil.kr/newsWeb/20260508/7/ATCE_CTGR_0010010000/view.do" target="_blank" rel="noreferrer" aria-label="“국방 향한 청년 제언 귀담아듣고 활동도 적극 지원” 링크 바로가기">혁신어벤져스·청년자문단 합동 발대식 안규백 장관, 특별강연서 도전정신 강조 소통간담회선 고민 공감하며 조언 건네 혁신어벤져스·청년자문단 합동 발대식…소통하는 軍 안규백(맨 앞줄 오른쪽 다섯째) 국방부...</a></p>
+      <div class="article-actions"><a class="mini-link article-link-action" href="https://kookbang.dema.mil.kr/newsWeb/20260508/7/ATCE_CTGR_0010010000/view.do" target="_blank" rel="noreferrer" aria-label="“국방 향한 청년 제언 귀담아듣고 활동도 적극 지원” 링크 바로가기">링크 바로가기</a><button class="action-button" type="button" data-article-action="share" data-article-url="https://kookbang.dema.mil.kr/newsWeb/20260508/7/ATCE_CTGR_0010010000/view.do" data-share-title="“국방 향한 청년 제언 귀담아듣고 활동도 적극 지원”" aria-label="“국방 향한 청년 제언 귀담아듣고 활동도 적극 지원” 공유하기">공유하기</button><button class="action-button" type="button" data-article-action="copy" data-article-url="https://kookbang.dema.mil.kr/newsWeb/20260508/7/ATCE_CTGR_0010010000/view.do" data-share-title="“국방 향한 청년 제언 귀담아듣고 활동도 적극 지원”" aria-label="“국방 향한 청년 제언 귀담아듣고 활동도 적극 지원” 링크 복사">링크 복사</button></div><div class="article-feedback" data-article-feedback aria-live="polite"></div>
+    </article>
+    
+    <article class="article-card has-media" data-article-card="true" data-policy-card="true" data-policy-group="official" data-policy-scope="문화일보" data-policy-type="간담회" data-article-url="https://www.munhwa.com/article/11587453" data-article-title="국방부 ‘혁신어벤져스·2030청년자문단’ 합동발대식 가져" data-article-date="2026-05-07" data-article-region="서울" data-article-search="국방부 ‘혁신어벤져스·2030청년자문단’ 합동발대식 가져 국방부는 7일 서울 용산 국방컨벤션에서 안규백 국방부장관 주관으로 ‘제7기 혁신어벤져스’·‘제3기 2030청년자문단’ 합동발대식을 개최하고, 청년세대의 역할과 공직가치에 대해 소통하는 시간을 가졌다. 혁신어벤져스는 국방부 소속 청년 공무원으로 구성돼 조직문화 개선과 소 news &gt; 국방 문화일보 네이버뉴스 거버넌스(1개월) 정충신 서울 용산 제시 서울 국방부는 7일 서울 용산 국방컨벤션에서 안규백 국방부장관 주관으로 ‘제7기 혁신어벤져스’·‘제3기 2030청년자문단’ 합동발대식을 개최하고, 청년세대의 역할과 공직가치에 대해 소통하는 시간을 가졌다..... 정부 간담회, 위원회, 자문 청년보좌역, 2030청년자문단, 청년자문단 문화일보">
+      <a class="article-media" href="https://www.munhwa.com/article/11587453" target="_blank" rel="noreferrer" aria-label="국방부 ‘혁신어벤져스·2030청년자문단’ 합동발대식 가져 이미지와 기사 링크 바로가기"><img class="article-thumbnail" src="https://wimg.munhwa.com/news/cms/2026/05/07/news-p.v1.20260507.4a9fe5a3590f4252a44ee4d71d5c7e79_R.jpg" alt="국방부 ‘혁신어벤져스·2030청년자문단’ 합동발대식 가져" loading="lazy" decoding="async" referrerpolicy="no-referrer"  onerror="this.parentElement.hidden=true;var c=this.closest('.article-card');if(c){c.classList.remove('has-media');c.classList.add('no-media');}"></a>
+      <div class="article-meta"><div class="article-meta-tags"><span class="meta-pill primary">정부</span><span class="meta-pill subtle">문화일보</span></div><div class="article-byline"><span class="meta-item"><img class="publisher-icon" src="https://static.munhwa.com/img/favicon_service.ico" alt="문화일보 아이콘" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.hidden=true">문화일보</span><span class="meta-divider" aria-hidden="true">•</span><span class="meta-item">2026-05-07 15:32</span></div></div>
+      <h3><a class="article-title-link" href="https://www.munhwa.com/article/11587453" target="_blank" rel="noreferrer" aria-label="국방부 ‘혁신어벤져스·2030청년자문단’ 합동발대식 가져 링크 바로가기">국방부 ‘혁신어벤져스·2030청년자문단’ 합동발대식 가져</a></h3>
+      <div class="badge-row"><span class="badge">간담회, 위원회, 자문</span><span class="badge">청년보좌역, 2030청년자문단, 청년자문단</span></div>
+      <p class="article-summary"><a class="article-summary-link" href="https://www.munhwa.com/article/11587453" target="_blank" rel="noreferrer" aria-label="국방부 ‘혁신어벤져스·2030청년자문단’ 합동발대식 가져 링크 바로가기">국방부는 7일 서울 용산 국방컨벤션에서 안규백 국방부장관 주관으로 ‘제7기 혁신어벤져스’·‘제3기 2030청년자문단’ 합동발대식을 개최하고, 청년세대의 역할과 공직가치에 대해 소통하는 시간을 가졌다.....</a></p>
+      <div class="article-actions"><a class="mini-link article-link-action" href="https://www.munhwa.com/article/11587453" target="_blank" rel="noreferrer" aria-label="국방부 ‘혁신어벤져스·2030청년자문단’ 합동발대식 가져 링크 바로가기">링크 바로가기</a><button class="action-button" type="button" data-article-action="share" data-article-url="https://www.munhwa.com/article/11587453" data-share-title="국방부 ‘혁신어벤져스·2030청년자문단’ 합동발대식 가져" aria-label="국방부 ‘혁신어벤져스·2030청년자문단’ 합동발대식 가져 공유하기">공유하기</button><button class="action-button" type="button" data-article-action="copy" data-article-url="https://www.munhwa.com/article/11587453" data-share-title="국방부 ‘혁신어벤져스·2030청년자문단’ 합동발대식 가져" aria-label="국방부 ‘혁신어벤져스·2030청년자문단’ 합동발대식 가져 링크 복사">링크 복사</button></div><div class="article-feedback" data-article-feedback aria-live="polite"></div>
+    </article>
+    
+    <article class="article-card has-media" data-article-card="true" data-policy-card="true" data-policy-group="official" data-policy-scope="뉴스핌" data-policy-type="간담회" data-article-url="https://www.newspim.com/news/view/20260507000947" data-article-title="안규백 국방장관, 청년자문단 발대식서 &quot;실패 두려워 말라&quot;" data-article-date="2026-05-07" data-article-region="서울" data-article-search="안규백 국방장관, 청년자문단 발대식서 &quot;실패 두려워 말라&quot; [서울=뉴스핌] 오동룡 군사방산전문기자 = 국방부가 7일 오후 2시 서울 용산구 국방컨벤션에서 안규백 국방부 장관 주관으로 &#x27;제7기 혁신어벤져스&#x27;와 &#x27;제3기 2030청년자문단&#x27; 합동발대식을 개최했다.이날 행사는 청년세대의 역할과 공직 가치에 대한 소통 강화를 뉴스핌 네이버뉴스 거버넌스(1개월) 서울 용산 용산구 서울 [서울=뉴스핌] 오동룡 군사방산전문기자 = 국방부가 7일 오후 2시 서울 용산구 국방컨벤션에서 안규백 국방부 장관 주관으로 &#x27;제7기 혁신어벤져스&#x27;와 &#x27;제3기 2030청년자문단&#x27; 합동발대식을 개최했다..... 정부 간담회, 위원회, 자문 청년보좌역, 2030청년자문단, 청년자문단 뉴스핌">
+      <a class="article-media" href="https://www.newspim.com/news/view/20260507000947" target="_blank" rel="noreferrer" aria-label="안규백 국방장관, 청년자문단 발대식서 &quot;실패 두려워 말라&quot; 이미지와 기사 링크 바로가기"><img class="article-thumbnail" src="https://img.newspim.com/news/2026/05/07/2605071450344360_t1.jpg" alt="안규백 국방장관, 청년자문단 발대식서 &quot;실패 두려워 말라&quot;" loading="lazy" decoding="async" referrerpolicy="no-referrer"  onerror="this.parentElement.hidden=true;var c=this.closest('.article-card');if(c){c.classList.remove('has-media');c.classList.add('no-media');}"></a>
+      <div class="article-meta"><div class="article-meta-tags"><span class="meta-pill primary">정부</span><span class="meta-pill subtle">뉴스핌</span></div><div class="article-byline"><span class="meta-item"><img class="publisher-icon" src="https://img.newspim.com/m/mweb/favicon_72X72V2.png" alt="뉴스핌 아이콘" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.hidden=true">뉴스핌</span><span class="meta-divider" aria-hidden="true">•</span><span class="meta-item">2026-05-07 14:55</span></div></div>
+      <h3><a class="article-title-link" href="https://www.newspim.com/news/view/20260507000947" target="_blank" rel="noreferrer" aria-label="안규백 국방장관, 청년자문단 발대식서 &quot;실패 두려워 말라&quot; 링크 바로가기">안규백 국방장관, 청년자문단 발대식서 &quot;실패 두려워 말라&quot;</a></h3>
+      <div class="badge-row"><span class="badge">간담회, 위원회, 자문</span><span class="badge">청년보좌역, 2030청년자문단, 청년자문단</span></div>
+      <p class="article-summary"><a class="article-summary-link" href="https://www.newspim.com/news/view/20260507000947" target="_blank" rel="noreferrer" aria-label="안규백 국방장관, 청년자문단 발대식서 &quot;실패 두려워 말라&quot; 링크 바로가기">[서울=뉴스핌] 오동룡 군사방산전문기자 = 국방부가 7일 오후 2시 서울 용산구 국방컨벤션에서 안규백 국방부 장관 주관으로 &#x27;제7기 혁신어벤져스&#x27;와 &#x27;제3기 2030청년자문단&#x27; 합동발대식을 개최했다.....</a></p>
+      <div class="article-actions"><a class="mini-link article-link-action" href="https://www.newspim.com/news/view/20260507000947" target="_blank" rel="noreferrer" aria-label="안규백 국방장관, 청년자문단 발대식서 &quot;실패 두려워 말라&quot; 링크 바로가기">링크 바로가기</a><button class="action-button" type="button" data-article-action="share" data-article-url="https://www.newspim.com/news/view/20260507000947" data-share-title="안규백 국방장관, 청년자문단 발대식서 &quot;실패 두려워 말라&quot;" aria-label="안규백 국방장관, 청년자문단 발대식서 &quot;실패 두려워 말라&quot; 공유하기">공유하기</button><button class="action-button" type="button" data-article-action="copy" data-article-url="https://www.newspim.com/news/view/20260507000947" data-share-title="안규백 국방장관, 청년자문단 발대식서 &quot;실패 두려워 말라&quot;" aria-label="안규백 국방장관, 청년자문단 발대식서 &quot;실패 두려워 말라&quot; 링크 복사">링크 복사</button></div><div class="article-feedback" data-article-feedback aria-live="polite"></div>
+    </article>
+    
+    <article class="article-card has-media" data-article-card="true" data-policy-card="true" data-policy-group="official" data-policy-scope="BBS NEWS" data-policy-type="간담회" data-article-url="https://news.bbsi.co.kr/news/articleView.html?idxno=4082338" data-article-title="국방부, 청년세대와 소통 강화…‘혁신어벤져스·2030자문단’ 발대식" data-article-date="2026-05-07" data-article-region="중앙" data-article-search="국방부, 청년세대와 소통 강화…‘혁신어벤져스·2030자문단’ 발대식 국방부가 청년 세대의 참신한 시각을 정책과 조직 문화에 담기 위해 소통 행보에 나섰습니다. 국방부는 오늘 안규백 국방부 장관 주관으로 ‘제7기 혁신어벤져스’와 ‘제3기 2030 청년자문단’ 합동 발대식을 개최했습니다.혁신어벤져스는 조직 문화 개선을 주도하는 내부 청년 공무원들로, 20 정치 BBS NEWS 네이버뉴스 거버넌스(1개월) 황민호 기자 중앙 국방부가 청년 세대의 참신한 시각을 정책과 조직 문화에 담기 위해 소통 행보에 나섰습니다. 국방부는 오늘 안규백 국방부 장관 주관으로 ‘제7기 혁신어벤져스’와 ‘제3기 2030 청년자문단’ 합동 발대식... 정부 간담회, 자문 청년보좌역, 2030자문단, 2030청년자문단 BBS NEWS">
+      <a class="article-media" href="https://news.bbsi.co.kr/news/articleView.html?idxno=4082338" target="_blank" rel="noreferrer" aria-label="국방부, 청년세대와 소통 강화…‘혁신어벤져스·2030자문단’ 발대식 이미지와 기사 링크 바로가기"><img class="article-thumbnail" src="https://cdn.news.bbsi.co.kr/news/thumbnail/202605/4082338_727139_5124_v150.jpg" alt="국방부, 청년세대와 소통 강화…‘혁신어벤져스·2030자문단’ 발대식" loading="lazy" decoding="async" referrerpolicy="no-referrer"  onerror="this.parentElement.hidden=true;var c=this.closest('.article-card');if(c){c.classList.remove('has-media');c.classList.add('no-media');}"></a>
+      <div class="article-meta"><div class="article-meta-tags"><span class="meta-pill primary">정부</span><span class="meta-pill subtle">BBS NEWS</span></div><div class="article-byline"><span class="meta-item"><img class="publisher-icon" src="https://cdn.news.bbsi.co.kr/image/logo/favicon.ico" alt="BBS NEWS 아이콘" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.hidden=true">BBS NEWS</span><span class="meta-divider" aria-hidden="true">•</span><span class="meta-item">2026-05-07 14:51</span></div></div>
+      <h3><a class="article-title-link" href="https://news.bbsi.co.kr/news/articleView.html?idxno=4082338" target="_blank" rel="noreferrer" aria-label="국방부, 청년세대와 소통 강화…‘혁신어벤져스·2030자문단’ 발대식 링크 바로가기">국방부, 청년세대와 소통 강화…‘혁신어벤져스·2030자문단’ 발대식</a></h3>
+      <div class="badge-row"><span class="badge">간담회, 자문</span><span class="badge">청년보좌역, 2030자문단, 2030청년자문단</span></div>
+      <p class="article-summary"><a class="article-summary-link" href="https://news.bbsi.co.kr/news/articleView.html?idxno=4082338" target="_blank" rel="noreferrer" aria-label="국방부, 청년세대와 소통 강화…‘혁신어벤져스·2030자문단’ 발대식 링크 바로가기">국방부가 청년 세대의 참신한 시각을 정책과 조직 문화에 담기 위해 소통 행보에 나섰습니다. 국방부는 오늘 안규백 국방부 장관 주관으로 ‘제7기 혁신어벤져스’와 ‘제3기 2030 청년자문단’ 합동 발대식...</a></p>
+      <div class="article-actions"><a class="mini-link article-link-action" href="https://news.bbsi.co.kr/news/articleView.html?idxno=4082338" target="_blank" rel="noreferrer" aria-label="국방부, 청년세대와 소통 강화…‘혁신어벤져스·2030자문단’ 발대식 링크 바로가기">링크 바로가기</a><button class="action-button" type="button" data-article-action="share" data-article-url="https://news.bbsi.co.kr/news/articleView.html?idxno=4082338" data-share-title="국방부, 청년세대와 소통 강화…‘혁신어벤져스·2030자문단’ 발대식" aria-label="국방부, 청년세대와 소통 강화…‘혁신어벤져스·2030자문단’ 발대식 공유하기">공유하기</button><button class="action-button" type="button" data-article-action="copy" data-article-url="https://news.bbsi.co.kr/news/articleView.html?idxno=4082338" data-share-title="국방부, 청년세대와 소통 강화…‘혁신어벤져스·2030자문단’ 발대식" aria-label="국방부, 청년세대와 소통 강화…‘혁신어벤져스·2030자문단’ 발대식 링크 복사">링크 복사</button></div><div class="article-feedback" data-article-feedback aria-live="polite"></div>
+    </article>
+    
     <article class="article-card has-media" data-article-card="true" data-policy-card="true" data-policy-group="official" data-policy-scope="국무조정실" data-policy-type="회의" data-article-url="https://news.bbsi.co.kr/news/articleView.html?idxno=4081072" data-article-title="“청년의 미래에 30조 투입”...정부, 일자리·주거·격차 해소 총력전" data-article-date="2026-04-28" data-article-region="서울" data-article-search="“청년의 미래에 30조 투입”...정부, 일자리·주거·격차 해소 총력전 정부가 청년들의 일자리와 주거, 복지 문제를 해결하기 위해 올해만 약 30조 원의 예산을 투입해 사각지대에 놓였던 보호시설 퇴소 청년 지원이나 지방으로 이주하는 수도권 청년 지원 등 청년들에게 총력을 기울이기로 했습니다.정부는 오늘(28일) 오후 서울 중소기업 DMC타워에서 김민석 국 경제 &gt; 정책 BBS NEWS 네이버뉴스 거버넌스(1개월) 박성용 기자 주거 부채 고용 취업 주거 서울 광주 충남 서울시 광주시 서울 정부가 청년들의 일자리와 주거, 복지 문제를 해결하기 위해 올해만 약 30조 원의 예산을 투입해 사각지대에 놓였던 보호시설 퇴소 청년 지원이나 지방으로 이주하는 수도권 청년 지원 등 청년들에게 총력을... 정부 회의, 위원회 청년보좌역, 청년정책조정위원회, 청년정책 관계장관회의 국무조정실">
       <a class="article-media" href="https://news.bbsi.co.kr/news/articleView.html?idxno=4081072" target="_blank" rel="noreferrer" aria-label="“청년의 미래에 30조 투입”...정부, 일자리·주거·격차 해소 총력전 이미지와 기사 링크 바로가기"><img class="article-thumbnail" src="https://cdn.news.bbsi.co.kr/news/thumbnail/202604/4081072_724889_848_v150.jpg" alt="“청년의 미래에 30조 투입”...정부, 일자리·주거·격차 해소 총력전" loading="lazy" decoding="async" referrerpolicy="no-referrer"  onerror="this.parentElement.hidden=true;var c=this.closest('.article-card');if(c){c.classList.remove('has-media');c.classList.add('no-media');}"></a>
       <div class="article-meta"><div class="article-meta-tags"><span class="meta-pill primary">정부</span><span class="meta-pill subtle">국무조정실</span></div><div class="article-byline"><span class="meta-item"><img class="publisher-icon" src="https://cdn.news.bbsi.co.kr/image/logo/favicon.ico" alt="BBS NEWS 아이콘" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.hidden=true">BBS NEWS</span><span class="meta-divider" aria-hidden="true">•</span><span class="meta-item">2026-04-28 18:13</span></div></div>
@@ -5542,15 +6999,6 @@
       <div class="article-actions"><a class="mini-link article-link-action" href="https://www.opm.go.kr:443/opm/news/press-release.do" target="_blank" rel="noreferrer" aria-label="국무조정실 국무총리비서실 | 알림·소식 | 보도·설명자료 | 보도자료 게시판읽기([보도자료] 정부위원회 청년위원 의무위촉 비율 20%로 상향) | 국무조정실 국무총리비서실 링크 바로가기">링크 바로가기</a><button class="action-button" type="button" data-article-action="share" data-article-url="https://www.opm.go.kr:443/opm/news/press-release.do" data-share-title="국무조정실 국무총리비서실 | 알림·소식 | 보도·설명자료 | 보도자료 게시판읽기([보도자료] 정부위원회 청년위원 의무위촉 비율 20%로 상향) | 국무조정실 국무총리비서실" aria-label="국무조정실 국무총리비서실 | 알림·소식 | 보도·설명자료 | 보도자료 게시판읽기([보도자료] 정부위원회 청년위원 의무위촉 비율 20%로 상향) | 국무조정실 국무총리비서실 공유하기">공유하기</button><button class="action-button" type="button" data-article-action="copy" data-article-url="https://www.opm.go.kr:443/opm/news/press-release.do" data-share-title="국무조정실 국무총리비서실 | 알림·소식 | 보도·설명자료 | 보도자료 게시판읽기([보도자료] 정부위원회 청년위원 의무위촉 비율 20%로 상향) | 국무조정실 국무총리비서실" aria-label="국무조정실 국무총리비서실 | 알림·소식 | 보도·설명자료 | 보도자료 게시판읽기([보도자료] 정부위원회 청년위원 의무위촉 비율 20%로 상향) | 국무조정실 국무총리비서실 링크 복사">링크 복사</button></div><div class="article-feedback" data-article-feedback aria-live="polite"></div>
     </article>
     
-    <article class="article-card no-media" data-article-card="true" data-policy-card="true" data-policy-group="official" data-policy-scope="정책브리핑" data-policy-type="회의" data-article-url="https://news.google.com/rss/articles/CBMiaEFVX3lxTFBpZnd3Z05lZlNZTHIxNTR6cVdHdnZsNFNQRHlsYXZmd2NLNDBWR25uaXo5NzBqN1RCczk1cUhEdTR2SFBVUDNEMFRsbURnUTBVbjk0akt3R2F1WXZzMjh3VU1DYVYyT1M4?oc=5" data-article-title="제18차 청년정책조정위원회 겸 제2차 청년정책 관계장관회의 - 사진" data-article-date="" data-article-region="중앙" data-article-search="제18차 청년정책조정위원회 겸 제2차 청년정책 관계장관회의 - 사진 제18차 청년정책조정위원회 겸 제2차 청년정책 관계장관회의 - 사진 | 멀티미디어 대한민국 정책브리핑 대한민국 정책브리핑 구글뉴스 청년정책(7일) 중앙 정부 회의, 위원회, 발표회 청년정책조정위원회, 청년정책 관계장관회의 정책브리핑">
-      
-      <div class="article-meta"><div class="article-meta-tags"><span class="meta-pill primary">정부</span><span class="meta-pill subtle">정책브리핑</span></div><div class="article-byline"><span class="meta-item">대한민국 정책브리핑</span><span class="meta-divider" aria-hidden="true">•</span><span class="meta-item">2026-04-28 08:05</span></div></div>
-      <h3><a class="article-title-link" href="https://news.google.com/rss/articles/CBMiaEFVX3lxTFBpZnd3Z05lZlNZTHIxNTR6cVdHdnZsNFNQRHlsYXZmd2NLNDBWR25uaXo5NzBqN1RCczk1cUhEdTR2SFBVUDNEMFRsbURnUTBVbjk0akt3R2F1WXZzMjh3VU1DYVYyT1M4?oc=5" target="_blank" rel="noreferrer" aria-label="제18차 청년정책조정위원회 겸 제2차 청년정책 관계장관회의 - 사진 링크 바로가기">제18차 청년정책조정위원회 겸 제2차 청년정책 관계장관회의 - 사진</a></h3>
-      <div class="badge-row"><span class="badge">회의, 위원회, 발표회</span><span class="badge">청년정책조정위원회, 청년정책 관계장관회의</span></div>
-      
-      <div class="article-actions"><a class="mini-link article-link-action" href="https://news.google.com/rss/articles/CBMiaEFVX3lxTFBpZnd3Z05lZlNZTHIxNTR6cVdHdnZsNFNQRHlsYXZmd2NLNDBWR25uaXo5NzBqN1RCczk1cUhEdTR2SFBVUDNEMFRsbURnUTBVbjk0akt3R2F1WXZzMjh3VU1DYVYyT1M4?oc=5" target="_blank" rel="noreferrer" aria-label="제18차 청년정책조정위원회 겸 제2차 청년정책 관계장관회의 - 사진 링크 바로가기">링크 바로가기</a><button class="action-button" type="button" data-article-action="share" data-article-url="https://news.google.com/rss/articles/CBMiaEFVX3lxTFBpZnd3Z05lZlNZTHIxNTR6cVdHdnZsNFNQRHlsYXZmd2NLNDBWR25uaXo5NzBqN1RCczk1cUhEdTR2SFBVUDNEMFRsbURnUTBVbjk0akt3R2F1WXZzMjh3VU1DYVYyT1M4?oc=5" data-share-title="제18차 청년정책조정위원회 겸 제2차 청년정책 관계장관회의 - 사진" aria-label="제18차 청년정책조정위원회 겸 제2차 청년정책 관계장관회의 - 사진 공유하기">공유하기</button><button class="action-button" type="button" data-article-action="copy" data-article-url="https://news.google.com/rss/articles/CBMiaEFVX3lxTFBpZnd3Z05lZlNZTHIxNTR6cVdHdnZsNFNQRHlsYXZmd2NLNDBWR25uaXo5NzBqN1RCczk1cUhEdTR2SFBVUDNEMFRsbURnUTBVbjk0akt3R2F1WXZzMjh3VU1DYVYyT1M4?oc=5" data-share-title="제18차 청년정책조정위원회 겸 제2차 청년정책 관계장관회의 - 사진" aria-label="제18차 청년정책조정위원회 겸 제2차 청년정책 관계장관회의 - 사진 링크 복사">링크 복사</button></div><div class="article-feedback" data-article-feedback aria-live="polite"></div>
-    </article>
-    
     <article class="article-card no-media" data-article-card="true" data-policy-card="true" data-policy-group="official" data-policy-scope="국무조정실" data-policy-type="간담회" data-article-url="https://news.google.com/rss/articles/CBMiS0FVX3lxTE55enlsNThJVERXVllDSmxLelFxSDliMFFRdHJNRG5tY2JnM0ktWDFwd0JLMTR6U2VEWGR5MHlxWUdNX0NtQk1yNUdKWQ?oc=5" data-article-title="김민석 국무총리, 신임 부처 청년보좌역들과 ‘삼청동 공관 오픈하우스’ 간담회" data-article-date="" data-article-region="중앙" data-article-search="김민석 국무총리, 신임 부처 청년보좌역들과 ‘삼청동 공관 오픈하우스’ 간담회 김민석 국무총리, 신임 부처 청년보좌역들과 ‘삼청동 공관 오픈하우스’ 간담회 뉴스체인지 뉴스체인지 구글뉴스 거버넌스(30일) 중앙 정부 간담회 청년보좌역 국무조정실">
       
       <div class="article-meta"><div class="article-meta-tags"><span class="meta-pill primary">정부</span><span class="meta-pill subtle">국무조정실</span></div><div class="article-byline"><span class="meta-item">뉴스체인지</span><span class="meta-divider" aria-hidden="true">•</span><span class="meta-item">2026-04-20 03:14</span></div></div>
@@ -5567,9 +7015,18 @@
             <h2>지역 청년정책 네트워크</h2>
             <p>지자체가 운영하는 청년정책네트워크, 청년협의체, 청년위원회, 참여단 기록을 묶었습니다.</p>
           </div>
-          <span class="mini-link" aria-disabled="true" data-policy-section-count>0건</span>
+          <span class="mini-link" aria-disabled="true" data-policy-section-count>1건</span>
         </div>
-        <div class="article-grid"><article class="info-card"><h3>등록된 지역 청년정책 네트워크 기록이 없습니다</h3><p>새 지역 참여·네트워크 기록이 수집되면 이 영역에 표시됩니다.</p></article></div>
+        <div class="article-grid">
+    <article class="article-card no-media" data-article-card="true" data-policy-card="true" data-policy-group="local" data-policy-scope="울주군" data-policy-type="모집" data-article-url="https://news.google.com/rss/articles/CBMiVEFVX3lxTFBFa1I0NGRjUFY1eEdpZzBaMy1YZ2JSQm1lU2tNM3JBNHdHdk55Q05GZ1lhd2VGYVFUcUVBOXFCVkg4NW1Sd182cE1ETEJGSWlKclpMTQ?oc=5" data-article-title="울주군 청년정책협의체 위원 공개 모집" data-article-date="" data-article-region="울산" data-article-search="울주군 청년정책협의체 위원 공개 모집 울주군 청년정책협의체 위원 공개 모집 울산MBC 울산MBC 구글뉴스 청년정책(7일) 모집 울산 울주군 울산 지자체 모집 청년정책협의체 울주군">
+      
+      <div class="article-meta"><div class="article-meta-tags"><span class="meta-pill primary">지자체</span><span class="meta-pill subtle">울주군</span></div><div class="article-byline"><span class="meta-item">울산MBC</span><span class="meta-divider" aria-hidden="true">•</span><span class="meta-item">2026-05-04 01:22</span></div></div>
+      <h3><a class="article-title-link" href="https://news.google.com/rss/articles/CBMiVEFVX3lxTFBFa1I0NGRjUFY1eEdpZzBaMy1YZ2JSQm1lU2tNM3JBNHdHdk55Q05GZ1lhd2VGYVFUcUVBOXFCVkg4NW1Sd182cE1ETEJGSWlKclpMTQ?oc=5" target="_blank" rel="noreferrer" aria-label="울주군 청년정책협의체 위원 공개 모집 링크 바로가기">울주군 청년정책협의체 위원 공개 모집</a></h3>
+      <div class="badge-row"><span class="badge">모집</span><span class="badge">청년정책협의체</span></div>
+      
+      <div class="article-actions"><a class="mini-link article-link-action" href="https://news.google.com/rss/articles/CBMiVEFVX3lxTFBFa1I0NGRjUFY1eEdpZzBaMy1YZ2JSQm1lU2tNM3JBNHdHdk55Q05GZ1lhd2VGYVFUcUVBOXFCVkg4NW1Sd182cE1ETEJGSWlKclpMTQ?oc=5" target="_blank" rel="noreferrer" aria-label="울주군 청년정책협의체 위원 공개 모집 링크 바로가기">링크 바로가기</a><button class="action-button" type="button" data-article-action="share" data-article-url="https://news.google.com/rss/articles/CBMiVEFVX3lxTFBFa1I0NGRjUFY1eEdpZzBaMy1YZ2JSQm1lU2tNM3JBNHdHdk55Q05GZ1lhd2VGYVFUcUVBOXFCVkg4NW1Sd182cE1ETEJGSWlKclpMTQ?oc=5" data-share-title="울주군 청년정책협의체 위원 공개 모집" aria-label="울주군 청년정책협의체 위원 공개 모집 공유하기">공유하기</button><button class="action-button" type="button" data-article-action="copy" data-article-url="https://news.google.com/rss/articles/CBMiVEFVX3lxTFBFa1I0NGRjUFY1eEdpZzBaMy1YZ2JSQm1lU2tNM3JBNHdHdk55Q05GZ1lhd2VGYVFUcUVBOXFCVkg4NW1Sd182cE1ETEJGSWlKclpMTQ?oc=5" data-share-title="울주군 청년정책협의체 위원 공개 모집" aria-label="울주군 청년정책협의체 위원 공개 모집 링크 복사">링크 복사</button></div><div class="article-feedback" data-article-feedback aria-live="polite"></div>
+    </article>
+    </div>
       </section>
       <section class="section" id="public-governance" data-policy-section="public">
         <div class="section-head">
@@ -5582,15 +7039,86 @@
         <div class="article-grid"><article class="info-card"><h3>등록된 공공기관 참여·협의 기록이 없습니다</h3><p>새 공공기관 참여·협의 기록이 수집되면 이 영역에 표시됩니다.</p></article></div>
       </section>
       <article class="info-card" data-policy-empty-state="true" hidden>
-        <h3>조건에 맞는 참여·회의 기록이 없습니다</h3>
+        <h3>조건에 맞는 참여기구 기록이 없습니다</h3>
         <p>구분이나 세부, 활동, 기간을 바꾸면 다른 기록을 확인할 수 있습니다.</p>
       </article>
     </div>
     
-    <footer class="footer-note">© 2026 유스사이드 · 박진감 · 연락: <a href="https://litt.ly/spectac1e" target="_blank" rel="noopener noreferrer">제작자 연락 채널</a></footer>
+    <footer class="site-footer" id="site-footer" aria-label="운영 안내">
+      <div class="site-footer-top">
+        <nav class="site-footer-links" aria-label="운영 기준 바로가기">
+          <a href="guide.html">이용 안내</a>
+          <a href="guide.html#main-list">정보 기준</a>
+          <a href="contact.html#ops">이메일 무단수집거부</a>
+          <a href="contact.html">제보·문의</a>
+        </nav>
+        <details class="site-footer-related">
+          <summary>관련 사이트</summary>
+          <div class="site-footer-related-list"><a href="https://m.korea.kr/news/policyFocusList.do?pkgId=49500808" target="_blank" rel="noreferrer">정책브리핑 청년정책</a><a href="https://www.law.go.kr/LSW/LsiJoLinkP.do?docType=JO&amp;joNo=001700000&amp;languageType=KO&amp;lsNm=%EC%B2%AD%EB%85%84%EA%B8%B0%EB%B3%B8%EB%B2%95&amp;paras=1" target="_blank" rel="noreferrer">청년기본법</a><a href="https://kosis.kr/index/index.do" target="_blank" rel="noreferrer">KOSIS 국가통계포털</a><a href="https://www.data.go.kr/" target="_blank" rel="noreferrer">공공데이터포털</a></div>
+        </details>
+      </div>
+      <div class="site-footer-body has-brand-image">
+        
+        <div class="site-footer-brand-image" aria-label="유스사이드 브랜드 이미지">
+          <div class="site-footer-brand-image-frame">
+            <img src="assets/branding/youthside_logo_youth-group_compass_u-s-accent_horizontal_4x.png?v=20260501-sunlit-logo-1" alt="유스사이드 로고" loading="lazy" decoding="async">
+          </div>
+        </div>
+    
+        <div class="site-footer-info">
+          
+          <div class="site-footer-site-head">
+            <strong>청년정책 모아봄</strong>
+            <span>by YOUTHSIDE</span>
+          </div>
+    
+          <div class="site-footer-info-list">
+            <p><strong>운영 목적 :</strong><span>청년정책 활동가, 관련 업무 종사자, 그리고 모든 청년을 위한 정책 정보 안내 서비스입니다.</span></p>
+            <p><strong>정보 기준 :</strong><span>공개 기사와 정부·지자체 발표를 수집·분류해 정책 흐름과 신청 정보를 한 화면에서 확인할 수 있도록 정리합니다.</span></p>
+            <p><strong>확인 안내 :</strong><span>중요한 신청·의사결정은 반드시 원문 링크와 공식 발표를 함께 확인해 주세요.</span></p>
+          </div>
+          <div class="site-footer-meta">
+            <span>© 2026 유스사이드 · 박진감</span>
+            <span>이메일 pcwin21@gmail.com</span>
+            <span>연락 <a href="https://litt.ly/spectac1e" target="_blank" rel="noopener noreferrer">제작자 연락 채널</a></span>
+          </div>
+        </div>
+      </div>
+    </footer>
     </div>
   </div>
-  <nav class="bottom-nav" style="--bottom-nav-count: 7;"><a class="" href="index.html" data-icon="오늘"><span>오늘</span></a><a class="" href="news.html" data-icon="뉴스"><span>뉴스</span></a><a class="" href="election.html" data-icon="선거"><span>선거·공약</span></a><a class="" href="policies.html" data-icon="정책"><span>정책</span></a><a class="" href="plans.html" data-icon="계획"><span>정책계획</span></a><a class="active" href="hub.html" data-icon="참여"><span>참여·회의</span></a><a class="" href="tools.html" data-icon="도구"><span>자료·도구</span></a></nav>
+  <nav class="bottom-nav" style="--bottom-nav-count: 6;"><a class="" href="news.html"><span class="bottom-nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false">
+          <path d="M6 5.5h9.5L19 9v9.5H6z"></path>
+          <path d="M15.5 5.5V9H19"></path>
+          <path d="M9 12h6"></path>
+          <path d="M9 15h6"></path>
+          <path d="M9 18h4"></path>
+        </svg></span><span>뉴스 모음</span></a><a class="" href="election.html"><span class="bottom-nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false">
+          <path d="M6 10h12v10H6z"></path>
+          <path d="M8.5 10 12 5l3.5 5"></path>
+          <path d="m9.5 15 2 2 4-4"></path>
+        </svg></span><span>선거·공약</span></a><a class="" href="policies.html"><span class="bottom-nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false">
+          <path d="M4 9.5 12 5l8 4.5"></path>
+          <path d="M5.5 19h13"></path>
+          <path d="M7 10.5V17"></path>
+          <path d="M12 10.5V17"></path>
+          <path d="M17 10.5V17"></path>
+        </svg></span><span>정부 동향</span></a><a class="" href="plans.html"><span class="bottom-nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false">
+          <path d="M5 6.5 10 5l4 1.5 5-1.5v12.5L14 19l-4-1.5L5 19z"></path>
+          <path d="M10 5v12.5"></path>
+          <path d="M14 6.5V19"></path>
+          <path d="M16.5 10.5h.01"></path>
+        </svg></span><span>지자체 동향</span></a><a class="active" href="hub.html"><span class="bottom-nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false">
+          <path d="M8.5 10a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z"></path>
+          <path d="M15.5 10a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z"></path>
+          <path d="M4.5 19c.5-3 2-5 4-5s3.5 2 4 5"></path>
+          <path d="M11.5 15c.8-.7 1.9-1 3-1 2 0 3.5 2 4 5"></path>
+        </svg></span><span>참여기구</span></a><a class="" href="tools.html"><span class="bottom-nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false">
+          <path d="M5.5 5.5h5A3.5 3.5 0 0 1 14 9v10a3.5 3.5 0 0 0-3.5-3.5h-5z"></path>
+          <path d="M18.5 5.5h-4A3.5 3.5 0 0 0 11 9v10a3.5 3.5 0 0 1 3.5-3.5h4z"></path>
+          <path d="M14 9h2.5"></path>
+          <path d="M14 12h2.5"></path>
+        </svg></span><span>연구·문헌</span></a></nav>
   
   
   <div class="admin-login-overlay" data-admin-login-overlay hidden>
@@ -5714,6 +7242,87 @@
     return normalizedQuery ? `검색 "${normalizedQuery}"` : '';
   }
 
+  function getRegionMapTooltip(region) {
+    if (!region || !region.dataset || !region.dataset.regionMapId) {
+      return null;
+    }
+    const svg = region.closest('.filter-region-map-svg');
+    if (!svg) {
+      return null;
+    }
+    return Array.from(svg.querySelectorAll('.filter-region-map-tooltip'))
+      .find((tooltip) => tooltip.dataset.regionMapTooltip === region.dataset.regionMapId) || null;
+  }
+
+  function syncRegionMapTooltipState(region) {
+    const tooltip = getRegionMapTooltip(region);
+    if (!tooltip) {
+      return;
+    }
+    tooltip.classList.toggle('active', region.classList.contains('active'));
+    tooltip.classList.toggle('is-empty', region.classList.contains('is-empty'));
+  }
+
+  function setRegionMapTooltipVisibility(target, isVisible) {
+    const region = target.closest && target.closest('.filter-region-map-region');
+    if (!region) {
+      return;
+    }
+    const tooltip = getRegionMapTooltip(region);
+    if (!tooltip) {
+      return;
+    }
+    if (isVisible) {
+      const svg = region.closest('.filter-region-map-svg');
+      svg.querySelectorAll('.filter-region-map-tooltip.is-visible').forEach((item) => {
+        if (item !== tooltip) {
+          item.classList.remove('is-visible');
+        }
+      });
+    }
+    tooltip.classList.toggle('is-visible', isVisible);
+  }
+
+  function updateRegionFilterButtonCount(button, count) {
+    const label = button.getAttribute('data-region-label') || button.getAttribute('data-filter-value') || '';
+    const safeCount = Number.isFinite(count) ? count : 0;
+    if (label) {
+      button.setAttribute('aria-label', `${label} ${safeCount}건 선택`);
+    }
+    const countNodes = [];
+    const inlineCountNode = button.querySelector('[data-region-map-count]');
+    if (inlineCountNode) {
+      countNodes.push(inlineCountNode);
+    }
+    const tooltip = getRegionMapTooltip(button);
+    const tooltipCountNode = tooltip && tooltip.querySelector('[data-region-map-count]');
+    if (tooltipCountNode) {
+      countNodes.push(tooltipCountNode);
+    }
+    countNodes.forEach((countNode) => {
+      countNode.textContent = `${safeCount}건`;
+    });
+    button.dataset.regionVisibleCount = String(safeCount);
+    button.classList.toggle('is-empty', safeCount === 0);
+    syncRegionMapTooltipState(button);
+  }
+
+  function bringMapRegionToFront(target) {
+    const region = target.closest && target.closest('.filter-region-map-region, .local-map-region');
+    if (!region || !region.parentNode) {
+      return;
+    }
+    if (!region.querySelector('.filter-region-map-hit-target, .local-map-hit-target')) {
+      return;
+    }
+    const tooltipLayer = region.parentNode.querySelector('.filter-region-map-tooltip-layer');
+    if (tooltipLayer) {
+      region.parentNode.insertBefore(region, tooltipLayer);
+    } else {
+      region.parentNode.appendChild(region);
+    }
+  }
+
   function applyNewsFilters(root, selectedDateStart, selectedDateEnd, selectedRegion, selectedTopic, selectedQuery) {
     const normalizedDates = normalizeNewsDateRange(
       selectedDateStart ?? root.dataset.selectedDateStart ?? root.getAttribute('data-default-date-start') ?? '',
@@ -5734,6 +7343,7 @@
     root.dataset.selectedSearchQuery = activeQuery;
 
     const articleCards = Array.from(root.querySelectorAll('[data-article-date]'));
+    const regionCounts = new Map();
     let visibleCount = 0;
 
     articleCards.forEach((card) => {
@@ -5747,6 +7357,9 @@
       const topicMatch = activeTopic === 'all' || articleTopics.includes(activeTopic);
       const searchMatch = cardMatchesSearch(card, activeQuery);
       const isMatch = dateMatch && regionMatch && topicMatch && searchMatch;
+      if (dateMatch && topicMatch && searchMatch) {
+        regionCounts.set(articleRegion, (regionCounts.get(articleRegion) || 0) + 1);
+      }
       card.hidden = !isMatch;
       if (isMatch) {
         visibleCount += 1;
@@ -5761,8 +7374,12 @@
         : group === 'topic'
           ? value === activeTopic
           : (value === 'all' && !hasDateRange);
+      if (group === 'region' && value !== 'all') {
+        updateRegionFilterButtonCount(button, regionCounts.get(value) || 0);
+      }
       button.classList.toggle('active', isActive);
       button.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+      syncRegionMapTooltipState(button);
     });
 
     root.querySelectorAll('[data-news-date-input]').forEach((dateInput) => {
@@ -5834,6 +7451,31 @@
     return availableValues;
   }
 
+  function getPolicyCountsByAttribute(articleCards, targetGroup, attributeName, activeType, activeDateStart, activeDateEnd, hasDateRange, activeQuery) {
+    const counts = new Map();
+
+    articleCards.forEach((card) => {
+      const articleGroup = card.getAttribute('data-policy-group') || 'official';
+      if (articleGroup !== targetGroup) {
+        return;
+      }
+      const attributeValue = card.getAttribute(attributeName) || '';
+      const articleType = card.getAttribute('data-policy-type') || '기타';
+      const articleDate = card.getAttribute('data-article-date') || '';
+      const typeMatch = activeType === 'all' || articleType === activeType;
+      const isAfterStart = !activeDateStart || (articleDate && articleDate >= activeDateStart);
+      const isBeforeEnd = !activeDateEnd || (articleDate && articleDate <= activeDateEnd);
+      const dateMatch = !hasDateRange || (isAfterStart && isBeforeEnd);
+      const searchMatch = cardMatchesSearch(card, activeQuery);
+
+      if (attributeValue && typeMatch && dateMatch && searchMatch) {
+        counts.set(attributeValue, (counts.get(attributeValue) || 0) + 1);
+      }
+    });
+
+    return counts;
+  }
+
   function formatPolicyGroup(value, scopeMode) {
     if (scopeMode === 'hub-detail') {
       if (value === 'official') {
@@ -5897,6 +7539,7 @@
     const usesPolicyScope = scopeMode === 'authority-region' || scopeMode === 'hub-detail';
     const usesHubDetailScope = scopeMode === 'hub-detail';
     const keepEmptySections = root.dataset.keepEmptySections === 'true';
+    const keepEmptyScopes = root.dataset.keepEmptyScopes === 'true';
     root.dataset.selectedPolicyGroup = activeGroup;
     root.dataset.selectedPolicyRegion = activeRegion;
     root.dataset.selectedPolicyScope = activeScope;
@@ -5942,6 +7585,16 @@
       hasDateRange,
       activeQuery,
     );
+    const localScopeCounts = getPolicyCountsByAttribute(
+      articleCards,
+      'local',
+      usesHubDetailScope ? 'data-policy-scope' : 'data-article-region',
+      activeType,
+      activeDateStart,
+      activeDateEnd,
+      hasDateRange,
+      activeQuery,
+    );
     const availablePublicScopes = getPolicyAvailabilityByAttribute(
       articleCards,
       'public',
@@ -5972,7 +7625,7 @@
       } else {
         activeScope = 'all';
       }
-      if (activeScope !== 'all' && !availableScopes.has(activeScope)) {
+      if (activeScope !== 'all' && !keepEmptyScopes && !availableScopes.has(activeScope)) {
         activeScope = 'all';
       }
       root.dataset.selectedPolicyScope = activeScope;
@@ -6025,12 +7678,16 @@
         } else if (scopeKind !== visibleScopeKind) {
           button.hidden = true;
         } else {
-          button.hidden = !availableScopes.has(value);
+          button.hidden = !keepEmptyScopes && !availableScopes.has(value);
+        }
+        if (scopeKind === 'local' && value !== 'all') {
+          updateRegionFilterButtonCount(button, localScopeCounts.get(value) || 0);
         }
         isActive = value === activeScope;
       }
       button.classList.toggle('active', isActive);
       button.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+      syncRegionMapTooltipState(button);
     });
 
     const scopeLabel = root.querySelector('[data-policy-scope-label]');
@@ -6167,6 +7824,7 @@
 
     const filterButton = event.target.closest('[data-news-filter]');
     if (filterButton) {
+      event.preventDefault();
       const root = filterButton.closest('[data-news-filter-root]');
       if (root) {
         const group = filterButton.getAttribute('data-filter-group') || 'date';
@@ -6185,6 +7843,7 @@
 
     const policyFilterButton = event.target.closest('[data-policy-filter]');
     if (policyFilterButton) {
+      event.preventDefault();
       const root = policyFilterButton.closest('[data-policy-filter-root]');
       if (root) {
         const filterGroup = policyFilterButton.getAttribute('data-filter-group') || 'group';
@@ -6236,6 +7895,31 @@
       }
       setFeedback(card, '링크 복사에 실패했습니다.', true);
     }
+  });
+
+  document.addEventListener('pointerover', (event) => {
+    bringMapRegionToFront(event.target);
+    setRegionMapTooltipVisibility(event.target, true);
+  });
+
+  document.addEventListener('pointerout', (event) => {
+    const region = event.target.closest && event.target.closest('.filter-region-map-region');
+    const relatedTarget = event.relatedTarget;
+    const relatedRegion = relatedTarget && relatedTarget.closest
+      ? relatedTarget.closest('.filter-region-map-region')
+      : null;
+    if (region && relatedRegion !== region) {
+      setRegionMapTooltipVisibility(region, false);
+    }
+  });
+
+  document.addEventListener('focusin', (event) => {
+    bringMapRegionToFront(event.target);
+    setRegionMapTooltipVisibility(event.target, true);
+  });
+
+  document.addEventListener('focusout', (event) => {
+    setRegionMapTooltipVisibility(event.target, false);
   });
 
   const pageParams = new URLSearchParams(window.location.search);
@@ -6353,6 +8037,95 @@
     }
   });
 
+  function setupLiveClock() {
+    const clocks = Array.from(document.querySelectorAll('[data-live-clock]'));
+    if (clocks.length === 0) {
+      return;
+    }
+    const weekdayMap = {
+      월요일: '월',
+      화요일: '화',
+      수요일: '수',
+      목요일: '목',
+      금요일: '금',
+      토요일: '토',
+      일요일: '일',
+      Mon: '월',
+      Tue: '화',
+      Wed: '수',
+      Thu: '목',
+      Fri: '금',
+      Sat: '토',
+      Sun: '일',
+    };
+
+    function readPart(parts, type) {
+      const part = parts.find((item) => item.type === type);
+      return part ? part.value : '';
+    }
+
+    function clockParts(now) {
+      try {
+        const parts = new Intl.DateTimeFormat('ko-KR', {
+          timeZone: 'Asia/Seoul',
+          year: 'numeric',
+          month: '2-digit',
+          day: '2-digit',
+          weekday: 'short',
+          hour: '2-digit',
+          minute: '2-digit',
+          hour12: false,
+        }).formatToParts(now);
+        const year = readPart(parts, 'year');
+        const month = readPart(parts, 'month');
+        const day = readPart(parts, 'day');
+        const weekdayRaw = readPart(parts, 'weekday');
+        const weekday = weekdayMap[weekdayRaw] || weekdayRaw.replace('요일', '');
+        const hour = readPart(parts, 'hour').padStart(2, '0');
+        const minute = readPart(parts, 'minute').padStart(2, '0');
+        return { year, month, day, weekday, hour, minute };
+      } catch (error) {
+        const fallback = new Date(now.getTime() + (9 * 60 + now.getTimezoneOffset()) * 60000);
+        const weekdays = ['일', '월', '화', '수', '목', '금', '토'];
+        return {
+          year: String(fallback.getFullYear()),
+          month: String(fallback.getMonth() + 1).padStart(2, '0'),
+          day: String(fallback.getDate()).padStart(2, '0'),
+          weekday: weekdays[fallback.getDay()],
+          hour: String(fallback.getHours()).padStart(2, '0'),
+          minute: String(fallback.getMinutes()).padStart(2, '0'),
+        };
+      }
+    }
+
+    function updateClock() {
+      const parts = clockParts(new Date());
+      const fullDate = `${parts.year}.${parts.month}.${parts.day} (${parts.weekday})`;
+      const shortDate = `${parts.month}.${parts.day}`;
+      const time = `${parts.hour}:${parts.minute}`;
+      const iso = `${parts.year}-${parts.month}-${parts.day}T${parts.hour}:${parts.minute}:00+09:00`;
+      clocks.forEach((clock) => {
+        clock.setAttribute('datetime', iso);
+        clock.setAttribute('aria-label', `한국시간 ${fullDate} ${time}`);
+        const fullDateNode = clock.querySelector('[data-live-clock-date]');
+        const shortDateNode = clock.querySelector('[data-live-clock-date-short]');
+        const timeNode = clock.querySelector('[data-live-clock-time]');
+        if (fullDateNode) {
+          fullDateNode.textContent = fullDate;
+        }
+        if (shortDateNode) {
+          shortDateNode.textContent = shortDate;
+        }
+        if (timeNode) {
+          timeNode.textContent = time;
+        }
+      });
+    }
+
+    updateClock();
+    window.setInterval(updateClock, 30000);
+  }
+
   function setupPageMarkers() {
     const markerLinks = Array.from(document.querySelectorAll('[data-marker-link]'));
     if (markerLinks.length === 0) {
@@ -6419,6 +8192,7 @@
     activateFromHash();
   }
 
+  setupLiveClock();
   setupPageMarkers();
 
   const guideOverlay = document.querySelector('[data-guide-overlay]');
