@@ -20,6 +20,11 @@
     --accent: #e7bd52;
     --accent-soft: rgba(255, 243, 207, 0.9);
     --accent-strong: #735b12;
+    --filter-accent: var(--accent-strong);
+    --filter-accent-strong: var(--accent-strong);
+    --filter-active-bg: var(--accent-strong);
+    --filter-active-border: transparent;
+    --filter-active-stroke: #5c4318;
     --home-apricot: #e7bd52;
     --home-apricot-soft: rgba(231, 189, 82, 0.24);
     --home-teal: #a8d5ba;
@@ -590,7 +595,7 @@
     gap: 8px;
   }
   .filter-group-label {
-    color: var(--accent-strong);
+    color: var(--filter-accent-strong, var(--accent-strong));
     font-size: 0.78rem;
     font-weight: 800;
     letter-spacing: 0.01em;
@@ -641,7 +646,7 @@
     border: 1px solid rgba(31, 42, 51, 0.09);
     border-radius: 999px;
     background: rgba(255, 255, 255, 0.92);
-    color: var(--accent-strong);
+    color: var(--filter-accent-strong, var(--accent-strong));
     font-size: 0.8rem;
     font-weight: 700;
     white-space: nowrap;
@@ -649,8 +654,8 @@
     cursor: pointer;
   }
   .filter-button.active {
-    border-color: transparent;
-    background: var(--accent-strong);
+    border-color: var(--filter-active-border, transparent);
+    background: var(--filter-active-bg, var(--accent-strong));
     color: white;
   }
   .filter-status {
@@ -3215,7 +3220,7 @@
     gap: 14px;
   }
   .filter-group-label {
-    color: var(--accent-strong);
+    color: var(--filter-accent-strong, var(--accent-strong));
     font-size: 0.9rem;
     letter-spacing: 0;
     text-transform: none;
@@ -4033,6 +4038,12 @@
     --dashboard-dark: #292d29;
     --dashboard-dark-line: #111513;
     --dashboard-gold: #8b6b32;
+    --filter-accent: #006f63;
+    --filter-accent-strong: #004f47;
+    --filter-active-bg: #006f63;
+    --filter-active-border: #006f63;
+    --filter-active-stroke: #004f47;
+    --filter-active-soft: #d9f0ea;
     --success: #008a78;
     --danger: #c80000;
     --shadow: 0 16px 34px rgba(24, 24, 24, 0.08);
@@ -4954,10 +4965,14 @@
     box-shadow: none;
   }
   .button.primary,
-  .filter-button.active,
   .meta-pill.primary {
     border-color: var(--dashboard-gold);
     background: var(--dashboard-gold);
+    color: #ffffff;
+  }
+  .filter-button.active {
+    border-color: var(--filter-active-border);
+    background: var(--filter-active-bg);
     color: #ffffff;
   }
   body[data-page="index.html"] .home-briefing-card.lead .button {
@@ -6143,10 +6158,10 @@
     margin-top: 24px;
   }
   body:not([data-page="index.html"]) .filter-panel {
-    padding: 20px;
+    padding: 22px 24px;
   }
   body:not([data-page="index.html"]) .filter-head {
-    margin-bottom: 16px;
+    margin-bottom: 18px;
   }
   body:not([data-page="index.html"]) .filter-head h3 {
     font-size: 1.08rem;
@@ -6157,7 +6172,7 @@
     justify-content: space-between;
     gap: 14px;
     margin-bottom: 0;
-    padding-bottom: 14px;
+    padding-bottom: 16px;
     border-bottom: 1px solid #ebe8e2;
   }
   body:not([data-page="index.html"]) .filter-panel.has-region-map .filter-head .filter-status {
@@ -6180,10 +6195,11 @@
   body:not([data-page="index.html"]) .filter-stack {
     display: grid;
     grid-template-columns: repeat(12, minmax(0, 1fr));
-    gap: 18px 16px;
+    gap: 20px 18px;
     align-items: start;
   }
   body:not([data-page="index.html"]) .filter-group {
+    gap: 10px;
     min-width: 0;
   }
   body:not([data-page="index.html"]) .filter-group.wide,
@@ -6202,34 +6218,36 @@
   }
   body:not([data-page="index.html"]) .filter-button {
     min-height: 42px;
-    padding: 0 16px;
+    padding: 0 14px;
+    font-size: 0.82rem;
+    line-height: 1.1;
   }
   body:not([data-page="index.html"]) .filter-search-input {
-    min-height: 56px;
-    padding: 0 16px;
+    min-height: 58px;
+    padding: 0 18px;
   }
   body:not([data-page="index.html"]) .date-picker-row {
-    grid-template-columns: minmax(104px, 132px) minmax(0, 1fr);
-    gap: 12px;
+    grid-template-columns: minmax(112px, 140px) minmax(0, 1fr);
+    gap: 14px;
     align-items: stretch;
   }
   body:not([data-page="index.html"]) .date-picker-row > .filter-button {
     width: 100%;
-    min-height: 56px;
+    min-height: 58px;
   }
   body:not([data-page="index.html"]) .date-range-fields {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 12px;
+    gap: 14px;
   }
   body:not([data-page="index.html"]) .date-input-wrap {
     min-width: 0;
-    min-height: 56px;
-    padding: 10px 14px;
+    min-height: 58px;
+    padding: 10px 16px;
   }
   body:not([data-page="index.html"]) .filter-panel.has-region-map .filter-stack-map {
-    grid-template-columns: minmax(260px, 360px) minmax(0, 1fr);
-    gap: 0 28px;
+    grid-template-columns: minmax(244px, 332px) minmax(0, 1fr);
+    gap: 0 24px;
     align-items: stretch;
   }
   body:not([data-page="index.html"]) .filter-panel.has-region-map .filter-map-column,
@@ -6239,11 +6257,11 @@
     align-content: start;
   }
   body:not([data-page="index.html"]) .filter-panel.has-region-map .filter-map-column {
-    padding-right: 24px;
+    padding-right: 22px;
     border-right: 1px solid #ebe8e2;
   }
   body:not([data-page="index.html"]) .filter-panel.has-region-map .filter-control-column {
-    gap: 18px;
+    gap: 22px;
   }
   body:not([data-page="index.html"]) .filter-panel.has-region-map .filter-group-region-map,
   body:not([data-page="index.html"]) .filter-panel.has-region-map .filter-group-topic,
@@ -6256,7 +6274,7 @@
   .filter-region-picker {
     display: grid;
     grid-template-columns: 1fr;
-    gap: 10px;
+    gap: 12px;
   }
   .filter-region-quick {
     display: flex;
@@ -6264,7 +6282,7 @@
     gap: 8px;
   }
   .filter-region-map {
-    width: min(100%, 320px);
+    width: min(100%, 316px);
     justify-self: center;
     align-self: start;
   }
@@ -6328,8 +6346,8 @@
     opacity: 1;
   }
   .filter-region-map-region.active .filter-region-map-path {
-    fill: #8b6b32;
-    stroke: #5c4318;
+    fill: var(--filter-active-bg);
+    stroke: var(--filter-active-stroke);
     stroke-width: 2.45;
     filter: drop-shadow(0 8px 12px rgba(24, 24, 24, 0.16));
   }
@@ -6348,10 +6366,12 @@
     fill: #8a837a;
   }
   .filter-region-map-tooltip.active .filter-region-map-count {
-    fill: #8b6b32;
+    fill: var(--filter-active-bg);
   }
   body:not([data-page="index.html"]) .filter-controls {
     flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
     overflow: visible;
     padding-bottom: 0;
   }
@@ -6938,7 +6958,7 @@
         <div class="article-grid">
     <article class="article-card has-media" data-article-card="true" data-policy-card="true" data-policy-group="official" data-policy-scope="국방일보" data-policy-type="간담회" data-article-url="https://kookbang.dema.mil.kr/newsWeb/20260508/7/ATCE_CTGR_0010010000/view.do" data-article-title="“국방 향한 청년 제언 귀담아듣고 활동도 적극 지원”" data-article-date="2026-05-07" data-article-region="서울" data-article-search="“국방 향한 청년 제언 귀담아듣고 활동도 적극 지원” 혁신어벤져스&amp;middot;청년자문단 합동 발대식 안규백 장관, 특별강연서 도전정신 강조 소통간담회선 고민 공감하며 조언 건네 &amp;nbsp; 혁신어벤져스&amp;middot;청년자문단 합동 발대식&amp;hellip;소통하는 軍 안규백(맨 앞줄 오른쪽 다섯째) 국방부 장관이 7일 서울 용산구 국방컨벤션에서 열린 &amp;lsquo;제7기 혁신어벤져스&amp;rsquo;와 &amp;lsquo;제3기 2030청년자문단&amp;rsquo; 합동 발대식에서 참석자들과 기념촬영을 하고 있다. &amp;nbsp; 안규백 국방부 장관이 청년들을 만나 &amp;ldquo;어떤 실수나 과오도 다시 바로잡고 새롭게 시작할 수 있는 것이 청년의 특권&amp;rdquo;이라며 끊임없는 도전정신을 가지라고 당부했다. 안 장관은 7일 서울 용산구 국방컨벤션에서 국방부 청년 공무원으로 구성된 &amp;lsquo;제7기 혁신어벤져스&amp;rsquo;와 국방 분야에 관심 있는 청년 국민들로 꾸려진 &amp;lsquo;2030청년자문단&amp;rsquo;을 대상으로 특별강연을 열고 이같이 밝혔다. &amp;lsquo;청년에게 전하는 안부&amp;rsquo;를 주제로 강연에 나선 안 장관은 &amp;ldquo;청년들은 사람과의 만남에서, 책 속의 지혜에서, 그리고 낯선 곳으로의 여행에서 인생을 배운다&amp;rdquo;며 &amp;ldquo;꿈과 목표를 갖고 다양한 경험을 통해 자신만의 길을 찾아가길 바란다&amp;rdquo;고 말했다. 이어 &amp;ldquo;역사학자 아놀드 토인비가 인류의 역사를 &amp;lsquo;도전과 응전의 역사&amp;rsquo;라고 말한 것처럼 실패를 두려워하지 말고 끊임없이 도전해 달라&amp;rdquo;고 강조했다. &amp;nbsp; &amp;nbsp; 7일 열린 제7기 혁신어벤져스 및 제3기 2030청년자문단 합동 발대식에서 안규백 국방부 장관이 참석자들과 소통하고 있다. 한재호 기자 강연 뒤에는 소통간담회 &amp;lsquo;장관님, 궁금해요!&amp;rsquo;가 이어졌다. 안 장관은 형식과 주제에 구애받지 않고 자유롭게 대화를 나눴다. 참석한 청년들은 진로와 조직문화, 공직생활 등에 대한 고민을 털어놨고, 안 장관은 이에 공감하며 조언을 건넸다. 안 장관은 &amp;ldquo;청년들의 미래에 대해 함께 고민하고 이야기를 나눌 수 있었던 뜻깊은 시간이었다&amp;rdquo;며 &amp;ldquo;국방을 향한 청년들의 제언을 귀담아듣고, 청년 단원들의 활동도 적극 지원하겠다&amp;rdquo;고 전했다. 김수혁 국방부 청년보좌역은 &amp;ldquo;청년들이 국방부의 일원으로서 자긍심과 소속감을 느끼고 장관과 더욱 가까이 소통할 수 있었던 의미 있는 자리였다&amp;rdquo;며 &amp;ldquo;이들의 생생한 목소리가 국방정책과 조직문화에 실질적으로 반영될 수 있도록 가교 역할에 최선을 다하겠다&amp;rdquo;고 했다. 특별강연과 소통간담회에 앞서 안 장관은 &amp;lsquo;제7기 혁신어벤져스&amp;rsquo;와 &amp;lsquo;제3기 2030청년자문단&amp;rsquo; 합동 발대식을 주관했다. 혁신어벤져스는 조직문화 개선과 자유로운 소통문화 확산을 위한 활동을 해오고 있다. 청년자문단은 주요 국방정책에 대한 의견 제시와 정책 제언 역할을 맡는다. 두 조직은 긴밀한 협업을 통해 청년세대의 목소리를 국방 정책과 조직문화에 반영해 나갈 방침이다. 김해령 기자 국방일보 네이버뉴스 거버넌스(1개월) 서울 용산 용산구 서울 혁신어벤져스·청년자문단 합동 발대식 안규백 장관, 특별강연서 도전정신 강조 소통간담회선 고민 공감하며 조언 건네 혁신어벤져스·청년자문단 합동 발대식…소통하는 軍 안규백(맨 앞줄 오른쪽 다섯째) 국방부... 정부 간담회, 자문 청년보좌역, 2030청년자문단, 청년자문단 국방일보">
       <a class="article-media" href="https://kookbang.dema.mil.kr/newsWeb/20260508/7/ATCE_CTGR_0010010000/view.do" target="_blank" rel="noreferrer" aria-label="“국방 향한 청년 제언 귀담아듣고 활동도 적극 지원” 이미지와 기사 링크 바로가기"><img class="article-thumbnail" src="https://kookbang.dema.mil.kr/newspaper/tmplat/upload/20260507/thumb1/BBS_202605070516217210.jpg" alt="“국방 향한 청년 제언 귀담아듣고 활동도 적극 지원”" loading="lazy" decoding="async" referrerpolicy="no-referrer"  onerror="this.parentElement.hidden=true;var c=this.closest('.article-card');if(c){c.classList.remove('has-media');c.classList.add('no-media');}"></a>
-      <div class="article-meta"><div class="article-meta-tags"><span class="meta-pill primary">정부</span><span class="meta-pill subtle">국방일보</span></div><div class="article-byline"><span class="meta-item"><img class="publisher-icon" src="https://kookbang.dema.mil.kr/newspaper/2022/images/icon/favicon.ico" alt="국방일보 아이콘" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.hidden=true">국방일보</span><span class="meta-divider" aria-hidden="true">•</span><span class="meta-item">2026-05-07 18:00</span></div></div>
+      <div class="article-meta"><div class="article-meta-tags"><span class="meta-pill primary">정부</span><span class="meta-pill subtle">국방일보</span></div><div class="article-byline"><span class="meta-item"><img class="publisher-icon" src="https://kookbang.dema.mil.kr/newspaper/2022/images/icon/favicon.ico" alt="국방일보 아이콘" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.hidden=true">국방일보</span><span class="meta-divider" aria-hidden="true">•</span><span class="meta-item">2026-05-07 18:25</span></div></div>
       <h3><a class="article-title-link" href="https://kookbang.dema.mil.kr/newsWeb/20260508/7/ATCE_CTGR_0010010000/view.do" target="_blank" rel="noreferrer" aria-label="“국방 향한 청년 제언 귀담아듣고 활동도 적극 지원” 링크 바로가기">“국방 향한 청년 제언 귀담아듣고 활동도 적극 지원”</a></h3>
       <div class="badge-row"><span class="badge">간담회, 자문</span><span class="badge">청년보좌역, 2030청년자문단, 청년자문단</span></div>
       <p class="article-summary"><a class="article-summary-link" href="https://kookbang.dema.mil.kr/newsWeb/20260508/7/ATCE_CTGR_0010010000/view.do" target="_blank" rel="noreferrer" aria-label="“국방 향한 청년 제언 귀담아듣고 활동도 적극 지원” 링크 바로가기">혁신어벤져스·청년자문단 합동 발대식 안규백 장관, 특별강연서 도전정신 강조 소통간담회선 고민 공감하며 조언 건네 혁신어벤져스·청년자문단 합동 발대식…소통하는 軍 안규백(맨 앞줄 오른쪽 다섯째) 국방부...</a></p>
@@ -6981,22 +7001,22 @@
       <div class="article-actions"><a class="mini-link article-link-action" href="https://news.bbsi.co.kr/news/articleView.html?idxno=4081072" target="_blank" rel="noreferrer" aria-label="“청년의 미래에 30조 투입”...정부, 일자리·주거·격차 해소 총력전 링크 바로가기">링크 바로가기</a><button class="action-button" type="button" data-article-action="share" data-article-url="https://news.bbsi.co.kr/news/articleView.html?idxno=4081072" data-share-title="“청년의 미래에 30조 투입”...정부, 일자리·주거·격차 해소 총력전" aria-label="“청년의 미래에 30조 투입”...정부, 일자리·주거·격차 해소 총력전 공유하기">공유하기</button><button class="action-button" type="button" data-article-action="copy" data-article-url="https://news.bbsi.co.kr/news/articleView.html?idxno=4081072" data-share-title="“청년의 미래에 30조 투입”...정부, 일자리·주거·격차 해소 총력전" aria-label="“청년의 미래에 30조 투입”...정부, 일자리·주거·격차 해소 총력전 링크 복사">링크 복사</button></div><div class="article-feedback" data-article-feedback aria-live="polite"></div>
     </article>
     
-    <article class="article-card no-media" data-article-card="true" data-policy-card="true" data-policy-group="official" data-policy-scope="국무조정실" data-policy-type="간담회" data-article-url="https://www.opm.go.kr:443/opm/news/press-release.do" data-article-title="국무조정실 국무총리비서실 | 알림·소식 | 보도·설명자료 | 보도자료 게시판읽기([보도자료] 김민석 국무총리, 삼청동 오픈하우스-청년 보좌역 보도자료) | 국무조정실 국무총..." data-article-date="2026-04-18" data-article-region="서울" data-article-search="국무조정실 국무총리비서실 | 알림·소식 | 보도·설명자료 | 보도자료 게시판읽기([보도자료] 김민석 국무총리, 삼청동 오픈하우스-청년 보좌역 보도자료) | 국무조정실 국무총리비서실 청년정책협력관실 국무조정실 보도자료 국무조정실 보도자료 취업 노동 서울 세종 반드시 서울 청년정책협력관실 정부 간담회, 자문 청년보좌역, 2030청년자문단, 청년자문단 국무조정실">
+    <article class="article-card no-media" data-article-card="true" data-policy-card="true" data-policy-group="official" data-policy-scope="국무조정실" data-policy-type="간담회" data-article-url="https://www.opm.go.kr/opm/news/press-release.do?mode=view&amp;articleNo=161945&amp;srSearchVal=%EC%B2%AD%EB%85%84&amp;article.offset=0&amp;articleLimit=20" data-article-title="[보도자료] 김민석 국무총리, 삼청동 오픈하우스-청년 보좌역 보도자료" data-article-date="2026-04-18" data-article-region="서울" data-article-search="[보도자료] 김민석 국무총리, 삼청동 오픈하우스-청년 보좌역 보도자료 청년정책협력관실 국무조정실 보도자료 국무조정실 보도자료 취업 노동 서울 세종 반드시 서울 청년정책협력관실 정부 간담회, 자문 청년보좌역, 2030청년자문단, 청년자문단 국무조정실">
       
       <div class="article-meta"><div class="article-meta-tags"><span class="meta-pill primary">정부</span><span class="meta-pill subtle">국무조정실</span></div><div class="article-byline"><span class="meta-item"><img class="publisher-icon" src="https://www.opm.go.kr/favicon.ico" alt="국무조정실 보도자료 아이콘" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.hidden=true">국무조정실 보도자료</span><span class="meta-divider" aria-hidden="true">•</span><span class="meta-item">2026-04-18</span></div></div>
-      <h3><a class="article-title-link" href="https://www.opm.go.kr:443/opm/news/press-release.do" target="_blank" rel="noreferrer" aria-label="국무조정실 국무총리비서실 | 알림·소식 | 보도·설명자료 | 보도자료 게시판읽기([보도자료] 김민석 국무총리, 삼청동 오픈하우스-청년 보좌역 보도자료) | 국무조정실 국무총... 링크 바로가기">국무조정실 국무총리비서실 | 알림·소식 | 보도·설명자료 | 보도자료 게시판읽기([보도자료] 김민석 국무총리, 삼청동 오픈하우스-청년 보좌역 보도자료) | 국무조정실 국무총...</a></h3>
+      <h3><a class="article-title-link" href="https://www.opm.go.kr/opm/news/press-release.do?mode=view&amp;articleNo=161945&amp;srSearchVal=%EC%B2%AD%EB%85%84&amp;article.offset=0&amp;articleLimit=20" target="_blank" rel="noreferrer" aria-label="[보도자료] 김민석 국무총리, 삼청동 오픈하우스-청년 보좌역 보도자료 링크 바로가기">[보도자료] 김민석 국무총리, 삼청동 오픈하우스-청년 보좌역 보도자료</a></h3>
       <div class="badge-row"><span class="badge">간담회, 자문</span><span class="badge">청년보좌역, 2030청년자문단, 청년자문단</span></div>
-      <p class="article-summary"><a class="article-summary-link" href="https://www.opm.go.kr:443/opm/news/press-release.do" target="_blank" rel="noreferrer" aria-label="국무조정실 국무총리비서실 | 알림·소식 | 보도·설명자료 | 보도자료 게시판읽기([보도자료] 김민석 국무총리, 삼청동 오픈하우스-청년 보좌역 보도자료) | 국무조정실 국무총... 링크 바로가기">청년정책협력관실</a></p>
-      <div class="article-actions"><a class="mini-link article-link-action" href="https://www.opm.go.kr:443/opm/news/press-release.do" target="_blank" rel="noreferrer" aria-label="국무조정실 국무총리비서실 | 알림·소식 | 보도·설명자료 | 보도자료 게시판읽기([보도자료] 김민석 국무총리, 삼청동 오픈하우스-청년 보좌역 보도자료) | 국무조정실 국무총리비서실 링크 바로가기">링크 바로가기</a><button class="action-button" type="button" data-article-action="share" data-article-url="https://www.opm.go.kr:443/opm/news/press-release.do" data-share-title="국무조정실 국무총리비서실 | 알림·소식 | 보도·설명자료 | 보도자료 게시판읽기([보도자료] 김민석 국무총리, 삼청동 오픈하우스-청년 보좌역 보도자료) | 국무조정실 국무총리비서실" aria-label="국무조정실 국무총리비서실 | 알림·소식 | 보도·설명자료 | 보도자료 게시판읽기([보도자료] 김민석 국무총리, 삼청동 오픈하우스-청년 보좌역 보도자료) | 국무조정실 국무총리비서실 공유하기">공유하기</button><button class="action-button" type="button" data-article-action="copy" data-article-url="https://www.opm.go.kr:443/opm/news/press-release.do" data-share-title="국무조정실 국무총리비서실 | 알림·소식 | 보도·설명자료 | 보도자료 게시판읽기([보도자료] 김민석 국무총리, 삼청동 오픈하우스-청년 보좌역 보도자료) | 국무조정실 국무총리비서실" aria-label="국무조정실 국무총리비서실 | 알림·소식 | 보도·설명자료 | 보도자료 게시판읽기([보도자료] 김민석 국무총리, 삼청동 오픈하우스-청년 보좌역 보도자료) | 국무조정실 국무총리비서실 링크 복사">링크 복사</button></div><div class="article-feedback" data-article-feedback aria-live="polite"></div>
+      <p class="article-summary"><a class="article-summary-link" href="https://www.opm.go.kr/opm/news/press-release.do?mode=view&amp;articleNo=161945&amp;srSearchVal=%EC%B2%AD%EB%85%84&amp;article.offset=0&amp;articleLimit=20" target="_blank" rel="noreferrer" aria-label="[보도자료] 김민석 국무총리, 삼청동 오픈하우스-청년 보좌역 보도자료 링크 바로가기">청년정책협력관실</a></p>
+      <div class="article-actions"><a class="mini-link article-link-action" href="https://www.opm.go.kr/opm/news/press-release.do?mode=view&amp;articleNo=161945&amp;srSearchVal=%EC%B2%AD%EB%85%84&amp;article.offset=0&amp;articleLimit=20" target="_blank" rel="noreferrer" aria-label="[보도자료] 김민석 국무총리, 삼청동 오픈하우스-청년 보좌역 보도자료 링크 바로가기">링크 바로가기</a><button class="action-button" type="button" data-article-action="share" data-article-url="https://www.opm.go.kr/opm/news/press-release.do?mode=view&amp;articleNo=161945&amp;srSearchVal=%EC%B2%AD%EB%85%84&amp;article.offset=0&amp;articleLimit=20" data-share-title="[보도자료] 김민석 국무총리, 삼청동 오픈하우스-청년 보좌역 보도자료" aria-label="[보도자료] 김민석 국무총리, 삼청동 오픈하우스-청년 보좌역 보도자료 공유하기">공유하기</button><button class="action-button" type="button" data-article-action="copy" data-article-url="https://www.opm.go.kr/opm/news/press-release.do?mode=view&amp;articleNo=161945&amp;srSearchVal=%EC%B2%AD%EB%85%84&amp;article.offset=0&amp;articleLimit=20" data-share-title="[보도자료] 김민석 국무총리, 삼청동 오픈하우스-청년 보좌역 보도자료" aria-label="[보도자료] 김민석 국무총리, 삼청동 오픈하우스-청년 보좌역 보도자료 링크 복사">링크 복사</button></div><div class="article-feedback" data-article-feedback aria-live="polite"></div>
     </article>
     
-    <article class="article-card no-media" data-article-card="true" data-policy-card="true" data-policy-group="official" data-policy-scope="국무조정실" data-policy-type="회의" data-article-url="https://www.opm.go.kr:443/opm/news/press-release.do" data-article-title="국무조정실 국무총리비서실 | 알림·소식 | 보도·설명자료 | 보도자료 게시판읽기([보도자료] 정부위원회 청년위원 의무위촉 비율 20%로 상향) | 국무조정실 국무총리비서실" data-article-date="2026-04-13" data-article-region="세종" data-article-search="국무조정실 국무총리비서실 | 알림·소식 | 보도·설명자료 | 보도자료 게시판읽기([보도자료] 정부위원회 청년위원 의무위촉 비율 20%로 상향) | 국무조정실 국무총리비서실 청년정책협력관실 국무조정실 보도자료 국무조정실 보도자료 세종 인구 청년인구 반드시 세종 청년정책협력관실 정부 회의, 위원회 청년정책 관계장관회의 국무조정실">
+    <article class="article-card no-media" data-article-card="true" data-policy-card="true" data-policy-group="official" data-policy-scope="국무조정실" data-policy-type="회의" data-article-url="https://www.opm.go.kr/opm/news/press-release.do?mode=view&amp;articleNo=161861&amp;srSearchVal=%EC%B2%AD%EB%85%84&amp;article.offset=0&amp;articleLimit=20" data-article-title="[보도자료] 정부위원회 청년위원 의무위촉 비율 20%로 상향" data-article-date="2026-04-13" data-article-region="세종" data-article-search="[보도자료] 정부위원회 청년위원 의무위촉 비율 20%로 상향 청년정책협력관실 국무조정실 보도자료 국무조정실 보도자료 세종 인구 청년인구 반드시 세종 청년정책협력관실 정부 회의, 위원회 청년정책 관계장관회의 국무조정실">
       
       <div class="article-meta"><div class="article-meta-tags"><span class="meta-pill primary">정부</span><span class="meta-pill subtle">국무조정실</span></div><div class="article-byline"><span class="meta-item"><img class="publisher-icon" src="https://www.opm.go.kr/favicon.ico" alt="국무조정실 보도자료 아이콘" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.hidden=true">국무조정실 보도자료</span><span class="meta-divider" aria-hidden="true">•</span><span class="meta-item">2026-04-13</span></div></div>
-      <h3><a class="article-title-link" href="https://www.opm.go.kr:443/opm/news/press-release.do" target="_blank" rel="noreferrer" aria-label="국무조정실 국무총리비서실 | 알림·소식 | 보도·설명자료 | 보도자료 게시판읽기([보도자료] 정부위원회 청년위원 의무위촉 비율 20%로 상향) | 국무조정실 국무총리비서실 링크 바로가기">국무조정실 국무총리비서실 | 알림·소식 | 보도·설명자료 | 보도자료 게시판읽기([보도자료] 정부위원회 청년위원 의무위촉 비율 20%로 상향) | 국무조정실 국무총리비서실</a></h3>
+      <h3><a class="article-title-link" href="https://www.opm.go.kr/opm/news/press-release.do?mode=view&amp;articleNo=161861&amp;srSearchVal=%EC%B2%AD%EB%85%84&amp;article.offset=0&amp;articleLimit=20" target="_blank" rel="noreferrer" aria-label="[보도자료] 정부위원회 청년위원 의무위촉 비율 20%로 상향 링크 바로가기">[보도자료] 정부위원회 청년위원 의무위촉 비율 20%로 상향</a></h3>
       <div class="badge-row"><span class="badge">회의, 위원회</span><span class="badge">청년정책 관계장관회의</span></div>
-      <p class="article-summary"><a class="article-summary-link" href="https://www.opm.go.kr:443/opm/news/press-release.do" target="_blank" rel="noreferrer" aria-label="국무조정실 국무총리비서실 | 알림·소식 | 보도·설명자료 | 보도자료 게시판읽기([보도자료] 정부위원회 청년위원 의무위촉 비율 20%로 상향) | 국무조정실 국무총리비서실 링크 바로가기">청년정책협력관실</a></p>
-      <div class="article-actions"><a class="mini-link article-link-action" href="https://www.opm.go.kr:443/opm/news/press-release.do" target="_blank" rel="noreferrer" aria-label="국무조정실 국무총리비서실 | 알림·소식 | 보도·설명자료 | 보도자료 게시판읽기([보도자료] 정부위원회 청년위원 의무위촉 비율 20%로 상향) | 국무조정실 국무총리비서실 링크 바로가기">링크 바로가기</a><button class="action-button" type="button" data-article-action="share" data-article-url="https://www.opm.go.kr:443/opm/news/press-release.do" data-share-title="국무조정실 국무총리비서실 | 알림·소식 | 보도·설명자료 | 보도자료 게시판읽기([보도자료] 정부위원회 청년위원 의무위촉 비율 20%로 상향) | 국무조정실 국무총리비서실" aria-label="국무조정실 국무총리비서실 | 알림·소식 | 보도·설명자료 | 보도자료 게시판읽기([보도자료] 정부위원회 청년위원 의무위촉 비율 20%로 상향) | 국무조정실 국무총리비서실 공유하기">공유하기</button><button class="action-button" type="button" data-article-action="copy" data-article-url="https://www.opm.go.kr:443/opm/news/press-release.do" data-share-title="국무조정실 국무총리비서실 | 알림·소식 | 보도·설명자료 | 보도자료 게시판읽기([보도자료] 정부위원회 청년위원 의무위촉 비율 20%로 상향) | 국무조정실 국무총리비서실" aria-label="국무조정실 국무총리비서실 | 알림·소식 | 보도·설명자료 | 보도자료 게시판읽기([보도자료] 정부위원회 청년위원 의무위촉 비율 20%로 상향) | 국무조정실 국무총리비서실 링크 복사">링크 복사</button></div><div class="article-feedback" data-article-feedback aria-live="polite"></div>
+      <p class="article-summary"><a class="article-summary-link" href="https://www.opm.go.kr/opm/news/press-release.do?mode=view&amp;articleNo=161861&amp;srSearchVal=%EC%B2%AD%EB%85%84&amp;article.offset=0&amp;articleLimit=20" target="_blank" rel="noreferrer" aria-label="[보도자료] 정부위원회 청년위원 의무위촉 비율 20%로 상향 링크 바로가기">청년정책협력관실</a></p>
+      <div class="article-actions"><a class="mini-link article-link-action" href="https://www.opm.go.kr/opm/news/press-release.do?mode=view&amp;articleNo=161861&amp;srSearchVal=%EC%B2%AD%EB%85%84&amp;article.offset=0&amp;articleLimit=20" target="_blank" rel="noreferrer" aria-label="[보도자료] 정부위원회 청년위원 의무위촉 비율 20%로 상향 링크 바로가기">링크 바로가기</a><button class="action-button" type="button" data-article-action="share" data-article-url="https://www.opm.go.kr/opm/news/press-release.do?mode=view&amp;articleNo=161861&amp;srSearchVal=%EC%B2%AD%EB%85%84&amp;article.offset=0&amp;articleLimit=20" data-share-title="[보도자료] 정부위원회 청년위원 의무위촉 비율 20%로 상향" aria-label="[보도자료] 정부위원회 청년위원 의무위촉 비율 20%로 상향 공유하기">공유하기</button><button class="action-button" type="button" data-article-action="copy" data-article-url="https://www.opm.go.kr/opm/news/press-release.do?mode=view&amp;articleNo=161861&amp;srSearchVal=%EC%B2%AD%EB%85%84&amp;article.offset=0&amp;articleLimit=20" data-share-title="[보도자료] 정부위원회 청년위원 의무위촉 비율 20%로 상향" aria-label="[보도자료] 정부위원회 청년위원 의무위촉 비율 20%로 상향 링크 복사">링크 복사</button></div><div class="article-feedback" data-article-feedback aria-live="polite"></div>
     </article>
     
     <article class="article-card no-media" data-article-card="true" data-policy-card="true" data-policy-group="official" data-policy-scope="국무조정실" data-policy-type="간담회" data-article-url="https://news.google.com/rss/articles/CBMiS0FVX3lxTE55enlsNThJVERXVllDSmxLelFxSDliMFFRdHJNRG5tY2JnM0ktWDFwd0JLMTR6U2VEWGR5MHlxWUdNX0NtQk1yNUdKWQ?oc=5" data-article-title="김민석 국무총리, 신임 부처 청년보좌역들과 ‘삼청동 공관 오픈하우스’ 간담회" data-article-date="" data-article-region="중앙" data-article-search="김민석 국무총리, 신임 부처 청년보좌역들과 ‘삼청동 공관 오픈하우스’ 간담회 김민석 국무총리, 신임 부처 청년보좌역들과 ‘삼청동 공관 오픈하우스’ 간담회 뉴스체인지 뉴스체인지 구글뉴스 거버넌스(30일) 중앙 정부 간담회 청년보좌역 국무조정실">

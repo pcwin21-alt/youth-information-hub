@@ -13,12 +13,14 @@
 | 날짜 감사 | `audit_article_dates.py` | classified/selected/summarized/funnel | `article_date_audit.json` |
 | DB 발행 | `db_writer.py` | `step5_summarized.json`, `step2_filtered.json` | `runtime/db/articles.db` |
 | 공개 HTML | `web_updater.py` | `step5_summarized.json`, settings | `public-site/web/*.html` |
+| 피드백 점검 | `pipeline_feedback.py` | pipeline artifacts, web HTML, source health | `pipeline_feedback_report.json`, `pipeline_feedback_report.md` |
 | 전체 실행 | `cron_runner.py` | 위 단계 전체 | 상태 JSON, archive snapshot |
 
 ## Operations
 
 - 상태 리포트: `status_report.py`
 - 소스 헬스체크: `source_healthcheck.py`
+- 파이프라인 피드백 점검: `pipeline_feedback.py`
 - 공개 artifact 검증: `verify_site_artifacts.py`
 - Pages 패키징: `prepare_pages_site.py`
 - 로컬 자동 반영: `start_auto_update.ps1`, `stop_auto_update.ps1`, `auto_update_runner.py`
@@ -28,3 +30,8 @@
 
 - 별도 Basic Auth 문의 관리자 서버는 사용하지 않는다. 문의/연락처 설정은 Django 운영 콘솔 `/editorial/settings/`에서 관리한다.
 - 구버전 루트 `scripts/` 경로는 현재 표준이 아니다.
+
+## Runbooks
+
+- 전체 파이프라인 정의: `docs/pipeline-operations.md`
+- 정기 피드백/자가복구 루틴: `docs/pipeline-feedback-routine.md`

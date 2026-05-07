@@ -578,6 +578,30 @@ HOME_CENTRAL_OFFICIAL_ANNOUNCEMENT_KEYWORDS = (
     "report",
 )
 
+HOME_GOVERNMENT_TREND_YOUTH_KEYWORDS = (
+    "청년",
+    "청년층",
+    "청년세대",
+    "청년정책",
+    "청년위원",
+    "청년보좌역",
+    "대학생",
+    "사회초년생",
+    "취업",
+    "구직",
+    "일자리",
+    "고용",
+    "주거",
+    "월세",
+    "전세",
+    "청년도약",
+    "청년내일",
+    "고립",
+    "은둔",
+    "금융",
+    "대출",
+)
+
 HOME_LOCAL_OFFICIAL_ANNOUNCEMENT_CHANNELS = {
     "",
     "press_release",
@@ -904,6 +928,11 @@ BASE_CSS = """
     --accent: #e7bd52;
     --accent-soft: rgba(255, 243, 207, 0.9);
     --accent-strong: #735b12;
+    --filter-accent: var(--accent-strong);
+    --filter-accent-strong: var(--accent-strong);
+    --filter-active-bg: var(--accent-strong);
+    --filter-active-border: transparent;
+    --filter-active-stroke: #5c4318;
     --home-apricot: #e7bd52;
     --home-apricot-soft: rgba(231, 189, 82, 0.24);
     --home-teal: #a8d5ba;
@@ -1474,7 +1503,7 @@ BASE_CSS = """
     gap: 8px;
   }
   .filter-group-label {
-    color: var(--accent-strong);
+    color: var(--filter-accent-strong, var(--accent-strong));
     font-size: 0.78rem;
     font-weight: 800;
     letter-spacing: 0.01em;
@@ -1525,7 +1554,7 @@ BASE_CSS = """
     border: 1px solid rgba(31, 42, 51, 0.09);
     border-radius: 999px;
     background: rgba(255, 255, 255, 0.92);
-    color: var(--accent-strong);
+    color: var(--filter-accent-strong, var(--accent-strong));
     font-size: 0.8rem;
     font-weight: 700;
     white-space: nowrap;
@@ -1533,8 +1562,8 @@ BASE_CSS = """
     cursor: pointer;
   }
   .filter-button.active {
-    border-color: transparent;
-    background: var(--accent-strong);
+    border-color: var(--filter-active-border, transparent);
+    background: var(--filter-active-bg, var(--accent-strong));
     color: white;
   }
   .filter-status {
@@ -4099,7 +4128,7 @@ BASE_CSS = """
     gap: 14px;
   }
   .filter-group-label {
-    color: var(--accent-strong);
+    color: var(--filter-accent-strong, var(--accent-strong));
     font-size: 0.9rem;
     letter-spacing: 0;
     text-transform: none;
@@ -4920,6 +4949,12 @@ DASHBOARD_TONE_CSS = """
     --dashboard-dark: #292d29;
     --dashboard-dark-line: #111513;
     --dashboard-gold: #8b6b32;
+    --filter-accent: #006f63;
+    --filter-accent-strong: #004f47;
+    --filter-active-bg: #006f63;
+    --filter-active-border: #006f63;
+    --filter-active-stroke: #004f47;
+    --filter-active-soft: #d9f0ea;
     --success: #008a78;
     --danger: #c80000;
     --shadow: 0 16px 34px rgba(24, 24, 24, 0.08);
@@ -5841,10 +5876,14 @@ DASHBOARD_TONE_CSS = """
     box-shadow: none;
   }
   .button.primary,
-  .filter-button.active,
   .meta-pill.primary {
     border-color: var(--dashboard-gold);
     background: var(--dashboard-gold);
+    color: #ffffff;
+  }
+  .filter-button.active {
+    border-color: var(--filter-active-border);
+    background: var(--filter-active-bg);
     color: #ffffff;
   }
   body[data-page="index.html"] .home-briefing-card.lead .button {
@@ -7030,10 +7069,10 @@ DASHBOARD_TONE_CSS = """
     margin-top: 24px;
   }
   body:not([data-page="index.html"]) .filter-panel {
-    padding: 20px;
+    padding: 22px 24px;
   }
   body:not([data-page="index.html"]) .filter-head {
-    margin-bottom: 16px;
+    margin-bottom: 18px;
   }
   body:not([data-page="index.html"]) .filter-head h3 {
     font-size: 1.08rem;
@@ -7044,7 +7083,7 @@ DASHBOARD_TONE_CSS = """
     justify-content: space-between;
     gap: 14px;
     margin-bottom: 0;
-    padding-bottom: 14px;
+    padding-bottom: 16px;
     border-bottom: 1px solid #ebe8e2;
   }
   body:not([data-page="index.html"]) .filter-panel.has-region-map .filter-head .filter-status {
@@ -7067,10 +7106,11 @@ DASHBOARD_TONE_CSS = """
   body:not([data-page="index.html"]) .filter-stack {
     display: grid;
     grid-template-columns: repeat(12, minmax(0, 1fr));
-    gap: 18px 16px;
+    gap: 20px 18px;
     align-items: start;
   }
   body:not([data-page="index.html"]) .filter-group {
+    gap: 10px;
     min-width: 0;
   }
   body:not([data-page="index.html"]) .filter-group.wide,
@@ -7089,34 +7129,36 @@ DASHBOARD_TONE_CSS = """
   }
   body:not([data-page="index.html"]) .filter-button {
     min-height: 42px;
-    padding: 0 16px;
+    padding: 0 14px;
+    font-size: 0.82rem;
+    line-height: 1.1;
   }
   body:not([data-page="index.html"]) .filter-search-input {
-    min-height: 56px;
-    padding: 0 16px;
+    min-height: 58px;
+    padding: 0 18px;
   }
   body:not([data-page="index.html"]) .date-picker-row {
-    grid-template-columns: minmax(104px, 132px) minmax(0, 1fr);
-    gap: 12px;
+    grid-template-columns: minmax(112px, 140px) minmax(0, 1fr);
+    gap: 14px;
     align-items: stretch;
   }
   body:not([data-page="index.html"]) .date-picker-row > .filter-button {
     width: 100%;
-    min-height: 56px;
+    min-height: 58px;
   }
   body:not([data-page="index.html"]) .date-range-fields {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 12px;
+    gap: 14px;
   }
   body:not([data-page="index.html"]) .date-input-wrap {
     min-width: 0;
-    min-height: 56px;
-    padding: 10px 14px;
+    min-height: 58px;
+    padding: 10px 16px;
   }
   body:not([data-page="index.html"]) .filter-panel.has-region-map .filter-stack-map {
-    grid-template-columns: minmax(260px, 360px) minmax(0, 1fr);
-    gap: 0 28px;
+    grid-template-columns: minmax(244px, 332px) minmax(0, 1fr);
+    gap: 0 24px;
     align-items: stretch;
   }
   body:not([data-page="index.html"]) .filter-panel.has-region-map .filter-map-column,
@@ -7126,11 +7168,11 @@ DASHBOARD_TONE_CSS = """
     align-content: start;
   }
   body:not([data-page="index.html"]) .filter-panel.has-region-map .filter-map-column {
-    padding-right: 24px;
+    padding-right: 22px;
     border-right: 1px solid #ebe8e2;
   }
   body:not([data-page="index.html"]) .filter-panel.has-region-map .filter-control-column {
-    gap: 18px;
+    gap: 22px;
   }
   body:not([data-page="index.html"]) .filter-panel.has-region-map .filter-group-region-map,
   body:not([data-page="index.html"]) .filter-panel.has-region-map .filter-group-topic,
@@ -7143,7 +7185,7 @@ DASHBOARD_TONE_CSS = """
   .filter-region-picker {
     display: grid;
     grid-template-columns: 1fr;
-    gap: 10px;
+    gap: 12px;
   }
   .filter-region-quick {
     display: flex;
@@ -7151,7 +7193,7 @@ DASHBOARD_TONE_CSS = """
     gap: 8px;
   }
   .filter-region-map {
-    width: min(100%, 320px);
+    width: min(100%, 316px);
     justify-self: center;
     align-self: start;
   }
@@ -7215,8 +7257,8 @@ DASHBOARD_TONE_CSS = """
     opacity: 1;
   }
   .filter-region-map-region.active .filter-region-map-path {
-    fill: #8b6b32;
-    stroke: #5c4318;
+    fill: var(--filter-active-bg);
+    stroke: var(--filter-active-stroke);
     stroke-width: 2.45;
     filter: drop-shadow(0 8px 12px rgba(24, 24, 24, 0.16));
   }
@@ -7235,10 +7277,12 @@ DASHBOARD_TONE_CSS = """
     fill: #8a837a;
   }
   .filter-region-map-tooltip.active .filter-region-map-count {
-    fill: #8b6b32;
+    fill: var(--filter-active-bg);
   }
   body:not([data-page="index.html"]) .filter-controls {
     flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
     overflow: visible;
     padding-bottom: 0;
   }
@@ -10562,17 +10606,17 @@ def with_display_badges(article: dict, *badges: str) -> dict:
 
 
 def is_central_government_announcement(article: dict) -> bool:
-    if (
-        is_election_promise_article(article)
-        or home_campaign_political(article)
-        or article.get("campaign_political")
-        or article.get("substantive_promise")
-    ):
+    source_kind = normalize_inline_text(article.get("source_kind"))
+    is_official_source = source_kind == "official" or bool(article.get("is_official_source"))
+    if is_election_promise_article(article):
+        return False
+    if (article.get("campaign_political") or article.get("substantive_promise")) and not is_official_source:
+        return False
+    if home_campaign_political(article) and not is_official_source:
         return False
     if article.get("governance_scope") == "지자체" or article.get("is_regional_governance"):
         return False
-    source_kind = normalize_inline_text(article.get("source_kind"))
-    if source_kind != "official" and not article.get("is_official_source"):
+    if not is_official_source:
         return False
     return source_kind == "official" or home_is_central_policy_source(article)
 
@@ -10597,13 +10641,30 @@ def central_government_announcement_text(article: dict) -> str:
     )
 
 
+def central_government_announcement_signal_text(article: dict) -> str:
+    return normalize_inline_text(
+        " ".join(
+            str(value or "")
+            for value in [
+                article.get("title"),
+                article.get("summary"),
+                " ".join(article.get("issue_tags") or []),
+                " ".join(article.get("topic_tags") or []),
+            ]
+        )
+    )
+
+
 def is_home_central_official_announcement(article: dict) -> bool:
     if not is_central_government_announcement(article):
         return False
+    signal_text = central_government_announcement_signal_text(article).lower()
+    if not any(keyword.lower() in signal_text for keyword in HOME_GOVERNMENT_TREND_YOUTH_KEYWORDS):
+        return False
+    text = central_government_announcement_text(article).lower()
     source_channel = normalize_inline_text(article.get("source_channel"))
     if source_channel in HOME_CENTRAL_OFFICIAL_ANNOUNCEMENT_CHANNELS:
         return True
-    text = central_government_announcement_text(article).lower()
     return any(keyword.lower() in text for keyword in HOME_CENTRAL_OFFICIAL_ANNOUNCEMENT_KEYWORDS)
 
 

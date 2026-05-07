@@ -6,6 +6,7 @@ venv/
 .pytest_cache/
 runtime/db/*.db
 runtime/pipeline/*.json
+runtime/pipeline/*.md
 runtime/pipeline/**/*.json
 runtime/pipeline/**/*.log
 runtime/pipeline/**/*.html

@@ -1,5 +1,7 @@
 # Youth Info Platform Orchestrator
 
+> 공통 운영 기준: 이 문서는 `C:\★_VIBE CODING\CODEX.md`의 공통 원칙을 따른다. 더 구체적인 하위 지침이 있으면 하위 지침을 우선한다.
+
 이 저장소의 기본 실행 흐름은 아래와 같습니다.
 
 1. `collect-news`가 기사 원본을 수집한다.

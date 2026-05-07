@@ -17,6 +17,7 @@ from youth_info_platform.collect import (  # noqa: E402
     fetch_url_via_curl,
     get_source_parser,
     parse_feed,
+    parse_local_board_search,
     parse_naver_news_search,
     parse_source_payload,
 )
@@ -192,6 +193,79 @@ class SourceFilterTests(unittest.TestCase):
         self.assertEqual(len(filtered), 1)
         self.assertEqual(filtered[0]["source"], "YTN")
         self.assertIn("ytn.co.kr", filtered[0]["url"])
+
+
+class LocalBoardParserTests(unittest.TestCase):
+    def test_parse_local_board_search_extracts_youth_press_release(self) -> None:
+        html = """
+        <table>
+          <tr class="board-item">
+            <td class="title"><a href="/news/view.do?id=10">청년 일자리 보도자료</a></td>
+            <td class="date">2026.05.01</td>
+            <td class="summary">서울특별시 청년 지원사업 발표</td>
+          </tr>
+          <tr class="board-item">
+            <td class="title"><a href="/news/view.do?id=11">아동 행사 안내</a></td>
+            <td class="date">2026.05.02</td>
+          </tr>
+        </table>
+        """
+        source = {
+            "name": "서울특별시 보도자료 청년 검색",
+            "kind": "local",
+            "parser": "local_board_search",
+            "url": "https://www.seoul.go.kr/search?keyword=%EC%B2%AD%EB%85%84",
+            "region_id": "seoul",
+            "region_name": "서울",
+            "source_channel": "press_release",
+            "item_selector": "tr.board-item",
+            "title_selector": ".title a",
+            "link_selector": ".title a",
+            "date_selector": ".date",
+            "summary_selector": ".summary",
+            "search_terms": ["청년"],
+        }
+
+        articles = parse_local_board_search(html, source)
+
+        self.assertEqual(len(articles), 1)
+        self.assertEqual(articles[0]["title"], "청년 일자리 보도자료")
+        self.assertEqual(articles[0]["url"], "https://www.seoul.go.kr/news/view.do?id=10")
+        self.assertEqual(articles[0]["published_date"], "2026-05-01T00:00:00+09:00")
+        self.assertEqual(articles[0]["source_channel"], "press_release")
+        self.assertEqual(articles[0]["region_name"], "서울")
+
+    def test_parse_local_board_search_keeps_direct_document_url(self) -> None:
+        html = """
+        <ul>
+          <li class="board-item">
+            <a class="subject" href="/plan/view.do?id=20">청년정책 기본계획</a>
+            <a class="file" href="/files/youth-plan.pdf">원문 PDF</a>
+            <span class="date">2026-04-30</span>
+          </li>
+        </ul>
+        """
+        source = {
+            "name": "서울특별시 청년정책 기본·시행계획 검색",
+            "kind": "local",
+            "parser": "local_board_search",
+            "url": "https://www.seoul.go.kr/search?keyword=plan",
+            "region_id": "seoul",
+            "region_name": "서울",
+            "source_channel": "policy_plan",
+            "item_selector": "li.board-item",
+            "title_selector": ".subject",
+            "link_selector": ".subject",
+            "date_selector": ".date",
+            "search_terms": ["청년정책 기본계획", "시행계획"],
+        }
+
+        articles = parse_local_board_search(html, source)
+
+        self.assertEqual(len(articles), 1)
+        self.assertEqual(articles[0]["attachment_url"], "https://www.seoul.go.kr/files/youth-plan.pdf")
+        self.assertEqual(articles[0]["original_document_url"], "https://www.seoul.go.kr/files/youth-plan.pdf")
+        self.assertIsNotNone(get_source_parser("local_board_search"))
 
 
 class FetchUrlTests(unittest.TestCase):

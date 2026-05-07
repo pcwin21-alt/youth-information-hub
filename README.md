@@ -39,6 +39,12 @@ python institution-site\\manage.py runserver
 - 공개용 HTML: `public-site/web/`
 - 기관용 개인화 데이터: Django DB
 
+## Operations Runbooks
+
+- 전체 파이프라인 정의와 실행 계약: `docs/pipeline-operations.md`
+- 정기 피드백 점검과 자가복구 루틴: `docs/pipeline-feedback-routine.md`
+- 공개 사이트 스크립트 진입점: `public-site/scripts/README.md`
+
 ## Notes
 
 - `shared` 수정은 공개용과 기관용에 모두 영향을 준다.

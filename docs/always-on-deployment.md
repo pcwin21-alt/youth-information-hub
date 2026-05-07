@@ -74,11 +74,14 @@ sudo systemctl reload nginx
 ## Monitoring
 
 - `runtime/pipeline/pipeline_status.json`
+- `runtime/pipeline/pipeline_feedback_report.json`
+- `runtime/pipeline/pipeline_feedback_report.md`
 - `runtime/logs/`
 - `systemctl status youth-together-pipeline.service`
 - `systemctl status youth-together-pipeline.timer`
 - `bash public-site/deploy/linux/check_deployment.sh`
 - `python public-site/scripts/status_report.py`
+- `python public-site/scripts/pipeline_feedback.py --run-source-healthcheck`
 
 ## Backup
 

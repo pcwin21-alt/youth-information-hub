@@ -199,6 +199,46 @@ class HomeSelectionTests(unittest.TestCase):
         self.assertNotIn('<span class="home-glance-label">정책</span>', page_html)
         self.assertNotIn('<span class="home-glance-label">참여·회의</span>', page_html)
 
+    def test_home_government_trends_keep_youth_officials_and_skip_generic_officials(self) -> None:
+        youth_official = make_article(
+            title="[보도자료] 청년정책조정위원회 겸 관계장관회의 개최",
+            lead_text="청년 지원사업과 주거 대책, 공약 이행 점검을 논의했다.",
+            url="https://www.opm.go.kr/opm/news/press-release.do?mode=view&articleNo=1",
+            source_kind="official",
+        )
+        youth_official["is_official_source"] = True
+        youth_official["source"] = "국무조정실 보도자료"
+        youth_official["source_name"] = "국무조정실 보도자료"
+        youth_official["campaign_political"] = True
+        youth_official["substantive_promise"] = True
+
+        generic_official = make_article(
+            title="[보도자료] 해외 의장 면담",
+            lead_text="양국 협력과 의회 교류를 논의했다.",
+            url="https://www.opm.go.kr/opm/news/press-release.do?mode=view&articleNo=2",
+            source_kind="official",
+            published_date="2026-04-22T09:30:00+09:00",
+        )
+        generic_official["is_official_source"] = True
+        generic_official["source"] = "국무조정실 보도자료"
+        generic_official["source_name"] = "국무조정실 보도자료"
+
+        page_html = web_updater.build_home_page(
+            [youth_official],
+            [generic_official, youth_official],
+            {"finished_at": self.reference_time},
+            {
+                "organization_name": "유스사이드(Youthside)",
+                "copyright_text": "© 2026 유스사이드 · 박진감",
+                "version_text": "v0.3",
+                "email": "hello@example.com",
+            },
+        )
+        government_section = page_html.split("공식 발표와 지역 움직임", 1)[1].split("요즘 많이 잡힌 주제", 1)[0]
+
+        self.assertIn(youth_official["title"], government_section)
+        self.assertNotIn(generic_official["title"], government_section)
+
     def test_home_latest_news_uses_published_date_not_importance_score(self) -> None:
         older_high_score = make_article(
             title="청년 주거 지원 오래된 고점수 기사",
@@ -325,7 +365,7 @@ class HomeSelectionTests(unittest.TestCase):
 
     def test_home_government_local_trends_use_only_official_sources(self) -> None:
         central_press = make_article(
-            title="OFFICIAL CENTRAL PRESS RELEASE",
+            title="[보도자료] 청년 고용 지원사업 확대 발표",
             lead_text="Central ministry official youth policy release.",
             url="https://www.moel.go.kr/news/enews/report/enewsView.do?news_seq=1",
             source_kind="official",

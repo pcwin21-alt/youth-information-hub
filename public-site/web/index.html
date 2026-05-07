@@ -20,6 +20,11 @@
     --accent: #e7bd52;
     --accent-soft: rgba(255, 243, 207, 0.9);
     --accent-strong: #735b12;
+    --filter-accent: var(--accent-strong);
+    --filter-accent-strong: var(--accent-strong);
+    --filter-active-bg: var(--accent-strong);
+    --filter-active-border: transparent;
+    --filter-active-stroke: #5c4318;
     --home-apricot: #e7bd52;
     --home-apricot-soft: rgba(231, 189, 82, 0.24);
     --home-teal: #a8d5ba;
@@ -590,7 +595,7 @@
     gap: 8px;
   }
   .filter-group-label {
-    color: var(--accent-strong);
+    color: var(--filter-accent-strong, var(--accent-strong));
     font-size: 0.78rem;
     font-weight: 800;
     letter-spacing: 0.01em;
@@ -641,7 +646,7 @@
     border: 1px solid rgba(31, 42, 51, 0.09);
     border-radius: 999px;
     background: rgba(255, 255, 255, 0.92);
-    color: var(--accent-strong);
+    color: var(--filter-accent-strong, var(--accent-strong));
     font-size: 0.8rem;
     font-weight: 700;
     white-space: nowrap;
@@ -649,8 +654,8 @@
     cursor: pointer;
   }
   .filter-button.active {
-    border-color: transparent;
-    background: var(--accent-strong);
+    border-color: var(--filter-active-border, transparent);
+    background: var(--filter-active-bg, var(--accent-strong));
     color: white;
   }
   .filter-status {
@@ -3215,7 +3220,7 @@
     gap: 14px;
   }
   .filter-group-label {
-    color: var(--accent-strong);
+    color: var(--filter-accent-strong, var(--accent-strong));
     font-size: 0.9rem;
     letter-spacing: 0;
     text-transform: none;
@@ -4033,6 +4038,12 @@
     --dashboard-dark: #292d29;
     --dashboard-dark-line: #111513;
     --dashboard-gold: #8b6b32;
+    --filter-accent: #006f63;
+    --filter-accent-strong: #004f47;
+    --filter-active-bg: #006f63;
+    --filter-active-border: #006f63;
+    --filter-active-stroke: #004f47;
+    --filter-active-soft: #d9f0ea;
     --success: #008a78;
     --danger: #c80000;
     --shadow: 0 16px 34px rgba(24, 24, 24, 0.08);
@@ -4954,10 +4965,14 @@
     box-shadow: none;
   }
   .button.primary,
-  .filter-button.active,
   .meta-pill.primary {
     border-color: var(--dashboard-gold);
     background: var(--dashboard-gold);
+    color: #ffffff;
+  }
+  .filter-button.active {
+    border-color: var(--filter-active-border);
+    background: var(--filter-active-bg);
     color: #ffffff;
   }
   body[data-page="index.html"] .home-briefing-card.lead .button {
@@ -6143,10 +6158,10 @@
     margin-top: 24px;
   }
   body:not([data-page="index.html"]) .filter-panel {
-    padding: 20px;
+    padding: 22px 24px;
   }
   body:not([data-page="index.html"]) .filter-head {
-    margin-bottom: 16px;
+    margin-bottom: 18px;
   }
   body:not([data-page="index.html"]) .filter-head h3 {
     font-size: 1.08rem;
@@ -6157,7 +6172,7 @@
     justify-content: space-between;
     gap: 14px;
     margin-bottom: 0;
-    padding-bottom: 14px;
+    padding-bottom: 16px;
     border-bottom: 1px solid #ebe8e2;
   }
   body:not([data-page="index.html"]) .filter-panel.has-region-map .filter-head .filter-status {
@@ -6180,10 +6195,11 @@
   body:not([data-page="index.html"]) .filter-stack {
     display: grid;
     grid-template-columns: repeat(12, minmax(0, 1fr));
-    gap: 18px 16px;
+    gap: 20px 18px;
     align-items: start;
   }
   body:not([data-page="index.html"]) .filter-group {
+    gap: 10px;
     min-width: 0;
   }
   body:not([data-page="index.html"]) .filter-group.wide,
@@ -6202,34 +6218,36 @@
   }
   body:not([data-page="index.html"]) .filter-button {
     min-height: 42px;
-    padding: 0 16px;
+    padding: 0 14px;
+    font-size: 0.82rem;
+    line-height: 1.1;
   }
   body:not([data-page="index.html"]) .filter-search-input {
-    min-height: 56px;
-    padding: 0 16px;
+    min-height: 58px;
+    padding: 0 18px;
   }
   body:not([data-page="index.html"]) .date-picker-row {
-    grid-template-columns: minmax(104px, 132px) minmax(0, 1fr);
-    gap: 12px;
+    grid-template-columns: minmax(112px, 140px) minmax(0, 1fr);
+    gap: 14px;
     align-items: stretch;
   }
   body:not([data-page="index.html"]) .date-picker-row > .filter-button {
     width: 100%;
-    min-height: 56px;
+    min-height: 58px;
   }
   body:not([data-page="index.html"]) .date-range-fields {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 12px;
+    gap: 14px;
   }
   body:not([data-page="index.html"]) .date-input-wrap {
     min-width: 0;
-    min-height: 56px;
-    padding: 10px 14px;
+    min-height: 58px;
+    padding: 10px 16px;
   }
   body:not([data-page="index.html"]) .filter-panel.has-region-map .filter-stack-map {
-    grid-template-columns: minmax(260px, 360px) minmax(0, 1fr);
-    gap: 0 28px;
+    grid-template-columns: minmax(244px, 332px) minmax(0, 1fr);
+    gap: 0 24px;
     align-items: stretch;
   }
   body:not([data-page="index.html"]) .filter-panel.has-region-map .filter-map-column,
@@ -6239,11 +6257,11 @@
     align-content: start;
   }
   body:not([data-page="index.html"]) .filter-panel.has-region-map .filter-map-column {
-    padding-right: 24px;
+    padding-right: 22px;
     border-right: 1px solid #ebe8e2;
   }
   body:not([data-page="index.html"]) .filter-panel.has-region-map .filter-control-column {
-    gap: 18px;
+    gap: 22px;
   }
   body:not([data-page="index.html"]) .filter-panel.has-region-map .filter-group-region-map,
   body:not([data-page="index.html"]) .filter-panel.has-region-map .filter-group-topic,
@@ -6256,7 +6274,7 @@
   .filter-region-picker {
     display: grid;
     grid-template-columns: 1fr;
-    gap: 10px;
+    gap: 12px;
   }
   .filter-region-quick {
     display: flex;
@@ -6264,7 +6282,7 @@
     gap: 8px;
   }
   .filter-region-map {
-    width: min(100%, 320px);
+    width: min(100%, 316px);
     justify-self: center;
     align-self: start;
   }
@@ -6328,8 +6346,8 @@
     opacity: 1;
   }
   .filter-region-map-region.active .filter-region-map-path {
-    fill: #8b6b32;
-    stroke: #5c4318;
+    fill: var(--filter-active-bg);
+    stroke: var(--filter-active-stroke);
     stroke-width: 2.45;
     filter: drop-shadow(0 8px 12px rgba(24, 24, 24, 0.16));
   }
@@ -6348,10 +6366,12 @@
     fill: #8a837a;
   }
   .filter-region-map-tooltip.active .filter-region-map-count {
-    fill: #8b6b32;
+    fill: var(--filter-active-bg);
   }
   body:not([data-page="index.html"]) .filter-controls {
     flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
     overflow: visible;
     padding-bottom: 0;
   }
@@ -6887,9 +6907,9 @@
             <div>
               <h2 id="today-briefing-title">오늘 한눈에 보기</h2>
             </div>
-            <div class="home-glance-grid"><article class="home-glance-item neutral"><span class="home-glance-label">가장 최근 뉴스</span><strong class="home-glance-value">125건</strong></article><article class="home-glance-item teal"><span class="home-glance-label">정부·지자체 동향</span><strong class="home-glance-value">2건</strong></article></div>
+            <div class="home-glance-grid"><article class="home-glance-item neutral"><span class="home-glance-label">가장 최근 뉴스</span><strong class="home-glance-value">127건</strong></article><article class="home-glance-item teal"><span class="home-glance-label">정부·지자체 동향</span><strong class="home-glance-value">9건</strong></article></div>
           </div>
-          <div class="home-keyword-strip" aria-label="최근 많이 잡힌 카테고리"><div class="home-keyword-list"><a class="home-keyword-chip" href="news.html?topic=%EC%B7%A8%EC%97%85">#취업</a><a class="home-keyword-chip" href="news.html?topic=%EC%A3%BC%EA%B1%B0">#주거</a><a class="home-keyword-chip" href="news.html?topic=%EB%AA%A8%EC%A7%91">#모집</a><a class="home-keyword-chip" href="news.html?topic=%EA%B8%88%EC%9C%B5">#금융</a><a class="home-keyword-chip" href="news.html?topic=%EB%B3%B5%EC%A7%80">#복지</a><a class="home-keyword-chip" href="news.html?topic=%EB%85%B8%EB%8F%99">#노동</a><a class="home-keyword-chip" href="news.html?topic=%EC%A7%80%EC%97%AD%EC%A0%95%EC%B0%A9">#지역정착</a><a class="home-keyword-chip" href="news.html?topic=%EC%B0%BD%EC%97%85">#창업</a></div></div>
+          <div class="home-keyword-strip" aria-label="최근 많이 잡힌 카테고리"><div class="home-keyword-list"><a class="home-keyword-chip" href="news.html?topic=%EC%B7%A8%EC%97%85">#취업</a><a class="home-keyword-chip" href="news.html?topic=%EB%AA%A8%EC%A7%91">#모집</a><a class="home-keyword-chip" href="news.html?topic=%EC%A3%BC%EA%B1%B0">#주거</a><a class="home-keyword-chip" href="news.html?topic=%EA%B8%88%EC%9C%B5">#금융</a><a class="home-keyword-chip" href="news.html?topic=%EB%B3%B5%EC%A7%80">#복지</a><a class="home-keyword-chip" href="news.html?topic=%EB%85%B8%EB%8F%99">#노동</a><a class="home-keyword-chip" href="news.html?topic=%EC%A7%80%EC%97%AD%EC%A0%95%EC%B0%A9">#지역정착</a><a class="home-keyword-chip" href="news.html?topic=%EC%B0%BD%EC%97%85">#창업</a></div></div>
           <div class="home-overview-columns">
             <article class="home-overview-column">
               <div class="home-overview-column-head">
@@ -6899,7 +6919,7 @@
                 </div>
               </div>
               <p class="home-briefing-panel-note">언론 기사 중 선거·공약성 기사를 제외한 최신 청년 이슈입니다.</p>
-              <div class="home-urgent-list"><article class="home-urgent-item"><a class="home-urgent-link" href="http://www.ikpnews.net/news/articleView.html?idxno=70364" target="_blank" rel="noreferrer" aria-label="농산업 청년창업 지원 프로그램 ‘영농 히어로’ 모집 링크 바로가기"><span class="home-urgent-rank">01</span><div class="home-urgent-text"><strong>농산업 청년창업 지원 프로그램 ‘영농 히어로’ 모집</strong><span class="home-urgent-meta">한국농정신문 · 2026-05-07 20:37 · 충남</span></div></a></article><article class="home-urgent-item"><a class="home-urgent-link" href="https://www.kookje.co.kr/news2011/asp/newsbody.asp?code=0300&amp;key=20260508.22008001695" target="_blank" rel="noreferrer" aria-label="소액 빌려준 뒤 1만3383% 폭리…청년 불법 대부업 조직 집유 링크 바로가기"><span class="home-urgent-rank">02</span><div class="home-urgent-text"><strong>소액 빌려준 뒤 1만3383% 폭리…청년 불법 대부업 조직 집유</strong><span class="home-urgent-meta">국제신문 · 2026-05-07 20:00 · 부산</span></div></a></article><article class="home-urgent-item"><a class="home-urgent-link" href="https://www.newsfreezone.co.kr/news/articleView.html?idxno=688556" target="_blank" rel="noreferrer" aria-label="목포시, 청년창업공간 입주자 모집 및 직업소개소 점검 링크 바로가기"><span class="home-urgent-rank">03</span><div class="home-urgent-text"><strong>목포시, 청년창업공간 입주자 모집 및 직업소개소 점검</strong><span class="home-urgent-meta">뉴스프리존 · 2026-05-07 19:46 · 전남</span></div></a></article><article class="home-urgent-item"><a class="home-urgent-link" href="http://www.worktoday.co.kr" target="_blank" rel="noreferrer" aria-label="[금융 이모저모] KB국민은행, 하나금융, 하나은행, 한국씨티은행, BNK경남은행 링크 바로가기"><span class="home-urgent-rank">04</span><div class="home-urgent-text"><strong>[금융 이모저모] KB국민은행, 하나금융, 하나은행, 한국씨티은행, BNK경남은행</strong><span class="home-urgent-meta">워크투데이 · 2026-05-07 19:43 · 서울</span></div></a></article><article class="home-urgent-item"><a class="home-urgent-link" href="https://www.namdonews.com/news/articleView.html?idxno=909845" target="_blank" rel="noreferrer" aria-label="나눔·돌봄으로 피어난 광주 동구 ‘효사랑’ 링크 바로가기"><span class="home-urgent-rank">05</span><div class="home-urgent-text"><strong>나눔·돌봄으로 피어난 광주 동구 ‘효사랑’</strong><span class="home-urgent-meta">남도일보 · 2026-05-07 19:41 · 광주</span></div></a></article></div>
+              <div class="home-urgent-list"><article class="home-urgent-item"><a class="home-urgent-link" href="https://www.abcn.kr/news/articleView.html?idxno=87918" target="_blank" rel="noreferrer" aria-label="국제로타리 3650지구 &#x27;아름다운 특별전&#x27; 성황리 개최 링크 바로가기"><span class="home-urgent-rank">01</span><div class="home-urgent-text"><strong>국제로타리 3650지구 &#x27;아름다운 특별전&#x27; 성황리 개최</strong><span class="home-urgent-meta">ABC뉴스 · 2026-05-07 21:18 · 서울</span></div></a></article><article class="home-urgent-item"><a class="home-urgent-link" href="https://www.newsinside.kr/news/articleView.html?idxno=4654170" target="_blank" rel="noreferrer" aria-label="[금융가 산책] 케이뱅크, 최고 연 7.5% ‘마이키즈 적금’ 출시 링크 바로가기"><span class="home-urgent-rank">02</span><div class="home-urgent-text"><strong>[금융가 산책] 케이뱅크, 최고 연 7.5% ‘마이키즈 적금’ 출시</strong><span class="home-urgent-meta">뉴스인사이드 · 2026-05-07 20:55 · 서울</span></div></a></article><article class="home-urgent-item"><a class="home-urgent-link" href="http://www.ikpnews.net/news/articleView.html?idxno=70364" target="_blank" rel="noreferrer" aria-label="농산업 청년창업 지원 프로그램 ‘영농 히어로’ 모집 링크 바로가기"><span class="home-urgent-rank">03</span><div class="home-urgent-text"><strong>농산업 청년창업 지원 프로그램 ‘영농 히어로’ 모집</strong><span class="home-urgent-meta">한국농정신문 · 2026-05-07 20:37 · 충남</span></div></a></article><article class="home-urgent-item"><a class="home-urgent-link" href="https://www.kookje.co.kr/news2011/asp/newsbody.asp?code=0300&amp;key=20260508.22008001695" target="_blank" rel="noreferrer" aria-label="소액 빌려준 뒤 1만3383% 폭리…청년 불법 대부업 조직 집유 링크 바로가기"><span class="home-urgent-rank">04</span><div class="home-urgent-text"><strong>소액 빌려준 뒤 1만3383% 폭리…청년 불법 대부업 조직 집유</strong><span class="home-urgent-meta">국제신문 · 2026-05-07 20:24 · 부산</span></div></a></article><article class="home-urgent-item"><a class="home-urgent-link" href="https://www.newsfreezone.co.kr/news/articleView.html?idxno=688556" target="_blank" rel="noreferrer" aria-label="목포시, 청년창업공간 입주자 모집 및 직업소개소 점검 링크 바로가기"><span class="home-urgent-rank">05</span><div class="home-urgent-text"><strong>목포시, 청년창업공간 입주자 모집 및 직업소개소 점검</strong><span class="home-urgent-meta">뉴스프리존 · 2026-05-07 19:46 · 전남</span></div></a></article></div>
             </article>
             <article class="home-overview-column">
               <div class="home-overview-column-head">
@@ -6909,7 +6929,7 @@
                 </div>
               </div>
               <p class="home-briefing-panel-note">정부기관 공식 보도자료와 지자체 홈페이지 보도자료·공고 기준으로만 봅니다.</p>
-              <div class="home-urgent-list"><article class="home-urgent-item"><a class="home-urgent-link" href="https://www.opm.go.kr:443/opm/news/press-release.do" target="_blank" rel="noreferrer" aria-label="국무조정실 국무총리비서실 | 알림·소식 | 보도·설명자료 | 보도자료 게시판읽기([보도자료] 지속가능발전 국가보고서 의견수렴 협의회 개최) | 국무조정실 국무... 링크 바로가기"><span class="home-urgent-rank">01</span><div class="home-urgent-text"><strong>국무조정실 국무총리비서실 | 알림·소식 | 보도·설명자료 | 보도자료 게시판읽기([보도자료] 지속가능발전 국가보고서 의견수렴 협의회 개최) | 국무조정실 국무...</strong><span class="home-urgent-meta">국무조정실 보도자료 · 2026-05-07 · 서울</span></div></a></article><article class="home-urgent-item"><a class="home-urgent-link" href="https://www.fsc.go.kr/no010101/86804?srchCtgry=1&amp;curPage=&amp;srchKey=&amp;srchText=&amp;srchBeginDt=&amp;srchEndDt=" target="_blank" rel="noreferrer" aria-label="보도자료 - 위원회 소식 - 알림마당 - 금융위원회 링크 바로가기"><span class="home-urgent-rank">02</span><div class="home-urgent-text"><strong>보도자료 - 위원회 소식 - 알림마당 - 금융위원회</strong><span class="home-urgent-meta">금융위원회 보도자료 · 2026-04-29 · 서울</span></div></a></article></div>
+              <div class="home-urgent-list"><article class="home-urgent-item"><a class="home-urgent-link" href="https://youth.incheon.go.kr/financial/dreamfor.jsp" target="_blank" rel="noreferrer" aria-label="드림for청년통장 인천 청년 근로자의 밝은 내일을 응원합니다. 신청기간 : 2026.5.4.(월) ~ 5.15.(금) 지원대상 : 1년이상(동일기업) 재직중인... 링크 바로가기"><span class="home-urgent-rank">01</span><div class="home-urgent-text"><strong>드림for청년통장 인천 청년 근로자의 밝은 내일을 응원합니다. 신청기간 : 2026.5.4.(월) ~ 5.15.(금) 지원대상 : 1년이상(동일기업) 재직중인...</strong><span class="home-urgent-meta">인천광역시 보도자료 청년 검색 · 2026-05-04 · 인천</span></div></a></article><article class="home-urgent-item"><a class="home-urgent-link" href="https://www.fsc.go.kr/no010101/86804?srchCtgry=1&amp;curPage=&amp;srchKey=&amp;srchText=&amp;srchBeginDt=&amp;srchEndDt=" target="_blank" rel="noreferrer" aria-label="“청년이 달리면, 다같이 달린다!” 금융위원장 주재 「핀테크, 연결의 장」 행사 개최 링크 바로가기"><span class="home-urgent-rank">02</span><div class="home-urgent-text"><strong>“청년이 달리면, 다같이 달린다!” 금융위원장 주재 「핀테크, 연결의 장」 행사 개최</strong><span class="home-urgent-meta">금융위원회 보도자료 · 2026-04-29 · 서울</span></div></a></article><article class="home-urgent-item"><a class="home-urgent-link" href="https://www.opm.go.kr/opm/news/press-release.do?mode=view&amp;articleNo=162108&amp;srSearchVal=%EC%B2%AD%EB%85%84&amp;article.offset=0&amp;articleLimit=20" target="_blank" rel="noreferrer" aria-label="[보도자료] 김민석 국무총리, 제18차 청년정책조정위원회 겸 제2차 청년정책 관계장관회의 개최 링크 바로가기"><span class="home-urgent-rank">03</span><div class="home-urgent-text"><strong>[보도자료] 김민석 국무총리, 제18차 청년정책조정위원회 겸 제2차 청년정책 관계장관회의 개최</strong><span class="home-urgent-meta">국무조정실 보도자료 · 2026-04-28 · 서울</span></div></a></article><article class="home-urgent-item"><a class="home-urgent-link" href="https://www.opm.go.kr/opm/news/press-release.do?mode=view&amp;articleNo=161945&amp;srSearchVal=%EC%B2%AD%EB%85%84&amp;article.offset=0&amp;articleLimit=20" target="_blank" rel="noreferrer" aria-label="[보도자료] 김민석 국무총리, 삼청동 오픈하우스-청년 보좌역 보도자료 링크 바로가기"><span class="home-urgent-rank">04</span><div class="home-urgent-text"><strong>[보도자료] 김민석 국무총리, 삼청동 오픈하우스-청년 보좌역 보도자료</strong><span class="home-urgent-meta">국무조정실 보도자료 · 2026-04-18 · 서울</span></div></a></article><article class="home-urgent-item"><a class="home-urgent-link" href="https://www.opm.go.kr/opm/news/press-release.do?mode=view&amp;articleNo=161944&amp;srSearchVal=%EC%B2%AD%EB%85%84&amp;article.offset=0&amp;articleLimit=20" target="_blank" rel="noreferrer" aria-label="[보도자료] 김민석 국무총리, 삼청동 오픈하우스-청소년·청년 기후협의체 보도자료 링크 바로가기"><span class="home-urgent-rank">05</span><div class="home-urgent-text"><strong>[보도자료] 김민석 국무총리, 삼청동 오픈하우스-청소년·청년 기후협의체 보도자료</strong><span class="home-urgent-meta">국무조정실 보도자료 · 2026-04-18 · 서울</span></div></a></article></div>
             </article>
           </div>
         </section>
@@ -6989,42 +7009,42 @@
             <article class="home-application-card">
               <div class="home-application-main">
                 <div class="home-application-tags">
-                  <span>지자체 발표</span>
-                  <span>지원사업</span>
-                  <span>서울</span>
+                  <span>지자체 공식</span>
+                  <span>모집</span>
+                  <span>인천</span>
                 </div>
-                <h4>동대문구, 자립준비청년 안심홈세트 우선 지원</h4>
-                <p>...자립준비청년은 우선지원 대상에 포함된다. 구는 독립 생활을 시작한 청년층 가운데 주거 안전에 취약할 수 있는 대상을 먼저 지원해 사업 효과를 높인다는 방침이다. 신청 기간은 5월 11일부터 22일까지다. 희...</p>
+                <h4>인천시 청년월세 지원사업 신청기간 2026.3.30.월 09:00~5.29.(금) 16:00 지원대상 : 인천시 19~39세 이하 부모님과...</h4>
+                <p>인천시 청년월세 지원사업 신청기간 2026.3.30.월 09:00~5.29.(금) 16:00 지원대상 : 인천시 19~39세 이하 부모님과 별도 거주 무주택 청년 지원내용 : 1인 월20만원씩, 최대 24개월(회...</p>
                 <div class="home-application-meta">
-                  <span>게시 2026-05-07</span>
-                  <span>뉴스티앤티</span>
+                  <span>게시 2026-03-30</span>
+                  <span>인천광역시 보도자료 청년 검색</span>
                 </div>
               </div>
               <div class="home-application-period">
                 <span>신청 기간</span>
                 <strong>원문에서 확인</strong>
-                <a class="home-application-link" href="https://www.newstnt.com/news/articleView.html?idxno=701411" target="_blank" rel="noreferrer">신청·공고 보기</a>
+                <a class="home-application-link" href="https://youth.incheon.go.kr/dwelling/monthly.jsp" target="_blank" rel="noreferrer">신청·공고 보기</a>
               </div>
             </article>
             
             <article class="home-application-card">
               <div class="home-application-main">
                 <div class="home-application-tags">
-                  <span>정부 발표</span>
-                  <span>정책 발표</span>
-                  <span>서울</span>
+                  <span>지자체 공식</span>
+                  <span>지원사업</span>
+                  <span>인천</span>
                 </div>
-                <h4>올해 17개 청년사회서비스사업단 신규 선정…청년에 일·경험 제공</h4>
-                <p>보건복지부는 2025년 청년사회서비스사업단 공모절차를 거쳐 14개 시·도에서 17개의 신규 청년사회서비스사업단을 선정했다고 20일 밝혔다. 청년사업단은 청년이 지역사회서비스 제공에 - 정책브리핑 | 뉴스 | 정책...</p>
+                <h4>드림for청년통장 인천 청년 근로자의 밝은 내일을 응원합니다. 신청기간 : 2026.5.4.(월) ~ 5.15.(금) 지원대상 : 1년이상(...</h4>
+                <p>드림for청년통장 인천 청년 근로자의 밝은 내일을 응원합니다. 신청기간 : 2026.5.4.(월) ~ 5.15.(금) 지원대상 : 1년이상(동일기업) 재직중인 인천거주 18~39세 청년근로자 지원내용 : 3년간...</p>
                 <div class="home-application-meta">
-                  <span>게시 2025-02-21</span>
-                  <span>정책브리핑</span>
+                  <span>게시 2026-05-04</span>
+                  <span>인천광역시 보도자료 청년 검색</span>
                 </div>
               </div>
               <div class="home-application-period">
                 <span>신청 기간</span>
                 <strong>원문에서 확인</strong>
-                <a class="home-application-link" href="https://www.korea.kr/news/policyNewsView.do?newsId=148939881" target="_blank" rel="noreferrer">신청·공고 보기</a>
+                <a class="home-application-link" href="https://youth.incheon.go.kr/financial/dreamfor.jsp" target="_blank" rel="noreferrer">신청·공고 보기</a>
               </div>
             </article>
             </div>

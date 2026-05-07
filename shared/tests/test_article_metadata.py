@@ -162,6 +162,66 @@ class ArticleMetadataTests(unittest.TestCase):
 
         self.assertEqual(updated["title"], article["title"])
 
+    def test_resolve_article_metadata_keeps_official_detail_url_when_canonical_is_board_root(self) -> None:
+        article = {
+            "url": "https://www.opm.go.kr/opm/news/press-release.do?mode=view&articleNo=162154&articleLimit=20",
+            "title": "[보도자료] 지속가능발전 국가보고서 의견수렴 협의회 개최",
+            "source": "국무조정실 보도자료",
+            "source_name": "국무조정실 보도자료",
+            "source_kind": "official",
+            "published_date": "2026-05-07T00:00:00+09:00",
+            "pipeline_flags": {},
+        }
+
+        updated = resolve_article_metadata(
+            article,
+            homepage_cache={},
+            page_cache={
+                article["url"]: {
+                    "title": (
+                        "국무조정실 국무총리비서실 | 알림·소식 | 보도·설명자료 | "
+                        "보도자료 게시판읽기([보도자료] 지속가능발전 국가보고서 의견수렴 협의회 개최)"
+                    ),
+                    "canonical_url": "https://www.opm.go.kr:443/opm/news/press-release.do",
+                    "publisher_url": "https://www.opm.go.kr:443/opm/news/press-release.do",
+                    "publisher_domain": "www.opm.go.kr:443",
+                }
+            },
+        )
+
+        self.assertEqual(updated["canonical_url"], article["url"])
+        self.assertEqual(updated["publisher_url"], article["url"])
+        self.assertEqual(updated["title"], article["title"])
+
+    def test_resolve_article_metadata_keeps_local_search_title_when_page_title_is_portal_brand(self) -> None:
+        article = {
+            "url": "https://youth.incheon.go.kr/financial/dreamfor.jsp",
+            "title": "드림for청년통장 인천 청년 근로자의 밝은 내일을 응원합니다.",
+            "lead_text": "신청기간 : 2026.5.4.(월) ~ 5.15.(금) 지원대상 : 인천거주 청년근로자",
+            "source": "인천광역시 보도자료 청년 검색",
+            "source_name": "인천광역시 보도자료 청년 검색",
+            "source_kind": "local",
+            "published_date": "2026-05-04T00:00:00+09:00",
+            "pipeline_flags": {},
+        }
+
+        updated = resolve_article_metadata(
+            article,
+            homepage_cache={},
+            page_cache={
+                article["url"]: {
+                    "title": "인천유스톡톡 인천청년포털",
+                    "canonical_url": article["url"],
+                    "publisher_url": article["url"],
+                    "publisher_domain": "youth.incheon.go.kr",
+                    "lead_text": "인천청년포털, 인천유스톡톡",
+                }
+            },
+        )
+
+        self.assertEqual(updated["title"], article["title"])
+        self.assertEqual(updated["lead_text"], article["lead_text"])
+
     def test_resolve_article_metadata_promotes_publisher_published_time(self) -> None:
         article = {
             "url": "https://example.com/news/1",

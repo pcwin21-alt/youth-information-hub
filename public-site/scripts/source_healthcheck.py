@@ -13,12 +13,21 @@ from youth_info_platform.io_utils import write_json
 
 
 def inspect_source(source: dict) -> dict:
+    base_entry = {
+        "name": source["name"],
+        "kind": source.get("kind"),
+        "parser": source.get("parser"),
+        "enabled": bool(source.get("enabled", False)),
+        "source_channel": source.get("source_channel"),
+        "region_id": source.get("region_id"),
+        "region_name": source.get("region_name"),
+    }
     try:
         items = fetch_source_items(source)
         filtered = apply_source_filters(items, source)
         date_issues = audit_article_dates(filtered, context=source["name"])
         return {
-            "name": source["name"],
+            **base_entry,
             "status": "ok",
             "total_items": len(items),
             "filtered_items": len(filtered),
@@ -30,7 +39,7 @@ def inspect_source(source: dict) -> dict:
     except ValueError as error:
         if str(error).startswith("unsupported_parser:"):
             return {
-                "name": source["name"],
+                **base_entry,
                 "status": "unsupported_parser",
                 "total_items": 0,
                 "filtered_items": 0,
@@ -42,7 +51,7 @@ def inspect_source(source: dict) -> dict:
         raise
     except Exception as error:
         return {
-            "name": source["name"],
+            **base_entry,
             "status": f"error:{error.__class__.__name__}",
             "total_items": 0,
             "filtered_items": 0,
@@ -63,6 +72,12 @@ def main() -> int:
             report.append(
                 {
                     "name": source["name"],
+                    "kind": source.get("kind"),
+                    "parser": source.get("parser"),
+                    "enabled": False,
+                    "source_channel": source.get("source_channel"),
+                    "region_id": source.get("region_id"),
+                    "region_name": source.get("region_name"),
                     "status": "disabled",
                     "total_items": 0,
                     "filtered_items": 0,

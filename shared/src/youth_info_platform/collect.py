@@ -523,6 +523,155 @@ def parse_naver_news_search(
     return articles
 
 
+LOCAL_BOARD_ATTACHMENT_PATTERN = re.compile(
+    r"\.(?:pdf|hwp|hwpx|doc|docx|xls|xlsx|zip)(?:$|[?#])|file(?:down|download)|atchFileId|attach",
+    re.IGNORECASE,
+)
+LOCAL_BOARD_DATE_PATTERN = re.compile(r"(20\d{2})[.\-/년]\s*(\d{1,2})[.\-/월]\s*(\d{1,2})")
+
+
+def _selector_values(source: dict[str, Any], key: str) -> list[str]:
+    value = source.get(key)
+    if not value:
+        return []
+    if isinstance(value, str):
+        return [value]
+    return [str(item) for item in value if str(item).strip()]
+
+
+def _first_selected_text(root: Tag, selectors: list[str]) -> str:
+    for selector in selectors:
+        node = root.select_one(selector)
+        if node is not None:
+            text = strip_html(node.get_text(" ", strip=True))
+            if text:
+                return text
+    return ""
+
+
+def _first_selected_anchor(root: Tag, selectors: list[str]) -> Tag | None:
+    for selector in selectors:
+        node = root.select_one(selector)
+        if isinstance(node, Tag):
+            if node.name == "a" and node.get("href"):
+                return node
+            anchor = node.find("a", href=True)
+            if isinstance(anchor, Tag):
+                return anchor
+    anchor = root.find("a", href=True)
+    return anchor if isinstance(anchor, Tag) else None
+
+
+def _extract_local_board_date(value: str) -> str | None:
+    match = LOCAL_BOARD_DATE_PATTERN.search(value or "")
+    if not match:
+        return None
+    year, month, day = match.groups()
+    return f"{int(year):04d}-{int(month):02d}-{int(day):02d}T00:00:00+09:00"
+
+
+def _extract_attachment_url(root: Tag, base_url: str) -> str | None:
+    for anchor in root.find_all("a", href=True):
+        href = html.unescape(str(anchor.get("href") or "")).strip()
+        label = strip_html(anchor.get_text(" ", strip=True))
+        if LOCAL_BOARD_ATTACHMENT_PATTERN.search(href) or LOCAL_BOARD_ATTACHMENT_PATTERN.search(label):
+            return urljoin(base_url, href)
+    return None
+
+
+def _fallback_local_board_roots(soup: BeautifulSoup) -> list[Tag]:
+    roots: list[Tag] = []
+    seen: set[int] = set()
+    for anchor in soup.find_all("a", href=True):
+        title = strip_html(anchor.get_text(" ", strip=True))
+        if not title:
+            continue
+        parent = anchor.find_parent(["tr", "li", "article"])
+        if parent is None:
+            parent = anchor.find_parent(["div", "section"]) or anchor
+        if not isinstance(parent, Tag):
+            continue
+        key = id(parent)
+        if key in seen:
+            continue
+        seen.add(key)
+        roots.append(parent)
+    return roots
+
+
+def parse_local_board_search(page_text: str, source: dict[str, Any]) -> list[dict[str, Any]]:
+    base_url = str(source.get("url") or "")
+    source_name = str(source.get("name") or "")
+    source_kind = str(source.get("kind") or "local")
+    source_channel = str(source.get("source_channel") or "")
+    search_terms = [str(value).strip() for value in (source.get("search_terms") or []) if str(value).strip()]
+    if not search_terms:
+        search_terms = resolve_include_keywords(source) or ["청년"]
+
+    soup = BeautifulSoup(page_text, "html.parser")
+    item_selectors = _selector_values(source, "item_selector")
+    title_selectors = _selector_values(source, "title_selector") or ["a"]
+    link_selectors = _selector_values(source, "link_selector") or title_selectors
+    date_selectors = _selector_values(source, "date_selector")
+    summary_selectors = _selector_values(source, "summary_selector")
+
+    roots: list[Tag] = []
+    for selector in item_selectors:
+        roots.extend(node for node in soup.select(selector) if isinstance(node, Tag))
+    if not roots:
+        roots = _fallback_local_board_roots(soup)
+
+    articles: list[dict[str, Any]] = []
+    seen_urls: set[str] = set()
+    for root in roots:
+        anchor = _first_selected_anchor(root, link_selectors)
+        if anchor is None:
+            continue
+        href = html.unescape(str(anchor.get("href") or "")).strip()
+        if not href or href.lower().startswith(("javascript:", "mailto:", "#")):
+            continue
+        title = _first_selected_text(root, title_selectors) or strip_html(anchor.get_text(" ", strip=True))
+        title = re.sub(r"^\s*(?:새글|new|첨부파일)\s*", "", title, flags=re.IGNORECASE).strip()
+        if not title:
+            continue
+
+        item_text = strip_html(root.get_text(" ", strip=True))
+        summary = _first_selected_text(root, summary_selectors) or item_text
+        matched_terms = [term for term in search_terms if term in f"{title} {summary}"]
+        if search_terms and not matched_terms:
+            continue
+
+        article_url = urljoin(base_url, href)
+        if article_url in seen_urls:
+            continue
+        seen_urls.add(article_url)
+
+        article: dict[str, Any] = {
+            "title": title,
+            "url": article_url,
+            "source": source_name,
+            "source_name": source_name,
+            "source_kind": source_kind,
+            "source_url": base_url,
+            "published_date": _extract_local_board_date(
+                _first_selected_text(root, date_selectors) if date_selectors else item_text
+            ),
+            "lead_text": summary[:400],
+            "region": source.get("region_name") or "",
+            "region_id": source.get("region_id"),
+            "region_name": source.get("region_name"),
+            "source_channel": source_channel,
+            "search_terms": matched_terms,
+        }
+        attachment_url = _extract_attachment_url(root, base_url)
+        if attachment_url:
+            article["attachment_url"] = attachment_url
+            article["original_document_url"] = attachment_url
+        articles.append(article)
+
+    return articles
+
+
 def parse_opm_detail(detail_text: str) -> str:
     match = re.search(
         r'<div class="board-view-txt board-common-txt">.*?<div class="fr-view">(.*?)</div>\s*</div>',
@@ -727,6 +876,10 @@ def _parse_naver_payload(payload: str, source: dict[str, Any]) -> list[dict[str,
     return parse_naver_news_search(payload, source["url"], source["name"], source.get("kind", "news"))
 
 
+def _parse_local_board_payload(payload: str, source: dict[str, Any]) -> list[dict[str, Any]]:
+    return parse_local_board_search(payload, source)
+
+
 PARSER_REGISTRY: dict[str, ParserFn] = {
     "rss": _parse_rss_payload,
     "fsc_press_release": _parse_fsc_payload,
@@ -736,6 +889,7 @@ PARSER_REGISTRY: dict[str, ParserFn] = {
     "opm_press_release": _parse_opm_payload,
     "korea_withyou_policy_news": _parse_korea_withyou_payload,
     "naver_news_search": _parse_naver_payload,
+    "local_board_search": _parse_local_board_payload,
 }
 
 

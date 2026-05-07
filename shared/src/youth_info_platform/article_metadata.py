@@ -104,6 +104,53 @@ MEDIA_URL_BLOCKLIST_TOKENS = (
     "tracking",
     "analytics",
 )
+DETAIL_ID_QUERY_KEYS = {
+    "articleno",
+    "article_no",
+    "articleid",
+    "article_id",
+    "newsid",
+    "news_id",
+    "nttno",
+    "nttid",
+    "list_no",
+    "boardseq",
+    "msg_seq",
+    "poly_seq",
+}
+OFFICIAL_SOURCE_KINDS = {"official", "local", "regional_official", "municipal", "municipality"}
+GENERIC_METADATA_TITLE_HINTS = (
+    "보도자료 -",
+    "위원회 소식",
+    "알림마당",
+    "알림·소식",
+    "게시판읽기",
+    "인천유스톡톡",
+    "청년포털",
+    "공식 홈페이지",
+)
+GENERIC_LEAD_TEXT_HINTS = (
+    "인천청년포털",
+    "인천유스톡톡",
+    "공식 홈페이지",
+)
+SUBSTANTIVE_TITLE_KEYWORDS = (
+    "청년",
+    "정책",
+    "지원",
+    "공고",
+    "모집",
+    "개최",
+    "발표",
+    "사업",
+    "위원회",
+    "주거",
+    "월세",
+    "취업",
+    "고용",
+    "금융",
+    "대출",
+)
 
 
 def normalize_tracking_url(url: str | None) -> str:
@@ -129,6 +176,42 @@ def normalize_tracking_url(url: str | None) -> str:
             "",
         )
     )
+
+
+def _host_without_default_port(value: str) -> str:
+    parsed = urlparse(value)
+    host = parsed.hostname or parsed.netloc.lower()
+    port = parsed.port
+    if port and not (parsed.scheme == "https" and port == 443) and not (parsed.scheme == "http" and port == 80):
+        return f"{host}:{port}"
+    return host.lower()
+
+
+def metadata_url_loses_detail_identity(source_url: str | None, candidate_url: str | None) -> bool:
+    if not source_url or not candidate_url:
+        return False
+    normalized_source = normalize_tracking_url(source_url)
+    normalized_candidate = normalize_tracking_url(candidate_url)
+    if not normalized_source or not normalized_candidate or normalized_source == normalized_candidate:
+        return False
+
+    source = urlparse(normalized_source)
+    candidate = urlparse(normalized_candidate)
+    if _host_without_default_port(normalized_source) != _host_without_default_port(normalized_candidate):
+        return False
+
+    source_path = source.path.rstrip("/") or "/"
+    candidate_path = candidate.path.rstrip("/") or "/"
+    source_keys = {key.lower() for key, _ in parse_qsl(source.query, keep_blank_values=True)}
+    candidate_keys = {key.lower() for key, _ in parse_qsl(candidate.query, keep_blank_values=True)}
+    if source_keys & DETAIL_ID_QUERY_KEYS and not (source_keys & DETAIL_ID_QUERY_KEYS) <= candidate_keys:
+        return candidate_path == source_path or source_path.startswith(f"{candidate_path}/")
+
+    source_segments = [segment for segment in source_path.split("/") if segment]
+    candidate_segments = [segment for segment in candidate_path.split("/") if segment]
+    if any(segment.isdigit() for segment in source_segments) and len(candidate_segments) < len(source_segments):
+        return source_path.startswith(f"{candidate_path}/")
+    return False
 
 
 def is_google_news_url(url: str | None) -> bool:
@@ -317,6 +400,9 @@ def clean_metadata_title(value: str | None, article: dict[str, Any]) -> str:
     normalized = normalize_article_title(value)
     if not normalized:
         return ""
+    board_title_match = re.search(r"게시판읽기\((?P<title>.*?)\)", normalized)
+    if board_title_match:
+        normalized = normalize_article_title(board_title_match.group("title"))
     cleaned = strip_title_suffixes(
         normalized,
         (
@@ -325,6 +411,61 @@ def clean_metadata_title(value: str | None, article: dict[str, Any]) -> str:
         ),
     )
     return cleaned or normalized
+
+
+def is_official_or_local_source(article: dict[str, Any]) -> bool:
+    source_kind = str(article.get("source_kind") or "").strip()
+    return source_kind in OFFICIAL_SOURCE_KINDS or bool(article.get("is_official_source"))
+
+
+def has_substantive_title_signal(value: str | None) -> bool:
+    normalized = normalize_article_title(value)
+    return any(keyword in normalized for keyword in SUBSTANTIVE_TITLE_KEYWORDS)
+
+
+def metadata_title_looks_generic(value: str | None) -> bool:
+    normalized = normalize_article_title(value)
+    return any(hint in normalized for hint in GENERIC_METADATA_TITLE_HINTS)
+
+
+def should_keep_existing_title(article: dict[str, Any], metadata_title: str | None) -> bool:
+    if not is_official_or_local_source(article):
+        return False
+    existing = normalize_article_title(article.get("title"))
+    candidate = normalize_article_title(metadata_title)
+    if not existing or not candidate or existing == candidate:
+        return False
+
+    simplified_existing = simplify_title_for_comparison(existing)
+    simplified_candidate = simplify_title_for_comparison(candidate)
+    if simplified_existing and simplified_existing in simplified_candidate:
+        return False
+    if metadata_title_looks_generic(candidate) and (
+        len(existing) > len(candidate) or has_substantive_title_signal(existing)
+    ):
+        return True
+    return (
+        title_similarity(existing, candidate) < 0.35
+        and len(existing) >= len(candidate)
+        and has_substantive_title_signal(existing)
+    )
+
+
+def lead_text_looks_generic(value: str | None) -> bool:
+    normalized = normalize_article_title(value)
+    return any(hint in normalized for hint in GENERIC_LEAD_TEXT_HINTS)
+
+
+def should_keep_existing_lead_text(article: dict[str, Any], metadata_lead_text: str | None) -> bool:
+    if not is_official_or_local_source(article):
+        return False
+    existing = normalize_article_title(article.get("lead_text"))
+    candidate = normalize_article_title(metadata_lead_text)
+    if not existing or not candidate or existing == candidate:
+        return False
+    if lead_text_looks_generic(candidate) and len(existing) > len(candidate):
+        return True
+    return len(existing) >= 80 and len(candidate) <= 60 and has_substantive_title_signal(existing)
 
 
 def simplify_title_for_comparison(value: str | None) -> str:
@@ -968,8 +1109,14 @@ def resolve_article_metadata(
                 if metadata.get(key):
                     if key == "title":
                         cleaned_title = clean_metadata_title(metadata[key], updated)
-                        if not is_http_error_page_title(cleaned_title):
+                        if (
+                            not is_http_error_page_title(cleaned_title)
+                            and not should_keep_existing_title(updated, cleaned_title)
+                        ):
                             updated[key] = cleaned_title
+                    elif key in {"canonical_url", "publisher_url"}:
+                        if not metadata_url_loses_detail_identity(current_url, metadata[key]):
+                            updated[key] = metadata[key]
                     elif key in {"image_url", "publisher_icon_url"}:
                         if normalized_media_url := normalize_media_url(metadata[key], target_url):
                             updated[key] = normalized_media_url
@@ -978,7 +1125,7 @@ def resolve_article_metadata(
             publisher_published_at = metadata.get("publisher_published_at")
             if should_use_publisher_published_at(updated.get("published_date"), publisher_published_at):
                 updated["published_date"] = publisher_published_at
-            if metadata.get("lead_text"):
+            if metadata.get("lead_text") and not should_keep_existing_lead_text(updated, metadata["lead_text"]):
                 updated["lead_text"] = metadata["lead_text"]
             updated["authors"] = list(dict.fromkeys((updated.get("authors") or []) + (metadata.get("authors") or [])))
             updated["portal_urls"] = list(

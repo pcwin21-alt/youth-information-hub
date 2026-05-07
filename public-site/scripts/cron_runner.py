@@ -126,6 +126,8 @@ def main() -> int:
     parser.add_argument("--use-sample-data", action="store_true")
     parser.add_argument("--skip-collect-news", action="store_true")
     parser.add_argument("--skip-outbound-notifications", action="store_true")
+    parser.add_argument("--skip-feedback", action="store_true")
+    parser.add_argument("--feedback-with-source-healthcheck", action="store_true")
     parser.add_argument("--curator-max-network-enrich", type=int)
     args = parser.parse_args()
 
@@ -192,6 +194,25 @@ def main() -> int:
             },
         ]
     )
+    if not args.skip_feedback:
+        feedback_command = [
+            python,
+            str(PUBLIC_SITE_ROOT / "scripts" / "pipeline_feedback.py"),
+            "--fail-on",
+            "critical",
+        ]
+        if args.feedback_with_source_healthcheck:
+            feedback_command.append("--run-source-healthcheck")
+        commands.append(
+            {
+                "name": "pipeline_feedback",
+                "command": feedback_command,
+                "artifacts": {
+                    "pipeline_feedback_report": str(RUNTIME_PIPELINE_ROOT / "pipeline_feedback_report.json"),
+                    "pipeline_feedback_markdown": str(RUNTIME_PIPELINE_ROOT / "pipeline_feedback_report.md"),
+                },
+            }
+        )
     if not args.skip_outbound_notifications:
         commands.extend(
             [

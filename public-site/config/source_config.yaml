@@ -570,6 +570,822 @@
         "고등학생"
       ],
       "limit": 20
+    },
+    {
+      "name": "서울특별시 보도자료 청년 검색",
+      "kind": "local",
+      "enabled": true,
+      "parser": "local_board_search",
+      "url": "https://seoul.go.kr/search?keyword=%EC%B2%AD%EB%85%84",
+      "region_id": "seoul",
+      "region_name": "서울",
+      "region_full_name": "서울특별시",
+      "source_channel": "press_release",
+      "search_terms": [
+        "청년"
+      ],
+      "include_keywords": [
+        "청년"
+      ],
+      "allowed_domain_suffixes": [
+        "seoul.go.kr"
+      ],
+      "limit": 12
+    },
+    {
+      "name": "서울특별시 청년정책 기본·시행계획 검색",
+      "kind": "local",
+      "enabled": true,
+      "parser": "local_board_search",
+      "url": "https://seoul.go.kr/search?keyword=%EC%B2%AD%EB%85%84%EC%A0%95%EC%B1%85%20%EA%B8%B0%EB%B3%B8%EA%B3%84%ED%9A%8D%20%EC%8B%9C%ED%96%89%EA%B3%84%ED%9A%8D",
+      "region_id": "seoul",
+      "region_name": "서울",
+      "region_full_name": "서울특별시",
+      "source_channel": "policy_plan",
+      "search_terms": [
+        "청년정책 기본계획",
+        "청년정책 시행계획",
+        "기본계획",
+        "시행계획"
+      ],
+      "include_keywords": [
+        "청년정책 기본계획",
+        "청년정책 시행계획",
+        "기본계획",
+        "시행계획"
+      ],
+      "allowed_domain_suffixes": [
+        "seoul.go.kr"
+      ],
+      "limit": 8
+    },
+    {
+      "name": "부산광역시 보도자료 청년 검색",
+      "kind": "local",
+      "enabled": true,
+      "parser": "local_board_search",
+      "url": "https://busan.go.kr/search?keyword=%EC%B2%AD%EB%85%84",
+      "region_id": "busan",
+      "region_name": "부산",
+      "region_full_name": "부산광역시",
+      "source_channel": "press_release",
+      "search_terms": [
+        "청년"
+      ],
+      "include_keywords": [
+        "청년"
+      ],
+      "allowed_domain_suffixes": [
+        "busan.go.kr"
+      ],
+      "limit": 12
+    },
+    {
+      "name": "부산광역시 청년정책 기본·시행계획 검색",
+      "kind": "local",
+      "enabled": true,
+      "parser": "local_board_search",
+      "url": "https://busan.go.kr/search?keyword=%EC%B2%AD%EB%85%84%EC%A0%95%EC%B1%85%20%EA%B8%B0%EB%B3%B8%EA%B3%84%ED%9A%8D%20%EC%8B%9C%ED%96%89%EA%B3%84%ED%9A%8D",
+      "region_id": "busan",
+      "region_name": "부산",
+      "region_full_name": "부산광역시",
+      "source_channel": "policy_plan",
+      "search_terms": [
+        "청년정책 기본계획",
+        "청년정책 시행계획",
+        "기본계획",
+        "시행계획"
+      ],
+      "include_keywords": [
+        "청년정책 기본계획",
+        "청년정책 시행계획",
+        "기본계획",
+        "시행계획"
+      ],
+      "allowed_domain_suffixes": [
+        "busan.go.kr"
+      ],
+      "limit": 8
+    },
+    {
+      "name": "대구광역시 보도자료 청년 검색",
+      "kind": "local",
+      "enabled": true,
+      "parser": "local_board_search",
+      "url": "https://daegu.go.kr/search?keyword=%EC%B2%AD%EB%85%84",
+      "region_id": "daegu",
+      "region_name": "대구",
+      "region_full_name": "대구광역시",
+      "source_channel": "press_release",
+      "search_terms": [
+        "청년"
+      ],
+      "include_keywords": [
+        "청년"
+      ],
+      "allowed_domain_suffixes": [
+        "daegu.go.kr"
+      ],
+      "limit": 12
+    },
+    {
+      "name": "대구광역시 청년정책 기본·시행계획 검색",
+      "kind": "local",
+      "enabled": true,
+      "parser": "local_board_search",
+      "url": "https://daegu.go.kr/search?keyword=%EC%B2%AD%EB%85%84%EC%A0%95%EC%B1%85%20%EA%B8%B0%EB%B3%B8%EA%B3%84%ED%9A%8D%20%EC%8B%9C%ED%96%89%EA%B3%84%ED%9A%8D",
+      "region_id": "daegu",
+      "region_name": "대구",
+      "region_full_name": "대구광역시",
+      "source_channel": "policy_plan",
+      "search_terms": [
+        "청년정책 기본계획",
+        "청년정책 시행계획",
+        "기본계획",
+        "시행계획"
+      ],
+      "include_keywords": [
+        "청년정책 기본계획",
+        "청년정책 시행계획",
+        "기본계획",
+        "시행계획"
+      ],
+      "allowed_domain_suffixes": [
+        "daegu.go.kr"
+      ],
+      "limit": 8
+    },
+    {
+      "name": "인천광역시 보도자료 청년 검색",
+      "kind": "local",
+      "enabled": true,
+      "parser": "local_board_search",
+      "url": "https://incheon.go.kr/search?keyword=%EC%B2%AD%EB%85%84",
+      "region_id": "incheon",
+      "region_name": "인천",
+      "region_full_name": "인천광역시",
+      "source_channel": "press_release",
+      "search_terms": [
+        "청년"
+      ],
+      "include_keywords": [
+        "청년"
+      ],
+      "allowed_domain_suffixes": [
+        "incheon.go.kr"
+      ],
+      "limit": 12
+    },
+    {
+      "name": "인천광역시 청년정책 기본·시행계획 검색",
+      "kind": "local",
+      "enabled": true,
+      "parser": "local_board_search",
+      "url": "https://incheon.go.kr/search?keyword=%EC%B2%AD%EB%85%84%EC%A0%95%EC%B1%85%20%EA%B8%B0%EB%B3%B8%EA%B3%84%ED%9A%8D%20%EC%8B%9C%ED%96%89%EA%B3%84%ED%9A%8D",
+      "region_id": "incheon",
+      "region_name": "인천",
+      "region_full_name": "인천광역시",
+      "source_channel": "policy_plan",
+      "search_terms": [
+        "청년정책 기본계획",
+        "청년정책 시행계획",
+        "기본계획",
+        "시행계획"
+      ],
+      "include_keywords": [
+        "청년정책 기본계획",
+        "청년정책 시행계획",
+        "기본계획",
+        "시행계획"
+      ],
+      "allowed_domain_suffixes": [
+        "incheon.go.kr"
+      ],
+      "limit": 8
+    },
+    {
+      "name": "광주광역시 보도자료 청년 검색",
+      "kind": "local",
+      "enabled": true,
+      "parser": "local_board_search",
+      "url": "https://gwangju.go.kr/search?keyword=%EC%B2%AD%EB%85%84",
+      "region_id": "gwangju",
+      "region_name": "광주",
+      "region_full_name": "광주광역시",
+      "source_channel": "press_release",
+      "search_terms": [
+        "청년"
+      ],
+      "include_keywords": [
+        "청년"
+      ],
+      "allowed_domain_suffixes": [
+        "gwangju.go.kr"
+      ],
+      "limit": 12
+    },
+    {
+      "name": "광주광역시 청년정책 기본·시행계획 검색",
+      "kind": "local",
+      "enabled": true,
+      "parser": "local_board_search",
+      "url": "https://gwangju.go.kr/search?keyword=%EC%B2%AD%EB%85%84%EC%A0%95%EC%B1%85%20%EA%B8%B0%EB%B3%B8%EA%B3%84%ED%9A%8D%20%EC%8B%9C%ED%96%89%EA%B3%84%ED%9A%8D",
+      "region_id": "gwangju",
+      "region_name": "광주",
+      "region_full_name": "광주광역시",
+      "source_channel": "policy_plan",
+      "search_terms": [
+        "청년정책 기본계획",
+        "청년정책 시행계획",
+        "기본계획",
+        "시행계획"
+      ],
+      "include_keywords": [
+        "청년정책 기본계획",
+        "청년정책 시행계획",
+        "기본계획",
+        "시행계획"
+      ],
+      "allowed_domain_suffixes": [
+        "gwangju.go.kr"
+      ],
+      "limit": 8
+    },
+    {
+      "name": "대전광역시 보도자료 청년 검색",
+      "kind": "local",
+      "enabled": true,
+      "parser": "local_board_search",
+      "url": "https://daejeon.go.kr/search?keyword=%EC%B2%AD%EB%85%84",
+      "region_id": "daejeon",
+      "region_name": "대전",
+      "region_full_name": "대전광역시",
+      "source_channel": "press_release",
+      "search_terms": [
+        "청년"
+      ],
+      "include_keywords": [
+        "청년"
+      ],
+      "allowed_domain_suffixes": [
+        "daejeon.go.kr"
+      ],
+      "limit": 12
+    },
+    {
+      "name": "대전광역시 청년정책 기본·시행계획 검색",
+      "kind": "local",
+      "enabled": true,
+      "parser": "local_board_search",
+      "url": "https://daejeon.go.kr/search?keyword=%EC%B2%AD%EB%85%84%EC%A0%95%EC%B1%85%20%EA%B8%B0%EB%B3%B8%EA%B3%84%ED%9A%8D%20%EC%8B%9C%ED%96%89%EA%B3%84%ED%9A%8D",
+      "region_id": "daejeon",
+      "region_name": "대전",
+      "region_full_name": "대전광역시",
+      "source_channel": "policy_plan",
+      "search_terms": [
+        "청년정책 기본계획",
+        "청년정책 시행계획",
+        "기본계획",
+        "시행계획"
+      ],
+      "include_keywords": [
+        "청년정책 기본계획",
+        "청년정책 시행계획",
+        "기본계획",
+        "시행계획"
+      ],
+      "allowed_domain_suffixes": [
+        "daejeon.go.kr"
+      ],
+      "limit": 8
+    },
+    {
+      "name": "울산광역시 보도자료 청년 검색",
+      "kind": "local",
+      "enabled": true,
+      "parser": "local_board_search",
+      "url": "https://ulsan.go.kr/search?keyword=%EC%B2%AD%EB%85%84",
+      "region_id": "ulsan",
+      "region_name": "울산",
+      "region_full_name": "울산광역시",
+      "source_channel": "press_release",
+      "search_terms": [
+        "청년"
+      ],
+      "include_keywords": [
+        "청년"
+      ],
+      "allowed_domain_suffixes": [
+        "ulsan.go.kr"
+      ],
+      "limit": 12
+    },
+    {
+      "name": "울산광역시 청년정책 기본·시행계획 검색",
+      "kind": "local",
+      "enabled": true,
+      "parser": "local_board_search",
+      "url": "https://ulsan.go.kr/search?keyword=%EC%B2%AD%EB%85%84%EC%A0%95%EC%B1%85%20%EA%B8%B0%EB%B3%B8%EA%B3%84%ED%9A%8D%20%EC%8B%9C%ED%96%89%EA%B3%84%ED%9A%8D",
+      "region_id": "ulsan",
+      "region_name": "울산",
+      "region_full_name": "울산광역시",
+      "source_channel": "policy_plan",
+      "search_terms": [
+        "청년정책 기본계획",
+        "청년정책 시행계획",
+        "기본계획",
+        "시행계획"
+      ],
+      "include_keywords": [
+        "청년정책 기본계획",
+        "청년정책 시행계획",
+        "기본계획",
+        "시행계획"
+      ],
+      "allowed_domain_suffixes": [
+        "ulsan.go.kr"
+      ],
+      "limit": 8
+    },
+    {
+      "name": "세종특별자치시 보도자료 청년 검색",
+      "kind": "local",
+      "enabled": true,
+      "parser": "local_board_search",
+      "url": "https://sejong.go.kr/search?keyword=%EC%B2%AD%EB%85%84",
+      "region_id": "sejong",
+      "region_name": "세종",
+      "region_full_name": "세종특별자치시",
+      "source_channel": "press_release",
+      "search_terms": [
+        "청년"
+      ],
+      "include_keywords": [
+        "청년"
+      ],
+      "allowed_domain_suffixes": [
+        "sejong.go.kr"
+      ],
+      "limit": 12
+    },
+    {
+      "name": "세종특별자치시 청년정책 기본·시행계획 검색",
+      "kind": "local",
+      "enabled": true,
+      "parser": "local_board_search",
+      "url": "https://sejong.go.kr/search?keyword=%EC%B2%AD%EB%85%84%EC%A0%95%EC%B1%85%20%EA%B8%B0%EB%B3%B8%EA%B3%84%ED%9A%8D%20%EC%8B%9C%ED%96%89%EA%B3%84%ED%9A%8D",
+      "region_id": "sejong",
+      "region_name": "세종",
+      "region_full_name": "세종특별자치시",
+      "source_channel": "policy_plan",
+      "search_terms": [
+        "청년정책 기본계획",
+        "청년정책 시행계획",
+        "기본계획",
+        "시행계획"
+      ],
+      "include_keywords": [
+        "청년정책 기본계획",
+        "청년정책 시행계획",
+        "기본계획",
+        "시행계획"
+      ],
+      "allowed_domain_suffixes": [
+        "sejong.go.kr"
+      ],
+      "limit": 8
+    },
+    {
+      "name": "경기도 보도자료 청년 검색",
+      "kind": "local",
+      "enabled": true,
+      "parser": "local_board_search",
+      "url": "https://gg.go.kr/search?keyword=%EC%B2%AD%EB%85%84",
+      "region_id": "gyeonggi",
+      "region_name": "경기",
+      "region_full_name": "경기도",
+      "source_channel": "press_release",
+      "search_terms": [
+        "청년"
+      ],
+      "include_keywords": [
+        "청년"
+      ],
+      "allowed_domain_suffixes": [
+        "gg.go.kr"
+      ],
+      "limit": 12
+    },
+    {
+      "name": "경기도 청년정책 기본·시행계획 검색",
+      "kind": "local",
+      "enabled": true,
+      "parser": "local_board_search",
+      "url": "https://gg.go.kr/search?keyword=%EC%B2%AD%EB%85%84%EC%A0%95%EC%B1%85%20%EA%B8%B0%EB%B3%B8%EA%B3%84%ED%9A%8D%20%EC%8B%9C%ED%96%89%EA%B3%84%ED%9A%8D",
+      "region_id": "gyeonggi",
+      "region_name": "경기",
+      "region_full_name": "경기도",
+      "source_channel": "policy_plan",
+      "search_terms": [
+        "청년정책 기본계획",
+        "청년정책 시행계획",
+        "기본계획",
+        "시행계획"
+      ],
+      "include_keywords": [
+        "청년정책 기본계획",
+        "청년정책 시행계획",
+        "기본계획",
+        "시행계획"
+      ],
+      "allowed_domain_suffixes": [
+        "gg.go.kr"
+      ],
+      "limit": 8
+    },
+    {
+      "name": "강원특별자치도 보도자료 청년 검색",
+      "kind": "local",
+      "enabled": true,
+      "parser": "local_board_search",
+      "url": "https://province.gangwon.kr/search?keyword=%EC%B2%AD%EB%85%84",
+      "region_id": "gangwon",
+      "region_name": "강원",
+      "region_full_name": "강원특별자치도",
+      "source_channel": "press_release",
+      "search_terms": [
+        "청년"
+      ],
+      "include_keywords": [
+        "청년"
+      ],
+      "allowed_domain_suffixes": [
+        "province.gangwon.kr"
+      ],
+      "limit": 12
+    },
+    {
+      "name": "강원특별자치도 청년정책 기본·시행계획 검색",
+      "kind": "local",
+      "enabled": true,
+      "parser": "local_board_search",
+      "url": "https://province.gangwon.kr/search?keyword=%EC%B2%AD%EB%85%84%EC%A0%95%EC%B1%85%20%EA%B8%B0%EB%B3%B8%EA%B3%84%ED%9A%8D%20%EC%8B%9C%ED%96%89%EA%B3%84%ED%9A%8D",
+      "region_id": "gangwon",
+      "region_name": "강원",
+      "region_full_name": "강원특별자치도",
+      "source_channel": "policy_plan",
+      "search_terms": [
+        "청년정책 기본계획",
+        "청년정책 시행계획",
+        "기본계획",
+        "시행계획"
+      ],
+      "include_keywords": [
+        "청년정책 기본계획",
+        "청년정책 시행계획",
+        "기본계획",
+        "시행계획"
+      ],
+      "allowed_domain_suffixes": [
+        "province.gangwon.kr"
+      ],
+      "limit": 8
+    },
+    {
+      "name": "충청북도 보도자료 청년 검색",
+      "kind": "local",
+      "enabled": true,
+      "parser": "local_board_search",
+      "url": "https://chungbuk.go.kr/search?keyword=%EC%B2%AD%EB%85%84",
+      "region_id": "chungbuk",
+      "region_name": "충북",
+      "region_full_name": "충청북도",
+      "source_channel": "press_release",
+      "search_terms": [
+        "청년"
+      ],
+      "include_keywords": [
+        "청년"
+      ],
+      "allowed_domain_suffixes": [
+        "chungbuk.go.kr"
+      ],
+      "limit": 12
+    },
+    {
+      "name": "충청북도 청년정책 기본·시행계획 검색",
+      "kind": "local",
+      "enabled": true,
+      "parser": "local_board_search",
+      "url": "https://chungbuk.go.kr/search?keyword=%EC%B2%AD%EB%85%84%EC%A0%95%EC%B1%85%20%EA%B8%B0%EB%B3%B8%EA%B3%84%ED%9A%8D%20%EC%8B%9C%ED%96%89%EA%B3%84%ED%9A%8D",
+      "region_id": "chungbuk",
+      "region_name": "충북",
+      "region_full_name": "충청북도",
+      "source_channel": "policy_plan",
+      "search_terms": [
+        "청년정책 기본계획",
+        "청년정책 시행계획",
+        "기본계획",
+        "시행계획"
+      ],
+      "include_keywords": [
+        "청년정책 기본계획",
+        "청년정책 시행계획",
+        "기본계획",
+        "시행계획"
+      ],
+      "allowed_domain_suffixes": [
+        "chungbuk.go.kr"
+      ],
+      "limit": 8
+    },
+    {
+      "name": "충청남도 보도자료 청년 검색",
+      "kind": "local",
+      "enabled": true,
+      "parser": "local_board_search",
+      "url": "https://chungnam.go.kr/search?keyword=%EC%B2%AD%EB%85%84",
+      "region_id": "chungnam",
+      "region_name": "충남",
+      "region_full_name": "충청남도",
+      "source_channel": "press_release",
+      "search_terms": [
+        "청년"
+      ],
+      "include_keywords": [
+        "청년"
+      ],
+      "allowed_domain_suffixes": [
+        "chungnam.go.kr"
+      ],
+      "limit": 12
+    },
+    {
+      "name": "충청남도 청년정책 기본·시행계획 검색",
+      "kind": "local",
+      "enabled": true,
+      "parser": "local_board_search",
+      "url": "https://chungnam.go.kr/search?keyword=%EC%B2%AD%EB%85%84%EC%A0%95%EC%B1%85%20%EA%B8%B0%EB%B3%B8%EA%B3%84%ED%9A%8D%20%EC%8B%9C%ED%96%89%EA%B3%84%ED%9A%8D",
+      "region_id": "chungnam",
+      "region_name": "충남",
+      "region_full_name": "충청남도",
+      "source_channel": "policy_plan",
+      "search_terms": [
+        "청년정책 기본계획",
+        "청년정책 시행계획",
+        "기본계획",
+        "시행계획"
+      ],
+      "include_keywords": [
+        "청년정책 기본계획",
+        "청년정책 시행계획",
+        "기본계획",
+        "시행계획"
+      ],
+      "allowed_domain_suffixes": [
+        "chungnam.go.kr"
+      ],
+      "limit": 8
+    },
+    {
+      "name": "전북특별자치도 보도자료 청년 검색",
+      "kind": "local",
+      "enabled": true,
+      "parser": "local_board_search",
+      "url": "https://jeonbuk.go.kr/search?keyword=%EC%B2%AD%EB%85%84",
+      "region_id": "jeonbuk",
+      "region_name": "전북",
+      "region_full_name": "전북특별자치도",
+      "source_channel": "press_release",
+      "search_terms": [
+        "청년"
+      ],
+      "include_keywords": [
+        "청년"
+      ],
+      "allowed_domain_suffixes": [
+        "jeonbuk.go.kr"
+      ],
+      "limit": 12
+    },
+    {
+      "name": "전북특별자치도 청년정책 기본·시행계획 검색",
+      "kind": "local",
+      "enabled": true,
+      "parser": "local_board_search",
+      "url": "https://jeonbuk.go.kr/search?keyword=%EC%B2%AD%EB%85%84%EC%A0%95%EC%B1%85%20%EA%B8%B0%EB%B3%B8%EA%B3%84%ED%9A%8D%20%EC%8B%9C%ED%96%89%EA%B3%84%ED%9A%8D",
+      "region_id": "jeonbuk",
+      "region_name": "전북",
+      "region_full_name": "전북특별자치도",
+      "source_channel": "policy_plan",
+      "search_terms": [
+        "청년정책 기본계획",
+        "청년정책 시행계획",
+        "기본계획",
+        "시행계획"
+      ],
+      "include_keywords": [
+        "청년정책 기본계획",
+        "청년정책 시행계획",
+        "기본계획",
+        "시행계획"
+      ],
+      "allowed_domain_suffixes": [
+        "jeonbuk.go.kr"
+      ],
+      "limit": 8
+    },
+    {
+      "name": "전라남도 보도자료 청년 검색",
+      "kind": "local",
+      "enabled": true,
+      "parser": "local_board_search",
+      "url": "https://jeonnam.go.kr/search?keyword=%EC%B2%AD%EB%85%84",
+      "region_id": "jeonnam",
+      "region_name": "전남",
+      "region_full_name": "전라남도",
+      "source_channel": "press_release",
+      "search_terms": [
+        "청년"
+      ],
+      "include_keywords": [
+        "청년"
+      ],
+      "allowed_domain_suffixes": [
+        "jeonnam.go.kr"
+      ],
+      "limit": 12
+    },
+    {
+      "name": "전라남도 청년정책 기본·시행계획 검색",
+      "kind": "local",
+      "enabled": true,
+      "parser": "local_board_search",
+      "url": "https://jeonnam.go.kr/search?keyword=%EC%B2%AD%EB%85%84%EC%A0%95%EC%B1%85%20%EA%B8%B0%EB%B3%B8%EA%B3%84%ED%9A%8D%20%EC%8B%9C%ED%96%89%EA%B3%84%ED%9A%8D",
+      "region_id": "jeonnam",
+      "region_name": "전남",
+      "region_full_name": "전라남도",
+      "source_channel": "policy_plan",
+      "search_terms": [
+        "청년정책 기본계획",
+        "청년정책 시행계획",
+        "기본계획",
+        "시행계획"
+      ],
+      "include_keywords": [
+        "청년정책 기본계획",
+        "청년정책 시행계획",
+        "기본계획",
+        "시행계획"
+      ],
+      "allowed_domain_suffixes": [
+        "jeonnam.go.kr"
+      ],
+      "limit": 8
+    },
+    {
+      "name": "경상북도 보도자료 청년 검색",
+      "kind": "local",
+      "enabled": true,
+      "parser": "local_board_search",
+      "url": "https://gb.go.kr/search?keyword=%EC%B2%AD%EB%85%84",
+      "region_id": "gyeongbuk",
+      "region_name": "경북",
+      "region_full_name": "경상북도",
+      "source_channel": "press_release",
+      "search_terms": [
+        "청년"
+      ],
+      "include_keywords": [
+        "청년"
+      ],
+      "allowed_domain_suffixes": [
+        "gb.go.kr"
+      ],
+      "limit": 12
+    },
+    {
+      "name": "경상북도 청년정책 기본·시행계획 검색",
+      "kind": "local",
+      "enabled": true,
+      "parser": "local_board_search",
+      "url": "https://gb.go.kr/search?keyword=%EC%B2%AD%EB%85%84%EC%A0%95%EC%B1%85%20%EA%B8%B0%EB%B3%B8%EA%B3%84%ED%9A%8D%20%EC%8B%9C%ED%96%89%EA%B3%84%ED%9A%8D",
+      "region_id": "gyeongbuk",
+      "region_name": "경북",
+      "region_full_name": "경상북도",
+      "source_channel": "policy_plan",
+      "search_terms": [
+        "청년정책 기본계획",
+        "청년정책 시행계획",
+        "기본계획",
+        "시행계획"
+      ],
+      "include_keywords": [
+        "청년정책 기본계획",
+        "청년정책 시행계획",
+        "기본계획",
+        "시행계획"
+      ],
+      "allowed_domain_suffixes": [
+        "gb.go.kr"
+      ],
+      "limit": 8
+    },
+    {
+      "name": "경상남도 보도자료 청년 검색",
+      "kind": "local",
+      "enabled": true,
+      "parser": "local_board_search",
+      "url": "https://gyeongnam.go.kr/search?keyword=%EC%B2%AD%EB%85%84",
+      "region_id": "gyeongnam",
+      "region_name": "경남",
+      "region_full_name": "경상남도",
+      "source_channel": "press_release",
+      "search_terms": [
+        "청년"
+      ],
+      "include_keywords": [
+        "청년"
+      ],
+      "allowed_domain_suffixes": [
+        "gyeongnam.go.kr"
+      ],
+      "limit": 12
+    },
+    {
+      "name": "경상남도 청년정책 기본·시행계획 검색",
+      "kind": "local",
+      "enabled": true,
+      "parser": "local_board_search",
+      "url": "https://gyeongnam.go.kr/search?keyword=%EC%B2%AD%EB%85%84%EC%A0%95%EC%B1%85%20%EA%B8%B0%EB%B3%B8%EA%B3%84%ED%9A%8D%20%EC%8B%9C%ED%96%89%EA%B3%84%ED%9A%8D",
+      "region_id": "gyeongnam",
+      "region_name": "경남",
+      "region_full_name": "경상남도",
+      "source_channel": "policy_plan",
+      "search_terms": [
+        "청년정책 기본계획",
+        "청년정책 시행계획",
+        "기본계획",
+        "시행계획"
+      ],
+      "include_keywords": [
+        "청년정책 기본계획",
+        "청년정책 시행계획",
+        "기본계획",
+        "시행계획"
+      ],
+      "allowed_domain_suffixes": [
+        "gyeongnam.go.kr"
+      ],
+      "limit": 8
+    },
+    {
+      "name": "제주특별자치도 보도자료 청년 검색",
+      "kind": "local",
+      "enabled": true,
+      "parser": "local_board_search",
+      "url": "https://jeju.go.kr/search?keyword=%EC%B2%AD%EB%85%84",
+      "region_id": "jeju",
+      "region_name": "제주",
+      "region_full_name": "제주특별자치도",
+      "source_channel": "press_release",
+      "search_terms": [
+        "청년"
+      ],
+      "include_keywords": [
+        "청년"
+      ],
+      "allowed_domain_suffixes": [
+        "jeju.go.kr"
+      ],
+      "limit": 12
+    },
+    {
+      "name": "제주특별자치도 청년정책 기본·시행계획 검색",
+      "kind": "local",
+      "enabled": true,
+      "parser": "local_board_search",
+      "url": "https://jeju.go.kr/search?keyword=%EC%B2%AD%EB%85%84%EC%A0%95%EC%B1%85%20%EA%B8%B0%EB%B3%B8%EA%B3%84%ED%9A%8D%20%EC%8B%9C%ED%96%89%EA%B3%84%ED%9A%8D",
+      "region_id": "jeju",
+      "region_name": "제주",
+      "region_full_name": "제주특별자치도",
+      "source_channel": "policy_plan",
+      "search_terms": [
+        "청년정책 기본계획",
+        "청년정책 시행계획",
+        "기본계획",
+        "시행계획"
+      ],
+      "include_keywords": [
+        "청년정책 기본계획",
+        "청년정책 시행계획",
+        "기본계획",
+        "시행계획"
+      ],
+      "allowed_domain_suffixes": [
+        "jeju.go.kr"
+      ],
+      "limit": 8
     }
   ]
 }
