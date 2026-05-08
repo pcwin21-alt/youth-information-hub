@@ -32,7 +32,7 @@ jobs:
           python -m pip install -e ./public-site
 
       - name: Run sample pipeline
-        run: python public-site/scripts/cron_runner.py --use-sample-data
+        run: python public-site/scripts/cron_runner.py --use-sample-data --skip-feedback --skip-outbound-notifications
 
       - name: Verify public artifacts
         run: python public-site/scripts/verify_site_artifacts.py --min-articles 1 --min-news-cards 0

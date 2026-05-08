@@ -66,7 +66,7 @@ jobs:
 
       - name: Run pipeline
         if: ${{ steps.deploy_mode.outputs.use_prebuilt_site != 'true' }}
-        run: python public-site/scripts/cron_runner.py --curator-max-network-enrich 20
+        run: python public-site/scripts/cron_runner.py --curator-max-network-enrich 20 --skip-outbound-notifications
 
       - name: Verify generated artifacts
         run: python public-site/scripts/verify_site_artifacts.py --min-articles 1 --min-news-cards 0

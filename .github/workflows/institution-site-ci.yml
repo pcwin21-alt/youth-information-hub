@@ -33,7 +33,7 @@ jobs:
           python -m pip install -e ./institution-site
 
       - name: Build runtime sample data
-        run: python public-site/scripts/cron_runner.py --use-sample-data
+        run: python public-site/scripts/cron_runner.py --use-sample-data --skip-feedback --skip-outbound-notifications
 
       - name: Run migrations
         run: DJANGO_DEBUG=1 DJANGO_SECRET_KEY=ci-only-secret-key python institution-site/manage.py migrate --noinput

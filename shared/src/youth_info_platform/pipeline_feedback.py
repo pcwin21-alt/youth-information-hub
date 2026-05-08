@@ -321,6 +321,14 @@ def finding(
     }
 
 
+def is_pipeline_feedback_step_in_progress(status: dict[str, Any]) -> bool:
+    return (
+        status.get("state") == "running"
+        and status.get("current_step") == "pipeline_feedback"
+        and not status.get("error")
+    )
+
+
 def build_findings(metrics: dict[str, Any], thresholds: dict[str, int] | None = None) -> list[dict[str, str]]:
     thresholds = {**DEFAULT_THRESHOLDS, **(thresholds or {})}
     findings: list[dict[str, str]] = []
@@ -389,7 +397,7 @@ def build_findings(metrics: dict[str, Any], thresholds: dict[str, int] | None = 
         )
 
     status = metrics.get("status", {})
-    if status.get("state") not in {None, "completed"}:
+    if status.get("state") not in {None, "completed"} and not is_pipeline_feedback_step_in_progress(status):
         findings.append(
             finding(
                 "critical",

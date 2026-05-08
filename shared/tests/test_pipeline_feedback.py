@@ -137,6 +137,28 @@ class PipelineFeedbackTests(unittest.TestCase):
         self.assertEqual(report["verdict"], "warn")
         self.assertIn("low_government_policy_resource_cards", {item["code"] for item in report["findings"]})
 
+    def test_feedback_step_running_does_not_fail_itself(self) -> None:
+        metrics = healthy_metrics()
+        metrics["status"]["state"] = "running"
+        metrics["status"]["current_step"] = "pipeline_feedback"
+        metrics["status"]["finished_age_hours"] = None
+
+        report = build_feedback_report(metrics)
+
+        self.assertEqual(report["verdict"], "pass")
+        self.assertNotIn("pipeline_not_completed", {item["code"] for item in report["findings"]})
+
+    def test_other_running_step_still_fails(self) -> None:
+        metrics = healthy_metrics()
+        metrics["status"]["state"] = "running"
+        metrics["status"]["current_step"] = "collect_news"
+        metrics["status"]["finished_age_hours"] = None
+
+        report = build_feedback_report(metrics)
+
+        self.assertEqual(report["verdict"], "fail")
+        self.assertIn("pipeline_not_completed", {item["code"] for item in report["findings"]})
+
 
 if __name__ == "__main__":
     unittest.main()
