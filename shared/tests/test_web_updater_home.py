@@ -234,7 +234,8 @@ class HomeSelectionTests(unittest.TestCase):
                 "email": "hello@example.com",
             },
         )
-        government_section = page_html.split("<span>정부 동향</span>", 1)[1].split("</article>", 1)[0]
+        government_start = page_html.index("<span>정부 동향</span>")
+        government_section = page_html[government_start:page_html.index("</section>", government_start)]
 
         self.assertIn(youth_official["title"], government_section)
         self.assertNotIn(generic_official["title"], government_section)
@@ -362,7 +363,7 @@ class HomeSelectionTests(unittest.TestCase):
         self.assertNotIn(opinion["title"], latest_news_column)
         self.assertNotIn(campaign["title"], latest_news_column)
 
-    def test_home_government_local_trends_use_only_official_sources(self) -> None:
+    def test_home_government_trends_use_government_page_sections_and_skip_local_sources(self) -> None:
         central_press = make_article(
             title="[보도자료] 청년 고용 지원사업 확대 발표",
             lead_text="Central ministry official youth policy release.",
@@ -382,6 +383,16 @@ class HomeSelectionTests(unittest.TestCase):
         central_policy_news["is_official_source"] = True
         central_policy_news["source"] = "Policy Briefing RSS"
         central_policy_news["source_name"] = "Policy Briefing RSS"
+
+        central_announcement_news = make_article(
+            title="국방부, 청년 장병 지원 대책 발표",
+            lead_text="서울 용산구에서 중앙부처 청년정책 지원 방안을 설명했다.",
+            url="https://example.com/central-announcement-news",
+            source_kind="news",
+            published_date="2026-04-22T11:00:00+09:00",
+        )
+        central_announcement_news["source"] = "Example Defense News"
+        central_announcement_news["source_name"] = "Example Defense News"
 
         local_press = make_article(
             title="OFFICIAL LOCAL PRESS RELEASE",
@@ -429,6 +440,7 @@ class HomeSelectionTests(unittest.TestCase):
         articles = [
             central_press,
             central_policy_news,
+            central_announcement_news,
             local_press,
             local_notice,
             government_hub_news,
@@ -447,10 +459,11 @@ class HomeSelectionTests(unittest.TestCase):
         )
 
         gov_start = page_html.index("<span>정부 동향</span>")
-        gov_local_column = page_html[gov_start:page_html.index("</article>", gov_start)]
+        gov_local_column = page_html[gov_start:page_html.index("</section>", gov_start)]
 
-        self.assertIn("정부 동향 메뉴와 같은 기준으로 중앙정부 원문과 공식 발표만 봅니다.", page_html)
+        self.assertIn("정부 동향 메뉴와 같은 기준으로 정부 발표 뉴스와 중앙정부 원문을 함께 봅니다.", page_html)
         self.assertIn(central_press["title"], gov_local_column)
+        self.assertIn(central_announcement_news["title"], gov_local_column)
         self.assertNotIn(local_press["title"], gov_local_column)
         self.assertNotIn(local_notice["title"], gov_local_column)
         self.assertNotIn(central_policy_news["title"], gov_local_column)
@@ -640,7 +653,8 @@ class HomeSelectionTests(unittest.TestCase):
         self.assertNotIn(local_policy["title"], policies_html)
         self.assertNotIn(pure_campaign["title"], policies_html)
         self.assertNotIn(substantive_promise["title"], policies_html)
-        self.assertIn("중앙정부 관련 뉴스", policies_html)
+        self.assertIn("정부 발표 뉴스 모음", policies_html)
+        self.assertIn("정부 홈페이지 보도자료", policies_html)
         self.assertIn("지자체 발표와 선거·공약성 기사는 다른 메뉴로 분리합니다.", policies_html)
 
         self.assertIn(local_policy["title"], plans_html)

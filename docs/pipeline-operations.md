@@ -203,17 +203,17 @@ python public-site\scripts\web_updater.py
 주요 노출 기준:
 
 - 홈 최신 뉴스: 공식 소스 제외, 선거·공약 제외, noise/opinion 제외.
-- 홈 정부 동향: `정부 동향` 페이지의 중앙정부 공식 발표·주요 정책 자료 후보를 사용한다. 지자체 발표는 홈의 정부 영역에 섞지 않는다.
-- 정책/정부 동향 페이지: `중앙정부 관련 뉴스`, `중앙정부 공식 보도자료`, `주요 정책·시행계획 자료` 세 구역으로 분리한다.
+- 홈 정부 동향: `정부 동향` 페이지의 정부 발표 뉴스·중앙정부 홈페이지 보도자료·기본/시행계획 자료 후보를 사용한다. 지자체 발표는 홈의 정부 영역에 섞지 않는다.
+- 정책/정부 동향 페이지: `정부 발표 뉴스 모음`, `정부 홈페이지 보도자료`, `각 부처별 기본·시행계획 자료 모음` 세 구역으로 분리한다.
 - 지자체 동향 페이지: 지자체 공식 보도자료, 공고, 기본·시행계획 우선.
 - 뉴스 페이지: 언론 기사 중심, 공식 발표는 별도 메뉴로 보낸다.
 
 노하우:
 
 - 홈 리스트가 적을 때는 `HOME_DAILY_LIMIT`부터 보지 않는다. 먼저 후보 풀 수를 본다.
-- 홈 정부 동향 후보 풀은 `build_government_trend_articles`를 통해 중앙정부 공식 발표와 주요 정책 자료를 함께 보강한다. 날짜는 표시용 fallback 기준과 URL identity를 함께 확인한다.
-- 중앙정부 관련 뉴스 후보 풀은 `build_government_related_news_articles`를 통해 `정부 동향` 첫 구역으로 렌더한다. 공식 보도자료와 섞지 않는다.
-- 주요 정책·시행계획 자료는 `build_government_policy_resource_articles`의 중앙부처 watchlist로 렌더한다.
+- 홈 정부 동향 후보 풀은 `build_government_trend_articles`를 통해 정부 발표 뉴스, 중앙정부 홈페이지 보도자료, 기본·시행계획 자료를 함께 보강한다. 날짜는 표시용 fallback 기준과 URL identity를 함께 확인한다.
+- 정부 발표 뉴스 후보 풀은 `build_government_related_news_articles`를 통해 `정부 동향` 첫 구역으로 렌더한다. 공식 보도자료와 섞지 않는다.
+- 각 부처별 기본·시행계획 자료는 `build_government_policy_resource_articles`의 중앙부처 watchlist로 렌더한다.
 - `public-site/web/`는 Pages prebuilt 배포의 원본이다. `public-site/dist/`는 패키징 산출물이다.
 
 ## 8. 피드백 점검

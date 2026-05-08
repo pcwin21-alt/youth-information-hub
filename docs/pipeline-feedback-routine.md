@@ -118,8 +118,8 @@ python public-site\scripts\verify_site_artifacts.py --min-articles 1 --min-news-
 - 공식 source의 filtered_items가 특정 기관에만 몰리는지
 - 지자체 수집 지역이 늘고 있는지
 - 홈 정부 동향 후보가 충분한지
-- 정부 동향의 중앙정부 관련 뉴스 카드가 0건인지
-- 정부 동향의 주요 정책·시행계획 자료 카드가 빠졌는지
+- 정부 동향의 정부 발표 뉴스 카드가 0건인지
+- 정부 동향의 각 부처별 기본·시행계획 자료 카드가 빠졌는지
 - 날짜 warning이 같은 parser에서 반복되는지
 
 ## 자가복구 정책
@@ -214,7 +214,7 @@ python public-site\scripts\run_curator.py
 - `is_central_government_announcement`
 - `published_date`, `publisher_published_at`, `portal_published_at`
 - `canonical_url`/`publisher_url`이 상세 identity를 잃었는지
-- `policies.html`의 정부 공식 발표 후보와 홈 카운트가 맞는지
+- `policies.html`의 정부 발표 뉴스·정부 홈페이지 보도자료 후보와 홈 카운트가 맞는지
 
 조치:
 
@@ -226,7 +226,7 @@ python public-site\scripts\run_curator.py
 
 의미:
 
-- `정부 동향` 안의 `중앙정부 관련 뉴스` 구역에 표시되는 언론 기사 카드가 부족하다.
+- `정부 동향` 안의 `정부 발표 뉴스 모음` 구역에 표시되는 언론 기사 카드가 부족하다.
 - 공식 보도자료 수집 문제와 별개로, 언론 기사 후보 분리 조건이 너무 좁거나 중앙정부 키워드가 누락됐을 수 있다.
 
 확인:
@@ -234,18 +234,19 @@ python public-site\scripts\run_curator.py
 - `build_government_related_news_articles`
 - `is_central_government_related_news_article`
 - 중앙정부 부처명, 국무조정실, 정책브리핑, 장관·부처 발표 키워드가 제목·요약·리드에서 잡히는지
-- 지자체·선거·공약성 기사 제외 조건이 관련 뉴스까지 과하게 막고 있지 않은지
+- 지자체·선거·공약성 기사 제외 조건이 정부 발표 뉴스까지 과하게 막고 있지 않은지
+- 제목·출처가 중앙정부 주체인데 리드의 지역 장소명 때문에 지자체 동향으로 밀려나지 않는지
 
 조치:
 
-- 중앙정부 관련 뉴스는 공식 발표와 섞지 말고 정부 동향의 첫 구역(`#main-list`)에 둔다.
+- 정부 발표 뉴스는 공식 보도자료와 섞지 말고 정부 동향의 첫 구역(`#main-list`)에 둔다.
 - 후보가 0건이면 `step3_classified.json`의 비공식 뉴스 중 중앙정부 키워드 후보를 먼저 샘플링한다.
 
 ### low_government_policy_resource_cards
 
 의미:
 
-- `정부 동향` 안의 `주요 정책·시행계획 자료` 구역에 표시되는 중앙부처 공식 경로 카드가 부족하다.
+- `정부 동향` 안의 `각 부처별 기본·시행계획 자료 모음` 구역에 표시되는 중앙부처 공식 경로 카드가 부족하다.
 - 정부 동향 메뉴가 지자체 동향처럼 3갈래로 보이지 않거나, 중앙부처 watchlist 렌더링이 빠졌을 수 있다.
 
 확인:
@@ -257,7 +258,7 @@ python public-site\scripts\run_curator.py
 
 조치:
 
-- 주요 정책·시행계획 자료는 공식 보도자료와 섞지 말고 `government-policy-resources` 구역에 둔다.
+- 각 부처별 기본·시행계획 자료는 공식 보도자료와 섞지 말고 `government-policy-resources` 구역에 둔다.
 - 카드가 0건이면 중앙부처 watchlist와 렌더링 속성 누락을 먼저 확인한다.
 
 ### news_cards_below_candidate_pool

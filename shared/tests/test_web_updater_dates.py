@@ -100,6 +100,38 @@ def make_central_government_related_news_article() -> dict:
     }
 
 
+def make_local_government_news_with_central_keyword() -> dict:
+    return {
+        **make_portal_only_article(),
+        "url": "https://example.com/local-government-news",
+        "title": "\uc11c\uc6b8\uc2dc youth policy wins central government review",
+        "lead_text": "\uad6d\ubb34\uc870\uc815\uc2e4 review mentioned local youth policy.",
+        "summary": "\uad6d\ubb34\uc870\uc815\uc2e4 review mentioned local youth policy.",
+        "source": "Example Local News",
+        "source_name": "Example Local News",
+        "source_kind": "news",
+        "published_date": "2026-05-07T11:00:00+09:00",
+        "portal_published_at": None,
+        "region": "\uc11c\uc6b8",
+    }
+
+
+def make_central_government_news_with_location_text() -> dict:
+    return {
+        **make_portal_only_article(),
+        "url": "https://example.com/central-government-location-news",
+        "title": "\uad6d\ubc29\ubd80, \uccad\ub144 \uc7a5\ubcd1 \uc9c0\uc6d0 \ub300\ucc45 \ubc1c\ud45c",
+        "lead_text": "\uc11c\uc6b8 \uc6a9\uc0b0\uad6c\uc5d0\uc11c \uc911\uc559\ubd80\ucc98 \uccad\ub144\uc815\ucc45 \uc9c0\uc6d0 \ubc29\uc548\uc744 \uc124\uba85\ud588\ub2e4.",
+        "summary": "\uc11c\uc6b8 \uc6a9\uc0b0\uad6c\uc5d0\uc11c \uc911\uc559\ubd80\ucc98 \uccad\ub144\uc815\ucc45 \uc9c0\uc6d0 \ubc29\uc548\uc744 \uc124\uba85\ud588\ub2e4.",
+        "source": "Example Defense News",
+        "source_name": "Example Defense News",
+        "source_kind": "news",
+        "published_date": "2026-05-07T12:00:00+09:00",
+        "portal_published_at": None,
+        "region": "\uc11c\uc6b8",
+    }
+
+
 class WebUpdaterDateFallbackTests(unittest.TestCase):
     def test_recent_filter_uses_portal_published_at_when_published_date_is_missing(self) -> None:
         article = make_portal_only_article()
@@ -167,10 +199,49 @@ class WebUpdaterDateFallbackTests(unittest.TestCase):
         self.assertIn('href="#main-list"', page_html)
         self.assertIn('href="#government-official-releases"', page_html)
         self.assertIn('href="#government-policy-resources"', page_html)
+        self.assertIn('data-government-announcement-news-card="true"', page_html)
         self.assertIn('data-government-related-news-card="true"', page_html)
         self.assertIn('data-government-policy-resource-card="true"', page_html)
-        self.assertIn("중앙정부 관련 뉴스", page_html)
+        self.assertIn("정부 발표 뉴스 모음", page_html)
+        self.assertIn("정부 홈페이지 보도자료", page_html)
+        self.assertIn("각 부처별 기본·시행계획 자료 모음", page_html)
         self.assertIn("central-government-news", page_html)
+
+    def test_government_announcement_news_excludes_local_government_actor(self) -> None:
+        local_news = make_local_government_news_with_central_keyword()
+        local_news_with_abbreviated_region = {
+            **make_portal_only_article(),
+            "url": "https://example.com/local-government-jeju-news",
+            "title": "\uc81c\uc8fc\ub3c4, 3\ub9cc \uc6d0 \uc8fc\ud0dd \uc785\uc8fc\uc790 \ubaa8\uc9d1",
+            "lead_text": "\uad6d\ud1a0\uad50\ud1b5\ubd80 \uc720\uc0ac \uae09\uc5ec\uc640 \uc9c0\uc790\uccb4 \uc8fc\uac70 \uc9c0\uc6d0\uc744 \ud568\uaed8 \uc18c\uac1c\ud588\ub2e4.",
+            "summary": "\uad6d\ud1a0\uad50\ud1b5\ubd80 \uc720\uc0ac \uae09\uc5ec\uc640 \uc9c0\uc790\uccb4 \uc8fc\uac70 \uc9c0\uc6d0\uc744 \ud568\uaed8 \uc18c\uac1c\ud588\ub2e4.",
+            "source": "Example Jeju News",
+            "source_name": "Example Jeju News",
+            "source_kind": "news",
+            "published_date": "2026-05-07T11:30:00+09:00",
+            "portal_published_at": None,
+            "region": "\uc81c\uc8fc",
+        }
+
+        page_html = web_updater.build_policies_page_compact(
+            [local_news, local_news_with_abbreviated_region],
+            {"finished_at": "2026-05-08T00:00:00+09:00"},
+        )
+
+        self.assertNotIn("local-government-news", page_html)
+        self.assertNotIn("local-government-jeju-news", page_html)
+        self.assertNotIn('data-government-announcement-news-card="true"', page_html)
+
+    def test_government_announcement_news_keeps_central_article_with_location_text(self) -> None:
+        central_news = make_central_government_news_with_location_text()
+
+        page_html = web_updater.build_policies_page_compact(
+            [central_news],
+            {"finished_at": "2026-05-08T00:00:00+09:00"},
+        )
+
+        self.assertIn("central-government-location-news", page_html)
+        self.assertIn('data-government-announcement-news-card="true"', page_html)
 
 
 if __name__ == "__main__":

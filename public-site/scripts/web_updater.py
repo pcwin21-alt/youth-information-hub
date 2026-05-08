@@ -9076,8 +9076,13 @@ SIDE_NAV_CONFIG = {
     },
     "policies.html": {
         "title": "정부 동향 위치",
-        "description": "중앙정부 공식 발표",
-        "items": [("#page-top", "상단"), ("#filters", "필터"), ("#main-list", "정부 발표")],
+        "description": "뉴스·보도자료·계획",
+        "items": [
+            ("#page-top", "상단"),
+            ("#main-list", "발표 뉴스"),
+            ("#government-official-releases", "보도자료"),
+            ("#government-policy-resources", "기본·시행계획"),
+        ],
     },
     "plans.html": {
         "title": "지자체 동향 위치",
@@ -10757,11 +10762,11 @@ def is_local_government_announcement(article: dict) -> bool:
 
 
 def with_government_trend_badges(article: dict) -> dict:
-    return with_display_badges(article, "정부 공식 발표")
+    return with_display_badges(article, "정부 홈페이지 보도자료")
 
 
 def with_government_related_news_badges(article: dict) -> dict:
-    return with_display_badges(article, "중앙정부 관련 뉴스")
+    return with_display_badges(article, "정부 발표 뉴스")
 
 
 def with_local_trend_badges(article: dict) -> dict:
@@ -12857,16 +12862,16 @@ def build_menu_updates(articles: list[dict], classified_articles: list[dict], st
         },
         {
             "eyebrow": "02 정부 동향",
-            "title": "정부 공식 발표",
+            "title": "정부 발표 뉴스",
             "href": "policies.html",
-            "description": "정부 발표와 공식 정책 자료를 날짜순으로 확인할 수 있습니다.",
-            "article_basis_label": "최신 정부 발표 기준",
+            "description": "정부 발표 뉴스, 홈페이지 보도자료, 기본·시행계획 자료를 확인할 수 있습니다.",
+            "article_basis_label": "최신 정부 동향 기준",
             "article_basis_time": latest_article_timestamp(policy_articles, page_updated_at),
             "page_basis_label": "페이지 반영",
             "page_basis_time": page_updated_at,
             "items": summarize_menu_items(
                 policy_articles,
-                [("최근 발표", "공식 발표가 이 영역에 표시됩니다.")],
+                [("최근 동향", "정부 발표 뉴스와 보도자료가 이 영역에 표시됩니다.")],
             ),
             "link_label": "정부 동향 바로가기",
         },
@@ -12990,7 +12995,7 @@ def build_home_page(
     home_topic_categories = build_home_topic_categories(latest_home_news_candidates, page_updated_at)
     home_date_label = format_home_date_label(page_updated_at)
     home_time_label = format_home_time_label(page_updated_at)
-    lead_message = "청년정책 흐름이 조금 더 선명해지도록, 꼭 봐야 할 뉴스와 중앙정부 공식 발표를 한곳에 모았습니다."
+    lead_message = "청년정책 흐름이 조금 더 선명해지도록, 꼭 봐야 할 뉴스와 정부 발표 흐름을 한곳에 모았습니다."
     home_category_links = "".join(
         f'<a class="home-keyword-chip" href="{html.escape(home_topic_category_href(topic))}">#{html.escape(topic)}</a>'
         for topic, _ in home_topic_categories
@@ -13037,7 +13042,7 @@ def build_home_page(
     ) or (
         '<article class="home-urgent-item"><div class="home-urgent-link"><span class="home-urgent-rank">00</span>'
         '<div class="home-urgent-text"><strong>확인할 정부 동향이 아직 없습니다.</strong>'
-        '<span class="home-urgent-meta">중앙정부 공식 보도자료가 들어오면 이 영역이 먼저 채워집니다.</span></div></div></article>'
+        '<span class="home-urgent-meta">정부 발표 뉴스나 홈페이지 보도자료가 들어오면 이 영역이 먼저 채워집니다.</span></div></div></article>'
     )
     overview_stats_html = "".join(
         f'<article class="{card_class}"><span class="home-glance-label">{label}</span><strong class="home-glance-value">{value}</strong></article>'
@@ -13128,10 +13133,10 @@ def build_home_page(
               <div class="home-overview-column-head">
                 <div>
                   <span>정부 동향</span>
-                  <h3>중앙정부 공식 발표</h3>
+                  <h3>정부 발표 뉴스</h3>
                 </div>
               </div>
-              <p class="home-briefing-panel-note">정부 동향 메뉴와 같은 기준으로 중앙정부 원문과 공식 발표만 봅니다.</p>
+              <p class="home-briefing-panel-note">정부 동향 메뉴와 같은 기준으로 정부 발표 뉴스와 중앙정부 원문을 함께 봅니다.</p>
               <div class="home-urgent-list">{policy_briefing_html}</div>
             </article>
           </div>
@@ -13151,7 +13156,7 @@ def build_guide_page(status: dict) -> str:
             render_feature_card("홈", "오늘 바로 볼 기사와 오늘 집계를 먼저 보는 첫 화면입니다.", "index.html", "첫 화면"),
             render_feature_card("뉴스 모음", "수집된 청년 뉴스를 날짜별로 오래 남겨 빠르게 훑어봅니다.", "news.html", "누적 기사"),
             render_feature_card("선거·공약", "수집된 선거 기사와 청년 공약 흐름을 일반 뉴스와 분리해 봅니다.", "election.html", "누적 흐름"),
-            render_feature_card("정부 동향", "중앙정부와 부처가 공식으로 발표한 청년 정책 자료만 확인합니다.", "policies.html", "정부 발표"),
+            render_feature_card("정부 동향", "정부 발표 뉴스, 중앙정부 홈페이지 보도자료, 기본·시행계획 자료를 나눠 봅니다.", "policies.html", "정부 동향"),
             render_feature_card("지자체 동향", "광역·기초지자체의 청년 정책 발표와 공고성 흐름을 지역별로 봅니다.", "plans.html", "지역 발표"),
             render_feature_card("참여기구", "위원회, 자문단, 청년정책 네트워크 같은 참여 구조를 모아 봅니다.", "hub.html", "참여 구조"),
             render_feature_card("연구·문헌", "연구보고서, 통계, 법령, 공식 자료를 바로 엽니다.", "tools.html", "연구 자료"),
@@ -13171,7 +13176,7 @@ def build_guide_page(status: dict) -> str:
         "처음 들어왔을 때 가장 덜 헤매는 흐름을 짧게 정리했습니다.",
         [
             ("1. 홈", "오늘 바로 볼 기사와 집계를 먼저 확인합니다."),
-            ("2. 정부 동향", "중앙정부 공식 발표와 정책브리핑을 바로 확인합니다."),
+            ("2. 정부 동향", "정부 발표 뉴스와 중앙정부 홈페이지 보도자료를 바로 확인합니다."),
             ("3. 지자체 동향", "지역별 청년 정책 발표와 공고성 흐름을 따로 봅니다."),
             ("4. 참여기구", "위원회, 회의, 네트워크 소식이 이어지는지 살펴봅니다."),
             ("5. 연구·문헌", "연구보고서, 통계, 법령, 공식 자료를 확인합니다."),
@@ -13182,7 +13187,7 @@ def build_guide_page(status: dict) -> str:
       <article class="hero-card">
         <span class="eyebrow">사이트 소개</span>
         <h1>청년세대와 관련된 이슈들을 한 데 모았습니다.</h1>
-        <p class="hero-copy">수집된 기사와 정부 공식 발표, 지자체 발표, 참여기구 기록을 오래 남기되 서로 섞이지 않게 나눠 볼 수 있도록 정리했습니다. 홈은 가장 최근에 볼 기사부터 시작하고, 이 페이지에서는 메뉴와 보는 순서를 설명합니다.</p>
+        <p class="hero-copy">수집된 기사와 정부 발표 뉴스, 지자체 발표, 참여기구 기록을 오래 남기되 서로 섞이지 않게 나눠 볼 수 있도록 정리했습니다. 홈은 가장 최근에 볼 기사부터 시작하고, 이 페이지에서는 메뉴와 보는 순서를 설명합니다.</p>
         <div class="hero-feature-meta">페이지 반영 {html.escape(format_display_datetime(page_updated_at))} · {html.escape(status_meta["update_frequency"])}</div>
         <div class="hero-actions">
           <a class="button primary" href="index.html">홈에서 기사 보기</a>
@@ -13193,7 +13198,7 @@ def build_guide_page(status: dict) -> str:
         <h3>먼저 보면 좋은 메뉴</h3>
         <div class="list">
           <div class="list-item"><strong>홈</strong><span>첫 화면에서 오늘 바로 볼 기사와 업데이트 요약을 먼저 확인합니다.</span></div>
-          <div class="list-item"><strong>정부 동향</strong><span>중앙정부 공식 발표와 정부 원문만 확인하는 메뉴입니다.</span></div>
+          <div class="list-item"><strong>정부 동향</strong><span>정부 발표 뉴스, 홈페이지 보도자료, 기본·시행계획 자료를 분리해 보는 메뉴입니다.</span></div>
           <div class="list-item"><strong>지자체 동향</strong><span>지역별 청년 정책 발표와 공고성 흐름을 따로 봅니다.</span></div>
           <div class="list-item"><strong>참여기구</strong><span>위원회, 회의, 지역 네트워크 움직임을 추적할 때 유용합니다.</span></div>
           <div class="list-item"><strong>제작자 연락</strong><span>누락 기사나 협업 제안은 하단의 제작자 연락 채널로 전달할 수 있습니다.</span></div>
@@ -13410,14 +13415,14 @@ def build_policies_page(articles: list[dict], status: dict) -> str:
     <section class="hero">
       <article class="hero-card">
         <span class="eyebrow">02 정책</span>
-        <h1>정부 공식 발표와 참고 기사를 구분해 보여드립니다.</h1>
-        <p class="hero-copy">정책브리핑과 정부 발표는 위로, 지자체·언론 기사는 참고 영역으로 분리했습니다.</p>
+        <h1>정부 발표 뉴스와 보도자료를 구분해 보여드립니다.</h1>
+        <p class="hero-copy">중앙정부 발표와 연결된 뉴스, 정부 홈페이지 보도자료, 정책 자료를 서로 섞이지 않게 분리했습니다.</p>
       </article>
       <aside class="status-card">
         <h3>정책 보기 기준</h3>
         <div class="list">
-          <div class="list-item"><strong>정부 공식 발표</strong><span>{len(official_policies)}건 · 정책브리핑과 정부 원문만 모았습니다.</span></div>
-          <div class="list-item"><strong>참고 기사</strong><span>{len(reference_policies)}건 · 지자체 보도와 언론 기사는 별도 구역으로 분리했습니다.</span></div>
+          <div class="list-item"><strong>정부 홈페이지 보도자료</strong><span>{len(official_policies)}건 · 정책브리핑과 정부 원문만 모았습니다.</span></div>
+          <div class="list-item"><strong>참고 기사</strong><span>{len(reference_policies)}건 · 지자체 보도와 일반 언론 기사는 별도 구역으로 분리했습니다.</span></div>
           <div class="list-item"><strong>페이지 반영</strong><span>{html.escape(format_display_datetime(page_updated_at))}</span></div>
         </div>
       </aside>
@@ -13425,11 +13430,11 @@ def build_policies_page(articles: list[dict], status: dict) -> str:
     <section class="section" id="main-list">
       <div class="section-head">
         <div>
-          <h2>정부 공식 발표</h2>
-          <p>수집된 기간 안의 정부 원문과 공식 발표를 최대한 길게 보여줍니다.</p>
+          <h2>정부 홈페이지 보도자료</h2>
+          <p>수집된 기간 안의 정부 원문과 공식 보도자료를 최대한 길게 보여줍니다.</p>
         </div>
       </div>
-      <div class="article-grid">{official_cards or '<article class="info-card"><h3>공식 발표 없음</h3><p>표시할 정부 원문이 아직 없습니다.</p></article>'}</div>
+      <div class="article-grid">{official_cards or '<article class="info-card"><h3>정부 홈페이지 보도자료 없음</h3><p>표시할 정부 원문이 아직 없습니다.</p></article>'}</div>
     </section>
     <section class="section">
       <div class="section-head">
@@ -13458,17 +13463,43 @@ def build_government_official_release_articles(articles: list[dict], reference_t
 
 def build_government_policy_resource_articles() -> list[dict]:
     return [
-        with_display_badges(article, "주요 정책 자료")
+        with_display_badges(article, "기본·시행계획 자료")
         for article in build_curated_major_policy_articles()
     ]
 
 
+def government_trend_article_key(article: dict) -> str:
+    title_key = normalize_inline_text(clean_article_title(article.get("title"))).lower()
+    return article_identity_key(article) or title_key
+
+
+def deduplicate_government_trend_articles(articles: list[dict]) -> list[dict]:
+    deduped: list[dict] = []
+    seen_keys: set[str] = set()
+    seen_titles: set[str] = set()
+    for article in sort_articles_by_recency(articles):
+        identity_key = government_trend_article_key(article)
+        title_key = normalize_inline_text(clean_article_title(article.get("title"))).lower()
+        if identity_key in seen_keys or (title_key and title_key in seen_titles):
+            continue
+        seen_keys.add(identity_key)
+        if title_key:
+            seen_titles.add(title_key)
+        deduped.append(article)
+    return deduped
+
+
 def build_government_trend_articles(articles: list[dict], reference_time: str | None) -> list[dict]:
+    announcement_news = build_government_related_news_articles(articles, reference_time)
     official_policies = build_government_official_release_articles(articles, reference_time)
-    return [
-        with_government_trend_badges(article)
-        for article in add_major_policy_watchlist_articles(official_policies)
-    ]
+    policy_resources = build_government_policy_resource_articles()
+    return deduplicate_government_trend_articles(
+        [
+            *announcement_news,
+            *official_policies,
+            *policy_resources,
+        ]
+    )
 
 
 CENTRAL_GOVERNMENT_RELATED_NEWS_PROMINENT_KEYWORDS = (
@@ -13482,6 +13513,37 @@ CENTRAL_GOVERNMENT_RELATED_NEWS_PROMINENT_KEYWORDS = (
     "차관",
     "국방장관",
     "금융위원장",
+)
+
+
+LOCAL_GOVERNMENT_DOMINANT_ACTOR_KEYWORDS = tuple(
+    dict.fromkeys(
+        [
+            *[
+                keyword
+                for keyword in LOCAL_GOVERNMENT_ACTOR_KEYWORDS
+                if keyword not in {"시장"}
+            ],
+            "서울특별시",
+            "부산광역시",
+            "대구광역시",
+            "인천광역시",
+            "광주광역시",
+            "대전광역시",
+            "울산광역시",
+            "세종특별자치시",
+            "강원특별자치도",
+            "전라북도",
+            "충북도",
+            "충남도",
+            "전북도",
+            "전남도",
+            "경북도",
+            "경남도",
+            "제주도",
+            "제주자치도",
+        ]
+    )
 )
 
 
@@ -13500,6 +13562,27 @@ def central_government_related_news_prominent_text(article: dict) -> str:
             ]
         )
     )
+
+
+def local_government_dominant_actor_text(article: dict) -> str:
+    return normalize_inline_text(
+        " ".join(
+            str(value or "")
+            for value in [
+                article.get("title"),
+                article.get("source"),
+                article.get("source_name"),
+                article.get("publisher_domain"),
+            ]
+        )
+    )
+
+
+def has_dominant_local_government_actor_signal(article: dict) -> bool:
+    if is_local_official_source(article):
+        return True
+    text = local_government_dominant_actor_text(article)
+    return any(keyword in text for keyword in LOCAL_GOVERNMENT_DOMINANT_ACTOR_KEYWORDS)
 
 
 def central_government_related_news_full_text(article: dict) -> str:
@@ -13536,6 +13619,8 @@ def is_central_government_related_news_article(article: dict) -> bool:
     source_kind = normalize_inline_text(article.get("source_kind"))
     if source_kind == "official" or article.get("is_official_source"):
         return False
+    if source_kind in {"local", "regional_official", "municipal", "municipality"}:
+        return False
     if (
         is_election_promise_article(article)
         or home_campaign_political(article)
@@ -13545,9 +13630,11 @@ def is_central_government_related_news_article(article: dict) -> bool:
         return False
     if article.get("is_noise") or article.get("article_type") == "opinion":
         return False
-    if is_local_government_announcement(article) or home_is_regional_roundup_article(article):
+    if home_is_regional_roundup_article(article):
         return False
-    if has_local_government_actor_signal(article) and not has_prominent_central_government_related_news_signal(article):
+    if is_local_government_announcement(article) and not has_prominent_central_government_related_news_signal(article):
+        return False
+    if has_dominant_local_government_actor_signal(article):
         return False
     return has_central_government_related_news_signal(article)
 
@@ -13589,9 +13676,9 @@ def build_government_related_news_articles(articles: list[dict], reference_time:
 
 def render_government_menu_nav() -> str:
     items = [
-        ("#main-list", "01", "중앙정부 관련 뉴스", "언론 기사 중 중앙정부와 청년정책이 함께 핵심인 기사만 봅니다."),
-        ("#government-official-releases", "02", "중앙정부 공식 보도자료", "정책브리핑, 국무조정실, 중앙부처 원문과 공식 발표를 봅니다."),
-        ("#government-policy-resources", "03", "주요 정책·시행계획 자료", "청년정책 기본계획, 시행계획, 부처별 공식 경로를 연결합니다."),
+        ("#main-list", "01", "정부 발표 뉴스 모음", "뉴스 중 중앙정부 발표와 청년정책이 함께 핵심인 기사만 봅니다."),
+        ("#government-official-releases", "02", "정부 홈페이지 보도자료", "정책브리핑, 국무조정실, 중앙부처 홈페이지의 청년 보도자료를 모읍니다."),
+        ("#government-policy-resources", "03", "각 부처별 기본·시행계획 자료 모음", "부처별 청년정책 기본계획·시행계획과 공식 자료 경로를 연결합니다."),
     ]
     cards = "".join(
         f"""
@@ -13615,6 +13702,7 @@ def render_government_related_news_grid(articles: list[dict]) -> str:
         render_article_card(
             article,
             {
+                "data-government-announcement-news-card": "true",
                 "data-government-related-news-card": "true",
             },
         )
@@ -13625,8 +13713,8 @@ def render_government_related_news_grid(articles: list[dict]) -> str:
     return """
       <div class="article-grid">
         <article class="info-card">
-          <h3>중앙정부 관련 뉴스 없음</h3>
-          <p>중앙정부 정책과 직접 연결되는 언론 기사가 들어오면 이 영역에 표시됩니다.</p>
+          <h3>정부 발표 뉴스 없음</h3>
+          <p>중앙정부 발표와 직접 연결되는 언론 기사가 들어오면 이 영역에 표시됩니다.</p>
         </article>
       </div>
     """
@@ -13649,8 +13737,8 @@ def render_government_policy_resource_grid(articles: list[dict]) -> str:
     return """
       <div class="article-grid">
         <article class="info-card">
-          <h3>주요 정책 자료 없음</h3>
-          <p>중앙정부 기본계획과 부처별 공식 경로를 확인하면 이 영역에 표시됩니다.</p>
+          <h3>기본·시행계획 자료 없음</h3>
+          <p>부처별 기본계획·시행계획과 공식 경로를 확인하면 이 영역에 표시됩니다.</p>
         </article>
       </div>
     """
@@ -13663,7 +13751,7 @@ def build_policies_page_compact(articles: list[dict], status: dict) -> str:
     policy_resource_articles = build_government_policy_resource_articles()
     page_intro = render_compact_intro(
         "정부 동향",
-        "중앙정부 관련 뉴스, 정부 공식 보도자료, 주요 정책·시행계획 자료를 지자체 동향처럼 구분해 봅니다.",
+        "정부 발표 뉴스, 중앙부처 홈페이지 보도자료, 각 부처별 기본·시행계획 자료를 지자체 동향처럼 구분해 봅니다.",
         media_key="policies",
         title="중앙정부 청년정책 보드",
     )
@@ -13692,8 +13780,8 @@ def build_policies_page_compact(articles: list[dict], status: dict) -> str:
     <section class="section" id="main-list">
       <div class="section-head">
         <div>
-          <h2>중앙정부 관련 뉴스</h2>
-          <p>언론 기사 중 중앙정부 부처, 국무조정실, 정책브리핑, 장관·부처 발표와 직접 연결되는 청년정책 보도를 따로 모읍니다.</p>
+          <h2>정부 발표 뉴스 모음</h2>
+          <p>언론 기사 중 중앙정부 부처, 국무조정실, 정책브리핑, 장관·부처 발표와 직접 연결되는 청년정책 보도만 모읍니다. 지자체 발표 뉴스는 지자체 동향으로 보냅니다.</p>
         </div>
         <span class="mini-link" aria-disabled="true">{len(related_news_articles)}건</span>
       </div>
@@ -13704,23 +13792,23 @@ def build_policies_page_compact(articles: list[dict], status: dict) -> str:
       <section class="section" id="government-official-releases" data-policy-section="official">
         <div class="section-head">
           <div>
-            <h2>중앙정부 공식 보도자료</h2>
-            <p>정책브리핑, 국무조정실, 19개 중앙부처 원문과 공식 자료를 표시합니다. 지자체 발표와 선거·공약성 기사는 다른 메뉴로 분리합니다.</p>
+            <h2>정부 홈페이지 보도자료</h2>
+            <p>정책브리핑, 국무조정실, 19개 중앙부처 홈페이지 원문과 공식 보도자료를 표시합니다. 지자체 발표와 선거·공약성 기사는 다른 메뉴로 분리합니다.</p>
           </div>
           <span class="mini-link" aria-disabled="true" data-policy-section-count>{len(official_policies)}건</span>
         </div>
-        <div class="article-grid">{official_cards or '<article class="info-card"><h3>정부 공식 발표 없음</h3><p>표시할 중앙정부 공식 발표가 아직 없습니다.</p></article>'}</div>
+        <div class="article-grid">{official_cards or '<article class="info-card"><h3>정부 홈페이지 보도자료 없음</h3><p>표시할 중앙정부 홈페이지 보도자료가 아직 없습니다.</p></article>'}</div>
       </section>
       <article class="info-card" data-policy-empty-state="true" hidden>
-        <h3>조건에 맞는 정부 발표가 없습니다</h3>
-        <p>부처·기관, 유형, 기간을 바꾸면 다른 정부 발표를 볼 수 있습니다.</p>
+        <h3>조건에 맞는 정부 보도자료가 없습니다</h3>
+        <p>부처·기관, 유형, 기간을 바꾸면 다른 정부 홈페이지 보도자료를 볼 수 있습니다.</p>
       </article>
     </div>
     <section class="section" id="government-policy-resources">
       <div class="section-head">
         <div>
-          <h2>주요 정책·시행계획 자료</h2>
-          <p>청년정책 기본계획·시행계획, 주요 부처별 청년정책 공식 경로와 최근 확인된 핵심 자료를 연결합니다.</p>
+          <h2>각 부처별 기본·시행계획 자료 모음</h2>
+          <p>부처별 청년정책 기본계획·시행계획, 공식 홈페이지 경로와 최근 확인된 핵심 자료를 연결합니다.</p>
         </div>
         <span class="mini-link" aria-disabled="true">{len(policy_resource_articles)}건</span>
       </div>

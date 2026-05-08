@@ -45,11 +45,11 @@ def parse_datetime(value: str | None) -> datetime | None:
         return None
     try:
         parsed = datetime.fromisoformat(value.replace("Z", "+00:00"))
-    except ValueError:
+        if parsed.tzinfo is None:
+            return parsed.replace(tzinfo=timezone.utc).astimezone()
+        return parsed.astimezone()
+    except (OSError, OverflowError, ValueError):
         return None
-    if parsed.tzinfo is None:
-        return parsed.replace(tzinfo=timezone.utc).astimezone()
-    return parsed.astimezone()
 
 
 def age_hours(value: str | None, reference: datetime | None = None) -> float | None:
@@ -159,7 +159,11 @@ def count_government_related_news_cards(web_root: Path) -> int:
     policies_path = web_root / "policies.html"
     if not policies_path.exists():
         return 0
-    return policies_path.read_text(encoding="utf-8-sig").count('data-government-related-news-card="true"')
+    html = policies_path.read_text(encoding="utf-8-sig")
+    count = html.count('data-government-announcement-news-card="true"')
+    if count:
+        return count
+    return html.count('data-government-related-news-card="true"')
 
 
 def count_government_policy_resource_cards(web_root: Path) -> int:
@@ -584,8 +588,8 @@ def build_findings(metrics: dict[str, Any], thresholds: dict[str, int] | None = 
                 "warning",
                 "publish",
                 "low_government_related_news_cards",
-                f"정부 동향의 중앙정부 관련 뉴스 카드가 {public_html.get('government_related_news_cards', 0)}건입니다.",
-                "정부 동향 페이지의 관련 뉴스 분리 조건과 중앙정부 키워드 후보를 `step3_classified.json` 기준으로 점검합니다.",
+                f"정부 동향의 정부 발표 뉴스 카드가 {public_html.get('government_related_news_cards', 0)}건입니다.",
+                "정부 동향 페이지의 발표 뉴스 분리 조건과 중앙정부 키워드 후보를 `step3_classified.json` 기준으로 점검합니다.",
             )
         )
     if public_html.get("government_policy_resource_cards", 0) < thresholds["min_government_policy_resource_cards"]:
@@ -594,8 +598,8 @@ def build_findings(metrics: dict[str, Any], thresholds: dict[str, int] | None = 
                 "warning",
                 "publish",
                 "low_government_policy_resource_cards",
-                f"정부 동향의 주요 정책 자료 카드가 {public_html.get('government_policy_resource_cards', 0)}건입니다.",
-                "정부 동향 페이지의 주요 정책·시행계획 자료 구역과 중앙부처 watchlist 렌더링을 확인합니다.",
+                f"정부 동향의 각 부처별 기본·시행계획 자료 카드가 {public_html.get('government_policy_resource_cards', 0)}건입니다.",
+                "정부 동향 페이지의 각 부처별 기본·시행계획 자료 구역과 중앙부처 watchlist 렌더링을 확인합니다.",
             )
         )
     home_government_trends = public_html.get("home_government_trends")
@@ -697,8 +701,8 @@ def render_markdown_report(report: dict[str, Any]) -> str:
         f"| selected articles | {counts.get('selected', 0)} |",
         f"| summarized articles | {counts.get('summarized', 0)} |",
         f"| news cards | {public_html.get('news_cards', 0)} |",
-        f"| government related news cards | {public_html.get('government_related_news_cards', 0)} |",
-        f"| government policy resource cards | {public_html.get('government_policy_resource_cards', 0)} |",
+        f"| government announcement news cards | {public_html.get('government_related_news_cards', 0)} |",
+        f"| government plan/resource cards | {public_html.get('government_policy_resource_cards', 0)} |",
         f"| public news candidates | {public_html.get('public_news_candidates', 0)} |",
         (
             "| public news candidates with display date | "

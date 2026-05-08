@@ -12,6 +12,7 @@ if str(SHARED_SRC) not in sys.path:
 from youth_info_platform.pipeline_feedback import (  # noqa: E402
     build_feedback_report,
     extract_home_government_trends_count,
+    parse_datetime,
     should_fail,
 )
 
@@ -118,6 +119,9 @@ class PipelineFeedbackTests(unittest.TestCase):
         )
 
         self.assertEqual(extract_home_government_trends_count(html), 51)
+
+    def test_parse_datetime_ignores_windows_out_of_range_dates(self) -> None:
+        self.assertIsNone(parse_datetime("1899-12-30T00:00:00+09:00"))
 
     def test_missing_government_related_news_warns(self) -> None:
         metrics = healthy_metrics()
