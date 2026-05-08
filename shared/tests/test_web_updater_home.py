@@ -193,7 +193,7 @@ class HomeSelectionTests(unittest.TestCase):
 
         self.assertIn("오늘 올라온 청년 기사", page_html)
         self.assertIn("가장 최근 뉴스", page_html)
-        self.assertIn("정부·지자체 동향", page_html)
+        self.assertIn("정부 동향", page_html)
         self.assertIn("지금 모집 중인 청년정책", page_html)
         self.assertNotIn("오늘 메인", page_html)
         self.assertNotIn('<span class="home-glance-label">정책</span>', page_html)
@@ -234,7 +234,7 @@ class HomeSelectionTests(unittest.TestCase):
                 "email": "hello@example.com",
             },
         )
-        government_section = page_html.split("공식 발표와 지역 움직임", 1)[1].split("요즘 많이 잡힌 주제", 1)[0]
+        government_section = page_html.split("<span>정부 동향</span>", 1)[1].split("</article>", 1)[0]
 
         self.assertIn(youth_official["title"], government_section)
         self.assertNotIn(generic_official["title"], government_section)
@@ -352,7 +352,7 @@ class HomeSelectionTests(unittest.TestCase):
         )
 
         latest_news_column = page_html.split("<span>가장 최근 뉴스</span>", 1)[1].split(
-            "<span>정부·지자체 동향</span>",
+            "<span>정부 동향</span>",
             1,
         )[0]
 
@@ -361,7 +361,6 @@ class HomeSelectionTests(unittest.TestCase):
         self.assertNotIn(noisy["title"], latest_news_column)
         self.assertNotIn(opinion["title"], latest_news_column)
         self.assertNotIn(campaign["title"], latest_news_column)
-        self.assertNotIn(official["title"], page_html)
 
     def test_home_government_local_trends_use_only_official_sources(self) -> None:
         central_press = make_article(
@@ -447,13 +446,13 @@ class HomeSelectionTests(unittest.TestCase):
             },
         )
 
-        gov_start = page_html.index("<span>정부·지자체 동향</span>")
-        gov_local_column = page_html[gov_start:page_html.index("</section>", gov_start)]
+        gov_start = page_html.index("<span>정부 동향</span>")
+        gov_local_column = page_html[gov_start:page_html.index("</article>", gov_start)]
 
-        self.assertIn("정부기관 공식 보도자료와 지자체 홈페이지 보도자료·공고 기준으로만 봅니다.", page_html)
+        self.assertIn("정부 동향 메뉴와 같은 기준으로 중앙정부 원문과 공식 발표만 봅니다.", page_html)
         self.assertIn(central_press["title"], gov_local_column)
-        self.assertIn(local_press["title"], gov_local_column)
-        self.assertIn(local_notice["title"], gov_local_column)
+        self.assertNotIn(local_press["title"], gov_local_column)
+        self.assertNotIn(local_notice["title"], gov_local_column)
         self.assertNotIn(central_policy_news["title"], gov_local_column)
         self.assertNotIn(government_hub_news["title"], gov_local_column)
         self.assertNotIn(regional_hub_news["title"], gov_local_column)
@@ -641,7 +640,8 @@ class HomeSelectionTests(unittest.TestCase):
         self.assertNotIn(local_policy["title"], policies_html)
         self.assertNotIn(pure_campaign["title"], policies_html)
         self.assertNotIn(substantive_promise["title"], policies_html)
-        self.assertIn("지자체 발표와 일반 언론 기사는 다른 메뉴로 분리합니다.", policies_html)
+        self.assertIn("중앙정부 관련 뉴스", policies_html)
+        self.assertIn("지자체 발표와 선거·공약성 기사는 다른 메뉴로 분리합니다.", policies_html)
 
         self.assertIn(local_policy["title"], plans_html)
         self.assertNotIn(official_policy["title"], plans_html)
@@ -665,10 +665,9 @@ class HomeSelectionTests(unittest.TestCase):
         self.assertEqual(len(web_updater.CENTRAL_MINISTRY_AUTHORITIES), 19)
         for authority in web_updater.CENTRAL_MINISTRY_AUTHORITIES:
             self.assertIn(f'data-policy-authority="{authority}"', page_html)
-            self.assertIn(f'data-filter-group="scope" data-filter-value="{authority}"', page_html)
 
         self.assertIn('data-policy-authority="금융위원회"', page_html)
-        self.assertIn("19개 중앙부처 원문과 공식 자료", page_html)
+        self.assertIn("청년정책 기본계획·시행계획", page_html)
 
     def test_local_government_trends_page_has_submenus_and_plan_map(self) -> None:
         local_announcement = make_article(

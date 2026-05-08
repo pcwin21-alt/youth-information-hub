@@ -10,23 +10,23 @@
   <link rel="icon" type="image/svg+xml" href="assets/branding/youth-together-mark.svg?v=20260501-sunlit-logo-1">
   <style>
   :root {
-    --page-bg: #fffaf0;
-    --app-bg: #fffef9;
+    --page-bg: #f3faf7;
+    --app-bg: #fbfefd;
     --panel: #ffffff;
-    --panel-soft: #fff3cf;
+    --panel-soft: #d9f0ea;
     --text: #263238;
     --muted: #65727a;
     --line: rgba(38, 50, 56, 0.12);
-    --accent: #e7bd52;
-    --accent-soft: rgba(255, 243, 207, 0.9);
-    --accent-strong: #735b12;
+    --accent: #006f63;
+    --accent-soft: rgba(217, 240, 234, 0.9);
+    --accent-strong: #004f47;
     --filter-accent: var(--accent-strong);
     --filter-accent-strong: var(--accent-strong);
     --filter-active-bg: var(--accent-strong);
     --filter-active-border: transparent;
-    --filter-active-stroke: #5c4318;
-    --home-apricot: #e7bd52;
-    --home-apricot-soft: rgba(231, 189, 82, 0.24);
+    --filter-active-stroke: #004f47;
+    --home-accent: #006f63;
+    --home-accent-soft: rgba(0, 111, 99, 0.18);
     --home-teal: #a8d5ba;
     --home-teal-soft: rgba(168, 213, 186, 0.22);
     --shadow: 0 18px 42px rgba(31, 42, 51, 0.08);
@@ -38,7 +38,7 @@
   body {
     margin: 0;
     color: var(--text);
-    background: linear-gradient(180deg, #fff7df 0%, var(--page-bg) 100%);
+    background: linear-gradient(180deg, #eef8f5 0%, var(--page-bg) 100%);
     font-family: "Noto Sans KR", sans-serif;
     overflow-x: hidden;
   }
@@ -1027,7 +1027,7 @@
     background: radial-gradient(circle, rgba(57, 86, 119, 0.16) 0%, rgba(57, 86, 119, 0) 74%);
   }
   .home-briefing-card.digest-organic {
-    border-color: var(--home-apricot-soft);
+    border-color: var(--home-accent-soft);
     border-radius: 34px 30px 88px 34px;
     background:
       radial-gradient(circle at top right, rgba(221, 147, 103, 0.18), transparent 30%),
@@ -1054,7 +1054,7 @@
   .home-briefing-card.footer-warm {
     padding: 0;
     gap: 0;
-    border-color: var(--home-apricot-soft);
+    border-color: var(--home-accent-soft);
     border-radius: 36px 36px 84px 44px;
     background:
       radial-gradient(circle at top right, rgba(221, 147, 103, 0.18), transparent 28%),
@@ -1184,7 +1184,7 @@
     width: 100%;
   }
   .home-glance-item.warm {
-    border-color: var(--home-apricot-soft);
+    border-color: var(--home-accent-soft);
     background:
       radial-gradient(circle at top, rgba(221, 147, 103, 0.2), transparent 44%),
       linear-gradient(180deg, rgba(251, 241, 233, 0.98) 0%, rgba(255, 255, 255, 0.99) 100%);
@@ -1257,7 +1257,7 @@
     text-decoration: none;
   }
   .home-keyword-chip:nth-child(odd) {
-    border-color: var(--home-apricot-soft);
+    border-color: var(--home-accent-soft);
     background: rgba(251, 235, 224, 0.94);
   }
   .home-keyword-strip {
@@ -1433,7 +1433,7 @@
   }
   .home-support-links a:last-child {
     background: rgba(251, 235, 224, 0.94);
-    border-color: var(--home-apricot-soft);
+    border-color: var(--home-accent-soft);
   }
   .home-support-metrics {
     display: grid;
@@ -2510,18 +2510,18 @@
 
   /* GovNews-style dashboard skin: keeps the current pages and data contract. */
   :root {
-    --page-bg: #fffaf0;
-    --app-bg: #fffef9;
+    --page-bg: #f3faf7;
+    --app-bg: #fbfefd;
     --panel: #ffffff;
-    --panel-soft: #fff3cf;
+    --panel-soft: #d9f0ea;
     --text: #263238;
     --muted: #65727a;
     --line: #e7ddc8;
-    --accent: #e7bd52;
-    --accent-soft: #fff3cf;
-    --accent-strong: #735b12;
-    --surface-container-low: #fffaf0;
-    --surface-container-high: #fff3cf;
+    --accent: #006f63;
+    --accent-soft: #d9f0ea;
+    --accent-strong: #004f47;
+    --surface-container-low: #f3faf7;
+    --surface-container-high: #d9f0ea;
     --surface-container-highest: #ebddad;
     --error: #a84a34;
     --shadow: none;
@@ -2549,7 +2549,7 @@
     margin: 0;
     padding: 0 20px;
     border-bottom: 1px solid rgba(255, 255, 255, 0.14);
-    background: #735b12;
+    background: #004f47;
     color: #ffffff;
     box-shadow: none;
     backdrop-filter: none;
@@ -2810,7 +2810,7 @@
       top: 20px;
       left: 24px;
       right: 24px;
-      color: #735b12;
+      color: #004f47;
       font-size: 0.72rem;
       font-weight: 900;
       line-height: 1.55;
@@ -2829,12 +2829,12 @@
     }
     .nav a:hover {
       background: #f4f3f8;
-      color: #735b12;
+      color: #004f47;
     }
     .nav a.active {
-      border-right-color: #e7bd52;
-      background: #fffaf0;
-      color: #735b12;
+      border-right-color: #006f63;
+      background: #f3faf7;
+      color: #004f47;
     }
     .hero {
       grid-template-columns: minmax(0, 1.35fr) minmax(300px, 0.65fr);
@@ -2899,19 +2899,19 @@
 
   /* Civic Dashboard skin: public portal chrome with top and side navigation. */
   :root {
-    --page-bg: #fffaf0;
-    --app-bg: #fffef9;
+    --page-bg: #f3faf7;
+    --app-bg: #fbfefd;
     --panel: #ffffff;
-    --panel-soft: #fff3cf;
+    --panel-soft: #d9f0ea;
     --text: #263238;
     --muted: #65727a;
     --line: #e7ddc8;
-    --accent: #e7bd52;
-    --accent-soft: #fff3cf;
-    --accent-strong: #735b12;
-    --surface: #fffef9;
-    --surface-container-low: #fffaf0;
-    --surface-container-high: #fff3cf;
+    --accent: #006f63;
+    --accent-soft: #d9f0ea;
+    --accent-strong: #004f47;
+    --surface: #fbfefd;
+    --surface-container-low: #f3faf7;
+    --surface-container-high: #d9f0ea;
     --surface-container-highest: #ebddad;
     --outline: #69757c;
     --outline-variant: #e7ddc8;
@@ -3292,11 +3292,11 @@
     pointer-events: none;
     opacity: 0.12;
     background:
-      radial-gradient(ellipse at 50% 16%, #fff3cf 0 15%, transparent 16%),
-      radial-gradient(ellipse at 84% 45%, #fff3cf 0 15%, transparent 16%),
-      radial-gradient(ellipse at 68% 86%, #fff3cf 0 15%, transparent 16%),
-      radial-gradient(ellipse at 30% 84%, #fff3cf 0 15%, transparent 16%),
-      radial-gradient(ellipse at 16% 43%, #fff3cf 0 15%, transparent 16%),
+      radial-gradient(ellipse at 50% 16%, #d9f0ea 0 15%, transparent 16%),
+      radial-gradient(ellipse at 84% 45%, #d9f0ea 0 15%, transparent 16%),
+      radial-gradient(ellipse at 68% 86%, #d9f0ea 0 15%, transparent 16%),
+      radial-gradient(ellipse at 30% 84%, #d9f0ea 0 15%, transparent 16%),
+      radial-gradient(ellipse at 16% 43%, #d9f0ea 0 15%, transparent 16%),
       radial-gradient(circle at 50% 51%, #f2c66d 0 9%, transparent 10%);
     transform: rotate(-12deg);
   }
@@ -3537,7 +3537,7 @@
   }
   .home-urgent-rank {
     border-radius: 999px;
-    background: #fff3cf;
+    background: #d9f0ea;
     color: var(--accent-strong);
     font-size: 0.92rem;
   }
@@ -3757,7 +3757,7 @@
       width: 256px;
       padding: 22px 12px 18px;
       border-right: 1px solid var(--outline-variant);
-      background: #fff3cf;
+      background: #d9f0ea;
       flex-direction: column;
       gap: 18px;
       overflow-y: auto;
@@ -4026,18 +4026,18 @@
     --text: #181818;
     --muted: #6f6962;
     --line: #dedbd5;
-    --accent: #de7700;
-    --accent-soft: #fff3df;
-    --accent-strong: #8a5f22;
+    --accent: #006f63;
+    --accent-soft: #e6f5f1;
+    --accent-strong: #004f47;
     --surface: #ffffff;
     --surface-container-low: #f5f5f3;
     --surface-container-high: #efede9;
     --surface-container-highest: #e7e2da;
     --outline: #6f6962;
     --outline-variant: #dedbd5;
-    --dashboard-dark: #292d29;
-    --dashboard-dark-line: #111513;
-    --dashboard-gold: #8b6b32;
+    --dashboard-dark: #183b36;
+    --dashboard-dark-line: #0c2521;
+    --dashboard-accent: #006f63;
     --filter-accent: #006f63;
     --filter-accent-strong: #004f47;
     --filter-active-bg: #006f63;
@@ -4484,7 +4484,7 @@
     gap: 10px;
     margin-top: auto;
     padding: 20px;
-    border: 1px solid #ded8cf;
+    border: 1px solid #cbd8d4;
     border-radius: 8px;
     background: #f4f2ef;
     color: #5f5851;
@@ -4625,7 +4625,7 @@
     font-size: clamp(2.05rem, 3vw, 3.05rem);
     line-height: 1.08;
     letter-spacing: 0;
-    text-shadow: 0 2px 0 #111513;
+    text-shadow: 0 2px 0 #0c2521;
     word-break: keep-all;
     overflow-wrap: normal;
     text-wrap: auto;
@@ -4781,7 +4781,7 @@
     min-height: 32px;
     padding: 6px 11px;
     border-radius: 999px;
-    background: #fff7e8;
+    background: #edf8f5;
     box-shadow: none;
   }
   .home-application-panel {
@@ -4791,7 +4791,7 @@
     padding: 24px;
     border: 1px solid #d2cec6;
     border-radius: 8px;
-    background: #fffefb;
+    background: #fbfefd;
   }
   .home-application-head {
     display: flex;
@@ -4851,7 +4851,7 @@
   .home-application-card:first-child {
     grid-column: 1 / -1;
     padding: 20px;
-    background: linear-gradient(135deg, #fffaf0 0%, #ffffff 48%, #f5fbf8 100%);
+    background: linear-gradient(135deg, #f3faf7 0%, #ffffff 48%, #f5fbf8 100%);
   }
   .home-application-main {
     display: grid;
@@ -4868,10 +4868,10 @@
     min-height: 26px;
     align-items: center;
     padding: 4px 9px;
-    border: 1px solid #ead7b8;
+    border: 1px solid #b8d9d2;
     border-radius: 999px;
-    background: #fff7e8;
-    color: #8b5b18;
+    background: #edf8f5;
+    color: #006f63;
     font-size: 0.74rem;
     font-weight: 900;
   }
@@ -4966,8 +4966,8 @@
   }
   .button.primary,
   .meta-pill.primary {
-    border-color: var(--dashboard-gold);
-    background: var(--dashboard-gold);
+    border-color: var(--dashboard-accent);
+    background: var(--dashboard-accent);
     color: #ffffff;
   }
   .filter-button.active {
@@ -4981,8 +4981,8 @@
     color: #ffffff;
   }
   body[data-page="index.html"] .home-briefing-card.lead .button.primary {
-    border-color: var(--dashboard-gold);
-    background: var(--dashboard-gold);
+    border-color: var(--dashboard-accent);
+    background: var(--dashboard-accent);
   }
   .hero-card,
   .status-card,
@@ -5038,8 +5038,8 @@
   .page-intro-badge,
   .eyebrow {
     border-radius: 999px;
-    background: #f6ead8;
-    color: #9c5e00;
+    background: #d9f0ea;
+    color: #006f63;
     font-size: 0.78rem;
     letter-spacing: 0;
     text-transform: uppercase;
@@ -5122,7 +5122,7 @@
     transform: translateY(-1px);
   }
   .local-menu-card span {
-    color: #9c5e00;
+    color: #006f63;
     font-size: 0.78rem;
     font-weight: 900;
   }
@@ -5147,14 +5147,14 @@
     border-radius: 8px;
     background:
       radial-gradient(circle at 60% 18%, rgba(0, 111, 99, 0.08), transparent 34%),
-      linear-gradient(180deg, #fffefb 0%, #f8f6f1 100%);
+      linear-gradient(180deg, #fbfefd 0%, #f4f7f5 100%);
   }
   .local-map-canvas {
     position: relative;
     margin: 0 auto;
     overflow: visible;
     border-radius: 8px;
-    background: #f5f1e9;
+    background: #f1f5f2;
   }
   .local-map-canvas::before {
     content: none;
@@ -5181,7 +5181,7 @@
     height: 100%;
   }
   .local-map-path {
-    fill: #fffaf0;
+    fill: #f3faf7;
     stroke: rgba(0, 111, 99, 0.68);
     stroke-width: 2.2;
     stroke-linejoin: round;
@@ -5192,10 +5192,10 @@
     fill: #d9f0ea;
   }
   .local-map-path.status-candidate {
-    fill: #f7e5b3;
+    fill: #bfe3dc;
   }
   .local-map-path.status-missing {
-    fill: #f7f3eb;
+    fill: #f1f5f2;
   }
   .local-map-hit-target {
     fill: rgba(0, 0, 0, 0);
@@ -5359,8 +5359,8 @@
     align-items: center;
     padding: 4px 9px;
     border-radius: 999px;
-    background: #f6ead8;
-    color: #8b5b18;
+    background: #d9f0ea;
+    color: #006f63;
     font-size: 0.74rem;
     font-weight: 900;
   }
@@ -5425,7 +5425,7 @@
     margin: 56px -40px -96px;
     padding: 0;
     border: 0;
-    background: #2f302e;
+    background: #183b36;
     color: #f7f6f2;
   }
   .site-footer a {
@@ -5458,7 +5458,7 @@
     white-space: nowrap;
   }
   .site-footer-links a:hover {
-    color: #ffd08a;
+    color: #9bd8cc;
   }
   .site-footer-related {
     position: relative;
@@ -5498,7 +5498,7 @@
     padding: 10px;
     border: 1px solid rgba(255, 255, 255, 0.14);
     border-radius: 8px;
-    background: #242522;
+    background: #102d28;
     box-shadow: 0 18px 40px rgba(0, 0, 0, 0.24);
   }
   .site-footer-related-list a {
@@ -5513,7 +5513,7 @@
   }
   .site-footer-related-list a:hover {
     background: rgba(255, 255, 255, 0.08);
-    color: #ffd08a;
+    color: #9bd8cc;
   }
   .site-footer-body {
     display: grid;
@@ -5540,7 +5540,7 @@
     letter-spacing: 0;
   }
   .site-footer-brand span {
-    color: #ffd08a;
+    color: #9bd8cc;
     font-size: 0.86rem;
     font-weight: 900;
     letter-spacing: 0.08em;
@@ -5587,7 +5587,7 @@
     letter-spacing: 0;
   }
   .site-footer-site-head span {
-    color: #ffd08a;
+    color: #9bd8cc;
     font-size: 0.82rem;
     font-weight: 900;
     letter-spacing: 0.08em;
@@ -5627,7 +5627,7 @@
     font-size: 0.84rem;
   }
   .site-footer-meta a {
-    color: #ffd08a;
+    color: #9bd8cc;
     font-weight: 900;
     text-decoration: underline;
     text-underline-offset: 3px;
@@ -6182,7 +6182,7 @@
     padding: 0 11px;
     border: 1px solid #dedbd5;
     border-radius: 999px;
-    background: #f8f6f1;
+    background: #f4f7f5;
     color: #5f5a54;
     font-size: 0.8rem;
     font-weight: 800;
@@ -6299,7 +6299,7 @@
     outline: 0;
   }
   .filter-region-map-path {
-    fill: #f7f3eb;
+    fill: #f1f5f2;
     stroke: rgba(0, 111, 99, 0.5);
     stroke-width: 1.55;
     stroke-linejoin: round;
@@ -6442,7 +6442,7 @@
     }
     .filter-button:hover:not(.active) {
       border-color: rgba(156, 110, 43, 0.32);
-      background: #fffaf0;
+      background: #f3faf7;
     }
     .article-card:hover,
     .feature-grid > .section-card:hover,
@@ -6673,8 +6673,8 @@
     align-items: center;
     padding: 4px 10px;
     border-radius: 999px;
-    background: #fff3df;
-    color: #9c5e00;
+    background: #e6f5f1;
+    color: #006f63;
     font-size: 0.78rem;
     font-weight: 900;
   }
@@ -6799,33 +6799,33 @@
           <path d="M10 20v-5h4v5"></path>
         </svg>
       </a>
-      
+
       <time class="live-clock topbar-clock" data-live-clock aria-label="한국시간 현재 시각">
         <span class="live-clock-kicker">한국시간</span>
         <span class="live-clock-date" data-live-clock-date>오늘</span>
         <span class="live-clock-date-short" data-live-clock-date-short>오늘</span>
         <span class="live-clock-time" data-live-clock-time>--:--</span>
       </time>
-    
+
       <a class="guide-link" href="guide.html" data-guide-open-link="true" aria-label="이용 안내">이용방법</a>
       <a class="topbar-icon topbar-top-link" href="#page-top" aria-label="맨 위로">↑</a>
     </div>
   </header>
   <div class="app-layout">
     <aside class="side-nav" aria-label="현재 페이지 위치 마커">
-      
+
       <a class="side-brand" href="index.html" aria-label="청년정책 모아봄 홈으로 이동">
         <strong>청년정책 모아봄</strong>
         <span>by YOUTHSIDE</span>
       </a>
-      
+
       <time class="live-clock side-clock" data-live-clock aria-label="한국시간 현재 시각">
         <span class="live-clock-kicker">한국시간</span>
         <span class="live-clock-date" data-live-clock-date>오늘</span>
         <span class="live-clock-date-short" data-live-clock-date-short>오늘</span>
         <span class="live-clock-time" data-live-clock-time>--:--</span>
       </time>
-    
+
       <div class="side-menu-section">
         <span class="side-nav-kicker">주요 메뉴</span>
         <nav class="side-nav-links" aria-label="주요 메뉴">
@@ -6884,11 +6884,11 @@
       <div class="side-utility-section">
         <button class="side-admin-entry" type="button" data-admin-login-open="true" title="임시 관리자 표시 모드 열기"><span data-admin-entry-label>관리 로그인</span><em>임시</em></button>
       </div>
-    
+
     </aside>
     <div class="shell" id="page-top">
-    
-    
+
+
     <article class="page-intro-card has-media" data-media-host="page-intro">
       <div class="page-intro-content">
         <div class="page-intro-top">
@@ -6899,7 +6899,7 @@
       </div>
       <div class="page-intro-media"><img class="page-intro-media-img" src="assets/illustrations/intro-contact.svg" alt="문의와 전달을 나타내는 편지와 말풍선 모티프 일러스트" decoding="async" loading="lazy" onerror="const host=this.closest('[data-media-host]');if(host){host.classList.remove('has-media');}this.parentElement.remove();"></div>
     </article>
-    
+
     <section class="section" id="main-list">
       <article class="list-card">
         <h3>기본 연락 정보</h3>
@@ -6908,15 +6908,15 @@
       </article>
     </section>
     <section class="section">
-      
+
     <section class="list-card">
       <h3>보내기 전에 함께 적어주면 좋은 내용</h3>
       <p>문의 유형에 맞는 기본 정보를 함께 적어주면 답변과 검토가 더 빨라집니다.</p>
       <div class="list"><div class="list-item"><strong>문의·오류</strong><span>문제가 발생한 페이지, 상황, 기대한 동작</span></div><div class="list-item"><strong>제보·협업</strong><span>관련 링크, 왜 중요한지, 함께 하고 싶은 방식</span></div><div class="list-item"><strong>검토 요청</strong><span>문서 상태, 중점 검토 범위, 필요한 기한</span></div></div>
     </section>
-    
+
     </section>
-    
+
     <section class="section">
       <div class="section-head">
         <div>
@@ -6926,7 +6926,7 @@
       </div>
       <div class="list"><div class="list-item"><strong>안내 1</strong><span>궁금한 점이나 제안할 내용이 있다면 언제든 편하게 보내주세요.</span></div><div class="list-item"><strong>안내 2</strong><span>문의, 제보, 협업 제안은 연락 페이지에서 확인할 수 있습니다.</span></div></div>
     </section>
-    
+
     <section class="section">
       <div class="section-head">
         <div>
@@ -6935,60 +6935,60 @@
         </div>
       </div>
       <div class="feature-grid">
-        
+
     <article class="section-card">
       <div class="article-meta">운영</div>
       <h3>운영 문의</h3>
       <p>사이트 운영 정책, 기능 문의, 사용성 피드백을 받습니다.</p>
       <a class="mini-link" href="#ops">바로 가기</a>
     </article>
-    
-        
+
+
     <article class="section-card">
       <div class="article-meta">협업</div>
       <h3>제보 · 협업</h3>
       <p>유용한 소스, 지역 활동, 정책 제안 협업을 제보받습니다.</p>
       <a class="mini-link" href="#collab">바로 가기</a>
     </article>
-    
-        
+
+
     <article class="section-card">
       <div class="article-meta">검토</div>
       <h3>검토 요청</h3>
       <p>정책제안서 초안 검토 요청 내용을 정리해 둘 수 있습니다.</p>
       <a class="mini-link" href="#review">바로 가기</a>
     </article>
-    
+
       </div>
     </section>
     <section class="section" id="ops">
-      
+
     <section class="list-card">
       <h3>운영 문의</h3>
       <p>서비스 이용 중 불편함이나 오류를 알려주세요.</p>
       <div class="list"><div class="list-item"><strong>오류 제보</strong><span>문제가 발생한 페이지와 상황</span></div><div class="list-item"><strong>사용성 제안</strong><span>화면 구성이나 정보 정렬 관련 제안</span></div><div class="list-item"><strong>운영 문의</strong><span>서비스 이용과 운영 기준 관련 문의</span></div></div>
     </section>
-    
+
     </section>
     <section class="section" id="collab">
-      
+
     <section class="list-card">
       <h3>제보 · 협업</h3>
       <p>유용한 소스와 활동 소식, 협업 제안을 받습니다.</p>
       <div class="list"><div class="list-item"><strong>소스 제보</strong><span>청년 관련 기사와 자료 출처</span></div><div class="list-item"><strong>활동 소식</strong><span>지역 활동, 거버넌스, 행사 소식</span></div><div class="list-item"><strong>협업 제안</strong><span>함께 만들거나 검토할 수 있는 제안</span></div></div>
     </section>
-    
+
     </section>
     <section class="section" id="review">
-      
+
     <section class="list-card">
       <h3>검토 요청</h3>
       <p>정책제안서나 실무 문서의 검토 요청 내용을 정리할 수 있습니다.</p>
       <div class="list"><div class="list-item"><strong>문서 상태</strong><span>초안인지 수정본인지 표시</span></div><div class="list-item"><strong>검토 범위</strong><span>무엇을 중점적으로 봐야 하는지 정리</span></div><div class="list-item"><strong>기한 안내</strong><span>언제까지 검토가 필요한지 표시</span></div></div>
     </section>
-    
+
     </section>
-    
+
     <footer class="site-footer" id="site-footer" aria-label="운영 안내">
       <div class="site-footer-top">
         <nav class="site-footer-links" aria-label="운영 기준 바로가기">
@@ -7003,20 +7003,20 @@
         </details>
       </div>
       <div class="site-footer-body has-brand-image">
-        
+
         <div class="site-footer-brand-image" aria-label="유스사이드 브랜드 이미지">
           <div class="site-footer-brand-image-frame">
             <img src="assets/branding/youthside_logo_youth-group_compass_u-s-accent_horizontal_4x.png?v=20260501-sunlit-logo-1" alt="유스사이드 로고" loading="lazy" decoding="async">
           </div>
         </div>
-    
+
         <div class="site-footer-info">
-          
+
           <div class="site-footer-site-head">
             <strong>청년정책 모아봄</strong>
             <span>by YOUTHSIDE</span>
           </div>
-    
+
           <div class="site-footer-info-list">
             <p><strong>운영 목적 :</strong><span>청년정책 활동가, 관련 업무 종사자, 그리고 모든 청년을 위한 정책 정보 안내 서비스입니다.</span></p>
             <p><strong>정보 기준 :</strong><span>공개 기사와 정부·지자체 발표를 수집·분류해 정책 흐름과 신청 정보를 한 화면에서 확인할 수 있도록 정리합니다.</span></p>
@@ -7064,8 +7064,8 @@
           <path d="M14 9h2.5"></path>
           <path d="M14 12h2.5"></path>
         </svg></span><span>연구·문헌</span></a></nav>
-  
-  
+
+
   <div class="admin-login-overlay" data-admin-login-overlay hidden>
     <section class="admin-login-dialog" role="dialog" aria-modal="true" aria-labelledby="admin-login-title">
       <div class="admin-login-head">
@@ -7089,7 +7089,7 @@
       </form>
     </section>
   </div>
-    
+
   <script>
 (() => {
   function setFeedback(card, message, isError) {

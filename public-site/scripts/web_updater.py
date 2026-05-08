@@ -1,4 +1,4 @@
-﻿from __future__ import annotations
+from __future__ import annotations
 
 import argparse
 from datetime import datetime, timedelta
@@ -573,12 +573,14 @@ HOME_CENTRAL_OFFICIAL_ANNOUNCEMENT_KEYWORDS = (
     "알림",
     "고시",
     "입법예고",
+    "발표",
     "press-release",
     "press_release",
     "report",
 )
 
 HOME_GOVERNMENT_TREND_YOUTH_KEYWORDS = (
+    "youth",
     "청년",
     "청년층",
     "청년세대",
@@ -918,23 +920,23 @@ LOCAL_YOUTH_PLAN_STATIC_LINKS = {
 
 BASE_CSS = """
   :root {
-    --page-bg: #fffaf0;
-    --app-bg: #fffef9;
+    --page-bg: #f3faf7;
+    --app-bg: #fbfefd;
     --panel: #ffffff;
-    --panel-soft: #fff3cf;
+    --panel-soft: #d9f0ea;
     --text: #263238;
     --muted: #65727a;
     --line: rgba(38, 50, 56, 0.12);
-    --accent: #e7bd52;
-    --accent-soft: rgba(255, 243, 207, 0.9);
-    --accent-strong: #735b12;
+    --accent: #006f63;
+    --accent-soft: rgba(217, 240, 234, 0.9);
+    --accent-strong: #004f47;
     --filter-accent: var(--accent-strong);
     --filter-accent-strong: var(--accent-strong);
     --filter-active-bg: var(--accent-strong);
     --filter-active-border: transparent;
-    --filter-active-stroke: #5c4318;
-    --home-apricot: #e7bd52;
-    --home-apricot-soft: rgba(231, 189, 82, 0.24);
+    --filter-active-stroke: #004f47;
+    --home-accent: #006f63;
+    --home-accent-soft: rgba(0, 111, 99, 0.18);
     --home-teal: #a8d5ba;
     --home-teal-soft: rgba(168, 213, 186, 0.22);
     --shadow: 0 18px 42px rgba(31, 42, 51, 0.08);
@@ -946,7 +948,7 @@ BASE_CSS = """
   body {
     margin: 0;
     color: var(--text);
-    background: linear-gradient(180deg, #fff7df 0%, var(--page-bg) 100%);
+    background: linear-gradient(180deg, #eef8f5 0%, var(--page-bg) 100%);
     font-family: "Noto Sans KR", sans-serif;
     overflow-x: hidden;
   }
@@ -1935,7 +1937,7 @@ BASE_CSS = """
     background: radial-gradient(circle, rgba(57, 86, 119, 0.16) 0%, rgba(57, 86, 119, 0) 74%);
   }
   .home-briefing-card.digest-organic {
-    border-color: var(--home-apricot-soft);
+    border-color: var(--home-accent-soft);
     border-radius: 34px 30px 88px 34px;
     background:
       radial-gradient(circle at top right, rgba(221, 147, 103, 0.18), transparent 30%),
@@ -1962,7 +1964,7 @@ BASE_CSS = """
   .home-briefing-card.footer-warm {
     padding: 0;
     gap: 0;
-    border-color: var(--home-apricot-soft);
+    border-color: var(--home-accent-soft);
     border-radius: 36px 36px 84px 44px;
     background:
       radial-gradient(circle at top right, rgba(221, 147, 103, 0.18), transparent 28%),
@@ -2092,7 +2094,7 @@ BASE_CSS = """
     width: 100%;
   }
   .home-glance-item.warm {
-    border-color: var(--home-apricot-soft);
+    border-color: var(--home-accent-soft);
     background:
       radial-gradient(circle at top, rgba(221, 147, 103, 0.2), transparent 44%),
       linear-gradient(180deg, rgba(251, 241, 233, 0.98) 0%, rgba(255, 255, 255, 0.99) 100%);
@@ -2165,7 +2167,7 @@ BASE_CSS = """
     text-decoration: none;
   }
   .home-keyword-chip:nth-child(odd) {
-    border-color: var(--home-apricot-soft);
+    border-color: var(--home-accent-soft);
     background: rgba(251, 235, 224, 0.94);
   }
   .home-keyword-strip {
@@ -2341,7 +2343,7 @@ BASE_CSS = """
   }
   .home-support-links a:last-child {
     background: rgba(251, 235, 224, 0.94);
-    border-color: var(--home-apricot-soft);
+    border-color: var(--home-accent-soft);
   }
   .home-support-metrics {
     display: grid;
@@ -3418,18 +3420,18 @@ BASE_CSS = """
 
   /* GovNews-style dashboard skin: keeps the current pages and data contract. */
   :root {
-    --page-bg: #fffaf0;
-    --app-bg: #fffef9;
+    --page-bg: #f3faf7;
+    --app-bg: #fbfefd;
     --panel: #ffffff;
-    --panel-soft: #fff3cf;
+    --panel-soft: #d9f0ea;
     --text: #263238;
     --muted: #65727a;
     --line: #e7ddc8;
-    --accent: #e7bd52;
-    --accent-soft: #fff3cf;
-    --accent-strong: #735b12;
-    --surface-container-low: #fffaf0;
-    --surface-container-high: #fff3cf;
+    --accent: #006f63;
+    --accent-soft: #d9f0ea;
+    --accent-strong: #004f47;
+    --surface-container-low: #f3faf7;
+    --surface-container-high: #d9f0ea;
     --surface-container-highest: #ebddad;
     --error: #a84a34;
     --shadow: none;
@@ -3457,7 +3459,7 @@ BASE_CSS = """
     margin: 0;
     padding: 0 20px;
     border-bottom: 1px solid rgba(255, 255, 255, 0.14);
-    background: #735b12;
+    background: #004f47;
     color: #ffffff;
     box-shadow: none;
     backdrop-filter: none;
@@ -3718,7 +3720,7 @@ BASE_CSS = """
       top: 20px;
       left: 24px;
       right: 24px;
-      color: #735b12;
+      color: #004f47;
       font-size: 0.72rem;
       font-weight: 900;
       line-height: 1.55;
@@ -3737,12 +3739,12 @@ BASE_CSS = """
     }
     .nav a:hover {
       background: #f4f3f8;
-      color: #735b12;
+      color: #004f47;
     }
     .nav a.active {
-      border-right-color: #e7bd52;
-      background: #fffaf0;
-      color: #735b12;
+      border-right-color: #006f63;
+      background: #f3faf7;
+      color: #004f47;
     }
     .hero {
       grid-template-columns: minmax(0, 1.35fr) minmax(300px, 0.65fr);
@@ -3807,19 +3809,19 @@ BASE_CSS = """
 
   /* Civic Dashboard skin: public portal chrome with top and side navigation. */
   :root {
-    --page-bg: #fffaf0;
-    --app-bg: #fffef9;
+    --page-bg: #f3faf7;
+    --app-bg: #fbfefd;
     --panel: #ffffff;
-    --panel-soft: #fff3cf;
+    --panel-soft: #d9f0ea;
     --text: #263238;
     --muted: #65727a;
     --line: #e7ddc8;
-    --accent: #e7bd52;
-    --accent-soft: #fff3cf;
-    --accent-strong: #735b12;
-    --surface: #fffef9;
-    --surface-container-low: #fffaf0;
-    --surface-container-high: #fff3cf;
+    --accent: #006f63;
+    --accent-soft: #d9f0ea;
+    --accent-strong: #004f47;
+    --surface: #fbfefd;
+    --surface-container-low: #f3faf7;
+    --surface-container-high: #d9f0ea;
     --surface-container-highest: #ebddad;
     --outline: #69757c;
     --outline-variant: #e7ddc8;
@@ -4200,11 +4202,11 @@ BASE_CSS = """
     pointer-events: none;
     opacity: 0.12;
     background:
-      radial-gradient(ellipse at 50% 16%, #fff3cf 0 15%, transparent 16%),
-      radial-gradient(ellipse at 84% 45%, #fff3cf 0 15%, transparent 16%),
-      radial-gradient(ellipse at 68% 86%, #fff3cf 0 15%, transparent 16%),
-      radial-gradient(ellipse at 30% 84%, #fff3cf 0 15%, transparent 16%),
-      radial-gradient(ellipse at 16% 43%, #fff3cf 0 15%, transparent 16%),
+      radial-gradient(ellipse at 50% 16%, #d9f0ea 0 15%, transparent 16%),
+      radial-gradient(ellipse at 84% 45%, #d9f0ea 0 15%, transparent 16%),
+      radial-gradient(ellipse at 68% 86%, #d9f0ea 0 15%, transparent 16%),
+      radial-gradient(ellipse at 30% 84%, #d9f0ea 0 15%, transparent 16%),
+      radial-gradient(ellipse at 16% 43%, #d9f0ea 0 15%, transparent 16%),
       radial-gradient(circle at 50% 51%, #f2c66d 0 9%, transparent 10%);
     transform: rotate(-12deg);
   }
@@ -4445,7 +4447,7 @@ BASE_CSS = """
   }
   .home-urgent-rank {
     border-radius: 999px;
-    background: #fff3cf;
+    background: #d9f0ea;
     color: var(--accent-strong);
     font-size: 0.92rem;
   }
@@ -4665,7 +4667,7 @@ BASE_CSS = """
       width: 256px;
       padding: 22px 12px 18px;
       border-right: 1px solid var(--outline-variant);
-      background: #fff3cf;
+      background: #d9f0ea;
       flex-direction: column;
       gap: 18px;
       overflow-y: auto;
@@ -4937,18 +4939,18 @@ DASHBOARD_TONE_CSS = """
     --text: #181818;
     --muted: #6f6962;
     --line: #dedbd5;
-    --accent: #de7700;
-    --accent-soft: #fff3df;
-    --accent-strong: #8a5f22;
+    --accent: #006f63;
+    --accent-soft: #e6f5f1;
+    --accent-strong: #004f47;
     --surface: #ffffff;
     --surface-container-low: #f5f5f3;
     --surface-container-high: #efede9;
     --surface-container-highest: #e7e2da;
     --outline: #6f6962;
     --outline-variant: #dedbd5;
-    --dashboard-dark: #292d29;
-    --dashboard-dark-line: #111513;
-    --dashboard-gold: #8b6b32;
+    --dashboard-dark: #183b36;
+    --dashboard-dark-line: #0c2521;
+    --dashboard-accent: #006f63;
     --filter-accent: #006f63;
     --filter-accent-strong: #004f47;
     --filter-active-bg: #006f63;
@@ -5395,7 +5397,7 @@ DASHBOARD_TONE_CSS = """
     gap: 10px;
     margin-top: auto;
     padding: 20px;
-    border: 1px solid #ded8cf;
+    border: 1px solid #cbd8d4;
     border-radius: 8px;
     background: #f4f2ef;
     color: #5f5851;
@@ -5536,7 +5538,7 @@ DASHBOARD_TONE_CSS = """
     font-size: clamp(2.05rem, 3vw, 3.05rem);
     line-height: 1.08;
     letter-spacing: 0;
-    text-shadow: 0 2px 0 #111513;
+    text-shadow: 0 2px 0 #0c2521;
     word-break: keep-all;
     overflow-wrap: normal;
     text-wrap: auto;
@@ -5692,7 +5694,7 @@ DASHBOARD_TONE_CSS = """
     min-height: 32px;
     padding: 6px 11px;
     border-radius: 999px;
-    background: #fff7e8;
+    background: #edf8f5;
     box-shadow: none;
   }
   .home-application-panel {
@@ -5702,7 +5704,7 @@ DASHBOARD_TONE_CSS = """
     padding: 24px;
     border: 1px solid #d2cec6;
     border-radius: 8px;
-    background: #fffefb;
+    background: #fbfefd;
   }
   .home-application-head {
     display: flex;
@@ -5762,7 +5764,7 @@ DASHBOARD_TONE_CSS = """
   .home-application-card:first-child {
     grid-column: 1 / -1;
     padding: 20px;
-    background: linear-gradient(135deg, #fffaf0 0%, #ffffff 48%, #f5fbf8 100%);
+    background: linear-gradient(135deg, #f3faf7 0%, #ffffff 48%, #f5fbf8 100%);
   }
   .home-application-main {
     display: grid;
@@ -5779,10 +5781,10 @@ DASHBOARD_TONE_CSS = """
     min-height: 26px;
     align-items: center;
     padding: 4px 9px;
-    border: 1px solid #ead7b8;
+    border: 1px solid #b8d9d2;
     border-radius: 999px;
-    background: #fff7e8;
-    color: #8b5b18;
+    background: #edf8f5;
+    color: #006f63;
     font-size: 0.74rem;
     font-weight: 900;
   }
@@ -5877,8 +5879,8 @@ DASHBOARD_TONE_CSS = """
   }
   .button.primary,
   .meta-pill.primary {
-    border-color: var(--dashboard-gold);
-    background: var(--dashboard-gold);
+    border-color: var(--dashboard-accent);
+    background: var(--dashboard-accent);
     color: #ffffff;
   }
   .filter-button.active {
@@ -5892,8 +5894,8 @@ DASHBOARD_TONE_CSS = """
     color: #ffffff;
   }
   body[data-page="index.html"] .home-briefing-card.lead .button.primary {
-    border-color: var(--dashboard-gold);
-    background: var(--dashboard-gold);
+    border-color: var(--dashboard-accent);
+    background: var(--dashboard-accent);
   }
   .hero-card,
   .status-card,
@@ -5949,8 +5951,8 @@ DASHBOARD_TONE_CSS = """
   .page-intro-badge,
   .eyebrow {
     border-radius: 999px;
-    background: #f6ead8;
-    color: #9c5e00;
+    background: #d9f0ea;
+    color: #006f63;
     font-size: 0.78rem;
     letter-spacing: 0;
     text-transform: uppercase;
@@ -6033,7 +6035,7 @@ DASHBOARD_TONE_CSS = """
     transform: translateY(-1px);
   }
   .local-menu-card span {
-    color: #9c5e00;
+    color: #006f63;
     font-size: 0.78rem;
     font-weight: 900;
   }
@@ -6058,14 +6060,14 @@ DASHBOARD_TONE_CSS = """
     border-radius: 8px;
     background:
       radial-gradient(circle at 60% 18%, rgba(0, 111, 99, 0.08), transparent 34%),
-      linear-gradient(180deg, #fffefb 0%, #f8f6f1 100%);
+      linear-gradient(180deg, #fbfefd 0%, #f4f7f5 100%);
   }
   .local-map-canvas {
     position: relative;
     margin: 0 auto;
     overflow: visible;
     border-radius: 8px;
-    background: #f5f1e9;
+    background: #f1f5f2;
   }
   .local-map-canvas::before {
     content: none;
@@ -6092,7 +6094,7 @@ DASHBOARD_TONE_CSS = """
     height: 100%;
   }
   .local-map-path {
-    fill: #fffaf0;
+    fill: #f3faf7;
     stroke: rgba(0, 111, 99, 0.68);
     stroke-width: 2.2;
     stroke-linejoin: round;
@@ -6103,10 +6105,10 @@ DASHBOARD_TONE_CSS = """
     fill: #d9f0ea;
   }
   .local-map-path.status-candidate {
-    fill: #f7e5b3;
+    fill: #bfe3dc;
   }
   .local-map-path.status-missing {
-    fill: #f7f3eb;
+    fill: #f1f5f2;
   }
   .local-map-hit-target {
     fill: rgba(0, 0, 0, 0);
@@ -6270,8 +6272,8 @@ DASHBOARD_TONE_CSS = """
     align-items: center;
     padding: 4px 9px;
     border-radius: 999px;
-    background: #f6ead8;
-    color: #8b5b18;
+    background: #d9f0ea;
+    color: #006f63;
     font-size: 0.74rem;
     font-weight: 900;
   }
@@ -6336,7 +6338,7 @@ DASHBOARD_TONE_CSS = """
     margin: 56px -40px -96px;
     padding: 0;
     border: 0;
-    background: #2f302e;
+    background: #183b36;
     color: #f7f6f2;
   }
   .site-footer a {
@@ -6369,7 +6371,7 @@ DASHBOARD_TONE_CSS = """
     white-space: nowrap;
   }
   .site-footer-links a:hover {
-    color: #ffd08a;
+    color: #9bd8cc;
   }
   .site-footer-related {
     position: relative;
@@ -6409,7 +6411,7 @@ DASHBOARD_TONE_CSS = """
     padding: 10px;
     border: 1px solid rgba(255, 255, 255, 0.14);
     border-radius: 8px;
-    background: #242522;
+    background: #102d28;
     box-shadow: 0 18px 40px rgba(0, 0, 0, 0.24);
   }
   .site-footer-related-list a {
@@ -6424,7 +6426,7 @@ DASHBOARD_TONE_CSS = """
   }
   .site-footer-related-list a:hover {
     background: rgba(255, 255, 255, 0.08);
-    color: #ffd08a;
+    color: #9bd8cc;
   }
   .site-footer-body {
     display: grid;
@@ -6451,7 +6453,7 @@ DASHBOARD_TONE_CSS = """
     letter-spacing: 0;
   }
   .site-footer-brand span {
-    color: #ffd08a;
+    color: #9bd8cc;
     font-size: 0.86rem;
     font-weight: 900;
     letter-spacing: 0.08em;
@@ -6498,7 +6500,7 @@ DASHBOARD_TONE_CSS = """
     letter-spacing: 0;
   }
   .site-footer-site-head span {
-    color: #ffd08a;
+    color: #9bd8cc;
     font-size: 0.82rem;
     font-weight: 900;
     letter-spacing: 0.08em;
@@ -6538,7 +6540,7 @@ DASHBOARD_TONE_CSS = """
     font-size: 0.84rem;
   }
   .site-footer-meta a {
-    color: #ffd08a;
+    color: #9bd8cc;
     font-weight: 900;
     text-decoration: underline;
     text-underline-offset: 3px;
@@ -7093,7 +7095,7 @@ DASHBOARD_TONE_CSS = """
     padding: 0 11px;
     border: 1px solid #dedbd5;
     border-radius: 999px;
-    background: #f8f6f1;
+    background: #f4f7f5;
     color: #5f5a54;
     font-size: 0.8rem;
     font-weight: 800;
@@ -7210,7 +7212,7 @@ DASHBOARD_TONE_CSS = """
     outline: 0;
   }
   .filter-region-map-path {
-    fill: #f7f3eb;
+    fill: #f1f5f2;
     stroke: rgba(0, 111, 99, 0.5);
     stroke-width: 1.55;
     stroke-linejoin: round;
@@ -7353,7 +7355,7 @@ DASHBOARD_TONE_CSS = """
     }
     .filter-button:hover:not(.active) {
       border-color: rgba(156, 110, 43, 0.32);
-      background: #fffaf0;
+      background: #f3faf7;
     }
     .article-card:hover,
     .feature-grid > .section-card:hover,
@@ -7584,8 +7586,8 @@ DASHBOARD_TONE_CSS = """
     align-items: center;
     padding: 4px 10px;
     border-radius: 999px;
-    background: #fff3df;
-    color: #9c5e00;
+    background: #e6f5f1;
+    color: #006f63;
     font-size: 0.78rem;
     font-weight: 900;
   }
@@ -9888,6 +9890,27 @@ def parse_iso_datetime(value: str | None) -> datetime | None:
         return None
 
 
+ARTICLE_EXPOSURE_DATE_FIELDS = (
+    "publisher_published_at",
+    "published_date",
+    "portal_published_at",
+)
+
+
+def article_exposure_datetime(article: dict) -> datetime | None:
+    for field in ARTICLE_EXPOSURE_DATE_FIELDS:
+        value = article.get(field)
+        parsed = parse_iso_datetime(str(value) if value else None)
+        if parsed:
+            return parsed
+    return None
+
+
+def article_exposure_timestamp(article: dict) -> float:
+    parsed = article_exposure_datetime(article)
+    return parsed.timestamp() if parsed else 0.0
+
+
 def format_display_datetime(value: str | None) -> str:
     parsed = parse_iso_datetime(value)
     if not parsed:
@@ -9953,7 +9976,8 @@ def display_article_title(article: dict, limit: int = 96) -> str:
 
 
 def article_date_value(article: dict) -> str:
-    return ((article.get("published_date", "") or "")[:10]).strip()
+    parsed = article_exposure_datetime(article)
+    return parsed.strftime("%Y-%m-%d") if parsed else ""
 
 
 def article_topic_tags(article: dict, limit: int = 2) -> list[str]:
@@ -10736,6 +10760,10 @@ def with_government_trend_badges(article: dict) -> dict:
     return with_display_badges(article, "정부 공식 발표")
 
 
+def with_government_related_news_badges(article: dict) -> dict:
+    return with_display_badges(article, "중앙정부 관련 뉴스")
+
+
 def with_local_trend_badges(article: dict) -> dict:
     if is_local_official_source(article):
         return with_display_badges(article, "지자체 공식 발표")
@@ -11144,11 +11172,9 @@ def render_header_meta(active_page: str, status: dict) -> str:
 def article_sort_key(article: dict) -> tuple[int, float]:
     editorial_decision = str(article.get("editorial_decision") or "").strip().lower()
     is_highlighted = bool(article.get("editorial_is_highlighted"))
-    parsed = parse_iso_datetime(article.get("published_date"))
-    timestamp = parsed.timestamp() if parsed else 0.0
     return (
         2 if is_highlighted else 1 if editorial_decision == "include" else 0,
-        timestamp,
+        article_exposure_timestamp(article),
     )
 
 
@@ -11188,7 +11214,7 @@ def filter_recent_articles(
 ) -> list[dict]:
     reference_dt = parse_iso_datetime(reference_time)
     if reference_dt is None:
-        parsed_dates = [parse_iso_datetime(article.get("published_date")) for article in articles]
+        parsed_dates = [article_exposure_datetime(article) for article in articles]
         parsed_dates = [value for value in parsed_dates if value is not None]
         reference_dt = max(parsed_dates) if parsed_dates else None
     if reference_dt is None:
@@ -11197,7 +11223,7 @@ def filter_recent_articles(
     threshold = reference_dt - timedelta(hours=max_age_hours)
     filtered: list[dict] = []
     for article in articles:
-        published_dt = parse_iso_datetime(article.get("published_date"))
+        published_dt = article_exposure_datetime(article)
         if published_dt is None:
             continue
         if published_dt >= threshold:
@@ -11207,15 +11233,17 @@ def filter_recent_articles(
 
 def latest_article_timestamp(articles: list[dict], fallback: str) -> str:
     sorted_articles = sort_articles_by_recency(articles)
-    if sorted_articles and sorted_articles[0].get("published_date"):
-        return sorted_articles[0]["published_date"]
+    if sorted_articles:
+        published_dt = article_exposure_datetime(sorted_articles[0])
+        if published_dt:
+            return published_dt.isoformat()
     return fallback
 
 
 def count_articles_on_reference_day(articles: list[dict], reference_time: str | None) -> int:
     reference_dt = parse_iso_datetime(reference_time)
     if reference_dt is None:
-        parsed_dates = [parse_iso_datetime(article.get("published_date")) for article in articles]
+        parsed_dates = [article_exposure_datetime(article) for article in articles]
         parsed_dates = [value for value in parsed_dates if value is not None]
         reference_dt = max(parsed_dates) if parsed_dates else None
     if reference_dt is None:
@@ -11224,7 +11252,7 @@ def count_articles_on_reference_day(articles: list[dict], reference_time: str | 
     seen_keys: set[str] = set()
     total = 0
     for article in articles:
-        published_dt = parse_iso_datetime(article.get("published_date"))
+        published_dt = article_exposure_datetime(article)
         if published_dt is None:
             continue
         if reference_dt.tzinfo is not None and published_dt.tzinfo is not None:
@@ -11245,10 +11273,10 @@ def latest_reference_articles(articles: list[dict], limit: int = 5) -> list[dict
     sorted_articles = sort_articles_by_recency(articles)
     if not sorted_articles:
         return []
-    latest_day = (sorted_articles[0].get("published_date") or "")[:10]
+    latest_day = article_date_value(sorted_articles[0])
     if latest_day:
         same_day_articles = [
-            article for article in sorted_articles if (article.get("published_date") or "")[:10] == latest_day
+            article for article in sorted_articles if article_date_value(article) == latest_day
         ]
         if same_day_articles:
             return same_day_articles[:limit]
@@ -11360,7 +11388,7 @@ def build_home_update_briefing(
             added_articles = [
                 article
                 for article in recent_news_articles
-                if (published_dt := parse_iso_datetime(article.get("published_date"))) is not None and published_dt > reference_dt
+                if (published_dt := article_exposure_datetime(article)) is not None and published_dt > reference_dt
             ]
         else:
             added_articles = []
@@ -11611,7 +11639,7 @@ def home_topic_category_href(topic: str) -> str:
 def articles_on_reference_day(articles: list[dict], reference_time: str | None) -> list[dict]:
     reference_dt = parse_iso_datetime(reference_time)
     if reference_dt is None:
-        parsed_dates = [parse_iso_datetime(article.get("published_date")) for article in articles]
+        parsed_dates = [article_exposure_datetime(article) for article in articles]
         parsed_dates = [value for value in parsed_dates if value is not None]
         reference_dt = max(parsed_dates) if parsed_dates else None
     if reference_dt is None:
@@ -11620,7 +11648,7 @@ def articles_on_reference_day(articles: list[dict], reference_time: str | None) 
     day_articles: list[dict] = []
     seen_keys: set[str] = set()
     for article in articles:
-        published_dt = parse_iso_datetime(article.get("published_date"))
+        published_dt = article_exposure_datetime(article)
         if published_dt is None:
             continue
         if reference_dt.tzinfo is not None and published_dt.tzinfo is not None:
@@ -11717,7 +11745,7 @@ def home_campaign_political(article: dict) -> bool:
 def home_article_age_hours(article: dict, reference_dt: datetime | None) -> float:
     if reference_dt is None:
         return 10_000.0
-    published_dt = parse_iso_datetime(article.get("published_date"))
+    published_dt = article_exposure_datetime(article)
     if published_dt is None:
         return 10_000.0
     delta = reference_dt - published_dt
@@ -11954,7 +11982,7 @@ def is_home_latest_news_candidate(article: dict) -> bool:
 
 
 def home_latest_news_sort_key(article: dict) -> tuple[int, float]:
-    published_dt = parse_iso_datetime(article.get("published_date"))
+    published_dt = article_exposure_datetime(article)
     if published_dt is None:
         return (0, 0.0)
     return (1, published_dt.timestamp())
@@ -12163,8 +12191,8 @@ def summarize_menu_items(articles: list[dict], fallback_items: list[tuple[str, s
     items: list[tuple[str, str]] = []
     for article in sorted_articles[:limit]:
         meta_bits = [article.get("source", "")]
-        if article.get("published_date"):
-            meta_bits.append(article["published_date"][:10])
+        if article_date := article_date_value(article):
+            meta_bits.append(article_date)
         if article.get("categories"):
             meta_bits.append(article["categories"][0])
         items.append((display_article_title(article, limit=84), " · ".join(bit for bit in meta_bits if bit)))
@@ -12179,7 +12207,7 @@ def hub_representative_sort_key(article: dict) -> tuple[int, int, int, int, int,
     has_publisher_url = 0 if article.get("publisher_url") else 1
     owner_label = normalize_inline_text(article.get("hub_owner_label"))
     owner_match = 0 if owner_label and owner_label in source_text else 1
-    parsed_published = parse_iso_datetime(article.get("published_date"))
+    parsed_published = article_exposure_datetime(article)
     timestamp = -int(parsed_published.timestamp()) if parsed_published else 0
     return (
         is_official,
@@ -12218,7 +12246,7 @@ def hub_event_coarse_key(article: dict) -> str:
                 region_key,
                 (article.get("hub_topics") or [""])[0],
                 (article.get("governance_activity_types") or [""])[0],
-                (article.get("published_date", "") or "")[:10],
+                article_date_value(article),
             ]
             if value
         )
@@ -12273,7 +12301,7 @@ def build_hub_menu_items(classified_articles: list[dict]) -> list[tuple[str, str
                     bit
                     for bit in [
                         government_articles[0].get("source", ""),
-                        government_articles[0].get("published_date", "")[:10],
+                        article_date_value(government_articles[0]),
                     ]
                     if bit
                 ),
@@ -12290,7 +12318,7 @@ def build_hub_menu_items(classified_articles: list[dict]) -> list[tuple[str, str
                     bit
                     for bit in [
                         regional_articles[0].get("source", ""),
-                        regional_articles[0].get("published_date", "")[:10],
+                        article_date_value(regional_articles[0]),
                     ]
                     if bit
                 ),
@@ -12307,7 +12335,7 @@ def build_hub_menu_items(classified_articles: list[dict]) -> list[tuple[str, str
                     bit
                     for bit in [
                         public_articles[0].get("source", ""),
-                        public_articles[0].get("published_date", "")[:10],
+                        article_date_value(public_articles[0]),
                     ]
                     if bit
                 ),
@@ -12958,25 +12986,11 @@ def build_home_page(
         latest_home_news_candidates,
         highlighted_article,
     )
-    policy_articles = filter_recent_articles(
-        [
-            article
-            for article in all_articles
-            if article.get("is_official_source") or normalize_inline_text(article.get("source_kind")) == "official"
-        ],
-        page_updated_at,
-        PUBLIC_ARCHIVE_WINDOW_HOURS,
-    )
-    official_policy_articles = [article for article in policy_articles if is_home_central_official_announcement(article)]
-    local_official_announcement_articles = filter_recent_articles(
-        [article for article in all_articles if is_home_local_official_announcement(article)],
-        page_updated_at,
-        PUBLIC_ARCHIVE_WINDOW_HOURS,
-    )
+    government_trend_articles = build_government_trend_articles(all_articles, page_updated_at)
     home_topic_categories = build_home_topic_categories(latest_home_news_candidates, page_updated_at)
     home_date_label = format_home_date_label(page_updated_at)
     home_time_label = format_home_time_label(page_updated_at)
-    lead_message = "청년정책 흐름이 조금 더 선명해지도록, 꼭 봐야 할 뉴스와 정부·지자체 정책 흐름을 한곳에 모았습니다."
+    lead_message = "청년정책 흐름이 조금 더 선명해지도록, 꼭 봐야 할 뉴스와 중앙정부 공식 발표를 한곳에 모았습니다."
     home_category_links = "".join(
         f'<a class="home-keyword-chip" href="{html.escape(home_topic_category_href(topic))}">#{html.escape(topic)}</a>'
         for topic, _ in home_topic_categories
@@ -13017,25 +13031,19 @@ def build_home_page(
         '<div class="home-urgent-text"><strong>최근 올라온 청년 뉴스가 아직 없습니다.</strong>'
         '<span class="home-urgent-meta">새 청년 뉴스가 들어오면 이 영역이 먼저 채워집니다.</span></div></div></article>'
     )
-    gov_local_trend_articles = sort_articles_by_recency(
-        merge_home_candidate_articles(
-            official_policy_articles,
-            local_official_announcement_articles,
-        )
-    )
     policy_briefing_html = "".join(
         render_home_news_item(index, article)
-        for index, article in enumerate(gov_local_trend_articles[:HOME_DAILY_LIMIT], start=1)
+        for index, article in enumerate(government_trend_articles[:HOME_DAILY_LIMIT], start=1)
     ) or (
         '<article class="home-urgent-item"><div class="home-urgent-link"><span class="home-urgent-rank">00</span>'
-        '<div class="home-urgent-text"><strong>확인할 정부·지자체 동향이 아직 없습니다.</strong>'
-        '<span class="home-urgent-meta">공식 보도자료나 지자체 공고가 들어오면 이 영역이 먼저 채워집니다.</span></div></div></article>'
+        '<div class="home-urgent-text"><strong>확인할 정부 동향이 아직 없습니다.</strong>'
+        '<span class="home-urgent-meta">중앙정부 공식 보도자료가 들어오면 이 영역이 먼저 채워집니다.</span></div></div></article>'
     )
     overview_stats_html = "".join(
         f'<article class="{card_class}"><span class="home-glance-label">{label}</span><strong class="home-glance-value">{value}</strong></article>'
         for card_class, label, value in [
             ("home-glance-item neutral", "가장 최근 뉴스", f"{latest_home_news_total}건"),
-            ("home-glance-item teal", "정부·지자체 동향", f"{len(gov_local_trend_articles)}건"),
+            ("home-glance-item teal", "정부 동향", f"{len(government_trend_articles)}건"),
         ]
     )
     def render_home_highlight_card(article: dict | None) -> str:
@@ -13119,11 +13127,11 @@ def build_home_page(
             <article class="home-overview-column">
               <div class="home-overview-column-head">
                 <div>
-                  <span>정부·지자체 동향</span>
-                  <h3>공식 발표와 지역 움직임</h3>
+                  <span>정부 동향</span>
+                  <h3>중앙정부 공식 발표</h3>
                 </div>
               </div>
-              <p class="home-briefing-panel-note">정부기관 공식 보도자료와 지자체 홈페이지 보도자료·공고 기준으로만 봅니다.</p>
+              <p class="home-briefing-panel-note">정부 동향 메뉴와 같은 기준으로 중앙정부 원문과 공식 발표만 봅니다.</p>
               <div class="home-urgent-list">{policy_briefing_html}</div>
             </article>
           </div>
@@ -13435,27 +13443,229 @@ def build_policies_page(articles: list[dict], status: dict) -> str:
     """
 
 
-def build_policies_page_compact(articles: list[dict], status: dict) -> str:
-    page_updated_at = status.get("finished_at") or status.get("updated_at") or ""
+def build_government_official_release_articles(articles: list[dict], reference_time: str | None) -> list[dict]:
     recent_articles = filter_recent_articles(
         sort_articles_by_recency(articles),
-        page_updated_at,
+        reference_time,
         PUBLIC_ARCHIVE_WINDOW_HOURS,
     )
-    official_policies = [
+    return [
         with_government_trend_badges(article)
         for article in recent_articles
-        if is_central_government_announcement(article)
+        if is_home_central_official_announcement(article)
     ]
-    official_policies = [
+
+
+def build_government_policy_resource_articles() -> list[dict]:
+    return [
+        with_display_badges(article, "주요 정책 자료")
+        for article in build_curated_major_policy_articles()
+    ]
+
+
+def build_government_trend_articles(articles: list[dict], reference_time: str | None) -> list[dict]:
+    official_policies = build_government_official_release_articles(articles, reference_time)
+    return [
         with_government_trend_badges(article)
         for article in add_major_policy_watchlist_articles(official_policies)
     ]
+
+
+CENTRAL_GOVERNMENT_RELATED_NEWS_PROMINENT_KEYWORDS = (
+    "정부",
+    "중앙정부",
+    "국무총리",
+    "국무조정실",
+    "정책브리핑",
+    "부처",
+    "장관",
+    "차관",
+    "국방장관",
+    "금융위원장",
+)
+
+
+def central_government_related_news_prominent_text(article: dict) -> str:
+    return normalize_inline_text(
+        " ".join(
+            str(value or "")
+            for value in [
+                article.get("title"),
+                article.get("lead_text"),
+                article.get("summary"),
+                article.get("source"),
+                article.get("source_name"),
+                " ".join(article.get("issue_tags") or []),
+                " ".join(article.get("topic_tags") or []),
+            ]
+        )
+    )
+
+
+def central_government_related_news_full_text(article: dict) -> str:
+    body = normalize_inline_text(article.get("body_text"))[:1600]
+    return normalize_inline_text(
+        " ".join(
+            value
+            for value in [
+                central_government_related_news_prominent_text(article),
+                body,
+            ]
+            if value
+        )
+    )
+
+
+def has_central_government_related_news_signal(article: dict) -> bool:
+    prominent_text = central_government_related_news_prominent_text(article)
+    if has_prominent_central_government_related_news_signal(article):
+        return True
+
+    full_text = central_government_related_news_full_text(article)
+    return any(authority in full_text for authority in MAJOR_CENTRAL_POLICY_AUTHORITIES)
+
+
+def has_prominent_central_government_related_news_signal(article: dict) -> bool:
+    prominent_text = central_government_related_news_prominent_text(article)
+    return any(keyword in prominent_text for keyword in CENTRAL_GOVERNMENT_RELATED_NEWS_PROMINENT_KEYWORDS) or any(
+        authority in prominent_text for authority in MAJOR_CENTRAL_POLICY_AUTHORITIES
+    )
+
+
+def is_central_government_related_news_article(article: dict) -> bool:
+    source_kind = normalize_inline_text(article.get("source_kind"))
+    if source_kind == "official" or article.get("is_official_source"):
+        return False
+    if (
+        is_election_promise_article(article)
+        or home_campaign_political(article)
+        or article.get("campaign_political")
+        or article.get("substantive_promise")
+    ):
+        return False
+    if article.get("is_noise") or article.get("article_type") == "opinion":
+        return False
+    if is_local_government_announcement(article) or home_is_regional_roundup_article(article):
+        return False
+    if has_local_government_actor_signal(article) and not has_prominent_central_government_related_news_signal(article):
+        return False
+    return has_central_government_related_news_signal(article)
+
+
+def government_related_news_key(article: dict) -> str:
+    title = clean_article_title(article.get("title"))
+    title = re.sub(r"^\[[^\]]+\]\s*", "", title).strip()
+    return normalize_inline_text(title).lower() or article_identity_key(article)
+
+
+def deduplicate_government_related_news_articles(articles: list[dict]) -> list[dict]:
+    deduped: list[dict] = []
+    seen_identity_keys: set[str] = set()
+    seen_title_keys: set[str] = set()
+    for article in sort_articles_by_recency(articles):
+        identity_key = article_identity_key(article)
+        title_key = government_related_news_key(article)
+        if identity_key in seen_identity_keys or title_key in seen_title_keys:
+            continue
+        seen_identity_keys.add(identity_key)
+        seen_title_keys.add(title_key)
+        deduped.append(article)
+    return deduped
+
+
+def build_government_related_news_articles(articles: list[dict], reference_time: str | None) -> list[dict]:
+    recent_articles = filter_recent_articles(
+        sort_articles_by_recency(articles),
+        reference_time,
+        PUBLIC_ARCHIVE_WINDOW_HOURS,
+    )
+    related_news = [
+        with_government_related_news_badges(article)
+        for article in recent_articles
+        if is_central_government_related_news_article(article)
+    ]
+    return deduplicate_government_related_news_articles(related_news)
+
+
+def render_government_menu_nav() -> str:
+    items = [
+        ("#main-list", "01", "중앙정부 관련 뉴스", "언론 기사 중 중앙정부와 청년정책이 함께 핵심인 기사만 봅니다."),
+        ("#government-official-releases", "02", "중앙정부 공식 보도자료", "정책브리핑, 국무조정실, 중앙부처 원문과 공식 발표를 봅니다."),
+        ("#government-policy-resources", "03", "주요 정책·시행계획 자료", "청년정책 기본계획, 시행계획, 부처별 공식 경로를 연결합니다."),
+    ]
+    cards = "".join(
+        f"""
+        <a class="local-menu-card" href="{href}">
+          <span>{html.escape(order)}</span>
+          <strong>{html.escape(title)}</strong>
+          <small>{html.escape(description)}</small>
+        </a>
+        """
+        for href, order, title, description in items
+    )
+    return f"""
+    <section class="section" id="government-menu">
+      <div class="local-menu-nav">{cards}</div>
+    </section>
+    """
+
+
+def render_government_related_news_grid(articles: list[dict]) -> str:
+    cards = "".join(
+        render_article_card(
+            article,
+            {
+                "data-government-related-news-card": "true",
+            },
+        )
+        for article in articles
+    )
+    if cards:
+        return f'<div class="article-grid">{cards}</div>'
+    return """
+      <div class="article-grid">
+        <article class="info-card">
+          <h3>중앙정부 관련 뉴스 없음</h3>
+          <p>중앙정부 정책과 직접 연결되는 언론 기사가 들어오면 이 영역에 표시됩니다.</p>
+        </article>
+      </div>
+    """
+
+
+def render_government_policy_resource_grid(articles: list[dict]) -> str:
+    cards = "".join(
+        render_article_card(
+            article,
+            {
+                "data-government-policy-resource-card": "true",
+                "data-policy-authority": policy_authority_label(article),
+                "data-policy-type": policy_type_label(article),
+            },
+        )
+        for article in articles
+    )
+    if cards:
+        return f'<div class="article-grid">{cards}</div>'
+    return """
+      <div class="article-grid">
+        <article class="info-card">
+          <h3>주요 정책 자료 없음</h3>
+          <p>중앙정부 기본계획과 부처별 공식 경로를 확인하면 이 영역에 표시됩니다.</p>
+        </article>
+      </div>
+    """
+
+
+def build_policies_page_compact(articles: list[dict], status: dict) -> str:
+    page_updated_at = status.get("finished_at") or status.get("updated_at") or ""
+    official_policies = build_government_official_release_articles(articles, page_updated_at)
+    related_news_articles = build_government_related_news_articles(articles, page_updated_at)
+    policy_resource_articles = build_government_policy_resource_articles()
     page_intro = render_compact_intro(
         "정부 동향",
-        "중앙정부와 정부 부처가 공식으로 발표한 청년 정책 자료만 모읍니다. 지자체 발표와 일반 언론 기사는 다른 메뉴로 분리합니다.",
+        "중앙정부 관련 뉴스, 정부 공식 보도자료, 주요 정책·시행계획 자료를 지자체 동향처럼 구분해 봅니다.",
         media_key="policies",
-        title="정부 공식 발표",
+        title="중앙정부 청년정책 보드",
     )
     official_cards = "".join(
         render_article_card(
@@ -13477,14 +13687,25 @@ def build_policies_page_compact(articles: list[dict], status: dict) -> str:
         search_placeholder="정부 발표 제목, 요약, 부처 검색",
     )
     return f"""
+    {page_intro}
+    {render_government_menu_nav()}
+    <section class="section" id="main-list">
+      <div class="section-head">
+        <div>
+          <h2>중앙정부 관련 뉴스</h2>
+          <p>언론 기사 중 중앙정부 부처, 국무조정실, 정책브리핑, 장관·부처 발표와 직접 연결되는 청년정책 보도를 따로 모읍니다.</p>
+        </div>
+        <span class="mini-link" aria-disabled="true">{len(related_news_articles)}건</span>
+      </div>
+      {render_government_related_news_grid(related_news_articles)}
+    </section>
     <div data-policy-filter-root="policies" data-policy-scope-mode="authority-region" data-default-policy-group="official" data-default-policy-region="all" data-default-policy-scope="all" data-default-policy-type="all" data-default-date-start="" data-default-date-end="" data-default-search-query="">
-      {page_intro}
       {policy_filter_panel}
-      <section class="section" id="main-list" data-policy-section="official">
+      <section class="section" id="government-official-releases" data-policy-section="official">
         <div class="section-head">
           <div>
-            <h2>중앙정부 공식 발표</h2>
-            <p>정책브리핑, 국무조정실, 19개 중앙부처 원문과 공식 자료를 표시합니다.</p>
+            <h2>중앙정부 공식 보도자료</h2>
+            <p>정책브리핑, 국무조정실, 19개 중앙부처 원문과 공식 자료를 표시합니다. 지자체 발표와 선거·공약성 기사는 다른 메뉴로 분리합니다.</p>
           </div>
           <span class="mini-link" aria-disabled="true" data-policy-section-count>{len(official_policies)}건</span>
         </div>
@@ -13495,6 +13716,16 @@ def build_policies_page_compact(articles: list[dict], status: dict) -> str:
         <p>부처·기관, 유형, 기간을 바꾸면 다른 정부 발표를 볼 수 있습니다.</p>
       </article>
     </div>
+    <section class="section" id="government-policy-resources">
+      <div class="section-head">
+        <div>
+          <h2>주요 정책·시행계획 자료</h2>
+          <p>청년정책 기본계획·시행계획, 주요 부처별 청년정책 공식 경로와 최근 확인된 핵심 자료를 연결합니다.</p>
+        </div>
+        <span class="mini-link" aria-disabled="true">{len(policy_resource_articles)}건</span>
+      </div>
+      {render_government_policy_resource_grid(policy_resource_articles)}
+    </section>
     """
 
 
@@ -14420,6 +14651,10 @@ def build_footer_note(contact_settings: dict[str, str]) -> str:
     """
 
 
+def normalize_generated_html(value: str) -> str:
+    return "\n".join(line.rstrip() for line in value.splitlines()) + "\n"
+
+
 def write_page(
     path: Path,
     page_title: str,
@@ -14429,26 +14664,28 @@ def write_page(
     contact_settings: dict[str, str],
 ) -> None:
     path.write_text(
-        PAGE_TEMPLATE.format(
-            page_title=html.escape(page_title),
-            active_page=html.escape(active_page),
-            styles=BASE_CSS + DASHBOARD_TONE_CSS,
-            brand_mark_src=html.escape(BRAND_MARK_SRC),
-            script=build_page_script(),
-            page_heading=html.escape(page_heading(active_page)),
-            top_nav=render_top_nav(active_page),
-            live_clock_topbar=render_live_clock("topbar"),
-            side_nav=render_side_nav(active_page),
-            global_search=render_global_search(),
-            guide_link=render_guide_link(active_page),
-            header_meta=render_header_meta(active_page, status),
-            admin_entry=render_admin_entry(),
-            bottom_nav=render_bottom_nav(active_page),
-            bottom_nav_count=len(NAV_ITEMS),
-            guide_overlay=render_guide_overlay(active_page),
-            admin_login_overlay=render_admin_login_overlay(),
-            footer_note=build_footer_note(contact_settings),
-            content=content,
+        normalize_generated_html(
+            PAGE_TEMPLATE.format(
+                page_title=html.escape(page_title),
+                active_page=html.escape(active_page),
+                styles=BASE_CSS + DASHBOARD_TONE_CSS,
+                brand_mark_src=html.escape(BRAND_MARK_SRC),
+                script=build_page_script(),
+                page_heading=html.escape(page_heading(active_page)),
+                top_nav=render_top_nav(active_page),
+                live_clock_topbar=render_live_clock("topbar"),
+                side_nav=render_side_nav(active_page),
+                global_search=render_global_search(),
+                guide_link=render_guide_link(active_page),
+                header_meta=render_header_meta(active_page, status),
+                admin_entry=render_admin_entry(),
+                bottom_nav=render_bottom_nav(active_page),
+                bottom_nav_count=len(NAV_ITEMS),
+                guide_overlay=render_guide_overlay(active_page),
+                admin_login_overlay=render_admin_login_overlay(),
+                footer_note=build_footer_note(contact_settings),
+                content=content,
+            )
         ),
         encoding="utf-8",
     )

@@ -203,15 +203,17 @@ python public-site\scripts\web_updater.py
 주요 노출 기준:
 
 - 홈 최신 뉴스: 공식 소스 제외, 선거·공약 제외, noise/opinion 제외.
-- 홈 정부·지자체 동향: 공식 중앙 발표 또는 지자체 공식 발표 중 청년·주거·고용 등 직접 신호가 있는 항목.
-- 정책/정부 동향 페이지: 중앙정부 원문 중심.
+- 홈 정부 동향: `정부 동향` 페이지의 중앙정부 공식 발표·주요 정책 자료 후보를 사용한다. 지자체 발표는 홈의 정부 영역에 섞지 않는다.
+- 정책/정부 동향 페이지: `중앙정부 관련 뉴스`, `중앙정부 공식 보도자료`, `주요 정책·시행계획 자료` 세 구역으로 분리한다.
 - 지자체 동향 페이지: 지자체 공식 보도자료, 공고, 기본·시행계획 우선.
 - 뉴스 페이지: 언론 기사 중심, 공식 발표는 별도 메뉴로 보낸다.
 
 노하우:
 
 - 홈 리스트가 적을 때는 `HOME_DAILY_LIMIT`부터 보지 않는다. 먼저 후보 풀 수를 본다.
-- 후보 풀은 `is_home_central_official_announcement`, `is_home_local_official_announcement`, `published_date`, URL identity의 합작이다.
+- 홈 정부 동향 후보 풀은 `build_government_trend_articles`를 통해 중앙정부 공식 발표와 주요 정책 자료를 함께 보강한다. 날짜는 표시용 fallback 기준과 URL identity를 함께 확인한다.
+- 중앙정부 관련 뉴스 후보 풀은 `build_government_related_news_articles`를 통해 `정부 동향` 첫 구역으로 렌더한다. 공식 보도자료와 섞지 않는다.
+- 주요 정책·시행계획 자료는 `build_government_policy_resource_articles`의 중앙부처 watchlist로 렌더한다.
 - `public-site/web/`는 Pages prebuilt 배포의 원본이다. `public-site/dist/`는 패키징 산출물이다.
 
 ## 8. 피드백 점검
@@ -229,7 +231,7 @@ python public-site\scripts\pipeline_feedback.py
 
 역할:
 
-- 수집량, 필터 생존량, 최종 송출량, 날짜 오류, source health, 공개 HTML, 홈 정부·지자체 동향 후보 수를 한 번에 점검한다.
+- 수집량, 필터 생존량, 최종 송출량, 날짜 오류, source health, 공개 HTML, 홈 정부 동향 후보 수, 정부 동향 내부 구역 카드 수를 한 번에 점검한다.
 - `critical`은 배치를 실패시킬 수 있는 문제다.
 - `warning`은 송출은 가능하지만 다음 운영 정비 backlog로 올릴 문제다.
 - `info`는 참고 신호다.
@@ -282,6 +284,13 @@ python public-site\scripts\pipeline_feedback.py
 
 - 수집량 문제와 노출량 문제를 분리한다.
 - 공식/지자체 자료는 원문 상세 URL identity를 보존한다.
-- 날짜가 없는 자료는 최근성 UI에서 빠질 수 있으므로 수집 parser 단계에서 날짜를 최대한 확보한다.
+- 날짜가 없는 자료는 최근성 UI에서 빠질 수 있으므로 수집 parser 단계에서 날짜를 최대한 확보한다. 공개 웹은 표시용 날짜를 `publisher_published_at -> published_date -> portal_published_at` 순서로 보완한다.
 - warning은 무시하지 않고 다음 parser/source 개선 backlog로 보낸다.
 - critical은 배치 실패로 보고, 사이트를 조용히 잘못 갱신하지 않는다.
+
+## 11. 공개 기사 날짜 fallback 기준
+
+- 공개 웹의 기사 노출, 정렬, 최근성 필터는 `publisher_published_at -> published_date -> portal_published_at` 순서로 표시용 날짜를 잡는다.
+- `published_date`는 원문 발행일 의미를 유지한다. Google News처럼 원문 발행일을 확정하지 못하고 포털 수집 시각만 있는 기사는 `portal_published_at`으로 공개 페이지에 노출한다.
+- “최근 기사 40개만 잡힘”처럼 보이면 수집량부터 의심하지 말고 `pipeline_status.json`의 collected/filtered 수와 `pipeline_feedback_report.md`의 `news cards`, `public news candidates with display date`, `public news fallback-date candidates`를 먼저 비교한다.
+- `news_cards_below_candidate_pool` warning은 공개 후보는 충분한데 `news.html` 카드가 후보 풀의 기준 비율보다 적다는 뜻이다. 이때는 `web_updater.py`의 날짜 fallback, 뉴스/선거/정책 메뉴 분리 조건, `step3_classified.json`의 공개 후보를 함께 확인한다.

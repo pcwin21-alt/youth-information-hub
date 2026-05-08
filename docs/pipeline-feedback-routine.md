@@ -55,7 +55,7 @@ Critical:
 - 날짜 감사 error 발생
 - 공개 HTML 누락
 - 뉴스 카드 부족
-- 홈 정부·지자체 동향 후보 부족
+- 홈 정부 동향 후보 부족
 - 브랜드 문구 누락
 - 공식 소스 필터 통과 항목 0건
 
@@ -117,7 +117,9 @@ python public-site\scripts\verify_site_artifacts.py --min-articles 1 --min-news-
 - RuntimeError source가 반복되는지
 - 공식 source의 filtered_items가 특정 기관에만 몰리는지
 - 지자체 수집 지역이 늘고 있는지
-- 홈 정부·지자체 동향 후보가 충분한지
+- 홈 정부 동향 후보가 충분한지
+- 정부 동향의 중앙정부 관련 뉴스 카드가 0건인지
+- 정부 동향의 주요 정책·시행계획 자료 카드가 빠졌는지
 - 날짜 warning이 같은 parser에서 반복되는지
 
 ## 자가복구 정책
@@ -204,21 +206,79 @@ python public-site\scripts\run_curator.py
 
 의미:
 
-- 홈의 정부·지자체 동향 후보가 부족하다.
+- 홈의 정부 동향 후보가 부족하다.
 
 확인:
 
-- `is_home_central_official_announcement`
-- `is_home_local_official_announcement`
-- `published_date`
+- `build_government_trend_articles`
+- `is_central_government_announcement`
+- `published_date`, `publisher_published_at`, `portal_published_at`
 - `canonical_url`/`publisher_url`이 상세 identity를 잃었는지
-- 지자체 source가 날짜를 못 뽑고 있는지
+- `policies.html`의 정부 공식 발표 후보와 홈 카운트가 맞는지
 
 조치:
 
 - 공식 보도자료 상세 URL 보존
-- 지자체 parser에서 날짜 추출 강화
-- 홈 노출 조건은 완화보다 먼저 후보 품질을 확인
+- 홈 정부 영역은 `정부 동향` 페이지 후보 생성 기준을 공유한다.
+- 지자체 공식 발표는 `지자체 동향` 또는 `신청 정책` 영역에서 다룬다.
+
+### low_government_related_news_cards
+
+의미:
+
+- `정부 동향` 안의 `중앙정부 관련 뉴스` 구역에 표시되는 언론 기사 카드가 부족하다.
+- 공식 보도자료 수집 문제와 별개로, 언론 기사 후보 분리 조건이 너무 좁거나 중앙정부 키워드가 누락됐을 수 있다.
+
+확인:
+
+- `build_government_related_news_articles`
+- `is_central_government_related_news_article`
+- 중앙정부 부처명, 국무조정실, 정책브리핑, 장관·부처 발표 키워드가 제목·요약·리드에서 잡히는지
+- 지자체·선거·공약성 기사 제외 조건이 관련 뉴스까지 과하게 막고 있지 않은지
+
+조치:
+
+- 중앙정부 관련 뉴스는 공식 발표와 섞지 말고 정부 동향의 첫 구역(`#main-list`)에 둔다.
+- 후보가 0건이면 `step3_classified.json`의 비공식 뉴스 중 중앙정부 키워드 후보를 먼저 샘플링한다.
+
+### low_government_policy_resource_cards
+
+의미:
+
+- `정부 동향` 안의 `주요 정책·시행계획 자료` 구역에 표시되는 중앙부처 공식 경로 카드가 부족하다.
+- 정부 동향 메뉴가 지자체 동향처럼 3갈래로 보이지 않거나, 중앙부처 watchlist 렌더링이 빠졌을 수 있다.
+
+확인:
+
+- `build_government_policy_resource_articles`
+- `build_curated_major_policy_articles`
+- `CENTRAL_MINISTRY_AUTHORITIES`
+- `data-government-policy-resource-card="true"` 카드가 `policies.html`에 출력되는지
+
+조치:
+
+- 주요 정책·시행계획 자료는 공식 보도자료와 섞지 말고 `government-policy-resources` 구역에 둔다.
+- 카드가 0건이면 중앙부처 watchlist와 렌더링 속성 누락을 먼저 확인한다.
+
+### news_cards_below_candidate_pool
+
+의미:
+
+- 공개 후보와 표시용 날짜가 충분한데 `news.html` 카드 수가 후보 풀의 기준 비율보다 낮다.
+- 수집량 부족이 아니라 공개 HTML 노출 조건, 날짜 fallback, 메뉴 분리 조건에서 후보가 빠졌을 가능성이 높다.
+
+확인:
+
+- `pipeline_feedback_report.md`의 `news cards`, `public news candidates with display date`, `public news fallback-date candidates`
+- `step3_classified.json`에서 `published_date`는 없지만 `portal_published_at`이나 `publisher_published_at`이 있는 기사 수
+- `web_updater.py`의 표시용 날짜 순서: `publisher_published_at -> published_date -> portal_published_at`
+- 뉴스/선거/정책 메뉴 분리 조건 때문에 `news.html`에서 제외된 후보가 있는지
+
+조치:
+
+- Google News처럼 원문 발행일이 비어 있는 기사는 `portal_published_at`을 공개 노출 날짜로 사용한다.
+- `published_date` 자체를 포털 시각으로 덮어쓰지 않는다. 원문 발행일 의미는 유지하고, 공개 웹에서만 fallback을 적용한다.
+- 카드 수가 40건처럼 낮아 보이면 `pipeline_status.json`의 collected/filtered 수와 후보 풀 지표를 먼저 비교한다.
 
 ### local_source_errors
 

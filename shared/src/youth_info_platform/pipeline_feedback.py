@@ -6,6 +6,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
+from .curation import is_public_interest_article
 from .io_utils import read_json
 
 
@@ -16,6 +17,9 @@ DEFAULT_THRESHOLDS: dict[str, int] = {
     "min_classified_articles": 20,
     "min_summarized_articles": 1,
     "min_news_cards": 1,
+    "min_government_related_news_cards": 1,
+    "min_government_policy_resource_cards": 10,
+    "min_news_card_candidate_ratio_pct": 50,
     "min_home_government_trends": 3,
     "max_status_age_hours": 36,
     "max_source_health_age_hours": 168,
@@ -65,11 +69,104 @@ def load_json_list(path: Path) -> list[dict[str, Any]]:
     return []
 
 
+ARTICLE_EXPOSURE_DATE_FIELDS = (
+    "publisher_published_at",
+    "published_date",
+    "portal_published_at",
+)
+
+
+def has_article_exposure_date(article: dict[str, Any]) -> bool:
+    return any(
+        parse_datetime(str(article.get(field)))
+        for field in ARTICLE_EXPOSURE_DATE_FIELDS
+        if article.get(field)
+    )
+
+
+def is_public_candidate(article: dict[str, Any]) -> bool:
+    editorial_decision = str(article.get("editorial_decision") or "").strip().lower()
+    if editorial_decision == "exclude":
+        return False
+    if article.get("editorial_is_highlighted") or editorial_decision == "include":
+        return True
+    return is_public_interest_article(article)
+
+
+NEWS_PAGE_ELECTION_KEYWORDS = (
+    "\uc120\uac70",
+    "\ud6c4\ubcf4",
+    "\uc608\ube44\ud6c4\ubcf4",
+    "\uc720\uc138",
+    "\uacf5\ucc9c",
+    "\uc9c0\uc9c0\uc790",
+    "\ub2e8\uc77c\ud654",
+    "\ucd9c\ub9c8",
+    "\uacbd\uc120",
+    "\uc815\ub2f9",
+    "\uad6d\ubbfc\uc758\ud798",
+    "\ub354\ubd88\uc5b4\ubbfc\uc8fc\ub2f9",
+    "\ubbfc\uc8fc\ub2f9",
+    "\uac1c\ud601\uc2e0\ub2f9",
+    "\uc870\uad6d\ud601\uc2e0\ub2f9",
+    "\uc9c4\ubcf4\ub2f9",
+    "\uacf5\uc57d",
+)
+
+
+def news_page_candidate_text(article: dict[str, Any]) -> str:
+    return " ".join(
+        str(article.get(field) or "")
+        for field in ("title", "summary", "lead_text", "section")
+    )
+
+
+def is_news_page_candidate(article: dict[str, Any]) -> bool:
+    if article.get("is_official_source"):
+        return False
+    text = news_page_candidate_text(article)
+    return not any(keyword in text for keyword in NEWS_PAGE_ELECTION_KEYWORDS)
+
+
+def public_news_candidate_metrics(articles: list[dict[str, Any]]) -> dict[str, int]:
+    public_news = [
+        article
+        for article in articles
+        if is_public_candidate(article) and is_news_page_candidate(article)
+    ]
+    with_exposure_date = [article for article in public_news if has_article_exposure_date(article)]
+    fallback_only = [
+        article
+        for article in with_exposure_date
+        if not article.get("published_date")
+        and (article.get("publisher_published_at") or article.get("portal_published_at"))
+    ]
+    return {
+        "public_news_candidates": len(public_news),
+        "public_news_display_date_candidates": len(with_exposure_date),
+        "public_news_fallback_date_candidates": len(fallback_only),
+    }
+
+
 def count_news_cards(web_root: Path) -> int:
     news_path = web_root / "news.html"
     if not news_path.exists():
         return 0
     return news_path.read_text(encoding="utf-8-sig").count('data-article-card="true"')
+
+
+def count_government_related_news_cards(web_root: Path) -> int:
+    policies_path = web_root / "policies.html"
+    if not policies_path.exists():
+        return 0
+    return policies_path.read_text(encoding="utf-8-sig").count('data-government-related-news-card="true"')
+
+
+def count_government_policy_resource_cards(web_root: Path) -> int:
+    policies_path = web_root / "policies.html"
+    if not policies_path.exists():
+        return 0
+    return policies_path.read_text(encoding="utf-8-sig").count('data-government-policy-resource-card="true"')
 
 
 def read_text_if_exists(path: Path) -> str:
@@ -87,6 +184,14 @@ def extract_home_glance_count(index_html: str, label: str) -> int | None:
     if not match:
         return None
     return int(match.group("count").replace(",", ""))
+
+
+def extract_home_government_trends_count(index_html: str) -> int | None:
+    for label in ("정부 동향", "정부·지자체 동향"):
+        count = extract_home_glance_count(index_html, label)
+        if count is not None:
+            return count
+    return None
 
 
 def normalize_source_kind(entry: dict[str, Any]) -> str:
@@ -149,6 +254,7 @@ def build_metrics(
 ) -> dict[str, Any]:
     reference = reference or now_aware()
     artifact_counts: dict[str, int] = {}
+    classified_articles: list[dict[str, Any]] = []
     missing_artifacts: list[str] = []
     for label, file_name in PIPELINE_FILES.items():
         path = pipeline_root / file_name
@@ -156,7 +262,10 @@ def build_metrics(
             missing_artifacts.append(file_name)
             artifact_counts[label] = 0
         else:
-            artifact_counts[label] = len(load_json_list(path))
+            items = load_json_list(path)
+            artifact_counts[label] = len(items)
+            if label == "classified":
+                classified_articles = items
     missing_control_files = [file_name for file_name in CONTROL_FILES if not (pipeline_root / file_name).exists()]
 
     status = read_json(pipeline_root / "pipeline_status.json", default={}) or {}
@@ -186,7 +295,10 @@ def build_metrics(
         "public_html": {
             "missing_files": missing_html,
             "news_cards": count_news_cards(web_root),
-            "home_government_trends": extract_home_glance_count(index_html, "정부·지자체 동향"),
+            "government_related_news_cards": count_government_related_news_cards(web_root),
+            "government_policy_resource_cards": count_government_policy_resource_cards(web_root),
+            **public_news_candidate_metrics(classified_articles),
+            "home_government_trends": extract_home_government_trends_count(index_html),
             "home_latest_news": extract_home_glance_count(index_html, "가장 최근 뉴스"),
             "brand_ok": "청년정책 모아봄" in index_html,
         },
@@ -436,6 +548,48 @@ def build_findings(metrics: dict[str, Any], thresholds: dict[str, int] | None = 
                 "`news.html` 생성 기준과 `step3_classified.json` 공개 후보를 비교합니다.",
             )
         )
+    display_date_candidates = int(public_html.get("public_news_display_date_candidates") or 0)
+    news_cards = int(public_html.get("news_cards") or 0)
+    min_ratio_pct = thresholds["min_news_card_candidate_ratio_pct"]
+    if (
+        display_date_candidates >= thresholds["min_news_cards"]
+        and news_cards * 100 < display_date_candidates * min_ratio_pct
+    ):
+        findings.append(
+            finding(
+                "warning",
+                "publish",
+                "news_cards_below_candidate_pool",
+                (
+                    f"News cards are {news_cards}, below {min_ratio_pct}% of public news "
+                    f"candidates with display dates ({display_date_candidates})."
+                ),
+                (
+                    "`web_updater.py` date fallback and news/election/policy exposure split "
+                    "should be checked against `step3_classified.json`."
+                ),
+            )
+        )
+    if public_html.get("government_related_news_cards", 0) < thresholds["min_government_related_news_cards"]:
+        findings.append(
+            finding(
+                "warning",
+                "publish",
+                "low_government_related_news_cards",
+                f"정부 동향의 중앙정부 관련 뉴스 카드가 {public_html.get('government_related_news_cards', 0)}건입니다.",
+                "정부 동향 페이지의 관련 뉴스 분리 조건과 중앙정부 키워드 후보를 `step3_classified.json` 기준으로 점검합니다.",
+            )
+        )
+    if public_html.get("government_policy_resource_cards", 0) < thresholds["min_government_policy_resource_cards"]:
+        findings.append(
+            finding(
+                "warning",
+                "publish",
+                "low_government_policy_resource_cards",
+                f"정부 동향의 주요 정책 자료 카드가 {public_html.get('government_policy_resource_cards', 0)}건입니다.",
+                "정부 동향 페이지의 주요 정책·시행계획 자료 구역과 중앙부처 watchlist 렌더링을 확인합니다.",
+            )
+        )
     home_government_trends = public_html.get("home_government_trends")
     if home_government_trends is None:
         findings.append(
@@ -443,7 +597,7 @@ def build_findings(metrics: dict[str, Any], thresholds: dict[str, int] | None = 
                 "critical",
                 "publish",
                 "missing_home_government_metric",
-                "홈 정부·지자체 동향 카운트를 찾지 못했습니다.",
+                "홈 정부 동향 카운트를 찾지 못했습니다.",
                 "`web_updater.py` 홈 섹션 마크업 또는 `home-glance` 렌더링을 확인합니다.",
             )
         )
@@ -453,8 +607,8 @@ def build_findings(metrics: dict[str, Any], thresholds: dict[str, int] | None = 
                 "critical",
                 "publish",
                 "low_home_government_trends",
-                f"홈 정부·지자체 동향 후보가 {home_government_trends}건입니다.",
-                "공식 URL identity, 지자체 published_date, 홈 노출 조건을 함께 점검합니다.",
+                f"홈 정부 동향 후보가 {home_government_trends}건입니다.",
+                "정부 동향 페이지 후보, 공식 URL identity, 홈 노출 조건을 함께 점검합니다.",
             )
         )
     if not public_html.get("brand_ok"):
@@ -535,7 +689,15 @@ def render_markdown_report(report: dict[str, Any]) -> str:
         f"| selected articles | {counts.get('selected', 0)} |",
         f"| summarized articles | {counts.get('summarized', 0)} |",
         f"| news cards | {public_html.get('news_cards', 0)} |",
-        f"| home government/local trends | {public_html.get('home_government_trends')} |",
+        f"| government related news cards | {public_html.get('government_related_news_cards', 0)} |",
+        f"| government policy resource cards | {public_html.get('government_policy_resource_cards', 0)} |",
+        f"| public news candidates | {public_html.get('public_news_candidates', 0)} |",
+        (
+            "| public news candidates with display date | "
+            f"{public_html.get('public_news_display_date_candidates', 0)} |"
+        ),
+        f"| public news fallback-date candidates | {public_html.get('public_news_fallback_date_candidates', 0)} |",
+        f"| home government trends | {public_html.get('home_government_trends')} |",
         f"| source errors | {source_health.get('error_count', 'n/a')} |",
         f"| official filtered source items | {source_health.get('official_filtered_items', 'n/a')} |",
         f"| local filtered source items | {source_health.get('local_filtered_items', 'n/a')} |",

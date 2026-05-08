@@ -9,7 +9,11 @@ SHARED_SRC = Path(__file__).resolve().parents[1] / "src"
 if str(SHARED_SRC) not in sys.path:
     sys.path.insert(0, str(SHARED_SRC))
 
-from youth_info_platform.pipeline_feedback import build_feedback_report, should_fail  # noqa: E402
+from youth_info_platform.pipeline_feedback import (  # noqa: E402
+    build_feedback_report,
+    extract_home_government_trends_count,
+    should_fail,
+)
 
 
 def healthy_metrics() -> dict:
@@ -46,6 +50,11 @@ def healthy_metrics() -> dict:
         "public_html": {
             "missing_files": [],
             "news_cards": 40,
+            "government_related_news_cards": 12,
+            "government_policy_resource_cards": 20,
+            "public_news_candidates": 45,
+            "public_news_display_date_candidates": 45,
+            "public_news_fallback_date_candidates": 5,
             "home_government_trends": 9,
             "home_latest_news": 127,
             "brand_ok": True,
@@ -91,6 +100,42 @@ class PipelineFeedbackTests(unittest.TestCase):
 
         self.assertEqual(report["verdict"], "fail")
         self.assertIn("date_audit_errors", {item["code"] for item in report["findings"]})
+
+    def test_news_card_candidate_gap_warns(self) -> None:
+        metrics = healthy_metrics()
+        metrics["public_html"]["news_cards"] = 40
+        metrics["public_html"]["public_news_display_date_candidates"] = 127
+
+        report = build_feedback_report(metrics)
+
+        self.assertEqual(report["verdict"], "warn")
+        self.assertIn("news_cards_below_candidate_pool", {item["code"] for item in report["findings"]})
+
+    def test_home_government_metric_accepts_new_label(self) -> None:
+        html = (
+            '<span class="home-glance-label">정부 동향</span>'
+            '<strong class="home-glance-value">51건</strong>'
+        )
+
+        self.assertEqual(extract_home_government_trends_count(html), 51)
+
+    def test_missing_government_related_news_warns(self) -> None:
+        metrics = healthy_metrics()
+        metrics["public_html"]["government_related_news_cards"] = 0
+
+        report = build_feedback_report(metrics)
+
+        self.assertEqual(report["verdict"], "warn")
+        self.assertIn("low_government_related_news_cards", {item["code"] for item in report["findings"]})
+
+    def test_missing_government_policy_resources_warns(self) -> None:
+        metrics = healthy_metrics()
+        metrics["public_html"]["government_policy_resource_cards"] = 0
+
+        report = build_feedback_report(metrics)
+
+        self.assertEqual(report["verdict"], "warn")
+        self.assertIn("low_government_policy_resource_cards", {item["code"] for item in report["findings"]})
 
 
 if __name__ == "__main__":
