@@ -6,7 +6,7 @@
   <title>참여기구</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700;900&family=Noto+Sans+KR:wght@400;500;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="icon" type="image/svg+xml" href="assets/branding/youth-together-mark.svg?v=20260501-sunlit-logo-1">
   <style>
   :root {
@@ -6786,12 +6786,1709 @@
       padding: 14px 10px;
     }
   }
+
+  /* Youthside official skin: navy/coral brand palette with restrained public-service UI. */
+  :root {
+    --page-bg: #f6f8fb;
+    --app-bg: #f6f8fb;
+    --panel: #ffffff;
+    --panel-soft: #f1f4f8;
+    --text: #0b1f3a;
+    --muted: #5b6675;
+    --line: #d9e0ea;
+    --accent: #f15a4a;
+    --accent-soft: #fff0ee;
+    --accent-strong: #062a52;
+    --surface: #ffffff;
+    --surface-container-low: #f6f8fb;
+    --surface-container-high: #eef2f7;
+    --surface-container-highest: #e5ebf3;
+    --outline: #6a7585;
+    --outline-variant: #d9e0ea;
+    --dashboard-dark: #062a52;
+    --dashboard-dark-line: #0b1f3a;
+    --dashboard-accent: #f15a4a;
+    --filter-accent: #f15a4a;
+    --filter-accent-strong: #062a52;
+    --filter-active-bg: #062a52;
+    --filter-active-border: #062a52;
+    --filter-active-stroke: #f15a4a;
+    --filter-active-soft: #fff0ee;
+    --success: #0a7a6a;
+    --danger: #b42318;
+    --shadow: 0 14px 30px rgba(11, 31, 58, 0.08);
+    --shadow-soft: 0 8px 18px rgba(11, 31, 58, 0.05);
+  }
+  body {
+    background: #f6f8fb;
+    color: var(--text);
+    font-family: "Public Sans", "Noto Sans KR", sans-serif;
+    font-size: 15.8px;
+    line-height: 1.62;
+  }
+  .topbar {
+    border-bottom: 1px solid #d9e0ea;
+    background: rgba(255, 255, 255, 0.97);
+    box-shadow: 0 1px 2px rgba(11, 31, 58, 0.04);
+  }
+  .global-search {
+    border-radius: 8px;
+    background: #f1f4f8;
+    color: #5b6675;
+  }
+  .global-search:focus-within {
+    border-color: #9aa8ba;
+    background: #ffffff;
+  }
+  .topbar-icon,
+  .guide-link {
+    color: #0b1f3a;
+  }
+  .topbar-icon:hover,
+  .guide-link:hover,
+  .guide-link.active {
+    background: #eef2f7;
+    color: #062a52;
+  }
+  .side-nav {
+    border-right: 1px solid #d9e0ea;
+    background: #ffffff;
+  }
+  .side-brand {
+    gap: 8px;
+    padding: 0 12px 20px;
+    border-bottom: 1px solid #e7ecf3;
+    color: #062a52;
+  }
+  .side-brand strong {
+    color: #062a52;
+    font-size: 1.08rem;
+    font-weight: 850;
+    line-height: 1.18;
+  }
+  .side-brand span {
+    width: fit-content;
+    padding: 3px 8px;
+    border: 1px solid rgba(241, 90, 74, 0.28);
+    border-radius: 999px;
+    background: #fff0ee;
+    color: #c43d31;
+    font-size: 0.68rem;
+    font-weight: 850;
+    letter-spacing: 0.08em;
+  }
+  .side-clock {
+    border-color: #d9e0ea;
+    border-radius: 8px;
+    background: #f6f8fb;
+    box-shadow: none;
+  }
+  .live-clock-kicker,
+  .side-nav-head span,
+  .side-nav-kicker,
+  .side-nav-text small,
+  .side-marker-link,
+  .side-nav-link.pending em {
+    color: #667386;
+  }
+  .live-clock-date,
+  .live-clock-time,
+  .side-nav-head strong {
+    color: #0b1f3a;
+  }
+  .side-nav-link {
+    border-radius: 8px;
+    color: #4e5b6b;
+    font-weight: 760;
+  }
+  .side-nav-link:hover,
+  .side-nav-link.active,
+  .side-nav-link.primary-menu-link.active {
+    background: #f1f4f8;
+    color: #062a52;
+  }
+  .side-nav-link.primary-menu-link.active {
+    box-shadow: inset 3px 0 0 #f15a4a;
+  }
+  .side-nav-link:hover .side-nav-icon,
+  .side-nav-link.active .side-nav-icon {
+    color: #062a52;
+  }
+  .side-marker-list::before,
+  .side-nav-section,
+  .side-nav-admin,
+  .side-utility-section {
+    border-color: #e7ecf3;
+  }
+  .side-marker-dot {
+    border-color: #9aa8ba;
+    background: #ffffff;
+  }
+  .side-marker-link.active .side-marker-dot {
+    border-color: #f15a4a;
+    background: #f15a4a;
+    box-shadow: 0 0 0 4px #fff0ee;
+  }
+  .shell {
+    background: #f6f8fb;
+  }
+  body[data-page="index.html"] .home-briefing-card.lead {
+    min-height: 176px;
+    padding: 30px 32px;
+    border: 1px solid #d9e0ea;
+    border-top: 4px solid #062a52;
+    border-radius: 8px;
+    background: #ffffff;
+    color: #0b1f3a;
+    box-shadow: 0 10px 24px rgba(11, 31, 58, 0.06);
+  }
+  body[data-page="index.html"] .home-briefing-card.lead-arch::before,
+  body[data-page="index.html"] .home-briefing-card.lead-arch::after,
+  body[data-page="index.html"] .home-briefing-card > .home-illustration-slot {
+    display: none;
+  }
+  body[data-page="index.html"] .home-briefing-card.lead .home-briefing-content {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "date"
+      "title"
+      "copy";
+    gap: 10px;
+  }
+  body[data-page="index.html"] .home-briefing-date,
+  body[data-page="index.html"] .home-briefing-card.lead-arch .home-briefing-date {
+    border-bottom: 0;
+    color: #c43d31;
+    font-size: 0.76rem;
+    font-weight: 850;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+  body[data-page="index.html"] .home-briefing-title,
+  body[data-page="index.html"] .home-briefing-card.lead-arch .home-briefing-title {
+    color: #062a52;
+    font-size: clamp(1.82rem, 2.45vw, 2.58rem);
+    font-weight: 850;
+    line-height: 1.12;
+    text-shadow: none;
+  }
+  body[data-page="index.html"] .home-briefing-copy,
+  body[data-page="index.html"] .home-briefing-card.lead-arch .home-briefing-copy {
+    max-width: 760px;
+    color: #4e5b6b;
+    font-size: 0.98rem;
+    line-height: 1.68;
+  }
+  .home-overview,
+  .page-intro-card,
+  .news-intro-card,
+  .filter-panel,
+  .section-card,
+  .article-card,
+  .info-card,
+  .list-card,
+  .menu-update-card,
+  .local-menu-card,
+  .home-overview-column,
+  .youth-metric-item,
+  .home-report-row {
+    border-color: #d9e0ea;
+    border-radius: 8px;
+    background: #ffffff;
+    box-shadow: none;
+  }
+  .home-overview {
+    padding: 28px;
+  }
+  .home-overview h2,
+  .section-head h2,
+  .youth-metrics-head h2,
+  .home-section-head h2,
+  .page-intro-title {
+    color: #0b1f3a;
+    font-weight: 820;
+    letter-spacing: 0;
+  }
+  .home-overview h2 {
+    font-size: clamp(1.5rem, 1.9vw, 2.05rem);
+  }
+  .home-overview h3,
+  .article-card h3,
+  .section-card h3,
+  .info-card h3,
+  .list-card h3,
+  .local-menu-card strong {
+    color: #0b1f3a;
+    font-weight: 780;
+  }
+  .home-overview p,
+  .section-head p,
+  .youth-metrics-head p,
+  .page-intro-copy,
+  .article-summary,
+  .section-card p,
+  .info-card p,
+  .list-card p,
+  .filter-head p,
+  .local-menu-card small {
+    color: #5b6675;
+  }
+  .home-overview .home-glance-item,
+  .home-keyword-chip,
+  .home-urgent-link,
+  .filter-button,
+  .date-input-wrap,
+  .filter-search-input,
+  .action-button,
+  .button,
+  .badge,
+  .meta-pill.subtle {
+    border-color: #d9e0ea;
+    border-radius: 6px;
+    background: #f8fafc;
+    box-shadow: none;
+  }
+  .home-glance-label,
+  .youth-metric-label {
+    color: #5b6675;
+    font-weight: 760;
+  }
+  .home-glance-value,
+  .youth-metric-value,
+  .home-keyword-heading strong,
+  .home-application-period strong {
+    color: #062a52;
+  }
+  .home-overview-column-head span,
+  .mini-link,
+  .action-button,
+  .youth-metric-source,
+  .local-menu-card span,
+  .home-region-link {
+    color: #c43d31;
+  }
+  .home-urgent-rank {
+    border-radius: 6px;
+    background: #fff0ee;
+    color: #c43d31;
+  }
+  .button.primary,
+  .filter-button.active,
+  .meta-pill.primary,
+  .home-briefing-tab[aria-selected="true"] {
+    border-color: #062a52;
+    background: #062a52;
+    color: #ffffff;
+  }
+  .page-intro-badge,
+  .eyebrow,
+  .badge,
+  .meta-pill.subtle,
+  .home-region-focus,
+  .home-report-tag {
+    background: #fff0ee;
+    color: #c43d31;
+  }
+  .article-card:hover,
+  .section-card:hover,
+  .local-menu-card:hover,
+  .home-report-row:hover {
+    border-color: #b8c2d0;
+    box-shadow: 0 12px 24px rgba(11, 31, 58, 0.07);
+  }
+  .bottom-nav {
+    border-color: #d9e0ea;
+    background: rgba(255, 255, 255, 0.96);
+  }
+  .bottom-nav a {
+    color: #5b6675;
+    font-weight: 720;
+  }
+  .bottom-nav a.active {
+    color: #062a52;
+  }
+  .bottom-nav a.active .bottom-nav-icon {
+    background: #fff0ee;
+    color: #c43d31;
+  }
+  .site-footer {
+    background: #062a52;
+    color: #f7f9fc;
+  }
+  .site-footer-top,
+  .site-footer-related,
+  .site-footer-brand-image-frame,
+  .site-footer-related-list {
+    border-color: rgba(255, 255, 255, 0.14);
+  }
+  .site-footer-brand span,
+  .site-footer-site-head span,
+  .site-footer-meta a,
+  .site-footer-links a:hover,
+  .site-footer-related-list a:hover {
+    color: #ffb1a8;
+  }
+  .site-footer-related-list {
+    background: #0b1f3a;
+  }
+  @media (max-width: 1180px) {
+    .topbar {
+      left: 232px;
+    }
+  }
+  @media (max-width: 900px) {
+    .topbar {
+      left: 0;
+    }
+    body[data-page="index.html"] .home-briefing-card.lead {
+      padding: 24px 22px;
+    }
+    .home-overview {
+      padding: 22px;
+    }
+    .home-overview-head,
+    .home-overview-columns {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  /* Reference polish: rounded analytics cards, softer gray-blue canvas, cleaner text rhythm. */
+  :root {
+    --page-bg: #eef3f9;
+    --surface-container-low: #eef3f9;
+    --panel: #ffffff;
+    --text: #111827;
+    --muted: #5f6b7a;
+    --line: #dce5ef;
+    --accent: #ff5a1f;
+    --accent-soft: #fff1e8;
+    --accent-strong: #111827;
+    --dashboard-accent: #ff5a1f;
+    --filter-active-bg: #111827;
+    --filter-active-border: #111827;
+    --filter-active-stroke: #ff5a1f;
+  }
+  body {
+    background: #eef3f9;
+    color: #111827;
+    font-family: "Inter", "Pretendard", "Noto Sans KR", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    font-size: 15.5px;
+    letter-spacing: -0.005em;
+  }
+  .topbar {
+    background: rgba(238, 243, 249, 0.92);
+    border-bottom: 1px solid rgba(220, 229, 239, 0.72);
+    box-shadow: none;
+  }
+  .shell {
+    background: #eef3f9;
+  }
+  .side-nav {
+    background: #ffffff;
+    border-right-color: #dce5ef;
+  }
+  .side-brand,
+  .side-nav-section,
+  .side-nav-admin,
+  .side-utility-section {
+    border-color: #eef3f9;
+  }
+  .side-brand strong {
+    color: #111827;
+    font-size: 1.14rem;
+    letter-spacing: -0.01em;
+  }
+  .side-brand span {
+    border: 0;
+    background: #fff1e8;
+    color: #ff5a1f;
+  }
+  .side-clock,
+  .global-search,
+  .side-admin-entry {
+    border-color: #dce5ef;
+    border-radius: 14px;
+    background: #f6f8fb;
+  }
+  .side-nav-link,
+  .side-nav-link.primary-menu-link {
+    border-radius: 13px;
+  }
+  .side-nav-link:hover,
+  .side-nav-link.active,
+  .side-nav-link.primary-menu-link.active {
+    background: #f4f7fb;
+    color: #111827;
+  }
+  .side-nav-link.primary-menu-link.active {
+    box-shadow: inset 4px 0 0 #ff5a1f;
+  }
+  .topbar-icon,
+  .guide-link {
+    background: #ffffff;
+    box-shadow: 0 1px 3px rgba(17, 24, 39, 0.05);
+  }
+  .topbar-icon:hover,
+  .guide-link:hover,
+  .guide-link.active {
+    background: #fff1e8;
+    color: #ff5a1f;
+  }
+  body[data-page="index.html"] .home-briefing-card.lead {
+    min-height: 154px;
+    padding: 30px 34px;
+    border: 1px solid #dce5ef;
+    border-radius: 16px;
+    background: #ffffff;
+    box-shadow: none;
+  }
+  body[data-page="index.html"] .home-briefing-card.lead .home-briefing-content {
+    gap: 12px;
+  }
+  body[data-page="index.html"] .home-briefing-date,
+  body[data-page="index.html"] .home-briefing-card.lead-arch .home-briefing-date {
+    width: fit-content;
+    padding: 6px 11px;
+    border-radius: 999px;
+    background: #fff1e8;
+    color: #ff5a1f;
+    font-size: 0.76rem;
+    font-weight: 850;
+    letter-spacing: 0;
+  }
+  body[data-page="index.html"] .home-briefing-title,
+  body[data-page="index.html"] .home-briefing-card.lead-arch .home-briefing-title {
+    color: #111827;
+    font-size: clamp(2rem, 2.6vw, 2.88rem);
+    font-weight: 900;
+    line-height: 1.08;
+    letter-spacing: -0.025em;
+  }
+  body[data-page="index.html"] .home-briefing-copy,
+  body[data-page="index.html"] .home-briefing-card.lead-arch .home-briefing-copy {
+    color: #4b5563;
+    font-size: 1.02rem;
+    line-height: 1.72;
+  }
+  .home-overview,
+  .page-intro-card,
+  .news-intro-card,
+  .filter-panel,
+  .section-card,
+  .article-card,
+  .info-card,
+  .list-card,
+  .menu-update-card,
+  .local-menu-card,
+  .home-overview-column,
+  .youth-metric-item,
+  .home-report-row,
+  .local-map-panel {
+    border: 1px solid #dce5ef;
+    border-radius: 16px;
+    background: #ffffff;
+    box-shadow: none;
+  }
+  .home-overview,
+  .page-intro-card,
+  .news-intro-card,
+  .filter-panel {
+    padding: 32px;
+  }
+  .home-overview-head {
+    grid-template-columns: minmax(0, 1fr) minmax(280px, 0.82fr);
+    gap: 22px;
+  }
+  .home-overview h2,
+  .section-head h2,
+  .youth-metrics-head h2,
+  .home-section-head h2,
+  .page-intro-title {
+    color: #111827;
+    font-weight: 900;
+    line-height: 1.13;
+    letter-spacing: -0.03em;
+  }
+  .home-overview h2 {
+    font-size: clamp(1.72rem, 2.1vw, 2.35rem);
+  }
+  .home-overview h3,
+  .article-card h3,
+  .section-card h3,
+  .info-card h3,
+  .list-card h3,
+  .local-menu-card strong {
+    color: #111827;
+    font-weight: 850;
+    letter-spacing: -0.018em;
+  }
+  .home-overview p,
+  .section-head p,
+  .youth-metrics-head p,
+  .page-intro-copy,
+  .article-summary,
+  .section-card p,
+  .info-card p,
+  .list-card p,
+  .filter-head p,
+  .local-menu-card small,
+  .home-briefing-panel-note {
+    color: #5f6b7a;
+  }
+  .home-overview .home-glance-grid {
+    gap: 12px;
+  }
+  .home-overview .home-glance-item {
+    min-height: 112px;
+    align-items: flex-start;
+    padding: 18px 20px;
+    border: 0;
+    border-radius: 16px;
+    background: #f6f8fb;
+    text-align: left;
+  }
+  .home-glance-label {
+    color: #5f6b7a;
+    font-size: 0.86rem;
+    font-weight: 750;
+  }
+  .home-glance-value {
+    color: #111827;
+    font-size: 2rem;
+    font-weight: 900;
+    letter-spacing: -0.03em;
+  }
+  .home-keyword-strip {
+    gap: 10px;
+  }
+  .home-keyword-chip,
+  .filter-button,
+  .date-input-wrap,
+  .filter-search-input,
+  .action-button,
+  .button,
+  .badge,
+  .meta-pill.subtle {
+    border-color: #dce5ef;
+    border-radius: 999px;
+    background: #f6f8fb;
+  }
+  .home-keyword-strip .home-keyword-chip,
+  .home-keyword-chip:nth-child(odd) {
+    background: #f6f8fb;
+    color: #111827;
+  }
+  .home-overview-column {
+    gap: 16px;
+    padding: 24px;
+    background: #ffffff;
+  }
+  .home-overview-column-head span,
+  .mini-link,
+  .action-button,
+  .youth-metric-source,
+  .local-menu-card span,
+  .home-region-link {
+    color: #ff5a1f;
+  }
+  .home-overview-column .home-urgent-item {
+    padding: 18px 0;
+  }
+  .home-urgent-list {
+    border-top-color: #eef3f9;
+  }
+  .home-urgent-item {
+    border-bottom-color: #eef3f9;
+  }
+  .home-urgent-link {
+    grid-template-columns: 64px minmax(0, 1fr);
+    gap: 18px;
+    align-items: center;
+    min-height: 84px;
+    padding: 10px 0;
+    border: 0;
+    background: transparent;
+  }
+  .home-urgent-rank {
+    width: 56px;
+    height: 56px;
+    border-radius: 18px;
+    background: #fff1e8;
+    color: #ff5a1f;
+    font-size: 0.95rem;
+    font-weight: 900;
+  }
+  .home-urgent-text strong {
+    color: #111827;
+    font-size: 1.06rem;
+    font-weight: 850;
+    line-height: 1.42;
+    letter-spacing: -0.015em;
+  }
+  .home-urgent-meta {
+    color: #6b7280;
+    font-size: 0.88rem;
+  }
+  .article-card {
+    border-radius: 16px;
+    padding: 22px;
+  }
+  .article-card:hover,
+  .section-card:hover,
+  .local-menu-card:hover,
+  .home-report-row:hover {
+    border-color: #c8d4e3;
+    box-shadow: 0 14px 28px rgba(17, 24, 39, 0.06);
+  }
+  .page-intro-badge,
+  .eyebrow,
+  .badge,
+  .meta-pill.subtle,
+  .home-region-focus,
+  .home-report-tag {
+    background: #fff1e8;
+    color: #ff5a1f;
+  }
+  .button.primary,
+  .filter-button.active,
+  .meta-pill.primary,
+  .home-briefing-tab[aria-selected="true"] {
+    border-color: #111827;
+    background: #111827;
+    color: #ffffff;
+  }
+  .youth-metric-item {
+    min-height: 190px;
+    padding: 26px;
+  }
+  .youth-metric-label {
+    color: #5f6b7a;
+    font-weight: 760;
+  }
+  .youth-metric-value {
+    color: #111827;
+    font-weight: 900;
+    letter-spacing: -0.025em;
+  }
+  .bottom-nav {
+    width: min(560px, calc(100% - 32px));
+    border: 1px solid #dce5ef;
+    border-radius: 22px;
+    background: rgba(255, 255, 255, 0.96);
+    box-shadow: 0 12px 28px rgba(17, 24, 39, 0.08);
+  }
+  .bottom-nav a {
+    color: #5f6b7a;
+  }
+  .bottom-nav a.active {
+    color: #111827;
+  }
+  .bottom-nav a.active .bottom-nav-icon {
+    background: #fff1e8;
+    color: #ff5a1f;
+  }
+  .site-footer {
+    background: #111827;
+  }
+  .site-footer-brand span,
+  .site-footer-site-head span,
+  .site-footer-meta a,
+  .site-footer-links a:hover,
+  .site-footer-related-list a:hover {
+    color: #ffb199;
+  }
+  @media (min-width: 980px) {
+    .shell > .hero,
+    .shell > .section,
+    .shell > .page-intro-card,
+    .shell > .news-intro-card,
+    .shell > .footer-note,
+    .shell > [data-news-filter-root],
+    .shell > [data-policy-filter-root] {
+      max-width: 1180px;
+    }
+  }
+  @media (max-width: 900px) {
+    body {
+      font-size: 15px;
+    }
+    .home-overview,
+    .page-intro-card,
+    .news-intro-card,
+    .filter-panel {
+      padding: 22px;
+    }
+    .home-overview-head,
+    .home-overview-columns {
+      grid-template-columns: 1fr;
+    }
+    .home-urgent-link {
+      grid-template-columns: 52px minmax(0, 1fr);
+      gap: 14px;
+    }
+    .home-urgent-rank {
+      width: 48px;
+      height: 48px;
+      border-radius: 16px;
+    }
+  }
+
+  /* Accent discipline: keep the UI to ink, neutral blue-gray, and one orange accent. */
+  :root {
+    --brand-ink: #111827;
+    --brand-muted: #5f6b7a;
+    --brand-line: #dce5ef;
+    --brand-canvas: #eef3f9;
+    --brand-soft: #f6f8fb;
+    --brand-accent: #ff5a1f;
+    --brand-accent-soft: #fff1e8;
+    --text: var(--brand-ink);
+    --muted: var(--brand-muted);
+    --line: var(--brand-line);
+    --accent: var(--brand-accent);
+    --accent-soft: var(--brand-accent-soft);
+    --accent-strong: var(--brand-ink);
+    --panel-soft: var(--brand-soft);
+    --surface-container-low: var(--brand-canvas);
+    --surface-container-high: var(--brand-soft);
+    --surface-container-highest: #e8eef6;
+    --filter-accent: var(--brand-accent);
+    --filter-accent-strong: var(--brand-ink);
+    --filter-active-bg: var(--brand-ink);
+    --filter-active-border: var(--brand-ink);
+    --filter-active-stroke: var(--brand-accent);
+    --filter-active-soft: var(--brand-accent-soft);
+    --dashboard-dark: var(--brand-ink);
+    --dashboard-dark-line: #0b1220;
+    --dashboard-accent: var(--brand-accent);
+    --success: var(--brand-accent);
+    --home-accent: var(--brand-accent);
+    --home-accent-soft: var(--brand-accent-soft);
+    --home-teal: #e8eef6;
+    --home-teal-soft: #f6f8fb;
+  }
+  .resource-card--teal,
+  .home-glance-item.teal,
+  .home-keyword-chip:nth-child(odd),
+  .local-map-path.status-confirmed,
+  .local-map-path.status-candidate,
+  .local-map-label,
+  .local-map-popover a,
+  .home-region-focus,
+  .home-report-tag,
+  .home-application-tags span,
+  .home-application-head .mini-link,
+  .side-marker-link.active .side-marker-dot,
+  .bottom-nav a.active .bottom-nav-icon {
+    border-color: var(--brand-line);
+    background: var(--brand-accent-soft);
+    color: var(--brand-accent);
+  }
+  .home-glance-item.teal,
+  .resource-card--teal {
+    background: var(--brand-soft);
+    color: var(--brand-ink);
+  }
+  .local-map-path,
+  .local-map-path.status-missing {
+    fill: #f8fafc;
+    stroke: #b9c6d6;
+  }
+  .local-map-path.status-confirmed,
+  .local-map-path.status-candidate {
+    fill: #fff1e8;
+    stroke: var(--brand-accent);
+  }
+  .local-map-region,
+  .local-map-source,
+  .local-menu-card span,
+  .home-overview-column-head span,
+  .mini-link,
+  .action-button,
+  .youth-metric-source,
+  .home-region-link,
+  .home-application-period strong {
+    color: var(--brand-accent);
+  }
+  .local-map-region:hover .local-map-path,
+  .local-map-region:focus-visible .local-map-path {
+    fill: var(--brand-accent);
+    stroke: #cc4819;
+  }
+  .local-map-region:hover,
+  .local-map-region:focus-visible {
+    color: #ffffff;
+  }
+  .button.primary,
+  .filter-button.active,
+  .meta-pill.primary,
+  .home-briefing-tab[aria-selected="true"],
+  .home-application-link {
+    border-color: var(--brand-ink);
+    background: var(--brand-ink);
+    color: #ffffff;
+  }
+  .page-intro-badge,
+  .eyebrow,
+  .badge,
+  .meta-pill.subtle,
+  .home-urgent-rank,
+  .side-brand span,
+  .topbar-icon:hover,
+  .guide-link:hover,
+  .guide-link.active {
+    background: var(--brand-accent-soft);
+    color: var(--brand-accent);
+  }
+  .site-footer-brand span,
+  .site-footer-site-head span,
+  .site-footer-meta a,
+  .site-footer-links a:hover,
+  .site-footer-related-list a:hover {
+    color: #ffb199;
+  }
+
+  :root {
+    /* 6:3:1 palette: calm field 60 / trustworthy structure 30 / action cue 10 */
+    --page-bg: #f8f6f0;
+    --app-bg: #f8f6f0;
+    --panel: #fffdf8;
+    --panel-strong: #ffffff;
+    --panel-soft: #f1f5f2;
+    --text: #102c32;
+    --muted: #52666a;
+    --line: rgba(16, 44, 50, 0.14);
+    --line-strong: rgba(16, 44, 50, 0.24);
+    --accent: #c84d39;
+    --accent-strong: #a83d2d;
+    --accent-soft: #f7ded8;
+    --deep-navy: #102c32;
+    --deep-navy-soft: #18464b;
+    --mint: #dcefeb;
+    --sky: #eaf3f1;
+    --shadow: 0 18px 42px rgba(16, 44, 50, 0.12);
+    --shadow-soft: 0 8px 22px rgba(16, 44, 50, 0.07);
+    --radius-xl: 24px;
+    --radius-lg: 18px;
+    --radius-md: 12px;
+  }
+
+  body {
+    color: var(--text);
+    background: var(--page-bg);
+    font-family: "Pretendard", "Noto Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+  }
+
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(circle at 88% 5%, rgba(223, 91, 67, 0.1), transparent 15rem),
+      radial-gradient(circle at 4% 45%, rgba(64, 158, 151, 0.09), transparent 16rem);
+    opacity: 1;
+    pointer-events: none;
+    z-index: -2;
+  }
+
+  a {
+    transition: color 180ms ease, border-color 180ms ease, background 180ms ease, transform 180ms ease, box-shadow 180ms ease;
+  }
+
+  .topbar {
+    position: sticky;
+    top: 0;
+    margin: 0;
+    padding: 16px 24px;
+    border-bottom: 1px solid var(--line);
+    background: rgba(248, 246, 240, 0.94);
+    backdrop-filter: blur(12px);
+    box-shadow: none;
+  }
+
+  .topbar-side {
+    width: min(1400px, calc(100vw - 48px));
+    margin: 0 auto;
+    justify-content: flex-end;
+  }
+
+  .topbar-icon,
+  .guide-link {
+    border-radius: 999px;
+    border: 1px solid rgba(24, 36, 61, 0.12);
+    background: rgba(255, 255, 255, 0.78);
+    box-shadow: 0 10px 24px rgba(18, 25, 38, 0.06);
+  }
+
+  .guide-link {
+    color: var(--deep-navy);
+    font-family: "Pretendard", "Noto Sans KR", sans-serif;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+
+  .guide-link:hover,
+  .topbar-icon:hover {
+    transform: translateY(-1px);
+    border-color: rgba(239, 111, 81, 0.34);
+    box-shadow: 0 14px 30px rgba(18, 25, 38, 0.09);
+  }
+
+  .app-layout {
+    width: min(1440px, calc(100vw - 40px));
+    margin: 22px auto 0;
+    display: grid;
+    grid-template-columns: 272px minmax(0, 1fr);
+    gap: 18px;
+    align-items: start;
+  }
+
+  .side-nav {
+    position: sticky;
+    top: 86px;
+    display: grid;
+    gap: 12px;
+    padding: 20px 14px 16px;
+    border: 0;
+    border-radius: var(--radius-xl);
+    background: var(--deep-navy);
+    box-shadow: 0 12px 28px rgba(16, 44, 50, 0.14);
+  }
+
+  .side-brand,
+  .side-nav-head strong,
+  .side-nav-kicker,
+  .side-nav-text strong {
+    color: #f8f6f2;
+  }
+
+  .side-nav-head span,
+  .side-nav-text small,
+  .side-nav-link.pending em {
+    color: rgba(239, 242, 247, 0.7);
+  }
+
+  .side-nav-section,
+  .side-nav-admin {
+    padding: 0;
+    border: 0;
+    background: transparent;
+  }
+
+  .side-nav-link,
+  .side-nav-link.primary-menu-link {
+    min-height: 50px;
+    padding: 10px 12px;
+    border: 1px solid transparent;
+    border-radius: 18px;
+    background: rgba(255, 255, 255, 0.04);
+  }
+
+  .side-nav-link:hover,
+  .side-nav-link.active,
+  .side-nav-link.primary-menu-link.active {
+    border-color: rgba(255, 255, 255, 0.12);
+    background: rgba(255, 255, 255, 0.1);
+    transform: translateX(2px);
+  }
+
+  .side-nav-link.primary-menu-link.active {
+    background: var(--accent);
+  }
+
+  .side-nav-link:hover .side-nav-icon,
+  .side-nav-link.active .side-nav-icon {
+    background: rgba(255, 255, 255, 0.16);
+    color: #fff;
+  }
+
+  .shell {
+    width: 100%;
+    max-width: none;
+    min-height: calc(100vh - 120px);
+    margin: 0;
+    padding: 26px 26px 84px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-xl);
+    background: rgba(255, 253, 248, 0.88);
+    box-shadow: var(--shadow-soft);
+  }
+
+  .shell > .hero,
+  .section,
+  .home-overview,
+  .home-top-briefing,
+  .home-data-board,
+  .home-support,
+  .home-maker,
+  .home-application,
+  .local-map-section,
+  .local-plan-section {
+    scroll-margin-top: 112px;
+  }
+
+  .hero {
+    gap: 22px;
+    margin-bottom: 30px;
+  }
+
+  .hero-card,
+  .status-card,
+  .section-card,
+  .article-card,
+  .info-card,
+  .list-card,
+  .menu-update-card,
+  .home-briefing-card,
+  .home-section-card,
+  .local-map-card,
+  .resource-card,
+  .youth-metric-item,
+  .home-glance-item,
+  .application-card,
+  .civic-flow-card {
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+    background: var(--panel);
+    box-shadow: none;
+    backdrop-filter: none;
+  }
+
+  .hero-card,
+  .home-briefing-card.lead,
+  .home-briefing-card.lead-arch,
+  .civic-hero .home-briefing-card.lead {
+    position: relative;
+    overflow: hidden;
+    background:
+      radial-gradient(circle at 84% 22%, rgba(223, 91, 67, 0.96) 0 11%, transparent 11.4%),
+      radial-gradient(circle at 94% 84%, rgba(72, 166, 158, 0.78) 0 19%, transparent 19.4%),
+      linear-gradient(135deg, #102c32 0%, #17484c 100%);
+    color: #f8f6f2;
+  }
+
+  .hero-card::after,
+  .home-briefing-card.lead::after,
+  .home-briefing-card.lead-arch::after {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 1px;
+    right: 0;
+    top: auto;
+    bottom: 0;
+    border-radius: 0;
+    background: rgba(255, 255, 255, 0.36);
+    pointer-events: none;
+  }
+
+  .hero-card h1,
+  .hero-card h2,
+  .hero-card h3,
+  .home-briefing-title,
+  .home-briefing-card.lead-arch .home-briefing-title {
+    font-family: "Pretendard", "Noto Sans KR", sans-serif;
+    letter-spacing: -0.045em;
+  }
+
+  .hero-card h1,
+  body[data-page="index.html"] .home-briefing-title {
+    font-size: clamp(2rem, 3.2vw, 2.25rem);
+    line-height: 1.15;
+  }
+
+  .hero-copy,
+  .home-briefing-copy,
+  .home-briefing-summary,
+  .hero-feature-meta,
+  .home-briefing-date {
+    color: rgba(246, 242, 236, 0.8);
+  }
+
+  .eyebrow,
+  .metric-label,
+  .section-kicker,
+  .side-nav-kicker {
+    font-family: "Pretendard", "Noto Sans KR", sans-serif;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+  }
+
+  .eyebrow {
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff1ec;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+  }
+
+  .button,
+  .hero-actions .button,
+  .article-action,
+  .filter-chip,
+  .mini-link {
+    border-radius: 999px;
+  }
+
+  .button.primary,
+  .hero-actions .button.primary,
+  .article-actions .button.primary {
+    background: var(--accent);
+    color: #fff;
+    border: 0;
+    box-shadow: none;
+  }
+
+  .button:hover,
+  .article-actions a:hover,
+  .mini-link:hover {
+    transform: translateY(-1px);
+  }
+
+  .button:not(.primary),
+  .article-actions a:not(.primary),
+  .mini-link {
+    border: 1px solid rgba(24, 36, 61, 0.1);
+    background: rgba(255, 255, 255, 0.78);
+    color: var(--deep-navy);
+  }
+
+  .home-briefing-grid,
+  .home-data-board-grid,
+  .home-maker-grid,
+  .home-application-grid,
+  .feature-grid,
+  .article-grid,
+  .youth-metrics-grid,
+  .home-support-metrics-grid,
+  .overview-grid {
+    gap: 18px;
+  }
+
+  body[data-page="index.html"] .home-briefing-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.3fr) minmax(320px, 0.7fr);
+    align-items: stretch;
+  }
+
+  body[data-page="index.html"] .home-briefing-card.digest,
+  body[data-page="index.html"] .home-briefing-card.support,
+  body[data-page="index.html"] .home-briefing-card.footer {
+    background: var(--panel);
+  }
+
+  body[data-page="index.html"] .home-briefing-card.lead .home-briefing-content {
+    gap: 18px;
+  }
+
+  .home-overview .home-glance-grid,
+  .home-glance-grid {
+    gap: 14px;
+  }
+
+  .home-glance-item,
+  .youth-metric-item,
+  .application-card,
+  .resource-card,
+  .home-section-card {
+    background: var(--panel-soft);
+  }
+
+  .home-glance-item strong,
+  .youth-metric-value,
+  .metric-value {
+    font-family: "Pretendard", "Noto Sans KR", sans-serif;
+    color: var(--deep-navy);
+    letter-spacing: -0.04em;
+  }
+
+  .section-card,
+  .info-card,
+  .list-card,
+  .status-card,
+  .menu-update-card {
+    padding: 24px;
+  }
+
+  .article-card {
+    display: grid;
+    gap: 14px;
+    padding: 20px;
+    background: var(--panel);
+    overflow: hidden;
+  }
+
+  .article-card::before {
+    background: var(--accent);
+    opacity: 0.92;
+  }
+
+  .article-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 24px rgba(16, 44, 50, 0.1);
+  }
+
+  .article-card h3,
+  .section-card h3,
+  .info-card h3,
+  .list-card h3,
+  .resource-card h3 {
+    font-family: "Pretendard", "Noto Sans KR", sans-serif;
+    color: var(--deep-navy);
+  }
+
+  .article-meta,
+  .article-summary,
+  .article-feedback,
+  .section-card p,
+  .info-card p,
+  .list-card p,
+  .resource-card p,
+  .site-footer-meta,
+  .site-footer-related-list {
+    color: var(--muted);
+  }
+
+  .badge,
+  .category-badge,
+  .feedback-chip,
+  .topic-badge {
+    border-radius: 999px;
+    border: 1px solid rgba(24, 36, 61, 0.08);
+    background: rgba(24, 36, 61, 0.04);
+    color: var(--deep-navy);
+  }
+
+  .article-media,
+  .home-illustration-slot,
+  .local-map-stage {
+    border-radius: 22px;
+    overflow: hidden;
+  }
+
+  .article-media {
+    background: var(--mint);
+  }
+
+  .top-nav {
+    display: flex;
+    gap: 10px;
+    padding: 8px;
+    border: 1px solid rgba(24, 36, 61, 0.08);
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.76);
+  }
+
+  .top-nav-link {
+    border-radius: 999px;
+    font-family: "Pretendard", "Noto Sans KR", sans-serif;
+    font-weight: 700;
+    color: var(--muted);
+  }
+
+  .top-nav-link:hover,
+  .top-nav-link.active {
+    background: rgba(24, 36, 61, 0.08);
+    color: var(--deep-navy);
+  }
+
+  .top-nav-link.active::after {
+    background: var(--accent);
+  }
+
+  .site-footer {
+    margin-top: 42px;
+    padding: 26px 28px;
+    border: 1px solid rgba(24, 36, 61, 0.08);
+    border-radius: 28px;
+    background: var(--deep-navy);
+    box-shadow: var(--shadow-soft);
+  }
+
+  .site-footer,
+  .site-footer h3,
+  .site-footer strong,
+  .site-footer a {
+    color: #f7f2eb;
+  }
+
+  .site-footer-meta,
+  .site-footer-related-list,
+  .site-footer small {
+    color: rgba(247, 242, 235, 0.72);
+  }
+
+  .site-footer-links a,
+  .site-footer-related-list a {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.18);
+  }
+
+  .bottom-nav {
+    left: 50%;
+    bottom: 16px;
+    transform: translateX(-50%);
+    width: min(860px, calc(100vw - 32px));
+    padding: 10px;
+    border: 1px solid rgba(24, 36, 61, 0.08);
+    border-radius: 24px;
+    background: rgba(255, 252, 247, 0.88);
+    backdrop-filter: blur(16px);
+    box-shadow: 0 18px 40px rgba(18, 25, 38, 0.12);
+  }
+
+  .bottom-nav a {
+    border-radius: 16px;
+    font-family: "Pretendard", "Noto Sans KR", sans-serif;
+    font-weight: 700;
+    color: var(--muted);
+  }
+
+  .bottom-nav a.active {
+    background: rgba(24, 36, 61, 0.08);
+    color: var(--deep-navy);
+  }
+
+  .bottom-nav a.active .bottom-nav-icon {
+    background: var(--accent);
+    color: white;
+  }
+
+  /* 2026-07-31 harness pass: 60 field / 30 structure / 10 action. */
+  body::before {
+    background: none;
+  }
+
+  .topbar {
+    background: rgba(248, 246, 240, 0.98);
+    backdrop-filter: none;
+  }
+
+  .global-search {
+    border: 1px solid var(--line);
+    background: var(--panel);
+    box-shadow: none;
+  }
+
+  .app-layout {
+    grid-template-columns: 248px minmax(0, 1fr);
+    gap: 22px;
+    padding-top: 0;
+  }
+
+  .side-nav {
+    border: 1px solid rgba(220, 239, 235, 0.12);
+    border-radius: 20px;
+    background: var(--deep-navy);
+    box-shadow: none;
+  }
+
+  .side-nav .side-brand {
+    border-bottom: 1px solid rgba(220, 239, 235, 0.16);
+  }
+
+  .side-nav .side-brand strong {
+    color: #fffdf8;
+    letter-spacing: -0.035em;
+  }
+
+  .side-nav .side-brand span {
+    border: 1px solid rgba(200, 77, 57, 0.34);
+    background: rgba(200, 77, 57, 0.16);
+    color: #ffd8cf;
+  }
+
+  .shell {
+    padding: 10px 8px 84px;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+  }
+
+  .site-footer {
+    width: 100%;
+    margin-right: 0;
+    margin-left: 0;
+  }
+
+  body[data-page="index.html"] .home-briefing-card.lead,
+  body[data-page="index.html"] .home-briefing-card.lead-arch,
+  body[data-page="index.html"] .civic-hero .home-briefing-card.lead {
+    min-height: 210px;
+    padding: 34px 36px;
+    border: 0;
+    border-top: 5px solid var(--accent);
+    border-radius: 18px;
+    background: var(--deep-navy);
+    color: #fffdf8;
+    box-shadow: none;
+  }
+
+  body[data-page="index.html"] .home-briefing-card.lead::after,
+  body[data-page="index.html"] .home-briefing-card.lead-arch::after {
+    display: none;
+  }
+
+  body[data-page="index.html"] .home-briefing-title,
+  body[data-page="index.html"] .home-briefing-card.lead-arch .home-briefing-title {
+    max-width: 760px;
+    color: #fffdf8;
+    font-size: clamp(1.9rem, 2.7vw, 2.125rem);
+    font-weight: 800;
+    line-height: 1.2;
+  }
+
+  body[data-page="index.html"] .home-briefing-copy,
+  body[data-page="index.html"] .home-briefing-card.lead-arch .home-briefing-copy {
+    max-width: 720px;
+    color: rgba(255, 253, 248, 0.78);
+    font-size: 0.98rem;
+    font-weight: 400;
+    line-height: 1.7;
+  }
+
+  body[data-page="index.html"] .home-briefing-date,
+  body[data-page="index.html"] .home-briefing-card.lead-arch .home-briefing-date {
+    border: 1px solid rgba(255, 253, 248, 0.16);
+    background: rgba(255, 253, 248, 0.08);
+    color: #fffdf8;
+  }
+
+  body[data-page="index.html"] .home-briefing-date-label {
+    color: #ffb8a8;
+  }
+
+  .home-overview {
+    padding: 28px;
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    background: var(--panel);
+    box-shadow: none;
+  }
+
+  /* Type scale: text 400 / context 500 / navigation and headings 700 / key decisions 800. */
+  body {
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 1.68;
+  }
+
+  .side-nav .side-brand strong {
+    font-size: 1.18rem;
+    font-weight: 800;
+    line-height: 1.25;
+  }
+
+  .side-nav-link,
+  .side-nav-link.primary-menu-link {
+    font-size: 0.94rem;
+    font-weight: 700;
+    letter-spacing: -0.015em;
+  }
+
+  .side-nav-kicker,
+  .home-overview-column-head span,
+  .home-glance-label,
+  .home-briefing-date,
+  .article-meta,
+  .article-summary,
+  .home-briefing-panel-note {
+    font-size: 0.79rem;
+    font-weight: 500;
+    line-height: 1.55;
+  }
+
+  .home-overview h2,
+  .section-head h2,
+  .youth-metrics-head h2,
+  .home-application-head h2 {
+    font-size: clamp(1.5rem, 2vw, 1.75rem);
+    font-weight: 800;
+    line-height: 1.28;
+    letter-spacing: -0.035em;
+  }
+
+  .home-overview-column h3,
+  .article-card h3,
+  .section-card h3,
+  .info-card h3,
+  .list-card h3,
+  .resource-card h3 {
+    font-size: 1.08rem;
+    font-weight: 700;
+    line-height: 1.45;
+    letter-spacing: -0.025em;
+  }
+
+  .home-glance-value,
+  .youth-metric-value,
+  .metric-value {
+    font-size: 1.46rem;
+    font-weight: 800;
+    line-height: 1.15;
+    letter-spacing: -0.045em;
+  }
+
+  .home-keyword-chip,
+  .meta-pill,
+  .badge,
+  .category-badge,
+  .feedback-chip,
+  .topic-badge {
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: -0.015em;
+  }
+
+  .hero-card,
+  .status-card,
+  .section-card,
+  .article-card,
+  .info-card,
+  .list-card,
+  .menu-update-card,
+  .home-briefing-card,
+  .home-section-card,
+  .local-map-card,
+  .resource-card,
+  .youth-metric-item,
+  .home-glance-item,
+  .application-card,
+  .civic-flow-card {
+    border-radius: 14px;
+    box-shadow: none;
+  }
+
+  .home-keyword-chip,
+  .home-keyword-chip:nth-child(odd),
+  .meta-pill.subtle,
+  .badge,
+  .category-badge,
+  .feedback-chip,
+  .topic-badge {
+    border-color: rgba(16, 44, 50, 0.1);
+    background: var(--mint);
+    color: var(--deep-navy);
+  }
+
+  .article-card::before {
+    background: var(--deep-navy-soft);
+  }
+
+  .article-card:hover {
+    transform: translateY(-2px);
+    border-color: var(--line-strong);
+    box-shadow: 0 10px 24px rgba(16, 44, 50, 0.08);
+  }
+
+  .button.primary,
+  .hero-actions .button.primary,
+  .article-actions .button.primary,
+  .home-application-link,
+  .side-nav-link.primary-menu-link.active {
+    background: var(--accent);
+    color: #ffffff;
+  }
+
+  :focus-visible {
+    outline: 3px solid rgba(200, 77, 57, 0.42);
+    outline-offset: 3px;
+  }
+
+  @media (max-width: 1180px) {
+    .app-layout {
+      grid-template-columns: 1fr;
+    }
+
+    .side-nav {
+      position: relative;
+      top: auto;
+    }
+
+    .shell {
+      min-height: 0;
+    }
+
+    body[data-page="index.html"] .home-briefing-grid,
+    .home-data-board-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .article-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 760px) {
+    .topbar {
+      padding: 12px 14px;
+    }
+
+    .topbar-side,
+    .app-layout {
+      width: calc(100vw - 20px);
+    }
+
+    .app-layout {
+      margin-top: 14px;
+      gap: 14px;
+    }
+
+    .side-nav {
+      display: none;
+    }
+
+    .shell {
+      padding: 18px 16px 92px;
+      border-radius: 0;
+    }
+
+    .hero-card,
+    .status-card,
+    .section-card,
+    .article-card,
+    .info-card,
+    .list-card,
+    .menu-update-card,
+    .home-briefing-card,
+    .home-section-card,
+    .resource-card,
+    .application-card,
+    .site-footer {
+      border-radius: 22px;
+    }
+
+    .hero-card h1,
+    body[data-page="index.html"] .home-briefing-title {
+      font-size: clamp(1.8rem, 8vw, 2.25rem);
+    }
+
+    .article-grid,
+    .feature-grid,
+    .home-maker-grid,
+    .home-application-grid,
+    .youth-metrics-grid,
+    .home-support-metrics-grid,
+    .home-overview .home-glance-grid,
+    .home-glance-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .top-nav {
+      overflow-x: auto;
+    }
+
+    .bottom-nav {
+      width: calc(100vw - 20px);
+      bottom: 10px;
+      border-radius: 20px;
+    }
+  }
 </style>
 </head>
 <body data-page="hub.html">
   <header class="topbar">
     <div class="topbar-side">
-      <form class="global-search" action="news.html" method="get" role="search"><span class="global-search-icon" aria-hidden="true">⌕</span><input type="search" name="q" autocomplete="off" placeholder="Search insights..."></form>
+      <form class="global-search" action="news.html" method="get" role="search"><span class="global-search-icon" aria-hidden="true">⌕</span><input type="search" name="q" autocomplete="off" placeholder="정책·이슈 검색"></form>
       <a class="topbar-icon topbar-home-link" href="index.html" aria-label="홈">
         <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
           <path d="M4 11.5 12 5l8 6.5"></path>
@@ -6839,22 +8536,13 @@
           <path d="M9 12h6"></path>
           <path d="M9 15h6"></path>
           <path d="M9 18h4"></path>
-        </svg></span><span class="side-nav-text"><strong>뉴스 모음</strong></span></a><a class="side-nav-link primary-menu-link" href="election.html" data-side-icon="ballot"><span class="side-nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false">
-          <path d="M6 10h12v10H6z"></path>
-          <path d="M8.5 10 12 5l3.5 5"></path>
-          <path d="m9.5 15 2 2 4-4"></path>
-        </svg></span><span class="side-nav-text"><strong>선거·공약</strong></span></a><a class="side-nav-link primary-menu-link" href="policies.html" data-side-icon="government"><span class="side-nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false">
+        </svg></span><span class="side-nav-text"><strong>뉴스 모음</strong></span></a><a class="side-nav-link primary-menu-link" href="official.html" data-side-icon="government"><span class="side-nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false">
           <path d="M4 9.5 12 5l8 4.5"></path>
           <path d="M5.5 19h13"></path>
           <path d="M7 10.5V17"></path>
           <path d="M12 10.5V17"></path>
           <path d="M17 10.5V17"></path>
-        </svg></span><span class="side-nav-text"><strong>정부 동향</strong></span></a><a class="side-nav-link primary-menu-link" href="plans.html" data-side-icon="map"><span class="side-nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false">
-          <path d="M5 6.5 10 5l4 1.5 5-1.5v12.5L14 19l-4-1.5L5 19z"></path>
-          <path d="M10 5v12.5"></path>
-          <path d="M14 6.5V19"></path>
-          <path d="M16.5 10.5h.01"></path>
-        </svg></span><span class="side-nav-text"><strong>지자체 동향</strong></span></a><a class="side-nav-link primary-menu-link active" href="hub.html" data-side-icon="meeting" aria-current="page"><span class="side-nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false">
+        </svg></span><span class="side-nav-text"><strong>공식자료</strong></span></a><a class="side-nav-link primary-menu-link active" href="hub.html" data-side-icon="meeting" aria-current="page"><span class="side-nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false">
           <path d="M8.5 10a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z"></path>
           <path d="M15.5 10a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z"></path>
           <path d="M4.5 19c.5-3 2-5 4-5s3.5 2 4 5"></path>
@@ -6864,7 +8552,11 @@
           <path d="M18.5 5.5h-4A3.5 3.5 0 0 0 11 9v10a3.5 3.5 0 0 1 3.5-3.5h4z"></path>
           <path d="M14 9h2.5"></path>
           <path d="M14 12h2.5"></path>
-        </svg></span><span class="side-nav-text"><strong>연구·문헌</strong></span></a>
+        </svg></span><span class="side-nav-text"><strong>연구·문헌</strong></span></a><a class="side-nav-link primary-menu-link" href="contact.html" data-side-icon="contact"><span class="side-nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false">
+          <path d="M5 7.5h14v10H5z"></path>
+          <path d="m5.5 8 6.5 5 6.5-5"></path>
+          <path d="M8 19h8"></path>
+        </svg></span><span class="side-nav-text"><strong>문의/운영안내</strong></span></a>
         </nav>
       </div>
       <div class="side-nav-section">
@@ -6875,7 +8567,7 @@
       </div>
       <a class="side-update-card" href="news.html">
         <strong>Weekly Update</strong>
-        <span>새로 수집된 청년 정책·뉴스 흐름을 이번 주 단위로 확인하세요.</span>
+        <span>이번 주 청년정책과 청년 이슈의 흐름을 확인합니다.</span>
       </a>
       <div class="side-nav-admin" data-admin-only="true" hidden>
         <span class="side-nav-kicker">관리 예정</span>
@@ -6914,11 +8606,11 @@
           </div>
           <div class="filter-group filter-group-scope wide">
             <span class="filter-group-label" data-policy-scope-label="true">세부 구분</span>
-            <div class="filter-controls"><button class="filter-button active" type="button" data-policy-filter="true" data-filter-group="scope" data-filter-value="all" data-policy-scope-button="true" data-scope-kind="all" aria-pressed="true">전체</button><button class="filter-button" type="button" data-policy-filter="true" data-filter-group="scope" data-filter-value="국무조정실" data-policy-scope-button="true" data-scope-kind="official" aria-pressed="false" hidden>국무조정실</button><button class="filter-button" type="button" data-policy-filter="true" data-filter-group="scope" data-filter-value="BBS NEWS" data-policy-scope-button="true" data-scope-kind="official" aria-pressed="false" hidden>BBS NEWS</button><button class="filter-button" type="button" data-policy-filter="true" data-filter-group="scope" data-filter-value="국방일보" data-policy-scope-button="true" data-scope-kind="official" aria-pressed="false" hidden>국방일보</button><button class="filter-button" type="button" data-policy-filter="true" data-filter-group="scope" data-filter-value="뉴스핌" data-policy-scope-button="true" data-scope-kind="official" aria-pressed="false" hidden>뉴스핌</button><button class="filter-button" type="button" data-policy-filter="true" data-filter-group="scope" data-filter-value="문화일보" data-policy-scope-button="true" data-scope-kind="official" aria-pressed="false" hidden>문화일보</button><button class="filter-button" type="button" data-policy-filter="true" data-filter-group="scope" data-filter-value="광진구" data-policy-scope-button="true" data-scope-kind="local" aria-pressed="false" hidden>광진구</button><button class="filter-button" type="button" data-policy-filter="true" data-filter-group="scope" data-filter-value="울주군" data-policy-scope-button="true" data-scope-kind="local" aria-pressed="false" hidden>울주군</button></div>
+            <div class="filter-controls"><button class="filter-button active" type="button" data-policy-filter="true" data-filter-group="scope" data-filter-value="all" data-policy-scope-button="true" data-scope-kind="all" aria-pressed="true">전체</button><button class="filter-button" type="button" data-policy-filter="true" data-filter-group="scope" data-filter-value="새 창 열림" data-policy-scope-button="true" data-scope-kind="official" aria-pressed="false" hidden>새 창 열림</button><button class="filter-button" type="button" data-policy-filter="true" data-filter-group="scope" data-filter-value="시간도" data-policy-scope-button="true" data-scope-kind="local" aria-pressed="false" hidden>시간도</button></div>
           </div>
           <div class="filter-group filter-group-type wide">
             <span class="filter-group-label">활동</span>
-            <div class="filter-controls"><button class="filter-button active" type="button" data-policy-filter="true" data-filter-group="type" data-filter-value="all" aria-pressed="true">전체</button><button class="filter-button" type="button" data-policy-filter="true" data-filter-group="type" data-filter-value="회의" aria-pressed="false">회의</button><button class="filter-button" type="button" data-policy-filter="true" data-filter-group="type" data-filter-value="위원회" aria-pressed="false">위원회</button><button class="filter-button" type="button" data-policy-filter="true" data-filter-group="type" data-filter-value="모집" aria-pressed="false">모집</button><button class="filter-button" type="button" data-policy-filter="true" data-filter-group="type" data-filter-value="간담회" aria-pressed="false">간담회</button></div>
+            <div class="filter-controls"><button class="filter-button active" type="button" data-policy-filter="true" data-filter-group="type" data-filter-value="all" aria-pressed="true">전체</button><button class="filter-button" type="button" data-policy-filter="true" data-filter-group="type" data-filter-value="회의" aria-pressed="false">회의</button><button class="filter-button" type="button" data-policy-filter="true" data-filter-group="type" data-filter-value="간담회" aria-pressed="false">간담회</button><button class="filter-button" type="button" data-policy-filter="true" data-filter-group="type" data-filter-value="포럼" aria-pressed="false">포럼</button></div>
           </div>
           <div class="filter-group filter-group-search">
             <span class="filter-group-label">검색</span>
@@ -6933,17 +8625,17 @@
               <div class="date-range-fields">
                 <label class="date-input-wrap" data-policy-date-launch="true">
                   <span class="date-picker-label">시작일</span>
-                  <input class="date-input" type="date" data-policy-date-input="true" data-date-role="start" min="2026-04-13" max="2026-05-08">
+                  <input class="date-input" type="date" data-policy-date-input="true" data-date-role="start" min="2026-07-30" max="2026-07-30">
                 </label>
                 <label class="date-input-wrap" data-policy-date-launch="true">
                   <span class="date-picker-label">종료일</span>
-                  <input class="date-input" type="date" data-policy-date-input="true" data-date-role="end" min="2026-04-13" max="2026-05-08">
+                  <input class="date-input" type="date" data-policy-date-input="true" data-date-role="end" min="2026-07-30" max="2026-07-30">
                 </label>
               </div>
             </div>
           </div>
         </div>
-        <div class="filter-status" data-policy-filter-status>전체 12건을 보고 있습니다.</div>
+        <div class="filter-status" data-policy-filter-status>전체 6건을 보고 있습니다.</div>
       </article>
     </section>
 
@@ -6953,97 +8645,52 @@
             <h2>중앙부처 자문·회의</h2>
             <p>국무조정실과 중앙부처의 청년 관계장관회의, 자문단, 보좌역, 위원회 기록을 모았습니다.</p>
           </div>
-          <span class="mini-link" aria-disabled="true" data-policy-section-count>10건</span>
+          <span class="mini-link" aria-disabled="true" data-policy-section-count>5건</span>
         </div>
         <div class="article-grid">
-    <article class="article-card has-media" data-article-card="true" data-policy-card="true" data-policy-group="official" data-policy-scope="국무조정실" data-policy-type="위원회" data-article-url="https://www.yna.co.kr/view/AKR20260508145000001" data-article-title="[게시판] 정부 청년정책조정위 전문위원회 출범" data-article-date="2026-05-08" data-article-region="서울" data-article-search="[게시판] 정부 청년정책조정위 전문위원회 출범 ▲ 국무조정실은 8일 서울 중구 LW컨벤션에서 청년정책조정위원회 산하 전문위원회 출범식을 열어 청년 및 전문가 60명을 위원으로 위촉했다. 위원... 연합뉴스 네이버뉴스 청년 광역(1주) 이상현 서울 중구 충주시 요구 서울 ▲ 국무조정실은 8일 서울 중구 LW컨벤션에서 청년정책조정위원회 산하 전문위원회 출범식을 열어 청년 및 전문가 60명을 위원으로 위촉했다. 위원... 정부 위원회, 출범 청년정책조정위원회 국무조정실">
-      <a class="article-media" href="https://www.yna.co.kr/view/AKR20260508145000001" target="_blank" rel="noreferrer" aria-label="[게시판] 정부 청년정책조정위 전문위원회 출범 이미지와 기사 링크 바로가기"><img class="article-thumbnail" src="https://img3.yna.co.kr/photo/yna/YH/2026/05/06/PYH2026050607010001300_P4.jpg" alt="[게시판] 정부 청년정책조정위 전문위원회 출범 | 연합뉴스" loading="lazy" decoding="async" referrerpolicy="no-referrer"  onerror="this.parentElement.hidden=true;var c=this.closest('.article-card');if(c){c.classList.remove('has-media');c.classList.add('no-media');}"></a>
-      <div class="article-meta"><div class="article-meta-tags"><span class="meta-pill primary">정부</span><span class="meta-pill subtle">국무조정실</span></div><div class="article-byline"><span class="meta-item"><img class="publisher-icon" src="https://r.yna.co.kr/www/home_n/v03/favicon/favicon_180x180_01.png?v=20260326_0935" alt="연합뉴스 아이콘" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.hidden=true">연합뉴스</span><span class="meta-divider" aria-hidden="true">•</span><span class="meta-item">2026-05-08 17:44</span></div></div>
-      <h3><a class="article-title-link" href="https://www.yna.co.kr/view/AKR20260508145000001" target="_blank" rel="noreferrer" aria-label="[게시판] 정부 청년정책조정위 전문위원회 출범 링크 바로가기">[게시판] 정부 청년정책조정위 전문위원회 출범</a></h3>
-      <div class="badge-row"><span class="badge">위원회, 출범</span><span class="badge">청년정책조정위원회</span></div>
-      <p class="article-summary"><a class="article-summary-link" href="https://www.yna.co.kr/view/AKR20260508145000001" target="_blank" rel="noreferrer" aria-label="[게시판] 정부 청년정책조정위 전문위원회 출범 링크 바로가기">▲ 국무조정실은 8일 서울 중구 LW컨벤션에서 청년정책조정위원회 산하 전문위원회 출범식을 열어 청년 및 전문가 60명을 위원으로 위촉했다. 위원...</a></p>
-      <div class="article-actions"><a class="mini-link article-link-action" href="https://www.yna.co.kr/view/AKR20260508145000001" target="_blank" rel="noreferrer" aria-label="[게시판] 정부 청년정책조정위 전문위원회 출범 링크 바로가기">링크 바로가기</a><button class="action-button" type="button" data-article-action="share" data-article-url="https://www.yna.co.kr/view/AKR20260508145000001" data-share-title="[게시판] 정부 청년정책조정위 전문위원회 출범" aria-label="[게시판] 정부 청년정책조정위 전문위원회 출범 공유하기">공유하기</button><button class="action-button" type="button" data-article-action="copy" data-article-url="https://www.yna.co.kr/view/AKR20260508145000001" data-share-title="[게시판] 정부 청년정책조정위 전문위원회 출범" aria-label="[게시판] 정부 청년정책조정위 전문위원회 출범 링크 복사">링크 복사</button></div><div class="article-feedback" data-article-feedback aria-live="polite"></div>
+    <article class="article-card no-media" data-article-card="true" data-policy-card="true" data-policy-group="official" data-policy-scope="새 창 열림" data-policy-type="간담회" data-article-url="https://www.cbci.co.kr/news/articleView.html?idxno=589598" data-article-title="[정치家] 배경훈 부총리 겸 과학기술정보통신부 장관 ④ㅣ AI 대전환 속..." data-article-date="" data-article-region="대전" data-article-search="[정치家] 배경훈 부총리 겸 과학기술정보통신부 장관 ④ㅣ AI 대전환 속... 출범식 행사에서는 배경훈 부총리 겸 과기정통부 장관의 환영사와 함께, 이무근 청년보좌역 이 신임 자문단장으로 임명장을 받았다. 자문단원들에게도 위촉장이 수여됐으며, 이후 오찬 간담회가 이어졌다. 배경훈 부총리는 &quot;AI가 많은 일을 대신하는 시대일수록 세상을 바꾸는 것은 &#x27;사람만이 할 수 있는... 새 창 열림 새 창 열림 네이버뉴스 거버넌스(1개월) 대전 대전 일반보도 출범식 행사에서는 배경훈 부총리 겸 과기정통부 장관의 환영사와 함께, 이무근 청년보좌역 이 신임 자문단장으로 임명장을 받았다. 자문단원들에게도 위촉장이 수여됐으며, 이후 오찬 간담회가 이어졌다. 배경훈... 정부 간담회, 위원회, 자문 청년보좌역 새 창 열림">
+
+      <div class="article-meta"><div class="article-meta-tags"><span class="meta-pill primary">정부</span><span class="meta-pill subtle">새 창 열림</span></div><div class="article-byline"><span class="meta-item">새 창 열림</span><span class="meta-divider" aria-hidden="true">•</span><span class="meta-item">날짜 미상</span></div></div>
+      <h3><a class="article-title-link" href="https://www.cbci.co.kr/news/articleView.html?idxno=589598" target="_blank" rel="noreferrer" aria-label="[정치家] 배경훈 부총리 겸 과학기술정보통신부 장관 ④ㅣ AI 대전환 속... 링크 바로가기">[정치家] 배경훈 부총리 겸 과학기술정보통신부 장관 ④ㅣ AI 대전환 속...</a></h3>
+      <div class="badge-row"><span class="badge">간담회, 위원회, 자문</span><span class="badge">청년보좌역</span></div>
+      <p class="article-summary"><a class="article-summary-link" href="https://www.cbci.co.kr/news/articleView.html?idxno=589598" target="_blank" rel="noreferrer" aria-label="[정치家] 배경훈 부총리 겸 과학기술정보통신부 장관 ④ㅣ AI 대전환 속... 링크 바로가기">출범식 행사에서는 배경훈 부총리 겸 과기정통부 장관의 환영사와 함께, 이무근 청년보좌역 이 신임 자문단장으로 임명장을 받았다. 자문단원들에게도 위촉장이 수여됐으며, 이후 오찬 간담회가 이어졌다. 배경훈...</a></p>
+      <div class="article-actions"><a class="mini-link article-link-action" href="https://www.cbci.co.kr/news/articleView.html?idxno=589598" target="_blank" rel="noreferrer" aria-label="[정치家] 배경훈 부총리 겸 과학기술정보통신부 장관 ④ㅣ AI 대전환 속... 링크 바로가기">링크 바로가기</a><button class="action-button" type="button" data-article-action="share" data-article-url="https://www.cbci.co.kr/news/articleView.html?idxno=589598" data-share-title="[정치家] 배경훈 부총리 겸 과학기술정보통신부 장관 ④ㅣ AI 대전환 속..." aria-label="[정치家] 배경훈 부총리 겸 과학기술정보통신부 장관 ④ㅣ AI 대전환 속... 공유하기">공유하기</button><button class="action-button" type="button" data-article-action="copy" data-article-url="https://www.cbci.co.kr/news/articleView.html?idxno=589598" data-share-title="[정치家] 배경훈 부총리 겸 과학기술정보통신부 장관 ④ㅣ AI 대전환 속..." aria-label="[정치家] 배경훈 부총리 겸 과학기술정보통신부 장관 ④ㅣ AI 대전환 속... 링크 복사">링크 복사</button></div><div class="article-feedback" data-article-feedback aria-live="polite"></div>
     </article>
 
-    <article class="article-card no-media" data-article-card="true" data-policy-card="true" data-policy-group="official" data-policy-scope="국무조정실" data-policy-type="회의" data-article-url="https://www.opm.go.kr/opm/news/press-release.do?mode=view&amp;articleNo=162185&amp;srSearchVal=%EC%B2%AD%EB%85%84&amp;article.offset=0&amp;articleLimit=20" data-article-title="[보도자료] 청년정책위원회 전문위원회 발대식 개최" data-article-date="2026-05-08" data-article-region="서울" data-article-search="[보도자료] 청년정책위원회 전문위원회 발대식 개최 청년이 직접 입안하여, 청년의 삶을 바꾼다! - 청년정책조정위원회 전문위원회 출범, 청년주도 정책 본격화 - - 청년정책조정위원회 실무위 내 6개 분과(일자리, 교육, 주거 등) 전문위원회 설치 - 윤창렬 국무조정실장, 청년 및 전문가 60명을 전문위원회 위원으로 위촉 - 위원의 70%를 청년으로 구성, ‘청년 주도형’ 정책 발굴·제안 본격화 【관련 국정과제】 89. 청년의 정책 참여 확대와 기본생활 지원으로 함께 만드는 미래 □ 국무조정실(실장 윤창렬)은 5월 8일(금) 14시, 서울 중구 LW컨벤션에서 청년정책조정위원회 전문위원회(이하 ‘전문위원회’) 출범식을 개최하고, 총 60명의 청년 및 전문가들을 전문위원회 위원으로 위촉했다. □ 전문위원회는「청년기본법」*에 따라 청년정책조정위원회 실무위원회 산하에 설치된 기구로, 청년들이 정책수립 과정에 주도적으로 참여하여 청년의 시각에서 청년사업들을 직접 발굴·입안하는 핵심 역할을 수행한다. * (청년기본법 제13조 7항) 청년정책조정위원회의 효율적 운영 및 위원회 심의사항의 전문적 검토를 위해 실무위원회를 두며, 실무위원회에 분과별 전문위원회를 둘 수 있다. ㅇ 지난해 9월부터 공모 및 1·2차 서류심사, 3차 면접심사 등 엄격한 선발절차를 거쳐 위촉된 60명의 위원들은 ▴일자리 ▴교육 ▴주거 ▴생활 ▴참여·권리 ▴기획·균형발전 등 6개 분과별로 10명씩 나눠 본격적인 활동에 들어간다. 〈 전문위원회 분과별 소관 사항 〉 분과 소관 사항 일자리 청년 고용촉진 및 청년일자리의 질 향상 등에 관한 사항 교육 청년 능력·재능·기술 등 개발 지원을 위한 교육환경 조성 등에 관한 사항 주거 청년 주거안정 및 주거수준 향상 등에 관한 사항 생활 청년의 안정적인 금융생활 및 문화활동 지원 등에 관한 사항 참여·권리 청년정책 수립 절차에의 청년 참여 확대 등에 관한 사항 기획·균형발전 지역 청년의 자립 지원 및 지역 간 균형발전에 관한 사항 등 □ 전문위원회 위원들은 청년정책에 대한 높은 관심과 참여 의지를 갖추고, 청년 관련 분야에서 풍부한 활동 경험을 쌓은 청년 및 전문가들로 구성되었다. ㅇ 위원 구성 시 전문성은 물론 성별, 활동 지역 등을 종합적으로 고려하였으며, 청년 눈높이에 맞춘 실효성 있는 정책 제안이 이루어질 수 있도록 전체 위원의 70%(총 60명 중 42명)를 청년들로 위촉하였다. □ 전문위원회 위원들은 앞으로 2년의 임기 동안 매월 온·오프라인 회의 등을 통 국무조정실 보도자료 국무조정실 보도자료 주거 부채 고용 취업 주거 서울 세종 구로 중구 반드시 서울 청년이 직접 입안하여, 청년의 삶을 바꾼다! - 청년정책조정위원회 전문위원회 출범, 청년주도 정책 본격화 - - 청년정책조정위원회 실무위 내 6개 분과(일자리, 교육, 주거 등) 전문위원회 설치 - 윤... 정부 회의, 위원회, 모집 청년정책조정위원회 국무조정실">
+    <article class="article-card no-media" data-article-card="true" data-policy-card="true" data-policy-group="official" data-policy-scope="새 창 열림" data-policy-type="회의" data-article-url="http://www.hansbiz.co.kr/news/articleView.html?idxno=849893" data-article-title="의식주의 윤태이 대표, 산업부 2030 청년 자문단 위촉" data-article-date="" data-article-region="대전" data-article-search="의식주의 윤태이 대표, 산업부 2030 청년 자문단 위촉 이 기구는 부처 내 공식 회의 체계에서 청년보좌역 제도와 연계해 운영한다. 자문단이 제안한 아이디어는 부처 검토 과정에 실질적으로 반영된다. 윤 대표가 배정된 산업 분과는 첨단산업 인재 양성, 인공지능(AI) 기반 산업 대전환, 제조업 혁신 등 국가 미래 성장동력과 관련된 산업 정책을 모니터링하고... 새 창 열림 새 창 열림 네이버뉴스 거버넌스(1개월) 대전 대전 일반보도 이 기구는 부처 내 공식 회의 체계에서 청년보좌역 제도와 연계해 운영한다. 자문단이 제안한 아이디어는 부처 검토 과정에 실질적으로 반영된다. 윤 대표가 배정된 산업 분과는 첨단산업 인재 양성, 인공지능... 정부 회의, 위원회, 자문 청년보좌역 새 창 열림">
 
-      <div class="article-meta"><div class="article-meta-tags"><span class="meta-pill primary">정부</span><span class="meta-pill subtle">국무조정실</span></div><div class="article-byline"><span class="meta-item"><img class="publisher-icon" src="https://www.opm.go.kr/favicon.ico" alt="국무조정실 보도자료 아이콘" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.hidden=true">국무조정실 보도자료</span><span class="meta-divider" aria-hidden="true">•</span><span class="meta-item">2026-05-08</span></div></div>
-      <h3><a class="article-title-link" href="https://www.opm.go.kr/opm/news/press-release.do?mode=view&amp;articleNo=162185&amp;srSearchVal=%EC%B2%AD%EB%85%84&amp;article.offset=0&amp;articleLimit=20" target="_blank" rel="noreferrer" aria-label="[보도자료] 청년정책위원회 전문위원회 발대식 개최 링크 바로가기">[보도자료] 청년정책위원회 전문위원회 발대식 개최</a></h3>
-      <div class="badge-row"><span class="badge">회의, 위원회, 모집</span><span class="badge">청년정책조정위원회</span></div>
-      <p class="article-summary"><a class="article-summary-link" href="https://www.opm.go.kr/opm/news/press-release.do?mode=view&amp;articleNo=162185&amp;srSearchVal=%EC%B2%AD%EB%85%84&amp;article.offset=0&amp;articleLimit=20" target="_blank" rel="noreferrer" aria-label="[보도자료] 청년정책위원회 전문위원회 발대식 개최 링크 바로가기">청년이 직접 입안하여, 청년의 삶을 바꾼다! - 청년정책조정위원회 전문위원회 출범, 청년주도 정책 본격화 - - 청년정책조정위원회 실무위 내 6개 분과(일자리, 교육, 주거 등) 전문위원회 설치 - 윤...</a></p>
-      <div class="article-actions"><a class="mini-link article-link-action" href="https://www.opm.go.kr/opm/news/press-release.do?mode=view&amp;articleNo=162185&amp;srSearchVal=%EC%B2%AD%EB%85%84&amp;article.offset=0&amp;articleLimit=20" target="_blank" rel="noreferrer" aria-label="[보도자료] 청년정책위원회 전문위원회 발대식 개최 링크 바로가기">링크 바로가기</a><button class="action-button" type="button" data-article-action="share" data-article-url="https://www.opm.go.kr/opm/news/press-release.do?mode=view&amp;articleNo=162185&amp;srSearchVal=%EC%B2%AD%EB%85%84&amp;article.offset=0&amp;articleLimit=20" data-share-title="[보도자료] 청년정책위원회 전문위원회 발대식 개최" aria-label="[보도자료] 청년정책위원회 전문위원회 발대식 개최 공유하기">공유하기</button><button class="action-button" type="button" data-article-action="copy" data-article-url="https://www.opm.go.kr/opm/news/press-release.do?mode=view&amp;articleNo=162185&amp;srSearchVal=%EC%B2%AD%EB%85%84&amp;article.offset=0&amp;articleLimit=20" data-share-title="[보도자료] 청년정책위원회 전문위원회 발대식 개최" aria-label="[보도자료] 청년정책위원회 전문위원회 발대식 개최 링크 복사">링크 복사</button></div><div class="article-feedback" data-article-feedback aria-live="polite"></div>
+      <div class="article-meta"><div class="article-meta-tags"><span class="meta-pill primary">정부</span><span class="meta-pill subtle">새 창 열림</span></div><div class="article-byline"><span class="meta-item">새 창 열림</span><span class="meta-divider" aria-hidden="true">•</span><span class="meta-item">날짜 미상</span></div></div>
+      <h3><a class="article-title-link" href="http://www.hansbiz.co.kr/news/articleView.html?idxno=849893" target="_blank" rel="noreferrer" aria-label="의식주의 윤태이 대표, 산업부 2030 청년 자문단 위촉 링크 바로가기">의식주의 윤태이 대표, 산업부 2030 청년 자문단 위촉</a></h3>
+      <div class="badge-row"><span class="badge">회의, 위원회, 자문</span><span class="badge">청년보좌역</span></div>
+      <p class="article-summary"><a class="article-summary-link" href="http://www.hansbiz.co.kr/news/articleView.html?idxno=849893" target="_blank" rel="noreferrer" aria-label="의식주의 윤태이 대표, 산업부 2030 청년 자문단 위촉 링크 바로가기">이 기구는 부처 내 공식 회의 체계에서 청년보좌역 제도와 연계해 운영한다. 자문단이 제안한 아이디어는 부처 검토 과정에 실질적으로 반영된다. 윤 대표가 배정된 산업 분과는 첨단산업 인재 양성, 인공지능...</a></p>
+      <div class="article-actions"><a class="mini-link article-link-action" href="http://www.hansbiz.co.kr/news/articleView.html?idxno=849893" target="_blank" rel="noreferrer" aria-label="의식주의 윤태이 대표, 산업부 2030 청년 자문단 위촉 링크 바로가기">링크 바로가기</a><button class="action-button" type="button" data-article-action="share" data-article-url="http://www.hansbiz.co.kr/news/articleView.html?idxno=849893" data-share-title="의식주의 윤태이 대표, 산업부 2030 청년 자문단 위촉" aria-label="의식주의 윤태이 대표, 산업부 2030 청년 자문단 위촉 공유하기">공유하기</button><button class="action-button" type="button" data-article-action="copy" data-article-url="http://www.hansbiz.co.kr/news/articleView.html?idxno=849893" data-share-title="의식주의 윤태이 대표, 산업부 2030 청년 자문단 위촉" aria-label="의식주의 윤태이 대표, 산업부 2030 청년 자문단 위촉 링크 복사">링크 복사</button></div><div class="article-feedback" data-article-feedback aria-live="polite"></div>
     </article>
 
-    <article class="article-card has-media" data-article-card="true" data-policy-card="true" data-policy-group="official" data-policy-scope="국방일보" data-policy-type="간담회" data-article-url="https://kookbang.dema.mil.kr/newsWeb/20260508/7/ATCE_CTGR_0010010000/view.do" data-article-title="“국방 향한 청년 제언 귀담아듣고 활동도 적극 지원”" data-article-date="2026-05-07" data-article-region="서울" data-article-search="“국방 향한 청년 제언 귀담아듣고 활동도 적극 지원” 혁신어벤져스&amp;middot;청년자문단 합동 발대식 안규백 장관, 특별강연서 도전정신 강조 소통간담회선 고민 공감하며 조언 건네 &amp;nbsp; 혁신어벤져스&amp;middot;청년자문단 합동 발대식&amp;hellip;소통하는 軍 안규백(맨 앞줄 오른쪽 다섯째) 국방부 장관이 7일 서울 용산구 국방컨벤션에서 열린 &amp;lsquo;제7기 혁신어벤져스&amp;rsquo;와 &amp;lsquo;제3기 2030청년자문단&amp;rsquo; 합동 발대식에서 참석자들과 기념촬영을 하고 있다. &amp;nbsp; 안규백 국방부 장관이 청년들을 만나 &amp;ldquo;어떤 실수나 과오도 다시 바로잡고 새롭게 시작할 수 있는 것이 청년의 특권&amp;rdquo;이라며 끊임없는 도전정신을 가지라고 당부했다. 안 장관은 7일 서울 용산구 국방컨벤션에서 국방부 청년 공무원으로 구성된 &amp;lsquo;제7기 혁신어벤져스&amp;rsquo;와 국방 분야에 관심 있는 청년 국민들로 꾸려진 &amp;lsquo;2030청년자문단&amp;rsquo;을 대상으로 특별강연을 열고 이같이 밝혔다. &amp;lsquo;청년에게 전하는 안부&amp;rsquo;를 주제로 강연에 나선 안 장관은 &amp;ldquo;청년들은 사람과의 만남에서, 책 속의 지혜에서, 그리고 낯선 곳으로의 여행에서 인생을 배운다&amp;rdquo;며 &amp;ldquo;꿈과 목표를 갖고 다양한 경험을 통해 자신만의 길을 찾아가길 바란다&amp;rdquo;고 말했다. 이어 &amp;ldquo;역사학자 아놀드 토인비가 인류의 역사를 &amp;lsquo;도전과 응전의 역사&amp;rsquo;라고 말한 것처럼 실패를 두려워하지 말고 끊임없이 도전해 달라&amp;rdquo;고 강조했다. &amp;nbsp; &amp;nbsp; 7일 열린 제7기 혁신어벤져스 및 제3기 2030청년자문단 합동 발대식에서 안규백 국방부 장관이 참석자들과 소통하고 있다. 한재호 기자 강연 뒤에는 소통간담회 &amp;lsquo;장관님, 궁금해요!&amp;rsquo;가 이어졌다. 안 장관은 형식과 주제에 구애받지 않고 자유롭게 대화를 나눴다. 참석한 청년들은 진로와 조직문화, 공직생활 등에 대한 고민을 털어놨고, 안 장관은 이에 공감하며 조언을 건넸다. 안 장관은 &amp;ldquo;청년들의 미래에 대해 함께 고민하고 이야기를 나눌 수 있었던 뜻깊은 시간이었다&amp;rdquo;며 &amp;ldquo;국방을 향한 청년들의 제언을 귀담아듣고, 청년 단원들의 활동도 적극 지원하겠다&amp;rdquo;고 전했다. 김수혁 국방부 청년보좌역은 &amp;ldquo;청년들이 국방부의 일원으로서 자긍심과 소속감을 느끼고 장관과 더욱 가까이 소통할 수 있었던 의미 있는 자리였다&amp;rdquo;며 &amp;ldquo;이들의 생생한 목소리가 국방정책과 조직문화에 실질적으로 반영될 수 있도록 가교 역할에 최선을 다하겠다&amp;rdquo;고 했다. 특별강연과 소통간담회에 앞서 안 장관은 &amp;lsquo;제7기 혁신어벤져스&amp;rsquo;와 &amp;lsquo;제3기 2030청년자문단&amp;rsquo; 합동 발대식을 주관했다. 혁신어벤져스는 조직문화 개선과 자유로운 소통문화 확산을 위한 활동을 해오고 있다. 청년자문단은 주요 국방정책에 대한 의견 제시와 정책 제언 역할을 맡는다. 두 조직은 긴밀한 협업을 통해 청년세대의 목소리를 국방 정책과 조직문화에 반영해 나갈 방침이다. 김해령 기자 국방일보 네이버뉴스 거버넌스(1개월) 서울 용산 용산구 서울 혁신어벤져스·청년자문단 합동 발대식 안규백 장관, 특별강연서 도전정신 강조 소통간담회선 고민 공감하며 조언 건네 혁신어벤져스·청년자문단 합동 발대식…소통하는 軍 안규백(맨 앞줄 오른쪽 다섯째) 국방부... 정부 간담회, 자문 청년보좌역, 2030청년자문단, 청년자문단 국방일보">
-      <a class="article-media" href="https://kookbang.dema.mil.kr/newsWeb/20260508/7/ATCE_CTGR_0010010000/view.do" target="_blank" rel="noreferrer" aria-label="“국방 향한 청년 제언 귀담아듣고 활동도 적극 지원” 이미지와 기사 링크 바로가기"><img class="article-thumbnail" src="https://kookbang.dema.mil.kr/newspaper/tmplat/upload/20260507/thumb1/BBS_202605070516217210.jpg" alt="“국방 향한 청년 제언 귀담아듣고 활동도 적극 지원”" loading="lazy" decoding="async" referrerpolicy="no-referrer"  onerror="this.parentElement.hidden=true;var c=this.closest('.article-card');if(c){c.classList.remove('has-media');c.classList.add('no-media');}"></a>
-      <div class="article-meta"><div class="article-meta-tags"><span class="meta-pill primary">정부</span><span class="meta-pill subtle">국방일보</span></div><div class="article-byline"><span class="meta-item"><img class="publisher-icon" src="https://kookbang.dema.mil.kr/newspaper/2022/images/icon/favicon.ico" alt="국방일보 아이콘" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.hidden=true">국방일보</span><span class="meta-divider" aria-hidden="true">•</span><span class="meta-item">2026-05-07 19:10</span></div></div>
-      <h3><a class="article-title-link" href="https://kookbang.dema.mil.kr/newsWeb/20260508/7/ATCE_CTGR_0010010000/view.do" target="_blank" rel="noreferrer" aria-label="“국방 향한 청년 제언 귀담아듣고 활동도 적극 지원” 링크 바로가기">“국방 향한 청년 제언 귀담아듣고 활동도 적극 지원”</a></h3>
-      <div class="badge-row"><span class="badge">간담회, 자문</span><span class="badge">청년보좌역, 2030청년자문단, 청년자문단</span></div>
-      <p class="article-summary"><a class="article-summary-link" href="https://kookbang.dema.mil.kr/newsWeb/20260508/7/ATCE_CTGR_0010010000/view.do" target="_blank" rel="noreferrer" aria-label="“국방 향한 청년 제언 귀담아듣고 활동도 적극 지원” 링크 바로가기">혁신어벤져스·청년자문단 합동 발대식 안규백 장관, 특별강연서 도전정신 강조 소통간담회선 고민 공감하며 조언 건네 혁신어벤져스·청년자문단 합동 발대식…소통하는 軍 안규백(맨 앞줄 오른쪽 다섯째) 국방부...</a></p>
-      <div class="article-actions"><a class="mini-link article-link-action" href="https://kookbang.dema.mil.kr/newsWeb/20260508/7/ATCE_CTGR_0010010000/view.do" target="_blank" rel="noreferrer" aria-label="“국방 향한 청년 제언 귀담아듣고 활동도 적극 지원” 링크 바로가기">링크 바로가기</a><button class="action-button" type="button" data-article-action="share" data-article-url="https://kookbang.dema.mil.kr/newsWeb/20260508/7/ATCE_CTGR_0010010000/view.do" data-share-title="“국방 향한 청년 제언 귀담아듣고 활동도 적극 지원”" aria-label="“국방 향한 청년 제언 귀담아듣고 활동도 적극 지원” 공유하기">공유하기</button><button class="action-button" type="button" data-article-action="copy" data-article-url="https://kookbang.dema.mil.kr/newsWeb/20260508/7/ATCE_CTGR_0010010000/view.do" data-share-title="“국방 향한 청년 제언 귀담아듣고 활동도 적극 지원”" aria-label="“국방 향한 청년 제언 귀담아듣고 활동도 적극 지원” 링크 복사">링크 복사</button></div><div class="article-feedback" data-article-feedback aria-live="polite"></div>
+    <article class="article-card no-media" data-article-card="true" data-policy-card="true" data-policy-group="official" data-policy-scope="새 창 열림" data-policy-type="회의" data-article-url="https://view.asiae.co.kr/article/2026071313162238713" data-article-title="부처마다 &#x27;너도나도 청년 &#x27;…예산 30조 몸집 커졌다" data-article-date="" data-article-region="중앙" data-article-search="부처마다 &#x27;너도나도 청년 &#x27;…예산 30조 몸집 커졌다 윤석열 정부에서 도입된 청년보좌역 역시 지난해 35개 기관에서 올해 48개 부처·청으로 확대됐다. 더불어민주당 일각에선 정부조직법을 개정해 청년 정책 전담 부처를 설치하자는 의견도 있다. 2월부터는 &#x27;청년정책 관계장관회의&#x27;가 신설됐다. 정부는 청년기본법에 따라 5년마다 청년정책 기본계획을... 새 창 열림 새 창 열림 네이버뉴스 거버넌스(1개월) 역시 중앙 일반보도 윤석열 정부에서 도입된 청년보좌역 역시 지난해 35개 기관에서 올해 48개 부처·청으로 확대됐다. 더불어민주당 일각에선 정부조직법을 개정해 청년 정책 전담 부처를 설치하자는 의견도 있다. 2월부터는 &#x27;... 정부 회의 청년보좌역, 청년정책 관계장관회의 새 창 열림">
+
+      <div class="article-meta"><div class="article-meta-tags"><span class="meta-pill primary">정부</span><span class="meta-pill subtle">새 창 열림</span></div><div class="article-byline"><span class="meta-item">새 창 열림</span><span class="meta-divider" aria-hidden="true">•</span><span class="meta-item">날짜 미상</span></div></div>
+      <h3><a class="article-title-link" href="https://view.asiae.co.kr/article/2026071313162238713" target="_blank" rel="noreferrer" aria-label="부처마다 &#x27;너도나도 청년 &#x27;…예산 30조 몸집 커졌다 링크 바로가기">부처마다 &#x27;너도나도 청년 &#x27;…예산 30조 몸집 커졌다</a></h3>
+      <div class="badge-row"><span class="badge">회의</span><span class="badge">청년보좌역, 청년정책 관계장관회의</span></div>
+      <p class="article-summary"><a class="article-summary-link" href="https://view.asiae.co.kr/article/2026071313162238713" target="_blank" rel="noreferrer" aria-label="부처마다 &#x27;너도나도 청년 &#x27;…예산 30조 몸집 커졌다 링크 바로가기">윤석열 정부에서 도입된 청년보좌역 역시 지난해 35개 기관에서 올해 48개 부처·청으로 확대됐다. 더불어민주당 일각에선 정부조직법을 개정해 청년 정책 전담 부처를 설치하자는 의견도 있다. 2월부터는 &#x27;...</a></p>
+      <div class="article-actions"><a class="mini-link article-link-action" href="https://view.asiae.co.kr/article/2026071313162238713" target="_blank" rel="noreferrer" aria-label="부처마다 &#x27;너도나도 청년 &#x27;…예산 30조 몸집 커졌다 링크 바로가기">링크 바로가기</a><button class="action-button" type="button" data-article-action="share" data-article-url="https://view.asiae.co.kr/article/2026071313162238713" data-share-title="부처마다 &#x27;너도나도 청년 &#x27;…예산 30조 몸집 커졌다" aria-label="부처마다 &#x27;너도나도 청년 &#x27;…예산 30조 몸집 커졌다 공유하기">공유하기</button><button class="action-button" type="button" data-article-action="copy" data-article-url="https://view.asiae.co.kr/article/2026071313162238713" data-share-title="부처마다 &#x27;너도나도 청년 &#x27;…예산 30조 몸집 커졌다" aria-label="부처마다 &#x27;너도나도 청년 &#x27;…예산 30조 몸집 커졌다 링크 복사">링크 복사</button></div><div class="article-feedback" data-article-feedback aria-live="polite"></div>
     </article>
 
-    <article class="article-card has-media" data-article-card="true" data-policy-card="true" data-policy-group="official" data-policy-scope="문화일보" data-policy-type="간담회" data-article-url="https://www.munhwa.com/article/11587453" data-article-title="국방부 ‘혁신어벤져스·2030청년자문단’ 합동발대식 가져" data-article-date="2026-05-07" data-article-region="서울" data-article-search="국방부 ‘혁신어벤져스·2030청년자문단’ 합동발대식 가져 국방부는 7일 서울 용산 국방컨벤션에서 안규백 국방부장관 주관으로 ‘제7기 혁신어벤져스’·‘제3기 2030청년자문단’ 합동발대식을 개최하고, 청년세대의 역할과 공직가치에 대해 소통하는 시간을 가졌다. 혁신어벤져스는 국방부 소속 청년 공무원으로 구성돼 조직문화 개선과 소 news &gt; 국방 문화일보 네이버뉴스 거버넌스(1개월) 정충신 서울 용산 제시 서울 국방부는 7일 서울 용산 국방컨벤션에서 안규백 국방부장관 주관으로 ‘제7기 혁신어벤져스’·‘제3기 2030청년자문단’ 합동발대식을 개최하고, 청년세대의 역할과 공직가치에 대해 소통하는 시간을 가졌다..... 정부 간담회, 위원회, 자문 청년보좌역, 2030청년자문단, 청년자문단 문화일보">
-      <a class="article-media" href="https://www.munhwa.com/article/11587453" target="_blank" rel="noreferrer" aria-label="국방부 ‘혁신어벤져스·2030청년자문단’ 합동발대식 가져 이미지와 기사 링크 바로가기"><img class="article-thumbnail" src="https://wimg.munhwa.com/news/cms/2026/05/07/news-p.v1.20260507.4a9fe5a3590f4252a44ee4d71d5c7e79_R.jpg" alt="국방부 ‘혁신어벤져스·2030청년자문단’ 합동발대식 가져" loading="lazy" decoding="async" referrerpolicy="no-referrer"  onerror="this.parentElement.hidden=true;var c=this.closest('.article-card');if(c){c.classList.remove('has-media');c.classList.add('no-media');}"></a>
-      <div class="article-meta"><div class="article-meta-tags"><span class="meta-pill primary">정부</span><span class="meta-pill subtle">문화일보</span></div><div class="article-byline"><span class="meta-item"><img class="publisher-icon" src="https://static.munhwa.com/img/favicon_service.ico" alt="문화일보 아이콘" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.hidden=true">문화일보</span><span class="meta-divider" aria-hidden="true">•</span><span class="meta-item">2026-05-07 15:32</span></div></div>
-      <h3><a class="article-title-link" href="https://www.munhwa.com/article/11587453" target="_blank" rel="noreferrer" aria-label="국방부 ‘혁신어벤져스·2030청년자문단’ 합동발대식 가져 링크 바로가기">국방부 ‘혁신어벤져스·2030청년자문단’ 합동발대식 가져</a></h3>
-      <div class="badge-row"><span class="badge">간담회, 위원회, 자문</span><span class="badge">청년보좌역, 2030청년자문단, 청년자문단</span></div>
-      <p class="article-summary"><a class="article-summary-link" href="https://www.munhwa.com/article/11587453" target="_blank" rel="noreferrer" aria-label="국방부 ‘혁신어벤져스·2030청년자문단’ 합동발대식 가져 링크 바로가기">국방부는 7일 서울 용산 국방컨벤션에서 안규백 국방부장관 주관으로 ‘제7기 혁신어벤져스’·‘제3기 2030청년자문단’ 합동발대식을 개최하고, 청년세대의 역할과 공직가치에 대해 소통하는 시간을 가졌다.....</a></p>
-      <div class="article-actions"><a class="mini-link article-link-action" href="https://www.munhwa.com/article/11587453" target="_blank" rel="noreferrer" aria-label="국방부 ‘혁신어벤져스·2030청년자문단’ 합동발대식 가져 링크 바로가기">링크 바로가기</a><button class="action-button" type="button" data-article-action="share" data-article-url="https://www.munhwa.com/article/11587453" data-share-title="국방부 ‘혁신어벤져스·2030청년자문단’ 합동발대식 가져" aria-label="국방부 ‘혁신어벤져스·2030청년자문단’ 합동발대식 가져 공유하기">공유하기</button><button class="action-button" type="button" data-article-action="copy" data-article-url="https://www.munhwa.com/article/11587453" data-share-title="국방부 ‘혁신어벤져스·2030청년자문단’ 합동발대식 가져" aria-label="국방부 ‘혁신어벤져스·2030청년자문단’ 합동발대식 가져 링크 복사">링크 복사</button></div><div class="article-feedback" data-article-feedback aria-live="polite"></div>
+    <article class="article-card no-media" data-article-card="true" data-policy-card="true" data-policy-group="official" data-policy-scope="새 창 열림" data-policy-type="포럼" data-article-url="https://www.ajunews.com/view/20260710091355887" data-article-title="&quot; 청년 정책, 생애경로 맞춰 재설계해야&quot;…기획처, 전문가 토론회" data-article-date="" data-article-region="중앙" data-article-search="&quot; 청년 정책, 생애경로 맞춰 재설계해야&quot;…기획처, 전문가 토론회 토론회에는 박홍근 기획처 장관과 통합성장정책기획관, 사회예산심의관, 정책보좌관, 청년보좌역 등이 참석했다. 전문가로는 조은주 리워크연구소 대표, 윤동열 건국대 교수, 김유빈 한국노동연구원 연구위원 등이 참석했다. 총괄 발제를 맡은 조은주 리워크연구소 대표는 청년 문제가 교육, 일자리, 주거, 자산... 새 창 열림 새 창 열림 네이버뉴스 거버넌스(1개월) 주거 고용 취업 주거 중앙 인사이트·분석 토론회에는 박홍근 기획처 장관과 통합성장정책기획관, 사회예산심의관, 정책보좌관, 청년보좌역 등이 참석했다. 전문가로는 조은주 리워크연구소 대표, 윤동열 건국대 교수, 김유빈 한국노동연구원 연구위원 등이... 정부 포럼 청년보좌역 새 창 열림">
+
+      <div class="article-meta"><div class="article-meta-tags"><span class="meta-pill primary">정부</span><span class="meta-pill subtle">새 창 열림</span></div><div class="article-byline"><span class="meta-item">새 창 열림</span><span class="meta-divider" aria-hidden="true">•</span><span class="meta-item">날짜 미상</span></div></div>
+      <h3><a class="article-title-link" href="https://www.ajunews.com/view/20260710091355887" target="_blank" rel="noreferrer" aria-label="&quot; 청년 정책, 생애경로 맞춰 재설계해야&quot;…기획처, 전문가 토론회 링크 바로가기">&quot; 청년 정책, 생애경로 맞춰 재설계해야&quot;…기획처, 전문가 토론회</a></h3>
+      <div class="badge-row"><span class="badge">포럼</span><span class="badge">청년보좌역</span></div>
+      <p class="article-summary"><a class="article-summary-link" href="https://www.ajunews.com/view/20260710091355887" target="_blank" rel="noreferrer" aria-label="&quot; 청년 정책, 생애경로 맞춰 재설계해야&quot;…기획처, 전문가 토론회 링크 바로가기">토론회에는 박홍근 기획처 장관과 통합성장정책기획관, 사회예산심의관, 정책보좌관, 청년보좌역 등이 참석했다. 전문가로는 조은주 리워크연구소 대표, 윤동열 건국대 교수, 김유빈 한국노동연구원 연구위원 등이...</a></p>
+      <div class="article-actions"><a class="mini-link article-link-action" href="https://www.ajunews.com/view/20260710091355887" target="_blank" rel="noreferrer" aria-label="&quot; 청년 정책, 생애경로 맞춰 재설계해야&quot;…기획처, 전문가 토론회 링크 바로가기">링크 바로가기</a><button class="action-button" type="button" data-article-action="share" data-article-url="https://www.ajunews.com/view/20260710091355887" data-share-title="&quot; 청년 정책, 생애경로 맞춰 재설계해야&quot;…기획처, 전문가 토론회" aria-label="&quot; 청년 정책, 생애경로 맞춰 재설계해야&quot;…기획처, 전문가 토론회 공유하기">공유하기</button><button class="action-button" type="button" data-article-action="copy" data-article-url="https://www.ajunews.com/view/20260710091355887" data-share-title="&quot; 청년 정책, 생애경로 맞춰 재설계해야&quot;…기획처, 전문가 토론회" aria-label="&quot; 청년 정책, 생애경로 맞춰 재설계해야&quot;…기획처, 전문가 토론회 링크 복사">링크 복사</button></div><div class="article-feedback" data-article-feedback aria-live="polite"></div>
     </article>
 
-    <article class="article-card has-media" data-article-card="true" data-policy-card="true" data-policy-group="official" data-policy-scope="뉴스핌" data-policy-type="회의" data-article-url="https://www.newspim.com/news/view/20260507000947" data-article-title="안규백 국방장관, 청년자문단 발대식서 &quot;실패 두려워 말라&quot;" data-article-date="2026-05-07" data-article-region="서울" data-article-search="안규백 국방장관, 청년자문단 발대식서 &quot;실패 두려워 말라&quot; [서울=뉴스핌] 오동룡 군사방산전문기자 = 국방부가 7일 오후 2시 서울 용산구 국방컨벤션에서 안규백 국방부 장관 주관으로 &#x27;제7기 혁신어벤져스&#x27;와 &#x27;제3기 2030청년자문단&#x27; 합동발대식을 개최했다.이날 행사는 청년세대의 역할과 공직 가치에 대한 소통 강화를 뉴스핌 네이버뉴스 거버넌스(1개월) 서울 용산 용산구 서울 [서울=뉴스핌] 오동룡 군사방산전문기자 = 국방부가 7일 오후 2시 서울 용산구 국방컨벤션에서 안규백 국방부 장관 주관으로 &#x27;제7기 혁신어벤져스&#x27;와 &#x27;제3기 2030청년자문단&#x27; 합동발대식을 개최했다..... 정부 회의, 간담회, 위원회 청년보좌역, 2030청년자문단, 청년자문단 뉴스핌">
-      <a class="article-media" href="https://www.newspim.com/news/view/20260507000947" target="_blank" rel="noreferrer" aria-label="안규백 국방장관, 청년자문단 발대식서 &quot;실패 두려워 말라&quot; 이미지와 기사 링크 바로가기"><img class="article-thumbnail" src="https://img.newspim.com/news/2026/05/07/2605071450344360_t1.jpg" alt="안규백 국방장관, 청년자문단 발대식서 &quot;실패 두려워 말라&quot;" loading="lazy" decoding="async" referrerpolicy="no-referrer"  onerror="this.parentElement.hidden=true;var c=this.closest('.article-card');if(c){c.classList.remove('has-media');c.classList.add('no-media');}"></a>
-      <div class="article-meta"><div class="article-meta-tags"><span class="meta-pill primary">정부</span><span class="meta-pill subtle">뉴스핌</span></div><div class="article-byline"><span class="meta-item"><img class="publisher-icon" src="https://img.newspim.com/m/mweb/favicon_72X72V2.png" alt="뉴스핌 아이콘" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.hidden=true">뉴스핌</span><span class="meta-divider" aria-hidden="true">•</span><span class="meta-item">2026-05-07 14:55</span></div></div>
-      <h3><a class="article-title-link" href="https://www.newspim.com/news/view/20260507000947" target="_blank" rel="noreferrer" aria-label="안규백 국방장관, 청년자문단 발대식서 &quot;실패 두려워 말라&quot; 링크 바로가기">안규백 국방장관, 청년자문단 발대식서 &quot;실패 두려워 말라&quot;</a></h3>
-      <div class="badge-row"><span class="badge">회의, 간담회, 위원회</span><span class="badge">청년보좌역, 2030청년자문단, 청년자문단</span></div>
-      <p class="article-summary"><a class="article-summary-link" href="https://www.newspim.com/news/view/20260507000947" target="_blank" rel="noreferrer" aria-label="안규백 국방장관, 청년자문단 발대식서 &quot;실패 두려워 말라&quot; 링크 바로가기">[서울=뉴스핌] 오동룡 군사방산전문기자 = 국방부가 7일 오후 2시 서울 용산구 국방컨벤션에서 안규백 국방부 장관 주관으로 &#x27;제7기 혁신어벤져스&#x27;와 &#x27;제3기 2030청년자문단&#x27; 합동발대식을 개최했다.....</a></p>
-      <div class="article-actions"><a class="mini-link article-link-action" href="https://www.newspim.com/news/view/20260507000947" target="_blank" rel="noreferrer" aria-label="안규백 국방장관, 청년자문단 발대식서 &quot;실패 두려워 말라&quot; 링크 바로가기">링크 바로가기</a><button class="action-button" type="button" data-article-action="share" data-article-url="https://www.newspim.com/news/view/20260507000947" data-share-title="안규백 국방장관, 청년자문단 발대식서 &quot;실패 두려워 말라&quot;" aria-label="안규백 국방장관, 청년자문단 발대식서 &quot;실패 두려워 말라&quot; 공유하기">공유하기</button><button class="action-button" type="button" data-article-action="copy" data-article-url="https://www.newspim.com/news/view/20260507000947" data-share-title="안규백 국방장관, 청년자문단 발대식서 &quot;실패 두려워 말라&quot;" aria-label="안규백 국방장관, 청년자문단 발대식서 &quot;실패 두려워 말라&quot; 링크 복사">링크 복사</button></div><div class="article-feedback" data-article-feedback aria-live="polite"></div>
-    </article>
+    <article class="article-card no-media" data-article-card="true" data-policy-card="true" data-policy-group="official" data-policy-scope="새 창 열림" data-policy-type="포럼" data-article-url="https://www.newspim.com/news/view/20260710000303" data-article-title="청년 일자리·주거·자산 지원 묶는다...기획처, 내년 예산 반영 검토" data-article-date="" data-article-region="세종" data-article-search="청년 일자리·주거·자산 지원 묶는다...기획처, 내년 예산 반영 검토 토론회에는 박홍근 기획예산처 장관을 비롯해 통합성장정책기획관, 사회예산심의관, 정책보좌관, 청년보좌역 과 청년정책 분야 전문가들이 참석했다. 정부세종청사 기획예산처 전경 [사진=뉴스핌DB] 조은주 리워크연구소 대표는 총괄 발제에서 청년 문제가 교육, 일자리, 주거, 자산, 결혼 등 삶의 주요 단계에서... 새 창 열림 새 창 열림 네이버뉴스 거버넌스(1개월) 주거 고용 취업 주거 세종 세종 인사이트·분석 토론회에는 박홍근 기획예산처 장관을 비롯해 통합성장정책기획관, 사회예산심의관, 정책보좌관, 청년보좌역 과 청년정책 분야 전문가들이 참석했다. 정부세종청사 기획예산처 전경 [사진=뉴스핌DB] 조은주 리워... 정부 포럼 청년보좌역 새 창 열림">
 
-    <article class="article-card has-media" data-article-card="true" data-policy-card="true" data-policy-group="official" data-policy-scope="BBS NEWS" data-policy-type="간담회" data-article-url="https://news.bbsi.co.kr/news/articleView.html?idxno=4082338" data-article-title="국방부, 청년세대와 소통 강화…‘혁신어벤져스·2030자문단’ 발대식" data-article-date="2026-05-07" data-article-region="중앙" data-article-search="국방부, 청년세대와 소통 강화…‘혁신어벤져스·2030자문단’ 발대식 국방부가 청년 세대의 참신한 시각을 정책과 조직 문화에 담기 위해 소통 행보에 나섰습니다. 국방부는 오늘 안규백 국방부 장관 주관으로 ‘제7기 혁신어벤져스’와 ‘제3기 2030 청년자문단’ 합동 발대식을 개최했습니다.혁신어벤져스는 조직 문화 개선을 주도하는 내부 청년 공무원들로, 20 정치 BBS NEWS 네이버뉴스 거버넌스(1개월) 황민호 기자 중앙 국방부가 청년 세대의 참신한 시각을 정책과 조직 문화에 담기 위해 소통 행보에 나섰습니다. 국방부는 오늘 안규백 국방부 장관 주관으로 ‘제7기 혁신어벤져스’와 ‘제3기 2030 청년자문단’ 합동 발대식... 정부 간담회, 자문 청년보좌역, 2030자문단, 2030청년자문단 BBS NEWS">
-      <a class="article-media" href="https://news.bbsi.co.kr/news/articleView.html?idxno=4082338" target="_blank" rel="noreferrer" aria-label="국방부, 청년세대와 소통 강화…‘혁신어벤져스·2030자문단’ 발대식 이미지와 기사 링크 바로가기"><img class="article-thumbnail" src="https://cdn.news.bbsi.co.kr/news/thumbnail/202605/4082338_727139_5124_v150.jpg" alt="국방부, 청년세대와 소통 강화…‘혁신어벤져스·2030자문단’ 발대식" loading="lazy" decoding="async" referrerpolicy="no-referrer"  onerror="this.parentElement.hidden=true;var c=this.closest('.article-card');if(c){c.classList.remove('has-media');c.classList.add('no-media');}"></a>
-      <div class="article-meta"><div class="article-meta-tags"><span class="meta-pill primary">정부</span><span class="meta-pill subtle">BBS NEWS</span></div><div class="article-byline"><span class="meta-item"><img class="publisher-icon" src="https://cdn.news.bbsi.co.kr/image/logo/favicon.ico" alt="BBS NEWS 아이콘" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.hidden=true">BBS NEWS</span><span class="meta-divider" aria-hidden="true">•</span><span class="meta-item">2026-05-07 14:51</span></div></div>
-      <h3><a class="article-title-link" href="https://news.bbsi.co.kr/news/articleView.html?idxno=4082338" target="_blank" rel="noreferrer" aria-label="국방부, 청년세대와 소통 강화…‘혁신어벤져스·2030자문단’ 발대식 링크 바로가기">국방부, 청년세대와 소통 강화…‘혁신어벤져스·2030자문단’ 발대식</a></h3>
-      <div class="badge-row"><span class="badge">간담회, 자문</span><span class="badge">청년보좌역, 2030자문단, 2030청년자문단</span></div>
-      <p class="article-summary"><a class="article-summary-link" href="https://news.bbsi.co.kr/news/articleView.html?idxno=4082338" target="_blank" rel="noreferrer" aria-label="국방부, 청년세대와 소통 강화…‘혁신어벤져스·2030자문단’ 발대식 링크 바로가기">국방부가 청년 세대의 참신한 시각을 정책과 조직 문화에 담기 위해 소통 행보에 나섰습니다. 국방부는 오늘 안규백 국방부 장관 주관으로 ‘제7기 혁신어벤져스’와 ‘제3기 2030 청년자문단’ 합동 발대식...</a></p>
-      <div class="article-actions"><a class="mini-link article-link-action" href="https://news.bbsi.co.kr/news/articleView.html?idxno=4082338" target="_blank" rel="noreferrer" aria-label="국방부, 청년세대와 소통 강화…‘혁신어벤져스·2030자문단’ 발대식 링크 바로가기">링크 바로가기</a><button class="action-button" type="button" data-article-action="share" data-article-url="https://news.bbsi.co.kr/news/articleView.html?idxno=4082338" data-share-title="국방부, 청년세대와 소통 강화…‘혁신어벤져스·2030자문단’ 발대식" aria-label="국방부, 청년세대와 소통 강화…‘혁신어벤져스·2030자문단’ 발대식 공유하기">공유하기</button><button class="action-button" type="button" data-article-action="copy" data-article-url="https://news.bbsi.co.kr/news/articleView.html?idxno=4082338" data-share-title="국방부, 청년세대와 소통 강화…‘혁신어벤져스·2030자문단’ 발대식" aria-label="국방부, 청년세대와 소통 강화…‘혁신어벤져스·2030자문단’ 발대식 링크 복사">링크 복사</button></div><div class="article-feedback" data-article-feedback aria-live="polite"></div>
-    </article>
-
-    <article class="article-card has-media" data-article-card="true" data-policy-card="true" data-policy-group="official" data-policy-scope="국무조정실" data-policy-type="회의" data-article-url="https://news.bbsi.co.kr/news/articleView.html?idxno=4081072" data-article-title="“청년의 미래에 30조 투입”...정부, 일자리·주거·격차 해소 총력전" data-article-date="2026-04-28" data-article-region="서울" data-article-search="“청년의 미래에 30조 투입”...정부, 일자리·주거·격차 해소 총력전 정부가 청년들의 일자리와 주거, 복지 문제를 해결하기 위해 올해만 약 30조 원의 예산을 투입해 사각지대에 놓였던 보호시설 퇴소 청년 지원이나 지방으로 이주하는 수도권 청년 지원 등 청년들에게 총력을 기울이기로 했습니다.정부는 오늘(28일) 오후 서울 중소기업 DMC타워에서 김민석 국 경제 &gt; 정책 BBS NEWS 네이버뉴스 거버넌스(1개월) 박성용 기자 주거 부채 고용 취업 주거 서울 광주 충남 서울시 광주시 서울 정부가 청년들의 일자리와 주거, 복지 문제를 해결하기 위해 올해만 약 30조 원의 예산을 투입해 사각지대에 놓였던 보호시설 퇴소 청년 지원이나 지방으로 이주하는 수도권 청년 지원 등 청년들에게 총력을... 정부 회의, 위원회 청년보좌역, 청년정책조정위원회, 청년정책 관계장관회의 국무조정실">
-      <a class="article-media" href="https://news.bbsi.co.kr/news/articleView.html?idxno=4081072" target="_blank" rel="noreferrer" aria-label="“청년의 미래에 30조 투입”...정부, 일자리·주거·격차 해소 총력전 이미지와 기사 링크 바로가기"><img class="article-thumbnail" src="https://cdn.news.bbsi.co.kr/news/thumbnail/202604/4081072_724889_848_v150.jpg" alt="“청년의 미래에 30조 투입”...정부, 일자리·주거·격차 해소 총력전" loading="lazy" decoding="async" referrerpolicy="no-referrer"  onerror="this.parentElement.hidden=true;var c=this.closest('.article-card');if(c){c.classList.remove('has-media');c.classList.add('no-media');}"></a>
-      <div class="article-meta"><div class="article-meta-tags"><span class="meta-pill primary">정부</span><span class="meta-pill subtle">국무조정실</span></div><div class="article-byline"><span class="meta-item"><img class="publisher-icon" src="https://cdn.news.bbsi.co.kr/image/logo/favicon.ico" alt="BBS NEWS 아이콘" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.hidden=true">BBS NEWS</span><span class="meta-divider" aria-hidden="true">•</span><span class="meta-item">2026-04-28 18:13</span></div></div>
-      <h3><a class="article-title-link" href="https://news.bbsi.co.kr/news/articleView.html?idxno=4081072" target="_blank" rel="noreferrer" aria-label="“청년의 미래에 30조 투입”...정부, 일자리·주거·격차 해소 총력전 링크 바로가기">“청년의 미래에 30조 투입”...정부, 일자리·주거·격차 해소 총력전</a></h3>
-      <div class="badge-row"><span class="badge">회의, 위원회</span><span class="badge">청년보좌역, 청년정책조정위원회, 청년정책 관계장관회의</span></div>
-      <p class="article-summary"><a class="article-summary-link" href="https://news.bbsi.co.kr/news/articleView.html?idxno=4081072" target="_blank" rel="noreferrer" aria-label="“청년의 미래에 30조 투입”...정부, 일자리·주거·격차 해소 총력전 링크 바로가기">정부가 청년들의 일자리와 주거, 복지 문제를 해결하기 위해 올해만 약 30조 원의 예산을 투입해 사각지대에 놓였던 보호시설 퇴소 청년 지원이나 지방으로 이주하는 수도권 청년 지원 등 청년들에게 총력을...</a></p>
-      <div class="article-actions"><a class="mini-link article-link-action" href="https://news.bbsi.co.kr/news/articleView.html?idxno=4081072" target="_blank" rel="noreferrer" aria-label="“청년의 미래에 30조 투입”...정부, 일자리·주거·격차 해소 총력전 링크 바로가기">링크 바로가기</a><button class="action-button" type="button" data-article-action="share" data-article-url="https://news.bbsi.co.kr/news/articleView.html?idxno=4081072" data-share-title="“청년의 미래에 30조 투입”...정부, 일자리·주거·격차 해소 총력전" aria-label="“청년의 미래에 30조 투입”...정부, 일자리·주거·격차 해소 총력전 공유하기">공유하기</button><button class="action-button" type="button" data-article-action="copy" data-article-url="https://news.bbsi.co.kr/news/articleView.html?idxno=4081072" data-share-title="“청년의 미래에 30조 투입”...정부, 일자리·주거·격차 해소 총력전" aria-label="“청년의 미래에 30조 투입”...정부, 일자리·주거·격차 해소 총력전 링크 복사">링크 복사</button></div><div class="article-feedback" data-article-feedback aria-live="polite"></div>
-    </article>
-
-    <article class="article-card no-media" data-article-card="true" data-policy-card="true" data-policy-group="official" data-policy-scope="국무조정실" data-policy-type="간담회" data-article-url="https://news.google.com/rss/articles/CBMiS0FVX3lxTE55enlsNThJVERXVllDSmxLelFxSDliMFFRdHJNRG5tY2JnM0ktWDFwd0JLMTR6U2VEWGR5MHlxWUdNX0NtQk1yNUdKWQ?oc=5" data-article-title="김민석 국무총리, 신임 부처 청년보좌역들과 ‘삼청동 공관 오픈하우스’ 간담회" data-article-date="2026-04-20" data-article-region="중앙" data-article-search="김민석 국무총리, 신임 부처 청년보좌역들과 ‘삼청동 공관 오픈하우스’ 간담회 김민석 국무총리, 신임 부처 청년보좌역들과 ‘삼청동 공관 오픈하우스’ 간담회 뉴스체인지 뉴스체인지 구글뉴스 거버넌스(30일) 중앙 정부 간담회 청년보좌역 국무조정실">
-
-      <div class="article-meta"><div class="article-meta-tags"><span class="meta-pill primary">정부</span><span class="meta-pill subtle">국무조정실</span></div><div class="article-byline"><span class="meta-item">뉴스체인지</span><span class="meta-divider" aria-hidden="true">•</span><span class="meta-item">2026-04-20 03:14</span></div></div>
-      <h3><a class="article-title-link" href="https://news.google.com/rss/articles/CBMiS0FVX3lxTE55enlsNThJVERXVllDSmxLelFxSDliMFFRdHJNRG5tY2JnM0ktWDFwd0JLMTR6U2VEWGR5MHlxWUdNX0NtQk1yNUdKWQ?oc=5" target="_blank" rel="noreferrer" aria-label="김민석 국무총리, 신임 부처 청년보좌역들과 ‘삼청동 공관 오픈하우스’ 간담회 링크 바로가기">김민석 국무총리, 신임 부처 청년보좌역들과 ‘삼청동 공관 오픈하우스’ 간담회</a></h3>
-      <div class="badge-row"><span class="badge">간담회</span><span class="badge">청년보좌역</span></div>
-
-      <div class="article-actions"><a class="mini-link article-link-action" href="https://news.google.com/rss/articles/CBMiS0FVX3lxTE55enlsNThJVERXVllDSmxLelFxSDliMFFRdHJNRG5tY2JnM0ktWDFwd0JLMTR6U2VEWGR5MHlxWUdNX0NtQk1yNUdKWQ?oc=5" target="_blank" rel="noreferrer" aria-label="김민석 국무총리, 신임 부처 청년보좌역들과 ‘삼청동 공관 오픈하우스’ 간담회 링크 바로가기">링크 바로가기</a><button class="action-button" type="button" data-article-action="share" data-article-url="https://news.google.com/rss/articles/CBMiS0FVX3lxTE55enlsNThJVERXVllDSmxLelFxSDliMFFRdHJNRG5tY2JnM0ktWDFwd0JLMTR6U2VEWGR5MHlxWUdNX0NtQk1yNUdKWQ?oc=5" data-share-title="김민석 국무총리, 신임 부처 청년보좌역들과 ‘삼청동 공관 오픈하우스’ 간담회" aria-label="김민석 국무총리, 신임 부처 청년보좌역들과 ‘삼청동 공관 오픈하우스’ 간담회 공유하기">공유하기</button><button class="action-button" type="button" data-article-action="copy" data-article-url="https://news.google.com/rss/articles/CBMiS0FVX3lxTE55enlsNThJVERXVllDSmxLelFxSDliMFFRdHJNRG5tY2JnM0ktWDFwd0JLMTR6U2VEWGR5MHlxWUdNX0NtQk1yNUdKWQ?oc=5" data-share-title="김민석 국무총리, 신임 부처 청년보좌역들과 ‘삼청동 공관 오픈하우스’ 간담회" aria-label="김민석 국무총리, 신임 부처 청년보좌역들과 ‘삼청동 공관 오픈하우스’ 간담회 링크 복사">링크 복사</button></div><div class="article-feedback" data-article-feedback aria-live="polite"></div>
-    </article>
-
-    <article class="article-card no-media" data-article-card="true" data-policy-card="true" data-policy-group="official" data-policy-scope="국무조정실" data-policy-type="간담회" data-article-url="https://www.opm.go.kr/opm/news/press-release.do?mode=view&amp;articleNo=161945&amp;srSearchVal=%EC%B2%AD%EB%85%84&amp;article.offset=0&amp;articleLimit=20" data-article-title="[보도자료] 김민석 국무총리, 삼청동 오픈하우스-청년 보좌역 보도자료" data-article-date="2026-04-18" data-article-region="서울" data-article-search="[보도자료] 김민석 국무총리, 삼청동 오픈하우스-청년 보좌역 보도자료 청년정책협력관실 국무조정실 보도자료 국무조정실 보도자료 취업 노동 서울 세종 반드시 서울 청년정책협력관실 정부 간담회, 자문 청년보좌역, 2030청년자문단, 청년자문단 국무조정실">
-
-      <div class="article-meta"><div class="article-meta-tags"><span class="meta-pill primary">정부</span><span class="meta-pill subtle">국무조정실</span></div><div class="article-byline"><span class="meta-item"><img class="publisher-icon" src="https://www.opm.go.kr/favicon.ico" alt="국무조정실 보도자료 아이콘" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.hidden=true">국무조정실 보도자료</span><span class="meta-divider" aria-hidden="true">•</span><span class="meta-item">2026-04-18</span></div></div>
-      <h3><a class="article-title-link" href="https://www.opm.go.kr/opm/news/press-release.do?mode=view&amp;articleNo=161945&amp;srSearchVal=%EC%B2%AD%EB%85%84&amp;article.offset=0&amp;articleLimit=20" target="_blank" rel="noreferrer" aria-label="[보도자료] 김민석 국무총리, 삼청동 오픈하우스-청년 보좌역 보도자료 링크 바로가기">[보도자료] 김민석 국무총리, 삼청동 오픈하우스-청년 보좌역 보도자료</a></h3>
-      <div class="badge-row"><span class="badge">간담회, 자문</span><span class="badge">청년보좌역, 2030청년자문단, 청년자문단</span></div>
-      <p class="article-summary"><a class="article-summary-link" href="https://www.opm.go.kr/opm/news/press-release.do?mode=view&amp;articleNo=161945&amp;srSearchVal=%EC%B2%AD%EB%85%84&amp;article.offset=0&amp;articleLimit=20" target="_blank" rel="noreferrer" aria-label="[보도자료] 김민석 국무총리, 삼청동 오픈하우스-청년 보좌역 보도자료 링크 바로가기">청년정책협력관실</a></p>
-      <div class="article-actions"><a class="mini-link article-link-action" href="https://www.opm.go.kr/opm/news/press-release.do?mode=view&amp;articleNo=161945&amp;srSearchVal=%EC%B2%AD%EB%85%84&amp;article.offset=0&amp;articleLimit=20" target="_blank" rel="noreferrer" aria-label="[보도자료] 김민석 국무총리, 삼청동 오픈하우스-청년 보좌역 보도자료 링크 바로가기">링크 바로가기</a><button class="action-button" type="button" data-article-action="share" data-article-url="https://www.opm.go.kr/opm/news/press-release.do?mode=view&amp;articleNo=161945&amp;srSearchVal=%EC%B2%AD%EB%85%84&amp;article.offset=0&amp;articleLimit=20" data-share-title="[보도자료] 김민석 국무총리, 삼청동 오픈하우스-청년 보좌역 보도자료" aria-label="[보도자료] 김민석 국무총리, 삼청동 오픈하우스-청년 보좌역 보도자료 공유하기">공유하기</button><button class="action-button" type="button" data-article-action="copy" data-article-url="https://www.opm.go.kr/opm/news/press-release.do?mode=view&amp;articleNo=161945&amp;srSearchVal=%EC%B2%AD%EB%85%84&amp;article.offset=0&amp;articleLimit=20" data-share-title="[보도자료] 김민석 국무총리, 삼청동 오픈하우스-청년 보좌역 보도자료" aria-label="[보도자료] 김민석 국무총리, 삼청동 오픈하우스-청년 보좌역 보도자료 링크 복사">링크 복사</button></div><div class="article-feedback" data-article-feedback aria-live="polite"></div>
-    </article>
-
-    <article class="article-card no-media" data-article-card="true" data-policy-card="true" data-policy-group="official" data-policy-scope="국무조정실" data-policy-type="회의" data-article-url="https://www.opm.go.kr/opm/news/press-release.do?mode=view&amp;articleNo=161861&amp;srSearchVal=%EC%B2%AD%EB%85%84&amp;article.offset=0&amp;articleLimit=20" data-article-title="[보도자료] 정부위원회 청년위원 의무위촉 비율 20%로 상향" data-article-date="2026-04-13" data-article-region="세종" data-article-search="[보도자료] 정부위원회 청년위원 의무위촉 비율 20%로 상향 청년정책협력관실 국무조정실 보도자료 국무조정실 보도자료 세종 인구 청년인구 반드시 세종 청년정책협력관실 정부 회의, 위원회 청년정책 관계장관회의 국무조정실">
-
-      <div class="article-meta"><div class="article-meta-tags"><span class="meta-pill primary">정부</span><span class="meta-pill subtle">국무조정실</span></div><div class="article-byline"><span class="meta-item"><img class="publisher-icon" src="https://www.opm.go.kr/favicon.ico" alt="국무조정실 보도자료 아이콘" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.hidden=true">국무조정실 보도자료</span><span class="meta-divider" aria-hidden="true">•</span><span class="meta-item">2026-04-13</span></div></div>
-      <h3><a class="article-title-link" href="https://www.opm.go.kr/opm/news/press-release.do?mode=view&amp;articleNo=161861&amp;srSearchVal=%EC%B2%AD%EB%85%84&amp;article.offset=0&amp;articleLimit=20" target="_blank" rel="noreferrer" aria-label="[보도자료] 정부위원회 청년위원 의무위촉 비율 20%로 상향 링크 바로가기">[보도자료] 정부위원회 청년위원 의무위촉 비율 20%로 상향</a></h3>
-      <div class="badge-row"><span class="badge">회의, 위원회</span><span class="badge">청년정책 관계장관회의</span></div>
-      <p class="article-summary"><a class="article-summary-link" href="https://www.opm.go.kr/opm/news/press-release.do?mode=view&amp;articleNo=161861&amp;srSearchVal=%EC%B2%AD%EB%85%84&amp;article.offset=0&amp;articleLimit=20" target="_blank" rel="noreferrer" aria-label="[보도자료] 정부위원회 청년위원 의무위촉 비율 20%로 상향 링크 바로가기">청년정책협력관실</a></p>
-      <div class="article-actions"><a class="mini-link article-link-action" href="https://www.opm.go.kr/opm/news/press-release.do?mode=view&amp;articleNo=161861&amp;srSearchVal=%EC%B2%AD%EB%85%84&amp;article.offset=0&amp;articleLimit=20" target="_blank" rel="noreferrer" aria-label="[보도자료] 정부위원회 청년위원 의무위촉 비율 20%로 상향 링크 바로가기">링크 바로가기</a><button class="action-button" type="button" data-article-action="share" data-article-url="https://www.opm.go.kr/opm/news/press-release.do?mode=view&amp;articleNo=161861&amp;srSearchVal=%EC%B2%AD%EB%85%84&amp;article.offset=0&amp;articleLimit=20" data-share-title="[보도자료] 정부위원회 청년위원 의무위촉 비율 20%로 상향" aria-label="[보도자료] 정부위원회 청년위원 의무위촉 비율 20%로 상향 공유하기">공유하기</button><button class="action-button" type="button" data-article-action="copy" data-article-url="https://www.opm.go.kr/opm/news/press-release.do?mode=view&amp;articleNo=161861&amp;srSearchVal=%EC%B2%AD%EB%85%84&amp;article.offset=0&amp;articleLimit=20" data-share-title="[보도자료] 정부위원회 청년위원 의무위촉 비율 20%로 상향" aria-label="[보도자료] 정부위원회 청년위원 의무위촉 비율 20%로 상향 링크 복사">링크 복사</button></div><div class="article-feedback" data-article-feedback aria-live="polite"></div>
+      <div class="article-meta"><div class="article-meta-tags"><span class="meta-pill primary">정부</span><span class="meta-pill subtle">새 창 열림</span></div><div class="article-byline"><span class="meta-item">새 창 열림</span><span class="meta-divider" aria-hidden="true">•</span><span class="meta-item">날짜 미상</span></div></div>
+      <h3><a class="article-title-link" href="https://www.newspim.com/news/view/20260710000303" target="_blank" rel="noreferrer" aria-label="청년 일자리·주거·자산 지원 묶는다...기획처, 내년 예산 반영 검토 링크 바로가기">청년 일자리·주거·자산 지원 묶는다...기획처, 내년 예산 반영 검토</a></h3>
+      <div class="badge-row"><span class="badge">포럼</span><span class="badge">청년보좌역</span></div>
+      <p class="article-summary"><a class="article-summary-link" href="https://www.newspim.com/news/view/20260710000303" target="_blank" rel="noreferrer" aria-label="청년 일자리·주거·자산 지원 묶는다...기획처, 내년 예산 반영 검토 링크 바로가기">토론회에는 박홍근 기획예산처 장관을 비롯해 통합성장정책기획관, 사회예산심의관, 정책보좌관, 청년보좌역 과 청년정책 분야 전문가들이 참석했다. 정부세종청사 기획예산처 전경 [사진=뉴스핌DB] 조은주 리워...</a></p>
+      <div class="article-actions"><a class="mini-link article-link-action" href="https://www.newspim.com/news/view/20260710000303" target="_blank" rel="noreferrer" aria-label="청년 일자리·주거·자산 지원 묶는다...기획처, 내년 예산 반영 검토 링크 바로가기">링크 바로가기</a><button class="action-button" type="button" data-article-action="share" data-article-url="https://www.newspim.com/news/view/20260710000303" data-share-title="청년 일자리·주거·자산 지원 묶는다...기획처, 내년 예산 반영 검토" aria-label="청년 일자리·주거·자산 지원 묶는다...기획처, 내년 예산 반영 검토 공유하기">공유하기</button><button class="action-button" type="button" data-article-action="copy" data-article-url="https://www.newspim.com/news/view/20260710000303" data-share-title="청년 일자리·주거·자산 지원 묶는다...기획처, 내년 예산 반영 검토" aria-label="청년 일자리·주거·자산 지원 묶는다...기획처, 내년 예산 반영 검토 링크 복사">링크 복사</button></div><div class="article-feedback" data-article-feedback aria-live="polite"></div>
     </article>
     </div>
       </section>
@@ -7053,25 +8700,16 @@
             <h2>지역 청년정책 네트워크</h2>
             <p>지자체가 운영하는 청년정책네트워크, 청년협의체, 청년위원회, 참여단 기록을 묶었습니다.</p>
           </div>
-          <span class="mini-link" aria-disabled="true" data-policy-section-count>2건</span>
+          <span class="mini-link" aria-disabled="true" data-policy-section-count>1건</span>
         </div>
         <div class="article-grid">
-    <article class="article-card has-media" data-article-card="true" data-policy-card="true" data-policy-group="local" data-policy-scope="광진구" data-policy-type="회의" data-article-url="https://www.cnbizm.com/news/articleView.html?idxno=302442" data-article-title="&quot;청년의 목소리가 지역을 바꾼다&quot; ‘제4기 광진구 청년네트워크 위촉식’ 개최 - 문화경제" data-article-date="2026-05-08" data-article-region="서울" data-article-search="&quot;청년의 목소리가 지역을 바꾼다&quot; ‘제4기 광진구 청년네트워크 위촉식’ 개최 - 문화경제 서울 광진구가 구청 16층 오픈스페이스에서 ‘제4기 광진구 청년네트워크 위촉식’을 개최하고 청년과 함께 만드는 정책 참여 활동의 본격적인 시작을 알렸다.광진구 청 전국·사회 CNB저널(문화경제) 네이버뉴스 청년 광역(1주) 안용호 기자 주거 고용 취업 주거 서울 광진 광진구 서울 서울 광진구가 구청 16층 오픈스페이스에서 ‘제4기 광진구 청년네트워크 위촉식’을 개최하고 청년과 함께 만드는 정책 참여 활동의 본격적인 시작을 알렸다... 지자체 회의, 위원회, 워크숍 청년네트워크, 청년정책네트워크 광진구">
-      <a class="article-media" href="https://www.cnbizm.com/news/articleView.html?idxno=302442" target="_blank" rel="noreferrer" aria-label="&quot;청년의 목소리가 지역을 바꾼다&quot; ‘제4기 광진구 청년네트워크 위촉식’ 개최 - 문화경제 이미지와 기사 링크 바로가기"><img class="article-thumbnail" src="https://cdn.cnbizm.com/news/photo/202605/302442_203276_2753.jpg" alt="&quot;청년의 목소리가 지역을 바꾼다&quot; ‘제4기 광진구 청년네트워크 위촉식’ 개최 - 문화경제" loading="lazy" decoding="async" referrerpolicy="no-referrer"  onerror="this.parentElement.hidden=true;var c=this.closest('.article-card');if(c){c.classList.remove('has-media');c.classList.add('no-media');}"></a>
-      <div class="article-meta"><div class="article-meta-tags"><span class="meta-pill primary">지자체</span><span class="meta-pill subtle">광진구</span></div><div class="article-byline"><span class="meta-item"><img class="publisher-icon" src="https://cdn.cnbizm.com/favicon.ico" alt="CNB저널(문화경제) 아이콘" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.hidden=true">CNB저널(문화경제)</span><span class="meta-divider" aria-hidden="true">•</span><span class="meta-item">2026-05-08 17:44</span></div></div>
-      <h3><a class="article-title-link" href="https://www.cnbizm.com/news/articleView.html?idxno=302442" target="_blank" rel="noreferrer" aria-label="&quot;청년의 목소리가 지역을 바꾼다&quot; ‘제4기 광진구 청년네트워크 위촉식’ 개최 - 문화경제 링크 바로가기">&quot;청년의 목소리가 지역을 바꾼다&quot; ‘제4기 광진구 청년네트워크 위촉식’ 개최 - 문화경제</a></h3>
-      <div class="badge-row"><span class="badge">회의, 위원회, 워크숍</span><span class="badge">청년네트워크, 청년정책네트워크</span></div>
-      <p class="article-summary"><a class="article-summary-link" href="https://www.cnbizm.com/news/articleView.html?idxno=302442" target="_blank" rel="noreferrer" aria-label="&quot;청년의 목소리가 지역을 바꾼다&quot; ‘제4기 광진구 청년네트워크 위촉식’ 개최 - 문화경제 링크 바로가기">서울 광진구가 구청 16층 오픈스페이스에서 ‘제4기 광진구 청년네트워크 위촉식’을 개최하고 청년과 함께 만드는 정책 참여 활동의 본격적인 시작을 알렸다...</a></p>
-      <div class="article-actions"><a class="mini-link article-link-action" href="https://www.cnbizm.com/news/articleView.html?idxno=302442" target="_blank" rel="noreferrer" aria-label="&quot;청년의 목소리가 지역을 바꾼다&quot; ‘제4기 광진구 청년네트워크 위촉식’ 개최 - 문화경제 링크 바로가기">링크 바로가기</a><button class="action-button" type="button" data-article-action="share" data-article-url="https://www.cnbizm.com/news/articleView.html?idxno=302442" data-share-title="&quot;청년의 목소리가 지역을 바꾼다&quot; ‘제4기 광진구 청년네트워크 위촉식’ 개최 - 문화경제" aria-label="&quot;청년의 목소리가 지역을 바꾼다&quot; ‘제4기 광진구 청년네트워크 위촉식’ 개최 - 문화경제 공유하기">공유하기</button><button class="action-button" type="button" data-article-action="copy" data-article-url="https://www.cnbizm.com/news/articleView.html?idxno=302442" data-share-title="&quot;청년의 목소리가 지역을 바꾼다&quot; ‘제4기 광진구 청년네트워크 위촉식’ 개최 - 문화경제" aria-label="&quot;청년의 목소리가 지역을 바꾼다&quot; ‘제4기 광진구 청년네트워크 위촉식’ 개최 - 문화경제 링크 복사">링크 복사</button></div><div class="article-feedback" data-article-feedback aria-live="polite"></div>
-    </article>
-
-    <article class="article-card no-media" data-article-card="true" data-policy-card="true" data-policy-group="local" data-policy-scope="울주군" data-policy-type="모집" data-article-url="https://news.google.com/rss/articles/CBMiVEFVX3lxTFBFa1I0NGRjUFY1eEdpZzBaMy1YZ2JSQm1lU2tNM3JBNHdHdk55Q05GZ1lhd2VGYVFUcUVBOXFCVkg4NW1Sd182cE1ETEJGSWlKclpMTQ?oc=5" data-article-title="울주군 청년정책협의체 위원 공개 모집" data-article-date="2026-05-04" data-article-region="울산" data-article-search="울주군 청년정책협의체 위원 공개 모집 울주군 청년정책협의체 위원 공개 모집 울산MBC 울산MBC 구글뉴스 청년정책(7일) 모집 울산 울주군 울산 지자체 모집 청년정책협의체 울주군">
-
-      <div class="article-meta"><div class="article-meta-tags"><span class="meta-pill primary">지자체</span><span class="meta-pill subtle">울주군</span></div><div class="article-byline"><span class="meta-item">울산MBC</span><span class="meta-divider" aria-hidden="true">•</span><span class="meta-item">2026-05-04 01:22</span></div></div>
-      <h3><a class="article-title-link" href="https://news.google.com/rss/articles/CBMiVEFVX3lxTFBFa1I0NGRjUFY1eEdpZzBaMy1YZ2JSQm1lU2tNM3JBNHdHdk55Q05GZ1lhd2VGYVFUcUVBOXFCVkg4NW1Sd182cE1ETEJGSWlKclpMTQ?oc=5" target="_blank" rel="noreferrer" aria-label="울주군 청년정책협의체 위원 공개 모집 링크 바로가기">울주군 청년정책협의체 위원 공개 모집</a></h3>
-      <div class="badge-row"><span class="badge">모집</span><span class="badge">청년정책협의체</span></div>
-
-      <div class="article-actions"><a class="mini-link article-link-action" href="https://news.google.com/rss/articles/CBMiVEFVX3lxTFBFa1I0NGRjUFY1eEdpZzBaMy1YZ2JSQm1lU2tNM3JBNHdHdk55Q05GZ1lhd2VGYVFUcUVBOXFCVkg4NW1Sd182cE1ETEJGSWlKclpMTQ?oc=5" target="_blank" rel="noreferrer" aria-label="울주군 청년정책협의체 위원 공개 모집 링크 바로가기">링크 바로가기</a><button class="action-button" type="button" data-article-action="share" data-article-url="https://news.google.com/rss/articles/CBMiVEFVX3lxTFBFa1I0NGRjUFY1eEdpZzBaMy1YZ2JSQm1lU2tNM3JBNHdHdk55Q05GZ1lhd2VGYVFUcUVBOXFCVkg4NW1Sd182cE1ETEJGSWlKclpMTQ?oc=5" data-share-title="울주군 청년정책협의체 위원 공개 모집" aria-label="울주군 청년정책협의체 위원 공개 모집 공유하기">공유하기</button><button class="action-button" type="button" data-article-action="copy" data-article-url="https://news.google.com/rss/articles/CBMiVEFVX3lxTFBFa1I0NGRjUFY1eEdpZzBaMy1YZ2JSQm1lU2tNM3JBNHdHdk55Q05GZ1lhd2VGYVFUcUVBOXFCVkg4NW1Sd182cE1ETEJGSWlKclpMTQ?oc=5" data-share-title="울주군 청년정책협의체 위원 공개 모집" aria-label="울주군 청년정책협의체 위원 공개 모집 링크 복사">링크 복사</button></div><div class="article-feedback" data-article-feedback aria-live="polite"></div>
+    <article class="article-card has-media" data-article-card="true" data-policy-card="true" data-policy-group="local" data-policy-scope="시간도" data-policy-type="회의" data-article-url="https://www.cnbizm.com/news/articleView.html?idxno=310162" data-article-title="열린 소통의 장...도봉구 ‘청년정책모아 팝업’ 4회 개최 - 문화경제" data-article-date="2026-07-30" data-article-region="서울" data-article-search="열린 소통의 장...도봉구 ‘청년정책모아 팝업’ 4회 개최 - 문화경제 서울 도봉구(구청장 김동욱)가 8월부터 4번에 걸쳐 청년정책 간담회를 연다.이번 자리는 따로 준비물이 필요 없고 자료를 준비하거나 발표 시간도 없다. 허심탄회하게 전국·사회 새 창 열림 네이버뉴스 청년 광역(1주) 안용호 기자 청년센터 운영 모집 청년센터 서울 도봉 도봉구 서울 인사이트·분석 서울 도봉구(구청장 김동욱)가 8월부터 4번에 걸쳐 청년정책 간담회를 연다.이번 자리는 따로 준비물이 필요 없고 자료를 준비하거나 발표 시간도 없다. 허심탄회하게 지자체 회의, 간담회, 발표회 청년네트워크 시간도">
+      <a class="article-media" href="https://www.cnbizm.com/news/articleView.html?idxno=310162" target="_blank" rel="noreferrer" aria-label="열린 소통의 장...도봉구 ‘청년정책모아 팝업’ 4회 개최 - 문화경제 이미지와 기사 링크 바로가기"><img class="article-thumbnail" src="https://cdn.cnbizm.com/news/photo/202607/310162_214692_3736.jpg" alt="열린 소통의 장...도봉구 ‘청년정책모아 팝업’ 4회 개최 - 문화경제" loading="lazy" decoding="async" referrerpolicy="no-referrer"  onerror="this.parentElement.hidden=true;var c=this.closest('.article-card');if(c){c.classList.remove('has-media');c.classList.add('no-media');}"></a>
+      <div class="article-meta"><div class="article-meta-tags"><span class="meta-pill primary">지자체</span><span class="meta-pill subtle">시간도</span></div><div class="article-byline"><span class="meta-item"><img class="publisher-icon" src="https://cdn.cnbizm.com/favicon.ico" alt="새 창 열림 아이콘" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.hidden=true">새 창 열림</span><span class="meta-divider" aria-hidden="true">•</span><span class="meta-item">2026-07-30 19:12</span></div></div>
+      <h3><a class="article-title-link" href="https://www.cnbizm.com/news/articleView.html?idxno=310162" target="_blank" rel="noreferrer" aria-label="열린 소통의 장...도봉구 ‘청년정책모아 팝업’ 4회 개최 - 문화경제 링크 바로가기">열린 소통의 장...도봉구 ‘청년정책모아 팝업’ 4회 개최 - 문화경제</a></h3>
+      <div class="badge-row"><span class="badge">회의, 간담회, 발표회</span><span class="badge">청년네트워크</span></div>
+      <p class="article-summary"><a class="article-summary-link" href="https://www.cnbizm.com/news/articleView.html?idxno=310162" target="_blank" rel="noreferrer" aria-label="열린 소통의 장...도봉구 ‘청년정책모아 팝업’ 4회 개최 - 문화경제 링크 바로가기">서울 도봉구(구청장 김동욱)가 8월부터 4번에 걸쳐 청년정책 간담회를 연다.이번 자리는 따로 준비물이 필요 없고 자료를 준비하거나 발표 시간도 없다. 허심탄회하게</a></p>
+      <div class="article-actions"><a class="mini-link article-link-action" href="https://www.cnbizm.com/news/articleView.html?idxno=310162" target="_blank" rel="noreferrer" aria-label="열린 소통의 장...도봉구 ‘청년정책모아 팝업’ 4회 개최 - 문화경제 링크 바로가기">링크 바로가기</a><button class="action-button" type="button" data-article-action="share" data-article-url="https://www.cnbizm.com/news/articleView.html?idxno=310162" data-share-title="열린 소통의 장...도봉구 ‘청년정책모아 팝업’ 4회 개최 - 문화경제" aria-label="열린 소통의 장...도봉구 ‘청년정책모아 팝업’ 4회 개최 - 문화경제 공유하기">공유하기</button><button class="action-button" type="button" data-article-action="copy" data-article-url="https://www.cnbizm.com/news/articleView.html?idxno=310162" data-share-title="열린 소통의 장...도봉구 ‘청년정책모아 팝업’ 4회 개최 - 문화경제" aria-label="열린 소통의 장...도봉구 ‘청년정책모아 팝업’ 4회 개최 - 문화경제 링크 복사">링크 복사</button></div><div class="article-feedback" data-article-feedback aria-live="polite"></div>
     </article>
     </div>
       </section>
@@ -7096,8 +8734,10 @@
         <nav class="site-footer-links" aria-label="운영 기준 바로가기">
           <a href="guide.html">이용 안내</a>
           <a href="guide.html#main-list">정보 기준</a>
-          <a href="contact.html#ops">이메일 무단수집거부</a>
-          <a href="contact.html">제보·문의</a>
+          <a href="privacy.html">개인정보 처리방침</a>
+          <a href="terms.html">이용약관</a>
+          <a href="contact.html#email-policy">이메일 무단수집거부</a>
+          <a href="contact.html">문의/운영안내</a>
         </nav>
         <details class="site-footer-related">
           <summary>관련 사이트</summary>
@@ -7134,28 +8774,19 @@
     </footer>
     </div>
   </div>
-  <nav class="bottom-nav" style="--bottom-nav-count: 6;"><a class="" href="news.html"><span class="bottom-nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false">
+  <nav class="bottom-nav" style="--bottom-nav-count: 5;"><a class="" href="news.html"><span class="bottom-nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false">
           <path d="M6 5.5h9.5L19 9v9.5H6z"></path>
           <path d="M15.5 5.5V9H19"></path>
           <path d="M9 12h6"></path>
           <path d="M9 15h6"></path>
           <path d="M9 18h4"></path>
-        </svg></span><span>뉴스 모음</span></a><a class="" href="election.html"><span class="bottom-nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false">
-          <path d="M6 10h12v10H6z"></path>
-          <path d="M8.5 10 12 5l3.5 5"></path>
-          <path d="m9.5 15 2 2 4-4"></path>
-        </svg></span><span>선거·공약</span></a><a class="" href="policies.html"><span class="bottom-nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false">
+        </svg></span><span>뉴스 모음</span></a><a class="" href="official.html"><span class="bottom-nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false">
           <path d="M4 9.5 12 5l8 4.5"></path>
           <path d="M5.5 19h13"></path>
           <path d="M7 10.5V17"></path>
           <path d="M12 10.5V17"></path>
           <path d="M17 10.5V17"></path>
-        </svg></span><span>정부 동향</span></a><a class="" href="plans.html"><span class="bottom-nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false">
-          <path d="M5 6.5 10 5l4 1.5 5-1.5v12.5L14 19l-4-1.5L5 19z"></path>
-          <path d="M10 5v12.5"></path>
-          <path d="M14 6.5V19"></path>
-          <path d="M16.5 10.5h.01"></path>
-        </svg></span><span>지자체 동향</span></a><a class="active" href="hub.html"><span class="bottom-nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false">
+        </svg></span><span>공식자료</span></a><a class="active" href="hub.html"><span class="bottom-nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false">
           <path d="M8.5 10a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z"></path>
           <path d="M15.5 10a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z"></path>
           <path d="M4.5 19c.5-3 2-5 4-5s3.5 2 4 5"></path>
@@ -7165,7 +8796,11 @@
           <path d="M18.5 5.5h-4A3.5 3.5 0 0 0 11 9v10a3.5 3.5 0 0 1 3.5-3.5h4z"></path>
           <path d="M14 9h2.5"></path>
           <path d="M14 12h2.5"></path>
-        </svg></span><span>연구·문헌</span></a></nav>
+        </svg></span><span>연구·문헌</span></a><a class="" href="contact.html"><span class="bottom-nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false">
+          <path d="M5 7.5h14v10H5z"></path>
+          <path d="m5.5 8 6.5 5 6.5-5"></path>
+          <path d="M8 19h8"></path>
+        </svg></span><span>문의/운영안내</span></a></nav>
 
 
   <div class="admin-login-overlay" data-admin-login-overlay hidden>
@@ -7289,6 +8924,18 @@
     return normalizedQuery ? `검색 "${normalizedQuery}"` : '';
   }
 
+  function contentDirectionLabel(value) {
+    const labels = {
+      promotion: '홍보성',
+      column: '칼럼·기고',
+      insight: '인사이트·분석',
+      report: '일반보도',
+      official_release: '공식자료',
+      unknown: '미분류',
+    };
+    return labels[value] || value || '';
+  }
+
   function getRegionMapTooltip(region) {
     if (!region || !region.dataset || !region.dataset.regionMapId) {
       return null;
@@ -7370,7 +9017,7 @@
     }
   }
 
-  function applyNewsFilters(root, selectedDateStart, selectedDateEnd, selectedRegion, selectedTopic, selectedQuery) {
+  function applyNewsFilters(root, selectedDateStart, selectedDateEnd, selectedRegion, selectedDirection, selectedTopic, selectedQuery) {
     const normalizedDates = normalizeNewsDateRange(
       selectedDateStart ?? root.dataset.selectedDateStart ?? root.getAttribute('data-default-date-start') ?? '',
       selectedDateEnd ?? root.dataset.selectedDateEnd ?? root.getAttribute('data-default-date-end') ?? '',
@@ -7379,6 +9026,7 @@
     const activeDateEnd = normalizedDates.endDate;
     const hasDateRange = Boolean(activeDateStart || activeDateEnd);
     const activeRegion = selectedRegion || root.dataset.selectedRegion || root.getAttribute('data-default-region') || 'all';
+    const activeDirection = selectedDirection || root.dataset.selectedDirection || root.getAttribute('data-default-direction') || 'all';
     const activeTopic = selectedTopic || root.dataset.selectedTopic || root.getAttribute('data-default-topic') || 'all';
     const activeQuery = normalizeSearchQuery(
       selectedQuery ?? root.dataset.selectedSearchQuery ?? root.getAttribute('data-default-search-query') ?? ''
@@ -7386,6 +9034,7 @@
     root.dataset.selectedDateStart = activeDateStart;
     root.dataset.selectedDateEnd = activeDateEnd;
     root.dataset.selectedRegion = activeRegion;
+    root.dataset.selectedDirection = activeDirection;
     root.dataset.selectedTopic = activeTopic;
     root.dataset.selectedSearchQuery = activeQuery;
 
@@ -7396,15 +9045,17 @@
     articleCards.forEach((card) => {
       const articleDate = card.getAttribute('data-article-date') || '';
       const articleRegion = card.getAttribute('data-article-region') || '중앙';
+      const articleDirection = card.getAttribute('data-article-direction') || 'unknown';
       const articleTopics = (card.getAttribute('data-article-topics') || '').split('|').filter(Boolean);
       const isAfterStart = !activeDateStart || (articleDate && articleDate >= activeDateStart);
       const isBeforeEnd = !activeDateEnd || (articleDate && articleDate <= activeDateEnd);
       const dateMatch = !hasDateRange || (isAfterStart && isBeforeEnd);
       const regionMatch = activeRegion === 'all' || articleRegion === activeRegion;
+      const directionMatch = activeDirection === 'all' || articleDirection === activeDirection;
       const topicMatch = activeTopic === 'all' || articleTopics.includes(activeTopic);
       const searchMatch = cardMatchesSearch(card, activeQuery);
-      const isMatch = dateMatch && regionMatch && topicMatch && searchMatch;
-      if (dateMatch && topicMatch && searchMatch) {
+      const isMatch = dateMatch && regionMatch && directionMatch && topicMatch && searchMatch;
+      if (dateMatch && directionMatch && topicMatch && searchMatch) {
         regionCounts.set(articleRegion, (regionCounts.get(articleRegion) || 0) + 1);
       }
       card.hidden = !isMatch;
@@ -7418,9 +9069,11 @@
       const value = button.getAttribute('data-filter-value') || 'all';
       const isActive = group === 'region'
         ? value === activeRegion
-        : group === 'topic'
-          ? value === activeTopic
-          : (value === 'all' && !hasDateRange);
+        : group === 'direction'
+          ? value === activeDirection
+          : group === 'topic'
+            ? value === activeTopic
+            : (value === 'all' && !hasDateRange);
       if (group === 'region' && value !== 'all') {
         updateRegionFilterButtonCount(button, regionCounts.get(value) || 0);
       }
@@ -7447,12 +9100,15 @@
     if (status) {
       const dateLabel = formatNewsDateRange(activeDateStart, activeDateEnd);
       const searchLabel = formatSearchLabel(activeQuery);
-      if (!hasDateRange && activeRegion === 'all' && activeTopic === 'all' && !searchLabel) {
+      if (!hasDateRange && activeRegion === 'all' && activeDirection === 'all' && activeTopic === 'all' && !searchLabel) {
         status.textContent = `전체 ${visibleCount}건을 보고 있습니다.`;
       } else {
         const parts = [];
         if (activeRegion !== 'all') {
           parts.push(activeRegion);
+        }
+        if (activeDirection !== 'all') {
+          parts.push(contentDirectionLabel(activeDirection));
         }
         if (activeTopic !== 'all') {
           parts.push(`#${activeTopic}`);
@@ -7881,6 +9537,7 @@
           group === 'date' ? '' : (root.dataset.selectedDateStart || root.getAttribute('data-default-date-start') || ''),
           group === 'date' ? '' : (root.dataset.selectedDateEnd || root.getAttribute('data-default-date-end') || ''),
           group === 'region' ? value : (root.dataset.selectedRegion || root.getAttribute('data-default-region') || 'all'),
+          group === 'direction' ? value : (root.dataset.selectedDirection || root.getAttribute('data-default-direction') || 'all'),
           group === 'topic' ? value : (root.dataset.selectedTopic || root.getAttribute('data-default-topic') || 'all'),
           root.dataset.selectedSearchQuery || root.getAttribute('data-default-search-query') || '',
         );
@@ -7972,6 +9629,7 @@
   const pageParams = new URLSearchParams(window.location.search);
   const queryFromUrl = normalizeSearchQuery(pageParams.get('q') || pageParams.get('keyword') || '');
   const topicFromUrl = normalizeSearchQuery(pageParams.get('topic') || '');
+  const directionFromUrl = normalizeSearchQuery(pageParams.get('direction') || '');
 
   document.querySelectorAll('[data-news-filter-root]').forEach((root) => {
     applyNewsFilters(
@@ -7979,6 +9637,7 @@
       root.getAttribute('data-default-date-start') || '',
       root.getAttribute('data-default-date-end') || '',
       root.getAttribute('data-default-region') || 'all',
+      directionFromUrl || root.getAttribute('data-default-direction') || 'all',
       topicFromUrl || root.getAttribute('data-default-topic') || 'all',
       queryFromUrl || root.getAttribute('data-default-search-query') || '',
     );
@@ -8008,6 +9667,7 @@
         root.dataset.selectedDateStart || root.getAttribute('data-default-date-start') || '',
         root.dataset.selectedDateEnd || root.getAttribute('data-default-date-end') || '',
         root.dataset.selectedRegion || root.getAttribute('data-default-region') || 'all',
+        root.dataset.selectedDirection || root.getAttribute('data-default-direction') || 'all',
         root.dataset.selectedTopic || root.getAttribute('data-default-topic') || 'all',
         searchInput.value,
       );
@@ -8047,6 +9707,7 @@
         startInput ? startInput.value : '',
         endInput ? endInput.value : '',
         root.dataset.selectedRegion || root.getAttribute('data-default-region') || 'all',
+        root.dataset.selectedDirection || root.getAttribute('data-default-direction') || 'all',
         root.dataset.selectedTopic || root.getAttribute('data-default-topic') || 'all',
         root.dataset.selectedSearchQuery || root.getAttribute('data-default-search-query') || '',
       );
