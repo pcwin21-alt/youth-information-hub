@@ -101,8 +101,8 @@ class LocalGovernmentTrendsPageTests(unittest.TestCase):
         )
         main_section = page_html.split('id="main-list"', 1)[1].split('id="local-press-releases"', 1)[0]
 
-        self.assertIn("지자체 홈페이지 보도자료", page_html)
-        self.assertIn("기본·시행계획 지도", page_html)
+        self.assertIn("지역의 변화와 현장 맥락을 읽는 곳", page_html)
+        self.assertIn("공식 자료와 참여 기록은 분리해서 확인", page_html)
         self.assertIn("<h3>자료 필터</h3>", page_html)
         self.assertIn("filter-panel has-region-map", page_html)
         self.assertIn('class="filter-stack filter-stack-map"', page_html)
@@ -124,22 +124,9 @@ class LocalGovernmentTrendsPageTests(unittest.TestCase):
         self.assertNotIn(local_press["title"], main_section)
         self.assertNotIn(central_policy["title"], page_html)
         self.assertNotIn(election_story["title"], page_html)
-        self.assertIn(local_press["title"], page_html)
-        self.assertIn("원문 확인됨", page_html)
-        self.assertIn("https://www.seoul.go.kr/files/youth-plan.pdf", page_html)
-        self.assertIn('class="local-map-svg"', page_html)
-        self.assertEqual(page_html.count('class="local-map-region"'), len(web_updater.LOCAL_YOUTH_PLAN_REGIONS))
-        self.assertIn('class="local-map-hit-target"', page_html)
-        self.assertEqual(page_html.count('class="local-map-marker"'), len(web_updater.LOCAL_YOUTH_PLAN_REGIONS))
-        self.assertIn('class="local-map-stage"', page_html)
-        self.assertIn('style="left: 44.69%; top: 21.82%;"', page_html)
-        self.assertNotIn('style="left: 47%; top: 18%;"', page_html)
-        self.assertIn("수집 후보 1건", page_html)
-        self.assertIn("기본계획", page_html)
-        self.assertIn("시행계획", page_html)
-        self.assertNotIn('class="local-plan-card"', page_html)
-        self.assertNotIn("local-source-design", page_html)
-        self.assertNotIn("자료 표기 기준", page_html)
+        self.assertNotIn(local_press["title"], page_html)
+        self.assertIn('href="local.html"', page_html)
+        self.assertIn('href="hub.html"', page_html)
 
 
 if __name__ == "__main__":

@@ -192,8 +192,10 @@ class HomeSelectionTests(unittest.TestCase):
         )
 
         self.assertIn("오늘 올라온 청년 기사", page_html)
-        self.assertIn("가장 최근 뉴스", page_html)
-        self.assertIn("공식자료", page_html)
+        self.assertIn("오늘 들어온 자료", page_html)
+        self.assertIn("15분마다 들어온 자료", page_html)
+        self.assertIn("시간의 강", page_html)
+        self.assertEqual(page_html.count('data-flow-id="06c509e269c18556"'), 1)
         self.assertNotIn("지금 모집 중인 청년정책", page_html)
         self.assertNotIn("application-policies", page_html)
         self.assertNotIn("오늘 메인", page_html)
@@ -235,11 +237,9 @@ class HomeSelectionTests(unittest.TestCase):
                 "email": "hello@example.com",
             },
         )
-        government_start = page_html.index("<span>공식자료</span>")
-        government_section = page_html[government_start:page_html.index("</section>", government_start)]
-
-        self.assertIn(youth_official["title"], government_section)
-        self.assertNotIn(generic_official["title"], government_section)
+        self.assertIn(youth_official["title"], page_html)
+        self.assertIn('href="official.html">정부 원문</a>', page_html)
+        self.assertNotIn(generic_official["title"], page_html)
 
     def test_home_latest_news_uses_published_date_not_importance_score(self) -> None:
         older_high_score = make_article(
@@ -276,8 +276,8 @@ class HomeSelectionTests(unittest.TestCase):
             },
         )
 
-        self.assertIn("최근 수집 기사", page_html)
-        self.assertIn("가장 최근 뉴스", page_html)
+        self.assertIn("시간의 강", page_html)
+        self.assertIn("뉴스 흐름", page_html)
         self.assertNotIn("오늘 놓치면 안되는 뉴스 5가지", page_html)
         self.assertLess(page_html.index(newest_low_score["title"]), page_html.index(middle_article["title"]))
         self.assertLess(page_html.index(middle_article["title"]), page_html.index(older_high_score["title"]))
@@ -305,12 +305,10 @@ class HomeSelectionTests(unittest.TestCase):
             },
         )
 
-        self.assertIn(
-            '<span class="home-glance-label">가장 최근 뉴스</span><strong class="home-glance-value">6건</strong>',
-            page_html,
-        )
+        self.assertIn('<div class="flow-stat"><span>오늘 들어온 자료</span><strong>6건</strong></div>', page_html)
+        self.assertEqual(page_html.count("data-flow-item data-flow-id="), 6)
 
-    def test_home_latest_news_excludes_non_news_candidates(self) -> None:
+    def test_home_flow_combines_routed_content_and_excludes_noise_or_campaign(self) -> None:
         visible_news = make_article(
             title="청년 월세 지원 최신 일반 기사",
             lead_text="청년 월세 지원 신청 소식을 다룬 기사다.",
@@ -330,7 +328,7 @@ class HomeSelectionTests(unittest.TestCase):
         )
         noisy["is_noise"] = True
         opinion = make_article(
-            title="메인에 나오면 안 되는 오피니언",
+            title="청년정책 현장을 다룬 오피니언",
             lead_text="청년 정책에 대한 칼럼이다.",
             url="https://example.com/opinion",
         )
@@ -353,16 +351,13 @@ class HomeSelectionTests(unittest.TestCase):
             },
         )
 
-        latest_news_column = page_html.split("<span>가장 최근 뉴스</span>", 1)[1].split(
-            "<span>공식자료</span>",
-            1,
-        )[0]
-
-        self.assertIn(visible_news["title"], latest_news_column)
-        self.assertNotIn(official["title"], latest_news_column)
-        self.assertNotIn(noisy["title"], latest_news_column)
-        self.assertNotIn(opinion["title"], latest_news_column)
-        self.assertNotIn(campaign["title"], latest_news_column)
+        self.assertIn(visible_news["title"], page_html)
+        self.assertIn(opinion["title"], page_html)
+        self.assertIn('href="opinion.html">관점</a>', page_html)
+        self.assertIn(official["title"], page_html)
+        self.assertIn('href="official.html">정부 원문</a>', page_html)
+        self.assertNotIn(noisy["title"], page_html)
+        self.assertNotIn(campaign["title"], page_html)
 
     def test_home_government_trends_use_government_page_sections_and_skip_local_sources(self) -> None:
         central_press = make_article(
@@ -459,17 +454,13 @@ class HomeSelectionTests(unittest.TestCase):
             },
         )
 
-        gov_start = page_html.index("<span>공식자료</span>")
-        gov_local_column = page_html[gov_start:page_html.index("</section>", gov_start)]
-
-        self.assertIn("공식자료 메뉴와 같은 기준으로 보도자료와 기본·시행계획 원문만 봅니다.", page_html)
-        self.assertIn(central_press["title"], gov_local_column)
-        self.assertNotIn(local_press["title"], gov_local_column)
-        self.assertNotIn(local_notice["title"], gov_local_column)
-        self.assertNotIn(central_policy_news["title"], gov_local_column)
-        self.assertNotIn(central_announcement_news["title"], gov_local_column)
-        self.assertNotIn(government_hub_news["title"], gov_local_column)
-        self.assertNotIn(regional_hub_news["title"], gov_local_column)
+        self.assertIn(central_press["title"], page_html)
+        self.assertIn(local_press["title"], page_html)
+        self.assertIn('href="official.html">정부 원문</a>', page_html)
+        self.assertIn('href="local.html">지역 원문</a>', page_html)
+        self.assertNotIn(central_policy_news["title"], page_html)
+        self.assertIn(local_notice["title"], page_html)
+        self.assertNotIn(central_announcement_news["title"], page_html)
 
     def test_home_categories_use_public_archive_topic_tags(self) -> None:
         recent_housing = make_article(
@@ -513,13 +504,10 @@ class HomeSelectionTests(unittest.TestCase):
             },
         )
 
-        self.assertIn('aria-label="최근 많이 잡힌 카테고리"', page_html)
+        self.assertIn("<strong>주거 · 금융 · 모집</strong>", page_html)
+        self.assertIn("<span>#주거</span>", page_html)
+        self.assertIn("<span>#취업</span>", page_html)
         self.assertNotIn("최근 48시간 기준입니다.", page_html)
-        self.assertNotIn("home-keyword-panel", page_html)
-        self.assertNotIn("오늘 많이 잡힌 키워드", page_html)
-        self.assertIn("news.html?topic=%EC%A3%BC%EA%B1%B0", page_html)
-        self.assertIn("news.html?topic=%EC%B7%A8%EC%97%85", page_html)
-        self.assertIn("news.html?topic=%EA%B8%88%EC%9C%B5", page_html)
 
 
     def test_home_page_omits_weekly_section_and_uses_support_credit_badge(self) -> None:
@@ -566,7 +554,7 @@ class HomeSelectionTests(unittest.TestCase):
         self.assertIn("청년정책 활동가, 관련 업무 종사자, 그리고 모든 청년을 위한 정책 정보 안내 서비스입니다.", footer_html)
         self.assertIn("관련 사이트", footer_html)
 
-        self.assertIn("청년정책 모아봄", footer_html)
+        self.assertIn("청년동향실", footer_html)
         self.assertIn("by YOUTHSIDE", footer_html)
         self.assertIn("운영 목적 :", footer_html)
         self.assertIn("정보 기준 :", footer_html)
@@ -745,12 +733,12 @@ class HomeSelectionTests(unittest.TestCase):
 
         labels = dict(web_updater.NAV_ITEMS)
         self.assertEqual(len(labels), 7)
-        self.assertEqual(labels["news.html"], "뉴스")
-        self.assertEqual(labels["opinion.html"], "기고·칼럼")
+        self.assertEqual(labels["news.html"], "뉴스 흐름")
+        self.assertEqual(labels["opinion.html"], "관점")
         self.assertEqual(labels["reports.html"], "연구·분석")
-        self.assertEqual(labels["local.html"], "지자체 자료실")
-        self.assertEqual(labels["official.html"], "정부부처 자료실")
-        self.assertEqual(labels["institution.html"], "준비 중")
+        self.assertEqual(labels["local.html"], "지역 원문")
+        self.assertEqual(labels["official.html"], "정부 원문")
+        self.assertEqual(labels["institution.html"], "분석실")
         self.assertIn(local_press["title"], materials_html)
         self.assertNotIn(regional_news["title"], materials_html)
         self.assertIn("자료실 수록 원칙", materials_html)

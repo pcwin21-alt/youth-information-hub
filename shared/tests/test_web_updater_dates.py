@@ -171,7 +171,7 @@ class WebUpdaterDateFallbackTests(unittest.TestCase):
 
         self.assertEqual(sorted_articles[0]["url"], portal_only["url"])
 
-    def test_home_government_column_uses_government_trend_pool(self) -> None:
+    def test_home_flow_routes_central_and_local_official_sources(self) -> None:
         official = make_official_government_article()
         local = make_local_official_article()
 
@@ -182,9 +182,11 @@ class WebUpdaterDateFallbackTests(unittest.TestCase):
             {},
         )
 
-        self.assertIn("공식자료", page_html)
+        self.assertIn("시간의 강", page_html)
         self.assertIn("Central official youth policy", page_html)
-        self.assertNotIn("Local city official youth policy", page_html)
+        self.assertIn("Local city official youth policy", page_html)
+        self.assertIn('href="official.html">정부 원문</a>', page_html)
+        self.assertIn('href="local.html">지역 원문</a>', page_html)
 
     def test_official_page_excludes_related_news_section(self) -> None:
         official = make_official_government_article()

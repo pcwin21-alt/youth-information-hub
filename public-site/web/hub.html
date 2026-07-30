@@ -2805,7 +2805,7 @@
       gap: 4px;
     }
     .nav::before {
-      content: "Navigation\A청년정책 모아봄";
+      content: "Navigation\A청년동향실";
       position: absolute;
       top: 20px;
       left: 24px;
@@ -8394,6 +8394,339 @@
     outline-offset: 3px;
   }
 
+  body[data-page="index.html"] .shell {
+    background:
+      radial-gradient(circle at 88% 2%, rgba(200, 77, 57, 0.1), transparent 23rem),
+      var(--surface);
+  }
+
+  .flow-hero {
+    display: grid;
+    gap: 22px;
+  }
+
+  .flow-hero-header {
+    display: grid;
+    grid-template-columns: minmax(0, 1.45fr) minmax(260px, 0.55fr);
+    gap: 18px;
+    align-items: end;
+  }
+
+  .flow-hero-title {
+    max-width: 850px;
+    margin: 10px 0 12px;
+    font-size: clamp(2.35rem, 5vw, 5.6rem);
+    line-height: 0.98;
+    letter-spacing: -0.075em;
+  }
+
+  .flow-hero-copy {
+    max-width: 720px;
+    margin: 0;
+    color: var(--muted);
+    font-size: clamp(1rem, 1.7vw, 1.22rem);
+    line-height: 1.75;
+  }
+
+  .flow-freshness {
+    padding: 18px;
+    border: 1px solid var(--line);
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.74);
+  }
+
+  .flow-freshness span,
+  .flow-stat span {
+    display: block;
+    color: var(--muted);
+    font-size: 0.76rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+  }
+
+  .flow-freshness strong {
+    display: block;
+    margin-top: 6px;
+    font-size: 1.45rem;
+  }
+
+  .flow-freshness p {
+    margin: 8px 0 0;
+    color: var(--muted);
+    font-size: 0.84rem;
+    line-height: 1.55;
+  }
+
+  .flow-board {
+    overflow: hidden;
+    border: 1px solid var(--line);
+    border-radius: 28px;
+    background: #fff;
+    box-shadow: 0 18px 42px rgba(16, 44, 50, 0.07);
+  }
+
+  .flow-board-head {
+    display: flex;
+    gap: 18px;
+    align-items: flex-end;
+    justify-content: space-between;
+    padding: 22px 24px 18px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .flow-board-head h2 {
+    margin: 4px 0 0;
+    font-size: clamp(1.3rem, 2vw, 1.8rem);
+  }
+
+  .flow-board-head p {
+    margin: 6px 0 0;
+    color: var(--muted);
+    font-size: 0.86rem;
+  }
+
+  .flow-stats {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(90px, 1fr));
+    border-bottom: 1px solid var(--line);
+  }
+
+  .flow-stat {
+    padding: 18px 22px;
+    border-right: 1px solid var(--line);
+  }
+
+  .flow-stat:last-child {
+    border-right: 0;
+  }
+
+  .flow-stat strong {
+    display: block;
+    margin-top: 5px;
+    font-size: 1.65rem;
+    letter-spacing: -0.045em;
+  }
+
+  .flow-map-wrap {
+    padding: 22px 24px 24px;
+  }
+
+  .flow-map {
+    display: grid;
+    grid-template-columns: repeat(24, minmax(18px, 1fr));
+    gap: 5px;
+    min-width: 690px;
+  }
+
+  .flow-map-scroll {
+    overflow-x: auto;
+    padding-bottom: 8px;
+  }
+
+  .flow-cell {
+    position: relative;
+    min-height: 76px;
+    padding: 9px 4px 7px;
+    border: 1px solid rgba(16, 44, 50, 0.08);
+    border-radius: 10px;
+    background: color-mix(in srgb, var(--deep-navy) calc(4% + var(--flow-level) * 14%), #f7faf9);
+    color: var(--deep-navy);
+    cursor: pointer;
+    transition: transform 160ms ease, border-color 160ms ease, background 160ms ease;
+  }
+
+  .flow-cell:hover,
+  .flow-cell.active {
+    z-index: 1;
+    transform: translateY(-3px);
+    border-color: var(--accent);
+  }
+
+  .flow-cell.latest:not(.empty)::after {
+    position: absolute;
+    top: 7px;
+    right: 7px;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 0 5px rgba(200, 77, 57, 0.12);
+    content: "";
+    animation: flow-pulse 1.8s ease-out infinite;
+  }
+
+  .flow-cell-count {
+    display: block;
+    font-size: 1rem;
+    font-weight: 800;
+  }
+
+  .flow-cell-time {
+    position: absolute;
+    right: 4px;
+    bottom: 7px;
+    left: 4px;
+    color: var(--muted);
+    font-size: 0.64rem;
+    font-weight: 700;
+    text-align: center;
+  }
+
+  .flow-map-legend {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 10px;
+    color: var(--muted);
+    font-size: 0.75rem;
+  }
+
+  .flow-map-legend strong {
+    color: var(--deep-navy);
+  }
+
+  .flow-stream {
+    margin-top: 20px;
+    border-top: 1px solid var(--line);
+  }
+
+  .flow-stream-head {
+    position: sticky;
+    top: 10px;
+    z-index: 6;
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 24px;
+    border: 1px solid var(--line);
+    border-radius: 20px;
+    background: rgba(250, 250, 247, 0.94);
+    backdrop-filter: blur(14px);
+  }
+
+  .flow-stream-head h2 {
+    margin: 0;
+    font-size: 1.25rem;
+  }
+
+  .flow-stream-status {
+    margin: 4px 0 0;
+    color: var(--muted);
+    font-size: 0.82rem;
+  }
+
+  .flow-read-button {
+    flex: none;
+    padding: 11px 15px;
+    border: 1px solid var(--deep-navy);
+    border-radius: 999px;
+    background: var(--deep-navy);
+    color: #fff;
+    font: inherit;
+    font-size: 0.82rem;
+    font-weight: 700;
+    cursor: pointer;
+  }
+
+  .flow-list {
+    padding: 2px 0 0;
+  }
+
+  .flow-item {
+    display: grid;
+    grid-template-columns: 88px minmax(0, 1fr) auto;
+    gap: 18px;
+    align-items: start;
+    padding: 22px 8px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .flow-item[hidden] {
+    display: none;
+  }
+
+  .flow-time {
+    color: var(--accent);
+    font-size: 0.86rem;
+    font-weight: 800;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .flow-item-main {
+    min-width: 0;
+  }
+
+  .flow-item-main a,
+  .flow-item-main strong {
+    color: var(--deep-navy);
+    font-size: clamp(1rem, 1.55vw, 1.22rem);
+    font-weight: 700;
+    line-height: 1.5;
+    text-decoration: none;
+  }
+
+  .flow-item-main a:hover {
+    color: var(--accent);
+  }
+
+  .flow-item-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 8px;
+    color: var(--muted);
+    font-size: 0.78rem;
+  }
+
+  .flow-route {
+    min-width: 76px;
+    padding: 6px 9px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: var(--mint);
+    color: var(--deep-navy);
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-align: center;
+  }
+
+  .flow-read-marker {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    margin: 4px 0;
+    color: var(--accent);
+    font-size: 0.78rem;
+    font-weight: 800;
+  }
+
+  .flow-read-marker::before,
+  .flow-read-marker::after {
+    height: 1px;
+    flex: 1;
+    background: rgba(200, 77, 57, 0.35);
+    content: "";
+  }
+
+  .flow-empty {
+    padding: 42px 20px;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  @keyframes flow-pulse {
+    0% { box-shadow: 0 0 0 0 rgba(200, 77, 57, 0.28); }
+    75%, 100% { box-shadow: 0 0 0 9px rgba(200, 77, 57, 0); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .flow-cell.latest:not(.empty)::after {
+      animation: none;
+    }
+  }
+
   @media (max-width: 1180px) {
     .app-layout {
       grid-template-columns: 1fr;
@@ -8415,6 +8748,10 @@
 
     .article-grid {
       grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .flow-hero-header {
+      grid-template-columns: 1fr;
     }
   }
 
@@ -8482,6 +8819,44 @@
       bottom: 10px;
       border-radius: 20px;
     }
+
+    .flow-hero-title {
+      font-size: clamp(2.25rem, 13vw, 4rem);
+    }
+
+    .flow-board-head,
+    .flow-stream-head {
+      align-items: flex-start;
+      flex-direction: column;
+    }
+
+    .flow-stats {
+      grid-template-columns: 1fr;
+    }
+
+    .flow-stat {
+      border-right: 0;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .flow-stat:last-child {
+      border-bottom: 0;
+    }
+
+    .flow-map-wrap {
+      padding: 18px 16px;
+    }
+
+    .flow-item {
+      grid-template-columns: 56px minmax(0, 1fr);
+      gap: 10px;
+      padding: 18px 2px;
+    }
+
+    .flow-route {
+      grid-column: 2;
+      justify-self: start;
+    }
   }
 </style>
 </head>
@@ -8511,8 +8886,8 @@
   <div class="app-layout">
     <aside class="side-nav" aria-label="현재 페이지 위치 마커">
 
-      <a class="side-brand" href="index.html" aria-label="청년정책 모아봄 홈으로 이동">
-        <strong>청년정책 모아봄</strong>
+      <a class="side-brand" href="index.html" aria-label="청년동향실 홈으로 이동">
+        <strong>청년동향실</strong>
         <span>by YOUTHSIDE</span>
       </a>
 
@@ -8530,19 +8905,19 @@
           <path d="M4 11.5 12 5l8 6.5"></path>
           <path d="M6.5 10.5V20h11V10.5"></path>
           <path d="M10 20v-5h4v5"></path>
-        </svg></span><span class="side-nav-text"><strong>홈</strong></span></a><a class="side-nav-link primary-menu-link" href="news.html" data-side-icon="news"><span class="side-nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false">
+        </svg></span><span class="side-nav-text"><strong>지금</strong></span></a><a class="side-nav-link primary-menu-link" href="news.html" data-side-icon="news"><span class="side-nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false">
           <path d="M6 5.5h9.5L19 9v9.5H6z"></path>
           <path d="M15.5 5.5V9H19"></path>
           <path d="M9 12h6"></path>
           <path d="M9 15h6"></path>
           <path d="M9 18h4"></path>
-        </svg></span><span class="side-nav-text"><strong>뉴스</strong></span></a><a class="side-nav-link primary-menu-link" href="opinion.html" data-side-icon="insights"><span class="side-nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false">
+        </svg></span><span class="side-nav-text"><strong>뉴스 흐름</strong></span></a><a class="side-nav-link primary-menu-link" href="opinion.html" data-side-icon="insights"><span class="side-nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false">
           <path d="M6 5.5h9.5L19 9v9.5H6z"></path>
           <path d="M15.5 5.5V9H19"></path>
           <path d="M9 12h6"></path>
           <path d="M9 15h6"></path>
           <path d="M9 18h4"></path>
-        </svg></span><span class="side-nav-text"><strong>기고·칼럼</strong></span></a><a class="side-nav-link primary-menu-link" href="reports.html" data-side-icon="insights"><span class="side-nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false">
+        </svg></span><span class="side-nav-text"><strong>관점</strong></span></a><a class="side-nav-link primary-menu-link" href="reports.html" data-side-icon="insights"><span class="side-nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false">
           <path d="M6 5.5h9.5L19 9v9.5H6z"></path>
           <path d="M15.5 5.5V9H19"></path>
           <path d="M9 12h6"></path>
@@ -8553,24 +8928,24 @@
           <path d="M10 5v12.5"></path>
           <path d="M14 6.5V19"></path>
           <path d="M16.5 10.5h.01"></path>
-        </svg></span><span class="side-nav-text"><strong>지자체 자료실</strong></span></a><a class="side-nav-link primary-menu-link" href="official.html" data-side-icon="government"><span class="side-nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false">
+        </svg></span><span class="side-nav-text"><strong>지역 원문</strong></span></a><a class="side-nav-link primary-menu-link" href="official.html" data-side-icon="government"><span class="side-nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false">
           <path d="M4 9.5 12 5l8 4.5"></path>
           <path d="M5.5 19h13"></path>
           <path d="M7 10.5V17"></path>
           <path d="M12 10.5V17"></path>
           <path d="M17 10.5V17"></path>
-        </svg></span><span class="side-nav-text"><strong>정부부처 자료실</strong></span></a><a class="side-nav-link primary-menu-link" href="tools.html" data-side-icon="book"><span class="side-nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false">
+        </svg></span><span class="side-nav-text"><strong>정부 원문</strong></span></a><a class="side-nav-link primary-menu-link" href="tools.html" data-side-icon="book"><span class="side-nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false">
           <path d="M5.5 5.5h5A3.5 3.5 0 0 1 14 9v10a3.5 3.5 0 0 0-3.5-3.5h-5z"></path>
           <path d="M18.5 5.5h-4A3.5 3.5 0 0 0 11 9v10a3.5 3.5 0 0 1 3.5-3.5h4z"></path>
           <path d="M14 9h2.5"></path>
           <path d="M14 12h2.5"></path>
-        </svg></span><span class="side-nav-text"><strong>근거 자료</strong></span></a><a class="side-nav-link primary-menu-link" href="institution.html" data-side-icon="insights"><span class="side-nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false">
+        </svg></span><span class="side-nav-text"><strong>통계·근거</strong></span></a><a class="side-nav-link primary-menu-link" href="institution.html" data-side-icon="insights"><span class="side-nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false">
           <path d="M6 5.5h9.5L19 9v9.5H6z"></path>
           <path d="M15.5 5.5V9H19"></path>
           <path d="M9 12h6"></path>
           <path d="M9 15h6"></path>
           <path d="M9 18h4"></path>
-        </svg></span><span class="side-nav-text"><strong>준비 중</strong></span></a>
+        </svg></span><span class="side-nav-text"><strong>분석실</strong></span></a>
         </nav>
       </div>
       <div class="side-nav-section">
@@ -8580,8 +8955,8 @@
         </nav>
       </div>
       <a class="side-update-card" href="news.html">
-        <strong>Weekly Update</strong>
-        <span>이번 주 청년정책과 청년 이슈의 흐름을 확인합니다.</span>
+        <strong>동향 브리핑</strong>
+        <span>업무 전에 새로 들어온 청년정책과 현장 이슈를 확인합니다.</span>
       </a>
       <div class="side-nav-admin" data-admin-only="true" hidden>
         <span class="side-nav-kicker">관리 예정</span>
@@ -8769,7 +9144,7 @@
         <div class="site-footer-info">
 
           <div class="site-footer-site-head">
-            <strong>청년정책 모아봄</strong>
+            <strong>청년동향실</strong>
             <span>by YOUTHSIDE</span>
           </div>
 
@@ -8792,19 +9167,19 @@
           <path d="M4 11.5 12 5l8 6.5"></path>
           <path d="M6.5 10.5V20h11V10.5"></path>
           <path d="M10 20v-5h4v5"></path>
-        </svg></span><span>오늘</span></a><a class="" href="news.html"><span class="bottom-nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false">
+        </svg></span><span>지금</span></a><a class="" href="news.html"><span class="bottom-nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false">
           <path d="M6 5.5h9.5L19 9v9.5H6z"></path>
           <path d="M15.5 5.5V9H19"></path>
           <path d="M9 12h6"></path>
           <path d="M9 15h6"></path>
           <path d="M9 18h4"></path>
-        </svg></span><span>뉴스</span></a><a class="" href="opinion.html"><span class="bottom-nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false">
+        </svg></span><span>흐름</span></a><a class="" href="opinion.html"><span class="bottom-nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false">
           <path d="M6 5.5h9.5L19 9v9.5H6z"></path>
           <path d="M15.5 5.5V9H19"></path>
           <path d="M9 12h6"></path>
           <path d="M9 15h6"></path>
           <path d="M9 18h4"></path>
-        </svg></span><span>칼럼</span></a><a class="" href="reports.html"><span class="bottom-nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false">
+        </svg></span><span>관점</span></a><a class="" href="reports.html"><span class="bottom-nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false">
           <path d="M6 5.5h9.5L19 9v9.5H6z"></path>
           <path d="M15.5 5.5V9H19"></path>
           <path d="M9 12h6"></path>
@@ -8815,7 +9190,7 @@
           <path d="M10 5v12.5"></path>
           <path d="M14 6.5V19"></path>
           <path d="M16.5 10.5h.01"></path>
-        </svg></span><span>지역</span></a></nav>
+        </svg></span><span>원문</span></a></nav>
 
 
   <div class="admin-login-overlay" data-admin-login-overlay hidden>
@@ -9922,6 +10297,97 @@
   if (guideOverlay && document.body.dataset.page === 'index.html') {
     guideOverlay.hidden = true;
   }
+})();
+
+
+(() => {
+  const root = document.querySelector('[data-flow-root]');
+  if (!root) {
+    return;
+  }
+
+  const storageKey = 'youth-trend-room-read-until';
+  const items = Array.from(root.querySelectorAll('[data-flow-item]'));
+  const cells = Array.from(root.querySelectorAll('[data-flow-cell]'));
+  const status = root.querySelector('[data-flow-status]');
+  const markButton = root.querySelector('[data-flow-mark-read]');
+  const allButton = root.querySelector('[data-flow-all]');
+
+  function readStoredTimestamp() {
+    try {
+      return Number(window.localStorage.getItem(storageKey) || 0);
+    } catch (error) {
+      return 0;
+    }
+  }
+
+  function refreshReadMarker() {
+    root.querySelectorAll('[data-flow-read-marker]').forEach((marker) => marker.remove());
+    const readUntil = readStoredTimestamp();
+    const unreadCount = items.filter((item) => Number(item.dataset.publishedTs || 0) > readUntil).length;
+    if (status) {
+      status.textContent = readUntil
+        ? `이전에 읽은 뒤 새로 들어온 자료 ${unreadCount}건`
+        : `최근 자료 ${items.length}건 · 읽은 위치를 이 브라우저에 저장할 수 있습니다`;
+    }
+    if (!readUntil) {
+      return;
+    }
+    const firstReadItem = items.find((item) => Number(item.dataset.publishedTs || 0) <= readUntil);
+    if (!firstReadItem) {
+      return;
+    }
+    const marker = document.createElement('div');
+    marker.className = 'flow-read-marker';
+    marker.dataset.flowReadMarker = 'true';
+    marker.textContent = '여기까지 읽으셨습니다';
+    firstReadItem.before(marker);
+  }
+
+  function showAll() {
+    items.forEach((item) => {
+      item.hidden = false;
+    });
+    cells.forEach((cell) => cell.classList.remove('active'));
+    if (allButton) {
+      allButton.classList.add('active');
+    }
+    refreshReadMarker();
+  }
+
+  cells.forEach((cell) => {
+    cell.addEventListener('click', () => {
+      const start = Number(cell.dataset.startTs || 0);
+      const end = Number(cell.dataset.endTs || 0);
+      items.forEach((item) => {
+        const timestamp = Number(item.dataset.publishedTs || 0);
+        item.hidden = !(timestamp >= start && timestamp < end);
+      });
+      cells.forEach((other) => other.classList.toggle('active', other === cell));
+      if (allButton) {
+        allButton.classList.remove('active');
+      }
+      root.querySelectorAll('[data-flow-read-marker]').forEach((marker) => marker.remove());
+      if (status) {
+        status.textContent = `${cell.dataset.label || '선택한 시간'} · ${cell.dataset.count || 0}건`;
+      }
+      root.querySelector('[data-flow-stream]')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  });
+
+  allButton?.addEventListener('click', showAll);
+  markButton?.addEventListener('click', () => {
+    const latestTimestamp = Math.max(0, ...items.map((item) => Number(item.dataset.publishedTs || 0)));
+    try {
+      window.localStorage.setItem(storageKey, String(latestTimestamp));
+    } catch (error) {
+      // Storage can be blocked; the current view still remains usable.
+    }
+    refreshReadMarker();
+    markButton.textContent = '읽은 위치 저장됨';
+  });
+
+  refreshReadMarker();
 })();
 
 

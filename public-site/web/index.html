@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>청년정책 모아봄</title>
+  <title>청년동향실</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -2805,7 +2805,7 @@
       gap: 4px;
     }
     .nav::before {
-      content: "Navigation\A청년정책 모아봄";
+      content: "Navigation\A청년동향실";
       position: absolute;
       top: 20px;
       left: 24px;
@@ -8394,6 +8394,339 @@
     outline-offset: 3px;
   }
 
+  body[data-page="index.html"] .shell {
+    background:
+      radial-gradient(circle at 88% 2%, rgba(200, 77, 57, 0.1), transparent 23rem),
+      var(--surface);
+  }
+
+  .flow-hero {
+    display: grid;
+    gap: 22px;
+  }
+
+  .flow-hero-header {
+    display: grid;
+    grid-template-columns: minmax(0, 1.45fr) minmax(260px, 0.55fr);
+    gap: 18px;
+    align-items: end;
+  }
+
+  .flow-hero-title {
+    max-width: 850px;
+    margin: 10px 0 12px;
+    font-size: clamp(2.35rem, 5vw, 5.6rem);
+    line-height: 0.98;
+    letter-spacing: -0.075em;
+  }
+
+  .flow-hero-copy {
+    max-width: 720px;
+    margin: 0;
+    color: var(--muted);
+    font-size: clamp(1rem, 1.7vw, 1.22rem);
+    line-height: 1.75;
+  }
+
+  .flow-freshness {
+    padding: 18px;
+    border: 1px solid var(--line);
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.74);
+  }
+
+  .flow-freshness span,
+  .flow-stat span {
+    display: block;
+    color: var(--muted);
+    font-size: 0.76rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+  }
+
+  .flow-freshness strong {
+    display: block;
+    margin-top: 6px;
+    font-size: 1.45rem;
+  }
+
+  .flow-freshness p {
+    margin: 8px 0 0;
+    color: var(--muted);
+    font-size: 0.84rem;
+    line-height: 1.55;
+  }
+
+  .flow-board {
+    overflow: hidden;
+    border: 1px solid var(--line);
+    border-radius: 28px;
+    background: #fff;
+    box-shadow: 0 18px 42px rgba(16, 44, 50, 0.07);
+  }
+
+  .flow-board-head {
+    display: flex;
+    gap: 18px;
+    align-items: flex-end;
+    justify-content: space-between;
+    padding: 22px 24px 18px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .flow-board-head h2 {
+    margin: 4px 0 0;
+    font-size: clamp(1.3rem, 2vw, 1.8rem);
+  }
+
+  .flow-board-head p {
+    margin: 6px 0 0;
+    color: var(--muted);
+    font-size: 0.86rem;
+  }
+
+  .flow-stats {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(90px, 1fr));
+    border-bottom: 1px solid var(--line);
+  }
+
+  .flow-stat {
+    padding: 18px 22px;
+    border-right: 1px solid var(--line);
+  }
+
+  .flow-stat:last-child {
+    border-right: 0;
+  }
+
+  .flow-stat strong {
+    display: block;
+    margin-top: 5px;
+    font-size: 1.65rem;
+    letter-spacing: -0.045em;
+  }
+
+  .flow-map-wrap {
+    padding: 22px 24px 24px;
+  }
+
+  .flow-map {
+    display: grid;
+    grid-template-columns: repeat(24, minmax(18px, 1fr));
+    gap: 5px;
+    min-width: 690px;
+  }
+
+  .flow-map-scroll {
+    overflow-x: auto;
+    padding-bottom: 8px;
+  }
+
+  .flow-cell {
+    position: relative;
+    min-height: 76px;
+    padding: 9px 4px 7px;
+    border: 1px solid rgba(16, 44, 50, 0.08);
+    border-radius: 10px;
+    background: color-mix(in srgb, var(--deep-navy) calc(4% + var(--flow-level) * 14%), #f7faf9);
+    color: var(--deep-navy);
+    cursor: pointer;
+    transition: transform 160ms ease, border-color 160ms ease, background 160ms ease;
+  }
+
+  .flow-cell:hover,
+  .flow-cell.active {
+    z-index: 1;
+    transform: translateY(-3px);
+    border-color: var(--accent);
+  }
+
+  .flow-cell.latest:not(.empty)::after {
+    position: absolute;
+    top: 7px;
+    right: 7px;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 0 5px rgba(200, 77, 57, 0.12);
+    content: "";
+    animation: flow-pulse 1.8s ease-out infinite;
+  }
+
+  .flow-cell-count {
+    display: block;
+    font-size: 1rem;
+    font-weight: 800;
+  }
+
+  .flow-cell-time {
+    position: absolute;
+    right: 4px;
+    bottom: 7px;
+    left: 4px;
+    color: var(--muted);
+    font-size: 0.64rem;
+    font-weight: 700;
+    text-align: center;
+  }
+
+  .flow-map-legend {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 10px;
+    color: var(--muted);
+    font-size: 0.75rem;
+  }
+
+  .flow-map-legend strong {
+    color: var(--deep-navy);
+  }
+
+  .flow-stream {
+    margin-top: 20px;
+    border-top: 1px solid var(--line);
+  }
+
+  .flow-stream-head {
+    position: sticky;
+    top: 10px;
+    z-index: 6;
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 24px;
+    border: 1px solid var(--line);
+    border-radius: 20px;
+    background: rgba(250, 250, 247, 0.94);
+    backdrop-filter: blur(14px);
+  }
+
+  .flow-stream-head h2 {
+    margin: 0;
+    font-size: 1.25rem;
+  }
+
+  .flow-stream-status {
+    margin: 4px 0 0;
+    color: var(--muted);
+    font-size: 0.82rem;
+  }
+
+  .flow-read-button {
+    flex: none;
+    padding: 11px 15px;
+    border: 1px solid var(--deep-navy);
+    border-radius: 999px;
+    background: var(--deep-navy);
+    color: #fff;
+    font: inherit;
+    font-size: 0.82rem;
+    font-weight: 700;
+    cursor: pointer;
+  }
+
+  .flow-list {
+    padding: 2px 0 0;
+  }
+
+  .flow-item {
+    display: grid;
+    grid-template-columns: 88px minmax(0, 1fr) auto;
+    gap: 18px;
+    align-items: start;
+    padding: 22px 8px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .flow-item[hidden] {
+    display: none;
+  }
+
+  .flow-time {
+    color: var(--accent);
+    font-size: 0.86rem;
+    font-weight: 800;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .flow-item-main {
+    min-width: 0;
+  }
+
+  .flow-item-main a,
+  .flow-item-main strong {
+    color: var(--deep-navy);
+    font-size: clamp(1rem, 1.55vw, 1.22rem);
+    font-weight: 700;
+    line-height: 1.5;
+    text-decoration: none;
+  }
+
+  .flow-item-main a:hover {
+    color: var(--accent);
+  }
+
+  .flow-item-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 8px;
+    color: var(--muted);
+    font-size: 0.78rem;
+  }
+
+  .flow-route {
+    min-width: 76px;
+    padding: 6px 9px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: var(--mint);
+    color: var(--deep-navy);
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-align: center;
+  }
+
+  .flow-read-marker {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    margin: 4px 0;
+    color: var(--accent);
+    font-size: 0.78rem;
+    font-weight: 800;
+  }
+
+  .flow-read-marker::before,
+  .flow-read-marker::after {
+    height: 1px;
+    flex: 1;
+    background: rgba(200, 77, 57, 0.35);
+    content: "";
+  }
+
+  .flow-empty {
+    padding: 42px 20px;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  @keyframes flow-pulse {
+    0% { box-shadow: 0 0 0 0 rgba(200, 77, 57, 0.28); }
+    75%, 100% { box-shadow: 0 0 0 9px rgba(200, 77, 57, 0); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .flow-cell.latest:not(.empty)::after {
+      animation: none;
+    }
+  }
+
   @media (max-width: 1180px) {
     .app-layout {
       grid-template-columns: 1fr;
@@ -8415,6 +8748,10 @@
 
     .article-grid {
       grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .flow-hero-header {
+      grid-template-columns: 1fr;
     }
   }
 
@@ -8482,6 +8819,44 @@
       bottom: 10px;
       border-radius: 20px;
     }
+
+    .flow-hero-title {
+      font-size: clamp(2.25rem, 13vw, 4rem);
+    }
+
+    .flow-board-head,
+    .flow-stream-head {
+      align-items: flex-start;
+      flex-direction: column;
+    }
+
+    .flow-stats {
+      grid-template-columns: 1fr;
+    }
+
+    .flow-stat {
+      border-right: 0;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .flow-stat:last-child {
+      border-bottom: 0;
+    }
+
+    .flow-map-wrap {
+      padding: 18px 16px;
+    }
+
+    .flow-item {
+      grid-template-columns: 56px minmax(0, 1fr);
+      gap: 10px;
+      padding: 18px 2px;
+    }
+
+    .flow-route {
+      grid-column: 2;
+      justify-self: start;
+    }
   }
 </style>
 </head>
@@ -8511,8 +8886,8 @@
   <div class="app-layout">
     <aside class="side-nav" aria-label="현재 페이지 위치 마커">
 
-      <a class="side-brand" href="index.html" aria-label="청년정책 모아봄 홈으로 이동">
-        <strong>청년정책 모아봄</strong>
+      <a class="side-brand" href="index.html" aria-label="청년동향실 홈으로 이동">
+        <strong>청년동향실</strong>
         <span>by YOUTHSIDE</span>
       </a>
 
@@ -8530,19 +8905,19 @@
           <path d="M4 11.5 12 5l8 6.5"></path>
           <path d="M6.5 10.5V20h11V10.5"></path>
           <path d="M10 20v-5h4v5"></path>
-        </svg></span><span class="side-nav-text"><strong>홈</strong></span></a><a class="side-nav-link primary-menu-link" href="news.html" data-side-icon="news"><span class="side-nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false">
+        </svg></span><span class="side-nav-text"><strong>지금</strong></span></a><a class="side-nav-link primary-menu-link" href="news.html" data-side-icon="news"><span class="side-nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false">
           <path d="M6 5.5h9.5L19 9v9.5H6z"></path>
           <path d="M15.5 5.5V9H19"></path>
           <path d="M9 12h6"></path>
           <path d="M9 15h6"></path>
           <path d="M9 18h4"></path>
-        </svg></span><span class="side-nav-text"><strong>뉴스</strong></span></a><a class="side-nav-link primary-menu-link" href="opinion.html" data-side-icon="insights"><span class="side-nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false">
+        </svg></span><span class="side-nav-text"><strong>뉴스 흐름</strong></span></a><a class="side-nav-link primary-menu-link" href="opinion.html" data-side-icon="insights"><span class="side-nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false">
           <path d="M6 5.5h9.5L19 9v9.5H6z"></path>
           <path d="M15.5 5.5V9H19"></path>
           <path d="M9 12h6"></path>
           <path d="M9 15h6"></path>
           <path d="M9 18h4"></path>
-        </svg></span><span class="side-nav-text"><strong>기고·칼럼</strong></span></a><a class="side-nav-link primary-menu-link" href="reports.html" data-side-icon="insights"><span class="side-nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false">
+        </svg></span><span class="side-nav-text"><strong>관점</strong></span></a><a class="side-nav-link primary-menu-link" href="reports.html" data-side-icon="insights"><span class="side-nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false">
           <path d="M6 5.5h9.5L19 9v9.5H6z"></path>
           <path d="M15.5 5.5V9H19"></path>
           <path d="M9 12h6"></path>
@@ -8553,24 +8928,24 @@
           <path d="M10 5v12.5"></path>
           <path d="M14 6.5V19"></path>
           <path d="M16.5 10.5h.01"></path>
-        </svg></span><span class="side-nav-text"><strong>지자체 자료실</strong></span></a><a class="side-nav-link primary-menu-link" href="official.html" data-side-icon="government"><span class="side-nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false">
+        </svg></span><span class="side-nav-text"><strong>지역 원문</strong></span></a><a class="side-nav-link primary-menu-link" href="official.html" data-side-icon="government"><span class="side-nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false">
           <path d="M4 9.5 12 5l8 4.5"></path>
           <path d="M5.5 19h13"></path>
           <path d="M7 10.5V17"></path>
           <path d="M12 10.5V17"></path>
           <path d="M17 10.5V17"></path>
-        </svg></span><span class="side-nav-text"><strong>정부부처 자료실</strong></span></a><a class="side-nav-link primary-menu-link" href="tools.html" data-side-icon="book"><span class="side-nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false">
+        </svg></span><span class="side-nav-text"><strong>정부 원문</strong></span></a><a class="side-nav-link primary-menu-link" href="tools.html" data-side-icon="book"><span class="side-nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false">
           <path d="M5.5 5.5h5A3.5 3.5 0 0 1 14 9v10a3.5 3.5 0 0 0-3.5-3.5h-5z"></path>
           <path d="M18.5 5.5h-4A3.5 3.5 0 0 0 11 9v10a3.5 3.5 0 0 1 3.5-3.5h4z"></path>
           <path d="M14 9h2.5"></path>
           <path d="M14 12h2.5"></path>
-        </svg></span><span class="side-nav-text"><strong>근거 자료</strong></span></a><a class="side-nav-link primary-menu-link" href="institution.html" data-side-icon="insights"><span class="side-nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false">
+        </svg></span><span class="side-nav-text"><strong>통계·근거</strong></span></a><a class="side-nav-link primary-menu-link" href="institution.html" data-side-icon="insights"><span class="side-nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false">
           <path d="M6 5.5h9.5L19 9v9.5H6z"></path>
           <path d="M15.5 5.5V9H19"></path>
           <path d="M9 12h6"></path>
           <path d="M9 15h6"></path>
           <path d="M9 18h4"></path>
-        </svg></span><span class="side-nav-text"><strong>준비 중</strong></span></a>
+        </svg></span><span class="side-nav-text"><strong>분석실</strong></span></a>
         </nav>
       </div>
       <div class="side-nav-section">
@@ -8580,8 +8955,8 @@
         </nav>
       </div>
       <a class="side-update-card" href="news.html">
-        <strong>Weekly Update</strong>
-        <span>이번 주 청년정책과 청년 이슈의 흐름을 확인합니다.</span>
+        <strong>동향 브리핑</strong>
+        <span>업무 전에 새로 들어온 청년정책과 현장 이슈를 확인합니다.</span>
       </a>
       <div class="side-nav-admin" data-admin-only="true" hidden>
         <span class="side-nav-kicker">관리 예정</span>
@@ -8594,105 +8969,53 @@
     </aside>
     <div class="shell" id="page-top">
 
-    <section class="hero home-hero civic-hero" id="overview">
-      <div class="home-briefing-grid">
-        <article class="home-briefing-card lead lead-arch has-media" data-media-host="home-lead">
-          <div class="home-briefing-content">
-            <span class="home-briefing-date" aria-label="마지막 업데이트 2026.07.31 (금) 02:49">
-              <span class="home-briefing-date-label">마지막 업데이트</span>
-              <span class="home-briefing-date-day">2026.07.31 (금)</span>
-              <span class="home-briefing-date-time">02:49</span>
-            </span>
-            <h1 class="home-briefing-title">정책 원문과 청년 이슈를 함께 봅니다</h1>
-            <p class="home-briefing-copy">공식자료와 언론 보도를 연결해, 청년정책과 현장 이슈를 한 화면에서 정리합니다.</p>
-          </div>
-          <div class="home-illustration-slot"><img class="home-illustration-img" src="assets/illustrations/home-moabom-collection.svg?v=20260501-sunlit-logo-1" alt="청년들이 봄꽃 아래에서 오늘의 기사와 정책 정보를 살펴보는 홈 화면 일러스트" decoding="async" loading="eager" onerror="const host=this.closest('[data-media-host]');if(host){host.classList.remove('has-media');}this.parentElement.remove();"></div>
-        </article>
-        <section class="home-overview" id="today-briefing" aria-labelledby="today-briefing-title">
-          <div class="home-overview-head">
-            <div>
-              <h2 id="today-briefing-title">지금 확인할 정보</h2>
-            </div>
-            <div class="home-glance-grid"><article class="home-glance-item neutral"><span class="home-glance-label">가장 최근 뉴스</span><strong class="home-glance-value">287건</strong></article><article class="home-glance-item teal"><span class="home-glance-label">공식자료</span><strong class="home-glance-value">27건</strong></article></div>
-          </div>
-          <div class="home-keyword-strip" aria-label="최근 많이 잡힌 카테고리"><div class="home-keyword-list"><a class="home-keyword-chip" href="news.html?topic=%EC%B7%A8%EC%97%85">#취업</a><a class="home-keyword-chip" href="news.html?topic=%EC%A3%BC%EA%B1%B0">#주거</a><a class="home-keyword-chip" href="news.html?topic=%EA%B8%88%EC%9C%B5">#금융</a><a class="home-keyword-chip" href="news.html?topic=%EB%85%B8%EB%8F%99">#노동</a><a class="home-keyword-chip" href="news.html?topic=%EB%B3%B5%EC%A7%80">#복지</a><a class="home-keyword-chip" href="news.html?topic=%EB%AA%A8%EC%A7%91">#모집</a><a class="home-keyword-chip" href="news.html?topic=%EC%B0%BD%EC%97%85">#창업</a><a class="home-keyword-chip" href="news.html?topic=%EC%B2%AD%EB%85%84%EC%84%BC%ED%84%B0">#청년센터</a></div></div>
-          <div class="home-overview-columns">
-            <article class="home-overview-column">
-              <div class="home-overview-column-head">
-                <div>
-                  <span>가장 최근 뉴스</span>
-                  <h3>최근 수집 기사</h3>
-                </div>
-              </div>
-              <p class="home-briefing-panel-note">언론 기사 중 선거·공약성 기사를 제외한 최신 청년 이슈입니다.</p>
-              <div class="home-urgent-list"><article class="home-urgent-item"><a class="home-urgent-link" href="https://news.google.com/rss/articles/CBMiTEFVX3lxTE1vaUVpeWNRUmFZTUhjZHZjaFlJb1pfNU9zN0pzTXcxQ05CbG1xT1JZRXhId05EaTVlMjJfMVVkZUVYUHpPX0tEdVN4dEY?oc=5" target="_blank" rel="noreferrer" aria-label="아프리카 청년 낙관론의 역설: 높아진 기대감, 구조적 실업의 벽 링크 바로가기"><span class="home-urgent-rank">01</span><div class="home-urgent-text"><strong>아프리카 청년 낙관론의 역설: 높아진 기대감, 구조적 실업의 벽</strong><span class="home-urgent-meta">한국AI부동산신문 · 2026-07-30 17:20</span></div></a></article><article class="home-urgent-item"><a class="home-urgent-link" href="http://www.ttlnews.com/news/articleView.html?idxno=3130272" target="_blank" rel="noreferrer" aria-label="삼성, 청년희망배움터 개강…비수도권 미취업 청년 1000명 선발 시작 - 퍼블릭뉴스통신(Public news-network for TTL) 링크 바로가기"><span class="home-urgent-rank">02</span><div class="home-urgent-text"><strong>삼성, 청년희망배움터 개강…비수도권 미취업 청년 1000명 선발 시작 - 퍼블릭뉴스통신(Public news-network for TTL)</strong><span class="home-urgent-meta">새 창 열림 · 2026-07-31 01:22 · 대전</span></div></a></article><article class="home-urgent-item"><a class="home-urgent-link" href="https://www.cstimes.com/news/articleView.html?idxno=715285" target="_blank" rel="noreferrer" aria-label="한전KDN, &#x27;KDN IT움·IT ON&#x27; 교육시설 환경 개선으로 &#x27;책임경영&#x27; 실천 링크 바로가기"><span class="home-urgent-rank">03</span><div class="home-urgent-text"><strong>한전KDN, &#x27;KDN IT움·IT ON&#x27; 교육시설 환경 개선으로 &#x27;책임경영&#x27; 실천</strong><span class="home-urgent-meta">새 창 열림 · 2026-07-31 01:05 · 광주</span></div></a></article><article class="home-urgent-item"><a class="home-urgent-link" href="https://www.kado.net/news/articleView.html?idxno=2064096" target="_blank" rel="noreferrer" aria-label="춘천시 청년 붙잡고 30만 도시 &#x27;승부수&#x27; 링크 바로가기"><span class="home-urgent-rank">04</span><div class="home-urgent-text"><strong>춘천시 청년 붙잡고 30만 도시 &#x27;승부수&#x27;</strong><span class="home-urgent-meta">새 창 열림 · 2026-07-31 00:48</span></div></a></article><article class="home-urgent-item"><a class="home-urgent-link" href="https://www.jnilbo.com/news/articleView.html?idxno=90000053387" target="_blank" rel="noreferrer" aria-label="완도군, &#x27;지역사회보장계획&#x27;에 군민 목소리 담는다 링크 바로가기"><span class="home-urgent-rank">05</span><div class="home-urgent-text"><strong>완도군, &#x27;지역사회보장계획&#x27;에 군민 목소리 담는다</strong><span class="home-urgent-meta">새 창 열림 · 2026-07-31 00:48</span></div></a></article></div>
-            </article>
-            <article class="home-overview-column">
-              <div class="home-overview-column-head">
-                <div>
-                  <span>공식자료</span>
-                  <h3>공식 원문 자료</h3>
-                </div>
-              </div>
-              <p class="home-briefing-panel-note">공식자료 메뉴와 같은 기준으로 보도자료와 기본·시행계획 원문만 봅니다.</p>
-              <div class="home-urgent-list"><article class="home-urgent-item"><a class="home-urgent-link" href="https://www.opm.go.kr/opm/news/press-release.do?mode=view&amp;articleNo=162963&amp;srSearchVal=청년&amp;article.offset=0&amp;articleLimit=20" target="_blank" rel="noreferrer" aria-label="[보도자료] 한성숙 국무총리 주재 ▲충청권 초광역 협력 오찬 간담회 ▲충청권 반도체 초광역 협력 기업 간담회 링크 바로가기"><span class="home-urgent-rank">01</span><div class="home-urgent-text"><strong>[보도자료] 한성숙 국무총리 주재 ▲충청권 초광역 협력 오찬 간담회 ▲충청권 반도체 초광역 협력 기업 간담회</strong><span class="home-urgent-meta">국무조정실 보도자료 · 2026-07-30 · 대전</span></div></a></article><article class="home-urgent-item"><a class="home-urgent-link" href="https://www.opm.go.kr/opm/news/press-release.do?mode=view&amp;articleNo=162953&amp;srSearchVal=청년&amp;article.offset=0&amp;articleLimit=20" target="_blank" rel="noreferrer" aria-label="[보도자료] 한성숙 국무총리 주재 고립·은둔 청년 관련 간담회 링크 바로가기"><span class="home-urgent-rank">02</span><div class="home-urgent-text"><strong>[보도자료] 한성숙 국무총리 주재 고립·은둔 청년 관련 간담회</strong><span class="home-urgent-meta">국무조정실 보도자료 · 2026-07-29 · 서울</span></div></a></article><article class="home-urgent-item"><a class="home-urgent-link" href="https://www.opm.go.kr/opm/news/press-release.do?mode=view&amp;articleNo=162777&amp;srSearchVal=청년&amp;article.offset=0&amp;articleLimit=20" target="_blank" rel="noreferrer" aria-label="[보도자료] 생명지킴 민관협력 한마당 개최 링크 바로가기"><span class="home-urgent-rank">03</span><div class="home-urgent-text"><strong>[보도자료] 생명지킴 민관협력 한마당 개최</strong><span class="home-urgent-meta">국무조정실 보도자료 · 2026-07-09 · 대구</span></div></a></article><article class="home-urgent-item"><a class="home-urgent-link" href="https://www.opm.go.kr/opm/news/press-release.do?mode=view&amp;articleNo=162723&amp;srSearchVal=청년&amp;article.offset=0&amp;articleLimit=20" target="_blank" rel="noreferrer" aria-label="[보도자료] 한성숙 국무총리, 신촌 대학가 원룸 밀집지역 및 홍제동 행복기숙사 방문 링크 바로가기"><span class="home-urgent-rank">04</span><div class="home-urgent-text"><strong>[보도자료] 한성숙 국무총리, 신촌 대학가 원룸 밀집지역 및 홍제동 행복기숙사 방문</strong><span class="home-urgent-meta">국무조정실 보도자료 · 2026-07-04</span></div></a></article><article class="home-urgent-item"><a class="home-urgent-link" href="https://www.opm.go.kr/opm/news/press-release.do?mode=view&amp;articleNo=162562&amp;srSearchVal=청년&amp;article.offset=0&amp;articleLimit=20" target="_blank" rel="noreferrer" aria-label="[보도자료] 김민석 국무총리 주재 전북 청년 새만금 현장간담회 링크 바로가기"><span class="home-urgent-rank">05</span><div class="home-urgent-text"><strong>[보도자료] 김민석 국무총리 주재 전북 청년 새만금 현장간담회</strong><span class="home-urgent-meta">국무조정실 보도자료 · 2026-06-19 · 전북</span></div></a></article></div>
-            </article>
-          </div>
-        </section>
-      </div>
-    </section>
-
-    <section class="section" id="youth-metrics">
-      <article class="youth-metrics-card">
-        <div class="youth-metrics-head">
-          <h2>핵심 지표 요약</h2>
-          <p>오늘의 정책·뉴스 흐름을 볼 때 함께 확인할 공식 통계 기준값만 추려 놓았습니다.</p>
+    <section class="flow-hero" id="overview" data-flow-root>
+      <header class="flow-hero-header">
+        <div>
+          <span class="eyebrow">청년정책 실무자를 위한 근실시간 동향판</span>
+          <h1 class="flow-hero-title">쏟아지는 청년 이슈를<br>시간의 흐름으로 읽습니다</h1>
+          <p class="flow-hero-copy">기사·관점·연구·정부와 지역의 원문을 한 시간축에 놓습니다. 무엇이 많이 들어왔는지 먼저 보고, 필요한 원문까지 바로 확인하세요.</p>
         </div>
-        <div class="youth-metrics-grid">
-            <article class="youth-metric-item youth-metric-primary">
-              <span class="youth-metric-label">청년 인구</span>
-              <strong class="youth-metric-value">1,040.4만명</strong>
-              <div class="youth-metric-scale" aria-hidden="true"><span></span></div>
-              <div class="youth-metric-meta">
-                <span>2024 · 19~34세</span>
-                <a class="youth-metric-source" href="https://mods.go.kr/board.es?act=view&amp;bid=246&amp;list_no=442421&amp;mainXml=Y&amp;mid=a10301010000" target="_blank" rel="noreferrer">청년 삶의 질 2025</a>
-              </div>
-            </article>
+        <aside class="flow-freshness">
+          <span>마지막 반영</span>
+          <strong>2026.07.31 (금) 02:49</strong>
+          <p>자동 수집 주기에 맞춰 갱신되는 근실시간 화면입니다. 블록의 색은 중요도가 아니라 해당 15분의 자료 수를 뜻합니다.</p>
+        </aside>
+      </header>
 
-            <article class="youth-metric-item youth-metric-compact">
-              <span class="youth-metric-label">청년 실업률</span>
-              <strong class="youth-metric-value">7.7%</strong>
+      <section class="flow-board" id="today-briefing" aria-labelledby="flow-map-title">
+        <div class="flow-board-head">
+          <div>
+            <span class="eyebrow">동향 파동 · 최근 6시간</span>
+            <h2 id="flow-map-title">15분마다 들어온 자료</h2>
+            <p>진한 블록일수록 그 시간대에 새 자료가 많았습니다. 블록을 누르면 아래 흐름만 좁혀 봅니다.</p>
+          </div>
+          <button class="flow-read-button" type="button" data-flow-all>전체 흐름 보기</button>
+        </div>
+        <div class="flow-stats">
+          <div class="flow-stat"><span>오늘 들어온 자료</span><strong>5건</strong></div>
+          <div class="flow-stat"><span>최근 60분</span><strong>1건</strong></div>
+          <div class="flow-stat"><span>주요 분류</span><strong>취업 · 주거 · 금융</strong></div>
+        </div>
+        <div class="flow-map-wrap">
+          <div class="flow-map-scroll">
+            <div class="flow-map"><button class="flow-cell empty" type="button" data-flow-cell data-start-ts="1785412800000" data-end-ts="1785413700000" data-count="0" data-label="21:00–21:15" style="--flow-level:0" aria-label="21:00–21:15 수집 자료 0건"><span class="flow-cell-count">0</span><span class="flow-cell-time">21:00</span></button><button class="flow-cell empty" type="button" data-flow-cell data-start-ts="1785413700000" data-end-ts="1785414600000" data-count="0" data-label="21:15–21:30" style="--flow-level:0" aria-label="21:15–21:30 수집 자료 0건"><span class="flow-cell-count">0</span><span class="flow-cell-time">21:15</span></button><button class="flow-cell empty" type="button" data-flow-cell data-start-ts="1785414600000" data-end-ts="1785415500000" data-count="0" data-label="21:30–21:45" style="--flow-level:0" aria-label="21:30–21:45 수집 자료 0건"><span class="flow-cell-count">0</span><span class="flow-cell-time">21:30</span></button><button class="flow-cell" type="button" data-flow-cell data-start-ts="1785415500000" data-end-ts="1785416400000" data-count="5" data-label="21:45–22:00" style="--flow-level:4" aria-label="21:45–22:00 수집 자료 5건"><span class="flow-cell-count">5</span><span class="flow-cell-time">21:45</span></button><button class="flow-cell empty" type="button" data-flow-cell data-start-ts="1785416400000" data-end-ts="1785417300000" data-count="0" data-label="22:00–22:15" style="--flow-level:0" aria-label="22:00–22:15 수집 자료 0건"><span class="flow-cell-count">0</span><span class="flow-cell-time">22:00</span></button><button class="flow-cell empty" type="button" data-flow-cell data-start-ts="1785417300000" data-end-ts="1785418200000" data-count="0" data-label="22:15–22:30" style="--flow-level:0" aria-label="22:15–22:30 수집 자료 0건"><span class="flow-cell-count">0</span><span class="flow-cell-time">22:15</span></button><button class="flow-cell empty" type="button" data-flow-cell data-start-ts="1785418200000" data-end-ts="1785419100000" data-count="0" data-label="22:30–22:45" style="--flow-level:0" aria-label="22:30–22:45 수집 자료 0건"><span class="flow-cell-count">0</span><span class="flow-cell-time">22:30</span></button><button class="flow-cell" type="button" data-flow-cell data-start-ts="1785419100000" data-end-ts="1785420000000" data-count="4" data-label="22:45–23:00" style="--flow-level:3" aria-label="22:45–23:00 수집 자료 4건"><span class="flow-cell-count">4</span><span class="flow-cell-time">22:45</span></button><button class="flow-cell empty" type="button" data-flow-cell data-start-ts="1785420000000" data-end-ts="1785420900000" data-count="0" data-label="23:00–23:15" style="--flow-level:0" aria-label="23:00–23:15 수집 자료 0건"><span class="flow-cell-count">0</span><span class="flow-cell-time">23:00</span></button><button class="flow-cell empty" type="button" data-flow-cell data-start-ts="1785420900000" data-end-ts="1785421800000" data-count="0" data-label="23:15–23:30" style="--flow-level:0" aria-label="23:15–23:30 수집 자료 0건"><span class="flow-cell-count">0</span><span class="flow-cell-time">23:15</span></button><button class="flow-cell empty" type="button" data-flow-cell data-start-ts="1785421800000" data-end-ts="1785422700000" data-count="0" data-label="23:30–23:45" style="--flow-level:0" aria-label="23:30–23:45 수집 자료 0건"><span class="flow-cell-count">0</span><span class="flow-cell-time">23:30</span></button><button class="flow-cell" type="button" data-flow-cell data-start-ts="1785422700000" data-end-ts="1785423600000" data-count="2" data-label="23:45–00:00" style="--flow-level:2" aria-label="23:45–00:00 수집 자료 2건"><span class="flow-cell-count">2</span><span class="flow-cell-time">23:45</span></button><button class="flow-cell" type="button" data-flow-cell data-start-ts="1785423600000" data-end-ts="1785424500000" data-count="1" data-label="00:00–00:15" style="--flow-level:1" aria-label="00:00–00:15 수집 자료 1건"><span class="flow-cell-count">1</span><span class="flow-cell-time">00:00</span></button><button class="flow-cell empty" type="button" data-flow-cell data-start-ts="1785424500000" data-end-ts="1785425400000" data-count="0" data-label="00:15–00:30" style="--flow-level:0" aria-label="00:15–00:30 수집 자료 0건"><span class="flow-cell-count">0</span><span class="flow-cell-time">00:15</span></button><button class="flow-cell empty" type="button" data-flow-cell data-start-ts="1785425400000" data-end-ts="1785426300000" data-count="0" data-label="00:30–00:45" style="--flow-level:0" aria-label="00:30–00:45 수집 자료 0건"><span class="flow-cell-count">0</span><span class="flow-cell-time">00:30</span></button><button class="flow-cell" type="button" data-flow-cell data-start-ts="1785426300000" data-end-ts="1785427200000" data-count="2" data-label="00:45–01:00" style="--flow-level:2" aria-label="00:45–01:00 수집 자료 2건"><span class="flow-cell-count">2</span><span class="flow-cell-time">00:45</span></button><button class="flow-cell empty" type="button" data-flow-cell data-start-ts="1785427200000" data-end-ts="1785428100000" data-count="0" data-label="01:00–01:15" style="--flow-level:0" aria-label="01:00–01:15 수집 자료 0건"><span class="flow-cell-count">0</span><span class="flow-cell-time">01:00</span></button><button class="flow-cell" type="button" data-flow-cell data-start-ts="1785428100000" data-end-ts="1785429000000" data-count="1" data-label="01:15–01:30" style="--flow-level:1" aria-label="01:15–01:30 수집 자료 1건"><span class="flow-cell-count">1</span><span class="flow-cell-time">01:15</span></button><button class="flow-cell empty" type="button" data-flow-cell data-start-ts="1785429000000" data-end-ts="1785429900000" data-count="0" data-label="01:30–01:45" style="--flow-level:0" aria-label="01:30–01:45 수집 자료 0건"><span class="flow-cell-count">0</span><span class="flow-cell-time">01:30</span></button><button class="flow-cell empty" type="button" data-flow-cell data-start-ts="1785429900000" data-end-ts="1785430800000" data-count="0" data-label="01:45–02:00" style="--flow-level:0" aria-label="01:45–02:00 수집 자료 0건"><span class="flow-cell-count">0</span><span class="flow-cell-time">01:45</span></button><button class="flow-cell empty" type="button" data-flow-cell data-start-ts="1785430800000" data-end-ts="1785431700000" data-count="0" data-label="02:00–02:15" style="--flow-level:0" aria-label="02:00–02:15 수집 자료 0건"><span class="flow-cell-count">0</span><span class="flow-cell-time">02:00</span></button><button class="flow-cell latest" type="button" data-flow-cell data-start-ts="1785431700000" data-end-ts="1785432600000" data-count="1" data-label="02:15–02:30" style="--flow-level:1" aria-label="02:15–02:30 수집 자료 1건"><span class="flow-cell-count">1</span><span class="flow-cell-time">02:15</span></button><button class="flow-cell empty" type="button" data-flow-cell data-start-ts="1785432600000" data-end-ts="1785433500000" data-count="0" data-label="02:30–02:45" style="--flow-level:0" aria-label="02:30–02:45 수집 자료 0건"><span class="flow-cell-count">0</span><span class="flow-cell-time">02:30</span></button><button class="flow-cell empty" type="button" data-flow-cell data-start-ts="1785433500000" data-end-ts="1785434400000" data-count="0" data-label="02:45–03:00" style="--flow-level:0" aria-label="02:45–03:00 수집 자료 0건"><span class="flow-cell-count">0</span><span class="flow-cell-time">02:45</span></button></div>
+          </div>
+          <div class="flow-map-legend"><span>6시간 전</span><strong>기사량 0 → 많음</strong><span>지금</span></div>
+        </div>
+      </section>
 
-              <div class="youth-metric-meta">
-                <span>2026.02 · 15~29세</span>
-                <a class="youth-metric-source" href="https://sri.kostat.go.kr/board.es?act=view&amp;bid=210&amp;list_no=444083&amp;mid=a10301030200&amp;ref_bid=&amp;tag=" target="_blank" rel="noreferrer">2026년 2월 고용동향</a>
-              </div>
-            </article>
-
-            <article class="youth-metric-item youth-metric-compact">
-              <span class="youth-metric-label">삶의 만족도</span>
-              <strong class="youth-metric-value">6.7점</strong>
-
-              <div class="youth-metric-meta">
-                <span>2024 · 19~34세</span>
-                <a class="youth-metric-source" href="https://mods.go.kr/board.es?act=view&amp;bid=12316&amp;list_no=442459&amp;mid=a90106000000&amp;nPage=1&amp;ref_bid=&amp;tag=" target="_blank" rel="noreferrer">청년 삶의 질 2025</a>
-              </div>
-            </article>
-
-            <article class="youth-metric-item youth-metric-compact">
-              <span class="youth-metric-label">고립·은둔 위기청년</span>
-              <strong class="youth-metric-value">최대 54만명</strong>
-
-              <div class="youth-metric-meta">
-                <span>2022 조사 기반 · 19~34세</span>
-                <a class="youth-metric-source" href="https://www.mohw.go.kr/board.es?act=view&amp;bid=0027&amp;list_no=1479278&amp;mid=a10503000000&amp;nPage=112&amp;tag=" target="_blank" rel="noreferrer">복지부·보사연 추정</a>
-              </div>
-            </article>
-            </div>
-        <p class="youth-metrics-note">지표마다 연령 기준과 기준 시점이 다르므로, 카드 아래 표기를 함께 확인해 주세요.</p>
-      </article>
+      <section class="flow-stream" id="flow-stream" data-flow-stream aria-labelledby="flow-stream-title">
+        <div class="flow-stream-head">
+          <div>
+            <h2 id="flow-stream-title">시간의 강</h2>
+            <p class="flow-stream-status" data-flow-status>최근 자료 59건</p>
+          </div>
+          <button class="flow-read-button" type="button" data-flow-mark-read>여기까지 읽었습니다</button>
+        </div>
+        <div class="flow-list"><article class="flow-item" data-flow-item data-flow-id="e52fa2da9534b9d2" data-published-ts="1785432025000"><time class="flow-time" datetime="2026-07-31T02:20:25+09:00">02:20</time><div class="flow-item-main"><a href="https://news.google.com/rss/articles/CBMiTEFVX3lxTE1vaUVpeWNRUmFZTUhjZHZjaFlJb1pfNU9zN0pzTXcxQ05CbG1xT1JZRXhId05EaTVlMjJfMVVkZUVYUHpPX0tEdVN4dEY?oc=5" target="_blank" rel="noreferrer">아프리카 청년 낙관론의 역설: 높아진 기대감, 구조적 실업의 벽</a><div class="flow-item-meta"><span>한국AI부동산신문</span></div></div><a class="flow-route" href="news.html">뉴스 흐름</a></article><article class="flow-item" data-flow-item data-flow-id="1cbbe0fc9a782640" data-published-ts="1785428561000"><time class="flow-time" datetime="2026-07-31T01:22:41+09:00">01:22</time><div class="flow-item-main"><a href="http://www.ttlnews.com/news/articleView.html?idxno=3130272" target="_blank" rel="noreferrer">삼성, 청년희망배움터 개강…비수도권 미취업 청년 1000명 선발 시작 - 퍼블릭뉴스통신(Public news-network for TTL)</a><div class="flow-item-meta"><span>새 창 열림</span><span>#모집</span><span>#취업</span></div></div><a class="flow-route" href="news.html">뉴스 흐름</a></article><article class="flow-item" data-flow-item data-flow-id="0fb17d0e3aa435ae" data-published-ts="1785426497296"><time class="flow-time" datetime="2026-07-31T00:48:17.296932+09:00">00:48</time><div class="flow-item-main"><a href="https://www.kado.net/news/articleView.html?idxno=2064096" target="_blank" rel="noreferrer">춘천시 청년 붙잡고 30만 도시 &#x27;승부수&#x27;</a><div class="flow-item-meta"><span>새 창 열림</span></div></div><a class="flow-route" href="reports.html">연구·분석</a></article><article class="flow-item" data-flow-item data-flow-id="d376b9f6a19eaa3e" data-published-ts="1785426497296"><time class="flow-time" datetime="2026-07-31T00:48:17.296932+09:00">00:48</time><div class="flow-item-main"><a href="http://www.paxetv.com/news/articleView.html?idxno=278307" target="_blank" rel="noreferrer">영광군, 청년 문화복지카드 2차 신청 접수</a><div class="flow-item-meta"><span>새 창 열림</span><span>#모집</span><span>#복지</span></div></div><a class="flow-route" href="news.html">뉴스 흐름</a></article><article class="flow-item" data-flow-item data-flow-id="2d451fe82dbd5099" data-published-ts="1785424217000"><time class="flow-time" datetime="2026-07-31T00:10:17+09:00">00:10</time><div class="flow-item-main"><a href="http://www.knpnews.com/news/articleView.html?idxno=34201" target="_blank" rel="noreferrer">삼성, 비수도권 청년 대상 ‘청년희망배움터’ 개강</a><div class="flow-item-meta"><span>새 창 열림</span><span>#취업</span><span>#모집</span></div></div><a class="flow-route" href="news.html">뉴스 흐름</a></article><article class="flow-item" data-flow-item data-flow-id="cd2a0d313cc13c1a" data-published-ts="1785422910131"><time class="flow-time" datetime="2026-07-30T23:48:30.131465+09:00">23:48</time><div class="flow-item-main"><a href="https://www.womennews.co.kr/news/articleView.html?idxno=280511" target="_blank" rel="noreferrer">성북구, 유해업소 떠난 삼양로에 청년 창업가게 11호점 문 열어</a><div class="flow-item-meta"><span>새 창 열림</span><span>#복지</span><span>#창업</span></div></div><a class="flow-route" href="news.html">뉴스 흐름</a></article><article class="flow-item" data-flow-item data-flow-id="286ca31164c0d91f" data-published-ts="1785422889164"><time class="flow-time" datetime="2026-07-30T23:48:09.164305+09:00">23:48</time><div class="flow-item-main"><a href="https://www.gukjenews.com/news/articleView.html?idxno=3651650" target="_blank" rel="noreferrer">중앙의 힘VS지역의 힘…문대림·송창권 10년 만의 승부</a><div class="flow-item-meta"><span>새 창 열림</span><span>#취업</span><span>#주거</span></div></div><a class="flow-route" href="news.html">뉴스 흐름</a></article><article class="flow-item" data-flow-item data-flow-id="6402466f510510aa" data-published-ts="1785419299414"><time class="flow-time" datetime="2026-07-30T22:48:19.414104+09:00">22:48</time><div class="flow-item-main"><a href="https://news.jtbc.co.kr/article/NB12311010?influxDiv=NAVER" target="_blank" rel="noreferrer">[단독] &quot; 청년 의 꿈&quot; 말하며 &#x27; 청년 돈&#x27; 떼먹은 이병한…&quot;유력 인사 인맥 ...</a><div class="flow-item-meta"><span>새 창 열림</span><span>#취업</span><span>#노동</span></div></div><a class="flow-route" href="news.html">뉴스 흐름</a></article><article class="flow-item" data-flow-item data-flow-id="c13ee7a405cdd080" data-published-ts="1785419298714"><time class="flow-time" datetime="2026-07-30T22:48:18.714056+09:00">22:48</time><div class="flow-item-main"><a href="https://www.segye.com/newsView/20260730516854?OutUrl=naver" target="_blank" rel="noreferrer">경기 둔화·취업한파 이중고…‘짠내’ 中 MZ, 침대도 공유</a><div class="flow-item-meta"><span>새 창 열림</span><span>#취업</span><span>#노동</span></div></div><a class="flow-route" href="reports.html">연구·분석</a></article><article class="flow-item" data-flow-item data-flow-id="c4ea3930a6e51e30" data-published-ts="1785419297547"><time class="flow-time" datetime="2026-07-30T22:48:17.547929+09:00">22:48</time><div class="flow-item-main"><a href="https://www.tournews21.com/news/articleView.html?idxno=139833" target="_blank" rel="noreferrer">용인특례시·베트남 다낭 꽝푸구, 복지·교육· 청년 교류 확대 논의</a><div class="flow-item-meta"><span>새 창 열림</span><span>#복지</span></div></div><a class="flow-route" href="news.html">뉴스 흐름</a></article><article class="flow-item" data-flow-item data-flow-id="553dac856988e092" data-published-ts="1785419289689"><time class="flow-time" datetime="2026-07-30T22:48:09.689591+09:00">22:48</time><div class="flow-item-main"><a href="https://www.wflower.info/news/article.html?no=12310" target="_blank" rel="noreferrer">청년 취업사관학교 새싹, 송파캠퍼스 교육생 모집</a><div class="flow-item-meta"><span>새 창 열림</span><span>#취업</span><span>#모집</span></div></div><a class="flow-route" href="news.html">뉴스 흐름</a></article><article class="flow-item" data-flow-item data-flow-id="4d8c18f8d78c1ccd" data-published-ts="1785415699049"><time class="flow-time" datetime="2026-07-30T21:48:19.049188+09:00">21:48</time><div class="flow-item-main"><a href="https://www.newstnt.com/news/articleView.html?idxno=712311" target="_blank" rel="noreferrer">&quot;합격 비결, 선배에게 직접 듣는다&quot;… 충남대, 취업 멘토링 호응</a><div class="flow-item-meta"><span>새 창 열림</span><span>#취업</span></div></div><a class="flow-route" href="news.html">뉴스 흐름</a></article><article class="flow-item" data-flow-item data-flow-id="effd18e00d6937cb" data-published-ts="1785415699049"><time class="flow-time" datetime="2026-07-30T21:48:19.049188+09:00">21:48</time><div class="flow-item-main"><a href="https://www.danbinews.com/news/articleView.html?idxno=33376" target="_blank" rel="noreferrer">청년 참여소득</a><div class="flow-item-meta"><span>새 창 열림</span><span>#복지</span><span>#취업</span></div></div><a class="flow-route" href="news.html">뉴스 흐름</a></article><article class="flow-item" data-flow-item data-flow-id="856a7ade13543459" data-published-ts="1785415699049"><time class="flow-time" datetime="2026-07-30T21:48:19.049188+09:00">21:48</time><div class="flow-item-main"><a href="http://www.gndomin.com/news/articleView.html?idxno=484126" target="_blank" rel="noreferrer">표병호 경남도의원 &quot;도정의 중심에 미래전략 총괄기구 세워야&quot;</a><div class="flow-item-meta"><span>새 창 열림</span><span>#취업</span><span>#지역정착</span></div></div><a class="flow-route" href="news.html">뉴스 흐름</a></article><article class="flow-item" data-flow-item data-flow-id="6b42360cf14c04e8" data-published-ts="1785415690672"><time class="flow-time" datetime="2026-07-30T21:48:10.672883+09:00">21:48</time><div class="flow-item-main"><a href="https://www.the-today.com/news/articleView.html?idxno=88002" target="_blank" rel="noreferrer">[이슈] 농협중앙회, 청년 사망사고 수사 중 하귀농협에 31억 지원…내부...</a><div class="flow-item-meta"><span>새 창 열림</span><span>#취업</span><span>#노동</span></div></div><a class="flow-route" href="news.html">뉴스 흐름</a></article><article class="flow-item" data-flow-item data-flow-id="88ff5f77fec700a3" data-published-ts="1785415690325"><time class="flow-time" datetime="2026-07-30T21:48:10.325878+09:00">21:48</time><div class="flow-item-main"><a href="https://www.cnbizm.com/news/articleView.html?idxno=310180" target="_blank" rel="noreferrer">건강한 결혼 생활과 출산 준비 지원...동작구, &#x27;예비부부·신혼부부를...</a><div class="flow-item-meta"><span>새 창 열림</span><span>#주거</span><span>#노동</span></div></div><a class="flow-route" href="news.html">뉴스 흐름</a></article><article class="flow-item" data-flow-item data-flow-id="0ce85bab2e8ff276" data-published-ts="1785412103140"><time class="flow-time" datetime="2026-07-30T20:48:23.140737+09:00">20:48</time><div class="flow-item-main"><a href="https://www.incheonilbo.com/news/articleView.html?idxno=1328539" target="_blank" rel="noreferrer">[&#x27; 청년 의 꿈&#x27; 머무는 경기도기숙사] ④ &#x27;행정 방정식&#x27; 한계…&#x27;민간요법...</a><div class="flow-item-meta"><span>새 창 열림</span><span>#취업</span><span>#주거</span></div></div><a class="flow-route" href="news.html">뉴스 흐름</a></article><article class="flow-item" data-flow-item data-flow-id="265dc00e545c046d" data-published-ts="1785412103140"><time class="flow-time" datetime="2026-07-30T20:48:23.140737+09:00">20:48</time><div class="flow-item-main"><a href="https://www.cstimes.com/news/articleView.html?idxno=715261" target="_blank" rel="noreferrer">한국어촌어항공단, &#x27;낚시인 교육&#x27; 시범 추진·참가자 모집 및 &#x27;어촌에 O...</a><div class="flow-item-meta"><span>새 창 열림</span><span>#노동</span><span>#모집</span></div></div><a class="flow-route" href="news.html">뉴스 흐름</a></article><article class="flow-item" data-flow-item data-flow-id="e08e48ae9085ebbb" data-published-ts="1785412099414"><time class="flow-time" datetime="2026-07-30T20:48:19.414104+09:00">20:48</time><div class="flow-item-main"><a href="https://news.jtbc.co.kr/article/NB12310969?influxDiv=NAVER" target="_blank" rel="noreferrer">[단독] &quot; 청년 의 꿈&quot; 말하며 &#x27; 청년 들 돈&#x27; 떼먹어…유명 미래학자의 민낯</a><div class="flow-item-meta"><span>새 창 열림</span><span>#취업</span><span>#노동</span></div></div><a class="flow-route" href="news.html">뉴스 흐름</a></article><article class="flow-item" data-flow-item data-flow-id="176286ab040412d4" data-published-ts="1785408499816"><time class="flow-time" datetime="2026-07-30T19:48:19.816290+09:00">19:48</time><div class="flow-item-main"><a href="http://www.jjn.co.kr/news/articleView.html?idxno=1048099" target="_blank" rel="noreferrer">&quot;도 결혼 진입 예산 &#x27;0원&#x27;··· 실효성 있는 정책 필요&quot;</a><div class="flow-item-meta"><span>새 창 열림</span><span>#주거</span><span>#노동</span></div></div><a class="flow-route" href="news.html">뉴스 흐름</a></article><article class="flow-item" data-flow-item data-flow-id="047cc9340ae37423" data-published-ts="1785408499414"><time class="flow-time" datetime="2026-07-30T19:48:19.414104+09:00">19:48</time><div class="flow-item-main"><a href="https://www.gnnews.co.kr/news/articleView.html?idxno=642235" target="_blank" rel="noreferrer">LH, 도심 비주택 리모델링 청년 층 주거공간 전환사업 속도</a><div class="flow-item-meta"><span>새 창 열림</span><span>#주거</span><span>#금융</span></div></div><a class="flow-route" href="news.html">뉴스 흐름</a></article><article class="flow-item" data-flow-item data-flow-id="bfee1468dd83365c" data-published-ts="1785408495050"><time class="flow-time" datetime="2026-07-30T19:48:15.050166+09:00">19:48</time><div class="flow-item-main"><a href="http://www.dandinews.com/news/articleView.html?idxno=17254" target="_blank" rel="noreferrer">진주시, &#x27;대학생 행정인턴 우수시책&#x27; 시상·발표</a><div class="flow-item-meta"><span>새 창 열림</span><span>#취업</span></div></div><a class="flow-route" href="news.html">뉴스 흐름</a></article><article class="flow-item" data-flow-item data-flow-id="3cd258ea8554baa1" data-published-ts="1785404900576"><time class="flow-time" datetime="2026-07-30T18:48:20.576617+09:00">18:48</time><div class="flow-item-main"><a href="https://www.hankyung.com/article/2026073064361" target="_blank" rel="noreferrer">다자녀·신혼 집 걱정 던다…포항 &#x27;10년간 월세 0원&#x27; 주택 공급</a><div class="flow-item-meta"><span>새 창 열림</span><span>#주거</span><span>#모집</span></div></div><a class="flow-route" href="news.html">뉴스 흐름</a></article><article class="flow-item" data-flow-item data-flow-id="8be57e4389014157" data-published-ts="1785404899816"><time class="flow-time" datetime="2026-07-30T18:48:19.816290+09:00">18:48</time><div class="flow-item-main"><a href="http://digitalchosun.dizzo.com/site/data/html_dir/2026/07/30/2026073080121.html" target="_blank" rel="noreferrer">[기자수첩]치솟는 집값, 폭락한 주식...사다리 붕괴된 청년</a><div class="flow-item-meta"><span>새 창 열림</span><span>#금융</span></div></div><a class="flow-route" href="news.html">뉴스 흐름</a></article><article class="flow-item" data-flow-item data-flow-id="84cd2f26a61e0e1a" data-published-ts="1785404899816"><time class="flow-time" datetime="2026-07-30T18:48:19.816290+09:00">18:48</time><div class="flow-item-main"><a href="http://www.gndomin.com/news/articleView.html?idxno=484090" target="_blank" rel="noreferrer">진주시 학자금 대출 이자 지원 신청 접수</a><div class="flow-item-meta"><span>새 창 열림</span><span>#금융</span><span>#모집</span></div></div><a class="flow-route" href="news.html">뉴스 흐름</a></article><article class="flow-item" data-flow-item data-flow-id="3fd8bf2423f39693" data-published-ts="1785404899816"><time class="flow-time" datetime="2026-07-30T18:48:19.816290+09:00">18:48</time><div class="flow-item-main"><a href="https://www.mk.co.kr/article/12112210" target="_blank" rel="noreferrer">대출 막힌 2030 &quot;초소형 아파트라도 사자&quot;</a><div class="flow-item-meta"><span>새 창 열림</span><span>#금융</span></div></div><a class="flow-route" href="news.html">뉴스 흐름</a></article><article class="flow-item" data-flow-item data-flow-id="396b6dbe95f98eed" data-published-ts="1785404899816"><time class="flow-time" datetime="2026-07-30T18:48:19.816290+09:00">18:48</time><div class="flow-item-main"><a href="https://newscham.net/articles/117014" target="_blank" rel="noreferrer">상고장이 오지 않았다, 배달라이더는 노동자다</a><div class="flow-item-meta"><span>새 창 열림</span><span>#노동</span><span>#금융</span></div></div><a class="flow-route" href="news.html">뉴스 흐름</a></article><article class="flow-item" data-flow-item data-flow-id="428ca2a67c1b6652" data-published-ts="1785404895777"><time class="flow-time" datetime="2026-07-30T18:48:15.777273+09:00">18:48</time><div class="flow-item-main"><a href="http://www.gndomin.com/news/articleView.html?idxno=484092" target="_blank" rel="noreferrer">청년 의 아이디어, 진주를 바꾼다</a><div class="flow-item-meta"><span>새 창 열림</span><span>#취업</span></div></div><a class="flow-route" href="news.html">뉴스 흐름</a></article><article class="flow-item" data-flow-item data-flow-id="6e9b7857a7a2dac7" data-published-ts="1785402221000"><time class="flow-time" datetime="2026-07-30T18:03:41+09:00">18:03</time><div class="flow-item-main"><a href="https://news.google.com/rss/articles/CBMiZ0FVX3lxTE16V0p4Mm81MWpJT2xGaVR3dl96OGFjREFmS0Jxd2w4NEpCSEJSSVYyOWpnaUZubEZ5dFRINzN2Q285SmVpUEpDR3NlQm9ucTFyS0lYMC1tbjgxWEkxQTVBVk1DOE5ZWlk?oc=5" target="_blank" rel="noreferrer">대구한의대, 경산청년센터와 손잡고 청년 진로·취업부터 지역 정착까지 지원</a><div class="flow-item-meta"><span>교수신문</span><span>#취업</span><span>#청년센터</span></div></div><a class="flow-route" href="news.html">뉴스 흐름</a></article><article class="flow-item" data-flow-item data-flow-id="1b24330d4652c9b5" data-published-ts="1785401300180"><time class="flow-time" datetime="2026-07-30T17:48:20.180244+09:00">17:48</time><div class="flow-item-main"><a href="https://www.ajunews.com/view/20260729090631216" target="_blank" rel="noreferrer">[AJU+MONEY] &#x27;웨딩 페널티&#x27; 걷어내는 정부… 대출 ·공공임대 불이익 줄인...</a><div class="flow-item-meta"><span>새 창 열림</span><span>#주거</span><span>#금융</span></div></div><a class="flow-route" href="news.html">뉴스 흐름</a></article><article class="flow-item" data-flow-item data-flow-id="3008fef5f6a5c922" data-published-ts="1785401300180"><time class="flow-time" datetime="2026-07-30T17:48:20.180244+09:00">17:48</time><div class="flow-item-main"><a href="https://www.mk.co.kr/article/12112149" target="_blank" rel="noreferrer">특례 대출 에 전세사기 지원까지 … 주거정책 쌈짓돈 된 주택기금</a><div class="flow-item-meta"><span>새 창 열림</span><span>#주거</span><span>#금융</span></div></div><a class="flow-route" href="news.html">뉴스 흐름</a></article><article class="flow-item" data-flow-item data-flow-id="c40f8f30af0ad29a" data-published-ts="1785401300180"><time class="flow-time" datetime="2026-07-30T17:48:20.180244+09:00">17:48</time><div class="flow-item-main"><a href="https://www.daejonilbo.com/news/articleView.html?idxno=2291657" target="_blank" rel="noreferrer">치솟는 분양가에 대출 까지 막혔는데…주식마저 곤두박질</a><div class="flow-item-meta"><span>새 창 열림</span><span>#주거</span><span>#금융</span></div></div><a class="flow-route" href="news.html">뉴스 흐름</a></article><article class="flow-item" data-flow-item data-flow-id="e00f82bc9ee1574b" data-published-ts="1785401299816"><time class="flow-time" datetime="2026-07-30T17:48:19.816290+09:00">17:48</time><div class="flow-item-main"><a href="https://www.gukjenews.com/news/articleView.html?idxno=3650994" target="_blank" rel="noreferrer">전북 혼인율 6.2%↓ &#x27;최하위&#x27;…이명연 도의원, 청년 결혼 지원 정책 전환...</a><div class="flow-item-meta"><span>새 창 열림</span><span>#주거</span><span>#노동</span></div></div><a class="flow-route" href="news.html">뉴스 흐름</a></article><article class="flow-item" data-flow-item data-flow-id="7de48ae7fdb98c0c" data-published-ts="1785401295777"><time class="flow-time" datetime="2026-07-30T17:48:15.777273+09:00">17:48</time><div class="flow-item-main"><a href="https://www.newsgn.com/news/articleView.html?idxno=565372" target="_blank" rel="noreferrer">진주시, &#x27;대학생 행정인턴 우수시책&#x27; 시상·발표</a><div class="flow-item-meta"><span>새 창 열림</span><span>#취업</span></div></div><a class="flow-route" href="news.html">뉴스 흐름</a></article><article class="flow-item" data-flow-item data-flow-id="1a706c69dc53ca10" data-published-ts="1785397696395"><time class="flow-time" datetime="2026-07-30T16:48:16.395331+09:00">16:48</time><div class="flow-item-main"><a href="http://www.thefirstmedia.net/news/articleView.html?idxno=205021" target="_blank" rel="noreferrer">KT, 통신비 부담 완화 나선다... 멤버십·로밍· 청년 지원 확대</a><div class="flow-item-meta"><span>새 창 열림</span></div></div><a class="flow-route" href="reports.html">연구·분석</a></article><article class="flow-item" data-flow-item data-flow-id="68693fa98bf58174" data-published-ts="1785394103506"><time class="flow-time" datetime="2026-07-30T15:48:23.506320+09:00">15:48</time><div class="flow-item-main"><a href="http://www.nongaek.com/news/articleView.html?idxno=96277" target="_blank" rel="noreferrer">&#x27;반도체 초과이익&#x27; 사회 환원 방안은? …민생·복지 확충 등에 써야</a><div class="flow-item-meta"><span>새 창 열림</span><span>#주거</span><span>#노동</span></div></div><a class="flow-route" href="news.html">뉴스 흐름</a></article><article class="flow-item" data-flow-item data-flow-id="d95c61805b9ff8ef" data-published-ts="1785394100952"><time class="flow-time" datetime="2026-07-30T15:48:20.952326+09:00">15:48</time><div class="flow-item-main"><a href="https://www.kmib.co.kr/article/view.asp?arcid=0030184455&amp;code=61221111&amp;cp=nv" target="_blank" rel="noreferrer">“홍대 클럽 이어 마트까지 접수한 청년 들 열정… 새 도전 시작”</a><div class="flow-item-meta"><span>새 창 열림</span><span>#주거</span><span>#모집</span></div></div><a class="flow-route" href="news.html">뉴스 흐름</a></article><article class="flow-item" data-flow-item data-flow-id="a63eb4ca013b0655" data-published-ts="1785392330000"><time class="flow-time" datetime="2026-07-30T15:18:50+09:00">15:18</time><div class="flow-item-main"><a href="https://news.google.com/rss/articles/CBMiYkFVX3lxTE96QU03Wjk1cTJnSUxqOUZXV0dsN0NaekRKUzlpYmJNd2YzV0w2NEx5U1VwS1RRampla19pd2JoMHNlU1dkck4xU3lZUFhmS09qQldPWktja01zZ181ZTNOdFpB?oc=5" target="_blank" rel="noreferrer">[막막한 청년 취업] 구직자들 &quot;이력서에 써야 하는 스펙 항목 많다&quot;</a><div class="flow-item-meta"><span>매일신문</span><span>#취업</span></div></div><a class="flow-route" href="news.html">뉴스 흐름</a></article><article class="flow-item" data-flow-item data-flow-id="f0f11bb43b3ebb4e" data-published-ts="1785391880000"><time class="flow-time" datetime="2026-07-30T15:11:20+09:00">15:11</time><div class="flow-item-main"><a href="https://news.google.com/rss/articles/CBMiYkFVX3lxTE92bWN3Y0pIRjJPcVNyVEw2dW5VNXRLQ1dmdGZEd295VTZjWldPNHJJOVl4NW1PcXVfR1RCcG9CUEZCMjI5Sk9wekFFTzZRWEpka0FFSFhsZ3ViTzY4WmViSHBR?oc=5" target="_blank" rel="noreferrer">[막막한 청년 취업] 취준도 결국 돈, 돈, 돈…`사교육비` 월 30만원, 지방은 교통비 부담도</a><div class="flow-item-meta"><span>매일신문</span><span>#취업</span></div></div><a class="flow-route" href="news.html">뉴스 흐름</a></article><article class="flow-item" data-flow-item data-flow-id="673d95ea6de77d8d" data-published-ts="1785390780000"><time class="flow-time" datetime="2026-07-30T14:53:00+09:00">14:53</time><div class="flow-item-main"><a href="https://news.google.com/rss/articles/CBMiaEFVX3lxTFB6WElNZGVXRGlpTi1YakdpMWdJS09iQ1h2RkFWbl9FUlgzVGNDYm55cEc0TnJhSzNNTGh0S1h4bm9fcS1RbkoyMEFNWDAtWG5sTG5saE9yUzd6cU90MWE3aHpiQVVqNXky?oc=5" target="_blank" rel="noreferrer">김성갑 도의원, &quot;예산은 썼지만 청년은 떠났다&quot;… 정책 재설계 촉구</a><div class="flow-item-meta"><span>뉴스경남</span></div></div><a class="flow-route" href="news.html">뉴스 흐름</a></article><article class="flow-item" data-flow-item data-flow-id="b80abcd595c743b2" data-published-ts="1785390500952"><time class="flow-time" datetime="2026-07-30T14:48:20.952326+09:00">14:48</time><div class="flow-item-main"><a href="https://www.joongang.co.kr/article/25449483" target="_blank" rel="noreferrer">“취업 못해 월세 라도 벌려다…” 주식 물린 2030 개미들 비명</a><div class="flow-item-meta"><span>새 창 열림</span><span>#취업</span><span>#주거</span></div></div><a class="flow-route" href="news.html">뉴스 흐름</a></article><article class="flow-item" data-flow-item data-flow-id="217e586b3295d92e" data-published-ts="1785386978000"><time class="flow-time" datetime="2026-07-30T13:49:38+09:00">13:49</time><div class="flow-item-main"><a href="https://news.google.com/rss/articles/CBMibEFVX3lxTE1IZnF2Tk5QY0FjQnpqLWw3SW96dzNNVWozeFctT0llSXB1N3p6UlpCZTk2aGp2N3NqbEJ6aV9aelpQSmY1azl2NVZHZzd1OWJ6Z2VGclVYeUx5eF9xNHE4Rmpsb3podUc1bjNIbQ?oc=5" target="_blank" rel="noreferrer">LGU+, 여름 휴가철 맞춤 혜택 확대… 로밍·멤버십·청년 지원 강화</a><div class="flow-item-meta"><span>중소기업신문</span></div></div><a class="flow-route" href="news.html">뉴스 흐름</a></article><article class="flow-item" data-flow-item data-flow-id="9b936e036ecf3ac2" data-published-ts="1785384986000"><time class="flow-time" datetime="2026-07-30T13:16:26+09:00">13:16</time><div class="flow-item-main"><a href="https://news.google.com/rss/articles/CBMid0FVX3lxTE1XWG95a3pfWGRZeEIySEw0emh2ZXF0NV9LY1J4MmRjYjdYaDdoa3VQaEpkOUFoVktLdG5FOXBoQzNHd0N2U2dwNFctcjdBUGt1ekxScTVZMm1NVlF4cjZqblRuRzB3U2ZmT3A3X0doVlZwRTlnWm1R0gF3QVVfeXFMTVdYb3lrel9YZFl4QjJITDR6aHZlcXQ1X0tjUngyZGNiN1hoN2hrdVBoSmQ5QWhWS0t0bkU5cGhDM0d3Q3ZTZ3A0Vy1yN0FQa3V6TFJxNVkybU1WUXhyNmpuVG5HMHdTZmZPcDdfR2hWVnBFOWdabVE?oc=5" target="_blank" rel="noreferrer">에쓰오일, 자립준비청년 취업 지원에 1억3000만원 후원…&#x27;굿잡드림&#x27; 사업 지속</a><div class="flow-item-meta"><span>스트레이트뉴스</span><span>#취업</span><span>#복지</span></div></div><a class="flow-route" href="news.html">뉴스 흐름</a></article><article class="flow-item" data-flow-item data-flow-id="1dbe6299eb6be94b" data-published-ts="1785381480000"><time class="flow-time" datetime="2026-07-30T12:18:00+09:00">12:18</time><div class="flow-item-main"><a href="https://news.google.com/rss/articles/CBMiU0FVX3lxTFAxcGwxaE5BQ1RBMnR3Ti10VU1Vd3FFWG40UnF3MHRuMUg3YmxNTW1jdGdfY0hmUDYyYVNDN0c3REMyWEhHeEp1aUJKd0dwN2RIU1dV?oc=5" target="_blank" rel="noreferrer">[인터뷰] 박준 경남도의회 의장 &quot;청년이 머무르는 정주기반 만들겠다&quot;</a><div class="flow-item-meta"><span>네이트</span></div></div><a class="flow-route" href="reports.html">연구·분석</a></article><article class="flow-item" data-flow-item data-flow-id="d3a2d2acae658756" data-published-ts="1785379620000"><time class="flow-time" datetime="2026-07-30T11:47:00+09:00">11:47</time><div class="flow-item-main"><a href="https://news.google.com/rss/articles/CBMigwFBVV95cUxNcDVlMW1pN2s5SzNaUFVnMlFoRnZrUk9KX0ZVTENLSGpnaU5Nbm11UUFTak5tS1BKSnBrTVdoX0xSUUp0T3FqUDVvX09wdUVIWTZ6QkdNQVBwVnhRcFJMNGxWa3N5SjdZTWhiQkNKQzNNaVpUNzZ3ZGNkbFlwTURyZDFhSQ?oc=5" target="_blank" rel="noreferrer">“돈 없는 청년은 들어오지마”…자산격차 키우는 청년 지원사업 허실</a><div class="flow-item-meta"><span>네이버 프리미엄콘텐츠</span></div></div><a class="flow-route" href="news.html">뉴스 흐름</a></article><article class="flow-item" data-flow-item data-flow-id="cea98ed53f963c9e" data-published-ts="1785376101286"><time class="flow-time" datetime="2026-07-30T10:48:21.286281+09:00">10:48</time><div class="flow-item-main"><a href="https://www.dnews.co.kr/uhtml/view.jsp?idxno=202607300952180300118" target="_blank" rel="noreferrer">[머니테크] 부동산 세제개편 임박… 주택시장 ‘게임의 법칙’이 바뀐다</a><div class="flow-item-meta"><span>새 창 열림</span><span>#주거</span><span>#금융</span></div></div><a class="flow-route" href="reports.html">연구·분석</a></article><article class="flow-item" data-flow-item data-flow-id="a3e445edcf352a06" data-published-ts="1785375596000"><time class="flow-time" datetime="2026-07-30T10:39:56+09:00">10:39</time><div class="flow-item-main"><a href="https://news.google.com/rss/articles/CBMib0FVX3lxTE52VS03OG15a1Q2VV9wRlI2SEczT1RWdzJ5RW1BcmotcndKaUNiYWJqZGR1V05FeFRfXzJ5Ym5pb3RYcDRNb0FYbldQNjR0QjVSdlRWYTdyWkRHZDdvekZlX25iZjU1b1o1UklBNTJ3Zw?oc=5" target="_blank" rel="noreferrer">동부고용복지+센터, 미취업 청년 지원 워크숍 개최</a><div class="flow-item-meta"><span>송파타임즈</span><span>#취업</span><span>#복지</span></div></div><a class="flow-route" href="news.html">뉴스 흐름</a></article><article class="flow-item" data-flow-item data-flow-id="ffd6587d2b11aa5a" data-published-ts="1785372600000"><time class="flow-time" datetime="2026-07-30T09:50:00+09:00">09:50</time><div class="flow-item-main"><a href="https://news.google.com/rss/articles/CBMiXEFVX3lxTE5JLU1LeVV5ZDhZZkRxLXExNl9HT0l0S3pPNk14RUxlTVhTSVZqbU9OMnVVTHNDay1aMGd4dEp4ZVJrUjFDRXNWYzNzbHd0eTh5b0pzcWdsQzEzU3pa?oc=5" target="_blank" rel="noreferrer">금산군, 가족돌봄청년 지원 확대…연 최대 200만원 지급</a><div class="flow-item-meta"><span>뉴스핌</span><span>#복지</span></div></div><a class="flow-route" href="news.html">뉴스 흐름</a></article><article class="flow-item" data-flow-item data-flow-id="fe4df37ab457518d" data-published-ts="1785372501286"><time class="flow-time" datetime="2026-07-30T09:48:21.286281+09:00">09:48</time><div class="flow-item-main"><a href="https://www.sidae.com/article/2026073008215167311" target="_blank" rel="noreferrer">[인터뷰]이충우 여주시장 &quot;기업· 청년 찾는 체류형 도시 완성&quot;</a><div class="flow-item-meta"><span>새 창 열림</span><span>#취업</span><span>#주거</span></div></div><a class="flow-route" href="reports.html">연구·분석</a></article><article class="flow-item" data-flow-item data-flow-id="2722ce9332275d5e" data-published-ts="1785372494284"><time class="flow-time" datetime="2026-07-30T09:48:14.284205+09:00">09:48</time><div class="flow-item-main"><a href="http://www.whosaeng.com/172515" target="_blank" rel="noreferrer">우울 증상 있는 청년 , 지방간 위험 최대 2배 이상 높아</a><div class="flow-item-meta"><span>새 창 열림</span></div></div><a class="flow-route" href="reports.html">연구·분석</a></article><article class="flow-item" data-flow-item data-flow-id="4f042adef06e2c00" data-published-ts="1785371118000"><time class="flow-time" datetime="2026-07-30T09:25:18+09:00">09:25</time><div class="flow-item-main"><a href="https://news.google.com/rss/articles/CBMiZkFVX3lxTFBGTVpNLTNGcGNSSGlUem1EcF9iRTdNV3FpR3FVUHhjSTJVZHJWSGJkR09SeUlPcXVZNm1BMU1SUExEZXA0enVFV0dIdXk2b0FKRzdpNTE1dzBwQ1FSX0Vodm1TQk1Ldw?oc=5" target="_blank" rel="noreferrer">LG유플러스, 여름 맞아 로밍·멤버십 혜택 확대…청년 지원도 강화</a><div class="flow-item-meta"><span>이로운넷</span></div></div><a class="flow-route" href="news.html">뉴스 흐름</a></article><article class="flow-item" data-flow-item data-flow-id="aecc909a13cd6096" data-published-ts="1785370949000"><time class="flow-time" datetime="2026-07-30T09:22:29+09:00">09:22</time><div class="flow-item-main"><a href="https://news.google.com/rss/articles/CBMiWkFVX3lxTE1OcEt4ZmhUZ0tmZmk3NGNoWVBTcVR3bXJsc3BSZGpHQkpWQXBBdkVPN29OcWtvUkN0X3dEY3E0MFU1UmUxVkxBMFdYNlhZLUlQYXV2Y1FEcjF6Zw?oc=5" target="_blank" rel="noreferrer">한성숙 국무총리, 고립·은둔청년 지원 현장 방문 및 간담회 개최</a><div class="flow-item-meta"><span>서남투데이</span><span>#복지</span></div></div><a class="flow-route" href="news.html">뉴스 흐름</a></article><article class="flow-item" data-flow-item data-flow-id="e27766c1a659a058" data-published-ts="1785370680000"><time class="flow-time" datetime="2026-07-30T09:18:00+09:00">09:18</time><div class="flow-item-main"><a href="https://news.google.com/rss/articles/CBMiU0FVX3lxTE1USXRVQ2U1cVdnWllmSjhtTkpQWXFlZXI4R1JmZ0lBMC1WMVIzS2syWDBuWlBYYUtJN0N1VU5ZY3p5NnpJblcyVFRjLUlOTjlMeXpV?oc=5" target="_blank" rel="noreferrer">[인터뷰]이충우 여주시장 &quot;기업·청년 찾는 체류형 도시 완성&quot;</a><div class="flow-item-meta"><span>네이트</span></div></div><a class="flow-route" href="reports.html">연구·분석</a></article><article class="flow-item" data-flow-item data-flow-id="181970541d73fc0f" data-published-ts="1785368901286"><time class="flow-time" datetime="2026-07-30T08:48:21.286281+09:00">08:48</time><div class="flow-item-main"><a href="https://www.newsfreezone.co.kr/news/articleView.html?idxno=701665" target="_blank" rel="noreferrer">200만명 몰린 청년 미래적금, 정작 &#x27;저축 못하는 청년 &#x27;은 문턱 밖</a><div class="flow-item-meta"><span>새 창 열림</span><span>#주거</span><span>#금융</span></div></div><a class="flow-route" href="news.html">뉴스 흐름</a></article><article class="flow-item" data-flow-item data-flow-id="b15d85f6a4ae1659" data-published-ts="1785368901286"><time class="flow-time" datetime="2026-07-30T08:48:21.286281+09:00">08:48</time><div class="flow-item-main"><a href="https://www.youthdaily.co.kr/news/article.html?no=224084" target="_blank" rel="noreferrer">&#x27;가액 중심&#x27; 전환하는 종부세…초고가 주택 &#x27;핀셋&#x27; 증세 가닥</a><div class="flow-item-meta"><span>새 창 열림</span><span>#주거</span></div></div><a class="flow-route" href="reports.html">연구·분석</a></article><article class="flow-item" data-flow-item data-flow-id="1695f74b913ac54f" data-published-ts="1785366540000"><time class="flow-time" datetime="2026-07-30T08:09:00+09:00">08:09</time><div class="flow-item-main"><a href="https://news.google.com/rss/articles/CBMiQ0FVX3lxTE1VN291aFowNzBHZGM4aGJFQ25nZzNoaURaVGxhSUZSX3JhYWRGNERKR1I0Rksya19jem1WWkFGdnFzN1U?oc=5" target="_blank" rel="noreferrer">서울동부고용복지+센터, 「미취업청년 유입·지원 워크숍」개최</a><div class="flow-item-meta"><span>디지털광진</span><span>#취업</span><span>#복지</span></div></div><a class="flow-route" href="news.html">뉴스 흐름</a></article><article class="flow-item" data-flow-item data-flow-id="92b5e86472938177" data-published-ts="1785365301286"><time class="flow-time" datetime="2026-07-30T07:48:21.286281+09:00">07:48</time><div class="flow-item-main"><a href="https://www.sedaily.com/article/20073579" target="_blank" rel="noreferrer">‘역대 최다’ 개인회생 신청…‘빚투·주거난’에 올해 16만 건 넘긴다</a><div class="flow-item-meta"><span>새 창 열림</span><span>#주거</span><span>#노동</span></div></div><a class="flow-route" href="news.html">뉴스 흐름</a></article><article class="flow-item" data-flow-item data-flow-id="48d740b3c0cf78a4" data-published-ts="1785361066000"><time class="flow-time" datetime="2026-07-30T06:37:46+09:00">06:37</time><div class="flow-item-main"><a href="https://news.google.com/rss/articles/CBMiUEFVX3lxTE5qamN3WWp5YjZ0NkFJUkl4MnBhOVVqbVpCR1BfcldXWVFnMU1DZkVZSW82R2FoV2lCVUJPNzJkTGlmNVBvcFE5Vm9uWFZ1cnY0?oc=5" target="_blank" rel="noreferrer">도봉구, 청년정책 간담회 ‘청년정책모아 팝업’ 운영…김동욱 구청장과 직접 소통</a><div class="flow-item-meta"><span>문화일보</span></div></div><a class="flow-route" href="news.html">뉴스 흐름</a></article><article class="flow-item" data-flow-item data-flow-id="dc29056b64c827f2" data-published-ts="1785358800000"><time class="flow-time" datetime="2026-07-30T06:00:00+09:00">06:00</time><div class="flow-item-main"><a href="https://news.google.com/rss/articles/CBMickFVX3lxTE5IdURLQTRQQ0o5UjZoV2pYWDczQ3VUQ1Baci0wTUtPNDF3RTBXaDQ5RzYzb3FRWVRPdTlDR1Y0ZHhCUG9ndmVlNkF6VjNLMU5kbjd6LTFiQUZrUkM0V3B4eHhPYjBCOHg5RFJ5M2lRZ1l6UQ?oc=5" target="_blank" rel="noreferrer">[포커스] ‘쉬운 일’이 사라진 노동시장…청년은 밀리고 현장은 더 고달파졌다</a><div class="flow-item-meta"><span>아웃소싱타임스</span><span>#노동</span></div></div><a class="flow-route" href="news.html">뉴스 흐름</a></article></div>
+      </section>
     </section>
-
 
     <footer class="site-footer" id="site-footer" aria-label="운영 안내">
       <div class="site-footer-top">
@@ -8720,7 +9043,7 @@
         <div class="site-footer-info">
 
           <div class="site-footer-site-head">
-            <strong>청년정책 모아봄</strong>
+            <strong>청년동향실</strong>
             <span>by YOUTHSIDE</span>
           </div>
 
@@ -8743,19 +9066,19 @@
           <path d="M4 11.5 12 5l8 6.5"></path>
           <path d="M6.5 10.5V20h11V10.5"></path>
           <path d="M10 20v-5h4v5"></path>
-        </svg></span><span>오늘</span></a><a class="" href="news.html"><span class="bottom-nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false">
+        </svg></span><span>지금</span></a><a class="" href="news.html"><span class="bottom-nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false">
           <path d="M6 5.5h9.5L19 9v9.5H6z"></path>
           <path d="M15.5 5.5V9H19"></path>
           <path d="M9 12h6"></path>
           <path d="M9 15h6"></path>
           <path d="M9 18h4"></path>
-        </svg></span><span>뉴스</span></a><a class="" href="opinion.html"><span class="bottom-nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false">
+        </svg></span><span>흐름</span></a><a class="" href="opinion.html"><span class="bottom-nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false">
           <path d="M6 5.5h9.5L19 9v9.5H6z"></path>
           <path d="M15.5 5.5V9H19"></path>
           <path d="M9 12h6"></path>
           <path d="M9 15h6"></path>
           <path d="M9 18h4"></path>
-        </svg></span><span>칼럼</span></a><a class="" href="reports.html"><span class="bottom-nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false">
+        </svg></span><span>관점</span></a><a class="" href="reports.html"><span class="bottom-nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false">
           <path d="M6 5.5h9.5L19 9v9.5H6z"></path>
           <path d="M15.5 5.5V9H19"></path>
           <path d="M9 12h6"></path>
@@ -8766,7 +9089,7 @@
           <path d="M10 5v12.5"></path>
           <path d="M14 6.5V19"></path>
           <path d="M16.5 10.5h.01"></path>
-        </svg></span><span>지역</span></a></nav>
+        </svg></span><span>원문</span></a></nav>
 
   <div class="guide-overlay" data-guide-overlay hidden>
     <div class="guide-dialog" role="dialog" aria-modal="true" aria-labelledby="guide-dialog-title">
@@ -8776,10 +9099,10 @@
       <div class="list">
         <div class="list-item"><strong>오늘의 레이더</strong><span>오늘 먼저 확인할 변화와 이슈를 빠르게 훑습니다.</span></div>
         <div class="list-item"><strong>뉴스</strong><span>일반 보도만 모아 지역·주제·날짜별로 확인합니다.</span></div>
-        <div class="list-item"><strong>기고·칼럼</strong><span>사실 보도와 필자의 관점·주장을 분리해 읽습니다.</span></div>
+        <div class="list-item"><strong>관점</strong><span>사실 보도와 필자의 관점·주장을 분리해 읽습니다.</span></div>
         <div class="list-item"><strong>연구·분석</strong><span>논문·보고서·실태조사·동향분석을 확인합니다.</span></div>
-        <div class="list-item"><strong>지자체 자료실</strong><span>지역별 공식 보도자료와 계획 원문을 출처 기준으로 봅니다.</span></div>
-        <div class="list-item"><strong>정부부처 자료실</strong><span>중앙부처 보도자료와 기본·시행계획 원문을 봅니다.</span></div>
+        <div class="list-item"><strong>지역 원문</strong><span>지역별 공식 보도자료와 계획 원문을 출처 기준으로 봅니다.</span></div>
+        <div class="list-item"><strong>정부 원문</strong><span>중앙부처 보도자료와 기본·시행계획 원문을 봅니다.</span></div>
       </div>
       <div class="hero-actions">
         <button class="button primary" type="button" data-guide-dismiss="true">바로 보기</button>
@@ -9893,6 +10216,97 @@
   if (guideOverlay && document.body.dataset.page === 'index.html') {
     guideOverlay.hidden = true;
   }
+})();
+
+
+(() => {
+  const root = document.querySelector('[data-flow-root]');
+  if (!root) {
+    return;
+  }
+
+  const storageKey = 'youth-trend-room-read-until';
+  const items = Array.from(root.querySelectorAll('[data-flow-item]'));
+  const cells = Array.from(root.querySelectorAll('[data-flow-cell]'));
+  const status = root.querySelector('[data-flow-status]');
+  const markButton = root.querySelector('[data-flow-mark-read]');
+  const allButton = root.querySelector('[data-flow-all]');
+
+  function readStoredTimestamp() {
+    try {
+      return Number(window.localStorage.getItem(storageKey) || 0);
+    } catch (error) {
+      return 0;
+    }
+  }
+
+  function refreshReadMarker() {
+    root.querySelectorAll('[data-flow-read-marker]').forEach((marker) => marker.remove());
+    const readUntil = readStoredTimestamp();
+    const unreadCount = items.filter((item) => Number(item.dataset.publishedTs || 0) > readUntil).length;
+    if (status) {
+      status.textContent = readUntil
+        ? `이전에 읽은 뒤 새로 들어온 자료 ${unreadCount}건`
+        : `최근 자료 ${items.length}건 · 읽은 위치를 이 브라우저에 저장할 수 있습니다`;
+    }
+    if (!readUntil) {
+      return;
+    }
+    const firstReadItem = items.find((item) => Number(item.dataset.publishedTs || 0) <= readUntil);
+    if (!firstReadItem) {
+      return;
+    }
+    const marker = document.createElement('div');
+    marker.className = 'flow-read-marker';
+    marker.dataset.flowReadMarker = 'true';
+    marker.textContent = '여기까지 읽으셨습니다';
+    firstReadItem.before(marker);
+  }
+
+  function showAll() {
+    items.forEach((item) => {
+      item.hidden = false;
+    });
+    cells.forEach((cell) => cell.classList.remove('active'));
+    if (allButton) {
+      allButton.classList.add('active');
+    }
+    refreshReadMarker();
+  }
+
+  cells.forEach((cell) => {
+    cell.addEventListener('click', () => {
+      const start = Number(cell.dataset.startTs || 0);
+      const end = Number(cell.dataset.endTs || 0);
+      items.forEach((item) => {
+        const timestamp = Number(item.dataset.publishedTs || 0);
+        item.hidden = !(timestamp >= start && timestamp < end);
+      });
+      cells.forEach((other) => other.classList.toggle('active', other === cell));
+      if (allButton) {
+        allButton.classList.remove('active');
+      }
+      root.querySelectorAll('[data-flow-read-marker]').forEach((marker) => marker.remove());
+      if (status) {
+        status.textContent = `${cell.dataset.label || '선택한 시간'} · ${cell.dataset.count || 0}건`;
+      }
+      root.querySelector('[data-flow-stream]')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  });
+
+  allButton?.addEventListener('click', showAll);
+  markButton?.addEventListener('click', () => {
+    const latestTimestamp = Math.max(0, ...items.map((item) => Number(item.dataset.publishedTs || 0)));
+    try {
+      window.localStorage.setItem(storageKey, String(latestTimestamp));
+    } catch (error) {
+      // Storage can be blocked; the current view still remains usable.
+    }
+    refreshReadMarker();
+    markButton.textContent = '읽은 위치 저장됨';
+  });
+
+  refreshReadMarker();
 })();
 
 

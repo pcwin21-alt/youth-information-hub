@@ -3724,7 +3724,7 @@ BASE_CSS = """
       gap: 4px;
     }
     .nav::before {
-      content: "Navigation\\A청년정책 모아봄";
+      content: "Navigation\\A청년동향실";
       position: absolute;
       top: 20px;
       left: 24px;
@@ -9319,6 +9319,339 @@ DESIGN_OVERHAUL_CSS = """
     outline-offset: 3px;
   }
 
+  body[data-page="index.html"] .shell {
+    background:
+      radial-gradient(circle at 88% 2%, rgba(200, 77, 57, 0.1), transparent 23rem),
+      var(--surface);
+  }
+
+  .flow-hero {
+    display: grid;
+    gap: 22px;
+  }
+
+  .flow-hero-header {
+    display: grid;
+    grid-template-columns: minmax(0, 1.45fr) minmax(260px, 0.55fr);
+    gap: 18px;
+    align-items: end;
+  }
+
+  .flow-hero-title {
+    max-width: 850px;
+    margin: 10px 0 12px;
+    font-size: clamp(2.35rem, 5vw, 5.6rem);
+    line-height: 0.98;
+    letter-spacing: -0.075em;
+  }
+
+  .flow-hero-copy {
+    max-width: 720px;
+    margin: 0;
+    color: var(--muted);
+    font-size: clamp(1rem, 1.7vw, 1.22rem);
+    line-height: 1.75;
+  }
+
+  .flow-freshness {
+    padding: 18px;
+    border: 1px solid var(--line);
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.74);
+  }
+
+  .flow-freshness span,
+  .flow-stat span {
+    display: block;
+    color: var(--muted);
+    font-size: 0.76rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+  }
+
+  .flow-freshness strong {
+    display: block;
+    margin-top: 6px;
+    font-size: 1.45rem;
+  }
+
+  .flow-freshness p {
+    margin: 8px 0 0;
+    color: var(--muted);
+    font-size: 0.84rem;
+    line-height: 1.55;
+  }
+
+  .flow-board {
+    overflow: hidden;
+    border: 1px solid var(--line);
+    border-radius: 28px;
+    background: #fff;
+    box-shadow: 0 18px 42px rgba(16, 44, 50, 0.07);
+  }
+
+  .flow-board-head {
+    display: flex;
+    gap: 18px;
+    align-items: flex-end;
+    justify-content: space-between;
+    padding: 22px 24px 18px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .flow-board-head h2 {
+    margin: 4px 0 0;
+    font-size: clamp(1.3rem, 2vw, 1.8rem);
+  }
+
+  .flow-board-head p {
+    margin: 6px 0 0;
+    color: var(--muted);
+    font-size: 0.86rem;
+  }
+
+  .flow-stats {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(90px, 1fr));
+    border-bottom: 1px solid var(--line);
+  }
+
+  .flow-stat {
+    padding: 18px 22px;
+    border-right: 1px solid var(--line);
+  }
+
+  .flow-stat:last-child {
+    border-right: 0;
+  }
+
+  .flow-stat strong {
+    display: block;
+    margin-top: 5px;
+    font-size: 1.65rem;
+    letter-spacing: -0.045em;
+  }
+
+  .flow-map-wrap {
+    padding: 22px 24px 24px;
+  }
+
+  .flow-map {
+    display: grid;
+    grid-template-columns: repeat(24, minmax(18px, 1fr));
+    gap: 5px;
+    min-width: 690px;
+  }
+
+  .flow-map-scroll {
+    overflow-x: auto;
+    padding-bottom: 8px;
+  }
+
+  .flow-cell {
+    position: relative;
+    min-height: 76px;
+    padding: 9px 4px 7px;
+    border: 1px solid rgba(16, 44, 50, 0.08);
+    border-radius: 10px;
+    background: color-mix(in srgb, var(--deep-navy) calc(4% + var(--flow-level) * 14%), #f7faf9);
+    color: var(--deep-navy);
+    cursor: pointer;
+    transition: transform 160ms ease, border-color 160ms ease, background 160ms ease;
+  }
+
+  .flow-cell:hover,
+  .flow-cell.active {
+    z-index: 1;
+    transform: translateY(-3px);
+    border-color: var(--accent);
+  }
+
+  .flow-cell.latest:not(.empty)::after {
+    position: absolute;
+    top: 7px;
+    right: 7px;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 0 5px rgba(200, 77, 57, 0.12);
+    content: "";
+    animation: flow-pulse 1.8s ease-out infinite;
+  }
+
+  .flow-cell-count {
+    display: block;
+    font-size: 1rem;
+    font-weight: 800;
+  }
+
+  .flow-cell-time {
+    position: absolute;
+    right: 4px;
+    bottom: 7px;
+    left: 4px;
+    color: var(--muted);
+    font-size: 0.64rem;
+    font-weight: 700;
+    text-align: center;
+  }
+
+  .flow-map-legend {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 10px;
+    color: var(--muted);
+    font-size: 0.75rem;
+  }
+
+  .flow-map-legend strong {
+    color: var(--deep-navy);
+  }
+
+  .flow-stream {
+    margin-top: 20px;
+    border-top: 1px solid var(--line);
+  }
+
+  .flow-stream-head {
+    position: sticky;
+    top: 10px;
+    z-index: 6;
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 24px;
+    border: 1px solid var(--line);
+    border-radius: 20px;
+    background: rgba(250, 250, 247, 0.94);
+    backdrop-filter: blur(14px);
+  }
+
+  .flow-stream-head h2 {
+    margin: 0;
+    font-size: 1.25rem;
+  }
+
+  .flow-stream-status {
+    margin: 4px 0 0;
+    color: var(--muted);
+    font-size: 0.82rem;
+  }
+
+  .flow-read-button {
+    flex: none;
+    padding: 11px 15px;
+    border: 1px solid var(--deep-navy);
+    border-radius: 999px;
+    background: var(--deep-navy);
+    color: #fff;
+    font: inherit;
+    font-size: 0.82rem;
+    font-weight: 700;
+    cursor: pointer;
+  }
+
+  .flow-list {
+    padding: 2px 0 0;
+  }
+
+  .flow-item {
+    display: grid;
+    grid-template-columns: 88px minmax(0, 1fr) auto;
+    gap: 18px;
+    align-items: start;
+    padding: 22px 8px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .flow-item[hidden] {
+    display: none;
+  }
+
+  .flow-time {
+    color: var(--accent);
+    font-size: 0.86rem;
+    font-weight: 800;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .flow-item-main {
+    min-width: 0;
+  }
+
+  .flow-item-main a,
+  .flow-item-main strong {
+    color: var(--deep-navy);
+    font-size: clamp(1rem, 1.55vw, 1.22rem);
+    font-weight: 700;
+    line-height: 1.5;
+    text-decoration: none;
+  }
+
+  .flow-item-main a:hover {
+    color: var(--accent);
+  }
+
+  .flow-item-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 8px;
+    color: var(--muted);
+    font-size: 0.78rem;
+  }
+
+  .flow-route {
+    min-width: 76px;
+    padding: 6px 9px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: var(--mint);
+    color: var(--deep-navy);
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-align: center;
+  }
+
+  .flow-read-marker {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    margin: 4px 0;
+    color: var(--accent);
+    font-size: 0.78rem;
+    font-weight: 800;
+  }
+
+  .flow-read-marker::before,
+  .flow-read-marker::after {
+    height: 1px;
+    flex: 1;
+    background: rgba(200, 77, 57, 0.35);
+    content: "";
+  }
+
+  .flow-empty {
+    padding: 42px 20px;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  @keyframes flow-pulse {
+    0% { box-shadow: 0 0 0 0 rgba(200, 77, 57, 0.28); }
+    75%, 100% { box-shadow: 0 0 0 9px rgba(200, 77, 57, 0); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .flow-cell.latest:not(.empty)::after {
+      animation: none;
+    }
+  }
+
   @media (max-width: 1180px) {
     .app-layout {
       grid-template-columns: 1fr;
@@ -9340,6 +9673,10 @@ DESIGN_OVERHAUL_CSS = """
 
     .article-grid {
       grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .flow-hero-header {
+      grid-template-columns: 1fr;
     }
   }
 
@@ -9406,6 +9743,44 @@ DESIGN_OVERHAUL_CSS = """
       width: calc(100vw - 20px);
       bottom: 10px;
       border-radius: 20px;
+    }
+
+    .flow-hero-title {
+      font-size: clamp(2.25rem, 13vw, 4rem);
+    }
+
+    .flow-board-head,
+    .flow-stream-head {
+      align-items: flex-start;
+      flex-direction: column;
+    }
+
+    .flow-stats {
+      grid-template-columns: 1fr;
+    }
+
+    .flow-stat {
+      border-right: 0;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .flow-stat:last-child {
+      border-bottom: 0;
+    }
+
+    .flow-map-wrap {
+      padding: 18px 16px;
+    }
+
+    .flow-item {
+      grid-template-columns: 56px minmax(0, 1fr);
+      gap: 10px;
+      padding: 18px 2px;
+    }
+
+    .flow-route {
+      grid-column: 2;
+      justify-self: start;
     }
   }
 """
@@ -10753,45 +11128,138 @@ def build_admin_access_script() -> str:
 """
 
 
+HOME_FLOW_SCRIPT = """
+(() => {
+  const root = document.querySelector('[data-flow-root]');
+  if (!root) {
+    return;
+  }
+
+  const storageKey = 'youth-trend-room-read-until';
+  const items = Array.from(root.querySelectorAll('[data-flow-item]'));
+  const cells = Array.from(root.querySelectorAll('[data-flow-cell]'));
+  const status = root.querySelector('[data-flow-status]');
+  const markButton = root.querySelector('[data-flow-mark-read]');
+  const allButton = root.querySelector('[data-flow-all]');
+
+  function readStoredTimestamp() {
+    try {
+      return Number(window.localStorage.getItem(storageKey) || 0);
+    } catch (error) {
+      return 0;
+    }
+  }
+
+  function refreshReadMarker() {
+    root.querySelectorAll('[data-flow-read-marker]').forEach((marker) => marker.remove());
+    const readUntil = readStoredTimestamp();
+    const unreadCount = items.filter((item) => Number(item.dataset.publishedTs || 0) > readUntil).length;
+    if (status) {
+      status.textContent = readUntil
+        ? `이전에 읽은 뒤 새로 들어온 자료 ${unreadCount}건`
+        : `최근 자료 ${items.length}건 · 읽은 위치를 이 브라우저에 저장할 수 있습니다`;
+    }
+    if (!readUntil) {
+      return;
+    }
+    const firstReadItem = items.find((item) => Number(item.dataset.publishedTs || 0) <= readUntil);
+    if (!firstReadItem) {
+      return;
+    }
+    const marker = document.createElement('div');
+    marker.className = 'flow-read-marker';
+    marker.dataset.flowReadMarker = 'true';
+    marker.textContent = '여기까지 읽으셨습니다';
+    firstReadItem.before(marker);
+  }
+
+  function showAll() {
+    items.forEach((item) => {
+      item.hidden = false;
+    });
+    cells.forEach((cell) => cell.classList.remove('active'));
+    if (allButton) {
+      allButton.classList.add('active');
+    }
+    refreshReadMarker();
+  }
+
+  cells.forEach((cell) => {
+    cell.addEventListener('click', () => {
+      const start = Number(cell.dataset.startTs || 0);
+      const end = Number(cell.dataset.endTs || 0);
+      items.forEach((item) => {
+        const timestamp = Number(item.dataset.publishedTs || 0);
+        item.hidden = !(timestamp >= start && timestamp < end);
+      });
+      cells.forEach((other) => other.classList.toggle('active', other === cell));
+      if (allButton) {
+        allButton.classList.remove('active');
+      }
+      root.querySelectorAll('[data-flow-read-marker]').forEach((marker) => marker.remove());
+      if (status) {
+        status.textContent = `${cell.dataset.label || '선택한 시간'} · ${cell.dataset.count || 0}건`;
+      }
+      root.querySelector('[data-flow-stream]')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  });
+
+  allButton?.addEventListener('click', showAll);
+  markButton?.addEventListener('click', () => {
+    const latestTimestamp = Math.max(0, ...items.map((item) => Number(item.dataset.publishedTs || 0)));
+    try {
+      window.localStorage.setItem(storageKey, String(latestTimestamp));
+    } catch (error) {
+      // Storage can be blocked; the current view still remains usable.
+    }
+    refreshReadMarker();
+    markButton.textContent = '읽은 위치 저장됨';
+  });
+
+  refreshReadMarker();
+})();
+"""
+
+
 def build_page_script() -> str:
-    return "\n".join((BASE_SCRIPT, build_admin_access_script(), build_analytics_script()))
+    return "\n".join((BASE_SCRIPT, HOME_FLOW_SCRIPT, build_admin_access_script(), build_analytics_script()))
 
 
 NAV_ITEMS = [
-    ("news.html", "뉴스"),
-    ("opinion.html", "기고·칼럼"),
+    ("news.html", "뉴스 흐름"),
+    ("opinion.html", "관점"),
     ("reports.html", "연구·분석"),
-    ("local.html", "지자체 자료실"),
-    ("official.html", "정부부처 자료실"),
-    ("tools.html", "근거 자료"),
-    ("institution.html", "준비 중"),
+    ("local.html", "지역 원문"),
+    ("official.html", "정부 원문"),
+    ("tools.html", "통계·근거"),
+    ("institution.html", "분석실"),
 ]
 
 
-TOP_NAV_ITEMS = [("index.html", "홈"), *NAV_ITEMS]
+TOP_NAV_ITEMS = [("index.html", "지금"), *NAV_ITEMS]
 BOTTOM_NAV_ITEMS = [
-    ("index.html", "오늘"),
-    ("news.html", "뉴스"),
-    ("opinion.html", "칼럼"),
+    ("index.html", "지금"),
+    ("news.html", "흐름"),
+    ("opinion.html", "관점"),
     ("reports.html", "연구"),
-    ("local.html", "지역"),
+    ("local.html", "원문"),
 ]
 
 
 PAGE_HEADINGS = {
-    "index.html": "오늘의 레이더",
-    "news.html": "뉴스",
-    "opinion.html": "기고·칼럼·오피니언",
+    "index.html": "지금의 청년동향",
+    "news.html": "뉴스 흐름",
+    "opinion.html": "관점",
     "reports.html": "연구·논문·분석",
     "election.html": "선거·공약",
-    "official.html": "정부부처 자료실",
+    "official.html": "정부 원문",
     "policies.html": "정책 변화",
     "plans.html": "지역·현장 동향",
-    "local.html": "지자체 자료실",
+    "local.html": "지역 원문",
     "notices.html": "공고·신청",
     "hub.html": "참여기구",
-    "tools.html": "근거 자료",
-    "institution.html": "준비 중",
+    "tools.html": "통계·근거",
+    "institution.html": "분석실",
     "contact.html": "문의/운영안내",
     "guide.html": "아카이브",
     "privacy.html": "개인정보 처리방침",
@@ -10820,7 +11288,7 @@ SIDE_NAV_CONFIG = {
         "items": [("#page-top", "상단"), ("#filters", "필터"), ("#main-list", "주요 목록")],
     },
     "opinion.html": {
-        "title": "기고·칼럼 위치",
+        "title": "관점 위치",
         "description": "필터와 오피니언 목록",
         "items": [("#page-top", "상단"), ("#collection-contract", "수집 기준"), ("#filters", "필터"), ("#main-list", "주요 목록")],
     },
@@ -10830,7 +11298,7 @@ SIDE_NAV_CONFIG = {
         "items": [("#page-top", "상단"), ("#collection-contract", "수집 기준"), ("#filters", "필터"), ("#main-list", "주요 목록")],
     },
     "official.html": {
-        "title": "정부부처 자료실 위치",
+        "title": "정부 원문 위치",
         "description": "중앙부처 보도자료와 계획",
         "items": [
             ("#page-top", "상단"),
@@ -10864,7 +11332,7 @@ SIDE_NAV_CONFIG = {
         ],
     },
     "local.html": {
-        "title": "지자체 자료실 위치",
+        "title": "지역 원문 위치",
         "description": "공식 발표와 계획 원문",
         "items": [
             ("#page-top", "상단"),
@@ -10884,7 +11352,7 @@ SIDE_NAV_CONFIG = {
         ],
     },
     "institution.html": {
-        "title": "준비 중 기능",
+        "title": "분석실 기능",
         "description": "향후 기능 안내",
         "items": [
             ("#page-top", "상단"),
@@ -10940,7 +11408,7 @@ def nav_label(active_page: str) -> str:
 
 
 def page_heading(active_page: str) -> str:
-    return "청년정책 모아봄"
+    return "청년동향실"
 
 
 def render_guide_link(active_page: str) -> str:
@@ -11096,8 +11564,8 @@ def render_side_nav(active_page: str) -> str:
         for label in ADMIN_NAV_PLACEHOLDERS
     )
     return f"""
-      <a class="side-brand" href="index.html" aria-label="청년정책 모아봄 홈으로 이동">
-        <strong>청년정책 모아봄</strong>
+      <a class="side-brand" href="index.html" aria-label="청년동향실 홈으로 이동">
+        <strong>청년동향실</strong>
         <span>by YOUTHSIDE</span>
       </a>
       {render_live_clock("side")}
@@ -11114,8 +11582,8 @@ def render_side_nav(active_page: str) -> str:
         </nav>
       </div>
       <a class="side-update-card" href="news.html">
-        <strong>Weekly Update</strong>
-        <span>이번 주 청년정책과 청년 이슈의 흐름을 확인합니다.</span>
+        <strong>동향 브리핑</strong>
+        <span>업무 전에 새로 들어온 청년정책과 현장 이슈를 확인합니다.</span>
       </a>
       <div class="side-nav-admin" data-admin-only="true" hidden>
         <span class="side-nav-kicker">관리 예정</span>
@@ -11183,10 +11651,10 @@ def render_guide_overlay(active_page: str) -> str:
       <div class="list">
         <div class="list-item"><strong>오늘의 레이더</strong><span>오늘 먼저 확인할 변화와 이슈를 빠르게 훑습니다.</span></div>
         <div class="list-item"><strong>뉴스</strong><span>일반 보도만 모아 지역·주제·날짜별로 확인합니다.</span></div>
-        <div class="list-item"><strong>기고·칼럼</strong><span>사실 보도와 필자의 관점·주장을 분리해 읽습니다.</span></div>
+        <div class="list-item"><strong>관점</strong><span>사실 보도와 필자의 관점·주장을 분리해 읽습니다.</span></div>
         <div class="list-item"><strong>연구·분석</strong><span>논문·보고서·실태조사·동향분석을 확인합니다.</span></div>
-        <div class="list-item"><strong>지자체 자료실</strong><span>지역별 공식 보도자료와 계획 원문을 출처 기준으로 봅니다.</span></div>
-        <div class="list-item"><strong>정부부처 자료실</strong><span>중앙부처 보도자료와 기본·시행계획 원문을 봅니다.</span></div>
+        <div class="list-item"><strong>지역 원문</strong><span>지역별 공식 보도자료와 계획 원문을 출처 기준으로 봅니다.</span></div>
+        <div class="list-item"><strong>정부 원문</strong><span>중앙부처 보도자료와 기본·시행계획 원문을 봅니다.</span></div>
       </div>
       <div class="hero-actions">
         <button class="button primary" type="button" data-guide-dismiss="true">바로 보기</button>
@@ -11432,10 +11900,10 @@ MENU_COLLECTION_CONTRACTS = {
     "news": (
         "언론 기사",
         "등록된 뉴스 검색·RSS에서 청년정책과 청년 삶 이슈를 30분마다 확인합니다.",
-        "기고·칼럼, 연구·분석, 정부·지자체 공식자료는 각 전용 메뉴로 보냅니다.",
+        "관점, 연구·분석, 정부·지역 공식자료는 각 전용 메뉴로 보냅니다.",
     ),
     "opinion": (
-        "기고·칼럼·오피니언",
+        "관점",
         "제목·섹션·본문 신호로 필자 관점이 중심인 글을 30분마다 자동 판별합니다.",
         "청년 맥락이 약한 일반 사설과 단순 홍보는 공개하지 않습니다.",
     ),
@@ -11457,7 +11925,7 @@ MENU_COLLECTION_CONTRACTS = {
     "evidence": (
         "주요 통계·조사·설문",
         "국가승인통계와 공식 실태조사 링크를 기준 자료로 고정하고 사이트 갱신 때 관련 최신 발표를 연결합니다.",
-        "수치의 조사 시점·모집단·발표일을 확인할 수 없는 2차 인용은 근거 자료로 올리지 않습니다.",
+        "수치의 조사 시점·모집단·발표일을 확인할 수 없는 2차 인용은 통계·근거로 올리지 않습니다.",
     ),
 }
 
@@ -15108,55 +15576,193 @@ def build_home_page(
         loading="eager",
     )
     home_lead_class = " has-media" if home_lead_media else ""
+
+    reference_dt = parse_iso_datetime(page_updated_at)
+    if not reference_dt:
+        dated_articles = [article_exposure_datetime(article) for article in all_articles]
+        reference_dt = max((value for value in dated_articles if value), default=None)
+    if not reference_dt:
+        reference_dt = datetime.now(timezone(timedelta(hours=9)))
+    reference_dt = reference_dt.astimezone(timezone(timedelta(hours=9)))
+
+    def is_home_flow_article(article: dict) -> bool:
+        if not article_exposure_datetime(article) or article.get("is_noise") or is_publicly_excluded(article):
+            return False
+        if is_election_promise_article(article):
+            return False
+        if is_local_official_source(article):
+            return is_home_local_official_announcement(article) or is_local_youth_press_release(article)
+        if article.get("is_official_source") or article.get("source_kind") == "official":
+            return is_home_central_official_announcement(article)
+        has_direct_youth_context = home_has_direct_title_signal(article) or home_has_explicit_youth_lead_signal(article)
+        if not has_direct_youth_context:
+            return False
+        if is_general_news_menu_article(article):
+            return is_home_today_candidate(article, reference_dt) or is_home_today_fill_candidate(article, reference_dt)
+        return is_opinion_menu_article(article) or is_research_report_menu_article(article)
+
+    flow_articles: list[dict] = []
+    seen_flow_keys: set[str] = set()
+    for article in sort_articles_by_recency(
+        [article for article in all_articles if is_home_flow_article(article)]
+    ):
+        article_key = home_article_key(article)
+        if not article_key or article_key in seen_flow_keys:
+            continue
+        seen_flow_keys.add(article_key)
+        flow_articles.append(article)
+    day_start = reference_dt.replace(hour=0, minute=0, second=0, microsecond=0)
+    last_day_start = reference_dt - timedelta(hours=24)
+    stream_articles = [
+        article
+        for article in flow_articles
+        if last_day_start <= article_exposure_datetime(article).astimezone(reference_dt.tzinfo) <= reference_dt
+    ][:60]
+
+    bucket_minutes = 15
+    bucket_end = reference_dt.replace(
+        minute=(reference_dt.minute // bucket_minutes) * bucket_minutes,
+        second=0,
+        microsecond=0,
+    ) + timedelta(minutes=bucket_minutes)
+    bucket_start = bucket_end - timedelta(hours=6)
+    buckets: list[dict] = []
+    for index in range(24):
+        start = bucket_start + timedelta(minutes=bucket_minutes * index)
+        end = start + timedelta(minutes=bucket_minutes)
+        bucket_articles = [
+            article
+            for article in stream_articles
+            if start <= article_exposure_datetime(article).astimezone(reference_dt.tzinfo) < end
+        ]
+        buckets.append({"start": start, "end": end, "count": len(bucket_articles)})
+
+    max_bucket_count = max((bucket["count"] for bucket in buckets), default=0)
+    latest_populated_index = max(
+        (index for index, bucket in enumerate(buckets) if bucket["count"]),
+        default=-1,
+    )
+
+    def render_flow_cell(index: int, bucket: dict) -> str:
+        count = bucket["count"]
+        level = 0 if not count or not max_bucket_count else max(1, round((count / max_bucket_count) * 4))
+        latest_class = " latest" if index == latest_populated_index else ""
+        empty_class = " empty" if count == 0 else ""
+        label = f'{bucket["start"].strftime("%H:%M")}–{bucket["end"].strftime("%H:%M")}'
+        return (
+            f'<button class="flow-cell{latest_class}{empty_class}" type="button" data-flow-cell '
+            f'data-start-ts="{int(bucket["start"].timestamp() * 1000)}" '
+            f'data-end-ts="{int(bucket["end"].timestamp() * 1000)}" '
+            f'data-count="{count}" data-label="{html.escape(label)}" '
+            f'style="--flow-level:{level}" aria-label="{html.escape(label)} 수집 자료 {count}건">'
+            f'<span class="flow-cell-count">{count}</span>'
+            f'<span class="flow-cell-time">{bucket["start"].strftime("%H:%M")}</span></button>'
+        )
+
+    def home_flow_route(article: dict) -> tuple[str, str]:
+        if article.get("source_kind") == "local":
+            return "지역 원문", "local.html"
+        if article.get("is_official_source") or article.get("source_kind") == "official":
+            return "정부 원문", "official.html"
+        if is_opinion_menu_article(article):
+            return "관점", "opinion.html"
+        if is_research_report_menu_article(article):
+            return "연구·분석", "reports.html"
+        return "뉴스 흐름", "news.html"
+
+    def render_flow_item(article: dict) -> str:
+        published_dt = article_exposure_datetime(article).astimezone(reference_dt.tzinfo)
+        title = html.escape(display_article_title(article, limit=118))
+        url = article_target_url(article)
+        source = format_source_label(article.get("source") or article.get("source_name")) or "출처 확인"
+        topics = article_topic_tags(article, limit=2)
+        route_label, route_href = home_flow_route(article)
+        identity = hashlib.sha256(
+            f'{article_target_url(article)}|{clean_article_title(article.get("title"))}'.encode("utf-8")
+        ).hexdigest()[:16]
+        title_html = (
+            f'<a href="{html.escape(url)}" target="_blank" rel="noreferrer">{title}</a>'
+            if url
+            else f"<strong>{title}</strong>"
+        )
+        topic_html = "".join(f"<span>#{html.escape(topic)}</span>" for topic in topics)
+        return (
+            f'<article class="flow-item" data-flow-item data-flow-id="{identity}" '
+            f'data-published-ts="{int(published_dt.timestamp() * 1000)}">'
+            f'<time class="flow-time" datetime="{published_dt.isoformat()}">{published_dt.strftime("%H:%M")}</time>'
+            f'<div class="flow-item-main">{title_html}'
+            f'<div class="flow-item-meta"><span>{html.escape(source)}</span>{topic_html}</div></div>'
+            f'<a class="flow-route" href="{route_href}">{html.escape(route_label)}</a></article>'
+        )
+
+    flow_cells_html = "".join(render_flow_cell(index, bucket) for index, bucket in enumerate(buckets))
+    flow_items_html = "".join(render_flow_item(article) for article in stream_articles)
+    if not flow_items_html:
+        flow_items_html = (
+            '<div class="flow-empty">최근 24시간 안에 시각이 확인된 자료가 없습니다. '
+            '다음 수집 뒤 이 시간축이 자동으로 채워집니다.</div>'
+        )
+    today_count = sum(
+        1
+        for article in flow_articles
+        if day_start <= article_exposure_datetime(article).astimezone(reference_dt.tzinfo) <= reference_dt
+    )
+    hour_start = reference_dt - timedelta(hours=1)
+    recent_hour_count = sum(
+        1
+        for article in flow_articles
+        if hour_start <= article_exposure_datetime(article).astimezone(reference_dt.tzinfo) <= reference_dt
+    )
+    top_topics = " · ".join(topic for topic, _ in home_topic_categories[:3]) or "분류 대기"
+
     return f"""
-    <section class="hero home-hero civic-hero" id="overview">
-      <div class="home-briefing-grid">
-        <article class="home-briefing-card lead lead-arch{home_lead_class}" data-media-host="home-lead">
-          <div class="home-briefing-content">
-            <span class="home-briefing-date" aria-label="마지막 업데이트 {html.escape(home_date_label)} {html.escape(home_time_label)}">
-              <span class="home-briefing-date-label">마지막 업데이트</span>
-              <span class="home-briefing-date-day">{html.escape(home_date_label)}</span>
-              <span class="home-briefing-date-time">{html.escape(home_time_label)}</span>
-            </span>
-            <h1 class="home-briefing-title">정책 원문과 청년 이슈를 함께 봅니다</h1>
-            <p class="home-briefing-copy">{html.escape(lead_message)}</p>
+    <section class="flow-hero" id="overview" data-flow-root>
+      <header class="flow-hero-header">
+        <div>
+          <span class="eyebrow">청년정책 실무자를 위한 근실시간 동향판</span>
+          <h1 class="flow-hero-title">쏟아지는 청년 이슈를<br>시간의 흐름으로 읽습니다</h1>
+          <p class="flow-hero-copy">기사·관점·연구·정부와 지역의 원문을 한 시간축에 놓습니다. 무엇이 많이 들어왔는지 먼저 보고, 필요한 원문까지 바로 확인하세요.</p>
+        </div>
+        <aside class="flow-freshness">
+          <span>마지막 반영</span>
+          <strong>{html.escape(home_date_label)} {html.escape(home_time_label)}</strong>
+          <p>자동 수집 주기에 맞춰 갱신되는 근실시간 화면입니다. 블록의 색은 중요도가 아니라 해당 15분의 자료 수를 뜻합니다.</p>
+        </aside>
+      </header>
+
+      <section class="flow-board" id="today-briefing" aria-labelledby="flow-map-title">
+        <div class="flow-board-head">
+          <div>
+            <span class="eyebrow">동향 파동 · 최근 6시간</span>
+            <h2 id="flow-map-title">15분마다 들어온 자료</h2>
+            <p>진한 블록일수록 그 시간대에 새 자료가 많았습니다. 블록을 누르면 아래 흐름만 좁혀 봅니다.</p>
           </div>
-          {home_lead_media}
-        </article>
-        <section class="home-overview" id="today-briefing" aria-labelledby="today-briefing-title">
-          <div class="home-overview-head">
-            <div>
-              <h2 id="today-briefing-title">지금 확인할 정보</h2>
-            </div>
-            <div class="home-glance-grid">{overview_stats_html}</div>
+          <button class="flow-read-button" type="button" data-flow-all>전체 흐름 보기</button>
+        </div>
+        <div class="flow-stats">
+          <div class="flow-stat"><span>오늘 들어온 자료</span><strong>{today_count}건</strong></div>
+          <div class="flow-stat"><span>최근 60분</span><strong>{recent_hour_count}건</strong></div>
+          <div class="flow-stat"><span>주요 분류</span><strong>{html.escape(top_topics)}</strong></div>
+        </div>
+        <div class="flow-map-wrap">
+          <div class="flow-map-scroll">
+            <div class="flow-map">{flow_cells_html}</div>
           </div>
-          {home_categories_html}
-          <div class="home-overview-columns">
-            <article class="home-overview-column">
-              <div class="home-overview-column-head">
-                <div>
-                  <span>가장 최근 뉴스</span>
-                  <h3>최근 수집 기사</h3>
-                </div>
-              </div>
-              <p class="home-briefing-panel-note">언론 기사 중 선거·공약성 기사를 제외한 최신 청년 이슈입니다.</p>
-              <div class="home-urgent-list">{today_news_html}</div>
-            </article>
-            <article class="home-overview-column">
-              <div class="home-overview-column-head">
-                <div>
-                  <span>공식자료</span>
-                  <h3>공식 원문 자료</h3>
-                </div>
-              </div>
-              <p class="home-briefing-panel-note">공식자료 메뉴와 같은 기준으로 보도자료와 기본·시행계획 원문만 봅니다.</p>
-              <div class="home-urgent-list">{policy_briefing_html}</div>
-            </article>
+          <div class="flow-map-legend"><span>6시간 전</span><strong>기사량 0 → 많음</strong><span>지금</span></div>
+        </div>
+      </section>
+
+      <section class="flow-stream" id="flow-stream" data-flow-stream aria-labelledby="flow-stream-title">
+        <div class="flow-stream-head">
+          <div>
+            <h2 id="flow-stream-title">시간의 강</h2>
+            <p class="flow-stream-status" data-flow-status>최근 자료 {len(stream_articles)}건</p>
           </div>
-        </section>
-      </div>
+          <button class="flow-read-button" type="button" data-flow-mark-read>여기까지 읽었습니다</button>
+        </div>
+        <div class="flow-list">{flow_items_html}</div>
+      </section>
     </section>
-    {render_youth_metrics()}
     """
 
 
@@ -15167,12 +15773,12 @@ def build_guide_page(status: dict) -> str:
         [
             render_feature_card("홈", "오늘 확인할 청년 이슈와 공식 발표를 함께 보는 첫 화면입니다.", "index.html", "첫 화면"),
             render_feature_card("뉴스", "청년 관련 일반 보도를 칼럼·연구·공식자료와 분리해 봅니다.", "news.html", "최근 1년"),
-            render_feature_card("기고·칼럼", "필자의 관점과 주장이 중심인 글만 따로 봅니다.", "opinion.html", "오피니언"),
+            render_feature_card("관점", "필자의 관점과 주장이 중심인 글만 따로 봅니다.", "opinion.html", "오피니언"),
             render_feature_card("연구·분석", "연구·논문·동향분석·분석 리포트를 원문 중심으로 봅니다.", "reports.html", "연구 자료"),
-            render_feature_card("지자체 자료실", "17개 광역지자체 보도자료와 기본·시행계획을 봅니다.", "local.html", "광역 17곳"),
-            render_feature_card("정부부처 자료실", "중앙부처 보도자료와 기본·시행계획을 봅니다.", "official.html", "중앙부처"),
-            render_feature_card("근거 자료", "주요 통계·조사·설문과 공식 원자료를 바로 엽니다.", "tools.html", "근거 자료"),
-            render_feature_card("준비 중", "기관 레이더·AI 분석·정책 요약·알림봇의 기획 범위를 확인합니다.", "institution.html", "기능 예고"),
+            render_feature_card("지역 원문", "17개 광역지자체 보도자료와 기본·시행계획을 봅니다.", "local.html", "광역 17곳"),
+            render_feature_card("정부 원문", "중앙부처 보도자료와 기본·시행계획을 봅니다.", "official.html", "중앙부처"),
+            render_feature_card("통계·근거", "주요 통계·조사·설문과 공식 원자료를 바로 엽니다.", "tools.html", "공식 근거"),
+            render_feature_card("분석실", "기관 레이더·AI 분석·정책 요약·알림봇의 기획 범위를 확인합니다.", "institution.html", "준비 중"),
             render_feature_card("문의/운영안내", "문의, 제보, 정정 요청과 운영 기준을 확인합니다.", "contact.html", "운영 안내"),
         ]
     )
@@ -15183,7 +15789,7 @@ def build_guide_page(status: dict) -> str:
             ("기사 기준", "가장 최근 기사나 발표가 실제로 나온 시각입니다."),
             ("페이지 반영", "수집과 정리를 마치고 사이트에 다시 올린 시각입니다."),
             ("반영 주기", status_meta["update_frequency"] or "30분마다 신규 자료를 자동 확인합니다."),
-            ("공식자료 기준", "정부부처와 지자체 자료실을 분리하고 언론 기사는 공식자료에 표시하지 않습니다."),
+            ("공식자료 기준", "정부와 지역 원문을 분리하고 언론 기사는 공식자료에 표시하지 않습니다."),
         ],
     )
     usage_guide = render_list_block(
@@ -15194,7 +15800,7 @@ def build_guide_page(status: dict) -> str:
             ("2. 뉴스", "사실 보도를 지역·주제·날짜별로 확인합니다."),
             ("3. 기고·연구", "관점이 필요한 글과 근거가 필요한 자료를 분리해 봅니다."),
             ("4. 정부·지자체", "공식 보도자료와 기본·시행계획 원문을 확인합니다."),
-            ("5. 근거 자료", "통계·조사·설문의 조사 시점과 원문을 확인합니다."),
+            ("5. 통계·근거", "통계·조사·설문의 조사 시점과 원문을 확인합니다."),
         ],
     )
     return f"""
@@ -15202,7 +15808,7 @@ def build_guide_page(status: dict) -> str:
       <article class="hero-card">
         <span class="eyebrow">사이트 소개</span>
         <h1>청년세대와 관련된 이슈들을 한 데 모았습니다.</h1>
-        <p class="hero-copy">수집된 자료를 뉴스, 기고·칼럼, 연구·분석, 지자체, 정부부처, 근거 자료로 나눕니다. 같은 자료를 여러 메뉴에 반복 노출하지 않고 출처와 형식에 따라 한 곳에 배치합니다.</p>
+        <p class="hero-copy">수집된 자료를 뉴스 흐름, 관점, 연구·분석, 지역 원문, 정부 원문, 통계·근거로 나눕니다. 같은 자료를 여러 메뉴에 반복 노출하지 않고 출처와 형식에 따라 한 곳에 배치합니다.</p>
         <div class="hero-feature-meta">페이지 반영 {html.escape(format_display_datetime(page_updated_at))} · {html.escape(status_meta["update_frequency"])}</div>
         <div class="hero-actions">
           <a class="button primary" href="index.html">홈에서 기사 보기</a>
@@ -15214,8 +15820,8 @@ def build_guide_page(status: dict) -> str:
         <div class="list">
           <div class="list-item"><strong>홈</strong><span>첫 화면에서 오늘 확인할 이슈와 공식 발표를 함께 봅니다.</span></div>
           <div class="list-item"><strong>뉴스</strong><span>일반 보도를 지역·주제·날짜별로 봅니다.</span></div>
-          <div class="list-item"><strong>기고·칼럼</strong><span>필자의 해석과 주장이 중심인 글을 따로 봅니다.</span></div>
-          <div class="list-item"><strong>정부·지자체 자료실</strong><span>공식 보도자료와 계획 원문을 발행 주체별로 봅니다.</span></div>
+          <div class="list-item"><strong>관점</strong><span>필자의 해석과 주장이 중심인 글을 따로 봅니다.</span></div>
+          <div class="list-item"><strong>정부·지역 원문</strong><span>공식 보도자료와 계획 원문을 발행 주체별로 봅니다.</span></div>
           <div class="list-item"><strong>문의/운영안내</strong><span>누락 기사, 정정 요청, 운영 문의를 한곳에서 확인합니다.</span></div>
         </div>
       </aside>
@@ -15332,10 +15938,10 @@ def build_opinion_page(articles: list[dict], status: dict) -> str:
         articles,
         status,
         menu_key="opinion",
-        eyebrow="기고·칼럼·오피니언",
+        eyebrow="관점",
         title="청년을 해석하는 관점과 주장",
-        description="청년정책과 청년 삶을 다룬 기고·칼럼·오피니언을 일반 보도와 분리해 모읍니다.",
-        empty_title="최근 확인된 기고·칼럼이 없습니다",
+        description="청년정책과 청년 삶을 다룬 기고·칼럼·오피니언을 일반 보도와 분리해 읽습니다.",
+        empty_title="최근 확인된 관점 글이 없습니다",
         empty_body="청년 맥락과 필자 관점이 함께 확인된 글이 수집되면 표시됩니다.",
         predicate=is_opinion_menu_article,
     )
@@ -15976,7 +16582,7 @@ def build_official_page(articles: list[dict], status: dict) -> str:
     ]
     policy_resource_articles = build_government_policy_resource_articles()
     page_intro = render_compact_intro(
-        "정부부처 자료실",
+        "정부 원문",
         "정책브리핑과 중앙정부 부처가 낸 청년 관련 보도자료, 기본계획·시행계획 원문을 한곳에서 확인합니다. 지자체 자료는 별도 자료실로 분리합니다.",
         media_key="policies",
         title="중앙정부 원문을 부처별로 추적",
@@ -16516,7 +17122,7 @@ def build_local_government_trends_page(articles: list[dict], status: dict) -> st
     ]
     page_intro = render_compact_intro(
         "지역·현장 동향",
-        "지역에서 청년의 삶과 정책 실행이 어떻게 다뤄지는지 언론·현장 기록으로 읽습니다. 공식 공고와 지자체 원문은 지자체 자료실에서 따로 확인합니다.",
+        "지역에서 청년의 삶과 정책 실행이 어떻게 다뤄지는지 언론·현장 기록으로 읽습니다. 공식 공고와 지자체 원문은 지역 원문에서 따로 확인합니다.",
         media_key="policies",
         title="지역의 변화와 현장 맥락을 읽는 곳",
     )
@@ -16551,7 +17157,7 @@ def build_local_government_trends_page(articles: list[dict], status: dict) -> st
         </div>
       </div>
       <div class="feature-grid">
-        {render_feature_card("지자체 자료실", "광역지자체 공식 보도자료와 기본·시행계획 원문을 지역별로 확인합니다.", "local.html", "공식 원문")}
+        {render_feature_card("지역 원문", "광역지자체 공식 보도자료와 기본·시행계획 원문을 지역별로 확인합니다.", "local.html", "공식 원문")}
         {render_feature_card("참여기구 기록", "청년정책 협의체·위원회·자문단 등 지역 참여 구조의 움직임을 확인합니다.", "hub.html", "참여 기록")}
       </div>
     </section>
@@ -16582,7 +17188,7 @@ def build_local_materials_page(articles: list[dict], status: dict) -> str:
         if is_local_youth_plan_document(article)
     ]
     page_intro = render_compact_intro(
-        "지자체 자료실",
+        "지역 원문",
         "17개 광역지자체의 공식 홈페이지에서 확인된 청년 정책·공지 자료와 기본·시행계획 원문을 지역별로 모읍니다. 언론 기사는 지역·현장 동향에서 분리해 봅니다.",
         media_key="policies",
         title="지역의 공식 근거를 바로 찾는 자료실",
@@ -16644,7 +17250,7 @@ def build_notices_page(articles: list[dict], status: dict) -> str:
 
 def build_institution_page() -> str:
     page_intro = render_compact_intro(
-        "준비 중",
+        "분석실",
         "기관 분석 레이더, AI 기반 분석, 청년정책 요약, 자동 알림봇은 아직 제공하지 않습니다. 구현 전 기능의 목적과 공개 기준만 먼저 안내합니다.",
         media_key="contact",
         title="다음 단계에서 만들 기능",
@@ -16729,7 +17335,7 @@ def build_hub_page(classified_articles: list[dict]) -> str:
 
 def build_tools_page(articles: list[dict], status: dict) -> str:
     page_intro = render_compact_intro(
-        "근거 자료",
+        "통계·근거",
         "청년정책을 설명하고 검토할 때 직접 인용할 수 있는 주요 통계·조사·설문과 공식 원자료를 모았습니다.",
         media_key="tools",
         title="통계·조사·설문의 기준 자료",
@@ -16925,7 +17531,7 @@ def build_tools_page(articles: list[dict], status: dict) -> str:
 
 
 def build_privacy_page(contact_settings: dict[str, str]) -> str:
-    organization = html.escape(contact_settings.get("organization_name", "청년정책 모아봄"))
+    organization = html.escape(contact_settings.get("organization_name", "청년동향실"))
     contact_email = html.escape(contact_settings.get("email", ""))
     updated_at = html.escape(format_display_datetime(contact_settings.get("updated_at")))
     page_intro = render_compact_intro(
@@ -16937,7 +17543,7 @@ def build_privacy_page(contact_settings: dict[str, str]) -> str:
     return f"""
     {page_intro}
     <section class="section" id="main-list">
-      {render_list_block("처리 목적과 항목", "청년정책 모아봄은 공개 정보 제공과 문의 응대에 필요한 범위에서만 정보를 처리합니다.", [
+      {render_list_block("처리 목적과 항목", "청년동향실은 공개 정보 제공과 문의 응대에 필요한 범위에서만 정보를 처리합니다.", [
         ("사이트 이용 로그", "방문 페이지, 접속 시각, 브라우저·기기 정보, 참조 URL, 비식별 방문 식별자"),
         ("문의·제보", "이메일 주소, 이름 또는 단체명, 문의 내용, 첨부 링크처럼 이용자가 직접 제공한 정보"),
         ("운영자 로그인", "기관용 포털 계정, 세션 정보, 기사 선별·공개 반영 이력"),
@@ -16975,7 +17581,7 @@ def build_privacy_page(contact_settings: dict[str, str]) -> str:
 
 
 def build_terms_page(contact_settings: dict[str, str]) -> str:
-    organization = html.escape(contact_settings.get("organization_name", "청년정책 모아봄"))
+    organization = html.escape(contact_settings.get("organization_name", "청년동향실"))
     contact_email = html.escape(contact_settings.get("email", ""))
     page_intro = render_compact_intro(
         "이용약관",
@@ -16986,7 +17592,7 @@ def build_terms_page(contact_settings: dict[str, str]) -> str:
     return f"""
     {page_intro}
     <section class="section" id="main-list">
-      {render_list_block("서비스 성격", "청년정책 모아봄은 공개 기사, 정부·지자체 발표, 연구·통계 자료를 수집·분류해 안내하는 정보 서비스입니다.", [
+      {render_list_block("서비스 성격", "청년동향실은 공개 기사, 정부·지자체 발표, 연구·통계 자료를 수집·분류해 안내하는 정보 서비스입니다.", [
         ("원문 우선", "신청, 지원, 법적 판단, 일정 확인은 반드시 원문 링크와 해당 기관 공지를 기준으로 합니다."),
         ("자동 분류", "일부 요약, 분류, 날짜 추출은 자동화되어 오류가 있을 수 있으며 정정 요청을 받을 수 있습니다."),
         ("콘텐츠 제작", "내부 운영자가 선별한 기사는 카드뉴스, 블로그, 보고서 등 후속 콘텐츠의 원천 자료로 활용될 수 있습니다."),
@@ -17149,7 +17755,7 @@ def build_footer_note(contact_settings: dict[str, str]) -> str:
     footer_left = footer_brand_image
     footer_site_head = """
           <div class="site-footer-site-head">
-            <strong>청년정책 모아봄</strong>
+            <strong>청년동향실</strong>
             <span>by YOUTHSIDE</span>
           </div>
     """
@@ -17245,7 +17851,7 @@ def main() -> int:
 
     write_page(
         web_root / "index.html",
-        "청년정책 모아봄",
+        "청년동향실",
         "index.html",
         build_home_page(articles, classified_articles, status, contact_settings),
         status,
@@ -17262,7 +17868,7 @@ def main() -> int:
     )
     write_page(
         web_root / "opinion.html",
-        "기고·칼럼·오피니언",
+        "관점",
         "opinion.html",
         build_opinion_page(all_classified_articles, status),
         status,
@@ -17286,7 +17892,7 @@ def main() -> int:
     )
     write_page(
         web_root / "official.html",
-        "정부부처 자료실",
+        "정부 원문",
         "official.html",
         build_official_page(classified_articles, status),
         status,
@@ -17310,7 +17916,7 @@ def main() -> int:
     )
     write_page(
         web_root / "local.html",
-        "지자체 자료실",
+        "지역 원문",
         "local.html",
         build_local_materials_page(classified_articles, status),
         status,
@@ -17334,7 +17940,7 @@ def main() -> int:
     )
     write_page(
         web_root / "tools.html",
-        "근거 자료",
+        "통계·근거",
         "tools.html",
         build_tools_page(classified_articles, status),
         status,
@@ -17342,7 +17948,7 @@ def main() -> int:
     )
     write_page(
         web_root / "institution.html",
-        "준비 중",
+        "분석실",
         "institution.html",
         build_institution_page(),
         status,
