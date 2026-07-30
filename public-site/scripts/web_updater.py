@@ -11128,6 +11128,7 @@ def build_admin_access_script() -> str:
 """
 
 
+# Browser-only reading state; generated pages remain fully usable without storage access.
 HOME_FLOW_SCRIPT = """
 (() => {
   const root = document.querySelector('[data-flow-root]');
