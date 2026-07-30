@@ -39,6 +39,10 @@ NAVER_IGNORED_TEXTS = {
     "Keep에 바로가기",
 }
 ParserFn = Callable[[str, dict[str, Any]], list[dict[str, Any]]]
+SOURCE_METADATA_FIELDS = (
+    "selection_priority",
+    "source_focus",
+)
 
 
 def is_google_news_feed_url(url: str | None) -> bool:
@@ -570,6 +574,19 @@ def _extract_local_board_date(value: str) -> str | None:
     return f"{int(year):04d}-{int(month):02d}-{int(day):02d}T00:00:00+09:00"
 
 
+def _clean_local_board_title(value: str) -> str:
+    title = re.sub(r"^\s*해당\s*없음\s*[.·:：-]*\s*", "", value or "").strip()
+    return re.sub(r"\s+", " ", title)
+
+
+def _matches_allowed_local_domain(url: str, source: dict[str, Any]) -> bool:
+    allowed_suffixes = [str(value).lower().strip() for value in (source.get("allowed_domain_suffixes") or []) if value]
+    if not allowed_suffixes:
+        return True
+    hostname = (urlparse(url).hostname or "").lower()
+    return any(hostname == suffix or hostname.endswith(f".{suffix}") for suffix in allowed_suffixes)
+
+
 def _extract_attachment_url(root: Tag, base_url: str) -> str | None:
     for anchor in root.find_all("a", href=True):
         href = html.unescape(str(anchor.get("href") or "")).strip()
@@ -630,9 +647,11 @@ def parse_local_board_search(page_text: str, source: dict[str, Any]) -> list[dic
         href = html.unescape(str(anchor.get("href") or "")).strip()
         if not href or href.lower().startswith(("javascript:", "mailto:", "#")):
             continue
-        title = _first_selected_text(root, title_selectors) or strip_html(anchor.get_text(" ", strip=True))
+        title = _clean_local_board_title(
+            _first_selected_text(root, title_selectors) or strip_html(anchor.get_text(" ", strip=True))
+        )
         title = re.sub(r"^\s*(?:새글|new|첨부파일)\s*", "", title, flags=re.IGNORECASE).strip()
-        if not title:
+        if not title or title in {"청년포털", "홈", "메인", "더보기"}:
             continue
 
         item_text = strip_html(root.get_text(" ", strip=True))
@@ -642,6 +661,8 @@ def parse_local_board_search(page_text: str, source: dict[str, Any]) -> list[dic
             continue
 
         article_url = urljoin(base_url, href)
+        if not _matches_allowed_local_domain(article_url, source):
+            continue
         if article_url in seen_urls:
             continue
         seen_urls.add(article_url)
@@ -950,6 +971,13 @@ def fetch_naver_news_items(source: dict[str, Any]) -> list[dict[str, Any]]:
     return collected
 
 
+def attach_source_metadata(items: list[dict[str, Any]], source: dict[str, Any]) -> list[dict[str, Any]]:
+    metadata = {field: source[field] for field in SOURCE_METADATA_FIELDS if field in source}
+    if not metadata:
+        return items
+    return [{**item, **metadata} for item in items]
+
+
 def collect_articles(
     sources: list[dict[str, Any]],
     use_sample_data: bool = False,
@@ -964,6 +992,7 @@ def collect_articles(
             continue
         try:
             items = fetch_source_items(source)
+            items = attach_source_metadata(items, source)
             items = apply_source_filters(items, source)
             articles.extend(items[: int(source.get("limit", len(items)))])
         except Exception:
@@ -1006,6 +1035,7 @@ def normalize_publisher_name(value: str | None) -> str:
 
 def apply_source_filters(items: list[dict[str, Any]], source: dict[str, Any]) -> list[dict[str, Any]]:
     include_keywords = resolve_include_keywords(source)
+    required_keywords_any = list(source.get("required_keywords_any") or [])
     exclude_keywords = list(source.get("exclude_keywords") or [])
     allowed_domain_suffixes = [suffix.lower() for suffix in (source.get("allowed_domain_suffixes") or [])]
     blocked_domain_suffixes = [suffix.lower() for suffix in (source.get("blocked_domain_suffixes") or [])]
@@ -1027,6 +1057,8 @@ def apply_source_filters(items: list[dict[str, Any]], source: dict[str, Any]) ->
             continue
 
         text = " ".join(str(item.get(field) or "") for field in ("title", "lead_text", "source"))
+        if required_keywords_any and not any(keyword in text for keyword in required_keywords_any):
+            continue
         if include_keywords and not any(keyword in text for keyword in include_keywords):
             continue
         if exclude_keywords and any(keyword in text for keyword in exclude_keywords):

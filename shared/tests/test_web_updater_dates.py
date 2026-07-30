@@ -182,30 +182,31 @@ class WebUpdaterDateFallbackTests(unittest.TestCase):
             {},
         )
 
-        self.assertIn("정부 동향", page_html)
+        self.assertIn("공식자료", page_html)
         self.assertIn("Central official youth policy", page_html)
         self.assertNotIn("Local city official youth policy", page_html)
 
-    def test_government_page_has_separate_related_news_section(self) -> None:
+    def test_official_page_excludes_related_news_section(self) -> None:
         official = make_official_government_article()
         related_news = make_central_government_related_news_article()
 
-        page_html = web_updater.build_policies_page_compact(
+        page_html = web_updater.build_official_page(
             [official, related_news],
             {"finished_at": "2026-05-08T00:00:00+09:00"},
         )
 
-        self.assertIn('id="government-menu"', page_html)
-        self.assertIn('href="#main-list"', page_html)
-        self.assertIn('href="#government-official-releases"', page_html)
-        self.assertIn('href="#government-policy-resources"', page_html)
-        self.assertIn('data-government-announcement-news-card="true"', page_html)
-        self.assertIn('data-government-related-news-card="true"', page_html)
+        self.assertIn('id="official-menu"', page_html)
+        self.assertIn('href="#central-press-releases"', page_html)
+        self.assertNotIn('href="#local-press-releases"', page_html)
+        self.assertIn('href="#official-policy-plans"', page_html)
+        self.assertIn('data-official-central-release-card="true"', page_html)
+        self.assertNotIn('data-government-announcement-news-card="true"', page_html)
+        self.assertNotIn('data-government-related-news-card="true"', page_html)
         self.assertIn('data-government-policy-resource-card="true"', page_html)
-        self.assertIn("정부 발표 뉴스 모음", page_html)
-        self.assertIn("정부 홈페이지 보도자료", page_html)
-        self.assertIn("각 부처별 기본·시행계획 자료 모음", page_html)
-        self.assertIn("central-government-news", page_html)
+        self.assertIn("중앙정부 보도자료", page_html)
+        self.assertNotIn("지자체 보도자료", page_html)
+        self.assertIn("기본·시행계획", page_html)
+        self.assertNotIn("central-government-news", page_html)
 
     def test_government_announcement_news_excludes_local_government_actor(self) -> None:
         local_news = make_local_government_news_with_central_keyword()

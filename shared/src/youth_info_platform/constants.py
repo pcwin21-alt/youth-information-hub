@@ -12,6 +12,64 @@ CATEGORIES = [
     CATEGORY_REGION,
 ]
 
+CONTENT_DIRECTION_PROMOTION = "promotion"
+CONTENT_DIRECTION_COLUMN = "column"
+CONTENT_DIRECTION_INSIGHT = "insight"
+CONTENT_DIRECTION_REPORT = "report"
+CONTENT_DIRECTION_OFFICIAL_RELEASE = "official_release"
+CONTENT_DIRECTION_UNKNOWN = "unknown"
+
+CONTENT_DIRECTIONS = [
+    CONTENT_DIRECTION_PROMOTION,
+    CONTENT_DIRECTION_COLUMN,
+    CONTENT_DIRECTION_INSIGHT,
+    CONTENT_DIRECTION_REPORT,
+    CONTENT_DIRECTION_OFFICIAL_RELEASE,
+    CONTENT_DIRECTION_UNKNOWN,
+]
+
+CONTENT_DIRECTION_LABELS = {
+    CONTENT_DIRECTION_PROMOTION: "홍보성",
+    CONTENT_DIRECTION_COLUMN: "칼럼·기고",
+    CONTENT_DIRECTION_INSIGHT: "인사이트·분석",
+    CONTENT_DIRECTION_REPORT: "일반보도",
+    CONTENT_DIRECTION_OFFICIAL_RELEASE: "공식자료",
+    CONTENT_DIRECTION_UNKNOWN: "미분류",
+}
+
+PROMOTION_DIRECTION_KEYWORDS = [
+    "홍보",
+    "캠페인",
+    "프로모션",
+    "이벤트",
+    "브랜드",
+    "출시",
+    "제휴",
+    "협찬",
+    "후원",
+    "사회공헌",
+    "업무협약",
+    "협약식",
+    "체험단",
+]
+
+INSIGHT_DIRECTION_KEYWORDS = [
+    "분석",
+    "진단",
+    "전망",
+    "리포트",
+    "보고서",
+    "기획",
+    "심층",
+    "해설",
+    "인터뷰",
+    "통계",
+    "조사",
+    "실태",
+    "트렌드",
+    "데이터",
+]
+
 REGIONS = [
     "서울",
     "부산",

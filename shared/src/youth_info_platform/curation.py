@@ -25,10 +25,18 @@ from .constants import (
     CATEGORY_OPINION,
     CATEGORY_POLICY,
     CATEGORY_REGION,
+    CONTENT_DIRECTION_COLUMN,
+    CONTENT_DIRECTION_INSIGHT,
+    CONTENT_DIRECTION_OFFICIAL_RELEASE,
+    CONTENT_DIRECTION_PROMOTION,
+    CONTENT_DIRECTION_REPORT,
+    CONTENT_DIRECTION_UNKNOWN,
+    CONTENT_DIRECTIONS,
     GOVERNANCE_ACTIVITY_KEYWORDS,
     GOVERNMENT_GOVERNANCE_KEYWORDS,
     HUB_EXCLUDE_KEYWORDS,
     HUB_ROUTING_KEYWORDS,
+    INSIGHT_DIRECTION_KEYWORDS,
     LOCAL_GOVERNMENT_CONTEXT_KEYWORDS,
     NOISE_KEYWORDS,
     NOW_KEYWORDS,
@@ -36,6 +44,7 @@ from .constants import (
     OPINION_KEYWORDS,
     POLITICAL_CAMPAIGN_KEYWORDS,
     POLITICAL_HUB_EXCLUDE_KEYWORDS,
+    PROMOTION_DIRECTION_KEYWORDS,
     PUBLIC_GOVERNANCE_KEYWORDS,
     PUBLIC_INSTITUTION_CONTEXT_KEYWORDS,
     REGIONS,
@@ -69,14 +78,17 @@ ISSUE_TAG_SCORES: dict[str, int] = {
     "고용": 2,
 }
 SELECTION_BUCKET_SPECS: list[tuple[str, int]] = [
-    ("official_policy", 3),
-    ("youth_issue", 3),
-    ("opinion", 1),
-    ("regional_issue", 2),
+    ("official_policy", 2),
+    ("youth_life_signal", 1),
+    ("youth_research_signal", 1),
+    ("youth_issue", 1),
+    ("regional_issue", 1),
     ("governance", 1),
 ]
 BUCKET_LABELS = {
     "official_policy": "공식·정책",
+    "youth_life_signal": "청년 삶·현장",
+    "youth_research_signal": "조사·연구",
     "youth_issue": "청년 현안",
     "opinion": "의견·칼럼",
     "regional_issue": "지역 이슈",
@@ -167,6 +179,90 @@ PUBLIC_OPERATOR_ACTION_KEYWORDS = (
     "모집",
     "공고",
 )
+YOUTH_LIFE_SIGNAL_KEYWORDS = (
+    "청년세대",
+    "청년층",
+    "청년 유권자",
+    "젊치인",
+    "투표율",
+    "삶",
+    "생활",
+    "생활비",
+    "월급",
+    "소득",
+    "식비",
+    "월세",
+    "전세",
+    "주거비",
+    "박탈감",
+    "빈곤",
+    "체감",
+    "은둔",
+    "고립",
+    "방 안",
+    "방으로",
+    "쉬었음",
+    "구직단념",
+    "비정규직",
+    "임금",
+    "임금격차",
+    "평균임금",
+    "지방으로",
+    "서울로",
+    "수도권",
+    "지역격차",
+    "극단적 시도",
+    "자살",
+    "상담",
+    "마음건강",
+    "정신건강",
+    "전공",
+    "진로",
+    "AI시대",
+    "소비",
+    "입문 소비",
+)
+YOUTH_RESEARCH_SIGNAL_KEYWORDS = (
+    "심층",
+    "기획",
+    "르포",
+    "인터뷰",
+    "분석",
+    "진단",
+    "조사",
+    "실태",
+    "실태조사",
+    "전수조사",
+    "통계",
+    "데이터",
+    "연구",
+    "보고서",
+    "백서",
+    "설문",
+    "공시",
+    "연구 공모",
+    "청년연구",
+)
+UTILITY_PROMO_KEYWORDS = (
+    "신청",
+    "접수",
+    "모집",
+    "공모",
+    "청년 지원",
+    "지원 대상",
+    "지원금",
+    "할인",
+    "판매 시작",
+    "패스",
+    "문화예술패스",
+    "청년미래적금",
+    "청년도약",
+    "바다로",
+    "인건비",
+    "일경험",
+    "전수조사",
+    "가족돌봄청년",
+)
 LOW_VALUE_BUSINESS_KEYWORDS = (
     "순이익",
     "영업이익",
@@ -212,6 +308,44 @@ def classify_topic_tags(text: str, *, limit: int = 2) -> list[str]:
         if score:
             scored_tags.append((-score, priority, label))
     return [label for _, _, label in sorted(scored_tags)[:limit]]
+
+
+def normalize_content_direction(value: str | None) -> str:
+    candidate = str(value or "").strip().lower()
+    if candidate in CONTENT_DIRECTIONS:
+        return candidate
+    return ""
+
+
+def classify_content_direction(article: dict[str, Any], text: str) -> str:
+    existing = normalize_content_direction(article.get("content_direction"))
+    if existing and existing != CONTENT_DIRECTION_UNKNOWN:
+        return existing
+
+    source_kind = str(article.get("source_kind") or "").strip().lower()
+    article_type = str(article.get("article_type") or "").strip().lower()
+    is_official = bool(article.get("is_official_source")) or source_kind in {
+        "official",
+        "local",
+        "regional_official",
+        "municipal",
+        "municipality",
+    }
+    if is_official or article_type == "official":
+        return CONTENT_DIRECTION_OFFICIAL_RELEASE
+
+    if article_type == "opinion" or any(keyword in text for keyword in OPINION_KEYWORDS):
+        return CONTENT_DIRECTION_COLUMN
+
+    if any(keyword in text for keyword in PROMOTION_DIRECTION_KEYWORDS):
+        return CONTENT_DIRECTION_PROMOTION
+
+    if any(keyword in text for keyword in INSIGHT_DIRECTION_KEYWORDS):
+        return CONTENT_DIRECTION_INSIGHT
+
+    if normalize_article_title(article.get("title")) or normalize_article_title(article.get("lead_text")):
+        return CONTENT_DIRECTION_REPORT
+    return CONTENT_DIRECTION_UNKNOWN
 
 
 def has_youth_keyword_signal(text: str) -> bool:
@@ -289,6 +423,29 @@ def has_direct_helpful_youth_signal(article: dict[str, Any], text: str, prominen
     return has_youth_keyword_signal(prominent) and has_strong_youth_context(prominent)
 
 
+def has_youth_life_signal(article: dict[str, Any], text: str, prominent_text: str | None = None) -> bool:
+    prominent = prominent_text or _article_prominent_text(article)
+    target_text = " ".join([prominent, text])
+    return has_youth_keyword_signal(target_text) and _contains_any(target_text, YOUTH_LIFE_SIGNAL_KEYWORDS)
+
+
+def has_youth_research_signal(article: dict[str, Any], text: str, prominent_text: str | None = None) -> bool:
+    prominent = prominent_text or _article_prominent_text(article)
+    target_text = " ".join([prominent, text])
+    if not has_youth_keyword_signal(target_text):
+        return False
+    return _contains_any(target_text, YOUTH_RESEARCH_SIGNAL_KEYWORDS) and (
+        _contains_any(target_text, YOUTH_LIFE_SIGNAL_KEYWORDS)
+        or _contains_any(target_text, YOUTH_ISSUE_CONTEXT_KEYWORDS)
+    )
+
+
+def has_utility_promo_signal(article: dict[str, Any], text: str, prominent_text: str | None = None) -> bool:
+    prominent = prominent_text or _article_prominent_text(article)
+    target_text = " ".join([prominent, text])
+    return has_youth_keyword_signal(target_text) and _contains_any(target_text, UTILITY_PROMO_KEYWORDS)
+
+
 def has_operator_relevant_signal(article: dict[str, Any], text: str, prominent_text: str | None = None) -> bool:
     prominent = prominent_text or _article_prominent_text(article)
     if article.get("is_official_source") or article.get("governance_scope"):
@@ -330,6 +487,12 @@ def score_public_relevance(article: dict[str, Any], text: str, prominent_text: s
     score = 0
 
     if has_direct_helpful_youth_signal(article, text, prominent):
+        score += 4
+    if has_youth_life_signal(article, text, prominent):
+        score += 4
+    if has_youth_research_signal(article, text, prominent):
+        score += 4
+    if has_utility_promo_signal(article, text, prominent):
         score += 4
     if has_operator_relevant_signal(article, text, prominent):
         score += 4
@@ -381,8 +544,11 @@ def is_public_interest_article(article: dict[str, Any], text: str | None = None)
         return True
 
     has_help_signal = has_direct_helpful_youth_signal(article, article_text, prominent)
+    has_life_signal = article.get("youth_life_signal") or has_youth_life_signal(article, article_text, prominent)
+    has_research_signal = article.get("youth_research_signal") or has_youth_research_signal(article, article_text, prominent)
+    has_utility_signal = article.get("utility_promo_signal") or has_utility_promo_signal(article, article_text, prominent)
     has_operator_signal = has_operator_relevant_signal(article, article_text, prominent)
-    if not has_help_signal and not has_operator_signal:
+    if not any([has_help_signal, has_life_signal, has_research_signal, has_utility_signal, has_operator_signal]):
         return False
 
     score = int(article.get("public_relevance_score") or score_public_relevance(article, article_text, prominent))
@@ -488,7 +654,15 @@ def classify_articles(articles: list[dict]) -> list[dict]:
         has_youth_content_signal = _contains_any(content_text, YOUTH_RELATED_KEYWORDS)
         missing_youth_content_signal = not is_official and not has_youth_content_signal
         topic_tags = list(dict.fromkeys((article.get("topic_tags") or []) + classify_topic_tags(content_text)))
-        weak_youth_signal = False if missing_youth_content_signal else is_weak_youth_signal(article, content_text)
+        youth_life_signal = has_youth_life_signal(article, content_text)
+        youth_research_signal = has_youth_research_signal(article, content_text)
+        utility_promo_signal = has_utility_promo_signal(article, content_text)
+        strong_reference_signal = youth_life_signal or youth_research_signal or utility_promo_signal
+        weak_youth_signal = (
+            False
+            if missing_youth_content_signal or strong_reference_signal
+            else is_weak_youth_signal(article, content_text)
+        )
         has_policy_operational_context = has_policy_or_operational_youth_context(content_text)
         governance_activity_types = extract_governance_activity_types(content_text)
         governance_scope = extract_governance_scope(article, content_text, governance_activity_types)
@@ -503,7 +677,14 @@ def classify_articles(articles: list[dict]) -> list[dict]:
             governance_activity_types=governance_activity_types,
         )
         has_policy_signal = is_official or any(keyword in text for keyword in OFFICIAL_KEYWORDS)
-
+        content_direction = classify_content_direction(
+            {
+                **article,
+                "article_type": article_type,
+                "is_official_source": is_official,
+            },
+            content_text,
+        )
         categories: list[str] = []
         if has_policy_signal:
             categories.append(CATEGORY_POLICY)
@@ -517,7 +698,11 @@ def classify_articles(articles: list[dict]) -> list[dict]:
             categories.append(CATEGORY_NOW)
 
         ordered_categories = [category for category in CATEGORIES if category in categories]
-        is_noise = False if is_official else detect_noise(content_text) or weak_youth_signal or missing_youth_content_signal
+        is_noise = (
+            False
+            if is_official or strong_reference_signal
+            else detect_noise(content_text) or weak_youth_signal or missing_youth_content_signal
+        )
         pipeline_flags = {
             **article.get("pipeline_flags", {}),
             "collected": True,
@@ -536,6 +721,10 @@ def classify_articles(articles: list[dict]) -> list[dict]:
                 "topic_tags": topic_tags[:2],
                 "location_tags": location_tags,
                 "article_type": article_type,
+                "content_direction": content_direction,
+                "youth_life_signal": youth_life_signal,
+                "youth_research_signal": youth_research_signal,
+                "utility_promo_signal": utility_promo_signal,
                 "is_noise": is_noise,
                 "has_youth_content_signal": has_youth_content_signal,
                 "missing_youth_content_signal": missing_youth_content_signal,
@@ -605,6 +794,7 @@ def select_articles(articles: list[dict], limit: int = 10) -> tuple[list[dict], 
         article["editorial_decision"] = normalize_editorial_decision(article.get("editorial_decision"))
         article["editorial_is_highlighted"] = normalize_editorial_highlighted(article.get("editorial_is_highlighted"))
         article["editorial_note"] = (article.get("editorial_note") or "").strip()
+        article["content_direction"] = classify_content_direction(article, _article_content_text(article))
         article["pipeline_flags"] = {
             **article.get("pipeline_flags", {}),
             "collected": True,
@@ -647,6 +837,7 @@ def select_articles(articles: list[dict], limit: int = 10) -> tuple[list[dict], 
 
     selected_keys: set[str] = set()
     selected: list[dict[str, Any]] = []
+    selected_cluster_counts: dict[str, int] = {}
 
     def take_candidates(candidates: list[dict[str, Any]], count: int) -> None:
         taken = 0
@@ -656,8 +847,13 @@ def select_articles(articles: list[dict], limit: int = 10) -> tuple[list[dict], 
             key = article_identity_key(article)
             if key in selected_keys:
                 continue
+            cluster_key = selection_cluster_key(article)
+            if cluster_key and selected_cluster_counts.get(cluster_key, 0) >= 1:
+                continue
             selected.append(article)
             selected_keys.add(key)
+            if cluster_key:
+                selected_cluster_counts[cluster_key] = selected_cluster_counts.get(cluster_key, 0) + 1
             taken += 1
 
     highlighted_candidates = [article for article in ranked if is_editorially_highlighted(article)]
@@ -732,6 +928,7 @@ def summarize_articles(articles: list[dict]) -> list[dict]:
         article = normalize_article_record(raw_article)
         article["editorial_decision"] = normalize_editorial_decision(article.get("editorial_decision"))
         article["editorial_is_highlighted"] = normalize_editorial_highlighted(article.get("editorial_is_highlighted"))
+        article["content_direction"] = classify_content_direction(article, _article_content_text(article))
         badges: list[str] = []
         if is_editorially_highlighted(article):
             badges.append("하이라이트")
@@ -1035,6 +1232,15 @@ def score_article(article: dict) -> int:
         score += 1
     if article.get("body_text"):
         score += 1
+    if article.get("youth_life_signal"):
+        score += 5
+    if article.get("youth_research_signal"):
+        score += 5
+    if article.get("utility_promo_signal"):
+        score += 3
+    if article.get("content_direction") == CONTENT_DIRECTION_INSIGHT:
+        score += 3
+    score += max(0, min(int(article.get("selection_priority") or 0), 30))
 
     for tag in article.get("issue_tags") or []:
         score += ISSUE_TAG_SCORES.get(tag, 1)
@@ -1108,11 +1314,34 @@ def sort_selected_articles(articles: list[dict[str, Any]]) -> list[dict[str, Any
     )
 
 
+def selection_cluster_key(article: dict[str, Any]) -> str | None:
+    if int(article.get("selection_priority") or 0) <= 0:
+        return None
+    text = _article_content_text(article)
+    cluster_rules: tuple[tuple[str, tuple[str, ...]], ...] = (
+        ("retirement_age", ("정년", "정년연장", "정년 연장")),
+        ("compensation", ("임금격차", "임금 격차", "성과급", "성과 보상", "성과형 보상", "연봉")),
+        ("housing_income", ("월세", "주거비", "소득 감소", "2030 소득")),
+        ("youth_village", ("청년마을", "청년 마을", "지역정착", "지역 정착")),
+        ("climate_volunteer", ("기후행동", "기후 행동", "봉사단", "국립공원")),
+        ("fairness", ("절차적 공정성", "공정성", "선관위", "불공정")),
+        ("z_culture", ("셋로그", "3일팅", "소개팅")),
+    )
+    for cluster, keywords in cluster_rules:
+        if any(keyword in text for keyword in keywords):
+            return cluster
+    return None
+
+
 def determine_selection_bucket(article: dict) -> str:
     if article.get("is_official_source"):
         return "official_policy"
     if article.get("governance_scope") or article.get("is_hub_candidate"):
         return "governance"
+    if article.get("youth_research_signal"):
+        return "youth_research_signal"
+    if article.get("youth_life_signal"):
+        return "youth_life_signal"
     if article.get("article_type") == "opinion" or CATEGORY_OPINION in set(article.get("categories", [])):
         return "opinion"
     if article.get("region") not in {None, "", NATIONWIDE_REGION} and CATEGORY_REGION in set(article.get("categories", [])):

@@ -644,17 +644,16 @@ class HomeSelectionTests(unittest.TestCase):
         )
 
         self.assertIn(general_news["title"], news_html)
-        self.assertIn(local_policy["title"], news_html)
+        self.assertNotIn(local_policy["title"], news_html)
         self.assertNotIn(pure_campaign["title"], news_html)
         self.assertNotIn(substantive_promise["title"], news_html)
 
         self.assertIn(official_policy["title"], official_html)
-        self.assertIn(local_policy["title"], official_html)
+        self.assertNotIn(local_policy["title"], official_html)
         self.assertNotIn(general_news["title"], official_html)
         self.assertNotIn(pure_campaign["title"], official_html)
         self.assertNotIn(substantive_promise["title"], official_html)
         self.assertIn("중앙정부 보도자료", official_html)
-        self.assertIn("지자체 보도자료", official_html)
         self.assertIn("기본·시행계획", official_html)
 
         self.assertIn(pure_campaign["title"], election_html)
@@ -745,14 +744,76 @@ class HomeSelectionTests(unittest.TestCase):
         institution_html = web_updater.build_institution_page()
 
         labels = dict(web_updater.NAV_ITEMS)
-        self.assertEqual(labels["policies.html"], "정책 변화")
+        self.assertEqual(len(labels), 7)
+        self.assertEqual(labels["news.html"], "뉴스")
+        self.assertEqual(labels["opinion.html"], "기고·칼럼")
+        self.assertEqual(labels["reports.html"], "연구·분석")
         self.assertEqual(labels["local.html"], "지자체 자료실")
-        self.assertEqual(labels["institution.html"], "기관 레이더")
+        self.assertEqual(labels["official.html"], "정부부처 자료실")
+        self.assertEqual(labels["institution.html"], "준비 중")
         self.assertIn(local_press["title"], materials_html)
         self.assertNotIn(regional_news["title"], materials_html)
         self.assertIn("자료실 수록 원칙", materials_html)
         self.assertIn("공고 확인 원칙", notices_html)
-        self.assertIn("기관 업무 흐름에 맞춘 세 가지 질문", institution_html)
+        self.assertIn("기관 분석 레이더", institution_html)
+        self.assertIn("현재는 소개용 임시 페이지", institution_html)
+
+    def test_seven_menu_router_separates_news_opinion_research_and_official_sources(self) -> None:
+        general_news = make_article(
+            title="청년 고용시장 변화 현장 보도",
+            lead_text="청년 구직자와 기업의 현장 반응을 취재했다.",
+            url="https://example.com/news",
+        )
+        opinion = make_article(
+            title="청년정책, 당사자의 시간을 기준으로 다시 설계해야",
+            lead_text="청년정책의 집행 방식을 제안하는 필자의 칼럼이다.",
+            url="https://example.com/opinion",
+        )
+        opinion["article_type"] = "opinion"
+        opinion["content_direction"] = web_updater.CONTENT_DIRECTION_COLUMN
+        research = make_article(
+            title="청년 주거 실태조사 분석 보고서",
+            lead_text="청년 1인가구의 주거비와 정책 수요를 분석한 연구 결과다.",
+            url="https://example.com/report",
+        )
+        research["youth_research_signal"] = True
+        research["content_direction"] = web_updater.CONTENT_DIRECTION_INSIGHT
+        central = make_article(
+            title="고용노동부 청년고용 보도자료",
+            lead_text="청년고용 지원 정책을 발표했다.",
+            url="https://www.moel.go.kr/news/press/1",
+            source_kind="official",
+        )
+        central["is_official_source"] = True
+        central["source_channel"] = "press_release"
+        local = make_article(
+            title="서울시 청년정책 보도자료",
+            lead_text="서울시가 청년정책 시행계획을 발표했다.",
+            url="https://www.seoul.go.kr/news/press/1",
+            source_kind="local",
+            region="서울",
+        )
+        local["source_channel"] = "press_release"
+        status = {"finished_at": self.reference_time}
+        records = [general_news, opinion, research, central, local]
+
+        news_html = web_updater.build_news_page(records, status)
+        opinion_html = web_updater.build_opinion_page(records, status)
+        reports_html = web_updater.build_reports_page(records, status)
+        official_html = web_updater.build_official_page(records, status)
+        local_html = web_updater.build_local_materials_page(records, status)
+
+        self.assertIn(general_news["title"], news_html)
+        self.assertNotIn(opinion["title"], news_html)
+        self.assertNotIn(research["title"], news_html)
+        self.assertIn(opinion["title"], opinion_html)
+        self.assertNotIn(general_news["title"], opinion_html)
+        self.assertIn(research["title"], reports_html)
+        self.assertNotIn(opinion["title"], reports_html)
+        self.assertIn(central["title"], official_html)
+        self.assertNotIn(local["title"], official_html)
+        self.assertIn(local["title"], local_html)
+        self.assertNotIn(central["title"], local_html)
 
     def test_public_archive_window_is_one_year_and_notice_page_declares_that_scope(self) -> None:
         notices_html = web_updater.build_notices_page([], {"finished_at": self.reference_time})

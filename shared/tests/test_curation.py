@@ -17,7 +17,15 @@ from youth_info_platform.curation import (  # noqa: E402
     has_substantive_promise_signal,
     is_public_interest_article,
     is_excluded_hub_record,
+    score_article,
     select_articles,
+)
+from youth_info_platform.constants import (  # noqa: E402
+    CONTENT_DIRECTION_COLUMN,
+    CONTENT_DIRECTION_INSIGHT,
+    CONTENT_DIRECTION_OFFICIAL_RELEASE,
+    CONTENT_DIRECTION_PROMOTION,
+    CONTENT_DIRECTION_REPORT,
 )
 
 
@@ -137,6 +145,53 @@ class HomeSignalTests(unittest.TestCase):
 
         self.assertEqual(classified["topic_tags"], ["주거", "모집"])
 
+    def test_content_direction_is_assigned_without_ai(self) -> None:
+        cases = [
+            (
+                make_article(
+                    title="은행, 청년 자립 캠페인 홍보",
+                    lead_text="은행이 청년 자립 캠페인 홍보와 이벤트를 진행했다.",
+                ),
+                CONTENT_DIRECTION_PROMOTION,
+            ),
+            (
+                make_article(
+                    title="[칼럼] 청년정책은 왜 현장 언어를 잃었나",
+                    lead_text="청년 주거 정책을 현장에서 다시 설계해야 한다는 기고문이다.",
+                ),
+                CONTENT_DIRECTION_COLUMN,
+            ),
+            (
+                make_article(
+                    title="데이터로 본 쉬었음 청년 증가",
+                    lead_text="통계와 조사를 바탕으로 청년 고용 실태를 분석했다.",
+                ),
+                CONTENT_DIRECTION_INSIGHT,
+            ),
+            (
+                make_article(
+                    title="청년 월세 지원 접수 시작",
+                    lead_text="청년 주거 안정을 위한 월세 지원 신청이 시작됐다.",
+                ),
+                CONTENT_DIRECTION_REPORT,
+            ),
+        ]
+
+        classified = classify_articles([article for article, _ in cases])
+
+        self.assertEqual([article["content_direction"] for article in classified], [expected for _, expected in cases])
+
+    def test_official_sources_are_official_release_direction(self) -> None:
+        article = make_article(
+            title="국무조정실, 청년정책 시행계획 발표",
+            lead_text="국무조정실이 청년정책 시행계획 보도자료를 발표했다.",
+        )
+        article["source_kind"] = "official"
+
+        classified = classify_articles([article])[0]
+
+        self.assertEqual(classified["content_direction"], CONTENT_DIRECTION_OFFICIAL_RELEASE)
+
     def test_regional_settlement_topic_is_assigned_without_ai(self) -> None:
         article = make_article(
             title="불 꺼진 빈집, 청년의 꿈터로 되살린다",
@@ -224,6 +279,86 @@ class HomeSignalTests(unittest.TestCase):
         self.assertTrue(classified["campaign_political"])
         self.assertTrue(classified["campaign_attack"])
         self.assertFalse(classified["is_public_interest_article"])
+
+
+class ReferenceDeskPatternTests(unittest.TestCase):
+    def test_youth_life_feature_survives_as_public_interest(self) -> None:
+        article = make_article(
+            title="방 안으로 밀려난 청년들…'은둔'은 어떻게 삶이 됐나",
+            lead_text=(
+                "청년의 삶이 방 안으로 접혀 들어간 과정을 인터뷰와 르포로 추적했다. "
+                "밀린 월세, 구직단념, 고립·은둔 경험을 통해 청년세대의 생활 조건을 보여준다."
+            ),
+        )
+
+        classified = classify_articles([article])[0]
+        selected, prepared = select_articles([classified], limit=1)
+
+        self.assertTrue(classified["youth_life_signal"])
+        self.assertTrue(classified["youth_research_signal"])
+        self.assertTrue(classified["is_public_interest_article"])
+        self.assertEqual(prepared[0]["selection_bucket"], "youth_research_signal")
+        self.assertEqual(len(selected), 1)
+
+    def test_youth_data_and_inequality_story_gets_research_bucket(self) -> None:
+        article = make_article(
+            title="청년은 서울로, 비정규직은 지방으로…평균임금 50만원 차이",
+            lead_text=(
+                "통계와 조사 결과를 보면 청년층의 수도권 이동과 지방 비정규직 집중이 동시에 진행됐다. "
+                "평균임금 격차와 지역 일자리 구조가 청년세대 삶의 조건을 가르고 있다."
+            ),
+        )
+
+        classified = classify_articles([article])[0]
+        selected, prepared = select_articles([classified], limit=1)
+
+        self.assertTrue(classified["youth_life_signal"])
+        self.assertTrue(classified["youth_research_signal"])
+        self.assertEqual(prepared[0]["selection_bucket"], "youth_research_signal")
+        self.assertEqual(len(selected), 1)
+
+    def test_selection_priority_raises_score_without_manual_include(self) -> None:
+        base = make_article(
+            title="청년 임금격차 조사 결과 발표",
+            lead_text="청년층 임금격차와 성과급 보상 차이를 분석한 기사다.",
+        )
+        prioritized = {**base, "selection_priority": 24}
+
+        base_classified = classify_articles([base])[0]
+        prioritized_classified = classify_articles([prioritized])[0]
+
+        self.assertEqual(
+            score_article(prioritized_classified),
+            score_article(base_classified) + 24,
+        )
+
+    def test_actionable_utility_promo_can_survive_without_being_generic_pr(self) -> None:
+        article = make_article(
+            title="청년 연안여객선 할인권 '바다로' 판매 시작…최대 50% 할인",
+            lead_text="청년이 신청해 바로 쓸 수 있는 연안여객선 할인권 바다로 판매가 시작됐다. 대상과 할인율, 이용 기간이 공개됐다.",
+        )
+
+        classified = classify_articles([article])[0]
+        selected, _ = select_articles([classified], limit=1)
+
+        self.assertTrue(classified["utility_promo_signal"])
+        self.assertTrue(classified["is_public_interest_article"])
+        self.assertEqual(len(selected), 1)
+
+    def test_local_event_only_story_stays_filtered(self) -> None:
+        article = make_article(
+            title="광주, 전 세계 청년의 비트로 들썩인다 스트릿컬처 페스타 개막",
+            lead_text="지역 축제와 공연 프로그램을 소개하는 행사 기사로, 공연 일정과 참여 팀 안내가 중심이다.",
+        )
+
+        classified = classify_articles([article])[0]
+        selected, prepared = select_articles([classified], limit=1)
+
+        self.assertFalse(classified["youth_life_signal"])
+        self.assertFalse(classified["youth_research_signal"])
+        self.assertFalse(classified["is_public_interest_article"])
+        self.assertEqual(selected, [])
+        self.assertIn(prepared[0]["drop_reason"], {"noise_filtered", "public_relevance_filtered"})
 
 
 if __name__ == "__main__":

@@ -14,6 +14,7 @@ if str(SHARED_SRC) not in sys.path:
 
 from youth_info_platform.collect import (  # noqa: E402
     apply_source_filters,
+    attach_source_metadata,
     fetch_url_via_curl,
     get_source_parser,
     parse_feed,
@@ -194,6 +195,44 @@ class SourceFilterTests(unittest.TestCase):
         self.assertEqual(filtered[0]["source"], "YTN")
         self.assertIn("ytn.co.kr", filtered[0]["url"])
 
+    def test_apply_source_filters_requires_one_required_keyword_when_configured(self) -> None:
+        items = [
+            {
+                "title": "성과급 갈등 장기화",
+                "lead_text": "대기업 노사 협상이 이어졌다.",
+                "source": "Example News",
+                "url": "https://example.com/no-youth-signal",
+            },
+            {
+                "title": "Z세대 취준생은 성과급 있는 회사를 선호",
+                "lead_text": "청년 구직자의 보상 선호를 조사했다.",
+                "source": "Example News",
+                "url": "https://example.com/youth-signal",
+            },
+        ]
+        source = {
+            "include_keywords": ["성과급"],
+            "required_keywords_any": ["청년", "청년층", "2030", "Z세대"],
+        }
+
+        filtered = apply_source_filters(items, source)
+
+        self.assertEqual(len(filtered), 1)
+        self.assertEqual(filtered[0]["url"], "https://example.com/youth-signal")
+
+    def test_attach_source_metadata_carries_selection_priority(self) -> None:
+        items = [{"title": "청년 임금 기사", "url": "https://example.com/article"}]
+        source = {
+            "selection_priority": 24,
+            "source_focus": "nyouth_desk",
+        }
+
+        enriched = attach_source_metadata(items, source)
+
+        self.assertEqual(enriched[0]["selection_priority"], 24)
+        self.assertEqual(enriched[0]["source_focus"], "nyouth_desk")
+        self.assertNotIn("selection_priority", items[0])
+
 
 class LocalBoardParserTests(unittest.TestCase):
     def test_parse_local_board_search_extracts_youth_press_release(self) -> None:
@@ -266,6 +305,28 @@ class LocalBoardParserTests(unittest.TestCase):
         self.assertEqual(articles[0]["attachment_url"], "https://www.seoul.go.kr/files/youth-plan.pdf")
         self.assertEqual(articles[0]["original_document_url"], "https://www.seoul.go.kr/files/youth-plan.pdf")
         self.assertIsNotNone(get_source_parser("local_board_search"))
+
+    def test_parse_local_board_search_cleans_placeholder_title_and_rejects_external_link(self) -> None:
+        html = """
+        <ul>
+          <li class="board-item"><a href="https://outside.example/youth">해당없음 . 외부 청년 정보</a></li>
+          <li class="board-item"><a href="/policy/detail?id=1">해당없음 . 청년 면접정장 대여 지원</a></li>
+        </ul>
+        """
+        source = {
+            "name": "인천 청년정책 검색",
+            "kind": "local",
+            "url": "https://youth.incheon.go.kr/search?keyword=%EC%B2%AD%EB%85%84",
+            "region_name": "인천",
+            "search_terms": ["청년"],
+            "allowed_domain_suffixes": ["incheon.go.kr"],
+        }
+
+        articles = parse_local_board_search(html, source)
+
+        self.assertEqual(len(articles), 1)
+        self.assertEqual(articles[0]["title"], "청년 면접정장 대여 지원")
+        self.assertEqual(articles[0]["url"], "https://youth.incheon.go.kr/policy/detail?id=1")
 
 
 class FetchUrlTests(unittest.TestCase):
