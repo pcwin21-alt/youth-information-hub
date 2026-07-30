@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import argparse
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 import hashlib
 import html
 import json
@@ -32,7 +32,7 @@ from youth_info_platform.constants import (
 from youth_info_platform.curation import classify_content_direction, is_public_interest_article
 from youth_info_platform.io_utils import read_json
 
-PUBLIC_ARCHIVE_WINDOW_DAYS = 3650
+PUBLIC_ARCHIVE_WINDOW_DAYS = 365
 PUBLIC_ARCHIVE_WINDOW_HOURS = PUBLIC_ARCHIVE_WINDOW_DAYS * 24
 PUBLIC_ARCHIVE_LABEL = "수집된 누적"
 NEWS_WINDOW_DAYS = PUBLIC_ARCHIVE_WINDOW_DAYS
@@ -10847,9 +10847,8 @@ SIDE_NAV_CONFIG = {
         "description": "지역 이슈와 참여 흐름",
         "items": [
             ("#page-top", "상단"),
-            ("#main-list", "발표 뉴스"),
-            ("#local-press-releases", "보도자료"),
-            ("#local-policy-map", "기본·시행계획"),
+            ("#main-list", "지역·현장 이슈"),
+            ("#official-materials", "공식 자료·참여 기록"),
         ],
     },
     "local.html": {
@@ -10858,6 +10857,7 @@ SIDE_NAV_CONFIG = {
         "items": [
             ("#page-top", "상단"),
             ("#local-press-releases", "공식 보도자료"),
+            ("#date-unconfirmed", "날짜 미확인 자료"),
             ("#local-policy-map", "기본·시행계획"),
             ("#source-principle", "수록 기준"),
         ],
@@ -11726,7 +11726,8 @@ def parse_iso_datetime(value: str | None) -> datetime | None:
     if not value:
         return None
     try:
-        return datetime.fromisoformat(value.replace("Z", "+00:00"))
+        parsed = datetime.fromisoformat(value.replace("Z", "+00:00"))
+        return parsed if parsed.tzinfo else parsed.replace(tzinfo=timezone(timedelta(hours=9)))
     except ValueError:
         return None
 
@@ -14603,14 +14604,21 @@ def render_home_regional_policy_status(articles: list[dict], reference_time: str
     )
 
 
-def render_home_application_policies(articles: list[dict], reference_time: str | None) -> str:
-    candidates = build_home_application_policy_candidates(articles, reference_time)
+def render_home_application_policies(
+    articles: list[dict],
+    reference_time: str | None,
+    *,
+    limit: int = HOME_APPLICATION_POLICY_LIMIT,
+    title: str = "지금 확인할 정책 공고",
+    archive_label: str = "공식자료 보기",
+) -> str:
+    candidates = build_home_application_policy_candidates(articles, reference_time, limit=limit)
     if not candidates:
         return (
             '<article class="home-application-panel" id="application-policies" aria-labelledby="application-policies-title">'
             '<div class="home-application-head">'
-            '<h2 id="application-policies-title">지금 확인할 정책 공고</h2>'
-            '<a class="mini-link" href="official.html#local-press-releases">공식자료 보기</a>'
+            f'<h2 id="application-policies-title">{html.escape(title)}</h2>'
+            f'<a class="mini-link" href="official.html#local-press-releases">{html.escape(archive_label)}</a>'
             '</div>'
             '<div class="home-application-empty">'
             '<strong>확인 가능한 정책 공고가 아직 충분하지 않습니다.</strong>'
@@ -14658,7 +14666,7 @@ def render_home_application_policies(articles: list[dict], reference_time: str |
     return f"""
     <article class="home-application-panel" id="application-policies" aria-labelledby="application-policies-title">
       <div class="home-application-head">
-        <h2 id="application-policies-title">지금 확인할 정책 공고</h2>
+        <h2 id="application-policies-title">{html.escape(title)}</h2>
         <div class="home-application-head-links">
           <a class="mini-link" href="official.html#central-press-releases">중앙정부 보도자료</a>
           <a class="mini-link" href="official.html#local-press-releases">지자체 보도자료</a>
@@ -15117,10 +15125,10 @@ def build_news_page(articles: list[dict], status: dict) -> str:
     topic_options = collect_news_topics(recent_news_articles)
     direction_options = collect_news_directions(recent_news_articles)
     page_intro = render_compact_intro(
-        "뉴스 모음",
-        "홍보성, 칼럼·기고, 인사이트·분석, 일반보도처럼 기사 방향을 먼저 나누고 지역·주제·검색으로 좁혀 봅니다.",
+        "이슈 브리핑",
+        "최근 1년 동안 수집·분류된 청년 이슈 기사를 방향·지역·주제별로 읽습니다. 공식 정책 원문과 공고는 별도 메뉴로 분리합니다.",
         media_key="news",
-        title="청년 뉴스 모음",
+        title="최근 1년 청년 이슈 브리핑",
     )
     news_filter_panel = render_news_filter_panel(
         region_options,
@@ -15662,10 +15670,10 @@ def build_policies_page_compact(articles: list[dict], status: dict) -> str:
     related_news_articles = build_government_related_news_articles(articles, page_updated_at)
     policy_resource_articles = build_government_policy_resource_articles()
     page_intro = render_compact_intro(
-        "정부 동향",
-        "정부 발표 뉴스, 중앙부처 홈페이지 보도자료, 각 부처별 기본·시행계획 자료를 지자체 동향처럼 구분해 봅니다.",
+        "정책 변화",
+        "최근 1년 동안의 중앙정부 정책 변화와 공식 발표를 모읍니다. 언론 해설, 지자체 자료, 신청 공고는 각각의 메뉴에서 분리해 확인합니다.",
         media_key="policies",
-        title="중앙정부 청년정책 보드",
+        title="중앙정부 청년정책의 변화 기록",
     )
     official_cards = "".join(
         render_article_card(
@@ -16330,62 +16338,52 @@ def build_local_government_trends_page(articles: list[dict], status: dict) -> st
         page_updated_at,
         PUBLIC_ARCHIVE_WINDOW_HOURS,
     )
-    local_news_articles = [
+    regional_issue_articles = [
         with_local_news_badges(article)
         for article in recent_articles
-        if is_local_youth_news_article(article)
-    ]
-    local_press_releases = [
-        with_local_press_release_badges(article)
-        for article in recent_articles
-        if is_local_youth_press_release(article)
-    ]
-    local_plan_documents = [
-        with_local_plan_badges(article)
-        for article in recent_articles
-        if is_local_youth_plan_document(article)
+        if is_local_youth_news_article(article) and not is_local_official_source(article)
     ]
     page_intro = render_compact_intro(
-        "지자체 동향",
-        "뉴스 속 지자체·청년 이슈, 광역지자체 홈페이지 보도자료, 지역별 기본·시행계획 원문 경로를 분리해 봅니다.",
+        "지역·현장 동향",
+        "지역에서 청년의 삶과 정책 실행이 어떻게 다뤄지는지 언론·현장 기록으로 읽습니다. 공식 공고와 지자체 원문은 지자체 자료실에서 따로 확인합니다.",
         media_key="policies",
-        title="지역 청년정책 보드",
+        title="지역의 변화와 현장 맥락을 읽는 곳",
     )
     local_filter_panel = render_announcement_filter_panel(
-        local_news_articles,
+        regional_issue_articles,
         group="local",
         scope_label="지역",
         scope_values=LOCAL_YOUTH_PLAN_REGION_NAMES,
-        search_placeholder="지자체·청년 뉴스 제목, 요약, 지역 검색",
+        search_placeholder="지역·현장 이슈 제목, 요약, 지역 검색",
         use_region_map=True,
     )
     return f"""
     {page_intro}
-    {render_local_menu_nav()}
     <div data-policy-filter-root="plans" data-policy-scope-mode="authority-region" data-keep-empty-sections="true" data-keep-empty-scopes="true" data-default-policy-group="local" data-default-policy-region="all" data-default-policy-scope="all" data-default-policy-type="all" data-default-date-start="" data-default-date-end="" data-default-search-query="">
       {local_filter_panel}
       <section class="section" id="main-list" data-policy-section="local">
         <div class="section-head">
           <div>
-            <h2>지자체 발표 뉴스 모음</h2>
-            <p>일반 뉴스 중 지자체와 청년이 함께 핵심 주제로 다뤄진 기사만 표시합니다.</p>
+            <h2>최근 1년 지역·현장 이슈</h2>
+            <p>지역과 청년이 함께 핵심 주제로 다뤄진 언론·현장 기사입니다. 지자체의 공식 발표라고 해석하지 않습니다.</p>
           </div>
-          <span class="mini-link" aria-disabled="true" data-policy-section-count>{len(local_news_articles)}건</span>
+          <span class="mini-link" aria-disabled="true" data-policy-section-count>{len(regional_issue_articles)}건</span>
         </div>
-        {render_local_article_grid(local_news_articles, empty_title="최근 지자체·청년 뉴스 없음", empty_body="뉴스 중 지자체와 청년이 핵심 주제로 함께 잡힌 기사가 들어오면 이 영역에 표시됩니다.")}
+        {render_local_article_grid(regional_issue_articles, empty_title="최근 지역·현장 이슈가 없습니다", empty_body="지역과 청년이 함께 핵심 주제로 확인되는 언론·현장 기사가 들어오면 이 영역에 표시됩니다.")}
       </section>
     </div>
-    <section class="section" id="local-press-releases">
+    <section class="section" id="official-materials">
       <div class="section-head">
         <div>
-          <h2>지자체 홈페이지 보도자료</h2>
-          <p>17개 광역지자체 홈페이지에서 청년 단어가 들어간 보도자료와 시정·도정 뉴스를 자동 수집합니다.</p>
+          <h2>공식 자료와 참여 기록은 분리해서 확인</h2>
+          <p>지역 이슈를 실제 업무에 쓰려면 원문 근거와 참여기구 기록을 별도로 확인해야 합니다.</p>
         </div>
-        <span class="mini-link" aria-disabled="true">{len(local_press_releases)}건</span>
       </div>
-      {render_local_article_grid(local_press_releases, empty_title="최근 지자체 청년 보도자료 없음", empty_body="광역지자체 홈페이지 검색 결과에서 청년 관련 보도자료가 확인되면 이 영역에 표시됩니다.")}
+      <div class="feature-grid">
+        {render_feature_card("지자체 자료실", "광역지자체 공식 보도자료와 기본·시행계획 원문을 지역별로 확인합니다.", "local.html", "공식 원문")}
+        {render_feature_card("참여기구 기록", "청년정책 협의체·위원회·자문단 등 지역 참여 구조의 움직임을 확인합니다.", "hub.html", "참여 기록")}
+      </div>
     </section>
-    {render_local_policy_plan_map(local_plan_documents)}
     """
 
 
@@ -16402,6 +16400,11 @@ def build_local_materials_page(articles: list[dict], status: dict) -> str:
         for article in recent_articles
         if is_local_youth_press_release(article)
     ]
+    undated_local_materials = [
+        with_local_press_release_badges(article)
+        for article in sort_articles_by_recency(articles)
+        if is_local_youth_press_release(article) and article_exposure_datetime(article) is None
+    ]
     local_plan_documents = [
         with_local_plan_badges(article)
         for article in recent_articles
@@ -16409,7 +16412,7 @@ def build_local_materials_page(articles: list[dict], status: dict) -> str:
     ]
     page_intro = render_compact_intro(
         "지자체 자료실",
-        "17개 광역지자체의 공식 홈페이지에서 확인된 청년 관련 보도자료와 기본·시행계획 원문을 지역별로 모읍니다. 언론 기사는 지역·현장 동향에서 분리해 봅니다.",
+        "17개 광역지자체의 공식 홈페이지에서 확인된 청년 정책·공지 자료와 기본·시행계획 원문을 지역별로 모읍니다. 언론 기사는 지역·현장 동향에서 분리해 봅니다.",
         media_key="policies",
         title="지역의 공식 근거를 바로 찾는 자료실",
     )
@@ -16418,17 +16421,27 @@ def build_local_materials_page(articles: list[dict], status: dict) -> str:
     <section class="section" id="local-press-releases">
       <div class="section-head">
         <div>
-          <h2>지자체 공식 보도자료</h2>
-          <p>지자체가 발행한 원문으로 확인되는 자료만 표시합니다. 제목에 지역명이 있더라도 언론 기사나 중앙정부 발표는 이 목록에 넣지 않습니다.</p>
+          <h2>지자체 공식 정책·공지 자료</h2>
+          <p>지자체가 발행한 원문으로 확인되는 정책·공지·보도자료만 표시합니다. 제목에 지역명이 있더라도 언론 기사나 중앙정부 발표는 이 목록에 넣지 않습니다.</p>
         </div>
         <span class="mini-link" aria-disabled="true">{len(local_press_releases)}건</span>
       </div>
-      {render_local_article_grid(local_press_releases, empty_title="최근 확인된 지자체 공식 보도자료가 없습니다", empty_body="수집 결과에서 지자체 공식 출처와 청년 관련성이 함께 확인되면 이 영역에 표시됩니다.")}
+      {render_local_article_grid(local_press_releases, empty_title="최근 확인된 지자체 공식 자료가 없습니다", empty_body="수집 결과에서 지자체 공식 출처와 청년 관련성이 함께 확인되면 이 영역에 표시됩니다.")}
+    </section>
+    <section class="section" id="date-unconfirmed">
+      <div class="section-head">
+        <div>
+          <h2>게시일 미확인 공식 자료</h2>
+          <p>출처는 지자체 공식 도메인으로 확인됐지만 게시일을 추출하지 못한 자료입니다. 최근 1년 집계에는 넣지 않으며, 원문에서 날짜를 확인해야 합니다.</p>
+        </div>
+        <span class="mini-link" aria-disabled="true">{len(undated_local_materials)}건</span>
+      </div>
+      {render_local_article_grid(undated_local_materials, empty_title="게시일 미확인 공식 자료가 없습니다", empty_body="공식 출처는 확인됐지만 게시일을 추출하지 못한 자료가 들어오면 이 영역에 별도로 표시됩니다.")}
     </section>
     {render_local_policy_plan_map(local_plan_documents)}
     <section class="section" id="source-principle">
       {render_list_block("자료실 수록 원칙", "지역별 현황을 추정하지 않고, 원문으로 확인되는 근거만 남깁니다.", [
-        ("수록", "17개 광역지자체의 공식 도메인·공식 게시판에서 확인된 청년 관련 보도자료와 기본·시행계획"),
+        ("수록", "17개 광역지자체의 공식 도메인·공식 게시판에서 확인된 청년 정책·공지·보도자료와 기본·시행계획"),
         ("분리", "지역을 다룬 언론 기사와 현장 이슈는 ‘지역·현장 동향’에서 확인"),
         ("미확인 표시", "계획 원문이 확인되지 않은 지역은 빈 카드로 채우지 않고 ‘미확인’으로 표시"),
       ])}
@@ -16446,7 +16459,7 @@ def build_notices_page(articles: list[dict], status: dict) -> str:
     )
     return f"""
     {page_intro}
-    {render_home_application_policies(articles, reference_time)}
+    {render_home_application_policies(articles, reference_time, limit=1000, title="최근 1년 공고·신청", archive_label="공식 출처 기준")}
     <section class="section" id="notice-principle">
       {render_list_block("공고 확인 원칙", "신청 가능 여부를 대신 판정하지 않습니다. 공식 공고에 적힌 자격과 기간이 기준입니다.", [
         ("수록 대상", "중앙정부·지자체·공공기관의 공식 발표 중 신청·모집·접수 신호가 확인된 청년 지원 공고"),

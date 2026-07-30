@@ -678,7 +678,7 @@ class HomeSelectionTests(unittest.TestCase):
         self.assertIn('data-policy-authority="금융위원회"', page_html)
         self.assertIn("청년정책 기본계획·시행계획", page_html)
 
-    def test_local_government_trends_page_has_submenus_and_plan_map(self) -> None:
+    def test_local_government_trends_page_separates_field_news_from_official_materials(self) -> None:
         local_announcement = make_article(
             title="서울시, 청년 주거 지원 정책 발표",
             lead_text="서울시가 청년 주거 안정을 위한 월세 지원 정책을 발표했다.",
@@ -713,14 +713,12 @@ class HomeSelectionTests(unittest.TestCase):
         )
 
         self.assertIn(local_announcement["title"], page_html)
-        self.assertIn(local_plan["title"], page_html)
+        self.assertNotIn(local_plan["title"], page_html)
         self.assertNotIn(central_policy["title"], page_html)
-        self.assertIn('href="#main-list"', page_html)
-        self.assertIn('href="#local-press-releases"', page_html)
-        self.assertIn('href="#local-policy-map"', page_html)
-        self.assertEqual(page_html.count('class="local-map-region"'), len(web_updater.LOCAL_YOUTH_PLAN_REGIONS))
-        self.assertEqual(page_html.count('class="local-map-marker"'), len(web_updater.LOCAL_YOUTH_PLAN_REGIONS))
-        self.assertNotIn('class="local-plan-card"', page_html)
+        self.assertIn('href="local.html"', page_html)
+        self.assertIn('href="hub.html"', page_html)
+        self.assertIn("지자체의 공식 발표라고 해석하지 않습니다.", page_html)
+        self.assertNotIn('class="local-map-region"', page_html)
 
     def test_purpose_led_navigation_and_local_materials_page_keep_official_boundary(self) -> None:
         local_press = make_article(
@@ -755,6 +753,45 @@ class HomeSelectionTests(unittest.TestCase):
         self.assertIn("자료실 수록 원칙", materials_html)
         self.assertIn("공고 확인 원칙", notices_html)
         self.assertIn("기관 업무 흐름에 맞춘 세 가지 질문", institution_html)
+
+    def test_public_archive_window_is_one_year_and_notice_page_declares_that_scope(self) -> None:
+        notices_html = web_updater.build_notices_page([], {"finished_at": self.reference_time})
+        self.assertEqual(web_updater.PUBLIC_ARCHIVE_WINDOW_DAYS, 365)
+        self.assertEqual(web_updater.NEWS_WINDOW_DAYS, 365)
+        self.assertIn("최근 1년 공고·신청", notices_html)
+        self.assertIn("공식 공고에 적힌 자격과 기간이 기준입니다.", notices_html)
+
+    def test_naive_article_dates_are_treated_as_korea_time_for_archive_filtering(self) -> None:
+        article = make_article(
+            title="날짜 표준화 확인 기사",
+            lead_text="청년 정책 관련 기사입니다.",
+            url="https://example.com/naive-date",
+            published_date="2026-04-22T09:00:00",
+        )
+
+        filtered = web_updater.filter_recent_articles([article], self.reference_time, 24)
+
+        self.assertEqual(filtered, [article])
+
+    def test_local_materials_keeps_official_records_with_missing_dates_separate(self) -> None:
+        local_material = make_article(
+            title="청년 면접정장 대여 지원",
+            lead_text="지자체 청년포털의 공식 정책 안내입니다.",
+            url="https://youth.incheon.go.kr/job/suit.jsp",
+            source_kind="local",
+            region="인천",
+            published_date="",
+        )
+        local_material["source"] = "인천광역시 청년포털"
+        local_material["source_name"] = "인천광역시 청년포털"
+        local_material["source_channel"] = "press_release"
+
+        page_html = web_updater.build_local_materials_page(
+            [local_material], {"finished_at": self.reference_time}
+        )
+
+        self.assertIn("게시일 미확인 공식 자료", page_html)
+        self.assertIn(local_material["title"], page_html)
 
     def test_filter_public_articles_drops_low_value_business_story_but_keeps_manual_include(self) -> None:
         weak_business_story = make_article(
