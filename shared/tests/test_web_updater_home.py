@@ -238,7 +238,7 @@ class HomeSelectionTests(unittest.TestCase):
             },
         )
         self.assertIn(youth_official["title"], page_html)
-        self.assertIn('href="official.html">정부 원문</a>', page_html)
+        self.assertIn('href="official.html">정부 부처 자료실</a>', page_html)
         self.assertNotIn(generic_official["title"], page_html)
 
     def test_home_latest_news_uses_published_date_not_importance_score(self) -> None:
@@ -277,7 +277,7 @@ class HomeSelectionTests(unittest.TestCase):
         )
 
         self.assertIn("시간의 강", page_html)
-        self.assertIn("뉴스 흐름", page_html)
+        self.assertIn("뉴스 모아보기", page_html)
         self.assertNotIn("오늘 놓치면 안되는 뉴스 5가지", page_html)
         self.assertLess(page_html.index(newest_low_score["title"]), page_html.index(middle_article["title"]))
         self.assertLess(page_html.index(middle_article["title"]), page_html.index(older_high_score["title"]))
@@ -353,9 +353,9 @@ class HomeSelectionTests(unittest.TestCase):
 
         self.assertIn(visible_news["title"], page_html)
         self.assertIn(opinion["title"], page_html)
-        self.assertIn('href="opinion.html">관점</a>', page_html)
+        self.assertIn('href="opinion.html">기고·칼럼·오피니언</a>', page_html)
         self.assertIn(official["title"], page_html)
-        self.assertIn('href="official.html">정부 원문</a>', page_html)
+        self.assertIn('href="official.html">정부 부처 자료실</a>', page_html)
         self.assertNotIn(noisy["title"], page_html)
         self.assertNotIn(campaign["title"], page_html)
 
@@ -456,8 +456,8 @@ class HomeSelectionTests(unittest.TestCase):
 
         self.assertIn(central_press["title"], page_html)
         self.assertIn(local_press["title"], page_html)
-        self.assertIn('href="official.html">정부 원문</a>', page_html)
-        self.assertIn('href="local.html">지역 원문</a>', page_html)
+        self.assertIn('href="official.html">정부 부처 자료실</a>', page_html)
+        self.assertIn('href="local.html">지자체 자료실</a>', page_html)
         self.assertNotIn(central_policy_news["title"], page_html)
         self.assertIn(local_notice["title"], page_html)
         self.assertNotIn(central_announcement_news["title"], page_html)
@@ -733,11 +733,25 @@ class HomeSelectionTests(unittest.TestCase):
 
         labels = dict(web_updater.NAV_ITEMS)
         self.assertEqual(len(labels), 7)
-        self.assertEqual(labels["news.html"], "뉴스 흐름")
-        self.assertEqual(labels["opinion.html"], "관점")
-        self.assertEqual(labels["reports.html"], "연구·분석")
-        self.assertEqual(labels["local.html"], "지역 원문")
-        self.assertEqual(labels["official.html"], "정부 원문")
+        self.assertEqual(
+            web_updater.TOP_NAV_ITEMS,
+            [
+                ("index.html", "홈 허브"),
+                ("news.html", "뉴스 모아보기"),
+                ("opinion.html", "기고·칼럼·오피니언"),
+                ("official.html", "정부 부처 자료실"),
+                ("local.html", "지자체 자료실"),
+                ("reports.html", "논문·연구·리포트"),
+                ("tools.html", "정부조사·통계"),
+                ("institution.html", "분석실"),
+            ],
+        )
+        self.assertEqual(labels["news.html"], "뉴스 모아보기")
+        self.assertEqual(labels["opinion.html"], "기고·칼럼·오피니언")
+        self.assertEqual(labels["reports.html"], "논문·연구·리포트")
+        self.assertEqual(labels["local.html"], "지자체 자료실")
+        self.assertEqual(labels["official.html"], "정부 부처 자료실")
+        self.assertEqual(labels["tools.html"], "정부조사·통계")
         self.assertEqual(labels["institution.html"], "분석실")
         self.assertIn(local_press["title"], materials_html)
         self.assertNotIn(regional_news["title"], materials_html)

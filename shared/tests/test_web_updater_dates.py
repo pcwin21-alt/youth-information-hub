@@ -185,8 +185,8 @@ class WebUpdaterDateFallbackTests(unittest.TestCase):
         self.assertIn("시간의 강", page_html)
         self.assertIn("Central official youth policy", page_html)
         self.assertIn("Local city official youth policy", page_html)
-        self.assertIn('href="official.html">정부 원문</a>', page_html)
-        self.assertIn('href="local.html">지역 원문</a>', page_html)
+        self.assertIn('href="official.html">정부 부처 자료실</a>', page_html)
+        self.assertIn('href="local.html">지자체 자료실</a>', page_html)
 
     def test_official_page_excludes_related_news_section(self) -> None:
         official = make_official_government_article()

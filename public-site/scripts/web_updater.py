@@ -11227,39 +11227,39 @@ def build_page_script() -> str:
 
 
 NAV_ITEMS = [
-    ("news.html", "뉴스 흐름"),
-    ("opinion.html", "관점"),
-    ("reports.html", "연구·분석"),
-    ("local.html", "지역 원문"),
-    ("official.html", "정부 원문"),
-    ("tools.html", "통계·근거"),
+    ("news.html", "뉴스 모아보기"),
+    ("opinion.html", "기고·칼럼·오피니언"),
+    ("official.html", "정부 부처 자료실"),
+    ("local.html", "지자체 자료실"),
+    ("reports.html", "논문·연구·리포트"),
+    ("tools.html", "정부조사·통계"),
     ("institution.html", "분석실"),
 ]
 
 
-TOP_NAV_ITEMS = [("index.html", "지금"), *NAV_ITEMS]
+TOP_NAV_ITEMS = [("index.html", "홈 허브"), *NAV_ITEMS]
 BOTTOM_NAV_ITEMS = [
-    ("index.html", "지금"),
-    ("news.html", "흐름"),
-    ("opinion.html", "관점"),
-    ("reports.html", "연구"),
-    ("local.html", "원문"),
+    ("index.html", "홈"),
+    ("news.html", "뉴스"),
+    ("opinion.html", "칼럼"),
+    ("official.html", "정부"),
+    ("local.html", "지자체"),
 ]
 
 
 PAGE_HEADINGS = {
-    "index.html": "지금의 청년동향",
-    "news.html": "뉴스 흐름",
-    "opinion.html": "관점",
-    "reports.html": "연구·논문·분석",
+    "index.html": "홈 허브",
+    "news.html": "뉴스 모아보기",
+    "opinion.html": "기고·칼럼·오피니언",
+    "reports.html": "논문·연구·리포트",
     "election.html": "선거·공약",
-    "official.html": "정부 원문",
+    "official.html": "정부 부처 자료실",
     "policies.html": "정책 변화",
     "plans.html": "지역·현장 동향",
-    "local.html": "지역 원문",
+    "local.html": "지자체 자료실",
     "notices.html": "공고·신청",
     "hub.html": "참여기구",
-    "tools.html": "통계·근거",
+    "tools.html": "정부조사·통계",
     "institution.html": "분석실",
     "contact.html": "문의/운영안내",
     "guide.html": "아카이브",
@@ -11284,22 +11284,22 @@ SIDE_NAV_CONFIG = {
         ],
     },
     "news.html": {
-        "title": "뉴스 위치",
+        "title": "뉴스 모아보기 위치",
         "description": "필터와 기사 목록",
         "items": [("#page-top", "상단"), ("#filters", "필터"), ("#main-list", "주요 목록")],
     },
     "opinion.html": {
-        "title": "관점 위치",
+        "title": "기고·칼럼·오피니언 위치",
         "description": "필터와 오피니언 목록",
         "items": [("#page-top", "상단"), ("#collection-contract", "수집 기준"), ("#filters", "필터"), ("#main-list", "주요 목록")],
     },
     "reports.html": {
-        "title": "연구·분석 위치",
-        "description": "필터와 연구·분석 목록",
+        "title": "논문·연구·리포트 위치",
+        "description": "필터와 논문·연구·리포트 목록",
         "items": [("#page-top", "상단"), ("#collection-contract", "수집 기준"), ("#filters", "필터"), ("#main-list", "주요 목록")],
     },
     "official.html": {
-        "title": "정부 원문 위치",
+        "title": "정부 부처 자료실 위치",
         "description": "중앙부처 보도자료와 계획",
         "items": [
             ("#page-top", "상단"),
@@ -11333,7 +11333,7 @@ SIDE_NAV_CONFIG = {
         ],
     },
     "local.html": {
-        "title": "지역 원문 위치",
+        "title": "지자체 자료실 위치",
         "description": "공식 발표와 계획 원문",
         "items": [
             ("#page-top", "상단"),
@@ -11367,8 +11367,8 @@ SIDE_NAV_CONFIG = {
         "items": [("#page-top", "상단"), ("#filters", "필터"), ("#main-list", "공식 회의"), ("#public-governance", "참여 채널")],
     },
     "tools.html": {
-        "title": "연구·문헌 위치",
-        "description": "통계와 연구 자료",
+        "title": "정부조사·통계 위치",
+        "description": "정부 조사와 공식 통계 자료",
         "items": [
             ("#page-top", "상단"),
             ("#main-list", "주요 목록"),
@@ -11652,10 +11652,11 @@ def render_guide_overlay(active_page: str) -> str:
       <div class="list">
         <div class="list-item"><strong>오늘의 레이더</strong><span>오늘 먼저 확인할 변화와 이슈를 빠르게 훑습니다.</span></div>
         <div class="list-item"><strong>뉴스</strong><span>일반 보도만 모아 지역·주제·날짜별로 확인합니다.</span></div>
-        <div class="list-item"><strong>관점</strong><span>사실 보도와 필자의 관점·주장을 분리해 읽습니다.</span></div>
-        <div class="list-item"><strong>연구·분석</strong><span>논문·보고서·실태조사·동향분석을 확인합니다.</span></div>
-        <div class="list-item"><strong>지역 원문</strong><span>지역별 공식 보도자료와 계획 원문을 출처 기준으로 봅니다.</span></div>
-        <div class="list-item"><strong>정부 원문</strong><span>중앙부처 보도자료와 기본·시행계획 원문을 봅니다.</span></div>
+        <div class="list-item"><strong>기고·칼럼·오피니언</strong><span>사실 보도와 필자의 관점·주장을 분리해 읽습니다.</span></div>
+        <div class="list-item"><strong>정부 부처 자료실</strong><span>중앙부처 보도자료와 기본·시행계획 원문을 봅니다.</span></div>
+        <div class="list-item"><strong>지자체 자료실</strong><span>지역별 공식 보도자료와 계획 원문을 출처 기준으로 봅니다.</span></div>
+        <div class="list-item"><strong>논문·연구·리포트</strong><span>논문·보고서·실태조사·동향분석을 확인합니다.</span></div>
+        <div class="list-item"><strong>정부조사·통계</strong><span>정부 조사와 공식 통계의 기준 시점·원문을 확인합니다.</span></div>
       </div>
       <div class="hero-actions">
         <button class="button primary" type="button" data-guide-dismiss="true">바로 보기</button>
@@ -11901,10 +11902,10 @@ MENU_COLLECTION_CONTRACTS = {
     "news": (
         "언론 기사",
         "등록된 뉴스 검색·RSS에서 청년정책과 청년 삶 이슈를 30분마다 확인합니다.",
-        "관점, 연구·분석, 정부·지역 공식자료는 각 전용 메뉴로 보냅니다.",
+        "기고·칼럼·오피니언, 논문·연구·리포트, 정부·지자체 공식자료는 각 전용 메뉴로 보냅니다.",
     ),
     "opinion": (
-        "관점",
+        "기고·칼럼·오피니언",
         "제목·섹션·본문 신호로 필자 관점이 중심인 글을 30분마다 자동 판별합니다.",
         "청년 맥락이 약한 일반 사설과 단순 홍보는 공개하지 않습니다.",
     ),
@@ -11926,7 +11927,7 @@ MENU_COLLECTION_CONTRACTS = {
     "evidence": (
         "주요 통계·조사·설문",
         "국가승인통계와 공식 실태조사 링크를 기준 자료로 고정하고 사이트 갱신 때 관련 최신 발표를 연결합니다.",
-        "수치의 조사 시점·모집단·발표일을 확인할 수 없는 2차 인용은 통계·근거로 올리지 않습니다.",
+        "수치의 조사 시점·모집단·발표일을 확인할 수 없는 2차 인용은 정부조사·통계에 올리지 않습니다.",
     ),
 }
 
@@ -15662,14 +15663,14 @@ def build_home_page(
 
     def home_flow_route(article: dict) -> tuple[str, str]:
         if article.get("source_kind") == "local":
-            return "지역 원문", "local.html"
+            return "지자체 자료실", "local.html"
         if article.get("is_official_source") or article.get("source_kind") == "official":
-            return "정부 원문", "official.html"
+            return "정부 부처 자료실", "official.html"
         if is_opinion_menu_article(article):
-            return "관점", "opinion.html"
+            return "기고·칼럼·오피니언", "opinion.html"
         if is_research_report_menu_article(article):
-            return "연구·분석", "reports.html"
-        return "뉴스 흐름", "news.html"
+            return "논문·연구·리포트", "reports.html"
+        return "뉴스 모아보기", "news.html"
 
     def render_flow_item(article: dict) -> str:
         published_dt = article_exposure_datetime(article).astimezone(reference_dt.tzinfo)
@@ -15772,13 +15773,13 @@ def build_guide_page(status: dict) -> str:
     status_meta = render_status(status)
     menu_cards = "".join(
         [
-            render_feature_card("홈", "오늘 확인할 청년 이슈와 공식 발표를 함께 보는 첫 화면입니다.", "index.html", "첫 화면"),
-            render_feature_card("뉴스", "청년 관련 일반 보도를 칼럼·연구·공식자료와 분리해 봅니다.", "news.html", "최근 1년"),
-            render_feature_card("관점", "필자의 관점과 주장이 중심인 글만 따로 봅니다.", "opinion.html", "오피니언"),
-            render_feature_card("연구·분석", "연구·논문·동향분석·분석 리포트를 원문 중심으로 봅니다.", "reports.html", "연구 자료"),
-            render_feature_card("지역 원문", "17개 광역지자체 보도자료와 기본·시행계획을 봅니다.", "local.html", "광역 17곳"),
-            render_feature_card("정부 원문", "중앙부처 보도자료와 기본·시행계획을 봅니다.", "official.html", "중앙부처"),
-            render_feature_card("통계·근거", "주요 통계·조사·설문과 공식 원자료를 바로 엽니다.", "tools.html", "공식 근거"),
+            render_feature_card("홈 허브", "오늘 확인할 청년 이슈와 공식 발표를 함께 보는 첫 화면입니다.", "index.html", "첫 화면"),
+            render_feature_card("뉴스 모아보기", "청년 관련 일반 보도를 칼럼·연구·공식자료와 분리해 봅니다.", "news.html", "최근 1년"),
+            render_feature_card("기고·칼럼·오피니언", "필자의 관점과 주장이 중심인 글만 따로 봅니다.", "opinion.html", "의견·해설"),
+            render_feature_card("정부 부처 자료실", "중앙부처 보도자료와 기본·시행계획을 봅니다.", "official.html", "중앙부처"),
+            render_feature_card("지자체 자료실", "17개 광역지자체 보도자료와 기본·시행계획을 봅니다.", "local.html", "광역 17곳"),
+            render_feature_card("논문·연구·리포트", "논문·연구·동향분석·분석 리포트를 원문 중심으로 봅니다.", "reports.html", "연구 자료"),
+            render_feature_card("정부조사·통계", "정부 조사·통계·설문과 공식 원자료를 바로 엽니다.", "tools.html", "공식 통계"),
             render_feature_card("분석실", "기관 레이더·AI 분석·정책 요약·알림봇의 기획 범위를 확인합니다.", "institution.html", "준비 중"),
             render_feature_card("문의/운영안내", "문의, 제보, 정정 요청과 운영 기준을 확인합니다.", "contact.html", "운영 안내"),
         ]
@@ -15790,18 +15791,19 @@ def build_guide_page(status: dict) -> str:
             ("기사 기준", "가장 최근 기사나 발표가 실제로 나온 시각입니다."),
             ("페이지 반영", "수집과 정리를 마치고 사이트에 다시 올린 시각입니다."),
             ("반영 주기", status_meta["update_frequency"] or "30분마다 신규 자료를 자동 확인합니다."),
-            ("공식자료 기준", "정부와 지역 원문을 분리하고 언론 기사는 공식자료에 표시하지 않습니다."),
+            ("공식자료 기준", "정부 부처 자료실과 지자체 자료실을 분리하고 언론 기사는 공식자료에 표시하지 않습니다."),
         ],
     )
     usage_guide = render_list_block(
         "빠르게 보는 순서",
         "처음 들어왔을 때 가장 덜 헤매는 흐름을 짧게 정리했습니다.",
         [
-            ("1. 홈", "오늘 확인할 청년 이슈와 공식 발표를 함께 봅니다."),
-            ("2. 뉴스", "사실 보도를 지역·주제·날짜별로 확인합니다."),
-            ("3. 기고·연구", "관점이 필요한 글과 근거가 필요한 자료를 분리해 봅니다."),
-            ("4. 정부·지자체", "공식 보도자료와 기본·시행계획 원문을 확인합니다."),
-            ("5. 통계·근거", "통계·조사·설문의 조사 시점과 원문을 확인합니다."),
+            ("1. 홈 허브", "오늘 확인할 청년 이슈와 공식 발표를 함께 봅니다."),
+            ("2. 뉴스 모아보기", "사실 보도를 지역·주제·날짜별로 확인합니다."),
+            ("3. 기고·칼럼·오피니언", "필자의 해석과 주장이 중심인 글을 확인합니다."),
+            ("4. 정부 부처·지자체 자료실", "공식 보도자료와 기본·시행계획 원문을 확인합니다."),
+            ("5. 논문·연구·리포트", "근거와 분석이 필요한 자료를 확인합니다."),
+            ("6. 정부조사·통계", "조사 시점과 공식 원문을 확인합니다."),
         ],
     )
     return f"""
@@ -15809,7 +15811,7 @@ def build_guide_page(status: dict) -> str:
       <article class="hero-card">
         <span class="eyebrow">사이트 소개</span>
         <h1>청년세대와 관련된 이슈들을 한 데 모았습니다.</h1>
-        <p class="hero-copy">수집된 자료를 뉴스 흐름, 관점, 연구·분석, 지역 원문, 정부 원문, 통계·근거로 나눕니다. 같은 자료를 여러 메뉴에 반복 노출하지 않고 출처와 형식에 따라 한 곳에 배치합니다.</p>
+        <p class="hero-copy">수집된 자료를 뉴스, 기고·칼럼·오피니언, 정부 부처, 지자체, 논문·연구·리포트, 정부조사·통계로 나눕니다. 같은 자료를 여러 메뉴에 반복 노출하지 않고 출처와 형식에 따라 한 곳에 배치합니다.</p>
         <div class="hero-feature-meta">페이지 반영 {html.escape(format_display_datetime(page_updated_at))} · {html.escape(status_meta["update_frequency"])}</div>
         <div class="hero-actions">
           <a class="button primary" href="index.html">홈에서 기사 보기</a>
@@ -15819,10 +15821,10 @@ def build_guide_page(status: dict) -> str:
       <aside class="status-card">
         <h3>먼저 보면 좋은 메뉴</h3>
         <div class="list">
-          <div class="list-item"><strong>홈</strong><span>첫 화면에서 오늘 확인할 이슈와 공식 발표를 함께 봅니다.</span></div>
-          <div class="list-item"><strong>뉴스</strong><span>일반 보도를 지역·주제·날짜별로 봅니다.</span></div>
-          <div class="list-item"><strong>관점</strong><span>필자의 해석과 주장이 중심인 글을 따로 봅니다.</span></div>
-          <div class="list-item"><strong>정부·지역 원문</strong><span>공식 보도자료와 계획 원문을 발행 주체별로 봅니다.</span></div>
+          <div class="list-item"><strong>홈 허브</strong><span>첫 화면에서 오늘 확인할 이슈와 공식 발표를 함께 봅니다.</span></div>
+          <div class="list-item"><strong>뉴스 모아보기</strong><span>일반 보도를 지역·주제·날짜별로 봅니다.</span></div>
+          <div class="list-item"><strong>기고·칼럼·오피니언</strong><span>필자의 해석과 주장이 중심인 글을 따로 봅니다.</span></div>
+          <div class="list-item"><strong>정부 부처·지자체 자료실</strong><span>공식 보도자료와 계획 원문을 발행 주체별로 봅니다.</span></div>
           <div class="list-item"><strong>문의/운영안내</strong><span>누락 기사, 정정 요청, 운영 문의를 한곳에서 확인합니다.</span></div>
         </div>
       </aside>
@@ -15939,7 +15941,7 @@ def build_opinion_page(articles: list[dict], status: dict) -> str:
         articles,
         status,
         menu_key="opinion",
-        eyebrow="관점",
+        eyebrow="기고·칼럼·오피니언",
         title="청년을 해석하는 관점과 주장",
         description="청년정책과 청년 삶을 다룬 기고·칼럼·오피니언을 일반 보도와 분리해 읽습니다.",
         empty_title="최근 확인된 관점 글이 없습니다",
@@ -15956,7 +15958,7 @@ def build_reports_page(articles: list[dict], status: dict) -> str:
         eyebrow="연구·논문·동향분석",
         title="연구와 분석을 원문 중심으로",
         description="청년 관련 연구·논문·실태조사·동향분석·분석 리포트와 이를 소개한 자료를 모읍니다.",
-        empty_title="최근 확인된 연구·분석 자료가 없습니다",
+        empty_title="최근 확인된 논문·연구·리포트가 없습니다",
         empty_body="연구·조사·보고서 신호와 청년 관련성이 함께 확인되면 표시됩니다.",
         predicate=is_research_report_menu_article,
     )
@@ -16583,7 +16585,7 @@ def build_official_page(articles: list[dict], status: dict) -> str:
     ]
     policy_resource_articles = build_government_policy_resource_articles()
     page_intro = render_compact_intro(
-        "정부 원문",
+        "정부 부처 자료실",
         "정책브리핑과 중앙정부 부처가 낸 청년 관련 보도자료, 기본계획·시행계획 원문을 한곳에서 확인합니다. 지자체 자료는 별도 자료실로 분리합니다.",
         media_key="policies",
         title="중앙정부 원문을 부처별로 추적",
@@ -16628,7 +16630,7 @@ def build_official_page(articles: list[dict], status: dict) -> str:
       <div class="section-head">
         <div>
           <h2>기본·시행계획</h2>
-          <p>뉴스 흐름과 분리해, 콘텐츠 제작과 검토의 기준점이 되는 중앙정부 공식 계획 문서를 연결합니다.</p>
+          <p>뉴스 모아보기와 분리해, 콘텐츠 제작과 검토의 기준점이 되는 중앙정부 공식 계획 문서를 연결합니다.</p>
         </div>
         <span class="mini-link" aria-disabled="true">{len(policy_resource_articles)}건</span>
       </div>
@@ -17123,7 +17125,7 @@ def build_local_government_trends_page(articles: list[dict], status: dict) -> st
     ]
     page_intro = render_compact_intro(
         "지역·현장 동향",
-        "지역에서 청년의 삶과 정책 실행이 어떻게 다뤄지는지 언론·현장 기록으로 읽습니다. 공식 공고와 지자체 원문은 지역 원문에서 따로 확인합니다.",
+        "지역에서 청년의 삶과 정책 실행이 어떻게 다뤄지는지 언론·현장 기록으로 읽습니다. 공식 공고와 지자체 원문은 지자체 자료실에서 따로 확인합니다.",
         media_key="policies",
         title="지역의 변화와 현장 맥락을 읽는 곳",
     )
@@ -17158,7 +17160,7 @@ def build_local_government_trends_page(articles: list[dict], status: dict) -> st
         </div>
       </div>
       <div class="feature-grid">
-        {render_feature_card("지역 원문", "광역지자체 공식 보도자료와 기본·시행계획 원문을 지역별로 확인합니다.", "local.html", "공식 원문")}
+        {render_feature_card("지자체 자료실", "광역지자체 공식 보도자료와 기본·시행계획 원문을 지역별로 확인합니다.", "local.html", "공식 원문")}
         {render_feature_card("참여기구 기록", "청년정책 협의체·위원회·자문단 등 지역 참여 구조의 움직임을 확인합니다.", "hub.html", "참여 기록")}
       </div>
     </section>
@@ -17189,7 +17191,7 @@ def build_local_materials_page(articles: list[dict], status: dict) -> str:
         if is_local_youth_plan_document(article)
     ]
     page_intro = render_compact_intro(
-        "지역 원문",
+        "지자체 자료실",
         "17개 광역지자체의 공식 홈페이지에서 확인된 청년 정책·공지 자료와 기본·시행계획 원문을 지역별로 모읍니다. 언론 기사는 지역·현장 동향에서 분리해 봅니다.",
         media_key="policies",
         title="지역의 공식 근거를 바로 찾는 자료실",
@@ -17336,7 +17338,7 @@ def build_hub_page(classified_articles: list[dict]) -> str:
 
 def build_tools_page(articles: list[dict], status: dict) -> str:
     page_intro = render_compact_intro(
-        "통계·근거",
+        "정부조사·통계",
         "청년정책을 설명하고 검토할 때 직접 인용할 수 있는 주요 통계·조사·설문과 공식 원자료를 모았습니다.",
         media_key="tools",
         title="통계·조사·설문의 기준 자료",
@@ -17861,7 +17863,7 @@ def main() -> int:
     write_page(web_root / "guide.html", "이용방법", "guide.html", build_guide_page(status), status, contact_settings)
     write_page(
         web_root / "news.html",
-        "청년 뉴스",
+        "뉴스 모아보기",
         "news.html",
         build_news_page(classified_articles, status),
         status,
@@ -17869,7 +17871,7 @@ def main() -> int:
     )
     write_page(
         web_root / "opinion.html",
-        "관점",
+        "기고·칼럼·오피니언",
         "opinion.html",
         build_opinion_page(all_classified_articles, status),
         status,
@@ -17877,7 +17879,7 @@ def main() -> int:
     )
     write_page(
         web_root / "reports.html",
-        "연구·논문·분석",
+        "논문·연구·리포트",
         "reports.html",
         build_reports_page(classified_articles, status),
         status,
@@ -17893,7 +17895,7 @@ def main() -> int:
     )
     write_page(
         web_root / "official.html",
-        "정부 원문",
+        "정부 부처 자료실",
         "official.html",
         build_official_page(classified_articles, status),
         status,
@@ -17917,7 +17919,7 @@ def main() -> int:
     )
     write_page(
         web_root / "local.html",
-        "지역 원문",
+        "지자체 자료실",
         "local.html",
         build_local_materials_page(classified_articles, status),
         status,
@@ -17941,7 +17943,7 @@ def main() -> int:
     )
     write_page(
         web_root / "tools.html",
-        "통계·근거",
+        "정부조사·통계",
         "tools.html",
         build_tools_page(classified_articles, status),
         status,
