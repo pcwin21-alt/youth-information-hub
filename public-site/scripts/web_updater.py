@@ -9103,14 +9103,115 @@ DESIGN_OVERHAUL_CSS = """
     color: var(--muted);
   }
 
-  .bottom-nav a.active {
+  .bottom-nav a.active,
+  .bottom-nav button.active {
     background: rgba(24, 36, 61, 0.08);
     color: var(--deep-navy);
   }
 
-  .bottom-nav a.active .bottom-nav-icon {
+  .bottom-nav a.active .bottom-nav-icon,
+  .bottom-nav button.active .bottom-nav-icon {
     background: var(--accent);
     color: white;
+  }
+
+  .bottom-nav button {
+    min-width: 0;
+    border: 0;
+    border-radius: 16px;
+    background: transparent;
+    color: var(--muted);
+    font: inherit;
+    font-family: "Pretendard", "Noto Sans KR", sans-serif;
+    font-weight: 700;
+    cursor: pointer;
+  }
+
+  .bottom-nav button span {
+    display: block;
+  }
+
+  .mobile-menu-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 90;
+    display: grid;
+    align-items: end;
+    padding: 16px;
+    background: rgba(16, 44, 50, 0.42);
+    backdrop-filter: blur(8px);
+  }
+
+  .mobile-menu-sheet {
+    width: min(560px, 100%);
+    max-height: min(76vh, 680px);
+    margin: 0 auto;
+    padding: 22px;
+    overflow-y: auto;
+    border: 1px solid rgba(24, 36, 61, 0.08);
+    border-radius: 26px;
+    background: #fffdf8;
+    box-shadow: 0 24px 70px rgba(16, 44, 50, 0.2);
+  }
+
+  .mobile-menu-head {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 18px;
+  }
+
+  .mobile-menu-head h2 {
+    margin: 0;
+    color: var(--deep-navy);
+    font-size: 1.28rem;
+  }
+
+  .mobile-menu-close {
+    width: 42px;
+    height: 42px;
+    border: 1px solid var(--line);
+    border-radius: 50%;
+    background: #fff;
+    color: var(--deep-navy);
+    font: inherit;
+    font-size: 1.25rem;
+    cursor: pointer;
+  }
+
+  .mobile-menu-links {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+
+  .mobile-menu-link {
+    display: flex;
+    gap: 11px;
+    align-items: center;
+    min-height: 58px;
+    padding: 12px 14px;
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    background: #fff;
+    color: var(--deep-navy);
+    font-size: 0.9rem;
+    font-weight: 700;
+  }
+
+  .mobile-menu-link.active {
+    border-color: rgba(200, 77, 57, 0.28);
+    background: rgba(200, 77, 57, 0.1);
+    color: var(--accent);
+  }
+
+  .mobile-menu-link .side-nav-icon {
+    flex: 0 0 auto;
+  }
+
+  body.mobile-menu-open {
+    overflow: hidden;
   }
 
   /* 2026-07-31 harness pass: 60 field / 30 structure / 10 action. */
@@ -9723,12 +9824,12 @@ DESIGN_OVERHAUL_CSS = """
     }
 
     .side-nav {
-      position: relative;
-      top: auto;
+      display: none;
     }
 
     .shell {
       min-height: 0;
+      padding-bottom: 108px;
     }
 
     body[data-page="index.html"] .home-briefing-grid,
@@ -9742,6 +9843,32 @@ DESIGN_OVERHAUL_CSS = """
 
     .flow-hero-header {
       grid-template-columns: 1fr;
+    }
+
+    .bottom-nav {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      --bottom-nav-count: 5 !important;
+      width: min(560px, calc(100vw - 20px));
+    }
+
+    .bottom-nav a,
+    .bottom-nav button {
+      min-height: 54px;
+      padding: 6px 4px;
+      font-size: 0.7rem;
+      line-height: 1.2;
+    }
+
+    .bottom-nav-icon {
+      margin: 0 auto 3px;
+    }
+  }
+
+  @media (min-width: 1181px) {
+    .bottom-nav,
+    .mobile-menu-overlay {
+      display: none !important;
     }
   }
 
@@ -9808,6 +9935,10 @@ DESIGN_OVERHAUL_CSS = """
       width: calc(100vw - 20px);
       bottom: 10px;
       border-radius: 20px;
+    }
+
+    .mobile-menu-links {
+      grid-template-columns: 1fr;
     }
 
     .flow-hero-title {
@@ -9888,7 +10019,8 @@ PAGE_TEMPLATE = """<!doctype html>
     <footer class="site-footer" id="site-footer" aria-label="운영 안내">{footer_note}</footer>
     </div>
   </div>
-  <nav class="bottom-nav" style="--bottom-nav-count: {bottom_nav_count};">{bottom_nav}</nav>
+  <nav class="bottom-nav" style="--bottom-nav-count: {bottom_nav_count};" aria-label="모바일 주요 메뉴">{bottom_nav}</nav>
+  {mobile_menu}
   {guide_overlay}
   {admin_login_overlay}
   <script>{script}</script>
@@ -11325,9 +11457,50 @@ HOME_FLOW_SCRIPT = """
 })();
 """
 
+MOBILE_MENU_SCRIPT = """
+(() => {
+  const overlay = document.querySelector('[data-mobile-menu-overlay]');
+  const openButton = document.querySelector('[data-mobile-menu-open]');
+  if (!overlay || !openButton) {
+    return;
+  }
+
+  const closeButton = overlay.querySelector('[data-mobile-menu-close]');
+  const firstLink = overlay.querySelector('a');
+
+  function openMenu() {
+    overlay.hidden = false;
+    document.body.classList.add('mobile-menu-open');
+    openButton.setAttribute('aria-expanded', 'true');
+    window.requestAnimationFrame(() => firstLink?.focus());
+  }
+
+  function closeMenu() {
+    overlay.hidden = true;
+    document.body.classList.remove('mobile-menu-open');
+    openButton.setAttribute('aria-expanded', 'false');
+    openButton.focus();
+  }
+
+  openButton.setAttribute('aria-expanded', 'false');
+  openButton.addEventListener('click', openMenu);
+  closeButton?.addEventListener('click', closeMenu);
+  overlay.addEventListener('click', (event) => {
+    if (event.target === overlay) {
+      closeMenu();
+    }
+  });
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && !overlay.hidden) {
+      closeMenu();
+    }
+  });
+})();
+"""
+
 
 def build_page_script() -> str:
-    return "\n".join((BASE_SCRIPT, HOME_FLOW_SCRIPT, build_admin_access_script(), build_analytics_script()))
+    return "\n".join((BASE_SCRIPT, MOBILE_MENU_SCRIPT, HOME_FLOW_SCRIPT, build_admin_access_script(), build_analytics_script()))
 
 
 # Public IA uses first-recognition labels; keep this order aligned with harness.md and its regression test.
@@ -11346,7 +11519,6 @@ TOP_NAV_ITEMS = [("index.html", "홈 허브"), *NAV_ITEMS]
 BOTTOM_NAV_ITEMS = [
     ("index.html", "홈"),
     ("news.html", "뉴스"),
-    ("opinion.html", "칼럼"),
     ("official.html", "정부"),
     ("local.html", "지자체"),
 ]
@@ -11619,6 +11791,11 @@ def render_side_nav_icon(icon: str, class_name: str = "side-nav-icon") -> str:
           <path d="m5.5 8 6.5 5 6.5-5"></path>
           <path d="M8 19h8"></path>
         """,
+        "menu": """
+          <path d="M5 7h14"></path>
+          <path d="M5 12h14"></path>
+          <path d="M5 17h14"></path>
+        """,
     }
     path_markup = paths.get(icon, paths["news"])
     return (
@@ -11742,7 +11919,38 @@ def render_bottom_nav(active_page: str) -> str:
         items.append(
             f'<a class="{active}" href="{href}">{render_side_nav_icon(icon, "bottom-nav-icon")}<span>{html.escape(label)}</span></a>'
         )
+    menu_active = " active" if active_page not in {href for href, _ in BOTTOM_NAV_ITEMS} else ""
+    items.append(
+        f'<button class="{menu_active.strip()}" type="button" data-mobile-menu-open="true" aria-haspopup="dialog" '
+        'aria-controls="mobile-menu-sheet">'
+        f'{render_side_nav_icon("menu", "bottom-nav-icon")}<span>전체</span></button>'
+    )
     return "".join(items)
+
+
+def render_mobile_menu(active_page: str) -> str:
+    links: list[str] = []
+    for href, label in TOP_NAV_ITEMS:
+        active = " active" if href == active_page else ""
+        current = ' aria-current="page"' if active else ""
+        icon = SIDE_PRIMARY_NAV_ICONS.get(href, "insights")
+        links.append(
+            f'<a class="mobile-menu-link{active}" href="{href}"{current}>'
+            f'{render_side_nav_icon(icon)}<span>{html.escape(label)}</span></a>'
+        )
+    return f"""
+  <div class="mobile-menu-overlay" data-mobile-menu-overlay hidden>
+    <section class="mobile-menu-sheet" id="mobile-menu-sheet" role="dialog" aria-modal="true" aria-labelledby="mobile-menu-title">
+      <div class="mobile-menu-head">
+        <h2 id="mobile-menu-title">전체 메뉴</h2>
+        <button class="mobile-menu-close" type="button" data-mobile-menu-close="true" aria-label="전체 메뉴 닫기">×</button>
+      </div>
+      <nav class="mobile-menu-links" aria-label="전체 메뉴">
+        {''.join(links)}
+      </nav>
+    </section>
+  </div>
+    """
 
 
 def render_guide_overlay(active_page: str) -> str:
@@ -18098,7 +18306,8 @@ def write_page(
                 header_meta=render_header_meta(active_page, status),
                 admin_entry=render_admin_entry(),
                 bottom_nav=render_bottom_nav(active_page),
-                bottom_nav_count=len(NAV_ITEMS),
+                bottom_nav_count=len(BOTTOM_NAV_ITEMS) + 1,
+                mobile_menu=render_mobile_menu(active_page),
                 guide_overlay=render_guide_overlay(active_page),
                 admin_login_overlay=render_admin_login_overlay(),
                 footer_note=build_footer_note(contact_settings),

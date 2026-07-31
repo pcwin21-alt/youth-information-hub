@@ -798,6 +798,27 @@ class HomeSelectionTests(unittest.TestCase):
         self.assertIn("기관 분석 레이더", institution_html)
         self.assertIn("현재는 소개용 임시 페이지", institution_html)
 
+    def test_mobile_navigation_uses_four_primary_links_and_full_menu_sheet(self) -> None:
+        bottom_nav = web_updater.render_bottom_nav("official.html")
+        mobile_menu = web_updater.render_mobile_menu("official.html")
+
+        self.assertEqual(len(web_updater.BOTTOM_NAV_ITEMS), 4)
+        self.assertEqual(bottom_nav.count("<a "), 4)
+        self.assertIn('data-mobile-menu-open="true"', bottom_nav)
+        self.assertIn("<span>전체</span>", bottom_nav)
+        self.assertNotIn('class="active" type="button"', bottom_nav)
+        self.assertIn(
+            'class="active" type="button"',
+            web_updater.render_bottom_nav("opinion.html"),
+        )
+        self.assertEqual(mobile_menu.count('<a class="mobile-menu-link'), 8)
+        self.assertIn('class="mobile-menu-link active"', mobile_menu)
+        self.assertIn('data-mobile-menu-close="true"', mobile_menu)
+        self.assertIn("@media (max-width: 1180px)", web_updater.DESIGN_OVERHAUL_CSS)
+        tablet_rules = web_updater.DESIGN_OVERHAUL_CSS.split("@media (max-width: 1180px)", 1)[1]
+        self.assertIn(".side-nav {\n      display: none;", tablet_rules)
+        self.assertIn("grid-template-columns: repeat(5", tablet_rules)
+
     def test_seven_menu_router_separates_news_opinion_research_and_official_sources(self) -> None:
         general_news = make_article(
             title="청년 고용시장 변화 현장 보도",
