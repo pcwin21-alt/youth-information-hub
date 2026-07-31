@@ -8513,9 +8513,9 @@
 
   .flow-map {
     display: grid;
-    grid-template-columns: repeat(24, minmax(18px, 1fr));
-    gap: 5px;
-    min-width: 690px;
+    grid-template-columns: repeat(12, minmax(44px, 1fr));
+    gap: 8px;
+    min-width: 660px;
   }
 
   .flow-map-scroll {
@@ -8540,6 +8540,16 @@
     z-index: 1;
     transform: translateY(-3px);
     border-color: var(--accent);
+  }
+
+  .flow-cell.empty {
+    border-color: transparent;
+    background: transparent;
+    cursor: default;
+  }
+
+  .flow-cell.empty .flow-cell-count {
+    display: none;
   }
 
   .flow-cell.latest:not(.empty)::after {

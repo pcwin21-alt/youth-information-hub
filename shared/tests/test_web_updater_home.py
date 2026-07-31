@@ -193,8 +193,15 @@ class HomeSelectionTests(unittest.TestCase):
 
         self.assertIn("오늘 올라온 청년 기사", page_html)
         self.assertIn("오늘 들어온 자료", page_html)
-        self.assertIn("15분마다 들어온 자료", page_html)
-        self.assertIn("시간의 강", page_html)
+        self.assertIn("30분 단위 자료량", page_html)
+        self.assertIn("최신 자료 흐름", page_html)
+        self.assertNotIn("시간의 강", page_html)
+        flow_cell_count = (
+            page_html.count('<button class="flow-cell')
+            + page_html.count('<div class="flow-cell')
+        )
+        self.assertEqual(flow_cell_count, 12)
+        self.assertNotIn('flow-cell-count">0</span>', page_html)
         self.assertEqual(page_html.count('data-flow-id="06c509e269c18556"'), 1)
         self.assertNotIn("지금 모집 중인 청년정책", page_html)
         self.assertNotIn("application-policies", page_html)
@@ -276,7 +283,7 @@ class HomeSelectionTests(unittest.TestCase):
             },
         )
 
-        self.assertIn("시간의 강", page_html)
+        self.assertIn("최신 자료 흐름", page_html)
         self.assertIn("뉴스 모아보기", page_html)
         self.assertNotIn("오늘 놓치면 안되는 뉴스 5가지", page_html)
         self.assertLess(page_html.index(newest_low_score["title"]), page_html.index(middle_article["title"]))

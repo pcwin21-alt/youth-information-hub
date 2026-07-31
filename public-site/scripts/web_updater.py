@@ -9438,9 +9438,9 @@ DESIGN_OVERHAUL_CSS = """
 
   .flow-map {
     display: grid;
-    grid-template-columns: repeat(24, minmax(18px, 1fr));
-    gap: 5px;
-    min-width: 690px;
+    grid-template-columns: repeat(12, minmax(44px, 1fr));
+    gap: 8px;
+    min-width: 660px;
   }
 
   .flow-map-scroll {
@@ -9465,6 +9465,16 @@ DESIGN_OVERHAUL_CSS = """
     z-index: 1;
     transform: translateY(-3px);
     border-color: var(--accent);
+  }
+
+  .flow-cell.empty {
+    border-color: transparent;
+    background: transparent;
+    cursor: default;
+  }
+
+  .flow-cell.empty .flow-cell-count {
+    display: none;
   }
 
   .flow-cell.latest:not(.empty)::after {
@@ -15622,7 +15632,7 @@ def build_home_page(
         if last_day_start <= article_exposure_datetime(article).astimezone(reference_dt.tzinfo) <= reference_dt
     ][:60]
 
-    bucket_minutes = 15
+    bucket_minutes = 30
     bucket_end = reference_dt.replace(
         minute=(reference_dt.minute // bucket_minutes) * bucket_minutes,
         second=0,
@@ -15630,7 +15640,7 @@ def build_home_page(
     ) + timedelta(minutes=bucket_minutes)
     bucket_start = bucket_end - timedelta(hours=6)
     buckets: list[dict] = []
-    for index in range(24):
+    for index in range(12):
         start = bucket_start + timedelta(minutes=bucket_minutes * index)
         end = start + timedelta(minutes=bucket_minutes)
         bucket_articles = [
@@ -15650,10 +15660,15 @@ def build_home_page(
         count = bucket["count"]
         level = 0 if not count or not max_bucket_count else max(1, round((count / max_bucket_count) * 4))
         latest_class = " latest" if index == latest_populated_index else ""
-        empty_class = " empty" if count == 0 else ""
         label = f'{bucket["start"].strftime("%H:%M")}–{bucket["end"].strftime("%H:%M")}'
+        if count == 0:
+            return (
+                f'<div class="flow-cell empty" '
+                f'aria-label="{html.escape(label)} 새 자료 없음">'
+                f'<span class="flow-cell-time">{bucket["start"].strftime("%H:%M")}</span></div>'
+            )
         return (
-            f'<button class="flow-cell{latest_class}{empty_class}" type="button" data-flow-cell '
+            f'<button class="flow-cell{latest_class}" type="button" data-flow-cell '
             f'data-start-ts="{int(bucket["start"].timestamp() * 1000)}" '
             f'data-end-ts="{int(bucket["end"].timestamp() * 1000)}" '
             f'data-count="{count}" data-label="{html.escape(label)}" '
@@ -15729,16 +15744,16 @@ def build_home_page(
         <aside class="flow-freshness">
           <span>마지막 반영</span>
           <strong>{html.escape(home_date_label)} {html.escape(home_time_label)}</strong>
-          <p>자동 수집 주기에 맞춰 갱신되는 근실시간 화면입니다. 블록의 색은 중요도가 아니라 해당 15분의 자료 수를 뜻합니다.</p>
+          <p>자동 수집 주기에 맞춰 갱신되는 근실시간 화면입니다. 블록의 색은 중요도가 아니라 해당 30분의 자료 수를 뜻합니다.</p>
         </aside>
       </header>
 
       <section class="flow-board" id="today-briefing" aria-labelledby="flow-map-title">
         <div class="flow-board-head">
           <div>
-            <span class="eyebrow">동향 파동 · 최근 6시간</span>
-            <h2 id="flow-map-title">15분마다 들어온 자료</h2>
-            <p>진한 블록일수록 그 시간대에 새 자료가 많았습니다. 블록을 누르면 아래 흐름만 좁혀 봅니다.</p>
+            <span class="eyebrow">최근 6시간</span>
+            <h2 id="flow-map-title">30분 단위 자료량</h2>
+            <p>진한 블록일수록 그 시간대에 새 자료가 많았습니다. 자료가 있는 블록을 누르면 아래 목록을 좁혀 봅니다.</p>
           </div>
           <button class="flow-read-button" type="button" data-flow-all>전체 흐름 보기</button>
         </div>
@@ -15751,14 +15766,14 @@ def build_home_page(
           <div class="flow-map-scroll">
             <div class="flow-map">{flow_cells_html}</div>
           </div>
-          <div class="flow-map-legend"><span>6시간 전</span><strong>기사량 0 → 많음</strong><span>지금</span></div>
+          <div class="flow-map-legend"><span>6시간 전</span><strong>진할수록 자료가 많음</strong><span>지금</span></div>
         </div>
       </section>
 
       <section class="flow-stream" id="flow-stream" data-flow-stream aria-labelledby="flow-stream-title">
         <div class="flow-stream-head">
           <div>
-            <h2 id="flow-stream-title">시간의 강</h2>
+            <h2 id="flow-stream-title">최신 자료 흐름</h2>
             <p class="flow-stream-status" data-flow-status>최근 자료 {len(stream_articles)}건</p>
           </div>
           <button class="flow-read-button" type="button" data-flow-mark-read>여기까지 읽었습니다</button>

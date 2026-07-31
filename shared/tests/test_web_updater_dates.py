@@ -182,7 +182,7 @@ class WebUpdaterDateFallbackTests(unittest.TestCase):
             {},
         )
 
-        self.assertIn("시간의 강", page_html)
+        self.assertIn("최신 자료 흐름", page_html)
         self.assertIn("Central official youth policy", page_html)
         self.assertIn("Local city official youth policy", page_html)
         self.assertIn('href="official.html">정부 부처 자료실</a>', page_html)

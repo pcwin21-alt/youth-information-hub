@@ -8513,9 +8513,9 @@
 
   .flow-map {
     display: grid;
-    grid-template-columns: repeat(24, minmax(18px, 1fr));
-    gap: 5px;
-    min-width: 690px;
+    grid-template-columns: repeat(12, minmax(44px, 1fr));
+    gap: 8px;
+    min-width: 660px;
   }
 
   .flow-map-scroll {
@@ -8540,6 +8540,16 @@
     z-index: 1;
     transform: translateY(-3px);
     border-color: var(--accent);
+  }
+
+  .flow-cell.empty {
+    border-color: transparent;
+    background: transparent;
+    cursor: default;
+  }
+
+  .flow-cell.empty .flow-cell-count {
+    display: none;
   }
 
   .flow-cell.latest:not(.empty)::after {
@@ -8979,16 +8989,16 @@
         <aside class="flow-freshness">
           <span>마지막 반영</span>
           <strong>2026.07.31 (금) 11:44</strong>
-          <p>자동 수집 주기에 맞춰 갱신되는 근실시간 화면입니다. 블록의 색은 중요도가 아니라 해당 15분의 자료 수를 뜻합니다.</p>
+          <p>자동 수집 주기에 맞춰 갱신되는 근실시간 화면입니다. 블록의 색은 중요도가 아니라 해당 30분의 자료 수를 뜻합니다.</p>
         </aside>
       </header>
 
       <section class="flow-board" id="today-briefing" aria-labelledby="flow-map-title">
         <div class="flow-board-head">
           <div>
-            <span class="eyebrow">동향 파동 · 최근 6시간</span>
-            <h2 id="flow-map-title">15분마다 들어온 자료</h2>
-            <p>진한 블록일수록 그 시간대에 새 자료가 많았습니다. 블록을 누르면 아래 흐름만 좁혀 봅니다.</p>
+            <span class="eyebrow">최근 6시간</span>
+            <h2 id="flow-map-title">30분 단위 자료량</h2>
+            <p>진한 블록일수록 그 시간대에 새 자료가 많았습니다. 자료가 있는 블록을 누르면 아래 목록을 좁혀 봅니다.</p>
           </div>
           <button class="flow-read-button" type="button" data-flow-all>전체 흐름 보기</button>
         </div>
@@ -8999,16 +9009,16 @@
         </div>
         <div class="flow-map-wrap">
           <div class="flow-map-scroll">
-            <div class="flow-map"><button class="flow-cell empty" type="button" data-flow-cell data-start-ts="1785444300000" data-end-ts="1785445200000" data-count="0" data-label="05:45–06:00" style="--flow-level:0" aria-label="05:45–06:00 수집 자료 0건"><span class="flow-cell-count">0</span><span class="flow-cell-time">05:45</span></button><button class="flow-cell" type="button" data-flow-cell data-start-ts="1785445200000" data-end-ts="1785446100000" data-count="3" data-label="06:00–06:15" style="--flow-level:1" aria-label="06:00–06:15 수집 자료 3건"><span class="flow-cell-count">3</span><span class="flow-cell-time">06:00</span></button><button class="flow-cell empty" type="button" data-flow-cell data-start-ts="1785446100000" data-end-ts="1785447000000" data-count="0" data-label="06:15–06:30" style="--flow-level:0" aria-label="06:15–06:30 수집 자료 0건"><span class="flow-cell-count">0</span><span class="flow-cell-time">06:15</span></button><button class="flow-cell empty" type="button" data-flow-cell data-start-ts="1785447000000" data-end-ts="1785447900000" data-count="0" data-label="06:30–06:45" style="--flow-level:0" aria-label="06:30–06:45 수집 자료 0건"><span class="flow-cell-count">0</span><span class="flow-cell-time">06:30</span></button><button class="flow-cell empty" type="button" data-flow-cell data-start-ts="1785447900000" data-end-ts="1785448800000" data-count="0" data-label="06:45–07:00" style="--flow-level:0" aria-label="06:45–07:00 수집 자료 0건"><span class="flow-cell-count">0</span><span class="flow-cell-time">06:45</span></button><button class="flow-cell empty" type="button" data-flow-cell data-start-ts="1785448800000" data-end-ts="1785449700000" data-count="0" data-label="07:00–07:15" style="--flow-level:0" aria-label="07:00–07:15 수집 자료 0건"><span class="flow-cell-count">0</span><span class="flow-cell-time">07:00</span></button><button class="flow-cell empty" type="button" data-flow-cell data-start-ts="1785449700000" data-end-ts="1785450600000" data-count="0" data-label="07:15–07:30" style="--flow-level:0" aria-label="07:15–07:30 수집 자료 0건"><span class="flow-cell-count">0</span><span class="flow-cell-time">07:15</span></button><button class="flow-cell empty" type="button" data-flow-cell data-start-ts="1785450600000" data-end-ts="1785451500000" data-count="0" data-label="07:30–07:45" style="--flow-level:0" aria-label="07:30–07:45 수집 자료 0건"><span class="flow-cell-count">0</span><span class="flow-cell-time">07:30</span></button><button class="flow-cell empty" type="button" data-flow-cell data-start-ts="1785451500000" data-end-ts="1785452400000" data-count="0" data-label="07:45–08:00" style="--flow-level:0" aria-label="07:45–08:00 수집 자료 0건"><span class="flow-cell-count">0</span><span class="flow-cell-time">07:45</span></button><button class="flow-cell" type="button" data-flow-cell data-start-ts="1785452400000" data-end-ts="1785453300000" data-count="1" data-label="08:00–08:15" style="--flow-level:1" aria-label="08:00–08:15 수집 자료 1건"><span class="flow-cell-count">1</span><span class="flow-cell-time">08:00</span></button><button class="flow-cell empty" type="button" data-flow-cell data-start-ts="1785453300000" data-end-ts="1785454200000" data-count="0" data-label="08:15–08:30" style="--flow-level:0" aria-label="08:15–08:30 수집 자료 0건"><span class="flow-cell-count">0</span><span class="flow-cell-time">08:15</span></button><button class="flow-cell" type="button" data-flow-cell data-start-ts="1785454200000" data-end-ts="1785455100000" data-count="3" data-label="08:30–08:45" style="--flow-level:1" aria-label="08:30–08:45 수집 자료 3건"><span class="flow-cell-count">3</span><span class="flow-cell-time">08:30</span></button><button class="flow-cell" type="button" data-flow-cell data-start-ts="1785455100000" data-end-ts="1785456000000" data-count="2" data-label="08:45–09:00" style="--flow-level:1" aria-label="08:45–09:00 수집 자료 2건"><span class="flow-cell-count">2</span><span class="flow-cell-time">08:45</span></button><button class="flow-cell" type="button" data-flow-cell data-start-ts="1785456000000" data-end-ts="1785456900000" data-count="1" data-label="09:00–09:15" style="--flow-level:1" aria-label="09:00–09:15 수집 자료 1건"><span class="flow-cell-count">1</span><span class="flow-cell-time">09:00</span></button><button class="flow-cell" type="button" data-flow-cell data-start-ts="1785456900000" data-end-ts="1785457800000" data-count="2" data-label="09:15–09:30" style="--flow-level:1" aria-label="09:15–09:30 수집 자료 2건"><span class="flow-cell-count">2</span><span class="flow-cell-time">09:15</span></button><button class="flow-cell" type="button" data-flow-cell data-start-ts="1785457800000" data-end-ts="1785458700000" data-count="2" data-label="09:30–09:45" style="--flow-level:1" aria-label="09:30–09:45 수집 자료 2건"><span class="flow-cell-count">2</span><span class="flow-cell-time">09:30</span></button><button class="flow-cell" type="button" data-flow-cell data-start-ts="1785458700000" data-end-ts="1785459600000" data-count="2" data-label="09:45–10:00" style="--flow-level:1" aria-label="09:45–10:00 수집 자료 2건"><span class="flow-cell-count">2</span><span class="flow-cell-time">09:45</span></button><button class="flow-cell empty" type="button" data-flow-cell data-start-ts="1785459600000" data-end-ts="1785460500000" data-count="0" data-label="10:00–10:15" style="--flow-level:0" aria-label="10:00–10:15 수집 자료 0건"><span class="flow-cell-count">0</span><span class="flow-cell-time">10:00</span></button><button class="flow-cell" type="button" data-flow-cell data-start-ts="1785460500000" data-end-ts="1785461400000" data-count="1" data-label="10:15–10:30" style="--flow-level:1" aria-label="10:15–10:30 수집 자료 1건"><span class="flow-cell-count">1</span><span class="flow-cell-time">10:15</span></button><button class="flow-cell" type="button" data-flow-cell data-start-ts="1785461400000" data-end-ts="1785462300000" data-count="2" data-label="10:30–10:45" style="--flow-level:1" aria-label="10:30–10:45 수집 자료 2건"><span class="flow-cell-count">2</span><span class="flow-cell-time">10:30</span></button><button class="flow-cell" type="button" data-flow-cell data-start-ts="1785462300000" data-end-ts="1785463200000" data-count="6" data-label="10:45–11:00" style="--flow-level:2" aria-label="10:45–11:00 수집 자료 6건"><span class="flow-cell-count">6</span><span class="flow-cell-time">10:45</span></button><button class="flow-cell" type="button" data-flow-cell data-start-ts="1785463200000" data-end-ts="1785464100000" data-count="14" data-label="11:00–11:15" style="--flow-level:4" aria-label="11:00–11:15 수집 자료 14건"><span class="flow-cell-count">14</span><span class="flow-cell-time">11:00</span></button><button class="flow-cell" type="button" data-flow-cell data-start-ts="1785464100000" data-end-ts="1785465000000" data-count="1" data-label="11:15–11:30" style="--flow-level:1" aria-label="11:15–11:30 수집 자료 1건"><span class="flow-cell-count">1</span><span class="flow-cell-time">11:15</span></button><button class="flow-cell latest" type="button" data-flow-cell data-start-ts="1785465000000" data-end-ts="1785465900000" data-count="3" data-label="11:30–11:45" style="--flow-level:1" aria-label="11:30–11:45 수집 자료 3건"><span class="flow-cell-count">3</span><span class="flow-cell-time">11:30</span></button></div>
+            <div class="flow-map"><button class="flow-cell" type="button" data-flow-cell data-start-ts="1785445200000" data-end-ts="1785447000000" data-count="3" data-label="06:00–06:30" style="--flow-level:1" aria-label="06:00–06:30 수집 자료 3건"><span class="flow-cell-count">3</span><span class="flow-cell-time">06:00</span></button><div class="flow-cell empty" aria-label="06:30–07:00 새 자료 없음"><span class="flow-cell-time">06:30</span></div><div class="flow-cell empty" aria-label="07:00–07:30 새 자료 없음"><span class="flow-cell-time">07:00</span></div><div class="flow-cell empty" aria-label="07:30–08:00 새 자료 없음"><span class="flow-cell-time">07:30</span></div><button class="flow-cell" type="button" data-flow-cell data-start-ts="1785452400000" data-end-ts="1785454200000" data-count="1" data-label="08:00–08:30" style="--flow-level:1" aria-label="08:00–08:30 수집 자료 1건"><span class="flow-cell-count">1</span><span class="flow-cell-time">08:00</span></button><button class="flow-cell" type="button" data-flow-cell data-start-ts="1785454200000" data-end-ts="1785456000000" data-count="5" data-label="08:30–09:00" style="--flow-level:1" aria-label="08:30–09:00 수집 자료 5건"><span class="flow-cell-count">5</span><span class="flow-cell-time">08:30</span></button><button class="flow-cell" type="button" data-flow-cell data-start-ts="1785456000000" data-end-ts="1785457800000" data-count="3" data-label="09:00–09:30" style="--flow-level:1" aria-label="09:00–09:30 수집 자료 3건"><span class="flow-cell-count">3</span><span class="flow-cell-time">09:00</span></button><button class="flow-cell" type="button" data-flow-cell data-start-ts="1785457800000" data-end-ts="1785459600000" data-count="4" data-label="09:30–10:00" style="--flow-level:1" aria-label="09:30–10:00 수집 자료 4건"><span class="flow-cell-count">4</span><span class="flow-cell-time">09:30</span></button><button class="flow-cell" type="button" data-flow-cell data-start-ts="1785459600000" data-end-ts="1785461400000" data-count="1" data-label="10:00–10:30" style="--flow-level:1" aria-label="10:00–10:30 수집 자료 1건"><span class="flow-cell-count">1</span><span class="flow-cell-time">10:00</span></button><button class="flow-cell" type="button" data-flow-cell data-start-ts="1785461400000" data-end-ts="1785463200000" data-count="8" data-label="10:30–11:00" style="--flow-level:2" aria-label="10:30–11:00 수집 자료 8건"><span class="flow-cell-count">8</span><span class="flow-cell-time">10:30</span></button><button class="flow-cell" type="button" data-flow-cell data-start-ts="1785463200000" data-end-ts="1785465000000" data-count="15" data-label="11:00–11:30" style="--flow-level:4" aria-label="11:00–11:30 수집 자료 15건"><span class="flow-cell-count">15</span><span class="flow-cell-time">11:00</span></button><button class="flow-cell latest" type="button" data-flow-cell data-start-ts="1785465000000" data-end-ts="1785466800000" data-count="3" data-label="11:30–12:00" style="--flow-level:1" aria-label="11:30–12:00 수집 자료 3건"><span class="flow-cell-count">3</span><span class="flow-cell-time">11:30</span></button></div>
           </div>
-          <div class="flow-map-legend"><span>6시간 전</span><strong>기사량 0 → 많음</strong><span>지금</span></div>
+          <div class="flow-map-legend"><span>6시간 전</span><strong>진할수록 자료가 많음</strong><span>지금</span></div>
         </div>
       </section>
 
       <section class="flow-stream" id="flow-stream" data-flow-stream aria-labelledby="flow-stream-title">
         <div class="flow-stream-head">
           <div>
-            <h2 id="flow-stream-title">시간의 강</h2>
+            <h2 id="flow-stream-title">최신 자료 흐름</h2>
             <p class="flow-stream-status" data-flow-status>최근 자료 60건</p>
           </div>
           <button class="flow-read-button" type="button" data-flow-mark-read>여기까지 읽었습니다</button>
