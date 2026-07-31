@@ -562,6 +562,8 @@ def _first_selected_anchor(root: Tag, selectors: list[str]) -> Tag | None:
             anchor = node.find("a", href=True)
             if isinstance(anchor, Tag):
                 return anchor
+    if selectors:
+        return None
     anchor = root.find("a", href=True)
     return anchor if isinstance(anchor, Tag) else None
 
@@ -645,6 +647,12 @@ def parse_local_board_search(page_text: str, source: dict[str, Any]) -> list[dic
         if anchor is None:
             continue
         href = html.unescape(str(anchor.get("href") or "")).strip()
+        if href.lower().startswith("javascript:"):
+            link_pattern = str(source.get("javascript_link_pattern") or "")
+            detail_template = str(source.get("detail_url_template") or "")
+            match = re.search(link_pattern, href) if link_pattern and detail_template else None
+            if match:
+                href = detail_template.format(*match.groups(), **match.groupdict())
         if not href or href.lower().startswith(("javascript:", "mailto:", "#")):
             continue
         title = _clean_local_board_title(
@@ -689,6 +697,62 @@ def parse_local_board_search(page_text: str, source: dict[str, Any]) -> list[dic
             article["attachment_url"] = attachment_url
             article["original_document_url"] = attachment_url
         articles.append(article)
+
+    return articles
+
+
+def parse_korea_press_release_list(page_text: str, source: dict[str, Any]) -> list[dict[str, Any]]:
+    """Parse the Policy Briefing press-release search result.
+
+    Policy Briefing is the stable cross-ministry index. Individual ministry
+    boards remain useful fallbacks, but this collector prevents coverage gaps
+    when a ministry changes its own board markup.
+    """
+    base_url = str(source.get("url") or "https://www.korea.kr/briefing/pressReleaseList.do")
+    source_name = str(source.get("name") or "정책브리핑 정부부처 보도자료")
+    source_kind = str(source.get("kind") or "official")
+    soup = BeautifulSoup(page_text, "html.parser")
+    articles: list[dict[str, Any]] = []
+    seen_urls: set[str] = set()
+
+    for anchor in soup.select('a[href*="/briefing/pressReleaseView.do"]'):
+        href = html.unescape(str(anchor.get("href") or "")).strip()
+        title_node = anchor.select_one(".text > strong, strong")
+        title = strip_html(title_node.get_text(" ", strip=True) if title_node else "")
+        if not href or not title:
+            continue
+        article_url = urljoin(base_url, href)
+        if article_url in seen_urls:
+            continue
+        seen_urls.add(article_url)
+
+        lead_node = anchor.select_one(".text > .lead, .lead")
+        source_nodes = anchor.select(".text > .source > span, .source > span")
+        published_date = _extract_local_board_date(
+            source_nodes[0].get_text(" ", strip=True) if source_nodes else anchor.get_text(" ", strip=True)
+        )
+        authority = (
+            strip_html(source_nodes[-1].get_text(" ", strip=True))
+            if len(source_nodes) >= 2
+            else source_name
+        )
+        lead_text = strip_html(lead_node.get_text(" ", strip=True)) if lead_node else ""
+        articles.append(
+            {
+                "title": title,
+                "url": article_url,
+                "source": authority,
+                "source_name": source_name,
+                "source_kind": source_kind,
+                "source_url": base_url,
+                "published_date": published_date,
+                "lead_text": lead_text[:1200],
+                "policy_authority": authority,
+                "source_channel": "press_release",
+                "is_official_source": True,
+                "region": "전국",
+            }
+        )
 
     return articles
 
@@ -901,6 +965,10 @@ def _parse_local_board_payload(payload: str, source: dict[str, Any]) -> list[dic
     return parse_local_board_search(payload, source)
 
 
+def _parse_korea_press_release_payload(payload: str, source: dict[str, Any]) -> list[dict[str, Any]]:
+    return parse_korea_press_release_list(payload, source)
+
+
 PARSER_REGISTRY: dict[str, ParserFn] = {
     "rss": _parse_rss_payload,
     "fsc_press_release": _parse_fsc_payload,
@@ -911,6 +979,7 @@ PARSER_REGISTRY: dict[str, ParserFn] = {
     "korea_withyou_policy_news": _parse_korea_withyou_payload,
     "naver_news_search": _parse_naver_payload,
     "local_board_search": _parse_local_board_payload,
+    "korea_press_release_list": _parse_korea_press_release_payload,
 }
 
 

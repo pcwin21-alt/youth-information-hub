@@ -166,17 +166,44 @@ CENTRAL_AUTHORITY_OFFICIAL_URLS = {
     "금융위원회": "https://www.fsc.go.kr/",
 }
 
+CENTRAL_YOUTH_POLICY_DOCUMENTS = [
+    {
+        "policy_authority": "국무조정실",
+        "title": "제2차 청년정책 기본계획(2026~2030) PDF",
+        "url": "https://www.opm.go.kr/_res/opm/etc/opm_youth_plan2.pdf",
+        "published_date": "2025-12-01T00:00:00+09:00",
+        "lead_text": "향후 5년간 중앙부처와 지방자치단체 청년정책의 공통 기준이 되는 범정부 기본계획 원문입니다.",
+        "policy_type": "기본계획",
+    },
+    {
+        "policy_authority": "국무조정실",
+        "title": "2026년 중앙행정기관 청년정책 시행계획 PDF",
+        "url": "https://www.korea.kr/common/download.do?fileId=198444829&tblKey=GMN",
+        "published_date": "2026-04-30T00:00:00+09:00",
+        "lead_text": "각 중앙부처의 2026년 청년정책 과제와 추진계획이 부처별로 수록된 범정부 시행계획 원문입니다.",
+        "policy_type": "시행계획",
+    },
+    {
+        "policy_authority": "국무조정실",
+        "title": "연도별 청년정책 시행계획 자료실",
+        "url": "https://www.opm.go.kr/opm/info/youth_implementation.do",
+        "published_date": "2026-04-30T00:00:00+09:00",
+        "lead_text": "국무조정실이 공개한 중앙행정기관·지방자치단체 연도별 청년정책 시행계획 목록입니다.",
+        "policy_type": "시행계획",
+    },
+]
+
 
 def build_central_authority_directory_entry(authority: str) -> dict:
     official_url = CENTRAL_AUTHORITY_OFFICIAL_URLS.get(authority, "https://www.korea.kr/")
     return {
         "policy_authority": authority,
-        "title": f"{authority} 청년정책 공식 경로",
+        "title": f"{authority} 공식 홈페이지·보도자료 경로",
         "url": official_url,
         "published_date": "2026-01-01T00:00:00+09:00",
         "lead_text": (
-            f"공식자료 메뉴에서 모든 중앙부처를 빠짐없이 탐색할 수 있도록 연결한 {authority} 공식 홈페이지입니다. "
-            "청년 관련 보도자료, 공고, 기본계획은 원문에서 확인합니다."
+            f"{authority}의 청년 관련 보도자료와 정책 원문을 확인하는 공식 경로입니다. "
+            "부처별 연간 과제는 국무조정실의 중앙행정기관 시행계획 PDF에서 함께 확인합니다."
         ),
         "policy_type": "기타",
     }
@@ -788,10 +815,12 @@ LOCAL_YOUTH_PLAN_STATIC_LINKS = {
         "basic_plan": {
             "title": "인천광역시 제2차 청년정책 기본계획(2026~2030)",
             "url": "https://youth.incheon.go.kr/bbs/bbsMsgDetail.do?bcd=data&msg_seq=22&pgno=1",
+            "download_url": "https://youth.incheon.go.kr/bbs/bbsMsgFileDown.do?bcd=data&msg_seq=22&fileno=1",
         },
         "implementation_plan": {
             "title": "2026년 인천광역시 청년정책 시행계획",
             "url": "https://youth.incheon.go.kr/bbs/bbsMsgDetail.do?bcd=data&msg_seq=23",
+            "download_url": "https://youth.incheon.go.kr/bbs/bbsMsgFileDown.do?bcd=data&msg_seq=23&fileno=1",
         },
     },
     "gwangju": {
@@ -924,6 +953,13 @@ LOCAL_YOUTH_PLAN_STATIC_LINKS = {
             "url": "https://www.jeju.go.kr/lifecycle/notice/guide.htm?act=download&no=1&seq=2011964",
         },
     },
+}
+
+LOCAL_IMPLEMENTATION_SUMMARY_DOCUMENT = {
+    "title": "2026년 17개 광역지자체 청년정책 시행계획 종합 PDF",
+    "url": "https://www.korea.kr/common/download.do?fileId=198444830&tblKey=GMN",
+    "download_url": "https://www.korea.kr/common/download.do?fileId=198444830&tblKey=GMN",
+    "scope": "17개 지자체 종합본",
 }
 
 
@@ -16338,8 +16374,55 @@ def build_government_official_release_articles(articles: list[dict], reference_t
 def build_government_policy_resource_articles() -> list[dict]:
     return [
         with_display_badges(article, "기본·시행계획 자료")
-        for article in build_curated_major_policy_articles()
+        for article in build_policy_document_and_authority_articles()
     ]
+
+
+def build_policy_document_and_authority_articles() -> list[dict]:
+    entries = [
+        *CENTRAL_YOUTH_POLICY_DOCUMENTS,
+        *[
+            build_central_authority_directory_entry(authority)
+            for authority in MAJOR_CENTRAL_POLICY_AUTHORITIES
+        ],
+    ]
+    articles: list[dict] = []
+    for entry in entries:
+        authority = entry["policy_authority"]
+        url = entry["url"]
+        lead_text = entry["lead_text"]
+        articles.append(
+            {
+                "title": entry["title"],
+                "url": url,
+                "publisher_url": url,
+                "canonical_url": url,
+                "feed_url": url,
+                "source": authority,
+                "source_name": authority,
+                "source_kind": "official",
+                "source_url": url,
+                "published_date": entry["published_date"],
+                "publisher_published_at": entry["published_date"],
+                "lead_text": lead_text,
+                "summary": lead_text,
+                "policy_authority": authority,
+                "is_official_source": True,
+                "region": "전국",
+                "display_badges": ["공식 자료", authority],
+                "issue_tags": [],
+                "location_tags": [],
+                "policy_type_override": entry["policy_type"],
+                "pipeline_flags": {
+                    "collected": True,
+                    "deduped": True,
+                    "classified": True,
+                    "selected": False,
+                    "published": True,
+                },
+            }
+        )
+    return articles
 
 
 CENTRAL_PRESS_RELEASE_KEYWORDS = (
@@ -16577,7 +16660,7 @@ def render_government_menu_nav() -> str:
     items = [
         ("#main-list", "01", "정부 발표 뉴스 모음", "뉴스 중 중앙정부 발표와 청년정책이 함께 핵심인 기사만 봅니다."),
         ("#government-official-releases", "02", "정부 홈페이지 보도자료", "정책브리핑, 국무조정실, 중앙부처 홈페이지의 청년 보도자료를 모읍니다."),
-        ("#government-policy-resources", "03", "각 부처별 기본·시행계획 자료 모음", "부처별 청년정책 기본계획·시행계획과 공식 자료 경로를 연결합니다."),
+        ("#government-policy-resources", "03", "청년정책 기준 문서·부처별 경로", "범정부 기본·시행계획 원문과 각 부처 공식 경로를 연결합니다."),
     ]
     cards = "".join(
         f"""
@@ -16706,8 +16789,8 @@ def build_policies_page_compact(articles: list[dict], status: dict) -> str:
     <section class="section" id="government-policy-resources">
       <div class="section-head">
         <div>
-          <h2>각 부처별 기본·시행계획 자료 모음</h2>
-          <p>부처별 청년정책 기본계획·시행계획, 공식 홈페이지 경로와 최근 확인된 핵심 자료를 연결합니다.</p>
+          <h2>청년정책 기준 문서·부처별 경로</h2>
+          <p>청년정책 기본계획은 국무조정실이 총괄하는 범정부 문서입니다. 기본계획과 중앙행정기관 시행계획 원문을 먼저 두고, 부처별 보도자료 확인 경로를 함께 연결합니다.</p>
         </div>
         <span class="mini-link" aria-disabled="true">{len(policy_resource_articles)}건</span>
       </div>
@@ -16771,7 +16854,7 @@ def build_official_page(articles: list[dict], status: dict) -> str:
         """
         for href, order, title, description in [
             ("#central-press-releases", "01", "정부부처 보도자료", "정책브리핑과 중앙부처 원문 보도자료"),
-            ("#official-policy-plans", "02", "기본·시행계획", "19개 중앙부처의 기준 문서와 공식 경로"),
+            ("#official-policy-plans", "02", "기본·시행계획", "범정부 기준 문서와 20개 부처·기관 공식 경로"),
         ]
     )
     central_grid = render_official_release_grid(
@@ -16806,8 +16889,8 @@ def build_official_page(articles: list[dict], status: dict) -> str:
         <span class="mini-link" aria-disabled="true">{len(policy_resource_articles)}건</span>
       </div>
       <div class="section-card">
-        <h3>중앙정부 기본·시행계획 자료</h3>
-        <p>부처별 청년정책 기본계획·시행계획과 공식 자료 경로입니다.</p>
+        <h3>범정부 계획 안에서 부처별 과제를 확인합니다</h3>
+        <p>부처마다 별도 문서가 있는 것처럼 표시하지 않습니다. 범정부 청년정책 기본계획·시행계획 PDF를 기준 문서로 제공하고, 각 부처 카드는 보도자료·정책 원문 탐색 경로로 구분합니다.</p>
       </div>
       {central_plan_grid}
     </section>
@@ -16903,6 +16986,8 @@ def build_local_plan_region_summaries(plan_documents: list[dict]) -> list[dict]:
         static_links = LOCAL_YOUTH_PLAN_STATIC_LINKS.get(region["id"], {})
         basic_plan = sanitize_static_local_plan_link(static_links.get("basic_plan") or {})
         implementation_plan = sanitize_static_local_plan_link(static_links.get("implementation_plan") or {})
+        if not implementation_plan:
+            implementation_plan = dict(LOCAL_IMPLEMENTATION_SUMMARY_DOCUMENT)
         if latest and document_url:
             dynamic_link = {
                 "title": display_article_title(latest, limit=72),
@@ -16936,10 +17021,22 @@ def build_local_plan_region_summaries(plan_documents: list[dict]) -> list[dict]:
 def sanitize_static_local_plan_link(link: dict) -> dict:
     """Do not present a central-government roundup as a municipality source."""
     url = str(link.get("url") or "").strip()
+    title = str(link.get("title") or "공식 자료")
     hostname = (urllib.parse.urlparse(url).hostname or "").lower()
-    if not url or hostname == "korea.kr" or hostname.endswith(".korea.kr"):
+    if (
+        not url
+        or hostname == "korea.kr"
+        or hostname.endswith(".korea.kr")
+        or ("인구정책" in title and "청년정책" not in title)
+    ):
         return {}
-    return {"title": str(link.get("title") or "공식 자료"), "url": url}
+    sanitized = {"title": title, "url": url}
+    download_url = str(link.get("download_url") or "").strip()
+    if download_url:
+        sanitized["download_url"] = download_url
+    if link.get("scope"):
+        sanitized["scope"] = str(link["scope"])
+    return sanitized
 
 
 def local_plan_document_url(article: dict | None) -> str:
@@ -17213,13 +17310,18 @@ def render_korea_adm1_local_map(summaries: list[dict]) -> str:
 
 
 def render_local_map_plan_link(label: str, link: dict) -> str:
-    url = normalize_inline_text(link.get("url") if isinstance(link, dict) else "")
+    download_url = normalize_inline_text(link.get("download_url") if isinstance(link, dict) else "")
+    url = download_url or normalize_inline_text(link.get("url") if isinstance(link, dict) else "")
     title = normalize_inline_text(link.get("title") if isinstance(link, dict) else "") or label
     if not url:
         return f'<span class="local-map-popover-empty">{html.escape(label)} 미확인</span>'
+    scope = normalize_inline_text(link.get("scope") if isinstance(link, dict) else "")
+    suffix = " PDF" if download_url else " 원문"
+    if scope:
+        suffix = " 종합 PDF"
     return (
         f'<a href="{html.escape(url, quote=True)}" target="_blank" rel="noreferrer" '
-        f'title="{html.escape(title, quote=True)}">{html.escape(label)}</a>'
+        f'title="{html.escape(title, quote=True)}">{html.escape(label + suffix)}</a>'
     )
 
 
@@ -17263,7 +17365,7 @@ def render_local_policy_plan_map(plan_documents: list[dict]) -> str:
       <div class="section-head">
         <div>
           <h2>지자체별 청년정책 기본·시행계획</h2>
-          <p>17개 광역지자체 공식 자료를 지역별로 연결합니다. 지역명 위에 올리면 기본계획과 시행계획 링크가 바로 열립니다.</p>
+          <p>17개 광역지자체 공식 자료를 지역별로 연결합니다. 지역 자체 PDF가 확인된 경우 바로 다운로드하고, 미확인 지역은 국무조정실이 공개한 17개 지자체 시행계획 종합 PDF로 연결합니다.</p>
         </div>
         <span class="mini-link" aria-disabled="true">광역 17곳</span>
       </div>

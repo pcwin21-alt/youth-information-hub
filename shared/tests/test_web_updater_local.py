@@ -128,6 +128,35 @@ class LocalGovernmentTrendsPageTests(unittest.TestCase):
         self.assertIn('href="local.html"', page_html)
         self.assertIn('href="hub.html"', page_html)
 
+    def test_local_plan_map_covers_17_regions_with_truthful_download_fallback(self) -> None:
+        summaries = web_updater.build_local_plan_region_summaries([])
+
+        self.assertEqual(len(summaries), 17)
+        incheon = next(item for item in summaries if item["id"] == "incheon")
+        jeju = next(item for item in summaries if item["id"] == "jeju")
+        self.assertIn("bbsMsgFileDown.do", incheon["basic_plan"]["download_url"])
+        self.assertIn("bbsMsgFileDown.do", incheon["implementation_plan"]["download_url"])
+        self.assertEqual(
+            jeju["implementation_plan"]["scope"],
+            "17개 지자체 종합본",
+        )
+
+        page_html = web_updater.render_local_policy_plan_map([])
+        self.assertEqual(page_html.count('class="local-map-marker"'), 17)
+        self.assertIn("PDF", page_html)
+        self.assertIn("종합 PDF", page_html)
+
+    def test_government_resources_start_with_cross_government_documents(self) -> None:
+        resources = web_updater.build_government_policy_resource_articles()
+        urls = {article["url"] for article in resources}
+
+        self.assertIn("https://www.opm.go.kr/_res/opm/etc/opm_youth_plan2.pdf", urls)
+        self.assertIn(
+            "https://www.korea.kr/common/download.do?fileId=198444829&tblKey=GMN",
+            urls,
+        )
+        self.assertGreaterEqual(len(resources), 23)
+
 
 if __name__ == "__main__":
     unittest.main()

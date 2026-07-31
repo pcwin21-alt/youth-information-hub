@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import sys
 import subprocess
+import json
 import unittest
 from datetime import datetime, timezone, timedelta
 from pathlib import Path
@@ -18,6 +19,7 @@ from youth_info_platform.collect import (  # noqa: E402
     fetch_url_via_curl,
     get_source_parser,
     parse_feed,
+    parse_korea_press_release_list,
     parse_local_board_search,
     parse_naver_news_search,
     parse_source_payload,
@@ -327,6 +329,107 @@ class LocalBoardParserTests(unittest.TestCase):
         self.assertEqual(len(articles), 1)
         self.assertEqual(articles[0]["title"], "청년 면접정장 대여 지원")
         self.assertEqual(articles[0]["url"], "https://youth.incheon.go.kr/policy/detail?id=1")
+
+    def test_parse_local_board_search_resolves_javascript_detail_link(self) -> None:
+        html = """
+        <ul><li class="board-item">
+          <a href="javascript:fnTbbsView('461792');">청년 마음건강 지원 보도자료</a>
+          <span>2026-07-20</span>
+        </li></ul>
+        """
+        source = {
+            "name": "서울특별시 보도자료 청년 검색",
+            "kind": "local",
+            "url": "https://www.seoul.go.kr/news/news_report.do?srchText=청년",
+            "region_name": "서울",
+            "source_channel": "press_release",
+            "search_terms": ["청년"],
+            "javascript_link_pattern": r"fnTbbsView\('(?P<id>\d+)'\)",
+            "detail_url_template": "/news/news_report.do?nttNo={id}",
+        }
+
+        articles = parse_local_board_search(html, source)
+
+        self.assertEqual(len(articles), 1)
+        self.assertEqual(
+            articles[0]["url"],
+            "https://www.seoul.go.kr/news/news_report.do?nttNo=461792",
+        )
+
+    def test_explicit_link_selector_does_not_fall_back_to_navigation_link(self) -> None:
+        html = """
+        <table><tbody><tr>
+          <td><a href="/home">청년포털</a></td>
+          <td>일반 보도자료</td>
+        </tr></tbody></table>
+        """
+        source = {
+            "name": "광역지자체 보도자료",
+            "kind": "local",
+            "url": "https://example.go.kr/press",
+            "item_selector": "table tbody tr",
+            "title_selector": "a[href*='view.do']",
+            "link_selector": "a[href*='view.do']",
+            "search_terms": ["청년"],
+        }
+
+        self.assertEqual(parse_local_board_search(html, source), [])
+
+
+class KoreaPressReleaseParserTests(unittest.TestCase):
+    def test_parse_cross_ministry_youth_press_release_results(self) -> None:
+        html = """
+        <div class="list_type"><ul><li>
+          <a href="/briefing/pressReleaseView.do?newsId=156700001">
+            <span class="text">
+              <strong>청년 주거지원 확대 방안 발표</strong>
+              <span class="lead"><span class="highlight">청년</span> 월세 지원을 확대합니다.</span>
+              <span class="source"><span>2026-07-31</span><span>국토교통부</span></span>
+            </span>
+          </a>
+        </li></ul></div>
+        """
+        source = {
+            "name": "정책브리핑 정부부처 청년 보도자료",
+            "kind": "official",
+            "parser": "korea_press_release_list",
+            "url": "https://www.korea.kr/briefing/pressReleaseList.do?srchWord=청년",
+        }
+
+        articles = parse_korea_press_release_list(html, source)
+
+        self.assertEqual(len(articles), 1)
+        self.assertEqual(articles[0]["source"], "국토교통부")
+        self.assertEqual(articles[0]["policy_authority"], "국토교통부")
+        self.assertEqual(articles[0]["source_channel"], "press_release")
+        self.assertEqual(articles[0]["published_date"], "2026-07-31T00:00:00+09:00")
+        self.assertEqual(
+            articles[0]["url"],
+            "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156700001",
+        )
+        self.assertIsNotNone(get_source_parser("korea_press_release_list"))
+
+
+class SourceRegistryCoverageTests(unittest.TestCase):
+    def test_all_17_metropolitan_governments_have_press_release_trackers(self) -> None:
+        config_path = Path(__file__).resolve().parents[2] / "public-site" / "config" / "source_config.yaml"
+        sources = json.loads(config_path.read_text(encoding="utf-8"))["sources"]
+        region_ids = {
+            source.get("region_id")
+            for source in sources
+            if source.get("enabled")
+            and source.get("kind") == "local"
+            and source.get("source_channel") == "press_release"
+        }
+
+        self.assertEqual(
+            region_ids,
+            {
+                "seoul", "busan", "daegu", "incheon", "gwangju", "daejeon",
+                "ulsan", "sejong", "gyeonggi", "gangwon", "chungbuk", "chungnam",
+                "jeonbuk", "jeonnam", "gyeongbuk", "gyeongnam", "jeju",
+            },
+        )
 
 
 class FetchUrlTests(unittest.TestCase):
