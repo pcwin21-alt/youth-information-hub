@@ -8503,37 +8503,53 @@
 
   .flow-hero {
     display: grid;
-    gap: 22px;
+    gap: 24px;
   }
 
   .flow-hero-header {
     display: grid;
-    grid-template-columns: minmax(0, 1.45fr) minmax(260px, 0.55fr);
-    gap: 18px;
+    /* Hero 6:3:1 hierarchy: content field 60 / information structure 30 / accent cue 10. */
+    grid-template-columns: minmax(0, 7fr) minmax(270px, 3fr);
+    gap: clamp(24px, 3vw, 42px);
     align-items: end;
   }
 
+  .flow-hero .eyebrow {
+    display: inline-flex;
+    width: fit-content;
+    padding: 7px 11px;
+    border: 1px solid var(--accent-strong);
+    border-radius: 999px;
+    background: var(--accent-strong);
+    color: #ffffff;
+    font-size: clamp(0.74rem, 0.7rem + 0.12vw, 0.8rem);
+    font-weight: 800;
+    line-height: 1.35;
+    letter-spacing: 0.015em;
+  }
+
   .flow-hero-title {
-    max-width: 850px;
-    margin: 10px 0 12px;
-    font-size: clamp(2.35rem, 5vw, 5.6rem);
-    line-height: 0.98;
-    letter-spacing: -0.075em;
+    max-width: 800px;
+    margin: 14px 0 14px;
+    font-size: clamp(2.65rem, 4.25vw, 4.65rem);
+    line-height: 1.04;
+    letter-spacing: -0.06em;
+    text-wrap: balance;
   }
 
   .flow-hero-copy {
-    max-width: 720px;
+    max-width: 680px;
     margin: 0;
     color: var(--muted);
-    font-size: clamp(1rem, 1.7vw, 1.22rem);
-    line-height: 1.75;
+    font-size: clamp(0.98rem, 0.91rem + 0.28vw, 1.1rem);
+    line-height: 1.7;
   }
 
   .flow-freshness {
-    padding: 18px;
-    border: 1px solid var(--line);
+    padding: 20px;
+    border: 1px solid rgba(16, 44, 50, 0.18);
     border-radius: 20px;
-    background: rgba(255, 255, 255, 0.74);
+    background: var(--sky);
   }
 
   .flow-freshness span,
@@ -8547,8 +8563,10 @@
 
   .flow-freshness strong {
     display: block;
-    margin-top: 6px;
-    font-size: 1.45rem;
+    margin-top: 7px;
+    font-size: clamp(1.15rem, 1.02rem + 0.4vw, 1.35rem);
+    line-height: 1.3;
+    letter-spacing: -0.035em;
   }
 
   .flow-freshness p {
@@ -8981,7 +8999,19 @@
     }
 
     .flow-hero-title {
-      font-size: clamp(2.25rem, 13vw, 4rem);
+      margin-top: 12px;
+      font-size: clamp(2rem, 8vw, 2.55rem);
+      line-height: 1.08;
+      letter-spacing: -0.06em;
+    }
+
+    .flow-hero-copy {
+      font-size: 0.98rem;
+      line-height: 1.65;
+    }
+
+    .flow-freshness {
+      padding: 17px;
     }
 
     .flow-board-head,

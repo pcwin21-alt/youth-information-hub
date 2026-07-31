@@ -819,6 +819,20 @@ class HomeSelectionTests(unittest.TestCase):
         self.assertIn(".side-nav {\n      display: none;", tablet_rules)
         self.assertIn("grid-template-columns: repeat(5", tablet_rules)
 
+    def test_home_hero_uses_balanced_type_scale_and_high_contrast_accent(self) -> None:
+        css = web_updater.DESIGN_OVERHAUL_CSS
+
+        self.assertIn("Hero 6:3:1 hierarchy", css)
+        self.assertIn("grid-template-columns: minmax(0, 7fr) minmax(270px, 3fr);", css)
+        self.assertIn(".flow-hero .eyebrow {", css)
+        self.assertIn("background: var(--accent-strong);", css)
+        self.assertIn("color: #ffffff;", css)
+        self.assertIn("font-size: clamp(2.65rem, 4.25vw, 4.65rem);", css)
+        self.assertIn("line-height: 1.04;", css)
+        self.assertIn("background: var(--sky);", css)
+        mobile_rules = css.split("@media (max-width: 760px)", 1)[1]
+        self.assertIn("font-size: clamp(2rem, 8vw, 2.55rem);", mobile_rules)
+
     def test_seven_menu_router_separates_news_opinion_research_and_official_sources(self) -> None:
         general_news = make_article(
             title="청년 고용시장 변화 현장 보도",
