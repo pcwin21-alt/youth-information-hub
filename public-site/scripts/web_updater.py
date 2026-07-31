@@ -11226,6 +11226,7 @@ def build_page_script() -> str:
     return "\n".join((BASE_SCRIPT, HOME_FLOW_SCRIPT, build_admin_access_script(), build_analytics_script()))
 
 
+# Public IA uses first-recognition labels; keep this order aligned with harness.md and its regression test.
 NAV_ITEMS = [
     ("news.html", "뉴스 모아보기"),
     ("opinion.html", "기고·칼럼·오피니언"),
