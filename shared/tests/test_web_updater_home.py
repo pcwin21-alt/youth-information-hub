@@ -196,11 +196,10 @@ class HomeSelectionTests(unittest.TestCase):
         self.assertIn("30분 단위 자료량", page_html)
         self.assertIn("최신 자료 흐름", page_html)
         self.assertNotIn("시간의 강", page_html)
-        flow_cell_count = (
-            page_html.count('<button class="flow-cell')
-            + page_html.count('<div class="flow-cell')
+        self.assertEqual(
+            page_html.count('data-flow-slot data-flow-period-index="0"'),
+            12,
         )
-        self.assertEqual(flow_cell_count, 12)
         self.assertNotIn('flow-cell-count">0</span>', page_html)
         self.assertEqual(page_html.count('data-flow-id="06c509e269c18556"'), 1)
         self.assertNotIn("지금 모집 중인 청년정책", page_html)
@@ -208,6 +207,38 @@ class HomeSelectionTests(unittest.TestCase):
         self.assertNotIn("오늘 메인", page_html)
         self.assertNotIn('<span class="home-glance-label">정책</span>', page_html)
         self.assertNotIn('<span class="home-glance-label">참여·회의</span>', page_html)
+
+    def test_home_full_flow_keeps_loading_older_six_hour_periods(self) -> None:
+        articles = []
+        for index, published_date in enumerate(
+            [
+                "2026-04-22T09:00:00+09:00",
+                "2026-04-22T03:00:00+09:00",
+                "2026-04-21T20:00:00+09:00",
+            ]
+        ):
+            article = make_article(
+                title=f"청년정책 현장 기고 {index}",
+                lead_text="청년정책 현장을 해설하는 필자의 글이다.",
+                url=f"https://example.com/history-{index}",
+                published_date=published_date,
+            )
+            article["article_type"] = "opinion"
+            article["content_direction"] = web_updater.CONTENT_DIRECTION_COLUMN
+            articles.append(article)
+
+        page_html = web_updater.build_home_page(
+            articles,
+            articles,
+            {"finished_at": self.reference_time},
+            {},
+        )
+
+        self.assertIn('data-flow-period-index="0"', page_html)
+        self.assertIn('data-flow-period-index="1" hidden', page_html)
+        self.assertIn('data-flow-period-index="2" hidden', page_html)
+        self.assertIn("이전 흐름 더 보기", web_updater.HOME_FLOW_SCRIPT)
+        self.assertIn("IntersectionObserver", web_updater.HOME_FLOW_SCRIPT)
 
     def test_home_government_trends_keep_youth_officials_and_skip_generic_officials(self) -> None:
         youth_official = make_article(
@@ -823,6 +854,35 @@ class HomeSelectionTests(unittest.TestCase):
         self.assertNotIn(local["title"], official_html)
         self.assertIn(local["title"], local_html)
         self.assertNotIn(central["title"], local_html)
+
+    def test_research_menu_does_not_capture_ordinary_insight_or_recruitment_news(self) -> None:
+        analytical_news = make_article(
+            title="청년 전월세 부담 커져…현장 목소리 들어보니",
+            lead_text="통계와 조사 결과를 인용해 청년 주거 문제를 다룬 일반 기사다.",
+            url="https://example.com/analytical-news",
+        )
+        analytical_news["youth_research_signal"] = True
+        analytical_news["content_direction"] = web_updater.CONTENT_DIRECTION_INSIGHT
+        recruitment_news = make_article(
+            title="울산 동구, 제4기 청년정책협의체 위원 모집",
+            lead_text="청년정책협의체 위원을 모집한다.",
+            url="https://example.com/recruitment",
+        )
+        recruitment_news["content_direction"] = web_updater.CONTENT_DIRECTION_INSIGHT
+        survey_plan_news = make_article(
+            title="정부, 청년 주거 실태조사 실시",
+            lead_text="정부가 향후 실태조사를 추진한다는 계획을 발표했다.",
+            url="https://example.com/survey-plan",
+        )
+        survey_plan_news["youth_research_signal"] = True
+        survey_plan_news["content_direction"] = web_updater.CONTENT_DIRECTION_INSIGHT
+
+        self.assertFalse(web_updater.is_research_report_menu_article(analytical_news))
+        self.assertFalse(web_updater.is_research_report_menu_article(recruitment_news))
+        self.assertFalse(web_updater.is_research_report_menu_article(survey_plan_news))
+        self.assertTrue(web_updater.is_general_news_menu_article(analytical_news))
+        self.assertTrue(web_updater.is_general_news_menu_article(recruitment_news))
+        self.assertTrue(web_updater.is_general_news_menu_article(survey_plan_news))
 
     def test_public_archive_window_is_one_year_and_notice_page_declares_that_scope(self) -> None:
         notices_html = web_updater.build_notices_page([], {"finished_at": self.reference_time})

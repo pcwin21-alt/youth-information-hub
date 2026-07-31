@@ -9436,6 +9436,21 @@ DESIGN_OVERHAUL_CSS = """
     padding: 22px 24px 24px;
   }
 
+  .flow-period + .flow-period {
+    margin-top: 20px;
+    padding-top: 18px;
+    border-top: 1px solid var(--line);
+  }
+
+  .flow-period-label {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    color: var(--muted);
+    font-size: 0.74rem;
+    font-weight: 700;
+  }
+
   .flow-map {
     display: grid;
     grid-template-columns: repeat(12, minmax(44px, 1fr));
@@ -9468,8 +9483,8 @@ DESIGN_OVERHAUL_CSS = """
   }
 
   .flow-cell.empty {
-    border-color: transparent;
-    background: transparent;
+    border-color: rgba(16, 44, 50, 0.12);
+    background: #fff;
     cursor: default;
   }
 
@@ -9519,6 +9534,10 @@ DESIGN_OVERHAUL_CSS = """
 
   .flow-map-legend strong {
     color: var(--deep-navy);
+  }
+
+  .flow-history-sentinel {
+    min-height: 1px;
   }
 
   .flow-stream {
@@ -11149,9 +11168,24 @@ HOME_FLOW_SCRIPT = """
   const storageKey = 'youth-trend-room-read-until';
   const items = Array.from(root.querySelectorAll('[data-flow-item]'));
   const cells = Array.from(root.querySelectorAll('[data-flow-cell]'));
+  const periods = Array.from(root.querySelectorAll('[data-flow-period]'));
   const status = root.querySelector('[data-flow-status]');
   const markButton = root.querySelector('[data-flow-mark-read]');
   const allButton = root.querySelector('[data-flow-all]');
+  const historySentinel = root.querySelector('[data-flow-history-sentinel]');
+  let historyStarted = false;
+
+  function visiblePeriodIndexes() {
+    return new Set(
+      periods
+        .filter((period) => !period.hidden)
+        .map((period) => String(period.dataset.flowPeriodIndex || '0'))
+    );
+  }
+
+  function visibleItems() {
+    return items.filter((item) => !item.hidden);
+  }
 
   function readStoredTimestamp() {
     try {
@@ -11164,16 +11198,17 @@ HOME_FLOW_SCRIPT = """
   function refreshReadMarker() {
     root.querySelectorAll('[data-flow-read-marker]').forEach((marker) => marker.remove());
     const readUntil = readStoredTimestamp();
-    const unreadCount = items.filter((item) => Number(item.dataset.publishedTs || 0) > readUntil).length;
+    const currentItems = visibleItems();
+    const unreadCount = currentItems.filter((item) => Number(item.dataset.publishedTs || 0) > readUntil).length;
     if (status) {
       status.textContent = readUntil
         ? `이전에 읽은 뒤 새로 들어온 자료 ${unreadCount}건`
-        : `최근 자료 ${items.length}건 · 읽은 위치를 이 브라우저에 저장할 수 있습니다`;
+        : `불러온 6시간 구간 ${visiblePeriodIndexes().size}개 · ${currentItems.length}건`;
     }
     if (!readUntil) {
       return;
     }
-    const firstReadItem = items.find((item) => Number(item.dataset.publishedTs || 0) <= readUntil);
+    const firstReadItem = currentItems.find((item) => Number(item.dataset.publishedTs || 0) <= readUntil);
     if (!firstReadItem) {
       return;
     }
@@ -11184,15 +11219,27 @@ HOME_FLOW_SCRIPT = """
     firstReadItem.before(marker);
   }
 
-  function showAll() {
+  function showLoadedPeriods() {
+    const loadedIndexes = visiblePeriodIndexes();
     items.forEach((item) => {
-      item.hidden = false;
+      item.hidden = !loadedIndexes.has(String(item.dataset.flowPeriodIndex || '0'));
     });
     cells.forEach((cell) => cell.classList.remove('active'));
-    if (allButton) {
-      allButton.classList.add('active');
-    }
     refreshReadMarker();
+  }
+
+  function revealOlderPeriods(batchSize = 4) {
+    const hiddenPeriods = periods.filter((period) => period.hidden);
+    hiddenPeriods.slice(0, batchSize).forEach((period) => {
+      period.hidden = false;
+    });
+    historyStarted = true;
+    showLoadedPeriods();
+    const remaining = periods.filter((period) => period.hidden).length;
+    if (allButton) {
+      allButton.textContent = remaining ? '이전 흐름 더 보기' : '저장된 흐름을 모두 봤습니다';
+      allButton.disabled = remaining === 0;
+    }
   }
 
   cells.forEach((cell) => {
@@ -11204,9 +11251,6 @@ HOME_FLOW_SCRIPT = """
         item.hidden = !(timestamp >= start && timestamp < end);
       });
       cells.forEach((other) => other.classList.toggle('active', other === cell));
-      if (allButton) {
-        allButton.classList.remove('active');
-      }
       root.querySelectorAll('[data-flow-read-marker]').forEach((marker) => marker.remove());
       if (status) {
         status.textContent = `${cell.dataset.label || '선택한 시간'} · ${cell.dataset.count || 0}건`;
@@ -11215,9 +11259,9 @@ HOME_FLOW_SCRIPT = """
     });
   });
 
-  allButton?.addEventListener('click', showAll);
+  allButton?.addEventListener('click', () => revealOlderPeriods());
   markButton?.addEventListener('click', () => {
-    const latestTimestamp = Math.max(0, ...items.map((item) => Number(item.dataset.publishedTs || 0)));
+    const latestTimestamp = Math.max(0, ...visibleItems().map((item) => Number(item.dataset.publishedTs || 0)));
     try {
       window.localStorage.setItem(storageKey, String(latestTimestamp));
     } catch (error) {
@@ -11226,6 +11270,20 @@ HOME_FLOW_SCRIPT = """
     refreshReadMarker();
     markButton.textContent = '읽은 위치 저장됨';
   });
+
+  if (periods.length <= 1 && allButton) {
+    allButton.textContent = '저장된 흐름을 모두 봤습니다';
+    allButton.disabled = true;
+  }
+
+  if ('IntersectionObserver' in window && historySentinel) {
+    const observer = new IntersectionObserver((entries) => {
+      if (historyStarted && entries.some((entry) => entry.isIntersecting)) {
+        revealOlderPeriods(2);
+      }
+    }, { rootMargin: '240px 0px' });
+    observer.observe(historySentinel);
+  }
 
   refreshReadMarker();
 })();
@@ -11850,19 +11908,42 @@ def content_direction_label(direction: str | None) -> str:
 
 
 RESEARCH_REPORT_KEYWORDS = (
-    "연구",
     "논문",
     "보고서",
     "리포트",
+    "연구 결과",
+    "연구결과",
+    "조사 결과",
+    "조사결과",
     "동향분석",
     "동향 분석",
     "현안분석",
     "현안 분석",
-    "실태조사",
-    "패널조사",
     "분석 결과",
+    "분석결과",
     "정책분석",
     "정책 분석",
+    "백서",
+    "브리프",
+    "워킹페이퍼",
+)
+
+RESEARCH_SOURCE_HINTS = (
+    "한국청소년정책연구원",
+    "한국보건사회연구원",
+    "한국노동연구원",
+    "국토연구원",
+    "한국개발연구원",
+    "경제인문사회연구회",
+    "nypi.re.kr",
+    "kihasa.re.kr",
+    "kli.re.kr",
+    "krihs.re.kr",
+    "kdi.re.kr",
+    "nrc.re.kr",
+    "riss.kr",
+    "dbpia.co.kr",
+    "kci.go.kr",
 )
 
 
@@ -11893,9 +11974,32 @@ def is_opinion_menu_article(article: dict) -> bool:
 def is_research_report_menu_article(article: dict) -> bool:
     if is_publicly_excluded(article) or is_official_archive_article(article) or is_opinion_menu_article(article):
         return False
-    text = article_direction_text(article)
-    return bool(article.get("youth_research_signal")) or article_content_direction(article) == CONTENT_DIRECTION_INSIGHT or any(
-        keyword in text for keyword in RESEARCH_REPORT_KEYWORDS
+    prominent_text = normalize_inline_text(
+        " ".join(
+            str(value or "")
+            for value in [
+                article.get("title"),
+                article.get("section"),
+            ]
+        )
+    )
+    source_text = normalize_inline_text(
+        " ".join(
+            str(value or "")
+            for value in [
+                article.get("source"),
+                article.get("source_name"),
+                article.get("publisher_domain"),
+                article_target_url(article),
+            ]
+        )
+    )
+    article_type = normalize_inline_text(article.get("article_type"))
+    explicit_research_type = article_type in {"research", "paper", "report", "thesis"}
+    prominent_research_signal = any(keyword in prominent_text for keyword in RESEARCH_REPORT_KEYWORDS)
+    trusted_research_source = any(hint in source_text for hint in RESEARCH_SOURCE_HINTS)
+    return explicit_research_type or prominent_research_signal or (
+        trusted_research_source and bool(article.get("youth_research_signal"))
     )
 
 
@@ -11922,8 +12026,8 @@ MENU_COLLECTION_CONTRACTS = {
     ),
     "reports": (
         "연구·논문·분석 리포트",
-        "연구·조사·보고서·현안분석 신호가 있는 신규 자료와 관련 보도를 30분마다 확인합니다.",
-        "원문 연구자료와 이를 소개한 기사에서 발행기관·게시일·원문 링크를 우선 보존합니다.",
+        "논문·보고서·연구결과·현안분석처럼 결과물 형식이 확인되는 신규 자료를 30분마다 확인합니다.",
+        "일반 분석기사나 조사 실시 계획은 뉴스로 보내고, 연구자료의 발행기관·게시일·원문 링크를 우선 보존합니다.",
     ),
     "local": (
         "17개 광역지자체 공식자료",
@@ -15625,56 +15729,101 @@ def build_home_page(
         seen_flow_keys.add(article_key)
         flow_articles.append(article)
     day_start = reference_dt.replace(hour=0, minute=0, second=0, microsecond=0)
-    last_day_start = reference_dt - timedelta(hours=24)
+    archive_start = reference_dt - timedelta(days=PUBLIC_ARCHIVE_WINDOW_DAYS)
     stream_articles = [
         article
         for article in flow_articles
-        if last_day_start <= article_exposure_datetime(article).astimezone(reference_dt.tzinfo) <= reference_dt
-    ][:60]
+        if archive_start <= article_exposure_datetime(article).astimezone(reference_dt.tzinfo) <= reference_dt
+    ]
 
     bucket_minutes = 30
+    period_hours = 6
+    period_seconds = period_hours * 60 * 60
     bucket_end = reference_dt.replace(
         minute=(reference_dt.minute // bucket_minutes) * bucket_minutes,
         second=0,
         microsecond=0,
     ) + timedelta(minutes=bucket_minutes)
-    bucket_start = bucket_end - timedelta(hours=6)
-    buckets: list[dict] = []
-    for index in range(12):
-        start = bucket_start + timedelta(minutes=bucket_minutes * index)
-        end = start + timedelta(minutes=bucket_minutes)
-        bucket_articles = [
-            article
-            for article in stream_articles
-            if start <= article_exposure_datetime(article).astimezone(reference_dt.tzinfo) < end
-        ]
-        buckets.append({"start": start, "end": end, "count": len(bucket_articles)})
 
-    max_bucket_count = max((bucket["count"] for bucket in buckets), default=0)
+    def flow_period_index(article: dict) -> int:
+        published_dt = article_exposure_datetime(article).astimezone(reference_dt.tzinfo)
+        elapsed_seconds = max(0.0, (bucket_end - published_dt).total_seconds() - 0.001)
+        return int(elapsed_seconds // period_seconds)
+
+    populated_period_indexes = sorted({flow_period_index(article) for article in stream_articles})
+    period_indexes = sorted({0, *populated_period_indexes})
+    flow_periods: list[dict] = []
+    for period_index in period_indexes:
+        period_end = bucket_end - timedelta(hours=period_hours * period_index)
+        period_start = period_end - timedelta(hours=period_hours)
+        buckets: list[dict] = []
+        for bucket_index in range(12):
+            start = period_start + timedelta(minutes=bucket_minutes * bucket_index)
+            end = start + timedelta(minutes=bucket_minutes)
+            count = sum(
+                1
+                for article in stream_articles
+                if start <= article_exposure_datetime(article).astimezone(reference_dt.tzinfo) < end
+            )
+            buckets.append({"start": start, "end": end, "count": count})
+        flow_periods.append(
+            {
+                "index": period_index,
+                "start": period_start,
+                "end": period_end,
+                "buckets": buckets,
+            }
+        )
+
+    max_bucket_count = max(
+        (bucket["count"] for period in flow_periods for bucket in period["buckets"]),
+        default=0,
+    )
+    latest_period = flow_periods[0]
     latest_populated_index = max(
-        (index for index, bucket in enumerate(buckets) if bucket["count"]),
+        (index for index, bucket in enumerate(latest_period["buckets"]) if bucket["count"]),
         default=-1,
     )
 
-    def render_flow_cell(index: int, bucket: dict) -> str:
+    def render_flow_cell(period_index: int, bucket_index: int, bucket: dict) -> str:
         count = bucket["count"]
         level = 0 if not count or not max_bucket_count else max(1, round((count / max_bucket_count) * 4))
-        latest_class = " latest" if index == latest_populated_index else ""
+        latest_class = " latest" if period_index == 0 and bucket_index == latest_populated_index else ""
         label = f'{bucket["start"].strftime("%H:%M")}–{bucket["end"].strftime("%H:%M")}'
         if count == 0:
             return (
-                f'<div class="flow-cell empty" '
+                f'<div class="flow-cell empty" data-flow-slot data-flow-period-index="{period_index}" '
                 f'aria-label="{html.escape(label)} 새 자료 없음">'
                 f'<span class="flow-cell-time">{bucket["start"].strftime("%H:%M")}</span></div>'
             )
         return (
-            f'<button class="flow-cell{latest_class}" type="button" data-flow-cell '
+            f'<button class="flow-cell{latest_class}" type="button" data-flow-cell data-flow-slot '
+            f'data-flow-period-index="{period_index}" '
             f'data-start-ts="{int(bucket["start"].timestamp() * 1000)}" '
             f'data-end-ts="{int(bucket["end"].timestamp() * 1000)}" '
             f'data-count="{count}" data-label="{html.escape(label)}" '
             f'style="--flow-level:{level}" aria-label="{html.escape(label)} 수집 자료 {count}건">'
             f'<span class="flow-cell-count">{count}</span>'
             f'<span class="flow-cell-time">{bucket["start"].strftime("%H:%M")}</span></button>'
+        )
+
+    def render_flow_period(period: dict, *, hidden: bool) -> str:
+        period_index = period["index"]
+        hidden_attr = " hidden" if hidden else ""
+        cells_html = "".join(
+            render_flow_cell(period_index, bucket_index, bucket)
+            for bucket_index, bucket in enumerate(period["buckets"])
+        )
+        date_label = period["start"].strftime("%Y.%m.%d")
+        time_label = (
+            f'{period["start"].strftime("%H:%M")}–{period["end"].strftime("%H:%M")}'
+        )
+        return (
+            f'<section class="flow-period" data-flow-period '
+            f'data-flow-period-index="{period_index}"{hidden_attr}>'
+            f'<div class="flow-period-label"><span>{date_label}</span><span>{time_label}</span></div>'
+            f'<div class="flow-map-scroll"><div class="flow-map">{cells_html}</div></div>'
+            f'</section>'
         )
 
     def home_flow_route(article: dict) -> tuple[str, str]:
@@ -15690,6 +15839,8 @@ def build_home_page(
 
     def render_flow_item(article: dict) -> str:
         published_dt = article_exposure_datetime(article).astimezone(reference_dt.tzinfo)
+        period_index = flow_period_index(article)
+        hidden_attr = " hidden" if period_index != 0 else ""
         title = html.escape(display_article_title(article, limit=118))
         url = article_target_url(article)
         source = format_source_label(article.get("source") or article.get("source_name")) or "출처 확인"
@@ -15706,20 +15857,25 @@ def build_home_page(
         topic_html = "".join(f"<span>#{html.escape(topic)}</span>" for topic in topics)
         return (
             f'<article class="flow-item" data-flow-item data-flow-id="{identity}" '
-            f'data-published-ts="{int(published_dt.timestamp() * 1000)}">'
+            f'data-flow-period-index="{period_index}" '
+            f'data-published-ts="{int(published_dt.timestamp() * 1000)}"{hidden_attr}>'
             f'<time class="flow-time" datetime="{published_dt.isoformat()}">{published_dt.strftime("%H:%M")}</time>'
             f'<div class="flow-item-main">{title_html}'
             f'<div class="flow-item-meta"><span>{html.escape(source)}</span>{topic_html}</div></div>'
             f'<a class="flow-route" href="{route_href}">{html.escape(route_label)}</a></article>'
         )
 
-    flow_cells_html = "".join(render_flow_cell(index, bucket) for index, bucket in enumerate(buckets))
+    flow_periods_html = "".join(
+        render_flow_period(period, hidden=index > 0)
+        for index, period in enumerate(flow_periods)
+    )
     flow_items_html = "".join(render_flow_item(article) for article in stream_articles)
     if not flow_items_html:
         flow_items_html = (
-            '<div class="flow-empty">최근 24시간 안에 시각이 확인된 자료가 없습니다. '
+            '<div class="flow-empty">시각이 확인된 자료가 없습니다. '
             '다음 수집 뒤 이 시간축이 자동으로 채워집니다.</div>'
         )
+    initially_visible_count = sum(1 for article in stream_articles if flow_period_index(article) == 0)
     today_count = sum(
         1
         for article in flow_articles
@@ -15763,9 +15919,7 @@ def build_home_page(
           <div class="flow-stat"><span>주요 분류</span><strong>{html.escape(top_topics)}</strong></div>
         </div>
         <div class="flow-map-wrap">
-          <div class="flow-map-scroll">
-            <div class="flow-map">{flow_cells_html}</div>
-          </div>
+          <div data-flow-periods>{flow_periods_html}</div>
           <div class="flow-map-legend"><span>6시간 전</span><strong>진할수록 자료가 많음</strong><span>지금</span></div>
         </div>
       </section>
@@ -15774,11 +15928,12 @@ def build_home_page(
         <div class="flow-stream-head">
           <div>
             <h2 id="flow-stream-title">최신 자료 흐름</h2>
-            <p class="flow-stream-status" data-flow-status>최근 자료 {len(stream_articles)}건</p>
+            <p class="flow-stream-status" data-flow-status>최근 6시간 · {initially_visible_count}건</p>
           </div>
           <button class="flow-read-button" type="button" data-flow-mark-read>여기까지 읽었습니다</button>
         </div>
         <div class="flow-list">{flow_items_html}</div>
+        <div class="flow-history-sentinel" data-flow-history-sentinel aria-hidden="true"></div>
       </section>
     </section>
     """

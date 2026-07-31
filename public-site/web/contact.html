@@ -8511,6 +8511,21 @@
     padding: 22px 24px 24px;
   }
 
+  .flow-period + .flow-period {
+    margin-top: 20px;
+    padding-top: 18px;
+    border-top: 1px solid var(--line);
+  }
+
+  .flow-period-label {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    color: var(--muted);
+    font-size: 0.74rem;
+    font-weight: 700;
+  }
+
   .flow-map {
     display: grid;
     grid-template-columns: repeat(12, minmax(44px, 1fr));
@@ -8543,8 +8558,8 @@
   }
 
   .flow-cell.empty {
-    border-color: transparent;
-    background: transparent;
+    border-color: rgba(16, 44, 50, 0.12);
+    background: #fff;
     cursor: default;
   }
 
@@ -8594,6 +8609,10 @@
 
   .flow-map-legend strong {
     color: var(--deep-navy);
+  }
+
+  .flow-history-sentinel {
+    min-height: 1px;
   }
 
   .flow-stream {
@@ -10300,9 +10319,24 @@
   const storageKey = 'youth-trend-room-read-until';
   const items = Array.from(root.querySelectorAll('[data-flow-item]'));
   const cells = Array.from(root.querySelectorAll('[data-flow-cell]'));
+  const periods = Array.from(root.querySelectorAll('[data-flow-period]'));
   const status = root.querySelector('[data-flow-status]');
   const markButton = root.querySelector('[data-flow-mark-read]');
   const allButton = root.querySelector('[data-flow-all]');
+  const historySentinel = root.querySelector('[data-flow-history-sentinel]');
+  let historyStarted = false;
+
+  function visiblePeriodIndexes() {
+    return new Set(
+      periods
+        .filter((period) => !period.hidden)
+        .map((period) => String(period.dataset.flowPeriodIndex || '0'))
+    );
+  }
+
+  function visibleItems() {
+    return items.filter((item) => !item.hidden);
+  }
 
   function readStoredTimestamp() {
     try {
@@ -10315,16 +10349,17 @@
   function refreshReadMarker() {
     root.querySelectorAll('[data-flow-read-marker]').forEach((marker) => marker.remove());
     const readUntil = readStoredTimestamp();
-    const unreadCount = items.filter((item) => Number(item.dataset.publishedTs || 0) > readUntil).length;
+    const currentItems = visibleItems();
+    const unreadCount = currentItems.filter((item) => Number(item.dataset.publishedTs || 0) > readUntil).length;
     if (status) {
       status.textContent = readUntil
         ? `이전에 읽은 뒤 새로 들어온 자료 ${unreadCount}건`
-        : `최근 자료 ${items.length}건 · 읽은 위치를 이 브라우저에 저장할 수 있습니다`;
+        : `불러온 6시간 구간 ${visiblePeriodIndexes().size}개 · ${currentItems.length}건`;
     }
     if (!readUntil) {
       return;
     }
-    const firstReadItem = items.find((item) => Number(item.dataset.publishedTs || 0) <= readUntil);
+    const firstReadItem = currentItems.find((item) => Number(item.dataset.publishedTs || 0) <= readUntil);
     if (!firstReadItem) {
       return;
     }
@@ -10335,15 +10370,27 @@
     firstReadItem.before(marker);
   }
 
-  function showAll() {
+  function showLoadedPeriods() {
+    const loadedIndexes = visiblePeriodIndexes();
     items.forEach((item) => {
-      item.hidden = false;
+      item.hidden = !loadedIndexes.has(String(item.dataset.flowPeriodIndex || '0'));
     });
     cells.forEach((cell) => cell.classList.remove('active'));
-    if (allButton) {
-      allButton.classList.add('active');
-    }
     refreshReadMarker();
+  }
+
+  function revealOlderPeriods(batchSize = 4) {
+    const hiddenPeriods = periods.filter((period) => period.hidden);
+    hiddenPeriods.slice(0, batchSize).forEach((period) => {
+      period.hidden = false;
+    });
+    historyStarted = true;
+    showLoadedPeriods();
+    const remaining = periods.filter((period) => period.hidden).length;
+    if (allButton) {
+      allButton.textContent = remaining ? '이전 흐름 더 보기' : '저장된 흐름을 모두 봤습니다';
+      allButton.disabled = remaining === 0;
+    }
   }
 
   cells.forEach((cell) => {
@@ -10355,9 +10402,6 @@
         item.hidden = !(timestamp >= start && timestamp < end);
       });
       cells.forEach((other) => other.classList.toggle('active', other === cell));
-      if (allButton) {
-        allButton.classList.remove('active');
-      }
       root.querySelectorAll('[data-flow-read-marker]').forEach((marker) => marker.remove());
       if (status) {
         status.textContent = `${cell.dataset.label || '선택한 시간'} · ${cell.dataset.count || 0}건`;
@@ -10366,9 +10410,9 @@
     });
   });
 
-  allButton?.addEventListener('click', showAll);
+  allButton?.addEventListener('click', () => revealOlderPeriods());
   markButton?.addEventListener('click', () => {
-    const latestTimestamp = Math.max(0, ...items.map((item) => Number(item.dataset.publishedTs || 0)));
+    const latestTimestamp = Math.max(0, ...visibleItems().map((item) => Number(item.dataset.publishedTs || 0)));
     try {
       window.localStorage.setItem(storageKey, String(latestTimestamp));
     } catch (error) {
@@ -10377,6 +10421,20 @@
     refreshReadMarker();
     markButton.textContent = '읽은 위치 저장됨';
   });
+
+  if (periods.length <= 1 && allButton) {
+    allButton.textContent = '저장된 흐름을 모두 봤습니다';
+    allButton.disabled = true;
+  }
+
+  if ('IntersectionObserver' in window && historySentinel) {
+    const observer = new IntersectionObserver((entries) => {
+      if (historyStarted && entries.some((entry) => entry.isIntersecting)) {
+        revealOlderPeriods(2);
+      }
+    }, { rootMargin: '240px 0px' });
+    observer.observe(historySentinel);
+  }
 
   refreshReadMarker();
 })();
