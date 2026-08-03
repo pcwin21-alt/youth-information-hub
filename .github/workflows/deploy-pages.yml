@@ -24,7 +24,9 @@ permissions:
 
 concurrency:
   group: github-pages
-  cancel-in-progress: true
+  # A scheduled collection can take several minutes. Queue a newer run rather
+  # than cancelling a collection that is already about to publish.
+  cancel-in-progress: false
 
 jobs:
   build:
