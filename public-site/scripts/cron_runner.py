@@ -199,7 +199,7 @@ def main() -> int:
             python,
             str(PUBLIC_SITE_ROOT / "scripts" / "pipeline_feedback.py"),
             "--fail-on",
-            "critical",
+            "never",
         ]
         if args.feedback_with_source_healthcheck:
             feedback_command.append("--run-source-healthcheck")

@@ -7,6 +7,12 @@ param(
 $ErrorActionPreference = "Stop"
 $ProgressPreference = "SilentlyContinue"
 
+# Task Scheduler starts PowerShell with the legacy Korean code page on this PC.
+# Force UTF-8 before Python spawns its child page-generator processes so the
+# Korean/symbol-containing repository path is preserved end to end.
+$env:PYTHONUTF8 = "1"
+$env:PYTHONIOENCODING = "utf-8"
+
 $publicSiteRoot = Split-Path -Parent $PSScriptRoot
 $repoRoot = Split-Path -Parent $publicSiteRoot
 $logDir = Join-Path $repoRoot "runtime\logs\scheduler_logs"

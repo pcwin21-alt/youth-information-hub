@@ -18230,6 +18230,74 @@ def normalize_generated_html(value: str) -> str:
     return "\n".join(line.rstrip() for line in value.splitlines()) + "\n"
 
 
+def write_utf8_page(path: Path, content: str) -> None:
+    """Write generated pages through the Unicode Windows API when necessary.
+
+    The scheduled runner operates from a Korean path containing a symbol.  On
+    some Windows code-page combinations, ``Path.write_text`` intermittently
+    rejects that otherwise valid path with ``OSError: [Errno 22]``.  CreateFileW
+    receives a UTF-16 path directly, avoiding the legacy CRT path conversion.
+    """
+    if os.name != "nt":
+        path.write_text(content, encoding="utf-8")
+        return
+
+    import ctypes
+    from ctypes import wintypes
+
+    kernel32 = ctypes.WinDLL("kernel32", use_last_error=True)
+    create_file = kernel32.CreateFileW
+    create_file.argtypes = [
+        wintypes.LPCWSTR,
+        wintypes.DWORD,
+        wintypes.DWORD,
+        ctypes.c_void_p,
+        wintypes.DWORD,
+        wintypes.DWORD,
+        wintypes.HANDLE,
+    ]
+    create_file.restype = wintypes.HANDLE
+    write_file = kernel32.WriteFile
+    write_file.argtypes = [
+        wintypes.HANDLE,
+        ctypes.c_void_p,
+        wintypes.DWORD,
+        ctypes.POINTER(wintypes.DWORD),
+        ctypes.c_void_p,
+    ]
+    write_file.restype = wintypes.BOOL
+    close_handle = kernel32.CloseHandle
+    close_handle.argtypes = [wintypes.HANDLE]
+    close_handle.restype = wintypes.BOOL
+
+    generic_write = 0x40000000
+    file_share_read = 0x00000001
+    file_share_write = 0x00000002
+    create_always = 2
+    file_attribute_normal = 0x00000080
+    invalid_handle = ctypes.c_void_p(-1).value
+    handle = create_file(
+        str(path),
+        generic_write,
+        file_share_read | file_share_write,
+        None,
+        create_always,
+        file_attribute_normal,
+        None,
+    )
+    if handle == invalid_handle:
+        raise OSError(ctypes.get_last_error(), "CreateFileW failed", str(path))
+
+    try:
+        encoded = content.encode("utf-8")
+        buffer = ctypes.create_string_buffer(encoded)
+        written = wintypes.DWORD()
+        if not write_file(handle, buffer, len(encoded), ctypes.byref(written), None) or written.value != len(encoded):
+            raise OSError(ctypes.get_last_error(), "WriteFile failed", str(path))
+    finally:
+        close_handle(handle)
+
+
 def write_page(
     path: Path,
     page_title: str,
@@ -18238,7 +18306,8 @@ def write_page(
     status: dict,
     contact_settings: dict[str, str],
 ) -> None:
-    path.write_text(
+    write_utf8_page(
+        path,
         normalize_generated_html(
             PAGE_TEMPLATE.format(
                 page_title=html.escape(page_title),
@@ -18263,7 +18332,6 @@ def write_page(
                 content=content,
             )
         ),
-        encoding="utf-8",
     )
 
 
