@@ -1,7 +1,12 @@
 param(
     [string]$TaskName = "YouthTogetherAutoUpdate",
     [string]$TaskPath = "\YouthTogether\",
-    [string[]]$Times = @("09:00", "15:00", "21:00"),
+    [string[]]$Times = @(
+        "00:00", "01:00", "02:00", "03:00", "04:00", "05:00",
+        "06:00", "07:00", "08:00", "09:00", "10:00", "11:00",
+        "12:00", "13:00", "14:00", "15:00", "16:00", "17:00",
+        "18:00", "19:00", "20:00", "21:00", "22:00", "23:00"
+    ),
     [switch]$WakeToRun,
     [switch]$Force
 )
@@ -59,10 +64,10 @@ Register-ScheduledTask `
     -Trigger $triggers `
     -Principal $principal `
     -Settings $settings `
-    -Description "Youth Together crawler auto-update at fixed daily times." | Out-Null
+    -Description "Youth Together crawler auto-update every hour on the hour." | Out-Null
 
 $taskInfo = Get-ScheduledTaskInfo -TaskName $TaskName -TaskPath $TaskPath
-$frequency = if ($Times.Count -eq 1) { "daily_1x" } else { "daily_$($Times.Count)x" }
+$frequency = if ($Times.Count -eq 24) { "hourly" } elseif ($Times.Count -eq 1) { "daily_1x" } else { "daily_$($Times.Count)x" }
 $payload = @{
     task_name = $TaskName
     task_path = $TaskPath

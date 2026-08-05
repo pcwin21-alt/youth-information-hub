@@ -17,6 +17,7 @@ from _bootstrap import PUBLIC_CONFIG_ROOT, PUBLIC_WEB_ROOT, RUNTIME_PIPELINE_ROO
 from youth_info_platform.article_metadata import (
     article_identity_key,
     extract_youth_preview_text,
+    has_explicit_opinion_marker,
     normalize_media_url,
     preferred_article_url,
 )
@@ -9589,13 +9590,7 @@ DESIGN_OVERHAUL_CSS = """
   }
 
   .flow-map-wrap {
-    padding: 22px 24px 24px;
-  }
-
-  .flow-period + .flow-period {
-    margin-top: 20px;
-    padding-top: 18px;
-    border-top: 1px solid var(--line);
+    padding: 30px;
   }
 
   .flow-day-heading {
@@ -9603,7 +9598,7 @@ DESIGN_OVERHAUL_CSS = """
     align-items: baseline;
     justify-content: space-between;
     gap: 12px;
-    margin-bottom: 18px;
+    margin-bottom: 20px;
     color: var(--deep-navy);
   }
 
@@ -9617,20 +9612,15 @@ DESIGN_OVERHAUL_CSS = """
     font-weight: 700;
   }
 
-  .flow-period-label {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 10px;
-    color: var(--muted);
-    font-size: 0.74rem;
-    font-weight: 700;
+  .flow-day-heading .flow-read-button {
+    margin-left: auto;
   }
 
   .flow-map {
     display: grid;
-    grid-template-columns: repeat(12, minmax(44px, 1fr));
-    gap: 8px;
-    min-width: 660px;
+    grid-template-columns: repeat(24, minmax(42px, 1fr));
+    gap: 12px;
+    min-width: 1,200px;
   }
 
   .flow-map-scroll {
@@ -9640,10 +9630,10 @@ DESIGN_OVERHAUL_CSS = """
 
   .flow-cell {
     position: relative;
-    min-height: 76px;
-    padding: 9px 4px 7px;
+    min-height: 84px;
+    padding: 10px 4px 8px;
     border: 1px solid rgba(16, 44, 50, 0.08);
-    border-radius: 10px;
+    border-radius: 12px;
     background: color-mix(in srgb, var(--deep-navy) calc(4% + var(--flow-level) * 14%), #f7faf9);
     color: var(--deep-navy);
     cursor: pointer;
@@ -10032,7 +10022,12 @@ DESIGN_OVERHAUL_CSS = """
     }
 
     .flow-map-wrap {
-      padding: 18px 16px;
+      padding: 24px 16px;
+    }
+
+    .flow-map {
+      gap: 10px;
+      min-width: 1,080px;
     }
 
     .flow-item {
@@ -12065,7 +12060,9 @@ def render_status(status: dict) -> dict[str, str]:
     date_basis = status.get("date_basis", {})
     update_policy = status.get("update_policy", {})
     times = update_policy.get("times", [])
-    if times:
+    if update_policy.get("frequency") == "hourly":
+        update_frequency = f'매시 정각 ({update_policy.get("timezone", "Asia/Seoul")})'
+    elif times:
         update_frequency = f'매일 {", ".join(times)} ({update_policy.get("timezone", "Asia/Seoul")})'
     else:
         update_frequency = update_policy.get("frequency", "-")
@@ -12278,6 +12275,15 @@ def is_opinion_menu_article(article: dict) -> bool:
     if is_publicly_excluded(article) or is_official_archive_article(article):
         return False
     if article.get("missing_youth_content_signal") or article.get("weak_youth_signal"):
+        return False
+    explicit_opinion = has_explicit_opinion_marker(
+        str(article.get("title") or ""),
+        " ".join(
+            str(value or "")
+            for value in [article.get("section"), article.get("lead_text")]
+        ),
+    )
+    if not explicit_opinion:
         return False
     categories = {normalize_inline_text(value) for value in article.get("categories") or []}
     return (
@@ -14153,6 +14159,8 @@ def previous_update_reference(status: dict, page_updated_at: str | None) -> date
     if current_dt is None:
         return None
     raw_times = status.get("update_policy", {}).get("times", [])
+    if status.get("update_policy", {}).get("frequency") == "hourly":
+        return current_dt - timedelta(hours=1)
     schedule_minutes: list[int] = []
     for raw_value in raw_times:
         try:
@@ -16004,24 +16012,24 @@ def build_home_page(
         if day_start <= article_exposure_datetime(article).astimezone(reference_dt.tzinfo) <= reference_dt
     ]
 
-    bucket_minutes = 30
-    period_hours = 6
+    bucket_minutes = 60
+    period_hours = 24
     period_seconds = period_hours * 60 * 60
     def flow_period_index(article: dict) -> int:
         published_dt = article_exposure_datetime(article).astimezone(reference_dt.tzinfo)
         elapsed_seconds = max(0.0, (published_dt - day_start).total_seconds())
         return int(elapsed_seconds // period_seconds)
 
-    # A calendar day is a fixed, readable 48-cell map: four six-hour rows with
-    # twelve 30-minute cells each. Avoid a rolling window, which makes a day
-    # look clipped and repeats the same date label for every row.
+    # A calendar day is a single, readable 24-cell map: one hourly cell for
+    # each hour. This preserves the full day without repeating date labels or
+    # splitting the timeline into visually disconnected rows.
     period_indexes = range(24 // period_hours)
     flow_periods: list[dict] = []
     for period_index in period_indexes:
         period_start = day_start + timedelta(hours=period_hours * period_index)
         period_end = period_start + timedelta(hours=period_hours)
         buckets: list[dict] = []
-        for bucket_index in range(12):
+        for bucket_index in range((period_hours * 60) // bucket_minutes):
             start = period_start + timedelta(minutes=bucket_minutes * bucket_index)
             end = start + timedelta(minutes=bucket_minutes)
             count = sum(
@@ -16068,20 +16076,15 @@ def build_home_page(
             f'<span class="flow-cell-time">{bucket["start"].strftime("%H:%M")}</span></button>'
         )
 
-    def render_flow_period(period: dict, *, hidden: bool) -> str:
+    def render_flow_period(period: dict) -> str:
         period_index = period["index"]
-        hidden_attr = " hidden" if hidden else ""
         cells_html = "".join(
             render_flow_cell(period_index, bucket_index, bucket)
             for bucket_index, bucket in enumerate(period["buckets"])
         )
-        time_label = (
-            f'{period["start"].strftime("%H:%M")}–{period["end"].strftime("%H:%M")}'
-        )
         return (
             f'<section class="flow-period" data-flow-period '
-            f'data-flow-period-index="{period_index}"{hidden_attr}>'
-            f'<div class="flow-period-label"><span>수집 구간</span><span>{time_label}</span></div>'
+            f'data-flow-period-index="{period_index}">'
             f'<div class="flow-map-scroll"><div class="flow-map">{cells_html}</div></div>'
             f'</section>'
         )
@@ -16125,10 +16128,7 @@ def build_home_page(
             f'<a class="flow-route" href="{route_href}">{html.escape(route_label)}</a></article>'
         )
 
-    flow_periods_html = "".join(
-        render_flow_period(period, hidden=False)
-        for index, period in enumerate(flow_periods)
-    )
+    flow_periods_html = "".join(render_flow_period(period) for period in flow_periods)
     flow_items_html = "".join(render_flow_item(article) for article in stream_articles)
     if not flow_items_html:
         flow_items_html = (
@@ -16160,28 +16160,14 @@ def build_home_page(
         <aside class="flow-freshness">
           <span>마지막 반영</span>
           <strong>{html.escape(home_date_label)} {html.escape(home_time_label)}</strong>
-          <p>자동 수집 주기에 맞춰 갱신되는 근실시간 화면입니다. 블록의 색은 중요도가 아니라 해당 30분의 자료 수를 뜻합니다.</p>
+          <p>자동 수집 주기에 맞춰 갱신되는 근실시간 화면입니다. 블록의 색은 중요도가 아니라 해당 1시간의 자료 수를 뜻합니다.</p>
         </aside>
       </header>
 
       <section class="flow-board" id="today-briefing" aria-labelledby="flow-map-title">
-        <div class="flow-board-head">
-          <div>
-            <span class="eyebrow">오늘 24시간</span>
-            <h2 id="flow-map-title">30분 단위 수집 흐름</h2>
-            <p>하루 전체를 48칸으로 보여줍니다. 진한 블록은 수집 자료가 많았던 시간, 점선 블록은 아직 오지 않은 예정 시간입니다.</p>
-          </div>
-          <button class="flow-read-button" type="button" data-flow-all>오늘 전체 보기</button>
-        </div>
-        <div class="flow-stats">
-          <div class="flow-stat"><span>오늘 들어온 자료</span><strong>{today_count}건</strong></div>
-          <div class="flow-stat"><span>최근 60분</span><strong>{recent_hour_count}건</strong></div>
-          <div class="flow-stat"><span>주요 분류</span><strong>{html.escape(top_topics)}</strong></div>
-        </div>
         <div class="flow-map-wrap">
-          <div class="flow-day-heading"><strong>{day_start.strftime("%Y.%m.%d")}</strong><span>오늘 24시간 · 30분 단위 48구간</span></div>
+          <div class="flow-day-heading"><strong id="flow-map-title">{day_start.strftime("%Y.%m.%d")}</strong><span>수집 구간 · 00:00–24:00</span><button class="flow-read-button" type="button" data-flow-all>전체 보기</button></div>
           <div data-flow-periods>{flow_periods_html}</div>
-          <div class="flow-map-legend"><span>00:00</span><strong>진할수록 자료가 많음 · 점선은 예정 구간</strong><span>24:00</span></div>
         </div>
       </section>
 
@@ -16191,7 +16177,6 @@ def build_home_page(
             <h2 id="flow-stream-title">최신 자료 흐름</h2>
             <p class="flow-stream-status" data-flow-status>오늘 전체 · {today_count}건</p>
           </div>
-          <button class="flow-read-button" type="button" data-flow-mark-read>여기까지 읽었습니다</button>
         </div>
         <div class="flow-list">{flow_items_html}</div>
         <div class="flow-history-sentinel" data-flow-history-sentinel aria-hidden="true"></div>

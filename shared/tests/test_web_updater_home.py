@@ -192,13 +192,13 @@ class HomeSelectionTests(unittest.TestCase):
         )
 
         self.assertIn("오늘 올라온 청년 기사", page_html)
-        self.assertIn("오늘 들어온 자료", page_html)
-        self.assertIn("30분 단위 수집 흐름", page_html)
+        self.assertIn("오늘 전체 · 1건", page_html)
+        self.assertIn("수집 구간 · 00:00–24:00", page_html)
         self.assertIn("최신 자료 흐름", page_html)
         self.assertNotIn("시간의 강", page_html)
         self.assertEqual(
             page_html.count('data-flow-slot data-flow-period-index="0"'),
-            12,
+            24,
         )
         self.assertNotIn('flow-cell-count">0</span>', page_html)
         self.assertEqual(page_html.count('data-flow-id="06c509e269c18556"'), 1)
@@ -208,7 +208,7 @@ class HomeSelectionTests(unittest.TestCase):
         self.assertNotIn('<span class="home-glance-label">정책</span>', page_html)
         self.assertNotIn('<span class="home-glance-label">참여·회의</span>', page_html)
 
-    def test_home_flow_renders_a_complete_calendar_day_in_four_rows(self) -> None:
+    def test_home_flow_renders_a_complete_calendar_day_in_one_hourly_row(self) -> None:
         articles = []
         for index, published_date in enumerate(
             [
@@ -235,13 +235,35 @@ class HomeSelectionTests(unittest.TestCase):
         )
 
         self.assertIn('data-flow-period-index="0"', page_html)
-        self.assertIn('data-flow-period-index="1"', page_html)
-        self.assertIn('data-flow-period-index="2"', page_html)
-        self.assertIn('data-flow-period-index="3"', page_html)
-        self.assertNotIn('data-flow-period-index="1" hidden', page_html)
-        self.assertEqual(page_html.count('data-flow-slot'), 48)
-        self.assertIn('오늘 24시간 · 30분 단위 48구간', page_html)
+        self.assertNotIn('data-flow-period-index="1"', page_html)
+        self.assertEqual(page_html.count('data-flow-slot'), 24)
+        self.assertIn('수집 구간 · 00:00–24:00', page_html)
+        self.assertNotIn('여기까지 읽었습니다', page_html)
         self.assertIn('flow-cell-note">예정', page_html)
+
+    def test_opinion_menu_requires_a_visible_editorial_marker(self) -> None:
+        false_positive = make_article(
+            title="청년 주거 지원 예산 발표",
+            lead_text="정부는 다음 달부터 지원 기준을 바꾼다고 밝혔다.",
+            url="https://example.com/general-news",
+        )
+        false_positive.update(
+            article_type="opinion",
+            content_direction=web_updater.CONTENT_DIRECTION_COLUMN,
+            categories=["의견"],
+        )
+        actual_column = make_article(
+            title="[칼럼] 청년 주거 지원을 다시 설계하려면",
+            lead_text="청년 주거 정책의 조건을 짚어 본다.",
+            url="https://example.com/column",
+        )
+        actual_column.update(
+            article_type="opinion",
+            content_direction=web_updater.CONTENT_DIRECTION_COLUMN,
+        )
+
+        self.assertFalse(web_updater.is_opinion_menu_article(false_positive))
+        self.assertTrue(web_updater.is_opinion_menu_article(actual_column))
 
     def test_home_government_trends_keep_youth_officials_and_skip_generic_officials(self) -> None:
         youth_official = make_article(
@@ -346,7 +368,7 @@ class HomeSelectionTests(unittest.TestCase):
             },
         )
 
-        self.assertIn('<div class="flow-stat"><span>오늘 들어온 자료</span><strong>6건</strong></div>', page_html)
+        self.assertIn("오늘 전체 · 6건", page_html)
         self.assertEqual(page_html.count("data-flow-item data-flow-id="), 6)
 
     def test_home_flow_combines_routed_content_and_excludes_noise_or_campaign(self) -> None:
@@ -545,7 +567,6 @@ class HomeSelectionTests(unittest.TestCase):
             },
         )
 
-        self.assertIn("<strong>주거 · 금융 · 모집</strong>", page_html)
         self.assertIn("<span>#주거</span>", page_html)
         self.assertNotIn("<span>#취업</span>", page_html)
         self.assertNotIn("최근 48시간 기준입니다.", page_html)

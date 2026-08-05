@@ -921,13 +921,22 @@ def extract_body_text(html_text: str) -> str:
     return " ".join(paragraph_text)[:4000]
 
 
+def has_explicit_opinion_marker(title: str, section: str) -> bool:
+    """Return true only when the article's visible editorial metadata says opinion.
+
+    A news body can quote or describe a column, so body-wide keyword matching
+    incorrectly routes ordinary reporting into the opinion menu.
+    """
+    prominent_text = " ".join(part for part in [title, section] if part)
+    markers = set(OPINION_KEYWORDS) | {"연재"}
+    return any(marker in prominent_text for marker in markers)
+
+
 def detect_article_type(title: str, section: str, body_text: str) -> str | None:
-    haystack = " ".join(part for part in [title, section, body_text] if part)
-    if any(keyword in haystack for keyword in OPINION_KEYWORDS):
+    prominent_text = " ".join(part for part in [title, section] if part)
+    if has_explicit_opinion_marker(title, section):
         return "opinion"
-    if any(keyword in haystack for keyword in ["오피니언", "칼럼", "사설", "기고", "연재"]):
-        return "opinion"
-    if any(keyword in haystack for keyword in ["보도자료", "정책브리핑"]):
+    if any(keyword in prominent_text for keyword in ["보도자료", "정책브리핑"]):
         return "official"
     return None
 

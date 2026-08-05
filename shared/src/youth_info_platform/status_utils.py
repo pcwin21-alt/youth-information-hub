@@ -16,9 +16,9 @@ DATE_BASIS = {
 
 UPDATE_POLICY = {
     "timezone": "Asia/Seoul",
-    "frequency": "daily_3x",
-    "times": ["09:00", "15:00", "21:00"],
-    "notes": "정기 배치 기준이며, 긴급 이슈는 수동 재실행으로 보완",
+    "frequency": "hourly",
+    "times": [],
+    "notes": "매시 정각에 자동 수집·웹 반영·브리핑을 실행",
 }
 
 

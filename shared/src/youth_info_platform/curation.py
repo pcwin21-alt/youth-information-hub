@@ -10,6 +10,7 @@ from .article_metadata import (
     extract_issue_tags,
     extract_location_tags,
     extract_youth_preview_text,
+    has_explicit_opinion_marker,
     infer_region,
     is_google_news_url,
     normalize_article_title,
@@ -41,7 +42,6 @@ from .constants import (
     NOISE_KEYWORDS,
     NOW_KEYWORDS,
     OFFICIAL_KEYWORDS,
-    OPINION_KEYWORDS,
     POLITICAL_CAMPAIGN_KEYWORDS,
     POLITICAL_HUB_EXCLUDE_KEYWORDS,
     PROMOTION_DIRECTION_KEYWORDS,
@@ -319,7 +319,12 @@ def normalize_content_direction(value: str | None) -> str:
 
 def classify_content_direction(article: dict[str, Any], text: str) -> str:
     existing = normalize_content_direction(article.get("content_direction"))
-    if existing and existing != CONTENT_DIRECTION_UNKNOWN:
+    explicit_opinion = has_explicit_opinion_marker(
+        str(article.get("title") or ""), str(article.get("section") or "")
+    )
+    if existing and existing != CONTENT_DIRECTION_UNKNOWN and not (
+        existing == CONTENT_DIRECTION_COLUMN and not explicit_opinion
+    ):
         return existing
 
     source_kind = str(article.get("source_kind") or "").strip().lower()
@@ -334,7 +339,7 @@ def classify_content_direction(article: dict[str, Any], text: str) -> str:
     if is_official or article_type == "official":
         return CONTENT_DIRECTION_OFFICIAL_RELEASE
 
-    if article_type == "opinion" or any(keyword in text for keyword in OPINION_KEYWORDS):
+    if explicit_opinion:
         return CONTENT_DIRECTION_COLUMN
 
     if any(keyword in text for keyword in PROMOTION_DIRECTION_KEYWORDS):
@@ -642,10 +647,21 @@ def classify_articles(articles: list[dict]) -> list[dict]:
         if not region:
             region = NATIONWIDE_REGION
 
-        article_type = article.get("article_type") or detect_article_type(
+        detected_article_type = detect_article_type(
             article.get("title", ""),
             article.get("section", "") or "",
             article.get("body_text", "") or "",
+        )
+        existing_article_type = str(article.get("article_type") or "").strip().lower()
+        # Re-evaluate legacy body-keyword false positives on every run. Other
+        # source-supplied types are preserved unless this is the opinion label.
+        article_type = (
+            detected_article_type
+            if existing_article_type == "opinion"
+            and not has_explicit_opinion_marker(
+                str(article.get("title") or ""), str(article.get("section") or "")
+            )
+            else article.get("article_type") or detected_article_type
         )
         campaign_political = has_campaign_political_signal(text)
         substantive_promise = has_substantive_promise_signal(text)
@@ -690,7 +706,9 @@ def classify_articles(articles: list[dict]) -> list[dict]:
             categories.append(CATEGORY_POLICY)
         if issue_tags or any(keyword in text for keyword in NOW_KEYWORDS):
             categories.append(CATEGORY_NOW)
-        if article_type == "opinion" or any(keyword in text for keyword in OPINION_KEYWORDS):
+        if has_explicit_opinion_marker(
+            str(article.get("title") or ""), str(article.get("section") or "")
+        ):
             categories.append(CATEGORY_OPINION)
         if region != NATIONWIDE_REGION:
             categories.append(CATEGORY_REGION)
