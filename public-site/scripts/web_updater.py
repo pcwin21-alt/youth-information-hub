@@ -7,6 +7,7 @@ import html
 import json
 import os
 import re
+import time
 import urllib.parse
 import urllib.request
 from pathlib import Path
@@ -18265,7 +18266,7 @@ def normalize_generated_html(value: str) -> str:
     return "\n".join(line.rstrip() for line in value.splitlines()) + "\n"
 
 
-def write_utf8_page(path: Path, content: str) -> None:
+def write_utf8_page(path: Path, content: str, *, retry_attempt: int = 0) -> None:
     """Write generated pages through the Unicode Windows API when necessary.
 
     The scheduled runner operates from a Korean path containing a symbol.  On
@@ -18321,7 +18322,18 @@ def write_utf8_page(path: Path, content: str) -> None:
         None,
     )
     if handle == invalid_handle:
-        raise OSError(ctypes.get_last_error(), "CreateFileW failed", str(path))
+        error_code = ctypes.get_last_error()
+        # A browser, preview server, or security scanner can briefly map a
+        # generated HTML file. Windows then returns ERROR_USER_MAPPED_FILE
+        # (1224), and direct overwrite is temporarily impossible. Retrying the
+        # individual page keeps a transient reader from failing the whole site
+        # publication run.
+        retryable_codes = {32, 33, 1224}
+        max_attempts = 8
+        if error_code in retryable_codes and retry_attempt < max_attempts:
+            time.sleep(min(5.0, 0.25 * (2 ** retry_attempt)))
+            return write_utf8_page(path, content, retry_attempt=retry_attempt + 1)
+        raise OSError(error_code, "CreateFileW failed", str(path))
 
     try:
         encoded = content.encode("utf-8")
