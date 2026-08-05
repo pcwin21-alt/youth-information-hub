@@ -9647,6 +9647,31 @@ DESIGN_OVERHAUL_CSS = """
     border-color: var(--accent);
   }
 
+  .flow-cell.active {
+    border-width: 2px;
+    background: color-mix(in srgb, var(--accent) 18%, #fff);
+    box-shadow: 0 10px 22px rgba(200, 77, 57, 0.2);
+  }
+
+  .flow-cell.current {
+    z-index: 1;
+    border: 2px solid var(--deep-navy);
+    box-shadow: 0 0 0 4px rgba(16, 44, 50, 0.12);
+  }
+
+  .flow-cell.empty.current {
+    background: color-mix(in srgb, var(--deep-navy) 7%, #fff);
+  }
+
+  .flow-cell.current .flow-cell-time {
+    bottom: 8px;
+  }
+
+  .flow-cell.current .flow-cell-note {
+    top: 9px;
+    color: var(--deep-navy);
+  }
+
   .flow-cell.empty {
     border-color: rgba(16, 44, 50, 0.12);
     background: #fff;
@@ -16054,19 +16079,25 @@ def build_home_page(
     def render_flow_cell(period_index: int, bucket_index: int, bucket: dict) -> str:
         count = bucket["count"]
         level = 0 if not count or not max_bucket_count else max(1, round((count / max_bucket_count) * 4))
-        latest_class = " latest" if bucket["start"] <= reference_dt < bucket["end"] else ""
+        is_current = bucket["start"] <= reference_dt < bucket["end"]
+        current_class = " current" if is_current else ""
+        latest_class = " latest" if is_current else ""
         label = f'{bucket["start"].strftime("%H:%M")}–{bucket["end"].strftime("%H:%M")}'
         if count == 0:
             is_future = bucket["start"] >= reference_dt
             future_class = " future" if is_future else ""
-            note_html = '<span class="flow-cell-note">예정</span>' if is_future else ""
+            note_html = (
+                '<span class="flow-cell-note">현재</span>'
+                if is_current
+                else '<span class="flow-cell-note">예정</span>' if is_future else ""
+            )
             return (
-                f'<div class="flow-cell empty{future_class}" data-flow-slot data-flow-period-index="{period_index}" '
+                f'<div class="flow-cell empty{future_class}{current_class}" data-flow-slot data-flow-period-index="{period_index}" '
                 f'aria-label="{html.escape(label)} 새 자료 없음">'
                 f'{note_html}<span class="flow-cell-time">{bucket["start"].strftime("%H:%M")}</span></div>'
             )
         return (
-            f'<button class="flow-cell{latest_class}" type="button" data-flow-cell data-flow-slot '
+            f'<button class="flow-cell{latest_class}{current_class}" type="button" data-flow-cell data-flow-slot '
             f'data-flow-period-index="{period_index}" '
             f'data-start-ts="{int(bucket["start"].timestamp() * 1000)}" '
             f'data-end-ts="{int(bucket["end"].timestamp() * 1000)}" '

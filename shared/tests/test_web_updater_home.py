@@ -239,6 +239,8 @@ class HomeSelectionTests(unittest.TestCase):
         self.assertEqual(page_html.count('data-flow-slot'), 24)
         self.assertIn('수집 구간 · 00:00–24:00', page_html)
         self.assertNotIn('여기까지 읽었습니다', page_html)
+        self.assertIn('flow-cell empty future current', page_html)
+        self.assertIn('flow-cell-note">현재', page_html)
         self.assertIn('flow-cell-note">예정', page_html)
 
     def test_opinion_menu_requires_a_visible_editorial_marker(self) -> None:
