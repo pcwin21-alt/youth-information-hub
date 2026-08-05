@@ -193,7 +193,7 @@ class HomeSelectionTests(unittest.TestCase):
 
         self.assertIn("오늘 올라온 청년 기사", page_html)
         self.assertIn("오늘 들어온 자료", page_html)
-        self.assertIn("30분 단위 자료량", page_html)
+        self.assertIn("30분 단위 수집 흐름", page_html)
         self.assertIn("최신 자료 흐름", page_html)
         self.assertNotIn("시간의 강", page_html)
         self.assertEqual(
@@ -208,7 +208,7 @@ class HomeSelectionTests(unittest.TestCase):
         self.assertNotIn('<span class="home-glance-label">정책</span>', page_html)
         self.assertNotIn('<span class="home-glance-label">참여·회의</span>', page_html)
 
-    def test_home_full_flow_keeps_loading_older_six_hour_periods(self) -> None:
+    def test_home_flow_renders_a_complete_calendar_day_in_four_rows(self) -> None:
         articles = []
         for index, published_date in enumerate(
             [
@@ -235,10 +235,13 @@ class HomeSelectionTests(unittest.TestCase):
         )
 
         self.assertIn('data-flow-period-index="0"', page_html)
-        self.assertIn('data-flow-period-index="1" hidden', page_html)
-        self.assertIn('data-flow-period-index="2" hidden', page_html)
-        self.assertIn("이전 흐름 더 보기", web_updater.HOME_FLOW_SCRIPT)
-        self.assertIn("IntersectionObserver", web_updater.HOME_FLOW_SCRIPT)
+        self.assertIn('data-flow-period-index="1"', page_html)
+        self.assertIn('data-flow-period-index="2"', page_html)
+        self.assertIn('data-flow-period-index="3"', page_html)
+        self.assertNotIn('data-flow-period-index="1" hidden', page_html)
+        self.assertEqual(page_html.count('data-flow-slot'), 48)
+        self.assertIn('오늘 24시간 · 30분 단위 48구간', page_html)
+        self.assertIn('flow-cell-note">예정', page_html)
 
     def test_home_government_trends_keep_youth_officials_and_skip_generic_officials(self) -> None:
         youth_official = make_article(
@@ -500,7 +503,7 @@ class HomeSelectionTests(unittest.TestCase):
         self.assertIn(local_notice["title"], page_html)
         self.assertNotIn(central_announcement_news["title"], page_html)
 
-    def test_home_categories_use_public_archive_topic_tags(self) -> None:
+    def test_home_categories_and_flow_use_the_current_calendar_day(self) -> None:
         recent_housing = make_article(
             title="청년 월세 신청자 모집",
             lead_text="청년 월세 신청자를 모집한다.",
@@ -544,7 +547,7 @@ class HomeSelectionTests(unittest.TestCase):
 
         self.assertIn("<strong>주거 · 금융 · 모집</strong>", page_html)
         self.assertIn("<span>#주거</span>", page_html)
-        self.assertIn("<span>#취업</span>", page_html)
+        self.assertNotIn("<span>#취업</span>", page_html)
         self.assertNotIn("최근 48시간 기준입니다.", page_html)
 
 
