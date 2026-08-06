@@ -9649,7 +9649,7 @@ DESIGN_OVERHAUL_CSS = """
   .flow-map {
     display: grid;
     grid-template-columns: repeat(24, minmax(42px, 1fr));
-    gap: 12px;
+    gap: 16px;
     min-width: 1,200px;
   }
 
