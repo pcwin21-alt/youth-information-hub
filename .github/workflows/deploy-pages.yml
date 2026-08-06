@@ -15,18 +15,13 @@ on:
         type: boolean
         default: false
   schedule:
-    - cron: "0 * * * *"
+    # Run off the top-of-hour congestion window (KST every hour at :17).
+    - cron: "17 * * * *"
 
 permissions:
   contents: read
   pages: write
   id-token: write
-
-concurrency:
-  group: github-pages
-  # A scheduled collection can take several minutes. Queue a newer run rather
-  # than cancelling a collection that is already about to publish.
-  cancel-in-progress: false
 
 jobs:
   build:
@@ -98,6 +93,12 @@ jobs:
   deploy:
     needs: build
     runs-on: ubuntu-latest
+    # Serialize only the final Pages deployment.  Collection builds must not
+    # share a queue with UI pushes, or a pending scheduled collection can be
+    # discarded when a newer push arrives.
+    concurrency:
+      group: github-pages-deploy
+      cancel-in-progress: false
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
