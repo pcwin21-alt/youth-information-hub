@@ -195,6 +195,7 @@ class HomeSelectionTests(unittest.TestCase):
         self.assertIn("오늘 들어온 자료 · 1건", page_html)
         self.assertIn("지난 7일, 어떤 일이 있었을까요", page_html)
         self.assertIn("오늘 들어온 자료", page_html)
+        self.assertNotIn("오늘의 청년 이슈를 함께 살펴봅니다", page_html)
         self.assertNotIn("시간의 강", page_html)
         self.assertEqual(page_html.count('data-flow-slot data-flow-period-index="0"'), 24)
         self.assertEqual(page_html.count('data-flow-slot'), 168)
@@ -845,14 +846,12 @@ class HomeSelectionTests(unittest.TestCase):
         self.assertIn(".side-nav {\n      display: none;", tablet_rules)
         self.assertIn("grid-template-columns: repeat(5", tablet_rules)
 
-    def test_home_hero_uses_balanced_type_scale_and_high_contrast_accent(self) -> None:
+    def test_home_hero_uses_balanced_type_scale_without_redundant_accent_badge(self) -> None:
         css = web_updater.DESIGN_OVERHAUL_CSS
 
         self.assertIn("Hero 6:3:1 hierarchy", css)
         self.assertIn("grid-template-columns: minmax(0, 7fr) minmax(270px, 3fr);", css)
-        self.assertIn(".flow-hero .eyebrow {", css)
-        self.assertIn("background: var(--accent-strong);", css)
-        self.assertIn("color: #ffffff;", css)
+        self.assertNotIn(".flow-hero .eyebrow {", css)
         self.assertIn("font-size: clamp(2.12rem, 3.4vw, 3.72rem);", css)
         self.assertIn("line-height: 1.04;", css)
         self.assertIn("background: var(--sky);", css)

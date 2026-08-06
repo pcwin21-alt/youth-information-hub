@@ -9234,7 +9234,7 @@ DESIGN_OVERHAUL_CSS = """
 
   .app-layout {
     grid-template-columns: 248px minmax(0, 1fr);
-    gap: 22px;
+    gap: 34px;
     padding-top: 0;
   }
 
@@ -9477,23 +9477,9 @@ DESIGN_OVERHAUL_CSS = """
     align-items: end;
   }
 
-  .flow-hero .eyebrow {
-    display: inline-flex;
-    width: fit-content;
-    padding: 7px 11px;
-    border: 1px solid var(--accent-strong);
-    border-radius: 999px;
-    background: var(--accent-strong);
-    color: #ffffff;
-    font-size: clamp(0.74rem, 0.7rem + 0.12vw, 0.8rem);
-    font-weight: 800;
-    line-height: 1.35;
-    letter-spacing: 0.015em;
-  }
-
   .flow-hero-title {
     max-width: 800px;
-    margin: 14px 0 14px;
+    margin: 0 0 14px;
     /* Keep the 6:3:1 hero hierarchy while reducing the dominant title by 20%. */
     font-size: clamp(2.12rem, 3.4vw, 3.72rem);
     line-height: 1.04;
@@ -16215,7 +16201,6 @@ def build_home_page(
     <section class="flow-hero" id="overview" data-flow-root>
       <header class="flow-hero-header">
         <div>
-          <span class="eyebrow">오늘의 청년 이슈를 함께 살펴봅니다</span>
           <h1 class="flow-hero-title">오늘 청년의 삶에 닿은 소식을<br>한곳에서 살펴봅니다</h1>
           <p class="flow-hero-copy">기사와 연구, 정부와 지역의 발표를 모았습니다. 지금 확인할 내용을 골라보고, 필요하면 원문까지 이어서 살펴보세요.</p>
         </div>
