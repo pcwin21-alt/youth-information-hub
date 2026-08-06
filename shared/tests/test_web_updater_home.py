@@ -853,11 +853,11 @@ class HomeSelectionTests(unittest.TestCase):
         self.assertIn(".flow-hero .eyebrow {", css)
         self.assertIn("background: var(--accent-strong);", css)
         self.assertIn("color: #ffffff;", css)
-        self.assertIn("font-size: clamp(2.65rem, 4.25vw, 4.65rem);", css)
+        self.assertIn("font-size: clamp(2.12rem, 3.4vw, 3.72rem);", css)
         self.assertIn("line-height: 1.04;", css)
         self.assertIn("background: var(--sky);", css)
         mobile_rules = css.split("@media (max-width: 760px)", 1)[1]
-        self.assertIn("font-size: clamp(2rem, 8vw, 2.55rem);", mobile_rules)
+        self.assertIn("font-size: clamp(1.6rem, 6.4vw, 2.04rem);", mobile_rules)
 
     def test_seven_menu_router_separates_news_opinion_research_and_official_sources(self) -> None:
         general_news = make_article(

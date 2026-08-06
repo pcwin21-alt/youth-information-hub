@@ -10044,7 +10044,7 @@ DESIGN_OVERHAUL_CSS = """
 
     .flow-hero-title {
       margin-top: 12px;
-      font-size: clamp(2rem, 8vw, 2.55rem);
+      font-size: clamp(1.6rem, 6.4vw, 2.04rem);
       line-height: 1.08;
       letter-spacing: -0.06em;
     }
