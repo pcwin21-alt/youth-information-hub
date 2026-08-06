@@ -9616,6 +9616,36 @@ DESIGN_OVERHAUL_CSS = """
     margin-left: auto;
   }
 
+  .flow-date-picker {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    margin: 0 0 18px;
+    padding: 2px 0 7px;
+    scrollbar-width: thin;
+  }
+
+  .flow-date-button {
+    flex: none;
+    min-width: 62px;
+    padding: 8px 10px;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    background: #fff;
+    color: var(--muted);
+    font: inherit;
+    font-size: 0.76rem;
+    font-weight: 700;
+    cursor: pointer;
+  }
+
+  .flow-date-button:hover,
+  .flow-date-button[aria-pressed="true"] {
+    border-color: var(--deep-navy);
+    background: var(--deep-navy);
+    color: #fff;
+  }
+
   .flow-map {
     display: grid;
     grid-template-columns: repeat(24, minmax(42px, 1fr));
@@ -11424,12 +11454,10 @@ HOME_FLOW_SCRIPT = """
   const items = Array.from(root.querySelectorAll('[data-flow-item]'));
   const cells = Array.from(root.querySelectorAll('[data-flow-cell]'));
   const periods = Array.from(root.querySelectorAll('[data-flow-period]'));
+  const dateButtons = Array.from(root.querySelectorAll('[data-flow-date]'));
   const status = root.querySelector('[data-flow-status]');
   const markButton = root.querySelector('[data-flow-mark-read]');
   const allButton = root.querySelector('[data-flow-all]');
-  const historySentinel = root.querySelector('[data-flow-history-sentinel]');
-  let historyStarted = false;
-
   function visiblePeriodIndexes() {
     return new Set(
       periods
@@ -11458,7 +11486,7 @@ HOME_FLOW_SCRIPT = """
     if (status) {
       status.textContent = readUntil
         ? `이전에 읽은 뒤 새로 들어온 자료 ${unreadCount}건`
-        : `불러온 6시간 구간 ${visiblePeriodIndexes().size}개 · ${currentItems.length}건`;
+        : `선택한 날짜 ${visiblePeriodIndexes().size}개 · ${currentItems.length}건`;
     }
     if (!readUntil) {
       return;
@@ -11483,19 +11511,26 @@ HOME_FLOW_SCRIPT = """
     refreshReadMarker();
   }
 
-  function revealOlderPeriods(batchSize = 4) {
-    const hiddenPeriods = periods.filter((period) => period.hidden);
-    hiddenPeriods.slice(0, batchSize).forEach((period) => {
-      period.hidden = false;
+  function selectPeriods(indexes) {
+    const selectedIndexes = new Set(indexes.map(String));
+    periods.forEach((period) => {
+      period.hidden = !selectedIndexes.has(String(period.dataset.flowPeriodIndex || '0'));
     });
-    historyStarted = true;
     showLoadedPeriods();
-    const remaining = periods.filter((period) => period.hidden).length;
-    if (allButton) {
-      allButton.textContent = remaining ? '이전 흐름 더 보기' : '저장된 흐름을 모두 봤습니다';
-      allButton.disabled = remaining === 0;
-    }
+    dateButtons.forEach((button) => {
+      button.setAttribute('aria-pressed', String(selectedIndexes.has(String(button.dataset.flowDate || '0'))));
+    });
   }
+
+  dateButtons.forEach((button) => {
+    button.addEventListener('click', () => {
+      selectPeriods([button.dataset.flowDate || '0']);
+      if (status) {
+        status.textContent = `${button.textContent.replace(/\s+/g, ' ').trim()} 흐름 · ${visibleItems().length}건`;
+      }
+      root.querySelector('[data-flow-stream]')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  });
 
   cells.forEach((cell) => {
     cell.addEventListener('click', () => {
@@ -11515,11 +11550,9 @@ HOME_FLOW_SCRIPT = """
   });
 
   allButton?.addEventListener('click', () => {
-    items.forEach((item) => { item.hidden = false; });
-    cells.forEach((cell) => cell.classList.remove('active'));
-    root.querySelectorAll('[data-flow-read-marker]').forEach((marker) => marker.remove());
+    selectPeriods(periods.map((period) => period.dataset.flowPeriodIndex || '0'));
     if (status) {
-      status.textContent = `오늘 전체 흐름 · ${items.length}건`;
+      status.textContent = `최근 7일 전체 흐름 · ${items.length}건`;
     }
   });
   markButton?.addEventListener('click', () => {
@@ -11533,21 +11566,7 @@ HOME_FLOW_SCRIPT = """
     markButton.textContent = '읽은 위치 저장됨';
   });
 
-  if (periods.length <= 1 && allButton) {
-    allButton.textContent = '저장된 흐름을 모두 봤습니다';
-    allButton.disabled = true;
-  }
-
-  if ('IntersectionObserver' in window && historySentinel) {
-    const observer = new IntersectionObserver((entries) => {
-      if (historyStarted && entries.some((entry) => entry.isIntersecting)) {
-        revealOlderPeriods(2);
-      }
-    }, { rootMargin: '240px 0px' });
-    observer.observe(historySentinel);
-  }
-
-  refreshReadMarker();
+  selectPeriods(['0']);
 })();
 """
 
@@ -16031,10 +16050,12 @@ def build_home_page(
         seen_flow_keys.add(article_key)
         flow_articles.append(article)
     day_start = reference_dt.replace(hour=0, minute=0, second=0, microsecond=0)
+    flow_history_days = 7
+    flow_window_start = day_start - timedelta(days=flow_history_days - 1)
     stream_articles = [
         article
         for article in flow_articles
-        if day_start <= article_exposure_datetime(article).astimezone(reference_dt.tzinfo) <= reference_dt
+        if flow_window_start <= article_exposure_datetime(article).astimezone(reference_dt.tzinfo) <= reference_dt
     ]
 
     bucket_minutes = 60
@@ -16042,16 +16063,15 @@ def build_home_page(
     period_seconds = period_hours * 60 * 60
     def flow_period_index(article: dict) -> int:
         published_dt = article_exposure_datetime(article).astimezone(reference_dt.tzinfo)
-        elapsed_seconds = max(0.0, (published_dt - day_start).total_seconds())
-        return int(elapsed_seconds // period_seconds)
+        return max(0, (day_start.date() - published_dt.date()).days)
 
     # A calendar day is a single, readable 24-cell map: one hourly cell for
     # each hour. This preserves the full day without repeating date labels or
     # splitting the timeline into visually disconnected rows.
-    period_indexes = range(24 // period_hours)
+    period_indexes = range(flow_history_days)
     flow_periods: list[dict] = []
     for period_index in period_indexes:
-        period_start = day_start + timedelta(hours=period_hours * period_index)
+        period_start = day_start - timedelta(days=period_index)
         period_end = period_start + timedelta(hours=period_hours)
         buckets: list[dict] = []
         for bucket_index in range((period_hours * 60) // bucket_minutes):
@@ -16115,7 +16135,7 @@ def build_home_page(
         )
         return (
             f'<section class="flow-period" data-flow-period '
-            f'data-flow-period-index="{period_index}">'
+            f'data-flow-period-index="{period_index}"{"" if period_index == 0 else " hidden"}>'
             f'<div class="flow-map-scroll"><div class="flow-map">{cells_html}</div></div>'
             f'</section>'
         )
@@ -16160,6 +16180,16 @@ def build_home_page(
         )
 
     flow_periods_html = "".join(render_flow_period(period) for period in flow_periods)
+    flow_date_buttons: list[str] = []
+    for period in flow_periods:
+        period_index = period["index"]
+        relative_label = "오늘" if period_index == 0 else f"{period_index}일 전"
+        flow_date_buttons.append(
+            f'<button class="flow-date-button" type="button" data-flow-date="{period_index}" '
+            f'aria-pressed="{"true" if period_index == 0 else "false"}">'
+            f'{period["start"].strftime("%m.%d")}<br><span>{relative_label}</span></button>'
+        )
+    flow_date_picker_html = "".join(flow_date_buttons)
     flow_items_html = "".join(render_flow_item(article) for article in stream_articles)
     if not flow_items_html:
         flow_items_html = (
@@ -16197,7 +16227,8 @@ def build_home_page(
 
       <section class="flow-board" id="today-briefing" aria-labelledby="flow-map-title">
         <div class="flow-map-wrap">
-          <div class="flow-day-heading"><strong id="flow-map-title">{day_start.strftime("%Y.%m.%d")}</strong><span>수집 구간 · 00:00–24:00</span><button class="flow-read-button" type="button" data-flow-all>전체 보기</button></div>
+          <div class="flow-day-heading"><strong id="flow-map-title">최근 7일 기록</strong><span>날짜를 선택해 시간별 흐름을 확인하세요</span><button class="flow-read-button" type="button" data-flow-all>7일 전체 보기</button></div>
+          <div class="flow-date-picker" aria-label="기록 날짜 선택">{flow_date_picker_html}</div>
           <div data-flow-periods>{flow_periods_html}</div>
         </div>
       </section>

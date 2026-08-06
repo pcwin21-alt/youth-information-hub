@@ -193,13 +193,12 @@ class HomeSelectionTests(unittest.TestCase):
 
         self.assertIn("오늘 올라온 청년 기사", page_html)
         self.assertIn("오늘 전체 · 1건", page_html)
-        self.assertIn("수집 구간 · 00:00–24:00", page_html)
+        self.assertIn("최근 7일 기록", page_html)
         self.assertIn("최신 자료 흐름", page_html)
         self.assertNotIn("시간의 강", page_html)
-        self.assertEqual(
-            page_html.count('data-flow-slot data-flow-period-index="0"'),
-            24,
-        )
+        self.assertEqual(page_html.count('data-flow-slot data-flow-period-index="0"'), 24)
+        self.assertEqual(page_html.count('data-flow-slot'), 168)
+        self.assertIn('data-flow-date="6"', page_html)
         self.assertNotIn('flow-cell-count">0</span>', page_html)
         self.assertEqual(page_html.count('data-flow-id="06c509e269c18556"'), 1)
         self.assertNotIn("지금 모집 중인 청년정책", page_html)
@@ -235,9 +234,9 @@ class HomeSelectionTests(unittest.TestCase):
         )
 
         self.assertIn('data-flow-period-index="0"', page_html)
-        self.assertNotIn('data-flow-period-index="1"', page_html)
-        self.assertEqual(page_html.count('data-flow-slot'), 24)
-        self.assertIn('수집 구간 · 00:00–24:00', page_html)
+        self.assertIn('data-flow-period-index="1"', page_html)
+        self.assertEqual(page_html.count('data-flow-slot'), 168)
+        self.assertIn('최근 7일 기록', page_html)
         self.assertNotIn('여기까지 읽었습니다', page_html)
         self.assertIn('flow-cell empty future current', page_html)
         self.assertIn('flow-cell-note">현재', page_html)
@@ -570,7 +569,7 @@ class HomeSelectionTests(unittest.TestCase):
         )
 
         self.assertIn("<span>#주거</span>", page_html)
-        self.assertNotIn("<span>#취업</span>", page_html)
+        self.assertIn("<span>#취업</span>", page_html)
         self.assertNotIn("최근 48시간 기준입니다.", page_html)
 
 
