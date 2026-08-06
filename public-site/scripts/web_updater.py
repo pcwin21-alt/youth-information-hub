@@ -11553,7 +11553,7 @@ HOME_FLOW_SCRIPT = """
   allButton?.addEventListener('click', () => {
     selectPeriods(periods.map((period) => period.dataset.flowPeriodIndex || '0'));
     if (status) {
-      status.textContent = `최근 7일 전체 흐름 · ${items.length}건`;
+      status.textContent = `최근 7일에 들어온 자료 · ${items.length}건`;
     }
   });
   markButton?.addEventListener('click', () => {
@@ -16215,20 +16215,20 @@ def build_home_page(
     <section class="flow-hero" id="overview" data-flow-root>
       <header class="flow-hero-header">
         <div>
-          <span class="eyebrow">청년정책 실무자를 위한 근실시간 동향판</span>
-          <h1 class="flow-hero-title">쏟아지는 청년 이슈를<br>시간의 흐름으로 읽습니다</h1>
-          <p class="flow-hero-copy">기사·관점·연구·정부와 지역의 원문을 한 시간축에 놓습니다. 무엇이 많이 들어왔는지 먼저 보고, 필요한 원문까지 바로 확인하세요.</p>
+          <span class="eyebrow">오늘의 청년 이슈를 함께 살펴봅니다</span>
+          <h1 class="flow-hero-title">오늘 청년의 삶에 닿은 소식을<br>한곳에서 살펴봅니다</h1>
+          <p class="flow-hero-copy">기사와 연구, 정부와 지역의 발표를 모았습니다. 지금 확인할 내용을 골라보고, 필요하면 원문까지 이어서 살펴보세요.</p>
         </div>
         <aside class="flow-freshness">
           <span>마지막 반영</span>
           <strong>{html.escape(home_date_label)} {html.escape(home_time_label)}</strong>
-          <p>자동 수집 주기에 맞춰 갱신되는 근실시간 화면입니다. 블록의 색은 중요도가 아니라 해당 1시간의 자료 수를 뜻합니다.</p>
+          <p>새 자료가 들어오면 이 화면도 바뀝니다. 색이 진할수록 그 시간에 들어온 자료가 많습니다.</p>
         </aside>
       </header>
 
       <section class="flow-board" id="today-briefing" aria-labelledby="flow-map-title">
         <div class="flow-map-wrap">
-          <div class="flow-day-heading"><strong id="flow-map-title">최근 7일 기록</strong><span>날짜를 선택해 시간별 흐름을 확인하세요</span><button class="flow-read-button" type="button" data-flow-all>7일 전체 보기</button></div>
+          <div class="flow-day-heading"><strong id="flow-map-title">지난 7일, 어떤 일이 있었을까요</strong><span>날짜를 골라 그날 들어온 소식을 살펴보세요</span><button class="flow-read-button" type="button" data-flow-all>7일 흐름 한 번에 보기</button></div>
           <div class="flow-date-picker" aria-label="기록 날짜 선택">{flow_date_picker_html}</div>
           <div data-flow-periods>{flow_periods_html}</div>
         </div>
@@ -16237,8 +16237,8 @@ def build_home_page(
       <section class="flow-stream" id="flow-stream" data-flow-stream aria-labelledby="flow-stream-title">
         <div class="flow-stream-head">
           <div>
-            <h2 id="flow-stream-title">최신 자료 흐름</h2>
-            <p class="flow-stream-status" data-flow-status>오늘 전체 · {today_count}건</p>
+            <h2 id="flow-stream-title">오늘 들어온 자료</h2>
+            <p class="flow-stream-status" data-flow-status>오늘 들어온 자료 · {today_count}건</p>
           </div>
         </div>
         <div class="flow-list">{flow_items_html}</div>

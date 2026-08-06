@@ -192,9 +192,9 @@ class HomeSelectionTests(unittest.TestCase):
         )
 
         self.assertIn("오늘 올라온 청년 기사", page_html)
-        self.assertIn("오늘 전체 · 1건", page_html)
-        self.assertIn("최근 7일 기록", page_html)
-        self.assertIn("최신 자료 흐름", page_html)
+        self.assertIn("오늘 들어온 자료 · 1건", page_html)
+        self.assertIn("지난 7일, 어떤 일이 있었을까요", page_html)
+        self.assertIn("오늘 들어온 자료", page_html)
         self.assertNotIn("시간의 강", page_html)
         self.assertEqual(page_html.count('data-flow-slot data-flow-period-index="0"'), 24)
         self.assertEqual(page_html.count('data-flow-slot'), 168)
@@ -236,7 +236,7 @@ class HomeSelectionTests(unittest.TestCase):
         self.assertIn('data-flow-period-index="0"', page_html)
         self.assertIn('data-flow-period-index="1"', page_html)
         self.assertEqual(page_html.count('data-flow-slot'), 168)
-        self.assertIn('최근 7일 기록', page_html)
+        self.assertIn('지난 7일, 어떤 일이 있었을까요', page_html)
         self.assertNotIn('여기까지 읽었습니다', page_html)
         self.assertIn('flow-cell empty future current', page_html)
         self.assertIn('flow-cell-note">현재', page_html)
@@ -340,7 +340,7 @@ class HomeSelectionTests(unittest.TestCase):
             },
         )
 
-        self.assertIn("최신 자료 흐름", page_html)
+        self.assertIn("오늘 들어온 자료", page_html)
         self.assertIn("뉴스 모아보기", page_html)
         self.assertNotIn("오늘 놓치면 안되는 뉴스 5가지", page_html)
         self.assertLess(page_html.index(newest_low_score["title"]), page_html.index(middle_article["title"]))
@@ -369,7 +369,7 @@ class HomeSelectionTests(unittest.TestCase):
             },
         )
 
-        self.assertIn("오늘 전체 · 6건", page_html)
+        self.assertIn("오늘 들어온 자료 · 6건", page_html)
         self.assertEqual(page_html.count("data-flow-item data-flow-id="), 6)
 
     def test_home_flow_combines_routed_content_and_excludes_noise_or_campaign(self) -> None:
