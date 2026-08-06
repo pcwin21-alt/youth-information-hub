@@ -9494,7 +9494,8 @@ DESIGN_OVERHAUL_CSS = """
   .flow-hero-title {
     max-width: 800px;
     margin: 14px 0 14px;
-    font-size: clamp(2.65rem, 4.25vw, 4.65rem);
+    /* Keep the 6:3:1 hero hierarchy while reducing the dominant title by 20%. */
+    font-size: clamp(2.12rem, 3.4vw, 3.72rem);
     line-height: 1.04;
     letter-spacing: -0.06em;
     text-wrap: balance;
