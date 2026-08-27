@@ -9,7 +9,7 @@ import sys
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
-from _bootstrap import PUBLIC_SITE_ROOT, RUNTIME_DB_ROOT, RUNTIME_PIPELINE_ROOT, RUNTIME_ROOT
+from _bootstrap import PUBLIC_SITE_ROOT, RUNTIME_DB_ROOT, RUNTIME_PIPELINE_ROOT
 
 from youth_info_platform.status_utils import complete_run, initialize_status, update_step
 
@@ -17,8 +17,6 @@ from youth_info_platform.status_utils import complete_run, initialize_status, up
 SNAPSHOT_ARTIFACT_NAMES = (
     "step2_filtered.json",
     "step5_summarized.json",
-    "daily_morning_briefing.json",
-    "daily_morning_briefing.md",
     "pipeline_status.json",
 )
 
@@ -148,7 +146,6 @@ def main() -> int:
     parser.add_argument("--use-sample-data", action="store_true")
     parser.add_argument("--skip-collect-news", action="store_true")
     parser.add_argument("--skip-outbound-notifications", action="store_true")
-    parser.add_argument("--skip-notion-sync", action="store_true")
     parser.add_argument("--skip-feedback", action="store_true")
     parser.add_argument("--feedback-with-source-healthcheck", action="store_true")
     parser.add_argument("--curator-max-network-enrich", type=int)
@@ -225,42 +222,8 @@ def main() -> int:
                 "command": [python, str(PUBLIC_SITE_ROOT / "scripts" / "web_updater.py")],
                 "artifacts": {"web_index": str(PUBLIC_SITE_ROOT / "web" / "index.html")},
             },
-            {
-                "name": "daily_briefing",
-                "command": [python, str(PUBLIC_SITE_ROOT / "scripts" / "daily_briefing.py")],
-                "artifacts": {
-                    "daily_morning_briefing": str(RUNTIME_PIPELINE_ROOT / "daily_morning_briefing.json"),
-                    "daily_morning_briefing_markdown": str(RUNTIME_PIPELINE_ROOT / "daily_morning_briefing.md"),
-                },
-            },
-            {
-                "name": "export_article_records",
-                "command": [python, str(PUBLIC_SITE_ROOT / "scripts" / "export_article_records.py")],
-                "artifacts": {
-                    "daily_articles_csv": str(RUNTIME_ROOT / "exports" / "daily_articles.csv"),
-                    "daily_articles_xlsx": str(RUNTIME_ROOT / "exports" / "daily_articles.xlsx"),
-                    "notion_articles_payload": str(RUNTIME_ROOT / "exports" / "notion_articles_payload.jsonl"),
-                },
-            },
         ]
     )
-    if not args.skip_notion_sync and os.getenv("NOTION_API_KEY"):
-        commands.append(
-            {
-                "name": "sync_notion_article_desk",
-                "command": [python, str(PUBLIC_SITE_ROOT / "scripts" / "sync_notion_article_desk.py")],
-                "artifacts": {
-                    "notion_sync_manifest": str(RUNTIME_ROOT / "exports" / "notion_sync_manifest.json"),
-                },
-            }
-        )
-    elif not args.skip_notion_sync:
-        update_step(
-            status_path,
-            "sync_notion_article_desk",
-            "skipped",
-            details={"reason": "missing_NOTION_API_KEY"},
-        )
     if not args.skip_feedback:
         feedback_command = [
             python,
