@@ -146,6 +146,51 @@ class LocalGovernmentTrendsPageTests(unittest.TestCase):
         self.assertIn("PDF", page_html)
         self.assertIn("종합 PDF", page_html)
 
+    def test_local_materials_switches_releases_and_each_plan_type_with_region_controls(self) -> None:
+        local_press = make_article(
+            title="서울시 청년 주거 지원사업 보도자료",
+            lead_text="서울특별시가 청년 주거 지원 정책을 공식 발표했다.",
+            url="https://www.seoul.go.kr/news/youth-housing",
+            source_kind="local",
+            region="서울",
+            source_channel="press_release",
+        )
+        basic_plan = make_article(
+            title="서울 청년정책 기본계획(2026~2030)",
+            lead_text="서울특별시 청년정책 기본계획 원문입니다.",
+            url="https://www.seoul.go.kr/plan/youth-basic",
+            source_kind="local",
+            region="서울",
+            source_channel="policy_plan",
+        )
+        implementation_plan = make_article(
+            title="2026년 서울 청년정책 시행계획",
+            lead_text="서울특별시 연도별 청년정책 시행계획 원문입니다.",
+            url="https://www.seoul.go.kr/plan/youth-implementation",
+            source_kind="local",
+            region="서울",
+            source_channel="policy_plan",
+        )
+
+        page_html = web_updater.build_local_materials_page(
+            [local_press, basic_plan, implementation_plan],
+            {"finished_at": "2026-05-01T10:00:00+09:00"},
+        )
+
+        self.assertIn('data-local-view-tab="releases"', page_html)
+        self.assertIn('data-local-view-tab="basic"', page_html)
+        self.assertIn('data-local-view-tab="implementation"', page_html)
+        self.assertIn('data-local-view-panel="releases"', page_html)
+        self.assertIn('data-local-view-panel="basic"', page_html)
+        self.assertIn('data-local-view-panel="implementation"', page_html)
+        self.assertIn('data-policy-filter-root="local-materials"', page_html)
+        self.assertIn('class="filter-region-map-svg"', page_html)
+        self.assertIn('data-policy-region="서울"', page_html)
+        self.assertIn("청년정책 기본계획(5개년)", page_html)
+        self.assertIn("청년정책 시행계획(1개년)", page_html)
+        self.assertIn('id="local-basic-policy-map"', page_html)
+        self.assertIn('id="local-implementation-policy-map"', page_html)
+
     def test_government_resources_start_with_cross_government_documents(self) -> None:
         resources = web_updater.build_government_policy_resource_articles()
         urls = {article["url"] for article in resources}

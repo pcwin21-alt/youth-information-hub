@@ -3,12 +3,13 @@ from __future__ import annotations
 import base64
 import html
 import json
+import os
 import re
 import shutil
 import subprocess
 import urllib.request
 import xml.etree.ElementTree as ET
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from email.utils import parsedate_to_datetime
 from typing import Any, Callable
 from urllib.parse import parse_qs, urlencode, urljoin, urlparse, urlunparse
@@ -42,6 +43,8 @@ ParserFn = Callable[[str, dict[str, Any]], list[dict[str, Any]]]
 SOURCE_METADATA_FIELDS = (
     "selection_priority",
     "source_focus",
+    "source_origin",
+    "publisher_icon_url",
 )
 
 
@@ -89,6 +92,61 @@ def decode_response_bytes(payload: bytes, header_charset: str | None = None) -> 
         except (LookupError, UnicodeDecodeError):
             continue
     return payload.decode("utf-8", errors="ignore")
+
+
+class SourceAccessError(RuntimeError):
+    """A source returned an access wall rather than collection data."""
+
+    def __init__(self, code: str) -> None:
+        super().__init__(code)
+        self.code = code
+
+
+def detect_source_access_issue(payload: str) -> str | None:
+    """Classify known soft blocks; this deliberately does not attempt a bypass."""
+
+    normalized = re.sub(r"\s+", " ", payload).lower()
+    if any(
+        marker in normalized
+        for marker in (
+            "captcha",
+            "recaptcha",
+            "access denied",
+            "unusual traffic",
+            "automated queries",
+            "비정상적인 접근",
+            "자동화된 요청",
+            "접근이 차단",
+        )
+    ):
+        return "blocked"
+    if any(
+        marker in normalized
+        for marker in (
+            "로그인이 필요",
+            "로그인 후 이용",
+            "sign in to continue",
+            "login required",
+            "authentication required",
+        )
+    ):
+        return "auth_required"
+    return None
+
+
+def require_usable_source_payload(payload: str) -> None:
+    if issue := detect_source_access_issue(payload):
+        raise SourceAccessError(issue)
+
+
+def classify_collection_error(error: Exception) -> str:
+    if isinstance(error, SourceAccessError):
+        return error.code
+    if isinstance(error, ValueError) and str(error).startswith("unsupported_parser:"):
+        return "unsupported_parser"
+    if isinstance(error, (ET.ParseError, json.JSONDecodeError)):
+        return "parser_error"
+    return "fetch_error"
 
 
 def fetch_url(url: str, timeout: int = 10) -> str:
@@ -527,6 +585,85 @@ def parse_naver_news_search(
     return articles
 
 
+def parse_openalex_works(payload: str, source: dict[str, Any]) -> list[dict[str, Any]]:
+    """Normalize OpenAlex work records into the shared article schema.
+
+    OpenAlex is used only as a public scholarly metadata index. The record
+    links to the DOI or landing page; it does not copy a paper's abstract or
+    full text into the public-site pipeline.
+    """
+
+    try:
+        document = json.loads(payload)
+    except json.JSONDecodeError as error:
+        raise ValueError("invalid_openalex_payload") from error
+
+    works = document.get("results") if isinstance(document, dict) else None
+    if not isinstance(works, list):
+        return []
+
+    allowed_languages = {
+        str(value).strip().lower()
+        for value in source.get("allowed_languages", [])
+        if str(value).strip()
+    }
+    articles: list[dict[str, Any]] = []
+    for work in works:
+        if not isinstance(work, dict):
+            continue
+        language = str(work.get("language") or "").strip().lower()
+        if allowed_languages and language and language not in allowed_languages:
+            continue
+        title = strip_html(str(work.get("display_name") or "")).strip()
+        if not title:
+            continue
+        primary_location = work.get("primary_location") or {}
+        if not isinstance(primary_location, dict):
+            primary_location = {}
+        best_oa_location = work.get("best_oa_location") or {}
+        if not isinstance(best_oa_location, dict):
+            best_oa_location = {}
+        primary_source = primary_location.get("source") or {}
+        if not isinstance(primary_source, dict):
+            primary_source = {}
+        url = (
+            str(work.get("doi") or "").strip()
+            or str(best_oa_location.get("landing_page_url") or "").strip()
+            or str(primary_location.get("landing_page_url") or "").strip()
+        )
+        if not url:
+            continue
+        authors = [
+            str((authorship.get("author") or {}).get("display_name") or "").strip()
+            for authorship in work.get("authorships") or []
+            if isinstance(authorship, dict)
+        ]
+        venue = str(primary_source.get("display_name") or "").strip()
+        publication_date = str(work.get("publication_date") or "").strip() or None
+        meta = " · ".join(
+            part
+            for part in [venue, str(work.get("type") or "").replace("_", " ")]
+            if part
+        )
+        articles.append(
+            {
+                "url": url,
+                "title": title,
+                "source": venue or source["name"],
+                "source_name": source["name"],
+                "source_kind": source.get("kind", "research"),
+                "source_url": "https://openalex.org/",
+                "published_date": publication_date,
+                "lead_text": meta[:240],
+                "article_type": "research",
+                "authors": [author for author in authors if author][:8],
+                "openalex_id": work.get("id"),
+                "open_access": bool((work.get("open_access") or {}).get("is_oa")),
+            }
+        )
+    return articles
+
+
 LOCAL_BOARD_ATTACHMENT_PATTERN = re.compile(
     r"\.(?:pdf|hwp|hwpx|doc|docx|xls|xlsx|zip)(?:$|[?#])|file(?:down|download)|atchFileId|attach",
     re.IGNORECASE,
@@ -692,6 +829,10 @@ def parse_local_board_search(page_text: str, source: dict[str, Any]) -> list[dic
             "source_channel": source_channel,
             "search_terms": matched_terms,
         }
+        if source_kind == "official":
+            article["is_official_source"] = True
+            article["policy_authority"] = str(source.get("policy_authority") or source_name)
+            article["publisher_url"] = article_url
         attachment_url = _extract_attachment_url(root, base_url)
         if attachment_url:
             article["attachment_url"] = attachment_url
@@ -961,6 +1102,10 @@ def _parse_naver_payload(payload: str, source: dict[str, Any]) -> list[dict[str,
     return parse_naver_news_search(payload, source["url"], source["name"], source.get("kind", "news"))
 
 
+def _parse_openalex_payload(payload: str, source: dict[str, Any]) -> list[dict[str, Any]]:
+    return parse_openalex_works(payload, source)
+
+
 def _parse_local_board_payload(payload: str, source: dict[str, Any]) -> list[dict[str, Any]]:
     return parse_local_board_search(payload, source)
 
@@ -978,6 +1123,7 @@ PARSER_REGISTRY: dict[str, ParserFn] = {
     "opm_press_release": _parse_opm_payload,
     "korea_withyou_policy_news": _parse_korea_withyou_payload,
     "naver_news_search": _parse_naver_payload,
+    "openalex_works": _parse_openalex_payload,
     "local_board_search": _parse_local_board_payload,
     "korea_press_release_list": _parse_korea_press_release_payload,
 }
@@ -1008,6 +1154,7 @@ def fetch_source_items(source: dict[str, Any]) -> list[dict[str, Any]]:
         return fetch_naver_news_items(source)
 
     payload = fetch_url(source["url"])
+    require_usable_source_payload(payload)
     items = parse_source_payload(payload, source)
     return enrich_articles_with_detail(items, source)
 
@@ -1020,6 +1167,7 @@ def fetch_naver_news_items(source: dict[str, Any]) -> list[dict[str, Any]]:
     for start in range(1, limit + 1, 10):
         page_url = build_paginated_source_url(source["url"], start=start)
         payload = fetch_url(page_url)
+        require_usable_source_payload(payload)
         page_source = {**source, "url": page_url}
         page_items = parse_source_payload(payload, page_source)
         if not page_items:
@@ -1047,35 +1195,289 @@ def attach_source_metadata(items: list[dict[str, Any]], source: dict[str, Any]) 
     return [{**item, **metadata} for item in items]
 
 
+def collect_articles_with_manifest(
+    sources: list[dict[str, Any]],
+    use_sample_data: bool = False,
+    fallback_to_sample: bool = False,
+) -> tuple[list[dict[str, Any]], dict[str, Any]]:
+    if use_sample_data:
+        articles = list(SAMPLE_ARTICLES)
+        return articles, {
+            "generated_at": datetime.now().astimezone().isoformat(),
+            "state": "sample",
+            "source_count": 0,
+            "successful_sources": 0,
+            "failed_sources": 0,
+            "sources": [],
+        }
+
+    articles: list[dict[str, Any]] = []
+    source_manifest: list[dict[str, Any]] = []
+    for source in sources:
+        if not source.get("enabled", False):
+            source_manifest.append(
+                {
+                    "name": source.get("name", "unnamed_source"),
+                    "kind": source.get("kind"),
+                    "parser": source.get("parser"),
+                    "source_url": source.get("url"),
+                    "status": "disabled",
+                    "fetched_items": 0,
+                    "filtered_items": 0,
+                    "collected_items": 0,
+                }
+            )
+            continue
+        try:
+            items = fetch_source_items(source)
+            items = attach_source_metadata(items, source)
+            filtered_items = apply_source_filters(items, source)
+            selected_items = filtered_items[: int(source.get("limit", len(filtered_items)))]
+            articles.extend(selected_items)
+            source_manifest.append(
+                {
+                    "name": source.get("name", "unnamed_source"),
+                    "kind": source.get("kind"),
+                    "parser": source.get("parser"),
+                    "source_url": source.get("url"),
+                    "status": "ok" if selected_items else "empty_result",
+                    "fetched_items": len(items),
+                    "filtered_items": len(filtered_items),
+                    "collected_items": len(selected_items),
+                }
+            )
+        except Exception as error:
+            source_manifest.append(
+                {
+                    "name": source.get("name", "unnamed_source"),
+                    "kind": source.get("kind"),
+                    "parser": source.get("parser"),
+                    "source_url": source.get("url"),
+                    "status": classify_collection_error(error),
+                    "fetched_items": 0,
+                    "filtered_items": 0,
+                    "collected_items": 0,
+                    "error_type": error.__class__.__name__,
+                }
+            )
+            continue
+
+    manifest = {
+        "generated_at": datetime.now().astimezone().isoformat(),
+        "state": "completed" if articles else "empty",
+        "source_count": sum(1 for source in sources if source.get("enabled", False)),
+        "successful_sources": sum(
+            1 for entry in source_manifest if entry["status"] in {"ok", "empty_result"}
+        ),
+        "failed_sources": sum(
+            1
+            for entry in source_manifest
+            if entry["status"] not in {"ok", "empty_result", "disabled"}
+        ),
+        "sources": source_manifest,
+    }
+    if articles:
+        return articles, manifest
+    if fallback_to_sample:
+        return list(SAMPLE_ARTICLES), {**manifest, "state": "fallback_sample"}
+    return [], manifest
+
+
 def collect_articles(
     sources: list[dict[str, Any]],
     use_sample_data: bool = False,
     fallback_to_sample: bool = False,
 ) -> list[dict[str, Any]]:
-    if use_sample_data:
-        return list(SAMPLE_ARTICLES)
+    articles, _manifest = collect_articles_with_manifest(
+        sources,
+        use_sample_data=use_sample_data,
+        fallback_to_sample=fallback_to_sample,
+    )
+    return articles
 
-    articles: list[dict[str, Any]] = []
-    for source in sources:
-        if not source.get("enabled", False):
+
+def load_youtube_source_config(config_path: str | None = None) -> dict[str, Any]:
+    default = {
+        "keywords": [],
+        "channels": [],
+        "max_results_per_keyword": 8,
+        "lookback_days": 14,
+        "region_code": "KR",
+        "language": "ko",
+    }
+    if not config_path:
+        return default
+    try:
+        with open(config_path, encoding="utf-8") as handle:
+            payload = json.load(handle)
+    except (OSError, json.JSONDecodeError):
+        return default
+    if not isinstance(payload, dict):
+        return default
+    return {**default, **payload}
+
+
+def _youtube_api_json(url: str) -> dict[str, Any]:
+    payload = json.loads(fetch_url(url, timeout=15))
+    if not isinstance(payload, dict):
+        raise RuntimeError("youtube_api_response_is_not_object")
+    return payload
+
+
+def _youtube_video_from_api(item: dict[str, Any], keyword: str) -> dict[str, Any] | None:
+    identifier = item.get("id") or {}
+    snippet = item.get("snippet") or {}
+    if not isinstance(identifier, dict) or not isinstance(snippet, dict):
+        return None
+    video_id = str(identifier.get("videoId") or "").strip()
+    title = strip_html(str(snippet.get("title") or ""))
+    if not video_id or not title:
+        return None
+    thumbnails = snippet.get("thumbnails") or {}
+    image = thumbnails.get("medium") or thumbnails.get("default") or {}
+    return {
+        "title": title,
+        "video_id": video_id,
+        "url": f"https://www.youtube.com/watch?v={video_id}",
+        "channel": strip_html(str(snippet.get("channelTitle") or "")),
+        "channel_id": str(snippet.get("channelId") or "").strip(),
+        "published_date": _parse_published(str(snippet.get("publishedAt") or "")),
+        "description": strip_html(str(snippet.get("description") or "")),
+        "thumbnail_url": str(image.get("url") or "").strip() if isinstance(image, dict) else "",
+        "collection_mode": "youtube_api_search",
+        "matched_keywords": [keyword],
+    }
+
+
+def _youtube_videos_from_channel_feed(channel: dict[str, Any]) -> list[dict[str, Any]]:
+    channel_id = str(channel.get("channel_id") or "").strip()
+    if not channel_id:
+        return []
+    root = ET.fromstring(fetch_url(f"https://www.youtube.com/feeds/videos.xml?channel_id={channel_id}", timeout=15))
+    atom = "{http://www.w3.org/2005/Atom}"
+    yt = "{http://www.youtube.com/xml/schemas/2015}"
+    media = "{http://search.yahoo.com/mrss/}"
+    result: list[dict[str, Any]] = []
+    for entry in root.findall(f"{atom}entry"):
+        video_id = (entry.findtext(f"{yt}videoId") or "").strip()
+        title = strip_html(entry.findtext(f"{atom}title") or "")
+        if not video_id or not title:
+            continue
+        author = entry.find(f"{atom}author")
+        channel_name = (author.findtext(f"{atom}name") if author is not None else "") or channel.get("label") or ""
+        group = entry.find(f"{media}group")
+        description = group.findtext(f"{media}description") if group is not None else ""
+        thumbnail = group.find(f"{media}thumbnail") if group is not None else None
+        result.append(
+            {
+                "title": title,
+                "video_id": video_id,
+                "url": f"https://www.youtube.com/watch?v={video_id}",
+                "channel": strip_html(str(channel_name)),
+                "channel_id": channel_id,
+                "published_date": _parse_published(entry.findtext(f"{atom}published") or ""),
+                "description": strip_html(description or ""),
+                "thumbnail_url": (thumbnail.attrib.get("url") if thumbnail is not None else "") or "",
+                "collection_mode": "channel_rss",
+                "matched_keywords": [str(tag) for tag in (channel.get("topic_tags") or []) if str(tag).strip()],
+            }
+        )
+    return result
+
+
+def collect_videos_with_status(
+    *,
+    use_sample_data: bool = False,
+    config_path: str | None = None,
+    api_key: str | None = None,
+) -> tuple[list[dict[str, Any]], dict[str, Any]]:
+    if use_sample_data:
+        sample_videos = [{**video, "collection_mode": "sample", "matched_keywords": ["샘플"]} for video in SAMPLE_VIDEOS]
+        return sample_videos, {
+            "state": "sample",
+            "collected_at": datetime.now(timezone.utc).isoformat(),
+            "search_video_count": 0,
+            "rss_video_count": len(sample_videos),
+            "message": "샘플 영상으로 화면을 확인하고 있습니다.",
+        }
+
+    config = load_youtube_source_config(config_path)
+    key = (api_key or os.getenv("YOUTUBE_API_KEY") or "").strip()
+    videos: list[dict[str, Any]] = []
+    search_video_count = 0
+    rss_video_count = 0
+    errors: list[str] = []
+
+    if key:
+        max_results = max(1, min(int(config.get("max_results_per_keyword") or 8), 25))
+        lookback_days = max(1, min(int(config.get("lookback_days") or 14), 90))
+        published_after = (datetime.now(timezone.utc) - timedelta(days=lookback_days)).replace(microsecond=0).isoformat().replace("+00:00", "Z")
+        for keyword in [str(value).strip() for value in (config.get("keywords") or []) if str(value).strip()]:
+            params = urlencode(
+                {
+                    "part": "snippet",
+                    "type": "video",
+                    "order": "date",
+                    "maxResults": max_results,
+                    "q": keyword,
+                    "relevanceLanguage": str(config.get("language") or "ko"),
+                    "regionCode": str(config.get("region_code") or "KR"),
+                    "publishedAfter": published_after,
+                    "key": key,
+                }
+            )
+            try:
+                payload = _youtube_api_json(f"https://www.googleapis.com/youtube/v3/search?{params}")
+                for item in payload.get("items", []):
+                    if isinstance(item, dict) and (video := _youtube_video_from_api(item, keyword)):
+                        videos.append(video)
+                        search_video_count += 1
+            except Exception:
+                errors.append("YouTube API 검색")
+
+    for channel in config.get("channels") or []:
+        if not isinstance(channel, dict):
             continue
         try:
-            items = fetch_source_items(source)
-            items = attach_source_metadata(items, source)
-            items = apply_source_filters(items, source)
-            articles.extend(items[: int(source.get("limit", len(items)))])
+            channel_videos = _youtube_videos_from_channel_feed(channel)
+            videos.extend(channel_videos)
+            rss_video_count += len(channel_videos)
         except Exception:
-            continue
+            errors.append("채널 RSS")
 
-    if articles:
-        return articles
-    if fallback_to_sample:
-        return list(SAMPLE_ARTICLES)
-    return []
+    deduped: list[dict[str, Any]] = []
+    seen: set[str] = set()
+    for video in videos:
+        key_id = str(video.get("video_id") or video.get("url") or "")
+        if not key_id or key_id in seen:
+            continue
+        seen.add(key_id)
+        deduped.append(video)
+
+    if deduped:
+        state = "connected"
+        message = "유튜브에서 가져온 영상입니다. 영상마다 수집 방식을 표시합니다."
+    elif not key and not any(isinstance(channel, dict) and channel.get("channel_id") for channel in config.get("channels") or []):
+        state = "not_connected"
+        message = "YouTube API 키 또는 채널 RSS 목록을 연결하면 영상이 표시됩니다."
+    elif errors:
+        state = "partial_failure"
+        message = "일부 유튜브 수집을 완료하지 못했습니다. 다음 수집에서 다시 확인합니다."
+    else:
+        state = "no_results"
+        message = "현재 설정한 검색어와 채널에서 표시할 영상이 없습니다."
+    return deduped, {
+        "state": state,
+        "collected_at": datetime.now(timezone.utc).isoformat(),
+        "search_video_count": search_video_count,
+        "rss_video_count": rss_video_count,
+        "message": message,
+    }
 
 
 def collect_videos(use_sample_data: bool = False) -> list[dict[str, Any]]:
-    return list(SAMPLE_VIDEOS)
+    videos, _status = collect_videos_with_status(use_sample_data=use_sample_data)
+    return videos
 
 
 def resolve_include_keywords(source: dict[str, Any]) -> list[str]:

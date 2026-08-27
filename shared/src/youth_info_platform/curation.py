@@ -531,10 +531,34 @@ def score_public_relevance(article: dict[str, Any], text: str, prominent_text: s
 def is_public_interest_article(article: dict[str, Any], text: str | None = None) -> bool:
     article_text = text or _article_text(article)
     prominent = _article_prominent_text(article)
-    if article.get("is_noise") or article.get("article_type") == "opinion":
+    article_type = str(article.get("article_type") or "").strip().lower()
+    explicit_opinion = has_explicit_opinion_marker(
+        str(article.get("title") or ""), str(article.get("section") or "")
+    )
+    research_source = str(article.get("source_kind") or "").strip().lower() == "research"
+    is_research_record = article_type in {"research", "paper", "report", "thesis"}
+    if article.get("is_noise") and not (article_type == "opinion" and explicit_opinion):
         return False
+    # 칼럼은 일반 보도와 다른 메뉴에서 다루되, 제목·섹션에 드러난 편집물이고
+    # 청년 맥락이 충분할 때는 공개 후보에서 일괄 탈락시키지 않는다.
+    if article_type == "opinion":
+        return (
+            explicit_opinion
+            and not article.get("missing_youth_content_signal")
+            and not article.get("weak_youth_signal")
+            and not article.get("campaign_attack")
+            and not has_political_attack_signal(article_text)
+            and not (
+                article.get("campaign_political")
+                and not article.get("substantive_promise")
+            )
+        )
     if article.get("missing_youth_content_signal"):
         return False
+    # 학술 색인에서 직접 받은 논문·보고서는 뉴스의 직접지원 신호 대신
+    # 연구 메타데이터와 청년 키워드로 공개 후보를 판단한다.
+    if research_source and is_research_record:
+        return True
     if article.get("campaign_attack") or has_political_attack_signal(article_text):
         return False
     if article.get("weak_youth_signal"):
@@ -716,9 +740,23 @@ def classify_articles(articles: list[dict]) -> list[dict]:
             categories.append(CATEGORY_NOW)
 
         ordered_categories = [category for category in CATEGORIES if category in categories]
+        is_indexed_research = (
+            article.get("source_kind") == "research"
+            and article_type in {"research", "paper", "report", "thesis"}
+            and has_youth_content_signal
+        )
+        is_explicit_youth_opinion = (
+            article_type == "opinion"
+            and has_explicit_opinion_marker(
+                str(article.get("title") or ""), str(article.get("section") or "")
+            )
+            and has_youth_content_signal
+            and not weak_youth_signal
+            and not campaign_attack
+        )
         is_noise = (
             False
-            if is_official or strong_reference_signal
+            if is_official or strong_reference_signal or is_indexed_research or is_explicit_youth_opinion
             else detect_noise(content_text) or weak_youth_signal or missing_youth_content_signal
         )
         pipeline_flags = {
@@ -1515,6 +1553,10 @@ def _extract_public_institution_owner_label(text: str) -> str | None:
 def _representative_sort_key(article: dict[str, Any]) -> tuple[Any, ...]:
     source_kind = article.get("source_kind") or ""
     source_rank = {"official": 0, "local": 1, "news": 2}.get(source_kind, 3)
+    source_origin_rank = {"direct_ministry": 0, "": 1, "policy_briefing": 2}.get(
+        str(article.get("source_origin") or ""),
+        1,
+    )
     has_publisher_url = 0 if article.get("publisher_url") else 1
     google_wrapper_penalty = 1 if is_google_news_url(article.get("url")) else 0
     enriched_penalty = 0 if article.get("body_text") else 1
@@ -1523,6 +1565,7 @@ def _representative_sort_key(article: dict[str, Any]) -> tuple[Any, ...]:
     issue_score = -(len(article.get("issue_tags") or []))
     return (
         official_rank,
+        source_origin_rank,
         has_publisher_url,
         google_wrapper_penalty,
         enriched_penalty,

@@ -16,12 +16,16 @@ if str(SHARED_SRC) not in sys.path:
 from youth_info_platform.collect import (  # noqa: E402
     apply_source_filters,
     attach_source_metadata,
+    collect_articles_with_manifest,
+    collect_videos_with_status,
+    detect_source_access_issue,
     fetch_url_via_curl,
     get_source_parser,
     parse_feed,
     parse_korea_press_release_list,
     parse_local_board_search,
     parse_naver_news_search,
+    parse_openalex_works,
     parse_source_payload,
 )
 
@@ -146,6 +150,42 @@ class NaverParserTests(unittest.TestCase):
         self.assertEqual(len(articles), 1)
         self.assertIsNotNone(get_source_parser("naver_news_search"))
         self.assertIsNotNone(get_source_parser("rss"))
+
+    def test_parse_openalex_works_keeps_metadata_and_doi_link(self) -> None:
+        payload = json.dumps(
+            {
+                "results": [
+                    {
+                        "id": "https://openalex.org/W123",
+                        "display_name": "청년정책 참여가 지역 정주에 미치는 영향",
+                        "publication_date": "2026-03-01",
+                        "language": "ko",
+                        "doi": "https://doi.org/10.1234/example",
+                        "type": "article",
+                        "primary_location": {"source": {"display_name": "한국정책연구"}},
+                        "authorships": [{"author": {"display_name": "홍길동"}}],
+                        "open_access": {"is_oa": True},
+                    },
+                    {
+                        "display_name": "Youth policy in English",
+                        "publication_date": "2026-03-02",
+                        "language": "en",
+                        "doi": "https://doi.org/10.1234/english",
+                    },
+                ]
+            }
+        )
+        source = {"name": "OpenAlex 청년정책 연구", "kind": "research", "allowed_languages": ["ko"]}
+
+        articles = parse_openalex_works(payload, source)
+
+        self.assertEqual(len(articles), 1)
+        self.assertEqual(articles[0]["article_type"], "research")
+        self.assertEqual(articles[0]["source_kind"], "research")
+        self.assertEqual(articles[0]["url"], "https://doi.org/10.1234/example")
+        self.assertEqual(articles[0]["published_date"], "2026-03-01")
+        self.assertEqual(articles[0]["authors"], ["홍길동"])
+        self.assertIsNotNone(get_source_parser("openalex_works"))
 
 
 class SourceFilterTests(unittest.TestCase):
@@ -275,6 +315,34 @@ class LocalBoardParserTests(unittest.TestCase):
         self.assertEqual(articles[0]["published_date"], "2026-05-01T00:00:00+09:00")
         self.assertEqual(articles[0]["source_channel"], "press_release")
         self.assertEqual(articles[0]["region_name"], "서울")
+
+    def test_parse_official_board_marks_direct_ministry_origin(self) -> None:
+        html = """
+        <table><tbody><tr class="board-item">
+          <td class="title"><a href="/news/view.do?id=10">청년 일자리 보도자료</a></td>
+          <td class="date">2026.05.01</td>
+        </tr></tbody></table>
+        """
+        source = {
+            "name": "고용노동부",
+            "kind": "official",
+            "url": "https://www.moel.go.kr/news/enews/report/enewsList.do",
+            "item_selector": "tr.board-item",
+            "title_selector": ".title a",
+            "link_selector": ".title a",
+            "date_selector": ".date",
+            "search_terms": ["청년"],
+            "source_origin": "direct_ministry",
+            "publisher_icon_url": "https://www.moel.go.kr/favicon.ico",
+        }
+
+        article = attach_source_metadata(parse_local_board_search(html, source), source)[0]
+
+        self.assertTrue(article["is_official_source"])
+        self.assertEqual(article["policy_authority"], "고용노동부")
+        self.assertEqual(article["publisher_url"], "https://www.moel.go.kr/news/view.do?id=10")
+        self.assertEqual(article["source_origin"], "direct_ministry")
+        self.assertEqual(article["publisher_icon_url"], "https://www.moel.go.kr/favicon.ico")
 
     def test_parse_local_board_search_keeps_direct_document_url(self) -> None:
         html = """
@@ -447,6 +515,57 @@ class FetchUrlTests(unittest.TestCase):
 
         command = run_mock.call_args.args[0]
         self.assertIn("--fail", command)
+
+
+class CollectionManifestTests(unittest.TestCase):
+    def test_detect_source_access_issue_distinguishes_block_and_auth(self) -> None:
+        self.assertEqual(detect_source_access_issue("<title>Access Denied</title>"), "blocked")
+        self.assertEqual(detect_source_access_issue("로그인이 필요합니다."), "auth_required")
+        self.assertIsNone(detect_source_access_issue("<rss><channel /></rss>"))
+
+    @patch("youth_info_platform.collect.fetch_source_items")
+    def test_collect_articles_records_source_outcomes_without_breaking_collection(self, fetch_mock) -> None:
+        fetch_mock.side_effect = [
+            [{"title": "청년 정책", "lead_text": "지원", "url": "https://example.com/1"}],
+            RuntimeError("network down"),
+        ]
+        articles, manifest = collect_articles_with_manifest(
+            [
+                {"name": "정상 소스", "enabled": True, "kind": "official", "parser": "rss", "url": "https://example.com/a"},
+                {"name": "실패 소스", "enabled": True, "kind": "official", "parser": "rss", "url": "https://example.com/b"},
+            ]
+        )
+        self.assertEqual(len(articles), 1)
+        self.assertEqual(manifest["successful_sources"], 1)
+        self.assertEqual(manifest["failed_sources"], 1)
+        self.assertEqual([entry["status"] for entry in manifest["sources"]], ["ok", "fetch_error"])
+
+
+class YoutubeCollectionTests(unittest.TestCase):
+    @patch("youth_info_platform.collect.fetch_url")
+    def test_channel_rss_collection_records_source_and_topic(self, fetch_mock) -> None:
+        fetch_mock.return_value = """
+        <feed xmlns="http://www.w3.org/2005/Atom" xmlns:yt="http://www.youtube.com/xml/schemas/2015" xmlns:media="http://search.yahoo.com/mrss/">
+          <entry><yt:videoId>video-1</yt:videoId><title>청년 주거 지원 설명</title><published>2026-08-13T01:00:00+00:00</published><author><name>청년 채널</name></author><media:group><media:description>영상 설명</media:description><media:thumbnail url="https://example.com/image.jpg" /></media:group></entry>
+        </feed>
+        """
+        videos, status = collect_videos_with_status(
+            config_path=None,
+            api_key="",
+        )
+        self.assertEqual(videos, [])
+        self.assertEqual(status["state"], "not_connected")
+
+        config_path = Path(self._testMethodName + ".json")
+        config_path.write_text(json.dumps({"channels": [{"channel_id": "channel-1", "topic_tags": ["청년 주거"]}]}), encoding="utf-8")
+        try:
+            videos, status = collect_videos_with_status(config_path=str(config_path), api_key="")
+        finally:
+            config_path.unlink(missing_ok=True)
+        self.assertEqual(status["state"], "connected")
+        self.assertEqual(len(videos), 1)
+        self.assertEqual(videos[0]["collection_mode"], "channel_rss")
+        self.assertEqual(videos[0]["matched_keywords"], ["청년 주거"])
 
 
 if __name__ == "__main__":

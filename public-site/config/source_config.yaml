@@ -15,6 +15,7 @@
       "enabled": true,
       "parser": "korea_press_release_list",
       "url": "https://www.korea.kr/briefing/pressReleaseList.do?srchWord=%EC%B2%AD%EB%85%84",
+      "source_origin": "policy_briefing",
       "source_channel": "press_release",
       "include_youth_related": true,
       "include_keywords": [
@@ -50,6 +51,27 @@
       "detail_limit": 6,
       "include_youth_related": true,
       "limit": 20
+    },
+    {
+      "name": "고용노동부 보도자료",
+      "kind": "official",
+      "enabled": true,
+      "parser": "local_board_search",
+      "url": "https://www.moel.go.kr/news/enews/report/enewsList.do",
+      "source_origin": "direct_ministry",
+      "publisher_icon_url": "https://www.moel.go.kr/favicon.ico",
+      "source_channel": "press_release",
+      "item_selector": "tbody tr",
+      "title_selector": "a[href*='enewsView.do']",
+      "link_selector": "a[href*='enewsView.do']",
+      "date_selector": "td:nth-of-type(4)",
+      "search_terms": [
+        "청년"
+      ],
+      "allowed_domain_suffixes": [
+        "moel.go.kr"
+      ],
+      "limit": 30
     },
     {
       "name": "고용노동부 정책자료 RSS",
@@ -845,6 +867,32 @@
         "인사종합"
       ],
       "limit": 40
+    },
+    {
+      "name": "OpenAlex 청년정책 연구",
+      "kind": "research",
+      "enabled": true,
+      "parser": "openalex_works",
+      "url": "https://api.openalex.org/works?filter=title.search:%EC%B2%AD%EB%85%84%20%EC%A0%95%EC%B1%85,from_publication_date:2020-01-01,language:ko&sort=publication_date:desc&per-page=25",
+      "allowed_languages": ["ko"],
+      "include_keywords": [
+        "청년",
+        "청년정책",
+        "청년 정책",
+        "청년세대",
+        "청년층"
+      ],
+      "limit": 25
+    },
+    {
+      "name": "구글뉴스 청년 칼럼·기고(30일)",
+      "kind": "news",
+      "enabled": true,
+      "parser": "rss",
+      "url": "https://news.google.com/rss/search?q=%EC%B2%AD%EB%85%84%20%28%EC%B9%BC%EB%9F%BC%20OR%20%EA%B8%B0%EA%B3%A0%20OR%20%EC%98%A4%ED%94%BC%EB%8B%88%EC%96%B8%20OR%20%EC%82%AC%EC%84%A4%29%20when%3A30d&hl=ko&gl=KR&ceid=KR:ko",
+      "include_keywords": ["청년", "청년정책", "청년 정책", "청년세대", "청년층", "2030"],
+      "exclude_keywords": ["청소년", "초등", "중학생", "고등학생", "아이돌", "연예", "스포츠"],
+      "limit": 35
     },
     {
       "name": "구글뉴스 청년정책(7일)",

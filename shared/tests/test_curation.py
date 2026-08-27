@@ -282,6 +282,36 @@ class HomeSignalTests(unittest.TestCase):
 
 
 class ReferenceDeskPatternTests(unittest.TestCase):
+    def test_explicit_youth_column_survives_for_the_opinion_menu(self) -> None:
+        article = make_article(
+            title="[청년 칼럼] 청년 주거정책은 계약 갱신의 불안을 먼저 봐야 한다",
+            lead_text="청년 세대의 주거비와 전월세 계약 불안을 다루는 필자의 기고다.",
+        )
+
+        classified = classify_articles([article])[0]
+        selected, prepared = select_articles([classified], limit=1)
+
+        self.assertEqual(classified["article_type"], "opinion")
+        self.assertFalse(classified["is_noise"])
+        self.assertTrue(classified["is_public_interest_article"])
+        self.assertEqual(len(selected), 1)
+        self.assertIsNone(prepared[0]["drop_reason"])
+
+    def test_indexed_youth_research_survives_without_a_news_help_signal(self) -> None:
+        article = make_article(
+            title="청년정책 참여 경험에 관한 연구",
+            lead_text="한국정책연구 · journal article",
+        )
+        article.update(source_kind="research", article_type="research")
+
+        classified = classify_articles([article])[0]
+        selected, prepared = select_articles([classified], limit=1)
+
+        self.assertFalse(classified["is_noise"])
+        self.assertTrue(classified["is_public_interest_article"])
+        self.assertEqual(len(selected), 1)
+        self.assertIsNone(prepared[0]["drop_reason"])
+
     def test_youth_life_feature_survives_as_public_interest(self) -> None:
         article = make_article(
             title="방 안으로 밀려난 청년들…'은둔'은 어떻게 삶이 됐나",

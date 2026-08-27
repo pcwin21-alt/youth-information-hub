@@ -5,6 +5,7 @@ from _bootstrap import PUBLIC_CONFIG_ROOT, RUNTIME_PIPELINE_ROOT
 
 from youth_info_platform.collect import (
     apply_source_filters,
+    classify_collection_error,
     fetch_source_items,
     load_source_config,
 )
@@ -21,6 +22,7 @@ def inspect_source(source: dict) -> dict:
         "source_channel": source.get("source_channel"),
         "region_id": source.get("region_id"),
         "region_name": source.get("region_name"),
+        "source_url": source.get("url"),
     }
     try:
         items = fetch_source_items(source)
@@ -29,6 +31,7 @@ def inspect_source(source: dict) -> dict:
         return {
             **base_entry,
             "status": "ok",
+            "outcome": "ok" if filtered else "empty_result",
             "total_items": len(items),
             "filtered_items": len(filtered),
             "date_error_count": sum(1 for issue in date_issues if issue.get("severity") == "error"),
@@ -41,6 +44,7 @@ def inspect_source(source: dict) -> dict:
             return {
                 **base_entry,
                 "status": "unsupported_parser",
+                "outcome": "unsupported_parser",
                 "total_items": 0,
                 "filtered_items": 0,
                 "date_error_count": 0,
@@ -50,15 +54,18 @@ def inspect_source(source: dict) -> dict:
             }
         raise
     except Exception as error:
+        outcome = classify_collection_error(error)
         return {
             **base_entry,
-            "status": f"error:{error.__class__.__name__}",
+            "status": f"error:{outcome}",
+            "outcome": outcome,
             "total_items": 0,
             "filtered_items": 0,
             "date_error_count": 0,
             "date_warning_count": 0,
             "date_issues": [],
             "sample_titles": [],
+            "error_type": error.__class__.__name__,
         }
 
 
@@ -79,6 +86,7 @@ def main() -> int:
                     "region_id": source.get("region_id"),
                     "region_name": source.get("region_name"),
                     "status": "disabled",
+                    "outcome": "disabled",
                     "total_items": 0,
                     "filtered_items": 0,
                     "date_error_count": 0,

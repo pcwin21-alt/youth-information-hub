@@ -182,11 +182,11 @@ class WebUpdaterDateFallbackTests(unittest.TestCase):
             {},
         )
 
-        self.assertIn("최신 자료 흐름", page_html)
+        self.assertIn("날짜를 골라 새 자료 보기", page_html)
         self.assertIn("Central official youth policy", page_html)
         self.assertIn("Local city official youth policy", page_html)
-        self.assertIn('href="official.html">정부 부처 자료실</a>', page_html)
-        self.assertIn('href="local.html">지자체 자료실</a>', page_html)
+        self.assertIn('href="official.html">관련 자료 보기</a>', page_html)
+        self.assertIn('href="local.html">관련 자료 보기</a>', page_html)
 
     def test_official_page_excludes_related_news_section(self) -> None:
         official = make_official_government_article()
@@ -198,9 +198,10 @@ class WebUpdaterDateFallbackTests(unittest.TestCase):
         )
 
         self.assertIn('id="official-menu"', page_html)
-        self.assertIn('href="#central-press-releases"', page_html)
-        self.assertNotIn('href="#local-press-releases"', page_html)
-        self.assertIn('href="#official-policy-plans"', page_html)
+        self.assertIn('data-official-view-tab="releases"', page_html)
+        self.assertIn('data-official-view-tab="plans"', page_html)
+        self.assertIn('data-official-view-panel="releases"', page_html)
+        self.assertIn('data-official-view-panel="plans" hidden', page_html)
         self.assertIn('data-official-central-release-card="true"', page_html)
         self.assertNotIn('data-government-announcement-news-card="true"', page_html)
         self.assertNotIn('data-government-related-news-card="true"', page_html)

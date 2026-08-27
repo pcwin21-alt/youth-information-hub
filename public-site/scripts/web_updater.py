@@ -43,6 +43,8 @@ HOME_TODAY_MAX_AGE_HOURS = 48
 HOME_CATEGORY_WINDOW_HOURS = PUBLIC_ARCHIVE_WINDOW_HOURS
 ELECTION_WINDOW_DAYS = PUBLIC_ARCHIVE_WINDOW_DAYS
 ELECTION_WINDOW_HOURS = PUBLIC_ARCHIVE_WINDOW_HOURS
+RESEARCH_ARCHIVE_WINDOW_DAYS = 10 * 365
+RESEARCH_ARCHIVE_WINDOW_HOURS = RESEARCH_ARCHIVE_WINDOW_DAYS * 24
 HOME_DAILY_LIMIT = 5
 HOME_WEEKLY_LIMIT = 3
 HOME_DAILY_STICKY_LIMIT = 2
@@ -54,13 +56,35 @@ REMOTE_TEXT_CACHE: dict[str, str] = {}
 ILLUSTRATION_ROOT = "assets/illustrations"
 KOREA_ADM1_SVG = PUBLIC_WEB_ROOT / "assets" / "vendor" / "geoboundaries-kor-adm1.svg"
 KOREA_ADM1_DISPLAY_MAX_X = 860.0
-ASSET_VERSION = "20260501-sunlit-logo-1"
+ASSET_VERSION = "20260826-functional-qa-13"
 BRAND_MARK_SRC = f"assets/branding/youth-together-mark.svg?v={ASSET_VERSION}"
+MINISTRY_HOME_MARKS = {
+    "고용노동부": ("https://www.moel.go.kr", "https://www.moel.go.kr/favicon.ico"),
+    "기후에너지환경부": ("https://www.me.go.kr", "https://www.me.go.kr/favicon.ico"),
+    "환경부": ("https://www.me.go.kr", "https://www.me.go.kr/favicon.ico"),
+    "국토교통부": ("https://www.molit.go.kr", "https://www.molit.go.kr/favicon.ico"),
+    "보건복지부": ("https://www.mohw.go.kr", "https://www.mohw.go.kr/favicon.ico"),
+    "교육부": ("https://www.moe.go.kr", "https://www.moe.go.kr/favicon.ico"),
+    "금융위원회": ("https://www.fsc.go.kr", "https://www.fsc.go.kr/favicon.ico"),
+    "기획재정부": ("https://www.moef.go.kr", "https://www.moef.go.kr/favicon.ico"),
+    "재정경제부": ("https://www.moef.go.kr", "https://www.moef.go.kr/favicon.ico"),
+    "산업통상자원부": ("https://www.motir.go.kr", "https://www.motir.go.kr/favicon.ico"),
+    "산업통상부": ("https://www.motir.go.kr", "https://www.motir.go.kr/favicon.ico"),
+    "중소벤처기업부": ("https://www.mss.go.kr", "https://www.mss.go.kr/favicon.ico"),
+    "행정안전부": ("https://www.mois.go.kr", "https://www.mois.go.kr/favicon.ico"),
+    "문화체육관광부": ("https://www.mcst.go.kr", "https://www.mcst.go.kr/favicon.ico"),
+    "농림축산식품부": ("https://www.mafra.go.kr", "https://www.mafra.go.kr/favicon.ico"),
+    "해양수산부": ("https://www.mof.go.kr", "https://www.mof.go.kr/favicon.ico"),
+    "과학기술정보통신부": ("https://www.msit.go.kr", "https://www.msit.go.kr/favicon.ico"),
+    "여성가족부": ("https://www.mogef.go.kr", "https://www.mogef.go.kr/favicon.ico"),
+    "성평등가족부": ("https://www.mogef.go.kr", "https://www.mogef.go.kr/favicon.ico"),
+}
 YOUTHSIDE_FOOTER_IMAGE_CANDIDATES = (
     "assets/branding/youthside_logo_youth-group_compass_u-s-accent_horizontal_4x.png",
 )
 PUBLIC_ANALYTICS_ENDPOINT = os.getenv("PUBLIC_SITE_ANALYTICS_ENDPOINT", "").strip()
 PUBLIC_ANALYTICS_SCOPE = os.getenv("PUBLIC_SITE_ANALYTICS_SCOPE", "public").strip() or "public"
+PUBLIC_SUBSCRIPTION_ENDPOINT = os.getenv("PUBLIC_SITE_SUBSCRIPTION_ENDPOINT", "").strip()
 
 
 def normalize_admin_account(value: str | None) -> str:
@@ -10091,14 +10115,17 @@ PAGE_TEMPLATE = """<!doctype html>
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="{page_description}">
+  <meta name="theme-color" content="#123c34">
   <title>{page_title}</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="icon" type="image/svg+xml" href="{brand_mark_src}">
-  <style>{styles}</style>
+  <link rel="stylesheet" href="assets/site.css?v={asset_version}">
 </head>
-<body data-page="{active_page}">
+<body data-page="{active_page}" data-analytics-endpoint="{analytics_endpoint}">
+  <a class="skip-link" href="#main-content">본문으로 건너뛰기</a>
   <header class="topbar">
     <div class="topbar-side">
       {global_search}
@@ -10118,16 +10145,16 @@ PAGE_TEMPLATE = """<!doctype html>
     <aside class="side-nav" aria-label="현재 페이지 위치 마커">
       {side_nav}
     </aside>
-    <div class="shell" id="page-top">
+    <main class="shell" id="main-content" tabindex="-1">
+    <span id="page-top" aria-hidden="true"></span>
     {content}
     <footer class="site-footer" id="site-footer" aria-label="운영 안내">{footer_note}</footer>
-    </div>
+    </main>
   </div>
   <nav class="bottom-nav" style="--bottom-nav-count: {bottom_nav_count};" aria-label="모바일 주요 메뉴">{bottom_nav}</nav>
   {mobile_menu}
   {guide_overlay}
-  {admin_login_overlay}
-  <script>{script}</script>
+  <script src="assets/site.js?v={asset_version}"></script>
 </body>
 </html>
 """
@@ -10379,7 +10406,9 @@ BASE_SCRIPT = """
           ? value === activeDirection
           : group === 'topic'
             ? value === activeTopic
-            : (value === 'all' && !hasDateRange);
+            : group === 'date'
+              ? (value === 'all' ? !hasDateRange : activeDateStart === value && activeDateEnd === value)
+              : false;
       if (group === 'region' && value !== 'all') {
         updateRegionFilterButtonCount(button, regionCounts.get(value) || 0);
       }
@@ -10781,6 +10810,30 @@ BASE_SCRIPT = """
     document.body.classList.remove('is-guide-open');
   }
 
+  function setOfficialView(activeView) {
+    document.querySelectorAll('[data-official-view-tab]').forEach((tab) => {
+      const isActive = tab.getAttribute('data-official-view-tab') === activeView;
+      tab.classList.toggle('active', isActive);
+      tab.setAttribute('aria-selected', isActive ? 'true' : 'false');
+      tab.tabIndex = isActive ? 0 : -1;
+    });
+    document.querySelectorAll('[data-official-view-panel]').forEach((panel) => {
+      panel.hidden = panel.getAttribute('data-official-view-panel') !== activeView;
+    });
+  }
+
+  function setLocalMaterialView(activeView) {
+    document.querySelectorAll('[data-local-view-tab]').forEach((tab) => {
+      const isActive = tab.getAttribute('data-local-view-tab') === activeView;
+      tab.classList.toggle('active', isActive);
+      tab.setAttribute('aria-selected', isActive ? 'true' : 'false');
+      tab.tabIndex = isActive ? 0 : -1;
+    });
+    document.querySelectorAll('[data-local-view-panel]').forEach((panel) => {
+      panel.hidden = panel.getAttribute('data-local-view-panel') !== activeView;
+    });
+  }
+
   document.addEventListener('click', async (event) => {
     const guideDismiss = event.target.closest('[data-guide-dismiss]');
     if (guideDismiss) {
@@ -10807,6 +10860,20 @@ BASE_SCRIPT = """
           panel.classList.toggle('active', isActive);
         });
       }
+      return;
+    }
+
+    const officialViewTab = event.target.closest('[data-official-view-tab]');
+    if (officialViewTab) {
+      event.preventDefault();
+      setOfficialView(officialViewTab.getAttribute('data-official-view-tab') || 'releases');
+      return;
+    }
+
+    const localViewTab = event.target.closest('[data-local-view-tab]');
+    if (localViewTab) {
+      event.preventDefault();
+      setLocalMaterialView(localViewTab.getAttribute('data-local-view-tab') || 'releases');
       return;
     }
 
@@ -10840,8 +10907,12 @@ BASE_SCRIPT = """
         const value = filterButton.getAttribute('data-filter-value') || 'all';
         applyNewsFilters(
           root,
-          group === 'date' ? '' : (root.dataset.selectedDateStart || root.getAttribute('data-default-date-start') || ''),
-          group === 'date' ? '' : (root.dataset.selectedDateEnd || root.getAttribute('data-default-date-end') || ''),
+          group === 'date'
+            ? (value === 'all' ? '' : value)
+            : (root.dataset.selectedDateStart || root.getAttribute('data-default-date-start') || ''),
+          group === 'date'
+            ? (value === 'all' ? '' : value)
+            : (root.dataset.selectedDateEnd || root.getAttribute('data-default-date-end') || ''),
           group === 'region' ? value : (root.dataset.selectedRegion || root.getAttribute('data-default-region') || 'all'),
           group === 'direction' ? value : (root.dataset.selectedDirection || root.getAttribute('data-default-direction') || 'all'),
           group === 'topic' ? value : (root.dataset.selectedTopic || root.getAttribute('data-default-topic') || 'all'),
@@ -10907,6 +10978,29 @@ BASE_SCRIPT = """
     }
   });
 
+  document.addEventListener('keydown', (event) => {
+    const currentTab = event.target.closest && event.target.closest('[data-official-view-tab], [data-local-view-tab]');
+    if (!currentTab || !['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) {
+      return;
+    }
+    const isLocalTab = currentTab.hasAttribute('data-local-view-tab');
+    const tabs = Array.from(document.querySelectorAll(isLocalTab ? '[data-local-view-tab]' : '[data-official-view-tab]'));
+    const currentIndex = tabs.indexOf(currentTab);
+    const targetIndex = event.key === 'Home' ? 0
+      : event.key === 'End' ? tabs.length - 1
+      : (currentIndex + (event.key === 'ArrowRight' ? 1 : -1) + tabs.length) % tabs.length;
+    const nextTab = tabs[targetIndex];
+    if (nextTab) {
+      event.preventDefault();
+      if (isLocalTab) {
+        setLocalMaterialView(nextTab.getAttribute('data-local-view-tab') || 'releases');
+      } else {
+        setOfficialView(nextTab.getAttribute('data-official-view-tab') || 'releases');
+      }
+      nextTab.focus();
+    }
+  });
+
   document.addEventListener('pointerover', (event) => {
     bringMapRegionToFront(event.target);
     setRegionMapTooltipVisibility(event.target, true);
@@ -10936,13 +11030,14 @@ BASE_SCRIPT = """
   const queryFromUrl = normalizeSearchQuery(pageParams.get('q') || pageParams.get('keyword') || '');
   const topicFromUrl = normalizeSearchQuery(pageParams.get('topic') || '');
   const directionFromUrl = normalizeSearchQuery(pageParams.get('direction') || '');
+  const regionFromUrl = normalizeSearchQuery(pageParams.get('region') || '');
 
   document.querySelectorAll('[data-news-filter-root]').forEach((root) => {
     applyNewsFilters(
       root,
       root.getAttribute('data-default-date-start') || '',
       root.getAttribute('data-default-date-end') || '',
-      root.getAttribute('data-default-region') || 'all',
+      regionFromUrl || root.getAttribute('data-default-region') || 'all',
       directionFromUrl || root.getAttribute('data-default-direction') || 'all',
       topicFromUrl || root.getAttribute('data-default-topic') || 'all',
       queryFromUrl || root.getAttribute('data-default-search-query') || '',
@@ -11218,7 +11313,7 @@ BASE_SCRIPT = """
 
 
 def build_analytics_script() -> str:
-    endpoint = PUBLIC_ANALYTICS_ENDPOINT or "/analytics/collect/"
+    endpoint = PUBLIC_ANALYTICS_ENDPOINT
     return f"""
 (() => {{
   const endpoint = {json.dumps(endpoint, ensure_ascii=False)};
@@ -11235,11 +11330,13 @@ def build_analytics_script() -> str:
       return `${{Date.now()}}-${{Math.random().toString(16).slice(2)}}`;
     }}
   }}
-  const visitorId = getStoredId(window.localStorage, "ytVisitorId");
+  if (!endpoint) {{
+    return;
+  }}
   const sessionId = getStoredId(window.sessionStorage, "ytSessionId");
   const payload = JSON.stringify({{
+    event_name: "page_view",
     site_scope: scope,
-    visitor_id: visitorId,
     session_id: sessionId,
     page_path: window.location.pathname,
     page_url: window.location.href,
@@ -11560,30 +11657,40 @@ HOME_FLOW_SCRIPT = """
 MOBILE_MENU_SCRIPT = """
 (() => {
   const overlay = document.querySelector('[data-mobile-menu-overlay]');
-  const openButton = document.querySelector('[data-mobile-menu-open]');
-  if (!overlay || !openButton) {
+  const openButtons = Array.from(document.querySelectorAll('[data-mobile-menu-open]'));
+  if (!overlay || openButtons.length === 0) {
     return;
   }
 
   const closeButton = overlay.querySelector('[data-mobile-menu-close]');
-  const firstLink = overlay.querySelector('a');
+  let returnFocusTarget = openButtons[0];
 
-  function openMenu() {
+  function getFocusableElements() {
+    return Array.from(overlay.querySelectorAll('a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'))
+      .filter((element) => !element.hidden && element.getAttribute('aria-hidden') !== 'true');
+  }
+
+  function setExpanded(isExpanded) {
+    openButtons.forEach((button) => button.setAttribute('aria-expanded', String(isExpanded)));
+  }
+
+  function openMenu(event) {
+    returnFocusTarget = event.currentTarget instanceof HTMLElement ? event.currentTarget : openButtons[0];
     overlay.hidden = false;
     document.body.classList.add('mobile-menu-open');
-    openButton.setAttribute('aria-expanded', 'true');
-    window.requestAnimationFrame(() => firstLink?.focus());
+    setExpanded(true);
+    window.requestAnimationFrame(() => (closeButton || getFocusableElements()[0])?.focus());
   }
 
   function closeMenu() {
     overlay.hidden = true;
     document.body.classList.remove('mobile-menu-open');
-    openButton.setAttribute('aria-expanded', 'false');
-    openButton.focus();
+    setExpanded(false);
+    returnFocusTarget?.focus();
   }
 
-  openButton.setAttribute('aria-expanded', 'false');
-  openButton.addEventListener('click', openMenu);
+  setExpanded(false);
+  openButtons.forEach((button) => button.addEventListener('click', openMenu));
   closeButton?.addEventListener('click', closeMenu);
   overlay.addEventListener('click', (event) => {
     if (event.target === overlay) {
@@ -11593,6 +11700,23 @@ MOBILE_MENU_SCRIPT = """
   document.addEventListener('keydown', (event) => {
     if (event.key === 'Escape' && !overlay.hidden) {
       closeMenu();
+      return;
+    }
+    if (event.key !== 'Tab' || overlay.hidden) {
+      return;
+    }
+    const focusableElements = getFocusableElements();
+    if (focusableElements.length === 0) {
+      return;
+    }
+    const firstElement = focusableElements[0];
+    const lastElement = focusableElements[focusableElements.length - 1];
+    if (event.shiftKey && document.activeElement === firstElement) {
+      event.preventDefault();
+      lastElement.focus();
+    } else if (!event.shiftKey && document.activeElement === lastElement) {
+      event.preventDefault();
+      firstElement.focus();
     }
   });
 })();
@@ -11600,7 +11724,7 @@ MOBILE_MENU_SCRIPT = """
 
 
 def build_page_script() -> str:
-    return "\n".join((BASE_SCRIPT, MOBILE_MENU_SCRIPT, HOME_FLOW_SCRIPT, build_admin_access_script(), build_analytics_script()))
+    return "\n".join((BASE_SCRIPT, MOBILE_MENU_SCRIPT, HOME_FLOW_SCRIPT, build_analytics_script(), build_product_event_script()))
 
 
 # Public IA uses first-recognition labels; keep this order aligned with harness.md and its regression test.
@@ -11746,7 +11870,6 @@ SIDE_NAV_CONFIG = {
         "description": "정부 조사와 공식 통계 자료",
         "items": [
             ("#page-top", "상단"),
-            ("#main-list", "주요 목록"),
             ("#youth-stat-releases", "통계 발표"),
             ("#stats-research-links", "연구 링크"),
             ("#ai-guide", "AI 활용"),
@@ -11784,7 +11907,7 @@ def nav_label(active_page: str) -> str:
 
 
 def page_heading(active_page: str) -> str:
-    return "청년동향실"
+    return "청년투게더"
 
 
 def render_guide_link(active_page: str) -> str:
@@ -11966,13 +12089,6 @@ def render_side_nav(active_page: str) -> str:
         <strong>동향 브리핑</strong>
         <span>업무 전에 새로 들어온 청년정책과 현장 이슈를 확인합니다.</span>
       </a>
-      <div class="side-nav-admin" data-admin-only="true" hidden>
-        <span class="side-nav-kicker">관리 예정</span>
-        {admin_items}
-      </div>
-      <div class="side-utility-section">
-        {render_admin_entry()}
-      </div>
     """
 
 
@@ -12145,6 +12261,22 @@ def render_article_actions(article: dict, include_link_button: bool = True) -> s
 
 def render_publisher_icon(article: dict) -> str:
     icon_url = normalize_media_url(article.get("publisher_icon_url"), article_target_url(article))
+    is_local_source = article.get("source_kind") in {"local", "regional_official", "municipal", "municipality"}
+    if is_local_source:
+        region = local_region_label_for_article(article)
+        region_entry = next((entry for entry in LOCAL_YOUTH_PLAN_REGIONS if entry["name"] == region), None)
+        if region_entry:
+            mark_url = icon_url or f'https://{region_entry["domain"]}/favicon.ico'
+            mark_label = region_entry["name"]
+            full_name = region_entry["full_name"]
+            return (
+                f'<span class="publisher-icon publisher-icon--local" aria-label="{html.escape(full_name)} 마크">'
+                f'<span class="publisher-icon-fallback" aria-hidden="true">{html.escape(mark_label)}</span>'
+                f'<img class="publisher-icon-image" src="{html.escape(mark_url)}" alt="" '
+                'loading="lazy" decoding="async" referrerpolicy="no-referrer" '
+                'onerror="this.remove()">'
+                '</span>'
+            )
     if not icon_url:
         return ""
     source = format_source_label(article.get("source") or article.get("source_name"))
@@ -12158,6 +12290,28 @@ def render_publisher_icon(article: dict) -> str:
 
 def render_article_media(article: dict) -> str:
     image_url = normalize_media_url(article.get("image_url"), article_target_url(article))
+    authority = normalize_inline_text(article.get("policy_authority") or article.get("source") or article.get("source_name"))
+    source_host = (urllib.parse.urlparse(article_target_url(article)).hostname or "").lower()
+    is_policy_briefing_release = source_host in {"korea.kr", "www.korea.kr"} and article.get("source_kind") == "official"
+    if is_policy_briefing_release or (article.get("source_kind") == "official" and not image_url):
+        homepage, mark_url = MINISTRY_HOME_MARKS.get(authority, ("", ""))
+        source_url = homepage or article_target_url(article)
+        title = html.escape(display_article_title(article))
+        authority_label = html.escape(authority or "정부 공식 자료")
+        mark_html = (
+            f'<img src="{html.escape(mark_url, quote=True)}" alt="" loading="lazy" decoding="async" '
+            'referrerpolicy="no-referrer" onerror="this.hidden=true">'
+            if mark_url
+            else '<span class="official-authority-monogram" aria-hidden="true">정</span>'
+        )
+        return (
+            f'<a class="article-media official-authority-media" href="{html.escape(source_url, quote=True)}" '
+            f'target="_blank" rel="noreferrer" aria-label="{authority_label} 공식 누리집 바로가기">'
+            f'<span class="official-authority-mark">{mark_html}</span>'
+            f'<span class="official-authority-copy"><strong>{authority_label}</strong><small>공식 보도자료</small></span>'
+            f'<span class="sr-only">{title}</span>'
+            '</a>'
+        )
     if not image_url:
         return ""
 
@@ -12290,6 +12444,24 @@ RESEARCH_SOURCE_HINTS = (
     "kci.go.kr",
 )
 
+OFFICIAL_STATISTICS_SOURCE_HINTS = (
+    "통계청",
+    "국가데이터처",
+    "kostat.go.kr",
+    "kosis.kr",
+    "sgis.kostat.go.kr",
+    "index.go.kr",
+)
+
+OFFICIAL_STATISTICS_TITLE_SIGNALS = (
+    "청년층 부가조사",
+    "청년의 삶 실태조사",
+    "청년 실태조사",
+    "청년패널조사",
+    "청년통계",
+    "청년 통계",
+)
+
 
 def is_official_archive_article(article: dict) -> bool:
     source_kind = normalize_inline_text(article.get("source_kind"))
@@ -12354,6 +12526,41 @@ def is_research_report_menu_article(article: dict) -> bool:
     return explicit_research_type or prominent_research_signal or (
         trusted_research_source and bool(article.get("youth_research_signal"))
     )
+
+
+def is_government_statistics_menu_article(article: dict) -> bool:
+    """정부조사·통계에는 공식 생산기관의 청년 대상 결과만 넣는다."""
+    if is_publicly_excluded(article):
+        return False
+
+    title = normalize_inline_text(article.get("title"))
+    source_text = normalize_inline_text(
+        " ".join(
+            str(value or "")
+            for value in [
+                article.get("source"),
+                article.get("source_name"),
+                article.get("publisher_domain"),
+                article_target_url(article),
+            ]
+        )
+    )
+    source_kind = normalize_inline_text(article.get("source_kind"))
+    is_official = bool(article.get("is_official_source")) or source_kind in {
+        "official",
+        "statistics",
+        "data",
+    }
+    if not is_official or "청년" not in title:
+        return False
+
+    has_statistical_title = any(signal in title for signal in OFFICIAL_STATISTICS_TITLE_SIGNALS)
+    has_statistics_authority = any(hint in source_text for hint in OFFICIAL_STATISTICS_SOURCE_HINTS)
+    is_opm_youth_life_survey = (
+        "청년의 삶 실태조사" in title
+        and ("국무조정실" in source_text or "opm.go.kr" in source_text)
+    )
+    return has_statistical_title and (has_statistics_authority or is_opm_youth_life_survey)
 
 
 def is_general_news_menu_article(article: dict) -> bool:
@@ -12860,8 +13067,8 @@ def article_target_url(article: dict) -> str:
 def build_article_search_text(article: dict, *extra_terms: str) -> str:
     fields = [
         clean_article_title(article.get("title")),
-        normalize_inline_text(article.get("summary")),
-        normalize_inline_text(article.get("lead_text")),
+        truncate_text(normalize_inline_text(article.get("summary")), 240),
+        truncate_text(normalize_inline_text(article.get("lead_text")), 240),
         normalize_inline_text(article.get("section")),
         normalize_inline_text(article.get("source")),
         normalize_inline_text(article.get("source_name")),
@@ -12872,9 +13079,9 @@ def build_article_search_text(article: dict, *extra_terms: str) -> str:
         news_region_label(article),
         content_direction_label(article_content_direction(article)),
         *[normalize_inline_text(value) for value in article.get("display_badges", [])],
-        *[normalize_inline_text(value) for value in extra_terms],
+        *[truncate_text(normalize_inline_text(value), 160) for value in extra_terms],
     ]
-    return normalize_inline_text(" ".join(value for value in fields if value))
+    return truncate_text(normalize_inline_text(" ".join(value for value in fields if value)), 720)
 
 
 def collect_article_dates(articles: list[dict]) -> list[str]:
@@ -13768,6 +13975,15 @@ def with_local_plan_badges(article: dict) -> dict:
     return with_display_badges(article, "기본·시행계획", local_region_label_for_article(article))
 
 
+def local_plan_document_type(article: dict) -> str:
+    text = local_government_article_text(article)
+    if "기본계획" in text:
+        return "basic"
+    if "시행계획" in text:
+        return "implementation"
+    return ""
+
+
 def is_election_promise_article(article: dict) -> bool:
     if article.get("is_official_source"):
         return False
@@ -13799,6 +14015,7 @@ def render_news_filter_panel(
     *,
     directions: list[str] | None = None,
     use_region_map: bool = True,
+    timeline_mode: bool = False,
     filter_title: str = "기사 필터",
     region_counts: dict[str, int] | None = None,
 ) -> str:
@@ -13861,6 +14078,56 @@ def render_news_filter_panel(
         date_input_attrs.append('disabled="true"')
     date_input_attrs_text = " ".join(date_input_attrs)
     status_html = f'<div class="filter-status" data-news-filter-status>전체 {total_count}건을 보고 있습니다.</div>'
+    if timeline_mode:
+        timeline_dates = dates[:21]
+        date_buttons = [
+            '<button class="filter-button active" type="button" data-news-filter="true" '
+            'data-filter-group="date" data-filter-value="all" aria-pressed="true">전체</button>'
+        ]
+        date_buttons.extend(
+            f'<button class="filter-button" type="button" data-news-filter="true" '
+            f'data-filter-group="date" data-filter-value="{html.escape(date)}" aria-pressed="false">'
+            f'{html.escape(date[5:].replace("-", "."))}</button>'
+            for date in timeline_dates
+        )
+        return f"""
+        <section class="section" id="filters">
+          <article class="section-card filter-panel news-filter-panel news-timeline-filter">
+            <div class="filter-head">
+              <div><h3>날짜별 기사 기록</h3><p>날짜를 고르면 그날 수집된 기사만 볼 수 있습니다.</p></div>
+              {status_html}
+            </div>
+            <div class="news-date-tabs" role="group" aria-label="기사 날짜 선택">
+              {''.join(date_buttons)}
+            </div>
+            <div class="news-filter-utility-row">
+              <div class="filter-group filter-group-topic">
+                <span class="filter-group-label">해시태그</span>
+                <div class="filter-controls">{''.join(topic_buttons)}</div>
+              </div>
+              <div class="filter-group filter-group-search">
+                <span class="filter-group-label">키워드 검색</span>
+                <label class="filter-search-wrap">
+                  <input class="filter-search-input" type="search" data-news-search-input="true" placeholder="제목·요약·출처 검색">
+                </label>
+              </div>
+              <div class="filter-group filter-group-date">
+                <span class="filter-group-label">기간</span>
+                <div class="date-range-fields">
+                  <label class="date-input-wrap" data-news-date-launch="true">
+                    <span class="date-picker-label">시작일</span>
+                    <input class="date-input" type="date" data-news-date-input="true" data-date-role="start" {date_input_attrs_text}>
+                  </label>
+                  <label class="date-input-wrap" data-news-date-launch="true">
+                    <span class="date-picker-label">종료일</span>
+                    <input class="date-input" type="date" data-news-date-input="true" data-date-role="end" {date_input_attrs_text}>
+                  </label>
+                </div>
+              </div>
+            </div>
+          </article>
+        </section>
+        """
     stack_class = "filter-stack filter-stack-map" if use_region_map else "filter-stack"
     map_column_open = '<div class="filter-map-column">' if use_region_map else ""
     map_column_close = '</div><div class="filter-control-column">' if use_region_map else ""
@@ -15632,7 +15899,7 @@ def render_home_application_policies(
             '<article class="home-application-panel" id="application-policies" aria-labelledby="application-policies-title">'
             '<div class="home-application-head">'
             f'<h2 id="application-policies-title">{html.escape(title)}</h2>'
-            f'<a class="mini-link" href="official.html#local-press-releases">{html.escape(archive_label)}</a>'
+            f'<a class="mini-link" href="local.html#local-press-releases">{html.escape(archive_label)}</a>'
             '</div>'
             '<div class="home-application-empty">'
             '<strong>확인 가능한 정책 공고가 아직 충분하지 않습니다.</strong>'
@@ -15683,7 +15950,7 @@ def render_home_application_policies(
         <h2 id="application-policies-title">{html.escape(title)}</h2>
         <div class="home-application-head-links">
           <a class="mini-link" href="official.html#central-press-releases">중앙정부 보도자료</a>
-          <a class="mini-link" href="official.html#local-press-releases">지자체 보도자료</a>
+          <a class="mini-link" href="local.html#local-press-releases">지자체 보도자료</a>
         </div>
       </div>
       <div class="home-application-grid">{''.join(cards)}</div>
@@ -16016,7 +16283,11 @@ def build_home_page(
         if is_election_promise_article(article):
             return False
         if is_local_official_source(article):
-            return is_home_local_official_announcement(article) or is_local_youth_press_release(article)
+            return (
+                is_home_local_official_announcement(article)
+                or is_local_youth_press_release(article)
+                or is_local_youth_plan_document(article)
+            )
         if article.get("is_official_source") or article.get("source_kind") == "official":
             return is_home_central_official_announcement(article)
         has_direct_youth_context = home_has_direct_title_signal(article) or home_has_explicit_youth_lead_signal(article)
@@ -16129,14 +16400,28 @@ def build_home_page(
 
     def home_flow_route(article: dict) -> tuple[str, str]:
         if article.get("source_kind") == "local":
-            return "지자체 자료실", "local.html"
+            return "관련 자료 보기", "local.html"
         if article.get("is_official_source") or article.get("source_kind") == "official":
-            return "정부 부처 자료실", "official.html"
+            return "관련 자료 보기", "official.html"
         if is_opinion_menu_article(article):
-            return "기고·칼럼·오피니언", "opinion.html"
+            return "관련 자료 보기", "opinion.html"
         if is_research_report_menu_article(article):
-            return "논문·연구·리포트", "reports.html"
-        return "뉴스 모아보기", "news.html"
+            return "관련 자료 보기", "reports.html"
+        return "관련 자료 보기", "news.html"
+
+    def home_flow_kind(article: dict) -> tuple[str, str]:
+        """Return a visible type label; color is never the only type signal."""
+        source_channel = normalize_inline_text(article.get("source_channel"))
+        source_kind = normalize_inline_text(article.get("source_kind"))
+        if is_research_report_menu_article(article):
+            return "연구·리포트", "research"
+        if source_kind in {"local", "regional_official", "municipal", "municipality"}:
+            return ("지역 계획", "local-plan") if source_channel == "policy_plan" else ("지자체 공식", "local")
+        if article.get("is_official_source") or source_kind == "official":
+            return "정부 공식", "official"
+        if is_opinion_menu_article(article):
+            return "기고·칼럼", "opinion"
+        return "언론 기사", "news"
 
     def render_flow_item(article: dict) -> str:
         published_dt = article_exposure_datetime(article).astimezone(reference_dt.tzinfo)
@@ -16144,9 +16429,10 @@ def build_home_page(
         hidden_attr = ""
         title = html.escape(display_article_title(article, limit=118))
         url = article_target_url(article)
-        source = format_source_label(article.get("source") or article.get("source_name")) or "출처 확인"
+        source = product_source_label(article)
         topics = article_topic_tags(article, limit=2)
         route_label, route_href = home_flow_route(article)
+        kind_label, kind_name = home_flow_kind(article)
         identity = hashlib.sha256(
             f'{article_target_url(article)}|{clean_article_title(article.get("title"))}'.encode("utf-8")
         ).hexdigest()[:16]
@@ -16155,15 +16441,17 @@ def build_home_page(
             if url
             else f"<strong>{title}</strong>"
         )
-        topic_html = "".join(f"<span>#{html.escape(topic)}</span>" for topic in topics)
+        topic_html = "".join(f'<span class="flow-topic">#{html.escape(topic)}</span>' for topic in topics)
         return (
-            f'<article class="flow-item" data-flow-item data-flow-id="{identity}" '
+            f'<article class="flow-item flow-item--{kind_name}" data-flow-item data-flow-id="{identity}" '
             f'data-flow-period-index="{period_index}" '
             f'data-published-ts="{int(published_dt.timestamp() * 1000)}"{hidden_attr}>'
             f'<time class="flow-time" datetime="{published_dt.isoformat()}">{published_dt.strftime("%H:%M")}</time>'
             f'<div class="flow-item-main">{title_html}'
-            f'<div class="flow-item-meta"><span>{html.escape(source)}</span>{topic_html}</div></div>'
-            f'<a class="flow-route" href="{route_href}">{html.escape(route_label)}</a></article>'
+            f'<div class="flow-item-meta"><span class="flow-kind flow-kind--{kind_name}">{html.escape(kind_label)}</span>'
+            f'<span class="flow-source">{html.escape(source)}</span>{topic_html}</div></div>'
+            f'<div class="flow-item-actions">{render_product_share_button(article, event_name="home_flow_share_open")}'
+            f'<a class="flow-route" href="{route_href}">{html.escape(route_label)}</a></div></article>'
         )
 
     flow_periods_html = "".join(render_flow_period(period) for period in flow_periods)
@@ -16201,7 +16489,8 @@ def build_home_page(
     <section class="flow-hero" id="overview" data-flow-root>
       <header class="flow-hero-header">
         <div>
-          <h1 class="flow-hero-title">오늘 청년의 삶에 닿은 소식을<br>한곳에서 살펴봅니다</h1>
+          <p class="flow-eyebrow">청년동향실</p>
+          <h1 class="flow-hero-title">오늘 청년의 삶에 닿은 소식을 한곳에서 살펴봅니다</h1>
           <p class="flow-hero-copy">기사와 연구, 정부와 지역의 발표를 모았습니다. 지금 확인할 내용을 골라보고, 필요하면 원문까지 이어서 살펴보세요.</p>
         </div>
         <aside class="flow-freshness">
@@ -16213,7 +16502,7 @@ def build_home_page(
 
       <section class="flow-board" id="today-briefing" aria-labelledby="flow-map-title">
         <div class="flow-map-wrap">
-          <div class="flow-day-heading"><strong id="flow-map-title">지난 7일, 어떤 일이 있었을까요</strong><span>날짜를 골라 그날 들어온 소식을 살펴보세요</span><button class="flow-read-button" type="button" data-flow-all>7일 흐름 한 번에 보기</button></div>
+          <div class="flow-day-heading"><strong id="flow-map-title">날짜를 골라 새 자료 보기</strong><span>하루를 고르면 그날 확인한 기사와 공식자료가 아래에 표시됩니다.</span><button class="flow-read-button" type="button" data-flow-all>7일 흐름 한 번에 보기</button></div>
           <div class="flow-date-picker" aria-label="기록 날짜 선택">{flow_date_picker_html}</div>
           <div data-flow-periods>{flow_periods_html}</div>
         </div>
@@ -16317,8 +16606,7 @@ def build_news_page(articles: list[dict], status: dict) -> str:
         topic_options,
         date_options,
         len(recent_news_articles),
-        directions=direction_options,
-        region_counts=collect_article_region_counts(recent_news_articles),
+        timeline_mode=True,
     )
     cards_html = "".join(render_article_card(article) for article in recent_news_articles)
     return f"""
@@ -16349,6 +16637,8 @@ def build_editorial_archive_page(
     empty_title: str,
     empty_body: str,
     predicate,
+    include_filters: bool = True,
+    archive_window_hours: int = PUBLIC_ARCHIVE_WINDOW_HOURS,
 ) -> str:
     page_updated_at = status.get("finished_at") or status.get("updated_at") or ""
     selected = [
@@ -16356,18 +16646,28 @@ def build_editorial_archive_page(
         for article in sort_articles_by_recency(articles)
         if predicate(article)
     ]
-    recent = filter_recent_articles(selected, page_updated_at, PUBLIC_ARCHIVE_WINDOW_HOURS)
-    filter_panel = render_news_filter_panel(
-        collect_news_regions(recent),
-        collect_news_topics(recent),
-        collect_article_dates(recent),
-        len(recent),
-        directions=collect_news_directions(recent),
-        region_counts=collect_article_region_counts(recent),
-    )
+    recent = filter_recent_articles(selected, page_updated_at, archive_window_hours)
+    filter_panel = ""
+    if include_filters:
+        filter_panel = render_news_filter_panel(
+            collect_news_regions(recent),
+            collect_news_topics(recent),
+            collect_article_dates(recent),
+            len(recent),
+            directions=collect_news_directions(recent),
+            region_counts=collect_article_region_counts(recent),
+        )
     cards_html = "".join(render_article_card(article) for article in recent)
+    filter_root_open = (
+        f'<div data-news-filter-root="{html.escape(menu_key, quote=True)}" '
+        'data-default-date-start="" data-default-date-end="" data-default-region="all" '
+        'data-default-direction="all" data-default-topic="all" data-default-search-query="">'
+        if include_filters
+        else ""
+    )
+    filter_root_close = "</div>" if include_filters else ""
     return f"""
-    <div data-news-filter-root="{html.escape(menu_key, quote=True)}" data-default-date-start="" data-default-date-end="" data-default-region="all" data-default-direction="all" data-default-topic="all" data-default-search-query="">
+    {filter_root_open}
       {render_compact_intro(eyebrow, description, media_key="news", title=title)}
       {filter_panel}
       <section class="section" id="main-list">
@@ -16379,7 +16679,7 @@ def build_editorial_archive_page(
           <p>지역이나 날짜 조건을 바꾸면 다른 자료를 확인할 수 있습니다.</p>
         </article>
       </section>
-    </div>
+    {filter_root_close}
     """
 
 
@@ -16394,6 +16694,7 @@ def build_opinion_page(articles: list[dict], status: dict) -> str:
         empty_title="최근 확인된 관점 글이 없습니다",
         empty_body="청년 맥락과 필자 관점이 함께 확인된 글이 수집되면 표시됩니다.",
         predicate=is_opinion_menu_article,
+        include_filters=False,
     )
 
 
@@ -16404,10 +16705,12 @@ def build_reports_page(articles: list[dict], status: dict) -> str:
         menu_key="reports",
         eyebrow="연구·논문·동향분석",
         title="연구와 분석을 원문 중심으로",
-        description="청년 관련 연구·논문·실태조사·동향분석·분석 리포트와 이를 소개한 자료를 모읍니다.",
+        description="청년 관련 논문·연구·실태조사·동향분석·리포트를 모읍니다. 연구는 발행 주기가 길어 최근 10년 자료까지 함께 봅니다.",
         empty_title="최근 확인된 논문·연구·리포트가 없습니다",
         empty_body="연구·조사·보고서 신호와 청년 관련성이 함께 확인되면 표시됩니다.",
         predicate=is_research_report_menu_article,
+        include_filters=False,
+        archive_window_hours=RESEARCH_ARCHIVE_WINDOW_HOURS,
     )
 
 
@@ -17084,18 +17387,21 @@ def build_official_page(articles: list[dict], status: dict) -> str:
         media_key="policies",
         title="중앙정부 원문을 부처별로 추적",
     )
-    menu_cards = "".join(
+    menu_tabs = "".join(
         f"""
-        <a class="local-menu-card" href="{href}">
+        <button class="official-view-tab{' active' if index == 0 else ''}" type="button" role="tab"
+          id="official-view-tab-{view}" aria-controls="{'central-press-releases' if view == 'releases' else 'official-policy-plans'}"
+          aria-selected="{'true' if index == 0 else 'false'}" tabindex="{'0' if index == 0 else '-1'}"
+          data-official-view-tab="{view}">
           <span>{order}</span>
           <strong>{html.escape(title)}</strong>
           <small>{html.escape(description)}</small>
-        </a>
+        </button>
         """
-        for href, order, title, description in [
-            ("#central-press-releases", "01", "정부부처 보도자료", "정책브리핑과 중앙부처 원문 보도자료"),
-            ("#official-policy-plans", "02", "기본·시행계획", "범정부 기준 문서와 20개 부처·기관 공식 경로"),
-        ]
+        for index, (view, order, title, description) in enumerate([
+            ("releases", "01", "정부부처 보도자료", "정책브리핑과 중앙부처 원문 보도자료"),
+            ("plans", "02", "기본·시행계획", "범정부 기준 문서와 20개 부처·기관 공식 경로"),
+        ])
     )
     central_grid = render_official_release_grid(
         central_press_releases,
@@ -17107,9 +17413,9 @@ def build_official_page(articles: list[dict], status: dict) -> str:
     return f"""
     {page_intro}
     <section class="section" id="official-menu">
-      <div class="local-menu-nav">{menu_cards}</div>
+      <div class="official-view-tabs" role="tablist" aria-label="정부 부처 자료 유형 선택">{menu_tabs}</div>
     </section>
-    <section class="section" id="central-press-releases">
+    <section class="section" id="central-press-releases" role="tabpanel" aria-labelledby="official-view-tab-releases" data-official-view-panel="releases">
       <div class="section-head">
         <div>
           <h2>중앙정부 보도자료</h2>
@@ -17119,7 +17425,7 @@ def build_official_page(articles: list[dict], status: dict) -> str:
       </div>
       {central_grid}
     </section>
-    <section class="section" id="official-policy-plans">
+    <section class="section" id="official-policy-plans" role="tabpanel" aria-labelledby="official-view-tab-plans" data-official-view-panel="plans" hidden>
       <div class="section-head">
         <div>
           <h2>기본·시행계획</h2>
@@ -17193,6 +17499,7 @@ def render_local_article_grid(
             {
                 "data-policy-card": "true",
                 "data-policy-group": group,
+                "data-policy-region": local_region_label_for_article(article),
                 "data-policy-type": policy_type_label(article),
             },
         )
@@ -17477,7 +17784,9 @@ def render_region_filter_map(*, filter_kind: str, region_counts: dict[str, int] 
     )
 
 
-def render_korea_adm1_local_map(summaries: list[dict]) -> str:
+def render_korea_adm1_local_map(summaries: list[dict], *, plan_type: str = "all") -> str:
+    plan_key = "basic_plan" if plan_type == "basic" else "implementation_plan"
+    plan_label = "기본계획" if plan_type == "basic" else "시행계획"
     summary_by_map_name = {
         KOREA_ADM1_REGION_NAMES[summary["id"]]: summary
         for summary in summaries
@@ -17514,12 +17823,8 @@ def render_korea_adm1_local_map(summaries: list[dict]) -> str:
             hit_y,
             "local-map-hit-target",
         )
-        label = f'{summary["full_name"]} {summary["status_label"]}'
-        primary_url = (
-            (summary.get("implementation_plan") or {}).get("url")
-            or (summary.get("basic_plan") or {}).get("url")
-            or "#local-policy-map"
-        )
+        label = f'{summary["full_name"]} {plan_label} {summary["status_label"]}'
+        primary_url = (summary.get(plan_key) or {}).get("url") or "#local-policy-map"
         target_attr = ' target="_blank" rel="noreferrer"' if primary_url.startswith(("http://", "https://")) else ""
         region_html = (
             f'<a class="local-map-region" href="{html.escape(primary_url, quote=True)}"{target_attr} '
@@ -17534,7 +17839,7 @@ def render_korea_adm1_local_map(summaries: list[dict]) -> str:
 
     if not region_paths:
         fallback_links = "".join(
-            f'<a class="local-map-fallback-link" href="{html.escape(((summary.get("implementation_plan") or {}).get("url") or (summary.get("basic_plan") or {}).get("url") or "#local-policy-map"), quote=True)}">'
+            f'<a class="local-map-fallback-link" href="{html.escape(((summary.get(plan_key) or {}).get("url") or "#local-policy-map"), quote=True)}">'
             f'{html.escape(summary["name"])}</a>'
             for summary in summaries
         )
@@ -17542,7 +17847,7 @@ def render_korea_adm1_local_map(summaries: list[dict]) -> str:
 
     return (
         f'<svg class="local-map-svg" viewBox="{viewbox}" role="img" '
-        'aria-label="대한민국 광역지자체 청년정책 기본·시행계획 지도" '
+        f'aria-label="대한민국 광역지자체 청년정책 {plan_label} 지도" '
         'xmlns="http://www.w3.org/2000/svg">'
         f'{"".join(region_paths)}</svg>'
     )
@@ -17564,7 +17869,9 @@ def render_local_map_plan_link(label: str, link: dict) -> str:
     )
 
 
-def render_local_map_region_labels(summaries: list[dict]) -> str:
+def render_local_map_region_labels(summaries: list[dict], *, plan_type: str = "all") -> str:
+    plan_key = "basic_plan" if plan_type == "basic" else "implementation_plan"
+    plan_label = "기본계획" if plan_type == "basic" else "시행계획"
     markers = []
     for summary in summaries:
         x = float(summary.get("map_label_x", 50.0))
@@ -17576,8 +17883,7 @@ def render_local_map_region_labels(summaries: list[dict]) -> str:
               <div class="local-map-popover" role="tooltip">
                 <strong>{html.escape(summary["full_name"])}</strong>
                 <span class="local-map-popover-count">수집 후보 {int(summary.get("count") or 0)}건 · {html.escape(summary["status_label"])}</span>
-                {render_local_map_plan_link("기본계획", summary.get("basic_plan") or {})}
-                {render_local_map_plan_link("시행계획", summary.get("implementation_plan") or {})}
+                {render_local_map_plan_link(plan_label, summary.get(plan_key) or {})}
               </div>
             </div>
             """
@@ -17593,18 +17899,26 @@ def korea_adm1_map_aspect_style() -> str:
     return f' style="aspect-ratio: {width:.2f} / {height:.2f};"'
 
 
-def render_local_policy_plan_map(plan_documents: list[dict]) -> str:
+def render_local_policy_plan_map(plan_documents: list[dict], *, plan_type: str = "all") -> str:
+    plan_type = "basic" if plan_type == "basic" else "implementation"
+    plan_title = "청년정책 기본계획(5개년)" if plan_type == "basic" else "청년정책 시행계획(1개년)"
+    plan_description = (
+        "17개 광역지자체의 중기 청년정책 기준 문서를 지역별로 연결합니다. 지역 자체 원문이 확인된 경우에만 바로 엽니다."
+        if plan_type == "basic"
+        else "17개 광역지자체의 연도별 청년정책 실행 문서를 지역별로 연결합니다. 지역 자체 원문을 우선하고, 미확인 지역은 17개 지자체 시행계획 종합 PDF로 구분해 연결합니다."
+    )
+    map_id = "local-basic-policy-map" if plan_type == "basic" else "local-implementation-policy-map"
     summaries = build_local_plan_region_summaries(plan_documents)
-    map_html = render_korea_adm1_local_map(summaries)
-    markers_html = render_local_map_region_labels(summaries)
+    map_html = render_korea_adm1_local_map(summaries, plan_type=plan_type)
+    markers_html = render_local_map_region_labels(summaries, plan_type=plan_type)
     map_aspect_style = korea_adm1_map_aspect_style()
 
     return f"""
-    <section class="section" id="local-policy-map">
+    <section class="section" id="{map_id}">
       <div class="section-head">
         <div>
-          <h2>지자체별 청년정책 기본·시행계획</h2>
-          <p>17개 광역지자체 공식 자료를 지역별로 연결합니다. 지역 자체 PDF가 확인된 경우 바로 다운로드하고, 미확인 지역은 국무조정실이 공개한 17개 지자체 시행계획 종합 PDF로 연결합니다.</p>
+          <h2>지자체별 {plan_title}</h2>
+          <p>{plan_description}</p>
         </div>
         <span class="mini-link" aria-disabled="true">광역 17곳</span>
       </div>
@@ -17702,15 +18016,52 @@ def build_local_materials_page(articles: list[dict], status: dict) -> str:
         for article in recent_articles
         if is_local_youth_plan_document(article)
     ]
+    local_basic_plan_documents = [
+        article for article in local_plan_documents if local_plan_document_type(article) == "basic"
+    ]
+    local_implementation_plan_documents = [
+        article for article in local_plan_documents if local_plan_document_type(article) == "implementation"
+    ]
+    local_press_filter_panel = render_announcement_filter_panel(
+        [*local_press_releases, *undated_local_materials],
+        group="local",
+        scope_label="지역",
+        scope_values=LOCAL_YOUTH_PLAN_REGION_NAMES,
+        search_placeholder="지자체 보도자료 제목, 요약, 지역 검색",
+        use_region_map=True,
+    )
     page_intro = render_compact_intro(
         "지자체 자료실",
         "17개 광역지자체의 공식 홈페이지에서 확인된 청년 정책·공지 자료와 기본·시행계획 원문을 지역별로 모읍니다. 언론 기사는 지역·현장 동향에서 분리해 봅니다.",
         media_key="policies",
         title="지역의 공식 근거를 바로 찾는 자료실",
     )
+    menu_tabs = "".join(
+        f"""
+        <button class="official-view-tab{' active' if index == 0 else ''}" type="button" role="tab"
+          id="local-view-tab-{view}" aria-controls="local-view-panel-{view}"
+          aria-selected="{'true' if index == 0 else 'false'}" tabindex="{'0' if index == 0 else '-1'}"
+          data-local-view-tab="{view}">
+          <span>{order}</span>
+          <strong>{html.escape(tab_title)}</strong>
+          <small>{html.escape(tab_description)}</small>
+        </button>
+        """
+        for index, (view, order, tab_title, tab_description) in enumerate([
+            ("releases", "01", "지자체 공식 보도자료", "정책·공지·보도자료를 지역별로 확인"),
+            ("basic", "02", "청년정책 기본계획(5개년)", "중기 정책 기준 문서를 지역별로 확인"),
+            ("implementation", "03", "청년정책 시행계획(1개년)", "연도별 실행 문서를 지역별로 확인"),
+        ])
+    )
     return f"""
     {page_intro}
-    <section class="section" id="local-press-releases">
+    <section class="section" id="local-material-menu">
+      <div class="official-view-tabs" role="tablist" aria-label="지자체 자료 유형 선택">{menu_tabs}</div>
+    </section>
+    <section class="section" id="local-view-panel-releases" role="tabpanel" aria-labelledby="local-view-tab-releases" data-local-view-panel="releases">
+      <div data-policy-filter-root="local-materials" data-policy-scope-mode="authority-region" data-keep-empty-sections="true" data-keep-empty-scopes="true" data-default-policy-group="local" data-default-policy-region="all" data-default-policy-scope="all" data-default-policy-type="all" data-default-date-start="" data-default-date-end="" data-default-search-query="">
+      {local_press_filter_panel}
+      <section class="section" id="local-press-releases" data-policy-section="local">
       <div class="section-head">
         <div>
           <h2>지자체 공식 정책·공지 자료</h2>
@@ -17719,8 +18070,8 @@ def build_local_materials_page(articles: list[dict], status: dict) -> str:
         <span class="mini-link" aria-disabled="true">{len(local_press_releases)}건</span>
       </div>
       {render_local_article_grid(local_press_releases, empty_title="최근 확인된 지자체 공식 자료가 없습니다", empty_body="수집 결과에서 지자체 공식 출처와 청년 관련성이 함께 확인되면 이 영역에 표시됩니다.")}
-    </section>
-    <section class="section" id="date-unconfirmed">
+      </section>
+      <section class="section" id="date-unconfirmed" data-policy-section="local">
       <div class="section-head">
         <div>
           <h2>게시일 미확인 공식 자료</h2>
@@ -17729,8 +18080,19 @@ def build_local_materials_page(articles: list[dict], status: dict) -> str:
         <span class="mini-link" aria-disabled="true">{len(undated_local_materials)}건</span>
       </div>
       {render_local_article_grid(undated_local_materials, empty_title="게시일 미확인 공식 자료가 없습니다", empty_body="공식 출처는 확인됐지만 게시일을 추출하지 못한 자료가 들어오면 이 영역에 별도로 표시됩니다.")}
+      </section>
+      <article class="info-card" data-policy-empty-state="true" hidden>
+        <h3>조건에 맞는 지자체 공식 자료가 없습니다</h3>
+        <p>지역·유형·기간을 바꾸면 다른 공식 자료를 확인할 수 있습니다.</p>
+      </article>
+      </div>
     </section>
-    {render_local_policy_plan_map(local_plan_documents)}
+    <section class="section" id="local-view-panel-basic" role="tabpanel" aria-labelledby="local-view-tab-basic" data-local-view-panel="basic" hidden>
+      {render_local_policy_plan_map(local_basic_plan_documents, plan_type="basic")}
+    </section>
+    <section class="section" id="local-view-panel-implementation" role="tabpanel" aria-labelledby="local-view-tab-implementation" data-local-view-panel="implementation" hidden>
+      {render_local_policy_plan_map(local_implementation_plan_documents, plan_type="implementation")}
+    </section>
     """
 
 
@@ -18002,9 +18364,6 @@ def build_tools_page(articles: list[dict], status: dict) -> str:
     )
     return f"""
     {page_intro}
-    <section class="section" id="main-list">
-      {render_list_block("빠른 시작", "처음이면 아래 세 단계부터 보면 가장 빠릅니다.", [("정부 원문 확인", "정책브리핑과 부처 자료로 기준점을 먼저 잡기"), ("AI로 질문 정리", "조사 범위와 논점을 짧게 정리하기"), ("검토 요청 준비", "문서 상태와 요청 포인트 적어두기")])}
-    </section>
     <section class="section" id="youth-stat-releases">
       <div class="section-head">
         <div>
@@ -18033,7 +18392,7 @@ def build_tools_page(articles: list[dict], status: dict) -> str:
 
 
 def build_privacy_page(contact_settings: dict[str, str]) -> str:
-    organization = html.escape(contact_settings.get("organization_name", "청년동향실"))
+    organization = html.escape(contact_settings.get("organization_name", "청년투게더"))
     contact_email = html.escape(contact_settings.get("email", ""))
     updated_at = html.escape(format_display_datetime(contact_settings.get("updated_at")))
     page_intro = render_compact_intro(
@@ -18045,8 +18404,9 @@ def build_privacy_page(contact_settings: dict[str, str]) -> str:
     return f"""
     {page_intro}
     <section class="section" id="main-list">
-      {render_list_block("처리 목적과 항목", "청년동향실은 공개 정보 제공과 문의 응대에 필요한 범위에서만 정보를 처리합니다.", [
-        ("사이트 이용 로그", "방문 페이지, 접속 시각, 브라우저·기기 정보, 참조 URL, 비식별 방문 식별자"),
+      {render_list_block("처리 목적과 항목", "청년투게더는 공개 정보 제공과 문의 응대에 필요한 범위에서만 정보를 처리합니다.", [
+        ("사이트 이용 로그", "분석 주소가 연결된 경우 방문 페이지, 접속 시각, 브라우저·기기 정보, 참조 URL, 세션 식별자"),
+        ("주간 브리핑 신청", "이메일, 선택한 역할·지역·의제, 수신 동의·확인·중지 시각, 신청 화면"),
         ("문의·제보", "이메일 주소, 이름 또는 단체명, 문의 내용, 첨부 링크처럼 이용자가 직접 제공한 정보"),
         ("운영자 로그인", "기관용 포털 계정, 세션 정보, 기사 선별·공개 반영 이력"),
       ])}
@@ -18054,6 +18414,7 @@ def build_privacy_page(contact_settings: dict[str, str]) -> str:
     <section class="section">
       {render_list_block("보유와 이용", "운영 목적이 끝난 정보는 지체 없이 파기하거나 접근을 제한합니다.", [
         ("문의 기록", "답변과 분쟁 대응에 필요한 기간 동안 보관"),
+        ("주간 브리핑", "수신 중지 전까지 보관하며 중지 시각과 동의 이력은 처리 근거 확인에 필요한 기간 동안 보관"),
         ("방문·분석 로그", "서비스 개선과 장애 분석을 위해 집계 중심으로 보관"),
         ("운영 이력", "공개 반영의 책임 추적을 위해 관리자 감사 로그로 보관"),
       ])}
@@ -18066,7 +18427,7 @@ def build_privacy_page(contact_settings: dict[str, str]) -> str:
       ])}
     </section>
     <section class="section">
-      {render_list_block("정보주체 권리", "개인정보 열람, 정정, 삭제, 처리정지 요청은 아래 연락처로 보낼 수 있습니다.", [
+      {render_list_block("정보주체 권리", "주간 브리핑은 각 이메일의 수신 중지 링크로 끌 수 있습니다. 개인정보 열람, 정정, 삭제, 처리정지 요청은 아래 연락처로 보낼 수 있습니다.", [
         ("운영 주체", organization),
         ("연락처", contact_email or "contact 페이지의 제작자 연락 채널"),
         ("최근 기준", updated_at or "사이트 하단 기준일"),
@@ -18083,7 +18444,7 @@ def build_privacy_page(contact_settings: dict[str, str]) -> str:
 
 
 def build_terms_page(contact_settings: dict[str, str]) -> str:
-    organization = html.escape(contact_settings.get("organization_name", "청년동향실"))
+    organization = html.escape(contact_settings.get("organization_name", "청년투게더"))
     contact_email = html.escape(contact_settings.get("email", ""))
     page_intro = render_compact_intro(
         "이용약관",
@@ -18094,7 +18455,7 @@ def build_terms_page(contact_settings: dict[str, str]) -> str:
     return f"""
     {page_intro}
     <section class="section" id="main-list">
-      {render_list_block("서비스 성격", "청년동향실은 공개 기사, 정부·지자체 발표, 연구·통계 자료를 수집·분류해 안내하는 정보 서비스입니다.", [
+      {render_list_block("서비스 성격", "청년투게더는 공개 기사, 정부·지자체 발표, 연구·통계 자료를 수집·분류해 안내하는 정보 서비스입니다.", [
         ("원문 우선", "신청, 지원, 법적 판단, 일정 확인은 반드시 원문 링크와 해당 기관 공지를 기준으로 합니다."),
         ("자동 분류", "일부 요약, 분류, 날짜 추출은 자동화되어 오류가 있을 수 있으며 정정 요청을 받을 수 있습니다."),
         ("콘텐츠 제작", "내부 운영자가 선별한 기사는 카드뉴스, 블로그, 보고서 등 후속 콘텐츠의 원천 자료로 활용될 수 있습니다."),
@@ -18257,7 +18618,7 @@ def build_footer_note(contact_settings: dict[str, str]) -> str:
     footer_left = footer_brand_image
     footer_site_head = """
           <div class="site-footer-site-head">
-            <strong>청년동향실</strong>
+            <strong>청년투게더</strong>
             <span>by YOUTHSIDE</span>
           </div>
     """
@@ -18265,6 +18626,7 @@ def build_footer_note(contact_settings: dict[str, str]) -> str:
       <div class="site-footer-top">
         <nav class="site-footer-links" aria-label="운영 기준 바로가기">
           <a href="guide.html">이용 안내</a>
+          <a href="about.html">운영자·편집 기준</a>
           <a href="guide.html#main-list">정보 기준</a>
           <a href="privacy.html">개인정보 처리방침</a>
           <a href="terms.html">이용약관</a>
@@ -18281,8 +18643,8 @@ def build_footer_note(contact_settings: dict[str, str]) -> str:
         <div class="site-footer-info">
           {footer_site_head}
           <div class="site-footer-info-list">
-            <p><strong>운영 목적 :</strong><span>청년정책 활동가, 관련 업무 종사자, 그리고 모든 청년을 위한 정책 정보 안내 서비스입니다.</span></p>
-            <p><strong>정보 기준 :</strong><span>공개 기사와 정부·지자체 발표를 수집·분류해 정책 흐름과 신청 정보를 한 화면에서 확인할 수 있도록 정리합니다.</span></p>
+            <p><strong>운영 목적 :</strong><span>청년정책 실무자와 활동가가 변화 판단과 정책제안에 쓸 수 있는 맥락을 제공합니다.</span></p>
+            <p><strong>정보 기준 :</strong><span>공개 기사와 정부·지자체 발표를 출처, 시간, 지역, 의제별로 연결해 보여줍니다.</span></p>
             <p><strong>확인 안내 :</strong><span>중요한 신청·의사결정은 반드시 원문 링크와 공식 발표를 함께 확인해 주세요.</span></p>
           </div>
           <div class="site-footer-meta">
@@ -18378,6 +18740,1901 @@ def write_utf8_page(path: Path, content: str, *, retry_attempt: int = 0) -> None
         close_handle(handle)
 
 
+# Product/IA rebuild layer. The legacy builders above remain available for old URLs and
+# regression tests; public entry points below use these task-oriented compositions.
+PRODUCT_REBUILD_CSS = r"""
+:root {
+  --product-ink: #102a26;
+  --product-green: #123c34;
+  --product-mint: #dff1ea;
+  --product-lime: #d9f06f;
+  --product-paper: #f7f8f3;
+  --product-line: #d5ddd8;
+  --product-warm: #f4ead8;
+}
+.skip-link { position: fixed; left: 1rem; top: .5rem; z-index: 999; padding: .75rem 1rem; background: #fff; color: #000; border: 2px solid #000; transform: translateY(-150%); }
+.skip-link:focus { transform: none; }
+.product-hero { display: grid; grid-template-columns: minmax(0, 1.45fr) minmax(280px, .55fr); gap: 2rem; padding: clamp(2rem, 6vw, 5.5rem); margin-bottom: 1rem; background: var(--product-green); color: #fff; border-radius: 0 0 2rem 2rem; }
+.product-hero-copy { max-width: 760px; }
+.product-eyebrow { margin: 0 0 .85rem; font-size: .82rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: #b8dfd2; }
+.product-hero h1 { margin: 0; max-width: 15ch; font-size: clamp(2.15rem, 5.5vw, 4.8rem); line-height: 1.06; letter-spacing: -.055em; color: #fff; }
+.product-hero-lead { max-width: 42rem; margin: 1.4rem 0 0; font-size: clamp(1rem, 1.6vw, 1.25rem); line-height: 1.75; color: #e7f1ed; }
+.product-actions { display: flex; flex-wrap: wrap; gap: .7rem; margin-top: 1.7rem; }
+.product-button { display: inline-flex; align-items: center; justify-content: center; min-height: 48px; padding: .75rem 1.05rem; border: 1px solid transparent; border-radius: .7rem; background: var(--product-lime); color: #162b24; font-weight: 800; text-decoration: none; cursor: pointer; }
+.product-button.secondary { background: transparent; border-color: #8fb3a8; color: #fff; }
+.product-button.dark { background: var(--product-green); color: #fff; }
+.product-button.subtle { background: #fff; border-color: var(--product-line); color: var(--product-green); }
+.product-button:focus-visible, .interest-chip:focus-visible { outline: 3px solid #f4b942; outline-offset: 3px; }
+.hero-proof { align-self: end; padding: 1.25rem; background: rgba(255,255,255,.09); border: 1px solid rgba(255,255,255,.2); border-radius: 1rem; }
+.hero-proof strong { display: block; font-size: 1rem; color: #fff; }
+.hero-proof p { margin: .55rem 0 0; color: #d8e7e2; line-height: 1.65; }
+.product-section { padding: clamp(2.2rem, 5vw, 4.5rem) clamp(1rem, 5vw, 4.5rem); border-bottom: 1px solid var(--product-line); }
+.product-section.tint { background: var(--product-paper); }
+.product-section.warm { background: var(--product-warm); }
+.product-section-head { display: flex; justify-content: space-between; align-items: end; gap: 1.5rem; margin-bottom: 1.4rem; }
+.product-section-head h2 { margin: 0; color: var(--product-ink); font-size: clamp(1.65rem, 3vw, 2.55rem); letter-spacing: -.035em; }
+.product-section-head p { max-width: 46rem; margin: .55rem 0 0; color: #53635e; line-height: 1.65; }
+.section-link { white-space: nowrap; color: var(--product-green); font-weight: 800; }
+.policy-signal-grid, .journey-grid, .trust-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; }
+.policy-signal { display: flex; flex-direction: column; min-height: 100%; padding: 1.25rem; background: #fff; border: 1px solid var(--product-line); border-radius: 1rem; }
+.policy-signal .signal-state { align-self: flex-start; padding: .28rem .55rem; background: var(--product-mint); border-radius: 999px; color: var(--product-green); font-size: .75rem; font-weight: 800; }
+.policy-signal h3 { margin: .9rem 0 .55rem; font-size: 1.12rem; line-height: 1.45; }
+.policy-signal h3 a { color: var(--product-ink); text-decoration: none; }
+.policy-signal-meta { margin: 0 0 .85rem; color: #66736f; font-size: .82rem; }
+.signal-question { margin: auto 0 .8rem; padding-top: .8rem; border-top: 1px solid #e8ece9; color: #344b45; font-size: .9rem; line-height: 1.55; }
+.signal-link { color: var(--product-green); font-weight: 800; }
+.interest-builder { display: grid; grid-template-columns: minmax(250px, .65fr) minmax(0, 1.35fr); gap: 1.2rem; }
+.interest-panel, .preview-panel { padding: clamp(1.2rem, 3vw, 2rem); background: #fff; border: 1px solid var(--product-line); border-radius: 1rem; }
+.interest-panel fieldset { margin: 0 0 1.25rem; padding: 0; border: 0; }
+.interest-panel legend { margin-bottom: .6rem; color: var(--product-ink); font-weight: 800; }
+.interest-panel label.select-label { display: grid; gap: .4rem; margin-bottom: 1.2rem; font-weight: 700; }
+.interest-panel select { min-height: 46px; padding: .6rem .7rem; border: 1px solid #9eaaa5; border-radius: .55rem; background: #fff; color: var(--product-ink); }
+.interest-chip-grid { display: flex; flex-wrap: wrap; gap: .5rem; }
+.interest-chip { position: relative; display: inline-flex; }
+.interest-chip input { position: absolute; opacity: 0; pointer-events: none; }
+.interest-chip span { padding: .55rem .75rem; border: 1px solid #aeb8b4; border-radius: 999px; background: #fff; color: #344b45; cursor: pointer; }
+.interest-chip input:checked + span { border-color: var(--product-green); background: var(--product-green); color: #fff; }
+.interest-note, .boundary-note { margin: .85rem 0 0; color: #5b6a65; font-size: .84rem; line-height: 1.55; }
+.form-feedback { min-height: 1.5rem; margin-top: .7rem; color: #285b4d; font-weight: 700; }
+.preview-list { display: grid; gap: .75rem; }
+.preview-item { padding: 1rem; border: 1px solid #e0e5e2; border-radius: .75rem; }
+.preview-item[hidden] { display: none; }
+.preview-item span { display: block; margin-bottom: .35rem; color: #60706a; font-size: .78rem; }
+.preview-item a { color: var(--product-ink); font-weight: 800; text-decoration: none; line-height: 1.45; }
+.journey-card, .trust-card { padding: 1.25rem; border: 1px solid var(--product-line); border-radius: 1rem; background: #fff; }
+.journey-card em { display: inline-grid; place-items: center; width: 2rem; height: 2rem; border-radius: 50%; background: var(--product-green); color: #fff; font-style: normal; font-weight: 800; }
+.journey-card h3, .trust-card h3 { margin: .85rem 0 .45rem; color: var(--product-ink); }
+.journey-card p, .trust-card p { margin: 0; color: #586762; line-height: 1.65; }
+.service-boundary { display: grid; grid-template-columns: 1fr auto; gap: 1rem; align-items: center; margin-top: 1.2rem; padding: 1rem 1.2rem; border-left: 4px solid #b06a2b; background: #fff8ef; }
+.service-boundary strong { color: #633916; }
+.institution-cta { padding: clamp(1.5rem, 4vw, 3rem); background: var(--product-green); color: #fff; border-radius: 1.25rem; }
+.institution-cta h2 { margin: 0; color: #fff; }
+.institution-cta p { max-width: 48rem; color: #dcebe6; line-height: 1.65; }
+.operator-event-list { display: grid; gap: .6rem; margin-top: 1rem; }
+.operator-event { padding: .75rem; background: #f5f7f5; border-radius: .5rem; font-size: .85rem; }
+.status-strip { display: flex; flex-wrap: wrap; gap: .6rem 1.2rem; padding: .8rem 1rem; background: #edf3ef; color: #3e514b; font-size: .82rem; }
+.top-nav-link { font-size: .9rem; }
+@media (max-width: 980px) {
+  .product-hero, .interest-builder { grid-template-columns: 1fr; }
+  .policy-signal-grid, .journey-grid, .trust-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 680px) {
+  .product-hero { padding: 2rem 1rem; border-radius: 0 0 1.2rem 1.2rem; }
+  .product-hero h1 { font-size: 2.35rem; }
+  .product-section { padding: 2.4rem 1rem; }
+  .product-section-head { align-items: flex-start; flex-direction: column; }
+  .policy-signal-grid, .journey-grid, .trust-grid { grid-template-columns: 1fr; }
+  .service-boundary { grid-template-columns: 1fr; }
+  .product-actions .product-button { width: 100%; }
+}
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; transition: none !important; animation: none !important; } }
+"""
+
+
+# Brand-new public layer. Toss contributes the one-message-per-section rhythm,
+# EvenI the concern-to-proof-to-action sequence, and Dohwaroun only the
+# editorial list/detail composition. No visual assets or brand expressions are copied.
+# Typography translates their shared hierarchy: display (700), section (700),
+# reading text (400), navigation/meta (500-600), and action labels (700-800).
+BRAND_NEW_CSS = r"""
+:root {
+  --brand-ink: #10131a;
+  --brand-muted: #667085;
+  --brand-blue: #2457f5;
+  --brand-blue-dark: #173cc8;
+  --brand-coral: #ff7455;
+  --brand-sky: #e8efff;
+  --brand-paper: #f7f8fc;
+  --brand-line: #e3e6ee;
+  --brand-white: #fff;
+  --content-width: 1180px;
+}
+html { scroll-behavior: smooth; }
+body { margin: 0; overflow-x: hidden; background: var(--brand-white); color: var(--brand-ink); font-family: "Noto Sans KR", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; font-size: 16px; font-weight: 400; letter-spacing: -.018em; }
+body::before { display: none !important; }
+a { text-underline-offset: .2em; }
+.site-header { position: sticky; top: 0; z-index: 80; border-bottom: 1px solid rgba(227,230,238,.88); background: rgba(255,255,255,.92); backdrop-filter: blur(18px); }
+.site-header-inner { box-sizing: border-box; display: flex; align-items: center; width: 100%; min-height: 70px; max-width: var(--content-width); margin: 0 auto; padding: 0 24px; gap: 24px; }
+.brand-lockup { display: inline-flex; align-items: center; gap: 10px; color: var(--brand-ink); font-size: 1rem; font-weight: 800; letter-spacing: -.04em; text-decoration: none; white-space: nowrap; }
+.brand-lockup img { width: 30px; height: 30px; object-fit: contain; }
+.site-header nav { display: flex; align-items: center; justify-content: center; gap: 4px; margin-left: auto; }
+.top-nav-link { padding: 10px 12px; border-radius: 10px; color: #4a5160; font-size: .875rem; font-weight: 600; text-decoration: none; }
+.top-nav-link:hover, .top-nav-link.active { background: #f0f3fa; color: var(--brand-ink); }
+.header-radar { display: inline-flex; align-items: center; min-height: 40px; padding: 0 15px; border-radius: 12px; background: var(--brand-blue); color: #fff; font-size: .875rem; font-weight: 700; text-decoration: none; }
+.mobile-menu-trigger { display: none; flex: 0 0 42px; width: 42px; height: 42px; border: 0; border-radius: 10px; background: #f2f4f8; color: var(--brand-ink); font-size: 1.25rem; }
+.shell { width: 100% !important; max-width: none !important; margin: 0 !important; padding: 0 !important; overflow: clip; }
+.product-hero { position: relative; isolation: isolate; display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(260px, .5fr); max-width: calc(var(--content-width) - 48px); min-height: 560px; margin: 28px auto 0; padding: clamp(54px, 8vw, 96px); border-radius: 34px; background: #10131a; color: #fff; overflow: hidden; }
+.product-hero::before, .product-hero::after { content: ""; position: absolute; z-index: -1; border-radius: 999px; filter: blur(2px); }
+.product-hero::before { width: 440px; height: 440px; right: -100px; top: -120px; background: radial-gradient(circle at 35% 35%, #7aa1ff, var(--brand-blue) 48%, transparent 70%); opacity: .92; }
+.product-hero::after { width: 280px; height: 280px; right: 16%; bottom: -180px; background: var(--brand-coral); opacity: .7; }
+.product-hero-copy { align-self: center; max-width: 790px; }
+.product-eyebrow { margin: 0 0 16px; color: var(--brand-blue); font-size: .8125rem; font-weight: 700; letter-spacing: .07em; }
+.product-hero .product-eyebrow { color: #a9c0ff; }
+.product-hero h1 { max-width: 13ch; margin: 0; color: #fff; font-size: clamp(2.85rem, 5.4vw, 4.9rem); font-weight: 700; line-height: 1.12; letter-spacing: -.055em; word-break: keep-all; }
+.product-hero-lead { max-width: 640px; margin: 24px 0 0; color: #d7dbe5; font-size: clamp(1rem, 1.35vw, 1.125rem); font-weight: 400; line-height: 1.8; word-break: keep-all; }
+.product-actions { gap: 10px; margin-top: 30px; }
+.product-button { min-height: 50px; padding: 0 18px; border-radius: 13px; background: var(--brand-blue); color: #fff; font-size: .9375rem; font-weight: 700; }
+.product-button:hover { background: var(--brand-blue-dark); }
+.product-button.secondary { border-color: rgba(255,255,255,.32); background: rgba(255,255,255,.08); color: #fff; }
+.product-button.dark { background: var(--brand-ink); color: #fff; }
+.product-button.subtle { border-color: var(--brand-line); background: #fff; color: var(--brand-ink); }
+.hero-proof { align-self: end; padding: 20px; border: 1px solid rgba(255,255,255,.16); border-radius: 18px; background: rgba(255,255,255,.08); backdrop-filter: blur(12px); }
+.hero-proof p { color: #d7dbe5; }
+.hero-proof ul { display: grid; gap: 10px; margin: 14px 0 0; padding: 0; list-style: none; }
+.hero-proof strong { font-size: .9375rem; font-weight: 700; }
+.hero-proof li { padding-top: 10px; border-top: 1px solid rgba(255,255,255,.14); color: #eef1f7; font-size: .875rem; font-weight: 500; }
+.status-strip { max-width: var(--content-width); margin: 18px auto 0; padding: 13px 20px; border-radius: 14px; background: #f4f6fa; color: #5e6676; }
+.operator-proof-strip { display: grid; grid-template-columns: 230px minmax(0, 1fr) auto; gap: 28px; align-items: center; max-width: var(--content-width); margin: 14px auto 0; padding: 18px 20px; border: 1px solid var(--brand-line); border-radius: 14px; background: #fff; }
+.operator-proof-strip span { display: block; color: var(--brand-blue); font-size: .75rem; font-weight: 700; letter-spacing: .06em; }
+.operator-proof-strip strong { display: block; margin-top: 4px; color: var(--brand-ink); }
+.operator-proof-strip p { margin: 0; color: var(--brand-muted); font-size: .9rem; line-height: 1.65; }
+.operator-proof-strip a { color: var(--brand-blue); font-size: .875rem; font-weight: 700; text-decoration: none; white-space: nowrap; }
+.product-section { padding: clamp(74px, 9vw, 132px) 24px; border: 0; }
+.product-section > * { max-width: var(--content-width); margin-left: auto; margin-right: auto; }
+.product-section.tint { background: var(--brand-paper); }
+.product-section.warm { background: #fff3ed; }
+.product-section-head { margin-bottom: 34px; }
+.product-section-head h2 { max-width: 18ch; color: var(--brand-ink); font-size: clamp(2rem, 3.8vw, 3.5rem); font-weight: 700; line-height: 1.2; letter-spacing: -.05em; word-break: keep-all; }
+.product-section-head p { max-width: 640px; color: var(--brand-muted); font-size: 1rem; font-weight: 400; line-height: 1.82; }
+.section-link { color: var(--brand-blue); }
+.policy-signal-grid { gap: 0; border-top: 1px solid var(--brand-ink); }
+.policy-signal { display: grid; grid-template-columns: 120px minmax(0, 1fr) 210px 120px; gap: 24px; align-items: start; min-height: auto; padding: 26px 0; border: 0; border-bottom: 1px solid var(--brand-line); border-radius: 0; }
+.policy-signal .signal-state { padding: 5px 9px; border-radius: 7px; background: var(--brand-sky); color: var(--brand-blue-dark); }
+.policy-signal h3 { margin: 0; font-size: 1.1875rem; font-weight: 700; line-height: 1.5; }
+.policy-signal h3 a { color: var(--brand-ink); }
+.policy-signal-meta { margin: 2px 0 0; color: var(--brand-muted); font-size: .875rem; font-weight: 500; line-height: 1.65; }
+.signal-question { margin: 0; padding: 0; border: 0; color: #394150; font-size: .9375rem; font-weight: 400; line-height: 1.65; }
+.signal-link { color: var(--brand-blue); }
+.editorial-feature { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(280px, .65fr); gap: 26px; max-width: var(--content-width); margin: 0 auto; }
+.feature-story { position: relative; min-height: 470px; padding: clamp(32px, 6vw, 66px); border-radius: 28px; background: linear-gradient(145deg, #e8efff 0%, #f3f6ff 58%, #ffe8df 100%); overflow: hidden; }
+.feature-story::after { content: ""; position: absolute; right: -70px; bottom: -100px; width: 280px; height: 280px; border-radius: 50%; background: var(--brand-coral); opacity: .9; }
+.feature-story h2 { position: relative; z-index: 1; max-width: 15ch; margin: 14px 0 18px; font-size: clamp(2rem, 3.6vw, 3.25rem); font-weight: 700; line-height: 1.18; letter-spacing: -.05em; }
+.feature-story p { position: relative; z-index: 1; max-width: 580px; color: #4e586b; font-size: 1rem; font-weight: 400; line-height: 1.82; }
+.feature-story a { position: relative; z-index: 1; color: var(--brand-blue-dark); font-weight: 700; }
+.feature-rail { display: grid; gap: 0; align-content: start; border-top: 1px solid var(--brand-ink); }
+.feature-rail article { padding: 22px 0; border-bottom: 1px solid var(--brand-line); }
+.feature-rail span { color: var(--brand-blue); font-size: .75rem; font-weight: 700; }
+.feature-rail h3 { margin: 8px 0; font-size: 1.0625rem; font-weight: 700; line-height: 1.5; }
+.feature-rail a { color: var(--brand-ink); text-decoration: none; }
+.feature-rail p { margin: 0; color: var(--brand-muted); font-size: .84rem; }
+.interest-builder { gap: 24px; }
+.interest-panel, .preview-panel, .journey-card, .trust-card { border-color: var(--brand-line); border-radius: 20px; box-shadow: 0 14px 42px rgba(16,19,26,.04); }
+.interest-chip input:checked + span, .journey-card em { border-color: var(--brand-blue); background: var(--brand-blue); }
+.institution-cta { padding: clamp(34px, 7vw, 72px); border-radius: 28px; background: var(--brand-ink); }
+.institution-cta p { color: #ccd1dc; }
+.operator-section { background: #10131a; color: #fff; }
+.operator-intro { display: grid; grid-template-columns: minmax(220px, .62fr) minmax(0, 1.38fr); gap: clamp(42px, 8vw, 110px); align-items: start; }
+.operator-identity { padding-top: 8px; border-top: 2px solid var(--brand-blue); }
+.operator-identity strong { display: block; font-size: 1.45rem; }
+.operator-identity span { display: block; margin-top: 7px; color: #aeb6c5; line-height: 1.6; }
+.operator-statement h2 { max-width: 15ch; margin: 0 0 24px; font-size: clamp(2.2rem, 4vw, 3.65rem); font-weight: 700; line-height: 1.2; letter-spacing: -.05em; word-break: keep-all; }
+.operator-statement p { max-width: 700px; color: #ccd1dc; font-size: 1.02rem; line-height: 1.85; }
+.operator-statement a { display: inline-block; margin-top: 18px; color: #a9c0ff; font-weight: 700; text-decoration: none; }
+.operator-standard-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 38px; }
+.operator-standard-grid article { padding: 22px; border: 1px solid rgba(255,255,255,.13); border-radius: 16px; background: rgba(255,255,255,.05); }
+.operator-standard-grid h3 { margin: 0 0 9px; font-size: 1rem; }
+.operator-standard-grid p { margin: 0; color: #bfc5d1; font-size: .88rem; line-height: 1.7; }
+.operator-page-grid { display: grid; grid-template-columns: minmax(230px, .65fr) minmax(0, 1.35fr); gap: clamp(36px, 8vw, 100px); }
+.operator-page-label { padding-top: 12px; border-top: 2px solid var(--brand-blue); }
+.operator-page-label strong { display: block; font-size: 1.5rem; }
+.operator-page-label span { display: block; margin-top: 8px; color: var(--brand-muted); line-height: 1.6; }
+.operator-page-copy h2 { margin: 0 0 20px; font-size: clamp(2rem, 3.8vw, 3.4rem); font-weight: 700; line-height: 1.2; letter-spacing: -.05em; }
+.operator-page-copy p { color: #465062; font-size: 1rem; font-weight: 400; line-height: 1.9; }
+.service-boundary { border-left-color: var(--brand-coral); border-radius: 0 12px 12px 0; }
+.editorial-page-head { max-width: var(--content-width); margin: 0 auto; padding: clamp(70px, 10vw, 126px) 24px 56px; }
+.editorial-page-head h1 { max-width: 15ch; margin: 10px 0 18px; font-size: clamp(2.75rem, 5.3vw, 4.7rem); font-weight: 700; line-height: 1.12; letter-spacing: -.055em; }
+.editorial-page-head p { max-width: 690px; color: var(--brand-muted); font-size: 1.05rem; font-weight: 400; line-height: 1.8; }
+.topic-strip { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 28px; }
+.topic-strip a { padding: 9px 13px; border: 1px solid var(--brand-line); border-radius: 999px; color: #4c5566; font-size: .84rem; font-weight: 700; text-decoration: none; }
+.topic-strip a:first-child { border-color: var(--brand-ink); background: var(--brand-ink); color: #fff; }
+.editorial-list { max-width: var(--content-width); margin: 0 auto; padding: 70px 24px 120px; }
+.editorial-list-head { display: flex; justify-content: space-between; align-items: end; padding-bottom: 18px; border-bottom: 2px solid var(--brand-ink); }
+.editorial-list-head h2 { margin: 0; font-size: clamp(1.6rem, 2.7vw, 2.25rem); font-weight: 700; letter-spacing: -.04em; }
+.editorial-feed-item { display: grid; grid-template-columns: 150px minmax(0, 1fr) 180px; gap: 28px; padding: 28px 0; border-bottom: 1px solid var(--brand-line); }
+.editorial-feed-item .feed-kicker { color: var(--brand-blue); font-size: .8125rem; font-weight: 700; }
+.editorial-feed-item h3 { margin: 0 0 10px; font-size: 1.1875rem; font-weight: 700; line-height: 1.5; }
+.editorial-feed-item h3 a { color: var(--brand-ink); text-decoration: none; }
+.editorial-feed-item .feed-summary { margin: 0; color: var(--brand-muted); font-size: .9375rem; font-weight: 400; line-height: 1.75; }
+.editorial-feed-item .feed-meta { margin: 0; color: #7a8291; font-size: .8125rem; font-weight: 500; line-height: 1.7; text-align: right; }
+.briefing-hero { max-width: 960px; margin: 0 auto; padding: clamp(70px, 10vw, 132px) 24px 52px; }
+.briefing-breadcrumb { color: var(--brand-blue); font-size: .8125rem; font-weight: 700; }
+.briefing-hero h1 { margin: 18px 0 24px; font-size: clamp(2.4rem, 4.9vw, 4.3rem); font-weight: 700; line-height: 1.18; letter-spacing: -.055em; word-break: keep-all; }
+.briefing-deck { max-width: 760px; color: #4f5868; font-size: 1.0625rem; font-weight: 400; line-height: 1.85; }
+.briefing-meta { display: flex; flex-wrap: wrap; gap: 9px 18px; margin-top: 24px; color: #727b8b; font-size: .8125rem; font-weight: 500; }
+.briefing-body { display: grid; grid-template-columns: minmax(0, 700px) 230px; gap: 54px; max-width: 960px; margin: 0 auto; padding: 0 24px 120px; }
+.briefing-block { padding: 34px 0; border-top: 1px solid var(--brand-line); }
+.briefing-block h2 { margin: 0 0 16px; font-size: 1.5rem; font-weight: 700; letter-spacing: -.035em; }
+.briefing-block p { margin: 0; color: #3f4857; font-size: 1rem; font-weight: 400; line-height: 1.9; }
+.briefing-source { position: sticky; top: 100px; align-self: start; padding: 20px; border-radius: 16px; background: var(--brand-paper); }
+.briefing-source strong { display: block; margin-bottom: 10px; }
+.briefing-source p { margin: 0 0 14px; color: var(--brand-muted); font-size: .82rem; line-height: 1.65; }
+.briefing-nav { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 24px; }
+.briefing-nav a { padding: 18px; border: 1px solid var(--brand-line); border-radius: 14px; color: var(--brand-ink); font-weight: 800; text-decoration: none; }
+.site-footer { margin: 0 !important; padding: 42px 24px !important; border: 0 !important; background: #0f1219 !important; color: #d5d9e1 !important; }
+.site-footer > * { max-width: var(--content-width); margin-left: auto; margin-right: auto; }
+.site-footer a { color: #fff !important; }
+.bottom-nav { display: none; }
+@media (max-width: 1040px) {
+  .site-header nav, .header-radar { display: none; }
+  .mobile-menu-trigger { display: inline-grid; place-items: center; margin-left: auto; }
+  .product-hero { margin: 18px; padding: 54px 36px; }
+  .policy-signal { grid-template-columns: 100px minmax(0, 1fr); }
+  .policy-signal-meta, .signal-question, .signal-link { grid-column: 2; }
+  .editorial-feature { grid-template-columns: 1fr; padding: 0 24px; }
+  .briefing-body { grid-template-columns: 1fr; }
+  .briefing-source { position: static; }
+  .operator-proof-strip { grid-template-columns: 1fr auto; }
+  .operator-proof-strip p { grid-column: 1 / -1; grid-row: 2; }
+  .bottom-nav { display: grid; }
+}
+@media (max-width: 680px) {
+  .site-header-inner { min-height: 62px; padding: 0 16px; }
+  .product-hero { box-sizing: border-box; grid-template-columns: 1fr; width: calc(100% - 20px); min-height: 580px; margin: 10px; padding: 42px 22px; border-radius: 24px; }
+  .product-hero h1 { max-width: none; font-size: 2.25rem; line-height: 1.18; word-break: normal; overflow-wrap: anywhere; }
+  .product-hero-lead { word-break: normal; overflow-wrap: anywhere; }
+  .hero-proof { align-self: end; }
+  .status-strip { margin: 10px; border-radius: 12px; }
+  .operator-proof-strip { grid-template-columns: 1fr; gap: 12px; margin: 10px; }
+  .operator-proof-strip p { grid-column: 1; grid-row: auto; }
+  .operator-intro, .operator-page-grid { grid-template-columns: 1fr; }
+  .operator-standard-grid { grid-template-columns: 1fr; }
+  .product-section { padding: 76px 18px; }
+  .product-section-head { align-items: flex-start; }
+  .product-section-head h2 { font-size: 2.2rem; }
+  .policy-signal { grid-template-columns: 1fr; gap: 10px; padding: 24px 0; }
+  .policy-signal-meta, .signal-question, .signal-link { grid-column: 1; }
+  .feature-story { min-height: 440px; padding: 30px 24px; }
+  .editorial-page-head { padding: 70px 18px 42px; }
+  .editorial-page-head h1 { font-size: 2.7rem; }
+  .editorial-list { padding: 52px 18px 100px; }
+  .editorial-feed-item { grid-template-columns: 1fr; gap: 8px; }
+  .editorial-feed-item .feed-meta { text-align: left; }
+  .briefing-hero { padding: 70px 18px 42px; }
+  .briefing-hero h1 { font-size: 2.45rem; }
+  .briefing-body { padding: 0 18px 100px; }
+  .briefing-nav { grid-template-columns: 1fr; }
+}
+"""
+
+
+LEAD_FUNNEL_CSS = r"""
+.briefing-signup { position: relative; overflow: hidden; }
+.briefing-signup-grid { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(320px, .95fr); gap: clamp(28px, 6vw, 80px); align-items: start; }
+.briefing-sample-list { display: grid; gap: 0; margin-top: 28px; border-top: 1px solid var(--brand-ink); }
+.briefing-sample-list article { padding: 16px 0; border-bottom: 1px solid var(--brand-line); }
+.briefing-sample-list span { display: block; margin-bottom: 5px; color: var(--brand-blue); font-size: .75rem; font-weight: 700; }
+.briefing-sample-list strong { font-size: .96rem; line-height: 1.55; }
+.briefing-form-card { padding: clamp(24px, 4vw, 38px); border: 1px solid var(--brand-line); border-radius: 24px; background: #fff; box-shadow: 0 18px 60px rgba(16,19,26,.08); }
+.briefing-form-card h3 { margin: 0 0 8px; font-size: 1.4rem; }
+.briefing-form-card > p { margin: 0 0 22px; color: var(--brand-muted); line-height: 1.7; }
+.briefing-form { display: grid; gap: 14px; }
+.briefing-form label { color: #303746; font-size: .9rem; font-weight: 700; }
+.briefing-form input[type="email"] { box-sizing: border-box; width: 100%; min-height: 50px; margin-top: 7px; padding: 0 14px; border: 1px solid #aeb5c1; border-radius: 12px; background: #fff; color: var(--brand-ink); font: inherit; }
+.briefing-form input[type="email"]:focus { outline: 3px solid rgba(36,87,245,.2); border-color: var(--brand-blue); }
+.briefing-consent { display: grid; grid-template-columns: 20px 1fr; gap: 10px; align-items: start; font-weight: 500 !important; line-height: 1.55; }
+.briefing-consent input { width: 18px; height: 18px; margin: 2px 0 0; accent-color: var(--brand-blue); }
+.briefing-form-meta { margin: 0; color: var(--brand-muted); font-size: .78rem; line-height: 1.6; }
+.briefing-form-feedback { min-height: 24px; margin: 0; color: #174b3d; font-size: .88rem; font-weight: 700; line-height: 1.55; }
+.soft-gate { position: fixed; right: 22px; bottom: 22px; z-index: 120; box-sizing: border-box; width: min(430px, calc(100vw - 28px)); padding: 24px; border: 1px solid #cfd5df; border-radius: 20px; background: #fff; box-shadow: 0 24px 70px rgba(16,19,26,.22); }
+.soft-gate[hidden] { display: none; }
+.soft-gate-close { position: absolute; top: 12px; right: 12px; width: 38px; height: 38px; border: 0; border-radius: 10px; background: #f1f3f7; color: var(--brand-ink); font-size: 1.15rem; cursor: pointer; }
+.soft-gate .product-eyebrow { padding-right: 42px; }
+.soft-gate h2 { max-width: 17ch; margin: 8px 0; font-size: 1.45rem; line-height: 1.35; }
+.soft-gate-copy { margin: 0 0 18px; color: var(--brand-muted); font-size: .9rem; line-height: 1.65; }
+@media (max-width: 800px) {
+  .briefing-signup-grid { grid-template-columns: 1fr; }
+  .soft-gate { right: 14px; bottom: 76px; }
+}
+"""
+
+
+# Readability refinement layer. It keeps the established editorial layout and
+# colour system while making the information hierarchy easier to scan across
+# the public site: restrained type, readable line lengths, clearer metadata,
+# visible keyboard focus, and touch-safe controls.
+READABILITY_REFINEMENT_CSS = r"""
+:root {
+  --reading-text: #202735;
+  --reading-muted: #566174;
+  --reading-focus: #2457f5;
+  --reading-soft-surface: #f7f8fc;
+}
+html { font-size: 100%; }
+body {
+  color: var(--reading-text);
+  font-family: Pretendard, "Noto Sans KR", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 17px;
+  line-height: 1.65;
+  text-rendering: optimizeLegibility;
+}
+body, button, input, select, textarea { font-synthesis: none; }
+p, li, dd, .product-hero-lead, .product-section-head p, .policy-signal-meta, .signal-question, .interest-note, .boundary-note {
+  overflow-wrap: break-word;
+  word-break: keep-all;
+}
+a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible {
+  outline: 3px solid var(--reading-focus);
+  outline-offset: 3px;
+}
+.site-header { background: rgba(255,255,255,.97); }
+.site-header-inner { min-height: 76px; gap: 18px; }
+.top-nav-link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  color: #30394a;
+  font-size: .9375rem;
+  font-weight: 650;
+}
+.top-nav-link:hover, .top-nav-link.active { background: var(--brand-sky); color: #10265d; }
+.header-radar { min-height: 44px; font-size: .9375rem; }
+.product-hero { min-height: 0; padding-block: clamp(56px, 7vw, 88px); }
+.product-hero h1 {
+  max-width: 17ch;
+  font-size: clamp(2rem, 4.3vw, 2.25rem);
+  line-height: 1.22;
+  letter-spacing: -.045em;
+  word-break: keep-all;
+}
+.product-hero-lead { max-width: 43rem; font-size: 1.0625rem; line-height: 1.75; }
+.product-eyebrow { font-size: .8125rem; letter-spacing: .045em; }
+.product-button { min-height: 48px; font-size: .9375rem; line-height: 1.35; }
+.product-section { padding-block: clamp(48px, 6vw, 76px); }
+.product-section-head { align-items: flex-start; }
+.product-section-head h2, .feature-story h2, .institution-cta h2 {
+  max-width: 24ch;
+  font-size: clamp(1.6rem, 3vw, 2rem);
+  line-height: 1.3;
+  letter-spacing: -.04em;
+  word-break: keep-all;
+}
+.product-section-head p { max-width: 52rem; color: var(--reading-muted); font-size: 1rem; line-height: 1.75; }
+.policy-signal, .journey-card, .trust-card, .interest-panel, .preview-panel, .briefing-form-card {
+  border-color: #cbd3df;
+  box-shadow: 0 8px 26px rgba(16, 19, 26, .045);
+}
+.policy-signal { gap: .15rem; }
+.policy-signal h3, .journey-card h3, .trust-card h3 { font-size: 1.0625rem; line-height: 1.55; }
+.policy-signal-meta, .preview-item span, .status-strip { color: var(--reading-muted); font-size: .875rem; }
+.signal-question { color: #334155; font-size: .9375rem; line-height: 1.65; }
+.signal-link, .section-link { display: inline-flex; align-items: center; min-height: 40px; }
+.preview-item { padding: 1.1rem 1.15rem; border-color: #d5dbe5; }
+.preview-item a { font-size: .96875rem; line-height: 1.6; }
+.journey-card p, .trust-card p, .institution-cta p { color: var(--reading-muted); font-size: 1rem; line-height: 1.75; }
+.status-strip { padding: 1rem max(24px, calc((100vw - var(--content-width)) / 2 + 24px)); background: var(--reading-soft-surface); line-height: 1.55; }
+.operator-proof-strip { line-height: 1.65; }
+.article-share-actions { display: inline-flex; align-items: center; gap: .55rem; margin-top: .85rem; }
+.article-share-button { min-height: 42px; padding: .55rem .78rem; border: 1px solid #aeb9cb; border-radius: 10px; background: #fff; color: #1c315f; font: inherit; font-size: .875rem; font-weight: 700; cursor: pointer; }
+.article-share-button:hover { border-color: var(--brand-blue); background: var(--brand-sky); }
+.article-share-feedback { margin: 0; color: var(--reading-muted); font-size: .8125rem; line-height: 1.45; }
+.feature-story .article-share-button { position: relative; z-index: 1; background: rgba(255,255,255,.7); }
+.briefing-source .article-share-actions { display: grid; margin-top: .8rem; }
+.editorial-feed-item .feed-side { display: grid; justify-items: end; gap: .45rem; }
+.editorial-feed-item .article-share-actions { margin-top: 0; }
+.home-news-hero { max-width: var(--content-width); margin: 28px auto 0; padding: clamp(30px, 5vw, 64px); border: 1px solid var(--brand-line); border-radius: 28px; background: #fff; }
+.home-news-heading { display: grid; grid-template-columns: minmax(0, 1fr) minmax(260px, .42fr); gap: clamp(28px, 6vw, 84px); align-items: end; padding-bottom: clamp(30px, 5vw, 56px); border-bottom: 1px solid var(--brand-line); }
+.home-news-heading h1 { max-width: 17ch; margin: 0; color: var(--brand-ink); font-size: clamp(2rem, 4.8vw, 3.3rem); font-weight: 700; line-height: 1.17; letter-spacing: -.055em; word-break: keep-all; }
+.home-news-heading > div > p:last-child { max-width: 46rem; margin: 18px 0 0; color: var(--reading-muted); font-size: 1.0625rem; line-height: 1.75; }
+.home-news-status { padding: 24px; border: 1px solid #b9d1cb; border-radius: 18px; background: #edf5f2; }
+.home-news-status > span { display: block; color: #45655b; font-size: .8125rem; font-weight: 700; }
+.home-news-status strong { display: block; margin-top: 8px; color: #123a32; font-size: 1.35rem; line-height: 1.35; letter-spacing: -.035em; }
+.home-news-status time { display: block; margin-top: 5px; color: #526c63; font-size: .8125rem; }
+.home-news-status p { margin: 14px 0 0; color: #4d625a; font-size: .875rem; line-height: 1.62; }
+.home-news-feature { padding-top: clamp(30px, 5vw, 56px); }
+.home-news-feature-head { display: flex; align-items: end; justify-content: space-between; gap: 20px; margin-bottom: 24px; }
+.home-news-feature-head .product-eyebrow { margin: 0 0 8px; }
+.home-news-feature-head h2 { margin: 0; color: var(--brand-ink); font-size: clamp(1.5rem, 3vw, 2rem); line-height: 1.3; letter-spacing: -.04em; }
+.home-news-hero .editorial-feature { padding: 0; }
+.home-news-hero .feature-story { min-height: 360px; }
+.home-news-list { padding-top: clamp(38px, 6vw, 68px); }
+.home-news-list .product-section-head { margin-bottom: 20px; }
+.home-news-list .policy-signal-grid { border-bottom: 1px solid var(--brand-line); }
+@media (max-width: 980px) {
+  .site-header nav { gap: 0; }
+  .top-nav-link { padding-inline: 9px; font-size: .875rem; }
+  .home-news-heading { grid-template-columns: 1fr; align-items: start; }
+}
+@media (max-width: 760px) {
+  body { font-size: 16px; }
+  .site-header-inner { min-height: 64px; padding-inline: 16px; }
+  .product-hero { margin-top: 0; border-radius: 0 0 24px 24px; padding: 44px 20px 48px; }
+  .product-hero h1 { max-width: 18ch; font-size: clamp(1.875rem, 8vw, 2.25rem); line-height: 1.28; }
+  .product-hero-lead { font-size: 1rem; line-height: 1.7; }
+  .product-section { padding: 44px 20px; }
+  .product-section-head h2, .feature-story h2, .institution-cta h2 { font-size: clamp(1.5rem, 7vw, 1.875rem); }
+  .product-section-head p { font-size: .96875rem; }
+  .policy-signal, .journey-card, .trust-card { padding: 1.15rem; }
+  .editorial-feed-item .feed-side { justify-items: start; }
+  .status-strip { padding: .9rem 20px; }
+  .product-actions { gap: .75rem; }
+  .product-actions .product-button { min-height: 50px; }
+  .home-news-hero { margin: 10px; padding: 32px 20px; border-radius: 22px; }
+  .home-news-heading { gap: 26px; padding-bottom: 32px; }
+  .home-news-heading h1 { max-width: 18ch; font-size: clamp(1.9rem, 8vw, 2.35rem); line-height: 1.25; }
+  .home-news-heading > div > p:last-child { font-size: 1rem; }
+  .home-news-status { padding: 20px; }
+  .home-news-feature { padding-top: 32px; }
+  .home-news-hero .editorial-feature { padding: 0; }
+  .home-news-hero .feature-story { min-height: 330px; }
+.home-news-list { padding-top: 42px; }
+}
+
+/* Legacy 동향실 shell: keep its information-dense layout, but give each
+   text role a stable reading size and each time control a touch-safe target. */
+.topbar-icon,
+.topbar-top-link { min-width: 44px; min-height: 44px; }
+.side-nav-link.primary-menu-link { min-height: 44px; }
+.side-nav-text strong { font-size: .9375rem; line-height: 1.35; }
+.side-nav-kicker { color: #687385; font-size: .75rem; letter-spacing: .04em; }
+.side-marker-link { min-height: 44px; color: #4d596b; font-size: .875rem; line-height: 1.4; }
+.flow-hero-title {
+  max-width: 22ch;
+  font-size: clamp(2rem, 3.4vw, 2.25rem);
+  line-height: 1.2;
+  letter-spacing: -.045em;
+}
+.flow-hero-copy { max-width: 54rem; color: var(--reading-muted); font-size: 1.0625rem; line-height: 1.75; }
+.flow-freshness span { color: #526174; font-size: .8125rem; letter-spacing: .04em; }
+.flow-freshness strong { font-size: 1.25rem; line-height: 1.4; }
+.flow-freshness p { color: #4b596b; font-size: .875rem; line-height: 1.65; }
+/* 첫 화면의 안내는 자료실과 같은 한 장의 인트로 카드로 묶되,
+   시간대별 탐색과 마지막 반영 상태는 독립적으로 빠르게 읽히게 둔다. */
+.flow-hero-header {
+  padding: clamp(28px, 4vw, 48px);
+  border: 1px solid #dbe3e0;
+  border-radius: 24px;
+  background: rgba(255, 255, 255, .94);
+  box-shadow: 0 12px 30px rgba(16, 44, 50, .055);
+  align-items: center;
+}
+.flow-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  min-height: 34px;
+  margin: 0 0 18px;
+  padding: 7px 14px;
+  border-radius: 999px;
+  background: #fff0e8;
+  color: #c84d39;
+  font-size: .875rem;
+  font-weight: 800;
+  line-height: 1.3;
+  letter-spacing: -.02em;
+}
+.flow-hero-title { max-width: 24ch; margin-bottom: 16px; }
+.flow-hero-copy { max-width: 58rem; }
+.flow-freshness {
+  padding: 22px;
+  border-color: #bdd1cb;
+  border-radius: 18px;
+  background: #edf5f2;
+  box-shadow: none;
+}
+/* 기사 줄은 제목, 출처, 의제를 한 번에 훑고 오른쪽에서 바로 행동할 수 있게
+   정보와 동작 영역을 분리한다. */
+.flow-item {
+  grid-template-columns: 72px minmax(0, 1fr) minmax(112px, auto);
+  gap: 16px;
+  padding: 18px 0;
+}
+.flow-item-meta { gap: 7px; margin-top: 9px; }
+.flow-source,
+.flow-topic,
+.flow-kind {
+  display: inline-flex;
+  align-items: center;
+  min-height: 28px;
+  padding: 4px 9px;
+  border-radius: 999px;
+  font-size: .75rem;
+  font-weight: 700;
+  line-height: 1.25;
+}
+.flow-source { background: #e8f1ee; color: #1a4b41; }
+.flow-topic { background: #fff0e8; color: #a84835; }
+.flow-kind { border: 1px solid transparent; }
+.flow-kind--news { border-color: #d7def0; background: #eef2fb; color: #38527c; }
+.flow-kind--official { border-color: #b9d9d0; background: #dff1ec; color: #155648; }
+.flow-kind--local { border-color: #c8d8ed; background: #e9f1fb; color: #315f8f; }
+.flow-kind--local-plan { border-color: #d8ccd9; background: #f2ebf3; color: #6d426e; }
+.flow-kind--research { border-color: #e5d09c; background: #fff4d8; color: #76511b; }
+.flow-kind--opinion { border-color: #e3c9c0; background: #fbeae4; color: #934938; }
+/* 화면은 순백색으로 유지하고, 자료 성격은 개별 칩보다 행 전체의 옅은 면으로 읽는다. */
+body,
+.app-layout,
+.shell { background: #fff; }
+.flow-hero-header,
+.flow-board,
+.flow-stream { background: #fff; }
+.flow-item {
+  margin: 8px 0;
+  padding: 18px 16px;
+  border: 1px solid #e0e5ea;
+  border-left-width: 4px;
+  border-radius: 16px;
+}
+.flow-kind {
+  min-height: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: #526174;
+  font-size: .75rem;
+  font-weight: 800;
+}
+.flow-item--news { border-color: #d9e2f4; border-left-color: #627db5; background: #f5f8ff; }
+.flow-item--official { border-color: #c8e0d8; border-left-color: #26806d; background: #f2faf7; }
+.flow-item--local { border-color: #ceddec; border-left-color: #477eae; background: #f4f8fc; }
+.flow-item--local-plan { border-color: #ddd0df; border-left-color: #875b88; background: #faf6fa; }
+.flow-item--research { border-color: #ead9ad; border-left-color: #a57828; background: #fffaf0; }
+.flow-item--opinion { border-color: #e7d1c9; border-left-color: #ae6352; background: #fdf7f5; }
+.flow-item { align-items: center; }
+.flow-time {
+  align-self: center;
+  justify-self: center;
+  color: #a84232;
+  font-size: clamp(1.125rem, 1.6vw, 1.35rem);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -.04em;
+}
+.flow-item-actions {
+  display: grid;
+  align-content: center;
+  justify-items: end;
+  gap: 8px;
+  min-width: 112px;
+}
+.flow-item-actions .article-share-actions {
+  display: grid;
+  justify-items: end;
+  gap: 4px;
+  margin: 0;
+}
+.flow-item-actions .article-share-button {
+  min-height: 38px;
+  padding: 7px 11px;
+  border-color: #d4dce8;
+  border-radius: 999px;
+  font-size: .8125rem;
+}
+.flow-item-actions .article-share-feedback {
+  max-width: 160px;
+  text-align: right;
+}
+.flow-item-actions .flow-route {
+  min-width: 0;
+  min-height: 36px;
+  padding: 7px 10px;
+}
+/* 정부 부처 자료실은 출처의 공신력과 제목을 먼저 읽는 화면이다.
+   작은 칩과 잘린 썸네일 대신, 식별 가능한 부처 마크와 충분한 본문 크기를 준다. */
+body[data-page="official.html"] .article-card {
+  grid-template-columns: minmax(0, 1fr) 180px;
+  grid-template-areas:
+    "meta media"
+    "title media"
+    "badges media"
+    "summary media"
+    "actions actions"
+    "feedback feedback";
+  align-content: start;
+  column-gap: 28px;
+  row-gap: 16px;
+  padding: 28px 30px;
+}
+body[data-page="official.html"] .article-meta { gap: 12px; }
+body[data-page="official.html"] .article-meta-tags { gap: 10px; }
+body[data-page="official.html"] .meta-pill,
+body[data-page="official.html"] .badge {
+  min-height: 38px;
+  padding: 8px 13px;
+  font-size: .9375rem;
+  font-weight: 750;
+}
+body[data-page="official.html"] .article-byline {
+  gap: 9px;
+  color: #536176;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+body[data-page="official.html"] .publisher-icon {
+  width: 28px;
+  height: 28px;
+  border-radius: 7px;
+}
+body[data-page="official.html"] .article-card h3 {
+  font-size: clamp(1.35rem, 1.65vw, 1.6rem);
+  line-height: 1.42;
+  letter-spacing: -.045em;
+}
+body[data-page="official.html"] .article-summary {
+  color: #506070;
+  font-size: 1.0625rem;
+  line-height: 1.72;
+  -webkit-line-clamp: 4;
+}
+body[data-page="official.html"] .article-media {
+  width: 180px;
+  height: 228px;
+  align-self: center;
+  border: 1px solid #d7e3ed;
+  border-radius: 24px;
+  background: #f4f9fc;
+}
+body[data-page="official.html"] .article-thumbnail {
+  object-fit: contain;
+  padding: 12px;
+  box-sizing: border-box;
+}
+body[data-page="official.html"] .article-actions {
+  margin-top: 2px;
+  padding-top: 16px;
+}
+/* 지자체 자료실은 17개 광역 지자체 각각을 식별한다. 공식 favicon을 먼저
+   보여 주고, 외부 이미지가 막혀도 지역 약칭 마크가 남아 출처가 사라지지 않는다. */
+.publisher-icon.publisher-icon--local {
+  display: inline-grid;
+  flex: 0 0 auto;
+  place-items: center;
+  position: relative;
+  overflow: hidden;
+  color: #245f74;
+  font: inherit;
+  font-size: .625rem;
+  font-weight: 850;
+  line-height: 1;
+  text-align: center;
+}
+.publisher-icon--local .publisher-icon-fallback { padding: 2px; white-space: nowrap; }
+.publisher-icon--local .publisher-icon-image {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  padding: 2px;
+  box-sizing: border-box;
+  background: #fff;
+  object-fit: contain;
+}
+body[data-page="local.html"] .article-card {
+  grid-template-columns: minmax(0, 1fr) 180px;
+  grid-template-areas:
+    "meta media"
+    "title media"
+    "badges media"
+    "summary media"
+    "actions actions"
+    "feedback feedback";
+  align-content: start;
+  column-gap: 28px;
+  row-gap: 16px;
+  padding: 28px 30px;
+}
+body[data-page="local.html"] .article-meta { gap: 12px; }
+body[data-page="local.html"] .article-meta-tags { gap: 10px; }
+body[data-page="local.html"] .meta-pill,
+body[data-page="local.html"] .badge {
+  min-height: 38px;
+  padding: 8px 13px;
+  font-size: .9375rem;
+  font-weight: 750;
+}
+body[data-page="local.html"] .article-byline {
+  gap: 9px;
+  color: #536176;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+body[data-page="local.html"] .publisher-icon { width: 28px; height: 28px; border-radius: 7px; }
+body[data-page="local.html"] .article-card h3 {
+  font-size: clamp(1.35rem, 1.65vw, 1.6rem);
+  line-height: 1.42;
+  letter-spacing: -.045em;
+}
+body[data-page="local.html"] .article-summary {
+  color: #506070;
+  font-size: 1.0625rem;
+  line-height: 1.72;
+  -webkit-line-clamp: 4;
+}
+body[data-page="local.html"] .article-media {
+  width: 180px;
+  height: 220px;
+  align-self: center;
+  border: 1px solid #d7e3ed;
+  border-radius: 24px;
+  background: #f4f9fc;
+}
+body[data-page="local.html"] .article-thumbnail {
+  object-fit: contain;
+  padding: 12px;
+  box-sizing: border-box;
+}
+body[data-page="local.html"] .article-actions {
+  margin-top: 2px;
+  padding-top: 16px;
+}
+/* 정책브리핑은 부처 발표를 재배포하는 색인이다. 카드의 큰 이미지는 색인
+   이미지 대신 실제 소관 부처를 보여 주고, 원문은 부처 직접 수집본을 우선한다. */
+.official-authority-media {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 12px;
+  box-sizing: border-box;
+  border: 1px solid #c9d9d5;
+  background: linear-gradient(145deg, #f8fcfb, #e6f1ee);
+  color: #153b35;
+  text-align: center;
+}
+.official-authority-mark {
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  flex: 0 0 42px;
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: 0 2px 8px rgba(24, 65, 55, .12);
+}
+.official-authority-mark img { width: 30px; height: 30px; object-fit: contain; }
+.official-authority-monogram { color: #0f5a4c; font-size: 1.15rem; font-weight: 850; }
+.official-authority-copy { display: grid; gap: 2px; min-width: 0; }
+.official-authority-copy strong { color: #123b34; font-size: .875rem; line-height: 1.35; word-break: keep-all; }
+.official-authority-copy small { color: #55736b; font-size: .6875rem; font-weight: 700; line-height: 1.3; }
+@media (max-width: 760px) {
+  body[data-page="official.html"] .article-card {
+    grid-template-columns: minmax(0, 1fr) 104px;
+    column-gap: 16px;
+    row-gap: 13px;
+    padding: 20px;
+  }
+  body[data-page="official.html"] .meta-pill,
+  body[data-page="official.html"] .badge { min-height: 34px; padding: 7px 10px; font-size: .8125rem; }
+  body[data-page="official.html"] .publisher-icon { width: 24px; height: 24px; }
+  body[data-page="official.html"] .article-card h3 { font-size: 1.2rem; }
+  body[data-page="official.html"] .article-summary { font-size: 1rem; }
+  body[data-page="official.html"] .article-media { width: 104px; height: 142px; border-radius: 18px; }
+  body[data-page="local.html"] .article-card {
+    grid-template-columns: minmax(0, 1fr) 104px;
+    column-gap: 16px;
+    row-gap: 13px;
+    padding: 20px;
+  }
+  body[data-page="local.html"] .meta-pill,
+  body[data-page="local.html"] .badge { min-height: 34px; padding: 7px 10px; font-size: .8125rem; }
+  body[data-page="local.html"] .publisher-icon { width: 24px; height: 24px; }
+  body[data-page="local.html"] .article-card h3 { font-size: 1.2rem; }
+  body[data-page="local.html"] .article-summary { font-size: 1rem; }
+  body[data-page="local.html"] .article-media { width: 104px; height: 132px; border-radius: 18px; }
+}
+/* 동향실의 좌측 탐색과 우측 인트로를 같은 캔버스 위에 놓는다.
+   바탕은 아이보리, 구조는 청록, 행동·라벨만 코럴로 제한한다. */
+body { background: #f8f6f0; }
+.topbar {
+  padding-block: 13px;
+  border-bottom-color: rgba(16, 44, 50, .12);
+  background: rgba(248, 246, 240, .98);
+}
+.topbar-side { width: min(1440px, calc(100vw - 40px)); }
+.app-layout {
+  width: min(1440px, calc(100vw - 40px));
+  margin-top: 16px;
+  gap: 24px;
+}
+.side-nav {
+  padding: 22px 16px 18px;
+  border-color: rgba(220, 239, 235, .16);
+  border-radius: 22px;
+  background: #102c32;
+}
+.side-nav .side-brand { padding-bottom: 16px; }
+.shell { padding-top: 0; }
+.flow-hero-header,
+.flow-board,
+.flow-stream { border-color: #d8e2df; background: #fffdf8; }
+.flow-hero-header { box-shadow: none; }
+.flow-eyebrow { background: #fbe9e2; color: #ae4634; }
+.flow-source { background: #e3f0ec; color: #174d42; }
+.flow-topic { background: #fbe9e2; color: #aa4937; }
+.flow-day-heading { align-items: center; }
+.flow-day-heading strong { font-size: 1.0625rem; line-height: 1.45; }
+.flow-day-heading span { color: var(--reading-muted); font-size: .875rem; line-height: 1.45; }
+.flow-read-button { min-height: 44px; padding: 10px 16px; font-size: .875rem; }
+.flow-date-button { min-width: 68px; min-height: 62px; padding: 9px 12px; font-size: .875rem; line-height: 1.45; }
+.flow-cell { min-height: 92px; padding: 12px 5px 10px; }
+.flow-cell-count { font-size: 1.125rem; }
+.flow-cell-time { bottom: 9px; color: #4e5d70; font-size: .75rem; }
+.flow-cell-note { color: #536176; font-size: .6875rem; }
+.flow-stream-head h2 { font-size: 1.375rem; line-height: 1.35; }
+.flow-stream-status { color: var(--reading-muted); font-size: .875rem; line-height: 1.5; }
+.flow-item-main a,
+.flow-item-main strong { font-size: clamp(1.0625rem, 1.55vw, 1.1875rem); line-height: 1.55; }
+.flow-item-meta { color: var(--reading-muted); font-size: .875rem; line-height: 1.5; }
+.flow-route { min-height: 40px; padding: 8px 11px; color: #163f37; font-size: .8125rem; line-height: 1.35; }
+/* 자료실은 제목·출처·요약을 함께 읽는 화면이라, 넓은 데스크톱에서도
+   뉴스 피드보다 한 단계 낮은 밀도(2열)를 유지한다. */
+@media (min-width: 761px) {
+  body[data-page="official.html"] .article-grid,
+  body[data-page="local.html"] .article-grid,
+  body[data-page="reports.html"] .article-grid,
+  body[data-page="tools.html"] .article-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 22px;
+  }
+}
+@media (max-width: 760px) {
+  .topbar-icon,
+  .topbar-top-link { min-width: 42px; min-height: 42px; }
+  .flow-hero-title { max-width: 19ch; font-size: clamp(1.75rem, 7.2vw, 2.125rem); line-height: 1.23; }
+  .flow-hero-header { padding: 24px 20px; border-radius: 20px; gap: 22px; }
+  .flow-eyebrow { min-height: 32px; margin-bottom: 15px; padding: 7px 12px; font-size: .8125rem; }
+  .flow-freshness { padding: 18px; }
+  .flow-hero-copy { font-size: 1rem; line-height: 1.7; }
+  .flow-item { grid-template-columns: 52px minmax(0, 1fr); gap: 10px; margin: 8px 0; padding: 15px 12px; }
+  .flow-item-actions { grid-column: 2; grid-template-columns: 1fr auto; align-items: center; min-width: 0; }
+  .flow-item-actions .article-share-actions { justify-items: start; }
+  .flow-item-actions .article-share-feedback { max-width: none; text-align: left; }
+  .flow-item-actions .flow-route { justify-self: end; }
+  .topbar { padding-block: 12px; }
+  .app-layout { margin-top: 12px; gap: 12px; }
+  .flow-day-heading { align-items: flex-start; }
+  .flow-day-heading span { font-size: .8125rem; }
+  .flow-date-button { min-width: 66px; min-height: 58px; font-size: .8125rem; }
+  .flow-cell { min-height: 84px; }
+  .flow-cell-time { font-size: .6875rem; }
+  .flow-stream-head h2 { font-size: 1.25rem; }
+  .flow-item-main a,
+  .flow-item-main strong { font-size: 1rem; line-height: 1.6; }
+  .flow-item-meta { font-size: .8125rem; }
+  .flow-route { min-height: 42px; font-size: .8125rem; }
+}
+
+/* 홈을 제외한 메뉴는 한 가지 인트로 규칙을 쓴다. 좌측 프레임과 각 메뉴의
+   자료 카드 구조는 그대로 두고, 상단 표기·면색·첫 섹션까지의 간격만 맞춘다. */
+body:not([data-page="index.html"]) .page-intro-card {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: clamp(20px, 3vw, 44px);
+  min-height: 0;
+  margin: clamp(18px, 2.2vw, 28px) auto 0;
+  padding: clamp(26px, 3.2vw, 42px);
+  border: 1px solid #dce4ed;
+  border-radius: 20px;
+  background: #ffffff;
+  box-shadow: 0 10px 28px rgba(20, 38, 61, .035);
+  color: #152238;
+}
+body:not([data-page="index.html"]) .page-intro-card.has-media {
+  grid-template-columns: minmax(0, 1fr) minmax(96px, 132px);
+}
+body:not([data-page="index.html"]) .page-intro-content { gap: 14px; }
+body:not([data-page="index.html"]) .page-intro-badge {
+  min-height: 34px;
+  padding: 7px 13px;
+  border-radius: 999px;
+  background: #fff0e8;
+  color: #c14c38;
+  font-size: .8125rem;
+  font-weight: 800;
+  letter-spacing: -.015em;
+}
+body:not([data-page="index.html"]) .page-intro-title {
+  max-width: 25ch;
+  margin: 0;
+  color: #101a2c;
+  font-size: clamp(1.9rem, 3.2vw, 2.55rem);
+  font-weight: 800;
+  line-height: 1.22;
+  letter-spacing: -.05em;
+}
+body:not([data-page="index.html"]) .page-intro-copy {
+  max-width: 66rem;
+  margin: 0;
+  color: #5a687c;
+  font-size: 1.03125rem;
+  line-height: 1.72;
+}
+body:not([data-page="index.html"]) .page-intro-media {
+  width: clamp(96px, 10vw, 132px);
+  margin: 0;
+}
+body:not([data-page="index.html"]) .page-intro-media img {
+  filter: none;
+}
+body:not([data-page="index.html"]) .page-intro-card + .section {
+  margin-top: clamp(30px, 4vw, 48px);
+}
+body:not([data-page="index.html"]) [data-news-filter-root] .page-intro-card {
+  margin-bottom: clamp(22px, 3vw, 34px);
+}
+/* 언론 기사는 지역 지도를 앞세우지 않고, 날짜 기록을 먼저 고른 뒤
+   해시태그·키워드·기간으로 좁혀 본다. */
+body[data-page="news.html"] .news-timeline-filter { padding: clamp(20px, 2.5vw, 30px); }
+body[data-page="news.html"] .news-timeline-filter .filter-head { align-items: start; margin-bottom: 18px; }
+body[data-page="news.html"] .news-timeline-filter .filter-head h3 { margin: 0; color: #17253a; font-size: 1.25rem; }
+body[data-page="news.html"] .news-timeline-filter .filter-head p { margin: 5px 0 0; color: #637187; font-size: .9375rem; }
+.news-date-tabs {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding: 2px 1px 12px;
+  border-bottom: 1px solid #e1e7ee;
+  scrollbar-width: thin;
+}
+.news-date-tabs .filter-button { flex: 0 0 auto; min-width: 58px; min-height: 42px; padding: 8px 12px; }
+.news-filter-utility-row {
+  display: grid;
+  grid-template-columns: minmax(250px, 1.25fr) minmax(210px, 1fr) minmax(250px, 1fr);
+  gap: 16px 20px;
+  align-items: end;
+  margin-top: 18px;
+}
+.news-filter-utility-row .filter-group { display: grid; gap: 8px; min-width: 0; }
+/* 기존 자료실 공통 그리드보다 우선한다. 언론기사에서는 세 도구를 동등한
+   가로 선택지로 보여 주며, 각 제어군이 행 전체를 차지하지 않는다. */
+body:not([data-page="index.html"])[data-page="news.html"] .news-filter-utility-row .filter-group-topic,
+body:not([data-page="index.html"])[data-page="news.html"] .news-filter-utility-row .filter-group-search,
+body:not([data-page="index.html"])[data-page="news.html"] .news-filter-utility-row .filter-group-date { grid-column: auto; }
+.news-filter-utility-row .filter-controls { display: flex; flex-wrap: wrap; gap: 7px; }
+.news-filter-utility-row .filter-button { min-height: 40px; padding: 7px 11px; }
+.news-filter-utility-row .date-range-fields { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+.news-filter-utility-row .date-input-wrap { min-height: 42px; }
+@media (max-width: 900px) {
+  .news-filter-utility-row { grid-template-columns: 1fr 1fr; }
+  .news-filter-utility-row .filter-group-topic { grid-column: 1 / -1; }
+}
+@media (max-width: 600px) {
+  .news-filter-utility-row { grid-template-columns: 1fr; }
+  .news-filter-utility-row .filter-group-topic { grid-column: auto; }
+  .news-filter-utility-row .date-range-fields { grid-template-columns: 1fr; }
+}
+/* 정부 부처 자료실은 두 자료군을 한 번에 늘어놓지 않고, 선택한 자료군만
+   읽도록 한다. 카드의 정보량은 유지하되 선택기는 탭으로 압축한다. */
+.official-view-tabs {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+.official-view-tab {
+  display: grid;
+  gap: 6px;
+  min-height: 118px;
+  padding: 20px 22px;
+  border: 1px solid #dce4ed;
+  border-radius: 16px;
+  background: #ffffff;
+  color: #26354a;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+.official-view-tab:hover { border-color: #aebdce; background: #f8fafc; }
+.official-view-tab.active { border-color: #c84d39; background: #fff7f2; box-shadow: inset 4px 0 0 #c84d39; }
+.official-view-tab span { color: #c84d39; font-size: .8125rem; font-weight: 800; }
+.official-view-tab strong { color: #132038; font-size: 1.15rem; line-height: 1.35; }
+.official-view-tab small { color: #617086; font-size: .90625rem; line-height: 1.55; }
+@media (max-width: 760px) {
+  .official-view-tabs { grid-template-columns: 1fr; gap: 10px; }
+  .official-view-tab { min-height: 0; padding: 17px 18px; }
+}
+@media (max-width: 760px) {
+  body:not([data-page="index.html"]) .page-intro-card,
+  body:not([data-page="index.html"]) .page-intro-card.has-media {
+    grid-template-columns: 1fr;
+    gap: 18px;
+    margin-top: 12px;
+    padding: 24px 20px;
+    border-radius: 16px;
+  }
+  body:not([data-page="index.html"]) .page-intro-title { font-size: clamp(1.7rem, 7.2vw, 2rem); }
+  body:not([data-page="index.html"]) .page-intro-copy { font-size: 1rem; line-height: 1.68; }
+  body:not([data-page="index.html"]) .page-intro-media { justify-self: end; width: 88px; }
+}
+
+/* 홈은 홍보·가입 퍼널 대신 읽을 자료를 이어서 보여 준다. 메뉴마다 같은 수의
+   최근 항목을 두어 스캔 리듬을 고정하고, 출처·일시는 제목 아래에 남긴다. */
+body[data-page="index.html"] .home-menu-feed {
+  margin-top: 28px;
+  padding: clamp(24px, 3vw, 40px);
+  border: 1px solid #d8e2df;
+  border-radius: 24px;
+  background: #ffffff;
+}
+body[data-page="index.html"] .home-menu-feed-intro { margin-bottom: 22px; }
+body[data-page="index.html"] .home-menu-feed-intro .flow-eyebrow { margin: 0 0 10px; }
+body[data-page="index.html"] .home-menu-feed-intro h2 {
+  margin: 0;
+  color: #102f33;
+  font-size: clamp(1.45rem, 2.4vw, 2rem);
+  line-height: 1.25;
+}
+body[data-page="index.html"] .home-menu-feed-intro p:not(.flow-eyebrow) {
+  margin: 10px 0 0;
+  color: #52666c;
+  font-size: .95rem;
+  line-height: 1.65;
+}
+body[data-page="index.html"] .home-menu-feed-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+}
+body[data-page="index.html"] .home-menu-feed-card {
+  display: grid;
+  grid-template-rows: auto 1fr;
+  min-height: 248px;
+  padding: 22px;
+  border: 1px solid #dce6e5;
+  border-radius: 18px;
+  background: #fffdfa;
+}
+body[data-page="index.html"] .home-menu-feed-card:last-child:nth-child(odd) { grid-column: 1 / -1; }
+body[data-page="index.html"] .home-menu-feed-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  padding-bottom: 13px;
+  border-bottom: 1px solid #e6ecea;
+}
+body[data-page="index.html"] .home-menu-feed-head h3 {
+  margin: 0;
+  color: #142b31;
+  font-size: 1.1rem;
+  line-height: 1.4;
+}
+body[data-page="index.html"] .home-menu-feed-head a {
+  flex: 0 0 auto;
+  color: #a94835;
+  font-size: .875rem;
+  font-weight: 800;
+  text-decoration: none;
+}
+body[data-page="index.html"] .home-menu-feed-head a:hover,
+body[data-page="index.html"] .home-menu-feed-head a:focus-visible { text-decoration: underline; text-underline-offset: 3px; }
+body[data-page="index.html"] .home-menu-feed-list {
+  display: grid;
+  gap: 0;
+  align-content: start;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+body[data-page="index.html"] .home-menu-feed-list li {
+  min-width: 0;
+  padding: 13px 0;
+  border-bottom: 1px solid #edf1f0;
+}
+body[data-page="index.html"] .home-menu-feed-list li:last-child { border-bottom: 0; }
+body[data-page="index.html"] .home-menu-feed-list a,
+body[data-page="index.html"] .home-menu-feed-list li > strong {
+  display: grid;
+  gap: 5px;
+  color: #20383d;
+  text-decoration: none;
+}
+body[data-page="index.html"] .home-menu-feed-list a:hover strong,
+body[data-page="index.html"] .home-menu-feed-list a:focus-visible strong { color: #a94835; text-decoration: underline; text-underline-offset: 3px; }
+body[data-page="index.html"] .home-menu-feed-list strong {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  font-size: .975rem;
+  line-height: 1.5;
+}
+body[data-page="index.html"] .home-menu-feed-list span {
+  overflow: hidden;
+  color: #6a7a7d;
+  font-size: .8125rem;
+  line-height: 1.45;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+body[data-page="index.html"] .home-menu-feed-list .home-menu-feed-empty {
+  color: #6a7a7d;
+  font-size: .925rem;
+  line-height: 1.55;
+}
+@media (max-width: 760px) {
+  body[data-page="index.html"] .home-menu-feed { margin-top: 20px; padding: 22px 18px; border-radius: 18px; }
+  body[data-page="index.html"] .home-menu-feed-grid { grid-template-columns: 1fr; gap: 12px; }
+  body[data-page="index.html"] .home-menu-feed-card,
+  body[data-page="index.html"] .home-menu-feed-card:last-child:nth-child(odd) { grid-column: auto; min-height: 0; padding: 18px; }
+}
+
+/* Final coherence layer: the legacy editorial shell remains intact, while
+   first actions, long Korean titles, keyboard focus, and narrow layouts share
+   one predictable rule set across the public pages. */
+/* The content field is intentionally pure white. Cards are separated by their
+   borders and spacing rather than a second near-white background layer. */
+body,
+.app-layout,
+.shell {
+  background: #ffffff;
+}
+.side-nav-link.primary-menu-link,
+.bottom-nav a,
+.bottom-nav button,
+.flow-date-button,
+.flow-read-button,
+.official-view-tab,
+.article-share-button {
+  transition: border-color 140ms ease, background-color 140ms ease, color 140ms ease, transform 140ms ease;
+}
+.side-nav-link.primary-menu-link:hover,
+.side-nav-link.primary-menu-link:focus-visible,
+.bottom-nav a:hover,
+.bottom-nav a:focus-visible {
+  text-decoration: none;
+}
+.side-nav a:focus-visible,
+.bottom-nav a:focus-visible,
+.bottom-nav button:focus-visible {
+  outline-color: #f2bd61;
+}
+.flow-date-button:focus-visible,
+.flow-read-button:focus-visible,
+.official-view-tab:focus-visible,
+.article-share-button:focus-visible {
+  outline-color: #1d64c8;
+  outline-offset: 3px;
+}
+.flow-date-button[aria-pressed="true"] {
+  box-shadow: inset 0 -3px 0 rgba(255,255,255,.5);
+}
+.flow-day-heading strong {
+  color: #102f33;
+  font-weight: 800;
+}
+.flow-day-heading span {
+  max-width: 40rem;
+}
+body:not([data-page="index.html"]) .page-intro-title {
+  word-break: keep-all;
+  overflow-wrap: normal;
+}
+@media (min-width: 1181px) {
+  .side-nav {
+    position: sticky;
+    top: 20px;
+    max-height: calc(100dvh - 40px);
+    overflow-y: auto;
+  }
+}
+@media (max-width: 760px) {
+  .flow-day-heading {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 8px 12px;
+    align-items: center;
+  }
+  .flow-day-heading strong {
+    grid-column: 1 / -1;
+    font-size: 1.125rem;
+  }
+  .flow-day-heading span {
+    grid-column: 1;
+    max-width: none;
+    font-size: .875rem;
+    line-height: 1.55;
+  }
+  .flow-day-heading .flow-read-button {
+    grid-column: 2;
+    grid-row: 2;
+    margin-left: 0;
+    padding-inline: 14px;
+    white-space: nowrap;
+  }
+  body:not([data-page="index.html"]) .page-intro-title {
+    max-width: 13ch;
+    font-size: clamp(1.6rem, 6.7vw, 1.875rem);
+    line-height: 1.28;
+    letter-spacing: -.045em;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .side-nav-link.primary-menu-link,
+  .bottom-nav a,
+  .bottom-nav button,
+  .flow-date-button,
+  .flow-read-button,
+  .official-view-tab,
+  .article-share-button {
+    transition: none;
+  }
+}
+"""
+
+
+def render_soft_gate() -> str:
+    return """
+    <aside class="soft-gate" data-soft-gate hidden aria-labelledby="soft-gate-title">
+      <button class="soft-gate-close" type="button" data-soft-gate-close aria-label="이 안내 닫기">×</button>
+      <p class="product-eyebrow">같은 의제의 자료를 4건 읽었습니다</p>
+      <h2 id="soft-gate-title">다음 변화를 주 1회 이메일로 받으세요</h2>
+      <p class="soft-gate-copy">기사·공식자료 링크와 다음 확인 항목을 묶어 보냅니다. 이 안내를 닫아도 모든 자료를 계속 볼 수 있습니다.</p>
+      <form class="briefing-form" data-briefing-form data-source-screen="fourth_article_gate">
+        <label>이메일<input type="email" name="email" autocomplete="email" required placeholder="name@example.com"></label>
+        <label class="briefing-consent"><input type="checkbox" name="consent" required><span>청년정책 브리핑을 주 1회 이메일로 받습니다.</span></label>
+        <button class="product-button dark" type="submit">확인 링크 받기</button>
+        <p class="briefing-form-feedback" data-briefing-feedback aria-live="polite"></p>
+      </form>
+    </aside>
+    """
+
+
+PUBLIC_PAGE_TEMPLATE = """<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="{page_description}">
+  <meta name="theme-color" content="#2457f5">
+  <title>{page_title}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/svg+xml" href="{brand_mark_src}">
+  <link rel="stylesheet" href="assets/site.css?v={asset_version}">
+</head>
+<body data-page="{active_page}" data-content-kind="{content_kind}" data-analytics-endpoint="{analytics_endpoint}" data-subscription-endpoint="{subscription_endpoint}">
+  <a class="skip-link" href="#main-content">본문으로 건너가기</a>
+  <header class="site-header">
+    <div class="site-header-inner">
+      <a class="brand-lockup" href="index.html"><img src="{brand_mark_src}" alt=""><span>청년투게더</span></a>
+      <nav aria-label="주요 메뉴">{top_nav}</nav>
+      <button class="mobile-menu-trigger" type="button" data-mobile-menu-open="true" aria-label="전체 메뉴 열기">☰</button>
+    </div>
+  </header>
+  <main class="shell" id="main-content" tabindex="-1"><span id="page-top" aria-hidden="true"></span>{content}</main>
+  <footer class="site-footer" aria-label="운영 안내">{footer_note}</footer>
+  {soft_gate}
+  <nav class="bottom-nav" style="--bottom-nav-count: {bottom_nav_count};" aria-label="모바일 주요 메뉴">{bottom_nav}</nav>
+  {mobile_menu}
+  <script src="assets/site.js?v={asset_version}"></script>
+</body>
+</html>
+"""
+
+
+PAGE_DESCRIPTIONS = {
+    "index.html": "청년정책의 변화와 현장 소식을 판단과 제안에 쓸 수 있게 연결합니다.",
+    "news.html": "지역과 의제별 청년정책 변화, 공식 발표와 후속 보도를 검색하고 확인합니다.",
+    "guide.html": "근거를 모으고 정책제안의 첫 문장을 만드는 단계별 실험실입니다.",
+    "hub.html": "청년 참여기구와 현장 논의 기록을 지역과 의제별로 확인합니다.",
+    "opinion.html": "청년정책을 둘러싼 검증 가능한 해설과 현장 관점을 모았습니다.",
+    "institution.html": "공공기관의 청년정책 변화 판단, 보고, 협업을 위한 청년투게더 안내입니다.",
+    "about.html": "청년투게더를 운영하는 박진감과 정책 정보를 고르는 편집 기준을 공개합니다.",
+    "contact.html": "청년투게더 운영 문의, 자료 제보, 정정 요청과 기관 협업 접수 안내입니다.",
+}
+
+
+NAV_ITEMS = [
+    ("news.html", "언론 기사"),
+    ("opinion.html", "기고·칼럼·오피니언"),
+    ("official.html", "정부 부처 자료실"),
+    ("local.html", "지자체 자료실"),
+    ("reports.html", "논문·연구·리포트"),
+    ("tools.html", "정부조사·통계"),
+    ("hub.html", "현장 목소리"),
+]
+TOP_NAV_ITEMS = [("index.html", "홈"), *NAV_ITEMS]
+BOTTOM_NAV_ITEMS = [
+    ("index.html", "홈"),
+    ("official.html", "정부"),
+    ("local.html", "지자체"),
+]
+PAGE_HEADINGS.update({
+    "index.html": "청년투게더",
+    "news.html": "언론 기사",
+    "guide.html": "정책제안 실험실",
+    "hub.html": "현장 목소리",
+    "opinion.html": "기고·칼럼·오피니언",
+    "institution.html": "기관 협업",
+    "about.html": "운영자·편집 기준",
+})
+SIDE_NAV_CONFIG.update({
+    "index.html": {"title": "홈", "description": "오늘의 자료", "items": [("#page-top", "처음"), ("#today-briefing", "날짜별 흐름"), ("#flow-stream", "오늘 들어온 자료"), ("#menu-updates", "메뉴별 최신 자료")]},
+    "news.html": {"title": "언론 기사", "description": "날짜와 검색", "items": [("#page-top", "처음"), ("#filters", "날짜·검색"), ("#main-list", "기사 목록")]},
+    "guide.html": {"title": "정책제안 실험실", "description": "제안 준비", "items": [("#page-top", "처음"), ("#main-list", "제안 단계"), ("#evidence-check", "근거 점검")]},
+    "hub.html": {"title": "현장 목소리", "description": "참여 기록", "items": [("#page-top", "처음"), ("#filters", "조건 설정"), ("#main-list", "참여 기록")]},
+    "opinion.html": {"title": "기고·칼럼·오피니언", "description": "해설과 관점", "items": [("#page-top", "처음"), ("#main-list", "기고·칼럼 목록")]},
+    "institution.html": {"title": "기관 협업", "description": "협업 방식", "items": [("#page-top", "처음"), ("#main-list", "제공 맥락"), ("#collaboration-scope", "협업 범위"), ("#event-audit", "이벤트 확인")]},
+    "about.html": {"title": "운영자·편집 기준", "description": "책임과 기준", "items": [("#page-top", "처음"), ("#operator", "운영자"), ("#editorial-standard", "편집 기준"), ("#limits", "한계와 정정")]},
+    "election.html": {"title": "이전 주소 안내", "description": "통합 경로", "items": [("#page-top", "처음"), ("#main-list", "이동 안내")]},
+    "privacy.html": {"title": "개인정보", "description": "처리 기준", "items": [("#page-top", "처음"), ("#main-list", "처리 항목"), ("#policy-basis", "참고 기준")]},
+    "terms.html": {"title": "이용약관", "description": "서비스 기준", "items": [("#page-top", "처음"), ("#main-list", "서비스 성격")]},
+})
+
+
+def _product_status(status: dict) -> tuple[str, str]:
+    timestamp = status.get("finished_at") or status.get("updated_at") or status.get("started_at") or ""
+    state = str(status.get("state") or "unknown")
+    state_labels = {
+        "completed": "자료 수집 완료",
+        "success": "자료 수집 완료",
+        "running": "수집 작업 시작됨 · 완료 시각 없음",
+        "failed": "마지막 수집 작업에서 자료를 추가하지 못함",
+        "unknown": "수집 시각 기록 없음",
+    }
+    return format_display_datetime(timestamp), state_labels.get(state, state)
+
+
+def _policy_stage(article: dict) -> str:
+    text = " ".join(str(article.get(key) or "") for key in ("title", "summary", "lead_text"))
+    if any(word in text for word in ("공고", "모집", "신청")):
+        return "공고·접수"
+    if any(word in text for word in ("시행", "집행", "개정", "추진")):
+        return "시행·추진"
+    if any(word in text for word in ("토론", "간담회", "의견수렴", "공청회")):
+        return "의견수렴"
+    if article.get("is_official_source") or article.get("source_kind") == "official":
+        return "공식 발표"
+    return "후속 보도"
+
+
+def _next_check(article: dict) -> str:
+    if article.get("is_official_source") or article.get("source_kind") == "official":
+        return "대상·시행일·담당기관과 후속 공고"
+    return "관련 기관의 공식 원문과 실제 후속 조치"
+
+
+def product_detail_filename(article: dict) -> str:
+    identity = article_target_url(article) or article_identity_key(article) or clean_article_title(article.get("title"))
+    digest = hashlib.sha256(str(identity).encode("utf-8")).hexdigest()[:12]
+    return f"briefing-{digest}.html"
+
+
+def product_article_excerpt(article: dict, limit: int = 260) -> str:
+    for key in ("youth_excerpt", "lead_text", "summary", "body_text"):
+        value = normalize_inline_text(article.get(key))
+        if value:
+            return truncate_text(value, limit)
+    return "본문 요약을 확보하지 못했습니다. 제목과 출처를 확인한 뒤 원문에서 내용을 검토해 주세요."
+
+
+def product_source_label(article: dict) -> str:
+    values = (
+        article.get("source"),
+        article.get("source_name"),
+        article.get("publisher_domain"),
+    )
+    for value in values:
+        label = format_source_label(value)
+        if label and label not in {"새 창 열림", "출처 미확인"}:
+            return label
+    return normalize_inline_text(article.get("publisher_domain")) or "출처 미확인"
+
+
+def render_product_share_button(article: dict, *, event_name: str = "article_share_open") -> str:
+    """Render a native-share entry with a useful, source-bounded message payload."""
+    title = html.escape(display_article_title(article, 140), quote=True)
+    summary = html.escape(product_article_excerpt(article, 180), quote=True)
+    metadata = " · ".join(
+        (
+            _policy_stage(article),
+            news_region_label(article) or "전국",
+            product_source_label(article),
+            article_published_label(article) or "발행일 미확인",
+        )
+    )
+    path = html.escape(product_detail_filename(article), quote=True)
+    return (
+        f'<div class="article-share-actions">'
+        f'<button class="article-share-button" type="button" data-article-share '
+        f'data-share-title="{title}" data-share-summary="{summary}" '
+        f'data-share-meta="{html.escape(metadata, quote=True)}" data-share-path="{path}" '
+        f'data-event="{html.escape(event_name, quote=True)}" aria-label="{title} 공유하기">공유하기</button>'
+        f'<p class="article-share-feedback" data-share-feedback aria-live="polite"></p>'
+        f'</div>'
+    )
+
+
+def render_policy_signal_card(article: dict) -> str:
+    title = html.escape(display_article_title(article))
+    detail_url = html.escape(product_detail_filename(article), quote=True)
+    source = html.escape(product_source_label(article))
+    published = html.escape(article_published_label(article) or "발행일 미확인")
+    region = html.escape(news_region_label(article) or "전국")
+    stage = html.escape(_policy_stage(article))
+    next_check = html.escape(_next_check(article))
+    return f"""
+      <article class="policy-signal" data-preview-card data-region="{region}" data-topics="{html.escape('|'.join(article_topic_tags(article)), quote=True)}">
+        <span class="signal-state">{stage}</span>
+        <h3><a href="{detail_url}" data-event="briefing_open">{title}</a></h3>
+        <p class="policy-signal-meta">{source} · {published} · {region}</p>
+        <p class="signal-question"><strong>다음 확인</strong><br>{next_check}</p>
+        <a class="signal-link" href="{detail_url}" data-event="briefing_open">맥락 읽기 →</a>
+        {render_product_share_button(article)}
+      </article>
+    """
+
+
+def render_editorial_feed_item(article: dict) -> str:
+    detail_url = html.escape(product_detail_filename(article), quote=True)
+    title = html.escape(display_article_title(article, 120))
+    excerpt = html.escape(product_article_excerpt(article, 170))
+    stage = html.escape(_policy_stage(article))
+    region = html.escape(news_region_label(article) or "전국")
+    source = html.escape(product_source_label(article))
+    published = html.escape(article_published_label(article) or "발행일 미확인")
+    return f"""
+      <article class="editorial-feed-item" data-article-card data-article-search="{html.escape(build_article_search_text(article), quote=True)}">
+        <div class="feed-kicker">{stage} · {region}</div>
+        <div><h3><a href="{detail_url}" data-event="briefing_open">{title}</a></h3><p class="feed-summary">{excerpt}</p></div>
+        <div class="feed-side"><p class="feed-meta">{source}<br>{published}</p>{render_product_share_button(article, event_name="news_feed_share_open")}</div>
+      </article>
+    """
+
+
+def build_product_detail_page(article: dict, related_articles: list[dict], status: dict) -> str:
+    title = html.escape(display_article_title(article, 150))
+    excerpt = html.escape(product_article_excerpt(article, 420))
+    stage = html.escape(_policy_stage(article))
+    region = html.escape(news_region_label(article) or "전국")
+    topics = [html.escape(value) for value in article_topic_tags(article, 4)]
+    topic_text = " · ".join(topics) or "청년정책"
+    source = html.escape(product_source_label(article))
+    published = html.escape(article_published_label(article) or "발행일 미확인")
+    collected_raw = article.get("resolved_at") or status.get("finished_at") or status.get("updated_at") or ""
+    collected = html.escape(format_display_datetime(collected_raw) or "수집 시각 미확인")
+    original_url = html.escape(article_target_url(article), quote=True)
+    why_now = html.escape(
+        f"{region}의 {topic_text} 의제와 연결된 자료입니다. 발표나 보도 자체보다 대상, 시행 시점, 담당기관과 후속 조치가 실제로 확인되는지 함께 봐야 합니다."
+    )
+    related = "".join(
+        f'<a href="{html.escape(product_detail_filename(item), quote=True)}">{html.escape(display_article_title(item, 72))}</a>'
+        for item in related_articles[:2]
+    ) or '<a href="news.html">정책 동향 전체 보기</a>'
+    source_action = (
+        f'<a class="product-button" href="{original_url}" target="_blank" rel="noreferrer" data-event="official_source_open">원문 확인</a>'
+        if original_url else '<p>연결 가능한 원문 주소가 없습니다.</p>'
+    )
+    return f"""
+    <article>
+      <header class="briefing-hero">
+        <a class="briefing-breadcrumb" href="news.html">정책 동향 / {stage}</a>
+        <h1>{title}</h1>
+        <p class="briefing-deck">{excerpt}</p>
+        <div class="briefing-meta"><span>{source}</span><span>{published}</span><span>{region}</span><span>{topic_text}</span></div>
+      </header>
+      <div class="briefing-body">
+        <div>
+          <section class="briefing-block"><h2>왜 지금 확인해야 하나</h2><p>{why_now}</p></section>
+          <section class="briefing-block"><h2>현장에서 무엇이 막히는가</h2><p>현재 수집 데이터만으로 실행 장애를 확정할 수 없습니다. 원문에서 대상과 예외 조건을 확인하고, 담당기관·당사자 기록에서 전달과 집행의 간극을 별도로 검증해야 합니다.</p></section>
+          <section class="briefing-block"><h2>다음으로 확인할 것</h2><p>{html.escape(_next_check(article))}. 제목에 나타난 상태 분류는 탐색 보조값이며 행정적 확정 판단이 아닙니다.</p></section>
+          <section class="briefing-block"><h2>편집 기준과 한계</h2><p>공개된 제목, 본문 요약, 출처, 날짜, 지역·의제 분류를 바탕으로 구성했습니다. 자동 수집·분류에는 오류가 있을 수 있으며 중요한 의사결정은 반드시 원문과 최신 공식 발표를 기준으로 해야 합니다.</p></section>
+          <nav class="briefing-nav" aria-label="이어 읽기">{related}</nav>
+        </div>
+        <aside class="briefing-source" aria-label="자료 출처">
+          <strong>자료 확인</strong>
+          <p>출처 {source}<br>발행 {published}<br>수집 {collected}<br>상태 {stage}</p>
+          {source_action}
+          {render_product_share_button(article, event_name="briefing_share_open")}
+        </aside>
+      </div>
+    </article>
+    """
+
+
+def build_product_event_script() -> str:
+    return r"""
+(() => {
+  const eventKey = 'youthTogetherProductEvents-v1';
+  const profileKey = 'youthTogetherInterestProfile-v1';
+  const articleViewKey = 'youthTogetherArticleViews-v1';
+  const softGateDismissedKey = 'youthTogetherSoftGateDismissed-v1';
+  const endpoint = document.body.dataset.analyticsEndpoint || '';
+  const subscriptionEndpoint = document.body.dataset.subscriptionEndpoint || '';
+  let productSessionId = '';
+  try {
+    productSessionId = sessionStorage.getItem('ytSessionId') || `${Date.now()}-${Math.random().toString(16).slice(2)}`;
+    sessionStorage.setItem('ytSessionId', productSessionId);
+  } catch (error) { productSessionId = `${Date.now()}-${Math.random().toString(16).slice(2)}`; }
+  function record(name, detail) {
+    const item = { name, detail: detail || {}, path: location.pathname, at: new Date().toISOString() };
+    try {
+      const events = JSON.parse(localStorage.getItem(eventKey) || '[]');
+      events.unshift(item);
+      localStorage.setItem(eventKey, JSON.stringify(events.slice(0, 50)));
+    } catch (error) { /* local auditing is best effort */ }
+    if (endpoint) {
+      try { navigator.sendBeacon(endpoint, JSON.stringify({ event_name: name, session_id: productSessionId, page_path: location.pathname, page_url: location.href, detail: item.detail })); } catch (error) { /* no-op */ }
+    }
+    window.dispatchEvent(new CustomEvent('yt-product-event', { detail: item }));
+  }
+  document.addEventListener('click', (event) => {
+    const target = event.target.closest('[data-event]');
+    if (target) record(target.dataset.event, { label: (target.textContent || '').trim().slice(0, 80), href: target.getAttribute('href') || '' });
+  });
+
+  function currentProfile() {
+    try { return JSON.parse(localStorage.getItem(profileKey) || 'null') || {}; } catch (error) { return {}; }
+  }
+
+  function shareFeedback(button, message, isError) {
+    const feedback = button.closest('.article-share-actions')?.querySelector('[data-share-feedback]');
+    if (!feedback) return;
+    feedback.textContent = message;
+    feedback.style.color = isError ? '#b42318' : '';
+  }
+
+  function buildSharePayload(button) {
+    const title = button.dataset.shareTitle || document.title;
+    const meta = button.dataset.shareMeta || '';
+    const summary = button.dataset.shareSummary || '';
+    const path = button.dataset.sharePath || location.href;
+    const url = new URL(path, location.href).href;
+    const lines = [title, meta, summary, '청년투게더에서 원문과 다음 확인 항목을 함께 확인해 보세요.', url].filter(Boolean);
+    return { title, text: lines.join('\n\n'), url };
+  }
+
+  document.addEventListener('click', async (event) => {
+    const button = event.target.closest('[data-article-share]');
+    if (!button) return;
+    event.preventDefault();
+    const payload = buildSharePayload(button);
+    try {
+      if (typeof navigator.share === 'function') {
+        await navigator.share(payload);
+        shareFeedback(button, '공유할 앱을 선택했습니다.', false);
+        record('article_shared_native', { path: button.dataset.sharePath || '', title: payload.title.slice(0, 80) });
+        return;
+      }
+      if (navigator.clipboard && window.isSecureContext) {
+        await navigator.clipboard.writeText(payload.text);
+      } else {
+        const area = document.createElement('textarea');
+        area.value = payload.text;
+        area.setAttribute('readonly', '');
+        area.style.position = 'fixed';
+        area.style.left = '-9999px';
+        document.body.appendChild(area);
+        area.select();
+        const copied = document.execCommand('copy');
+        document.body.removeChild(area);
+        if (!copied) throw new Error('copy_failed');
+      }
+      shareFeedback(button, '보낼 문구와 링크를 복사했습니다. 카카오톡 대화창에 붙여넣으세요.', false);
+      record('article_share_copied', { path: button.dataset.sharePath || '', title: payload.title.slice(0, 80) });
+    } catch (error) {
+      if (error && error.name === 'AbortError') return;
+      shareFeedback(button, '공유 창을 열지 못했습니다. 링크를 길게 눌러 복사해 보세요.', true);
+      record('article_share_failed', { path: button.dataset.sharePath || '' });
+    }
+  });
+
+  document.querySelectorAll('[data-briefing-form]').forEach((form) => {
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const feedback = form.querySelector('[data-briefing-feedback]');
+      const button = form.querySelector('button[type="submit"]');
+      const email = (form.elements.email?.value || '').trim();
+      const consent = Boolean(form.elements.consent?.checked);
+      if (!email || !consent) {
+        feedback.textContent = !email ? '이메일 주소를 입력해 주세요.' : '주간 브리핑 수신 항목에 체크해 주세요.';
+        return;
+      }
+      if (!subscriptionEndpoint) {
+        feedback.textContent = '이 화면에서는 이메일을 보낼 주소가 연결되지 않았습니다.';
+        return;
+      }
+      const profile = currentProfile();
+      button.disabled = true;
+      button.textContent = '확인 링크 보내는 중';
+      feedback.textContent = '';
+      record('briefing_subscription_started', { source_screen: form.dataset.sourceScreen || 'unknown' });
+      try {
+        const response = await fetch(subscriptionEndpoint, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            email,
+            consent,
+            role: profile.role || '',
+            region: profile.region === 'all' ? '' : (profile.region || ''),
+            topics: profile.topics || [],
+            source_screen: form.dataset.sourceScreen || 'unknown',
+          }),
+        });
+        const result = await response.json().catch(() => ({}));
+        feedback.textContent = result.message || (response.ok ? '입력한 이메일의 받은편지함을 확인해 주세요.' : '확인 링크를 보내지 못했습니다.');
+        if (response.ok) {
+          form.reset();
+          record('briefing_subscription_submitted', { source_screen: form.dataset.sourceScreen || 'unknown', status: result.status || 'pending' });
+        }
+      } catch (error) {
+        feedback.textContent = '인터넷 연결을 확인한 뒤 [확인 링크 받기]를 다시 눌러주세요.';
+      } finally {
+        button.disabled = false;
+        button.textContent = '확인 링크 받기';
+      }
+    });
+  });
+
+  const softGate = document.querySelector('[data-soft-gate]');
+  if (softGate && document.body.dataset.contentKind === 'briefing') {
+    let views = [];
+    try { views = JSON.parse(localStorage.getItem(articleViewKey) || '[]'); } catch (error) { views = []; }
+    if (!views.includes(location.pathname)) views.push(location.pathname);
+    try { localStorage.setItem(articleViewKey, JSON.stringify(views.slice(-20))); } catch (error) { /* best effort */ }
+    let dismissedAt = 0;
+    try { dismissedAt = Number(localStorage.getItem(softGateDismissedKey) || 0); } catch (error) { dismissedAt = 0; }
+    if (views.length >= 4 && Date.now() - dismissedAt > 24 * 60 * 60 * 1000) {
+      softGate.hidden = false;
+      record('soft_gate_shown', { unique_article_views: views.length });
+    }
+    softGate.querySelector('[data-soft-gate-close]')?.addEventListener('click', () => {
+      softGate.hidden = true;
+      try { localStorage.setItem(softGateDismissedKey, String(Date.now())); } catch (error) { /* best effort */ }
+      record('soft_gate_dismissed', { unique_article_views: views.length });
+    });
+  }
+
+  const verified = new URLSearchParams(location.search).get('subscription') === 'verified';
+  if (verified) {
+    const feedback = document.querySelector('#weekly-briefing [data-briefing-feedback]');
+    if (feedback) feedback.textContent = '주간 브리핑 수신을 시작했습니다. 다음 발송부터 입력한 이메일로 보냅니다.';
+    record('briefing_email_verified', {});
+  }
+
+  const root = document.querySelector('[data-interest-builder]');
+  if (root) {
+    const role = root.querySelector('[data-interest-role]');
+    const region = root.querySelector('[data-interest-region]');
+    const topics = Array.from(root.querySelectorAll('[data-interest-topic]'));
+    const previews = Array.from(root.querySelectorAll('.preview-panel [data-preview-card]'));
+    const feedback = root.querySelector('[data-interest-feedback]');
+    const resultLink = root.querySelector('[data-interest-result-link]');
+    function profile() { return { role: role.value, region: region.value, topics: topics.filter((input) => input.checked).map((input) => input.value) }; }
+    function update() {
+      const value = profile();
+      topics.forEach((input) => { input.disabled = !input.checked && value.topics.length >= 3; });
+      let visible = 0;
+      previews.forEach((card) => {
+        const regionMatch = value.region === 'all' || card.dataset.region === value.region || card.dataset.region === '전국';
+        const cardTopics = (card.dataset.topics || '').split('|');
+        const topicMatch = !value.topics.length || value.topics.some((topic) => cardTopics.includes(topic));
+        const show = regionMatch && topicMatch && visible < 3;
+        card.hidden = !show;
+        if (show) visible += 1;
+      });
+      const params = new URLSearchParams();
+      if (value.region !== 'all') params.set('region', value.region);
+      if (value.topics[0]) params.set('topic', value.topics[0]);
+      resultLink.href = `news.html${params.toString() ? `?${params}` : ''}`;
+      const empty = document.querySelector('[data-preview-empty]');
+      if (empty) empty.hidden = visible > 0;
+    }
+    root.addEventListener('change', update);
+    root.addEventListener('submit', (event) => {
+      event.preventDefault();
+      const value = profile();
+      try {
+        localStorage.setItem(profileKey, JSON.stringify(value));
+        feedback.textContent = '이 기기에 관심 설정을 저장했습니다. 주간 브리핑 신청란에는 선택한 지역과 의제만 함께 전달됩니다.';
+        record('radar_profile_saved_local', { role: value.role, region: value.region, topic_count: value.topics.length });
+      } catch (error) {
+        feedback.textContent = '브라우저 저장소를 사용할 수 없어 설정을 저장하지 못했습니다.';
+      }
+    });
+    try {
+      const saved = JSON.parse(localStorage.getItem(profileKey) || 'null');
+      if (saved) {
+        role.value = saved.role || role.value;
+        region.value = saved.region || region.value;
+        topics.forEach((input) => { input.checked = (saved.topics || []).includes(input.value); });
+      }
+    } catch (error) { /* ignore malformed local data */ }
+    update();
+  }
+
+  const eventList = document.querySelector('[data-operator-event-list]');
+  if (eventList) {
+    function renderEvents() {
+      let events = [];
+      try { events = JSON.parse(localStorage.getItem(eventKey) || '[]'); } catch (error) { events = []; }
+      eventList.innerHTML = events.length ? events.slice(0, 10).map((item) => `<div class="operator-event"><strong>${item.name}</strong><br><span>${new Date(item.at).toLocaleString('ko-KR')} · ${item.path}</span></div>`).join('') : '<p>이 기기에서 기록된 제품 이벤트가 없습니다.</p>';
+    }
+    renderEvents();
+    window.addEventListener('yt-product-event', renderEvents);
+  }
+})();
+"""
+
+
+def build_product_home_page(articles: list[dict], classified_articles: list[dict], status: dict, contact_settings: dict[str, str]) -> str:
+    timeline_home = build_home_page(articles, classified_articles, status, contact_settings)
+    latest_articles = sort_articles_by_recency(classified_articles or articles)
+    latest_per_menu = 3
+
+    menu_feeds = [
+        ("언론 기사", "news.html", is_general_news_menu_article),
+        ("기고·칼럼·오피니언", "opinion.html", is_opinion_menu_article),
+        ("정부 부처 자료실", "official.html", is_central_government_press_release),
+        ("지자체 자료실", "local.html", lambda article: is_local_youth_press_release(article) or is_local_youth_plan_document(article)),
+        ("논문·연구·리포트", "reports.html", is_research_report_menu_article),
+        ("정부조사·통계", "tools.html", is_government_statistics_menu_article),
+        ("현장 목소리", "hub.html", lambda article: article in filter_hub_articles(latest_articles)),
+    ]
+
+    def unique_menu_articles(items: list[dict]) -> list[dict]:
+        unique: list[dict] = []
+        seen: set[str] = set()
+        for article in sort_articles_by_recency(items):
+            key = article_target_url(article) or normalize_inline_text(
+                clean_article_title(article.get("title"))
+            ).lower()
+            if not key or key in seen:
+                continue
+            seen.add(key)
+            unique.append(article)
+        return unique
+
+    def render_menu_feed_card(label: str, href: str, predicate) -> str:
+        selected = unique_menu_articles(
+            [article for article in latest_articles if predicate(article)]
+        )[:latest_per_menu]
+        if selected:
+            rows = "".join(
+                (
+                    f'<li><a href="{html.escape(article_target_url(article), quote=True)}" target="_blank" rel="noreferrer">'
+                    f'<strong>{html.escape(display_article_title(article, 76))}</strong>'
+                    f'<span>{html.escape(compact_article_meta(article))}</span></a></li>'
+                    if article_target_url(article)
+                    else f'<li><strong>{html.escape(display_article_title(article, 76))}</strong><span>{html.escape(compact_article_meta(article))}</span></li>'
+                )
+                for article in selected
+            )
+        else:
+            rows = '<li class="home-menu-feed-empty">최근에 표시할 자료가 없습니다.</li>'
+        return f"""
+        <article class="home-menu-feed-card">
+          <div class="home-menu-feed-head">
+            <h3>{html.escape(label)}</h3>
+            <a href="{html.escape(href, quote=True)}">전체 보기</a>
+          </div>
+          <ol class="home-menu-feed-list">{rows}</ol>
+        </article>
+        """
+
+    menu_feed_cards = "".join(render_menu_feed_card(*menu) for menu in menu_feeds)
+    return f"""
+    {timeline_home}
+    <section class="home-menu-feed" id="menu-updates" aria-labelledby="menu-updates-title">
+      <div class="home-menu-feed-intro">
+        <div>
+          <p class="flow-eyebrow">메뉴별 최신 자료</p>
+          <h2 id="menu-updates-title">각 자료실에 새로 들어온 항목</h2>
+          <p>메뉴마다 최근 3건씩만 보여드립니다. 더 많은 자료는 각 메뉴에서 확인할 수 있습니다.</p>
+        </div>
+      </div>
+      <div class="home-menu-feed-grid">{menu_feed_cards}</div>
+    </section>
+    """
+
+
+def build_product_guide_page(status: dict) -> str:
+    return """
+    <section class="product-hero" aria-labelledby="proposal-page-title"><div class="product-hero-copy"><p class="product-eyebrow">정책제안 실험실</p><h1 id="proposal-page-title">근거가 남는 제안의 첫 문장을 만듭니다.</h1><p class="product-hero-lead">완성된 제안서를 자동 생성하지 않습니다. 문제 장면, 영향을 받는 사람, 현재 제도, 실행 간극, 검증 가능한 근거를 순서대로 점검합니다.</p><div class="product-actions"><a class="product-button" href="#main-list" data-event="proposal_steps_start">5단계 확인</a><a class="product-button secondary" href="reports.html" data-event="proposal_evidence_open">근거 자료 찾기</a></div></div><aside class="hero-proof"><strong>약 10분 · 질문 5개</strong><p>이 페이지는 준비 순서를 안내합니다. 작성 내용의 서버 저장이나 제출 기능은 없습니다.</p></aside></section>
+    <section class="product-section" id="main-list"><div class="product-section-head"><div><h2>제안을 검증하는 5단계</h2><p>각 단계에서 답을 한 문장으로 적고, 확인할 수 없는 주장은 표시해 둡니다.</p></div></div><div class="journey-grid"><article class="journey-card"><em>1</em><h3>장면</h3><p>누가, 언제, 어디에서 무엇을 하지 못하는지 적습니다.</p></article><article class="journey-card"><em>2</em><h3>현재 기준</h3><p>법령, 계획, 공고, 예산 중 지금 작동하는 기준을 연결합니다.</p></article><article class="journey-card"><em>3</em><h3>실행 간극</h3><p>제도 부재인지, 전달 실패인지, 지역 집행 차이인지 구분합니다.</p></article><article class="journey-card"><em>4</em><h3>변화 가설</h3><p>누가 무엇을 바꾸면 어떤 장면이 달라질지 반증 가능하게 적습니다.</p></article><article class="journey-card"><em>5</em><h3>다음 검증</h3><p>담당기관, 당사자, 데이터에서 각각 무엇을 확인할지 정합니다.</p></article></div></section>
+    <section class="product-section tint" id="evidence-check"><div class="product-section-head"><div><h2>제출 전 근거 점검</h2></div></div><div class="trust-grid"><article class="trust-card"><h3>원문성</h3><p>보도기사만이 아니라 공식 계획·공고·통계 원문을 확인했는가.</p></article><article class="trust-card"><h3>시간성</h3><p>발행일과 시행일을 구분하고, 더 최근의 변경사항을 확인했는가.</p></article><article class="trust-card"><h3>반증 가능성</h3><p>어떤 사실이 확인되면 이 제안이 틀렸다고 판단할지 정했는가.</p></article></div><div class="product-actions"><a class="product-button dark" href="news.html" data-event="proposal_trends_open">정책 동향에서 확인</a></div></section>
+    """
+
+
+def build_product_institution_page(contact_settings: dict[str, str]) -> str:
+    contact_href = f'mailto:{html.escape(contact_settings.get("email", ""), quote=True)}' if contact_settings.get("email") else CREATOR_CONTACT_URL
+    return f"""
+    <section class="product-hero" aria-labelledby="institution-title"><div class="product-hero-copy"><p class="product-eyebrow">공공기관·청년정책 실무 협업</p><h1 id="institution-title">자료를 더 모으는 대신, 변화 판단에 필요한 맥락을 정리합니다.</h1><p class="product-hero-lead">기관·지역·의제별 발표를 시간 흐름으로 연결하고, 현장의 실행 간극과 다음 확인 질문을 보고 가능한 형태로 정리합니다.</p><div class="product-actions"><a class="product-button" href="{contact_href}" data-event="institution_contact">협업 범위 문의</a><a class="product-button secondary" href="#collaboration-scope">제공 범위 확인</a></div></div><aside class="hero-proof"><strong>먼저 확인하는 것</strong><p>목적, 대상 지역·의제, 사용 장면, 필요한 시점, 공개 가능 범위를 확인한 뒤 진행 여부를 판단합니다.</p></aside></section>
+    <section class="product-section" id="main-list"><div class="product-section-head"><div><h2>실무 판단에 연결하는 세 가지 맥락</h2></div></div><div class="trust-grid"><article class="trust-card"><h3>변화 흐름</h3><p>공식 발표, 의견수렴, 공고, 시행, 후속 확인을 시간 순서로 연결합니다.</p></article><article class="trust-card"><h3>지역 차이</h3><p>같은 정책 의제가 지역별 계획과 집행에서 어떻게 달라지는지 비교합니다.</p></article><article class="trust-card"><h3>현장 질문</h3><p>당사자와 참여기구 기록에서 실행을 막는 조건과 다음 검증 질문을 찾습니다.</p></article></div></section>
+    <section class="product-section tint" id="collaboration-scope"><div class="product-section-head"><div><h2>협업 전에 합의할 범위</h2><p>성과나 데이터가 없는 기능을 먼저 약속하지 않습니다.</p></div></div><div class="journey-grid"><article class="journey-card"><em>1</em><h3>판단 과업</h3><p>주간 보고, 사업 기획, 정책 검토 중 어디에 쓸지 정합니다.</p></article><article class="journey-card"><em>2</em><h3>근거 범위</h3><p>공식 원문, 언론, 연구, 현장 기록의 포함·제외 기준을 정합니다.</p></article><article class="journey-card"><em>3</em><h3>검증과 공개</h3><p>오류 정정, 개인정보, 공개 수준, 업데이트 주기를 합의합니다.</p></article></div></section>
+    <section class="product-section" id="event-audit"><div class="product-section-head"><div><h2>이 기기의 제품 이벤트 확인</h2><p>현재는 서버 통합 분석이 아니라 이 브라우저에만 저장되는 개발·검수용 기록입니다. 이메일이나 이름은 포함하지 않습니다.</p></div></div><div class="operator-event-list" data-operator-event-list></div></section>
+    """
+
+
+def build_product_about_page(contact_settings: dict[str, str]) -> str:
+    contact_href = f'mailto:{html.escape(contact_settings.get("email", ""), quote=True)}' if contact_settings.get("email") else CREATOR_CONTACT_URL
+    return f"""
+    <header class="editorial-page-head">
+      <p class="product-eyebrow">운영자·편집 기준</p>
+      <h1>누가, 어떤 기준으로 이 정보를 고르는가</h1>
+      <p>청년투게더의 신뢰는 직함이나 말투가 아니라, 운영 주체와 선별 기준, 확인하지 못한 한계를 함께 공개하는 데서 시작합니다.</p>
+    </header>
+    <section class="product-section tint" id="operator" aria-labelledby="operator-title"><div class="operator-page-grid"><div class="operator-page-label"><strong>박진감</strong><span>유스사이드 운영<br>전직 정부 공무원(6급)</span></div><div class="operator-page-copy"><p class="product-eyebrow">왜 이 일을 하는가</p><h2 id="operator-title">발표된 정책과 실제로 작동하는 정책 사이를 봅니다.</h2><p>공공부문에서 정책을 다루며 쌓은 실행 관점을 청년투게더의 편집 기준으로 사용합니다. 같은 문장도 담당기관, 예산, 지역, 시행 시점에 따라 다르게 작동하기 때문입니다.</p><p>개인 이력을 권위의 대체물로 쓰지 않습니다. 대신 어떤 자료를 골랐는지, 무엇을 사실로 확인했는지, 어디부터 해석인지, 다음에는 무엇을 검증해야 하는지를 화면에 남깁니다.</p></div></div></section>
+    <section class="product-section" id="editorial-standard" aria-labelledby="standard-title"><div class="product-section-head"><div><p class="product-eyebrow">편집 기준</p><h2 id="standard-title">정보를 더 쌓기보다 판단 순서를 만듭니다</h2><p>각 자료는 아래 질문에 답할 수 있을 때 우선적으로 연결합니다.</p></div></div><div class="trust-grid"><article class="trust-card"><h3>무엇이 달라졌는가</h3><p>발표, 공고, 의견수렴, 시행, 후속 확인 가운데 현재 상태를 구분합니다.</p></article><article class="trust-card"><h3>누구에게 어디서 작동하는가</h3><p>대상, 지역, 담당기관과 실제 적용 조건을 확인합니다.</p></article><article class="trust-card"><h3>다음에 무엇을 볼 것인가</h3><p>후속 공고, 예산, 시행 결과와 현장 반응에서 검증할 질문을 남깁니다.</p></article></div></section>
+    <section class="product-section warm" id="limits" aria-labelledby="limits-title"><div class="product-section-head"><div><p class="product-eyebrow">한계와 정정</p><h2 id="limits-title">완전하거나 실시간이라고 말하지 않습니다</h2><p>현재 서비스는 선별된 공개 자료를 자동 수집·분류한 뒤 화면에 연결합니다. 누락, 날짜 미확인, 분류 오류가 있을 수 있으며 중요한 판단은 공식 원문을 기준으로 해야 합니다. 오류나 빠진 맥락은 근거와 함께 알려주시면 확인 후 바로잡습니다.</p></div></div><div class="product-actions"><a class="product-button dark" href="{contact_href}" data-event="operator_correction_contact">정정·자료 제보</a><a class="product-button subtle" href="contact.html" data-event="operator_contact_open">운영 문의 안내</a></div></section>
+    """
+
+
+def build_product_cases_page(articles: list[dict], status: dict) -> str:
+    return build_editorial_archive_page(
+        articles,
+        status,
+        menu_key="opinion",
+        eyebrow="기고·칼럼·오피니언",
+        title="청년을 해석하는 관점과 주장",
+        description="청년정책과 청년 삶을 다룬 기고·칼럼·오피니언을 일반 보도와 분리해 읽습니다.",
+        empty_title="최근 확인된 관점 글이 없습니다",
+        empty_body="청년 맥락과 필자 관점이 함께 확인된 글이 수집되면 표시됩니다.",
+        predicate=is_opinion_menu_article,
+        include_filters=False,
+    )
+
+
+def build_product_field_page(classified_articles: list[dict]) -> str:
+    markup = build_hub_page(classified_articles)
+    return markup.replace(
+        "뉴스와는 별도로, 중앙부처 자문·회의와 지역 청년정책 네트워크, 공공기관 참여·협의 기록만 구조화해 모았습니다.",
+        "공식 발표만으로 보이지 않는 자문·회의, 지역 네트워크, 공공기관 참여·협의 기록을 구조화해 모았습니다.",
+        1,
+    ).replace("청년 참여기구 기록", "정책이 현장과 만난 기록", 1)
+
+
+def build_product_news_page(articles: list[dict], status: dict) -> str:
+    latest = sort_articles_by_recency(articles)
+    featured = latest[0] if latest else None
+    topics = collect_news_topics(latest)[:10]
+    topic_links = '<a href="#main-list">전체</a>' + "".join(
+        f'<a href="news.html?topic={urllib.parse.quote(topic)}">{html.escape(topic)}</a>' for topic in topics
+    )
+    feature_story = ""
+    if featured:
+        feature_story = f"""
+        <article class="feature-story">
+          <p class="product-eyebrow">{html.escape(_policy_stage(featured))} · {html.escape(news_region_label(featured) or '전국')}</p>
+          <h2>{html.escape(display_article_title(featured, 105))}</h2>
+          <p>{html.escape(product_article_excerpt(featured, 260))}</p>
+          <a href="{html.escape(product_detail_filename(featured), quote=True)}" data-event="news_feature_open">상세 맥락 읽기 →</a>
+          {render_product_share_button(featured, event_name="news_feature_share_open")}
+        </article>"""
+    rail = "".join(
+        f'<article><span>{html.escape(_policy_stage(item))}</span><h3><a href="{html.escape(product_detail_filename(item), quote=True)}">{html.escape(display_article_title(item, 76))}</a></h3><p>{html.escape(product_source_label(item))} · {html.escape(article_published_label(item) or "발행일 미확인")}</p></article>'
+        for item in latest[1:4]
+    )
+    feed = "".join(render_editorial_feed_item(item) for item in latest[4:44])
+    updated_at, collection_state = _product_status(status)
+    return f"""
+    <header class="editorial-page-head">
+      <p class="product-eyebrow">POLICY CHANGE JOURNAL</p>
+      <h1>지역과 의제로 읽는 정책 변화</h1>
+      <p>공식 발표, 공고, 시행, 후속 보도를 한 화면에서 훑고 내부 상세에서 왜 중요한지와 다음 확인 질문까지 이어 읽습니다.</p>
+      <nav class="topic-strip" aria-label="주요 의제">{topic_links}</nav>
+    </header>
+    <section class="editorial-feature" aria-label="주요 정책 변화">{feature_story or '<article class="feature-story"><h2>표시할 자료가 없습니다</h2></article>'}<div class="feature-rail">{rail}</div></section>
+    <section class="editorial-list" id="main-list">
+      <div class="editorial-list-head"><h2>최근 변화</h2><span>{html.escape(collection_state)} · {html.escape(updated_at or '갱신 시각 미확인')}</span></div>
+      <div>{feed or '<p>표시할 최근 자료가 없습니다.</p>'}</div>
+    </section>
+    """
+
+
 def write_page(
     path: Path,
     page_title: str,
@@ -18386,28 +20643,38 @@ def write_page(
     status: dict,
     contact_settings: dict[str, str],
 ) -> None:
+    assets_root = path.parent / "assets"
+    assets_root.mkdir(parents=True, exist_ok=True)
+    site_css = BASE_CSS + DASHBOARD_TONE_CSS + DESIGN_OVERHAUL_CSS + PRODUCT_REBUILD_CSS + BRAND_NEW_CSS + LEAD_FUNNEL_CSS + READABILITY_REFINEMENT_CSS
+    site_js = build_page_script()
+    write_utf8_page(assets_root / "site.css", site_css)
+    write_utf8_page(assets_root / "site.js", site_js)
     write_utf8_page(
         path,
         normalize_generated_html(
             PAGE_TEMPLATE.format(
-                page_title=html.escape(page_title),
+                page_title=html.escape("청년동향실" if active_page == "index.html" else f"{page_title} | 청년동향실"),
+                page_description=html.escape(PAGE_DESCRIPTIONS.get(active_page, "청년정책과 현장 변화를 출처와 시간 흐름으로 확인합니다."), quote=True),
                 active_page=html.escape(active_page),
-                styles=BASE_CSS + DASHBOARD_TONE_CSS + DESIGN_OVERHAUL_CSS,
+                content_kind="briefing" if path.name.startswith("briefing-") else "page",
+                analytics_endpoint=html.escape(PUBLIC_ANALYTICS_ENDPOINT, quote=True),
+                subscription_endpoint=html.escape(PUBLIC_SUBSCRIPTION_ENDPOINT, quote=True),
+                asset_version=html.escape(ASSET_VERSION, quote=True),
+                styles="",
                 brand_mark_src=html.escape(BRAND_MARK_SRC),
-                script=build_page_script(),
+                script="",
                 page_heading=html.escape(page_heading(active_page)),
                 top_nav=render_top_nav(active_page),
                 live_clock_topbar=render_live_clock("topbar"),
                 side_nav=render_side_nav(active_page),
                 global_search=render_global_search(),
-                guide_link=render_guide_link(active_page),
+                guide_link="",
                 header_meta=render_header_meta(active_page, status),
-                admin_entry=render_admin_entry(),
                 bottom_nav=render_bottom_nav(active_page),
                 bottom_nav_count=len(BOTTOM_NAV_ITEMS) + 1,
                 mobile_menu=render_mobile_menu(active_page),
                 guide_overlay=render_guide_overlay(active_page),
-                admin_login_overlay=render_admin_login_overlay(),
+                soft_gate=render_soft_gate(),
                 footer_note=build_footer_note(contact_settings),
                 content=content,
             )
@@ -18433,18 +20700,18 @@ def main() -> int:
 
     write_page(
         web_root / "index.html",
-        "청년동향실",
+        "홈",
         "index.html",
-        build_home_page(articles, classified_articles, status, contact_settings),
+        build_product_home_page(articles, classified_articles, status, contact_settings),
         status,
         contact_settings,
     )
-    write_page(web_root / "guide.html", "이용방법", "guide.html", build_guide_page(status), status, contact_settings)
+    write_page(web_root / "guide.html", "정책제안 실험실", "guide.html", build_product_guide_page(status), status, contact_settings)
     write_page(
         web_root / "news.html",
-        "뉴스 모아보기",
+        "언론 기사",
         "news.html",
-        build_news_page(classified_articles, status),
+        build_news_page(articles, status),
         status,
         contact_settings,
     )
@@ -18452,7 +20719,7 @@ def main() -> int:
         web_root / "opinion.html",
         "기고·칼럼·오피니언",
         "opinion.html",
-        build_opinion_page(all_classified_articles, status),
+        build_product_cases_page(all_classified_articles, status),
         status,
         contact_settings,
     )
@@ -18514,9 +20781,9 @@ def main() -> int:
     )
     write_page(
         web_root / "hub.html",
-        "참여기구",
+        "현장 목소리",
         "hub.html",
-        build_hub_page(classified_articles),
+        build_product_field_page(classified_articles),
         status,
         contact_settings,
     )
@@ -18530,9 +20797,17 @@ def main() -> int:
     )
     write_page(
         web_root / "institution.html",
-        "분석실",
+        "기관 협업",
         "institution.html",
-        build_institution_page(),
+        build_product_institution_page(contact_settings),
+        status,
+        contact_settings,
+    )
+    write_page(
+        web_root / "about.html",
+        "운영자·편집 기준",
+        "about.html",
+        build_product_about_page(contact_settings),
         status,
         contact_settings,
     )
@@ -18561,7 +20836,50 @@ def main() -> int:
         contact_settings,
     )
 
+    detail_articles: list[dict] = []
+    seen_detail_files: set[str] = set()
+    for article in sort_articles_by_recency(classified_articles):
+        filename = product_detail_filename(article)
+        if filename in seen_detail_files:
+            continue
+        seen_detail_files.add(filename)
+        detail_articles.append(article)
+
+    for index, article in enumerate(detail_articles):
+        article_topics = set(article_topic_tags(article, 4))
+        related_articles = [
+            candidate
+            for candidate in detail_articles
+            if candidate is not article and article_topics.intersection(article_topic_tags(candidate, 4))
+        ][:2]
+        if len(related_articles) < 2:
+            neighbors = detail_articles[max(0, index - 1):index] + detail_articles[index + 1:index + 3]
+            for candidate in neighbors:
+                if candidate not in related_articles:
+                    related_articles.append(candidate)
+                if len(related_articles) == 2:
+                    break
+        write_page(
+            web_root / product_detail_filename(article),
+            display_article_title(article, 70),
+            "news.html",
+            build_product_detail_page(article, related_articles, status),
+            status,
+            contact_settings,
+        )
+
+    expected_detail_files = {product_detail_filename(article) for article in detail_articles}
+    resolved_web_root = web_root.resolve()
+    stale_detail_count = 0
+    for candidate in web_root.glob("briefing-*.html"):
+        if candidate.name in expected_detail_files or candidate.parent.resolve() != resolved_web_root:
+            continue
+        candidate.unlink()
+        stale_detail_count += 1
+
     print(f"web_output={web_root / 'index.html'}")
+    print(f"briefing_pages={len(detail_articles)}")
+    print(f"stale_briefing_pages_removed={stale_detail_count}")
     return 0
 
 

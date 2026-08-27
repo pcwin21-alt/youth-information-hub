@@ -9,19 +9,41 @@ import sys
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
-from _bootstrap import PUBLIC_SITE_ROOT, RUNTIME_DB_ROOT, RUNTIME_PIPELINE_ROOT
+from _bootstrap import PUBLIC_SITE_ROOT, RUNTIME_DB_ROOT, RUNTIME_PIPELINE_ROOT, RUNTIME_ROOT
 
 from youth_info_platform.status_utils import complete_run, initialize_status, update_step
 
 
-SNAPSHOT_ARTIFACT_NAMES = ("step2_filtered.json", "step5_summarized.json", "pipeline_status.json")
+SNAPSHOT_ARTIFACT_NAMES = (
+    "step2_filtered.json",
+    "step5_summarized.json",
+    "daily_morning_briefing.json",
+    "daily_morning_briefing.md",
+    "pipeline_status.json",
+)
+
+
+def print_console_safe(text: str) -> None:
+    if not text:
+        return
+    encoding = sys.stdout.encoding or "utf-8"
+    safe_text = text.encode(encoding, errors="backslashreplace").decode(encoding, errors="strict")
+    print(safe_text)
 
 
 def run_step(command: list[str]) -> str:
-    result = subprocess.run(command, cwd=PUBLIC_SITE_ROOT, check=True, text=True, capture_output=True)
-    stdout = result.stdout.strip()
+    result = subprocess.run(
+        command,
+        cwd=PUBLIC_SITE_ROOT,
+        check=True,
+        text=True,
+        capture_output=True,
+        encoding="utf-8",
+        errors="replace",
+    )
+    stdout = (result.stdout or "").strip()
     if stdout:
-        print(stdout)
+        print_console_safe(stdout)
     return stdout
 
 
@@ -126,6 +148,7 @@ def main() -> int:
     parser.add_argument("--use-sample-data", action="store_true")
     parser.add_argument("--skip-collect-news", action="store_true")
     parser.add_argument("--skip-outbound-notifications", action="store_true")
+    parser.add_argument("--skip-notion-sync", action="store_true")
     parser.add_argument("--skip-feedback", action="store_true")
     parser.add_argument("--feedback-with-source-healthcheck", action="store_true")
     parser.add_argument("--curator-max-network-enrich", type=int)
@@ -136,7 +159,11 @@ def main() -> int:
     lock_path = RUNTIME_PIPELINE_ROOT / "pipeline.lock"
     acquire_lock(lock_path)
     initialize_status(status_path)
-    collect_news = [python, str(PUBLIC_SITE_ROOT / "scripts" / "rss_fetcher.py")]
+    collect_news = [
+        python,
+        str(PUBLIC_SITE_ROOT / "scripts" / "rss_fetcher.py"),
+        "--preserve-previous-on-empty",
+    ]
     collect_youtube = [python, str(PUBLIC_SITE_ROOT / "scripts" / "youtube_fetcher.py")]
     if args.use_sample_data:
         collect_news.append("--use-sample-data")
@@ -152,7 +179,10 @@ def main() -> int:
             {
                 "name": "collect_news",
                 "command": collect_news,
-                "artifacts": {"step1_raw_articles": str(RUNTIME_PIPELINE_ROOT / "step1_raw_articles.json")},
+                "artifacts": {
+                    "step1_raw_articles": str(RUNTIME_PIPELINE_ROOT / "step1_raw_articles.json"),
+                    "source_collection_manifest": str(RUNTIME_PIPELINE_ROOT / "source_collection_manifest.json"),
+                },
             }
         )
     commands.extend(
@@ -160,7 +190,10 @@ def main() -> int:
             {
                 "name": "collect_youtube",
                 "command": collect_youtube,
-                "artifacts": {"step1_raw_youtube": str(RUNTIME_PIPELINE_ROOT / "step1_raw_youtube.json")},
+                "artifacts": {
+                    "step1_raw_youtube": str(RUNTIME_PIPELINE_ROOT / "step1_raw_youtube.json"),
+                    "youtube_collection_status": str(RUNTIME_PIPELINE_ROOT / "youtube_collection_status.json"),
+                },
             },
             {
                 "name": "dedup_filter",
@@ -192,8 +225,42 @@ def main() -> int:
                 "command": [python, str(PUBLIC_SITE_ROOT / "scripts" / "web_updater.py")],
                 "artifacts": {"web_index": str(PUBLIC_SITE_ROOT / "web" / "index.html")},
             },
+            {
+                "name": "daily_briefing",
+                "command": [python, str(PUBLIC_SITE_ROOT / "scripts" / "daily_briefing.py")],
+                "artifacts": {
+                    "daily_morning_briefing": str(RUNTIME_PIPELINE_ROOT / "daily_morning_briefing.json"),
+                    "daily_morning_briefing_markdown": str(RUNTIME_PIPELINE_ROOT / "daily_morning_briefing.md"),
+                },
+            },
+            {
+                "name": "export_article_records",
+                "command": [python, str(PUBLIC_SITE_ROOT / "scripts" / "export_article_records.py")],
+                "artifacts": {
+                    "daily_articles_csv": str(RUNTIME_ROOT / "exports" / "daily_articles.csv"),
+                    "daily_articles_xlsx": str(RUNTIME_ROOT / "exports" / "daily_articles.xlsx"),
+                    "notion_articles_payload": str(RUNTIME_ROOT / "exports" / "notion_articles_payload.jsonl"),
+                },
+            },
         ]
     )
+    if not args.skip_notion_sync and os.getenv("NOTION_API_KEY"):
+        commands.append(
+            {
+                "name": "sync_notion_article_desk",
+                "command": [python, str(PUBLIC_SITE_ROOT / "scripts" / "sync_notion_article_desk.py")],
+                "artifacts": {
+                    "notion_sync_manifest": str(RUNTIME_ROOT / "exports" / "notion_sync_manifest.json"),
+                },
+            }
+        )
+    elif not args.skip_notion_sync:
+        update_step(
+            status_path,
+            "sync_notion_article_desk",
+            "skipped",
+            details={"reason": "missing_NOTION_API_KEY"},
+        )
     if not args.skip_feedback:
         feedback_command = [
             python,
@@ -201,6 +268,19 @@ def main() -> int:
             "--fail-on",
             "never",
         ]
+        if args.use_sample_data:
+            feedback_command.extend(
+                [
+                    "--min-raw-articles",
+                    "1",
+                    "--min-filtered-articles",
+                    "1",
+                    "--min-classified-articles",
+                    "1",
+                    "--min-summarized-articles",
+                    "1",
+                ]
+            )
         if args.feedback_with_source_healthcheck:
             feedback_command.append("--run-source-healthcheck")
         commands.append(
