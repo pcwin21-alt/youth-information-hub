@@ -12,7 +12,7 @@ import urllib.parse
 import urllib.request
 from pathlib import Path
 
-from _bootstrap import PUBLIC_CONFIG_ROOT, PUBLIC_WEB_ROOT, RUNTIME_PIPELINE_ROOT
+from _bootstrap import PUBLIC_CONFIG_ROOT, PUBLIC_CONTENT_ROOT, PUBLIC_WEB_ROOT, RUNTIME_PIPELINE_ROOT
 
 from youth_info_platform.article_metadata import (
     article_identity_key,
@@ -51,6 +51,7 @@ HOME_DAILY_STICKY_LIMIT = 2
 HOME_DAILY_STICKY_HOURS = 24
 HOME_WEEKLY_STICKY_HOURS = 72
 HOME_UPDATE_SNAPSHOT = RUNTIME_PIPELINE_ROOT / "home_update_snapshot.json"
+PUBLIC_ARTICLE_ARCHIVE = PUBLIC_CONTENT_ROOT / "public_article_archive.json"
 HOME_HOT_KEYWORD_LIMIT = 8
 REMOTE_TEXT_CACHE: dict[str, str] = {}
 ILLUSTRATION_ROOT = "assets/illustrations"
@@ -14348,9 +14349,33 @@ def filter_public_articles(articles: list[dict]) -> list[dict]:
         if article.get("editorial_is_highlighted") or editorial_decision == "include":
             filtered.append(article)
             continue
-        if is_public_interest_article(article):
+        if article.get("is_public_interest_article") or is_public_interest_article(article):
             filtered.append(article)
     return filtered
+
+
+def load_public_archive_articles() -> list[dict]:
+    payload = read_json(PUBLIC_ARTICLE_ARCHIVE, default={})
+    articles = payload.get("articles", []) if isinstance(payload, dict) else []
+    return [article for article in articles if isinstance(article, dict)]
+
+
+def merge_public_article_lists(*article_lists: list[dict]) -> list[dict]:
+    """Prefer the latest pipeline record while retaining older public archive records."""
+    by_key: dict[str, dict] = {}
+    for articles in article_lists:
+        for article in articles:
+            if not isinstance(article, dict):
+                continue
+            key = str(article.get("archive_key") or article_identity_key(article)).strip()
+            if not key:
+                continue
+            existing = by_key.get(key, {})
+            by_key[key] = {
+                **existing,
+                **{name: value for name, value in article.items() if value not in (None, "", [], {})},
+            }
+    return sort_articles_by_recency(list(by_key.values()))
 
 
 def resolve_freshness_hours(status: dict, default: int = 24) -> int:
@@ -20690,8 +20715,12 @@ def main() -> int:
     args = parser.parse_args()
 
     articles = filter_public_articles(read_json(Path(args.input), default=[]))
-    all_classified_articles = read_json(RUNTIME_PIPELINE_ROOT / "step3_classified.json", default=articles)
-    classified_articles = filter_public_articles(all_classified_articles)
+    current_classified_articles = read_json(RUNTIME_PIPELINE_ROOT / "step3_classified.json", default=articles)
+    current_public_articles = filter_public_articles(current_classified_articles)
+    archived_public_articles = filter_public_articles(load_public_archive_articles())
+    # Home still receives the current top selection. Menu pages use the archive,
+    # so each scheduled collection extends rather than replaces public history.
+    classified_articles = merge_public_article_lists(archived_public_articles, current_public_articles)
     status = read_json(Path(args.status_input), default={})
     web_root = Path(args.output).parent
     web_root.mkdir(parents=True, exist_ok=True)
@@ -20711,7 +20740,7 @@ def main() -> int:
         web_root / "news.html",
         "언론 기사",
         "news.html",
-        build_news_page(articles, status),
+        build_news_page(classified_articles, status),
         status,
         contact_settings,
     )
@@ -20719,7 +20748,7 @@ def main() -> int:
         web_root / "opinion.html",
         "기고·칼럼·오피니언",
         "opinion.html",
-        build_product_cases_page(all_classified_articles, status),
+        build_product_cases_page(classified_articles, status),
         status,
         contact_settings,
     )

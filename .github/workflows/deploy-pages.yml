@@ -19,7 +19,9 @@ on:
     - cron: "17 * * * *"
 
 permissions:
-  contents: read
+  # The public archive is the durable state for a static Pages site. Each
+  # collection run commits only that JSON file back to the default branch.
+  contents: write
   pages: write
   id-token: write
 
@@ -64,6 +66,25 @@ jobs:
       - name: Run pipeline
         if: ${{ steps.deploy_mode.outputs.use_prebuilt_site != 'true' }}
         run: python public-site/scripts/cron_runner.py --curator-max-network-enrich 20 --skip-outbound-notifications
+      - name: Update public article archive
+        if: ${{ steps.deploy_mode.outputs.use_prebuilt_site != 'true' }}
+        run: |
+          python public-site/scripts/update_public_archive.py
+          python public-site/scripts/web_updater.py
+
+      - name: Persist public article archive
+        if: ${{ steps.deploy_mode.outputs.use_prebuilt_site != 'true' }}
+        shell: bash
+        run: |
+          if git diff --quiet -- public-site/content/public_article_archive.json; then
+            echo "public_archive=unchanged"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add public-site/content/public_article_archive.json
+          git commit -m "chore: update public article archive [skip ci]"
+          git push
 
       - name: Verify generated artifacts
         run: python public-site/scripts/verify_site_artifacts.py --min-articles 1 --min-news-cards 0
