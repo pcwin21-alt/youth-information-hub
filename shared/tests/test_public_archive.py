@@ -10,7 +10,10 @@ SHARED_SRC = Path(__file__).resolve().parents[1] / "src"
 if str(SHARED_SRC) not in sys.path:
     sys.path.insert(0, str(SHARED_SRC))
 
-from youth_info_platform.public_archive import build_public_archive_payload  # noqa: E402
+from youth_info_platform.public_archive import (  # noqa: E402
+    build_public_archive_payload,
+    legacy_db_article_to_public_candidate,
+)
 
 
 SEOUL = timezone(timedelta(hours=9))
@@ -65,3 +68,27 @@ class PublicArchiveTests(unittest.TestCase):
 
         self.assertEqual(payload["article_count"], 1)
         self.assertEqual(payload["research_retention_days"], 3650)
+
+    def test_legacy_record_requires_real_source_and_current_public_relevance(self) -> None:
+        row = {
+            "url": "https://news.example.com/youth-policy",
+            "title": "청년 주거 지원 정책 신청을 시작합니다",
+            "source": "테스트신문",
+            "published_date": "2026-08-01T10:00:00+09:00",
+            "region": "서울",
+            "categories": "주거, 모집",
+            "summary": "청년을 위한 주거 지원 신청과 상담을 안내합니다.",
+            "importance_score": 55,
+            "is_official_source": 0,
+        }
+        candidate = legacy_db_article_to_public_candidate(row)
+        self.assertIsNotNone(candidate)
+        self.assertEqual(candidate["source_kind"], "news")
+        self.assertTrue(candidate["is_public_interest_article"])
+
+        row["source"] = "새 창 열림"
+        self.assertIsNone(legacy_db_article_to_public_candidate(row))
+
+        row["source"] = "테스트신문"
+        row["title"] = "청년 후보의 공약 발표"
+        self.assertIsNone(legacy_db_article_to_public_candidate(row))

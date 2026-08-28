@@ -11,6 +11,20 @@ SEOUL = timezone(timedelta(hours=9))
 PUBLIC_ARCHIVE_SCHEMA_VERSION = 1
 DEFAULT_RETENTION_DAYS = 365
 DEFAULT_RESEARCH_RETENTION_DAYS = 10 * 365
+LEGACY_MIN_IMPORTANCE_SCORE = 55
+LEGACY_PLACEHOLDER_SOURCES = frozenset({"새 창 열림", "출처 미상", "미상"})
+LEGACY_POLITICAL_KEYWORDS = (
+    "선거",
+    "후보",
+    "출사표",
+    "공약",
+    "표심",
+    "여당",
+    "야당",
+    "정당",
+    "대선",
+    "지방선거",
+)
 
 # Static Pages needs content sufficient for cards, filters, and detail pages.
 # Do not retain raw response metadata, tracking payloads, or unlimited body text.
@@ -93,6 +107,66 @@ def is_public_archive_article(article: dict[str, Any]) -> bool:
     if article.get("editorial_is_highlighted") or decision == "include":
         return True
     return is_public_interest_article(article)
+
+
+def legacy_db_article_to_public_candidate(row: dict[str, Any]) -> dict[str, Any] | None:
+    """Convert a pre-archive SQLite row only when it meets current public rules.
+
+    Historical rows do not carry the full modern classifier payload. This bridge
+    excludes synthetic URLs, placeholder publishers, undated records, and
+    lower-confidence candidates before running the public-interest rule again.
+    """
+
+    url = str(row.get("url") or "").strip()
+    title = str(row.get("title") or "").strip()
+    source = str(row.get("source") or "").strip()
+    published_date = normalize_published_datetime(row.get("published_date"))
+    try:
+        importance_score = int(row.get("importance_score") or 0)
+    except (TypeError, ValueError):
+        importance_score = 0
+
+    if (
+        not url.startswith(("https://", "http://"))
+        or url.startswith("https://example.org/")
+        or not title
+        or not source
+        or source in LEGACY_PLACEHOLDER_SOURCES
+        or not published_date
+        or importance_score < LEGACY_MIN_IMPORTANCE_SCORE
+    ):
+        return None
+
+    categories = [
+        value.strip()
+        for value in str(row.get("categories") or "").replace("·", ",").split(",")
+        if value.strip()
+    ]
+    is_official_source = bool(row.get("is_official_source"))
+    summary = str(row.get("summary") or "").strip()
+    legacy_text = f"{title} {summary}"
+    if any(keyword in legacy_text for keyword in LEGACY_POLITICAL_KEYWORDS):
+        return None
+    candidate = {
+        "url": url,
+        "title": title,
+        "source": source,
+        "source_name": source,
+        "source_kind": "official" if is_official_source else "news",
+        "published_date": published_date,
+        "publisher_published_at": published_date,
+        "region": str(row.get("region") or "").strip(),
+        "categories": categories,
+        "topic_tags": categories[:3],
+        "lead_text": summary,
+        "summary": summary,
+        "importance_score": importance_score,
+        "is_official_source": is_official_source,
+    }
+    if not is_public_interest_article(candidate):
+        return None
+    candidate["is_public_interest_article"] = True
+    return candidate
 
 
 def compact_public_article(article: dict[str, Any]) -> dict[str, Any]:
