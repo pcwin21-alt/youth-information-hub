@@ -109,6 +109,19 @@ class HomeSelectionTests(unittest.TestCase):
         self.assertIn('https://www.moel.go.kr/favicon.ico', media_html)
         self.assertNotIn('korea_logo_2024.jpg', media_html)
 
+    def test_site_relative_home_thumbnail_is_not_resolved_against_publisher_url(self) -> None:
+        article = make_article(
+            title="홈 썸네일 캐시 확인",
+            lead_text="로컬 캐시 썸네일을 확인합니다.",
+            url="https://publisher.example.com/article/123",
+        )
+        article["image_url"] = "assets/article-thumbnails/cache.jpg?v=test"
+
+        media_html = web_updater.render_article_media(article)
+
+        self.assertIn('src="assets/article-thumbnails/cache.jpg?v=test"', media_html)
+        self.assertNotIn('publisher.example.com/article/assets', media_html)
+
     def test_campaign_story_stays_out_of_today_but_substantive_promise_can_enter_weekly(self) -> None:
         daily_issue = make_article(
             title="청년센터 운영 확대와 청년 주거 지원 발표",
@@ -285,6 +298,67 @@ class HomeSelectionTests(unittest.TestCase):
         self.assertIn('flow-cell empty future current', page_html)
         self.assertIn('flow-cell-note">현재', page_html)
         self.assertIn('flow-cell-note">예정', page_html)
+
+    def test_home_activity_calendar_keeps_date_only_material_out_of_hourly_timeline(self) -> None:
+        timed_article = make_article(
+            title="시각이 확인된 오늘 기사",
+            lead_text="오늘 시각까지 확인된 청년 기사입니다.",
+            url="https://example.com/timed",
+            published_date="2026-04-22T09:15:00+09:00",
+        )
+        date_only_article = make_article(
+            title="발행일만 확인된 공식자료",
+            lead_text="공식 자료의 발행일은 확인됐지만 시각은 없습니다.",
+            url="https://example.com/date-only",
+            published_date="2026-04-21",
+            source_kind="official",
+        )
+        date_only_article["is_official_source"] = True
+
+        payload = web_updater.build_home_activity_calendar_payload(
+            [timed_article, date_only_article],
+            self.reference_time,
+        )
+
+        timed = next(item for item in payload["items"] if item["url"] == timed_article["url"])
+        date_only = next(item for item in payload["items"] if item["url"] == date_only_article["url"])
+        self.assertTrue(timed["has_time"])
+        self.assertIsNotNone(timed["timestamp"])
+        self.assertFalse(date_only["has_time"])
+        self.assertIsNone(date_only["timestamp"])
+        self.assertEqual(payload["days"]["2026-04-21"]["count"], 1)
+
+    def test_product_home_includes_monthly_archive_without_hourly_timeline(self) -> None:
+        article = make_article(
+            title="오늘의 청년정책 기사",
+            lead_text="오늘 올라온 청년정책 관련 기사입니다.",
+            url="https://example.com/product-home",
+            published_date="2026-04-22T09:15:00+09:00",
+        )
+        payload = web_updater.build_home_activity_calendar_payload([article], self.reference_time)
+
+        page_html = web_updater.build_product_home_page(
+            [article],
+            [article],
+            {"finished_at": self.reference_time},
+            {},
+            payload,
+        )
+
+        self.assertIn('data-home-activity', page_html)
+        self.assertIn('data-activity-url="home_activity_calendar.json"', page_html)
+        self.assertIn('청년정책 AI 브리핑 보러가기', page_html)
+        self.assertNotIn('날짜별 기록', page_html)
+        self.assertNotIn('data-home-activity-date-records', page_html)
+        self.assertLess(page_html.index('id="today-briefing"'), page_html.index('id="activity-calendar"'))
+        self.assertNotIn('id="daily-records"', page_html)
+        self.assertNotIn('data-home-activity-timeline', page_html)
+        self.assertNotIn('data-home-activity-hour-records', page_html)
+
+        script = web_updater.build_page_script()
+        self.assertIn('renderDateList(date)', script)
+        self.assertIn('data-home-activity-date-list', script)
+        self.assertNotIn('function renderTimeline()', script)
 
     def test_opinion_menu_requires_a_visible_editorial_marker(self) -> None:
         false_positive = make_article(
@@ -689,7 +763,7 @@ class HomeSelectionTests(unittest.TestCase):
         self.assertIn("관련 사이트", footer_html)
 
         self.assertIn("청년투게더", footer_html)
-        self.assertIn("by YOUTHSIDE", footer_html)
+        self.assertIn("적재적소 연구소 운영", footer_html)
         self.assertIn("운영 목적 :", footer_html)
         self.assertIn("정보 기준 :", footer_html)
         self.assertIn("확인 안내 :", footer_html)
@@ -870,12 +944,13 @@ class HomeSelectionTests(unittest.TestCase):
         institution_html = web_updater.build_institution_page()
 
         labels = dict(web_updater.NAV_ITEMS)
-        self.assertEqual(len(labels), 7)
+        self.assertEqual(len(labels), 8)
         self.assertEqual(
             web_updater.TOP_NAV_ITEMS,
             [
                 ("index.html", "홈"),
                 ("news.html", "언론 기사"),
+                ("trends.html", "정책 동향"),
                 ("opinion.html", "기고·칼럼·오피니언"),
                 ("official.html", "정부 부처 자료실"),
                 ("local.html", "지자체 자료실"),
@@ -885,6 +960,7 @@ class HomeSelectionTests(unittest.TestCase):
             ],
         )
         self.assertEqual(labels["news.html"], "언론 기사")
+        self.assertEqual(labels["trends.html"], "정책 동향")
         self.assertEqual(labels["opinion.html"], "기고·칼럼·오피니언")
         self.assertEqual(labels["official.html"], "정부 부처 자료실")
         self.assertEqual(labels["local.html"], "지자체 자료실")
@@ -915,7 +991,7 @@ class HomeSelectionTests(unittest.TestCase):
             'class="active" type="button"',
             web_updater.render_bottom_nav("opinion.html"),
         )
-        self.assertEqual(mobile_menu.count('<a class="mobile-menu-link'), 8)
+        self.assertEqual(mobile_menu.count('<a class="mobile-menu-link'), 9)
         self.assertIn('data-mobile-menu-close="true"', mobile_menu)
         self.assertIn("@media (max-width: 1180px)", web_updater.DESIGN_OVERHAUL_CSS)
         tablet_rules = web_updater.DESIGN_OVERHAUL_CSS.split("@media (max-width: 1180px)", 1)[1]
@@ -1152,20 +1228,25 @@ class HomeSelectionTests(unittest.TestCase):
 
         page_html = web_updater.build_news_page([article], {"finished_at": self.reference_time})
 
-        self.assertIn('class="section-card filter-panel news-filter-panel news-timeline-filter"', page_html)
+        self.assertIn('class="section-card filter-panel news-filter-panel news-filter-split"', page_html)
         self.assertIn('>날짜별 기사 기록</h3>', page_html)
-        self.assertIn('class="news-date-tabs"', page_html)
-        self.assertIn('data-filter-group="date" data-filter-value="2026-04-22"', page_html)
+        self.assertIn('data-news-range-calendar', page_html)
+        self.assertIn('data-news-calendar-month="2026-04"', page_html)
+        self.assertIn('data-news-filter-apply', page_html)
+        self.assertIn('data-news-filter-reset', page_html)
         self.assertNotIn('class="filter-region-map-svg"', page_html)
         self.assertNotIn('data-filter-group="region"', page_html)
         self.assertNotIn('data-filter-group="direction"', page_html)
         self.assertIn('data-filter-group="topic" data-filter-value="주거"', page_html)
-        self.assertIn('>키워드 검색</span>', page_html)
-        self.assertIn('>기간</span>', page_html)
+        self.assertIn('>키워드 검색</label>', page_html)
+        self.assertIn('data-news-hour-start', page_html)
+        self.assertIn('data-news-hour-end', page_html)
+        self.assertNotIn('>기간 설정</span>', page_html)
         self.assertIn('data-article-topics="주거|모집"', page_html)
         self.assertIn(">#주거</button>", page_html)
+        self.assertIn('<div class="badge-row"><span class="badge">', page_html)
         self.assertIn(">주거</span>", page_html)
-        self.assertLess(page_html.index(">주거</span>"), page_html.index(">경기</span>"))
+        self.assertNotIn('<div class="article-meta-tags"><span class="meta-pill primary">주거</span>', page_html)
         self.assertNotIn(">오늘 이슈</span>", page_html)
 
     def test_news_page_uses_shared_archive_cards_and_original_source_links(self) -> None:
@@ -1195,7 +1276,7 @@ class HomeSelectionTests(unittest.TestCase):
 
 
 class ProductRebuildTests(unittest.TestCase):
-    def test_product_home_prioritizes_articles_and_menu_updates(self) -> None:
+    def test_product_home_prioritizes_first_actions_and_editorial_briefing(self) -> None:
         article = make_article(
             title="서울 청년 주거 지원 시행계획 발표",
             lead_text="서울시가 청년 주거 지원 시행계획을 발표했다.",
@@ -1211,36 +1292,158 @@ class ProductRebuildTests(unittest.TestCase):
             {"email": "hello@example.com"},
         )
 
-        self.assertIn("오늘 청년의 삶에 닿은 소식을", page_html)
-        self.assertIn("한곳에서 살펴봅니다", page_html)
-        self.assertIn('class="flow-eyebrow">청년동향실</p>', page_html)
+        self.assertNotIn('class="civic-site-title"', page_html)
+        self.assertNotIn('class="civic-eyebrow">정책 최신 헤드라인</p>', page_html)
+        self.assertNotIn('오늘 먼저 볼 변화', page_html)
+        self.assertNotIn('class="civic-story-kicker">', page_html)
+        self.assertNotIn('주요 최신 뉴스', page_html)
+        self.assertNotIn('월간 기록', page_html)
         self.assertNotIn("소식을<br>", page_html)
-        self.assertIn('data-flow-root', page_html)
-        self.assertIn('class="flow-source">테스트신문</span>', page_html)
-        self.assertIn('class="flow-topic">#주거</span>', page_html)
-        self.assertIn('class="flow-item-actions">', page_html)
-        self.assertNotIn('class="flow-source">새 창 열림</span>', page_html)
-        self.assertIn("날짜를 골라 새 자료 보기", page_html)
-        self.assertIn('data-flow-date="6"', page_html)
-        self.assertEqual(page_html.count('data-flow-slot'), 168)
-        self.assertIn('id="menu-updates"', page_html)
-        self.assertIn("각 자료실에 새로 들어온 항목", page_html)
-        self.assertEqual(page_html.count('class="home-menu-feed-card"'), 7)
-        self.assertIn("메뉴마다 최근 3건씩만 보여드립니다", page_html)
+        self.assertNotIn('class="civic-home-hero"', page_html)
+        self.assertNotIn("전체 아카이브", page_html)
+        self.assertNotIn("날짜별 자료", page_html)
+        self.assertNotIn('class="civic-task-strip"', page_html)
+        self.assertIn('id="today-briefing"', page_html)
+        self.assertIn('id="activity-calendar"', page_html)
+        self.assertLess(page_html.index('<section class="civic-ai-brief-home"'), page_html.index('id="today-briefing"'))
+        self.assertNotIn('id="article-discovery"', page_html)
+        self.assertIn("청년정책 AI 브리핑 보러가기", page_html)
+        self.assertNotIn("서울 청년 주거 지원 시행계획 발표", page_html)
+        self.assertIn('href="trends.html#brief-', page_html)
+        self.assertNotIn('id="editorial-standard"', page_html)
+        self.assertNotIn("자료를 고르는 기준을 함께 공개합니다.", page_html)
         self.assertNotIn('id="interest-builder"', page_html)
         self.assertNotIn("맞춤 변화 미리보기", page_html)
         self.assertNotIn('id="weekly-briefing"', page_html)
         self.assertNotIn("기관 협업", page_html)
-        self.assertIn('data-article-share', page_html)
-        self.assertIn('data-share-meta=', page_html)
-        self.assertIn('공유하기</button>', page_html)
+
+    def test_home_latest_article_links_open_the_original_source(self) -> None:
+        lead = make_article(
+            title="중요 정책 발표",
+            lead_text="중요 정책 발표 내용입니다.",
+            url="https://example.com/lead-source",
+            importance_score=30,
+        )
+        supporting = make_article(
+            title="최근 언론 기사",
+            lead_text="최근 언론 기사 요약입니다.",
+            url="https://example.com/supporting-source",
+            importance_score=10,
+        )
+
+        page_html = web_updater.build_product_home_page(
+            [lead, supporting],
+            [lead, supporting],
+            {"state": "completed", "finished_at": "2026-08-08T09:00:00+09:00"},
+            {"email": "hello@example.com"},
+        )
+
+        self.assertIn(
+            'href="https://example.com/supporting-source" target="_blank" rel="noreferrer" data-event="home_supporting_story_open"',
+            page_html,
+        )
+        self.assertNotIn('href="briefing-', page_html)
 
     def test_article_share_uses_native_share_with_copy_fallback(self) -> None:
         script = web_updater.build_product_event_script()
 
         self.assertIn("navigator.share", script)
-        self.assertIn("청년투게더에서 원문과 다음 확인 항목을 함께 확인해 보세요.", script)
+        self.assertIn("청년투게더에서 원문과 관련 자료를 확인해 보세요.", script)
         self.assertIn("카카오톡 대화창에 붙여넣으세요.", script)
+
+    def test_product_detail_keeps_source_metadata_without_automatic_commentary(self) -> None:
+        article = make_article(
+            title="청년 주거 지원 시행계획 발표",
+            lead_text="서울시가 청년 주거 지원 시행계획을 발표했다.",
+            url="https://example.com/seoul-housing",
+            published_date="2026-08-08T09:00:00+09:00",
+            region="서울",
+            topic_tags=["주거"],
+        )
+
+        page_html = web_updater.build_product_detail_page(
+            article,
+            [],
+            {"finished_at": "2026-08-08T10:00:00+09:00"},
+        )
+
+        self.assertIn("자료 확인", page_html)
+        self.assertIn("원문 열기", page_html)
+        self.assertIn("이 사건의 자료 흐름", page_html)
+        self.assertNotIn("왜 지금 확인해야 하나", page_html)
+        self.assertNotIn("현장에서 무엇이 막히는가", page_html)
+        self.assertNotIn("다음으로 확인할 것", page_html)
+        self.assertNotIn("편집 기준과 한계", page_html)
+
+    def test_policy_event_card_and_detail_use_typed_source_relations(self) -> None:
+        article = make_article(
+            title="청년 주거 지원 종합대책 발표",
+            lead_text="국토교통부가 청년 주거 지원 종합대책을 발표했다.",
+            url="https://example.com/official-release",
+            published_date="2026-08-08T09:00:00+09:00",
+            region="전국",
+            topic_tags=["주거"],
+        )
+        article.update(
+            source_kind="official",
+            is_official_source=True,
+            story_cluster_role="official_release",
+            policy_event_items=[
+                {
+                    "title": "청년 주거 지원 종합대책, 월세 지원 확대",
+                    "url": "https://example.com/news-coverage",
+                    "source": "테스트뉴스",
+                    "published_date": "2026-08-08T10:00:00+09:00",
+                    "relation_type": "news_coverage",
+                },
+                {
+                    "title": "청년 주거 지원 종합대책 시행계획 공고",
+                    "url": "https://example.com/official-follow-up",
+                    "source": "국토교통부",
+                    "published_date": "2026-08-12T09:00:00+09:00",
+                    "relation_type": "official_follow_up",
+                },
+            ],
+        )
+
+        card_html = web_updater.render_article_card(article)
+        detail_html = web_updater.build_product_detail_page(article, article["policy_event_items"], {})
+
+        self.assertIn("이 사건의 자료 흐름 · 언론 보도 1건 · 후속 공식자료 1건", card_html)
+        self.assertIn("2026-08-08 10:00", card_html)
+        self.assertIn("이 사건의 자료 흐름", detail_html)
+        self.assertIn('href="https://example.com/news-coverage" target="_blank"', detail_html)
+        self.assertNotIn('href="briefing-', detail_html)
+
+    def test_policy_trends_are_separate_from_news_and_require_typed_relations(self) -> None:
+        official = make_article(
+            title="청년 주거 지원 종합대책 발표",
+            lead_text="국토교통부가 청년 주거 지원 종합대책을 발표했다.",
+            url="https://example.com/official-release",
+            published_date="2026-08-08T09:00:00+09:00",
+            region="전국",
+            topic_tags=["주거"],
+        )
+        official.update(
+            source_kind="official",
+            is_official_source=True,
+            story_cluster_role="official_release",
+            policy_event_items=[{
+                "title": "청년 주거 지원 종합대책, 월세 지원 확대",
+                "url": "https://example.com/news-coverage",
+                "source": "테스트뉴스",
+                "published_date": "2026-08-08T10:00:00+09:00",
+                "relation_type": "news_coverage",
+            }],
+        )
+
+        trends_html = web_updater.build_policy_trends_page([official], {"finished_at": "2026-08-08T12:00:00+09:00"})
+        news_html = web_updater.build_news_page([official], {"finished_at": "2026-08-08T12:00:00+09:00"})
+
+        self.assertIn("청년정책 AI 브리핑", trends_html)
+        self.assertIn(official["title"], trends_html)
+        self.assertIn("08:00–10:00", trends_html)
+        self.assertNotIn('id="official-story-bundles"', news_html)
 
     def test_operator_page_states_identity_standard_and_limits(self) -> None:
         page_html = web_updater.build_product_about_page({"email": "hello@example.com"})
@@ -1265,6 +1468,7 @@ class ProductRebuildTests(unittest.TestCase):
             page_html = output.read_text(encoding="utf-8")
 
         self.assertIn('<meta name="description" content="청년정책의 변화와 현장 소식을 판단과 제안에 쓸 수 있게 연결합니다.">', page_html)
+        self.assertIn('<title>적재적소 브리프</title>', page_html)
         self.assertIn('class="skip-link"', page_html)
         self.assertIn('<main class="shell" id="main-content"', page_html)
         self.assertNotIn('visitor_id:', page_html)

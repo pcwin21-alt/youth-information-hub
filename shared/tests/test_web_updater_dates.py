@@ -171,6 +171,34 @@ class WebUpdaterDateFallbackTests(unittest.TestCase):
 
         self.assertEqual(sorted_articles[0]["url"], portal_only["url"])
 
+    def test_news_sort_matches_the_publisher_time_shown_to_readers(self) -> None:
+        utc_labelled_morning = {
+            **make_portal_only_article(),
+            "url": "https://example.com/morning",
+            "title": "Publisher morning article",
+            "publisher_published_at": "2026-09-01T08:44:00+00:00",
+        }
+        local_afternoon = {
+            **make_portal_only_article(),
+            "url": "https://example.com/afternoon",
+            "title": "Publisher afternoon article",
+            "publisher_published_at": "2026-09-01T14:06:00+09:00",
+        }
+
+        sorted_articles = web_updater.sort_news_articles_by_publisher_recency(
+            [utc_labelled_morning, local_afternoon]
+        )
+        page_html = web_updater.build_news_page(
+            [utc_labelled_morning, local_afternoon],
+            {"finished_at": "2026-09-02T00:00:00+09:00"},
+        )
+
+        self.assertEqual(sorted_articles[0]["url"], local_afternoon["url"])
+        self.assertLess(
+            page_html.index(local_afternoon["title"]),
+            page_html.index(utc_labelled_morning["title"]),
+        )
+
     def test_home_flow_routes_central_and_local_official_sources(self) -> None:
         official = make_official_government_article()
         local = make_local_official_article()

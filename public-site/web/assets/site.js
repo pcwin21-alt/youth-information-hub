@@ -202,12 +202,19 @@
     const activeQuery = normalizeSearchQuery(
       selectedQuery ?? root.dataset.selectedSearchQuery ?? root.getAttribute('data-default-search-query') ?? ''
     );
+    let activeHourStart = root.dataset.selectedHourStart || root.dataset.selectedHour || 'all';
+    let activeHourEnd = root.dataset.selectedHourEnd || root.dataset.selectedHour || 'all';
+    if (activeHourStart !== 'all' && activeHourEnd !== 'all' && activeHourStart > activeHourEnd) {
+      [activeHourStart, activeHourEnd] = [activeHourEnd, activeHourStart];
+    }
     root.dataset.selectedDateStart = activeDateStart;
     root.dataset.selectedDateEnd = activeDateEnd;
     root.dataset.selectedRegion = activeRegion;
     root.dataset.selectedDirection = activeDirection;
     root.dataset.selectedTopic = activeTopic;
     root.dataset.selectedSearchQuery = activeQuery;
+    root.dataset.selectedHourStart = activeHourStart;
+    root.dataset.selectedHourEnd = activeHourEnd;
 
     const articleCards = Array.from(root.querySelectorAll('[data-article-date]'));
     const regionCounts = new Map();
@@ -218,15 +225,18 @@
       const articleRegion = card.getAttribute('data-article-region') || '중앙';
       const articleDirection = card.getAttribute('data-article-direction') || 'unknown';
       const articleTopics = (card.getAttribute('data-article-topics') || '').split('|').filter(Boolean);
+      const articleHour = card.getAttribute('data-article-hour') || '';
       const isAfterStart = !activeDateStart || (articleDate && articleDate >= activeDateStart);
       const isBeforeEnd = !activeDateEnd || (articleDate && articleDate <= activeDateEnd);
       const dateMatch = !hasDateRange || (isAfterStart && isBeforeEnd);
       const regionMatch = activeRegion === 'all' || articleRegion === activeRegion;
       const directionMatch = activeDirection === 'all' || articleDirection === activeDirection;
       const topicMatch = activeTopic === 'all' || articleTopics.includes(activeTopic);
+      const hourMatch = (!activeHourStart || activeHourStart === 'all' || articleHour >= activeHourStart)
+        && (!activeHourEnd || activeHourEnd === 'all' || articleHour <= activeHourEnd);
       const searchMatch = cardMatchesSearch(card, activeQuery);
-      const isMatch = dateMatch && regionMatch && directionMatch && topicMatch && searchMatch;
-      if (dateMatch && directionMatch && topicMatch && searchMatch) {
+      const isMatch = dateMatch && regionMatch && directionMatch && topicMatch && hourMatch && searchMatch;
+      if (dateMatch && directionMatch && topicMatch && hourMatch && searchMatch) {
         regionCounts.set(articleRegion, (regionCounts.get(articleRegion) || 0) + 1);
       }
       card.hidden = !isMatch;
@@ -246,6 +256,8 @@
             ? value === activeTopic
             : group === 'date'
               ? (value === 'all' ? !hasDateRange : activeDateStart === value && activeDateEnd === value)
+              : group === 'hour'
+                ? (activeHourStart === activeHourEnd && value === activeHourStart)
               : false;
       if (group === 'region' && value !== 'all') {
         updateRegionFilterButtonCount(button, regionCounts.get(value) || 0);
@@ -273,7 +285,7 @@
     if (status) {
       const dateLabel = formatNewsDateRange(activeDateStart, activeDateEnd);
       const searchLabel = formatSearchLabel(activeQuery);
-      if (!hasDateRange && activeRegion === 'all' && activeDirection === 'all' && activeTopic === 'all' && !searchLabel) {
+      if (!hasDateRange && activeRegion === 'all' && activeDirection === 'all' && activeTopic === 'all' && activeHourStart === 'all' && activeHourEnd === 'all' && !searchLabel) {
         status.textContent = `전체 ${visibleCount}건을 보고 있습니다.`;
       } else {
         const parts = [];
@@ -285,6 +297,11 @@
         }
         if (activeTopic !== 'all') {
           parts.push(`#${activeTopic}`);
+        }
+        if (activeHourStart !== 'all' || activeHourEnd !== 'all') {
+          parts.push(activeHourStart === activeHourEnd
+            ? activeHourStart
+            : `${activeHourStart === 'all' ? '처음' : activeHourStart}–${activeHourEnd === 'all' ? '마지막' : activeHourEnd}`);
         }
         if (searchLabel) {
           parts.push(searchLabel);
@@ -672,6 +689,163 @@
     });
   }
 
+  function monthKeyFromDate(date) {
+    return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
+  }
+
+  function newsFilterStageValue(root, pendingKey, selectedKey, fallback = '') {
+    return root.dataset[pendingKey] ?? root.dataset[selectedKey] ?? fallback;
+  }
+
+  function syncNewsFilterStage(root) {
+    if (!root.querySelector('[data-news-range-filter]')) return;
+    const topic = newsFilterStageValue(root, 'pendingTopic', 'selectedTopic', 'all');
+    let hourStart = newsFilterStageValue(root, 'pendingHourStart', 'selectedHourStart', 'all');
+    let hourEnd = newsFilterStageValue(root, 'pendingHourEnd', 'selectedHourEnd', 'all');
+    if (hourStart !== 'all' && hourEnd !== 'all' && hourStart > hourEnd) {
+      [hourStart, hourEnd] = [hourEnd, hourStart];
+    }
+    const query = newsFilterStageValue(root, 'pendingSearchQuery', 'selectedSearchQuery', '');
+    root.querySelectorAll('[data-news-filter-stage="topic"]').forEach((button) => {
+      const active = (button.getAttribute('data-filter-value') || 'all') === topic;
+      button.classList.toggle('active', active);
+      button.setAttribute('aria-pressed', active ? 'true' : 'false');
+    });
+    const hourStartSelect = root.querySelector('[data-news-hour-start]');
+    const hourEndSelect = root.querySelector('[data-news-hour-end]');
+    if (hourStartSelect && hourStartSelect.value !== hourStart) hourStartSelect.value = hourStart;
+    if (hourEndSelect && hourEndSelect.value !== hourEnd) hourEndSelect.value = hourEnd;
+    const searchInput = root.querySelector('[data-news-search-stage]');
+    if (searchInput && searchInput.value !== query) searchInput.value = query;
+  }
+
+  function renderNewsRangeCalendar(root) {
+    const calendar = root.querySelector('[data-news-range-calendar]');
+    if (!calendar) return;
+    const dates = Array.from(root.querySelectorAll('[data-article-date]'))
+      .map((card) => card.getAttribute('data-article-date') || '')
+      .filter(Boolean)
+      .sort();
+    if (!dates.length) return;
+    const earliestMonth = dates[0].slice(0, 7);
+    const latestMonth = dates[dates.length - 1].slice(0, 7);
+    let visibleMonth = root.dataset.newsCalendarMonth || latestMonth;
+    if (visibleMonth < earliestMonth) visibleMonth = earliestMonth;
+    if (visibleMonth > latestMonth) visibleMonth = latestMonth;
+    root.dataset.newsCalendarMonth = visibleMonth;
+    const [year, month] = visibleMonth.split('-').map(Number);
+    const countByDate = new Map();
+    dates.forEach((date) => countByDate.set(date, (countByDate.get(date) || 0) + 1));
+    const pendingStart = root.dataset.pendingDateStart || root.dataset.selectedDateStart || '';
+    const pendingEnd = root.dataset.pendingDateEnd || root.dataset.selectedDateEnd || '';
+    const label = root.querySelector('[data-news-calendar-label]');
+    if (label) label.textContent = `${year}년 ${month}월`;
+    const previous = root.querySelector('[data-news-calendar-prev]');
+    const next = root.querySelector('[data-news-calendar-next]');
+    if (previous) previous.disabled = visibleMonth <= earliestMonth;
+    if (next) next.disabled = visibleMonth >= latestMonth;
+    calendar.replaceChildren();
+    ['일', '월', '화', '수', '목', '금', '토'].forEach((weekday) => {
+      const name = document.createElement('span');
+      name.className = 'news-calendar-weekday'; name.textContent = weekday; calendar.append(name);
+    });
+    const firstDay = new Date(year, month - 1, 1).getDay();
+    for (let blank = 0; blank < firstDay; blank += 1) {
+      const spacer = document.createElement('span'); spacer.className = 'news-calendar-day is-blank'; calendar.append(spacer);
+    }
+    const lastDay = new Date(year, month, 0).getDate();
+    for (let day = 1; day <= lastDay; day += 1) {
+      const date = `${visibleMonth}-${String(day).padStart(2, '0')}`;
+      const count = countByDate.get(date) || 0;
+      const button = document.createElement('button');
+      button.type = 'button'; button.className = 'news-calendar-day'; button.dataset.newsCalendarDate = date;
+      // A range endpoint can legitimately be a day with no matching article.
+      // Keep every calendar date selectable; the resulting empty range is a
+      // valid, explicit filter state rather than an unreachable one.
+      button.classList.toggle('is-empty', count === 0);
+      const inRange = pendingStart && pendingEnd && date >= pendingStart && date <= pendingEnd;
+      button.classList.toggle('is-selected', date === pendingStart || date === pendingEnd);
+      button.classList.toggle('is-in-range', Boolean(inRange && date !== pendingStart && date !== pendingEnd));
+      button.setAttribute('aria-pressed', String(date === pendingStart || date === pendingEnd));
+      button.setAttribute('aria-label', `${date} 기사 ${count}건, 날짜 선택`);
+      const dayNumber = document.createElement('span'); dayNumber.textContent = String(day);
+      const countLabel = document.createElement('small'); countLabel.textContent = `${count}건`;
+      button.append(dayNumber, countLabel); calendar.append(button);
+    }
+  }
+
+  function initializeNewsRangeFilters() {
+    document.querySelectorAll('[data-news-filter-root]').forEach((root) => {
+      if (!root.querySelector('[data-news-range-filter]')) return;
+      root.dataset.pendingDateStart = root.dataset.selectedDateStart || '';
+      root.dataset.pendingDateEnd = root.dataset.selectedDateEnd || '';
+      root.dataset.pendingTopic = root.dataset.selectedTopic || 'all';
+      root.dataset.pendingHourStart = root.dataset.selectedHourStart || root.dataset.selectedHour || 'all';
+      root.dataset.pendingHourEnd = root.dataset.selectedHourEnd || root.dataset.selectedHour || 'all';
+      root.dataset.pendingSearchQuery = root.dataset.selectedSearchQuery || '';
+      syncNewsFilterStage(root); renderNewsRangeCalendar(root);
+      root.addEventListener('click', (event) => {
+        const calendarMove = event.target.closest('[data-news-calendar-prev], [data-news-calendar-next]');
+        if (calendarMove) {
+          event.stopPropagation();
+          const [year, month] = (root.dataset.newsCalendarMonth || '').split('-').map(Number);
+          root.dataset.newsCalendarMonth = monthKeyFromDate(new Date(year, month - 1 + (calendarMove.hasAttribute('data-news-calendar-next') ? 1 : -1), 1));
+          renderNewsRangeCalendar(root); return;
+        }
+        const calendarDate = event.target.closest('[data-news-calendar-date]');
+        if (calendarDate) {
+          event.stopPropagation();
+          const value = calendarDate.dataset.newsCalendarDate || '';
+          const start = root.dataset.pendingDateStart || '';
+          const end = root.dataset.pendingDateEnd || '';
+          if (!start || !end || root.dataset.newsRangeAnchor !== 'true') {
+            root.dataset.pendingDateStart = value; root.dataset.pendingDateEnd = value; root.dataset.newsRangeAnchor = 'true';
+          } else {
+            root.dataset.pendingDateStart = value < start ? value : start;
+            root.dataset.pendingDateEnd = value < start ? start : value;
+            root.dataset.newsRangeAnchor = 'false';
+          }
+          // Date selection is a primary result control: show its matching
+          // articles immediately.  The Apply button still commits any staged
+          // hour, topic, and keyword changes alongside the chosen dates.
+          applyNewsFilters(
+            root,
+            root.dataset.pendingDateStart || '',
+            root.dataset.pendingDateEnd || '',
+            root.dataset.selectedRegion || 'all',
+            root.dataset.selectedDirection || 'all',
+            root.dataset.selectedTopic || 'all',
+            root.dataset.selectedSearchQuery || '',
+          );
+          renderNewsRangeCalendar(root); return;
+        }
+        const topic = event.target.closest('[data-news-filter-stage="topic"]');
+        if (topic) {
+          event.stopPropagation(); root.dataset.pendingTopic = topic.getAttribute('data-filter-value') || 'all'; syncNewsFilterStage(root); return;
+        }
+        if (event.target.closest('[data-news-filter-apply]')) {
+          event.stopPropagation();
+          root.dataset.selectedHourStart = root.dataset.pendingHourStart || 'all';
+          root.dataset.selectedHourEnd = root.dataset.pendingHourEnd || 'all';
+          applyNewsFilters(root, root.dataset.pendingDateStart || '', root.dataset.pendingDateEnd || '', root.dataset.selectedRegion || 'all', root.dataset.selectedDirection || 'all', root.dataset.pendingTopic || 'all', root.dataset.pendingSearchQuery || '');
+          syncNewsFilterStage(root); renderNewsRangeCalendar(root); return;
+        }
+        if (event.target.closest('[data-news-filter-reset]')) {
+          event.stopPropagation(); root.dataset.pendingDateStart = ''; root.dataset.pendingDateEnd = ''; root.dataset.newsRangeAnchor = 'false';
+          root.dataset.pendingTopic = 'all'; root.dataset.pendingHourStart = 'all'; root.dataset.pendingHourEnd = 'all'; root.dataset.pendingSearchQuery = '';
+          root.dataset.selectedHour = 'all'; root.dataset.selectedHourStart = 'all'; root.dataset.selectedHourEnd = 'all';
+          applyNewsFilters(root, '', '', 'all', 'all', 'all', ''); syncNewsFilterStage(root); renderNewsRangeCalendar(root);
+        }
+      });
+      const hourStartSelect = root.querySelector('[data-news-hour-start]');
+      const hourEndSelect = root.querySelector('[data-news-hour-end]');
+      if (hourStartSelect) hourStartSelect.addEventListener('change', () => { root.dataset.pendingHourStart = hourStartSelect.value || 'all'; syncNewsFilterStage(root); });
+      if (hourEndSelect) hourEndSelect.addEventListener('change', () => { root.dataset.pendingHourEnd = hourEndSelect.value || 'all'; syncNewsFilterStage(root); });
+      const searchInput = root.querySelector('[data-news-search-stage]');
+      if (searchInput) searchInput.addEventListener('input', () => { root.dataset.pendingSearchQuery = searchInput.value; });
+    });
+  }
+
   document.addEventListener('click', async (event) => {
     const guideDismiss = event.target.closest('[data-guide-dismiss]');
     if (guideDismiss) {
@@ -743,6 +917,9 @@
       if (root) {
         const group = filterButton.getAttribute('data-filter-group') || 'date';
         const value = filterButton.getAttribute('data-filter-value') || 'all';
+        if (group === 'hour') {
+          root.dataset.selectedHour = value;
+        }
         applyNewsFilters(
           root,
           group === 'date'
@@ -821,6 +998,67 @@
     if (!currentTab || !['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) {
       return;
     }
+
+    const calendarMove = event.target.closest('[data-news-calendar-prev], [data-news-calendar-next]');
+    if (calendarMove) {
+      const root = calendarMove.closest('[data-news-filter-root]');
+      if (root) {
+        const [year, month] = (root.dataset.newsCalendarMonth || '').split('-').map(Number);
+        const moved = new Date(year, month - 1 + (calendarMove.hasAttribute('data-news-calendar-next') ? 1 : -1), 1);
+        root.dataset.newsCalendarMonth = monthKeyFromDate(moved); renderNewsRangeCalendar(root);
+      }
+      return;
+    }
+
+    const calendarDate = event.target.closest('[data-news-calendar-date]');
+    if (calendarDate) {
+      const root = calendarDate.closest('[data-news-filter-root]');
+      const value = calendarDate.dataset.newsCalendarDate || '';
+      if (root && value) {
+        const start = root.dataset.pendingDateStart || '';
+        const end = root.dataset.pendingDateEnd || '';
+        if (!start || !end || root.dataset.newsRangeAnchor !== 'true') {
+          root.dataset.pendingDateStart = value; root.dataset.pendingDateEnd = value; root.dataset.newsRangeAnchor = 'true';
+        } else {
+          root.dataset.pendingDateStart = value < start ? value : start;
+          root.dataset.pendingDateEnd = value < start ? start : value;
+          root.dataset.newsRangeAnchor = 'false';
+        }
+        renderNewsRangeCalendar(root);
+      }
+      return;
+    }
+
+    const stagedTopic = event.target.closest('[data-news-filter-stage="topic"]');
+    if (stagedTopic) {
+      const root = stagedTopic.closest('[data-news-filter-root]');
+      if (root) { root.dataset.pendingTopic = stagedTopic.getAttribute('data-filter-value') || 'all'; syncNewsFilterStage(root); }
+      return;
+    }
+
+    const applyStagedFilters = event.target.closest('[data-news-filter-apply]');
+    if (applyStagedFilters) {
+      const root = applyStagedFilters.closest('[data-news-filter-root]');
+      if (root) {
+        root.dataset.selectedHourStart = root.dataset.pendingHourStart || 'all';
+        root.dataset.selectedHourEnd = root.dataset.pendingHourEnd || 'all';
+        applyNewsFilters(root, root.dataset.pendingDateStart || '', root.dataset.pendingDateEnd || '', root.dataset.selectedRegion || 'all', root.dataset.selectedDirection || 'all', root.dataset.pendingTopic || 'all', root.dataset.pendingSearchQuery || '');
+        syncNewsFilterStage(root); renderNewsRangeCalendar(root);
+      }
+      return;
+    }
+
+    const resetStagedFilters = event.target.closest('[data-news-filter-reset]');
+    if (resetStagedFilters) {
+      const root = resetStagedFilters.closest('[data-news-filter-root]');
+      if (root) {
+        root.dataset.pendingDateStart = ''; root.dataset.pendingDateEnd = ''; root.dataset.newsRangeAnchor = 'false';
+        root.dataset.pendingTopic = 'all'; root.dataset.pendingHourStart = 'all'; root.dataset.pendingHourEnd = 'all'; root.dataset.pendingSearchQuery = '';
+        root.dataset.selectedHour = 'all'; root.dataset.selectedHourStart = 'all'; root.dataset.selectedHourEnd = 'all';
+        applyNewsFilters(root, '', '', 'all', 'all', 'all', ''); syncNewsFilterStage(root); renderNewsRangeCalendar(root);
+      }
+      return;
+    }
     const isLocalTab = currentTab.hasAttribute('data-local-view-tab');
     const tabs = Array.from(document.querySelectorAll(isLocalTab ? '[data-local-view-tab]' : '[data-official-view-tab]'));
     const currentIndex = tabs.indexOf(currentTab);
@@ -881,6 +1119,7 @@
       queryFromUrl || root.getAttribute('data-default-search-query') || '',
     );
   });
+  initializeNewsRangeFilters();
 
   document.querySelectorAll('[data-policy-filter-root]').forEach((root) => {
     applyPolicyFilters(
@@ -895,6 +1134,13 @@
   });
 
   document.addEventListener('input', (event) => {
+    const stagedSearchInput = event.target.closest('[data-news-search-stage]');
+    if (stagedSearchInput) {
+      const root = stagedSearchInput.closest('[data-news-filter-root]');
+      if (root) root.dataset.pendingSearchQuery = stagedSearchInput.value;
+      return;
+    }
+
     const searchInput = event.target.closest('[data-news-search-input]');
     if (searchInput) {
       const root = searchInput.closest('[data-news-filter-root]');
@@ -933,6 +1179,17 @@
   });
 
   document.addEventListener('change', (event) => {
+    const hourSelect = event.target.closest('[data-news-hour-start], [data-news-hour-end]');
+    if (hourSelect) {
+      const root = hourSelect.closest('[data-news-filter-root]');
+      if (root) {
+        const key = hourSelect.hasAttribute('data-news-hour-end') ? 'pendingHourEnd' : 'pendingHourStart';
+        root.dataset[key] = hourSelect.value || 'all';
+        syncNewsFilterStage(root);
+      }
+      return;
+    }
+
     const dateInput = event.target.closest('[data-news-date-input]');
     if (dateInput) {
       const root = dateInput.closest('[data-news-filter-root]');
@@ -1150,6 +1407,76 @@
 
 
 (() => {
+  const panel = document.querySelector('[data-floating-nav]');
+  const toggle = panel?.querySelector('[data-floating-nav-toggle]');
+  const handle = panel?.querySelector('[data-floating-nav-drag]');
+  if (!panel || !toggle || !handle) {
+    return;
+  }
+
+  function setCollapsed(collapsed) {
+    panel.classList.toggle('is-collapsed', collapsed);
+    toggle.setAttribute('aria-expanded', String(!collapsed));
+    toggle.setAttribute('aria-label', collapsed ? '메뉴 펼치기' : '메뉴 접기');
+    toggle.textContent = collapsed ? '›' : '‹';
+  }
+
+  toggle.addEventListener('click', () => setCollapsed(!panel.classList.contains('is-collapsed')));
+
+  let pointerId = null;
+  let originX = 0;
+  let originY = 0;
+  let originLeft = 0;
+  let originTop = 0;
+
+  function startDrag(event) {
+    if (event.button !== 0 || event.pointerType === 'mouse' && event.buttons !== 1) {
+      return;
+    }
+    const bounds = panel.getBoundingClientRect();
+    pointerId = event.pointerId;
+    originX = event.clientX;
+    originY = event.clientY;
+    originLeft = bounds.left;
+    originTop = bounds.top;
+    panel.style.right = 'auto';
+    panel.style.bottom = 'auto';
+    panel.classList.add('is-dragging');
+    handle.setPointerCapture?.(pointerId);
+    event.preventDefault();
+  }
+
+  function moveDrag(event) {
+    if (event.pointerId !== pointerId) {
+      return;
+    }
+    const maxLeft = Math.max(8, window.innerWidth - panel.offsetWidth - 8);
+    const maxTop = Math.max(8, window.innerHeight - panel.offsetHeight - 8);
+    const left = Math.min(maxLeft, Math.max(8, originLeft + event.clientX - originX));
+    const top = Math.min(maxTop, Math.max(8, originTop + event.clientY - originY));
+    panel.style.left = `${left}px`;
+    panel.style.top = `${top}px`;
+  }
+
+  function endDrag(event) {
+    if (event.pointerId !== pointerId) {
+      return;
+    }
+    if (handle.hasPointerCapture?.(pointerId)) {
+      handle.releasePointerCapture(pointerId);
+    }
+    pointerId = null;
+    panel.classList.remove('is-dragging');
+  }
+
+  handle.addEventListener('pointerdown', startDrag);
+  handle.addEventListener('pointermove', moveDrag);
+  handle.addEventListener('pointerup', endDrag);
+  handle.addEventListener('pointercancel', endDrag);
+})();
+
+
+(() => {
   const overlay = document.querySelector('[data-mobile-menu-overlay]');
   const openButtons = Array.from(document.querySelectorAll('[data-mobile-menu-open]'));
   if (!overlay || openButtons.length === 0) {
@@ -1343,6 +1670,154 @@
 
 
 (() => {
+  const root = document.querySelector('[data-home-activity]');
+  if (!root) return;
+  const endpoint = root.dataset.activityUrl || 'home_activity_calendar.json';
+  const archiveRoot = document.querySelector('[data-home-activity-archive]');
+  const calendar = archiveRoot?.querySelector('[data-home-activity-calendar]');
+  const dateRecords = archiveRoot?.querySelector('[data-home-activity-date-records]');
+  const dateList = archiveRoot?.querySelector('[data-home-activity-date-list]');
+  const dateTitle = archiveRoot?.querySelector('[data-home-activity-date-list-title]');
+  const dateStatus = archiveRoot?.querySelector('[data-home-activity-date-status]');
+  const previous = archiveRoot?.querySelector('[data-home-activity-previous]');
+  const next = archiveRoot?.querySelector('[data-home-activity-next]');
+  const monthLabel = archiveRoot?.querySelector('[data-home-activity-month]');
+  const seoulFormatter = new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Seoul', year: 'numeric', month: '2-digit', day: '2-digit' });
+  const dayFormatter = new Intl.DateTimeFormat('ko-KR', { timeZone: 'Asia/Seoul', month: 'long', day: 'numeric', weekday: 'short' });
+  const hourFormatter = new Intl.DateTimeFormat('ko-KR', { timeZone: 'Asia/Seoul', hour: '2-digit', minute: '2-digit', hour12: false });
+  let payload = null;
+  let selectedDate = '';
+  let visibleMonth = null;
+
+  function escapeText(value) { return String(value || ''); }
+  function create(tag, className, text) {
+    const node = document.createElement(tag);
+    if (className) node.className = className;
+    if (text !== undefined) node.textContent = text;
+    return node;
+  }
+  function dateFromKey(key) { const [year, month, day] = key.split('-').map(Number); return new Date(year, month - 1, day); }
+  function dateKeyFromDate(date) { return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`; }
+  function monthKey(date) { return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`; }
+  function entriesFor(date) { return (payload?.items || []).filter((item) => item.date === date); }
+  function summaryFor(date) { return payload?.days?.[date] || { count: 0, kinds: {} }; }
+  function formatKinds(kinds) {
+    return Object.entries(kinds || {}).slice(0, 2).map(([kind, count]) => `${kind} ${count}`).join(' · ');
+  }
+  const menuLinks = {
+    news: ['뉴스', 'news.html'], opinion: ['기고·칼럼', 'opinion.html'], research: ['논문·연구', 'reports.html'],
+    official: ['정부부처', 'official.html'], local: ['지자체', 'local.html'], 'local-plan': ['지자체 계획', 'local.html'],
+    stats: ['정부조사·통계', 'tools.html'], hub: ['현장 목소리', 'hub.html']
+  };
+  function renderMenuCounts() {
+    const target = archiveRoot?.querySelector('[data-home-activity-menu-counts]');
+    if (!target || !payload || !visibleMonth) return;
+    const counts = {};
+    (payload.items || []).filter((item) => String(item.date || '').startsWith(visibleMonth)).forEach((item) => {
+      const key = item.kind_key || 'news'; counts[key] = (counts[key] || 0) + 1;
+    });
+    target.replaceChildren();
+    Object.entries(menuLinks).forEach(([key, [label, href]]) => {
+      const link = create('a', `home-activity-menu-count home-activity-menu-count--${key}`, `${label} ${counts[key] || 0}건`);
+      link.href = href; target.append(link);
+    });
+  }
+
+  function renderItems(list, title, status, date) {
+    if (!list || !payload) return;
+    let items = entriesFor(date);
+    list.replaceChildren();
+    const dateLabel = dayFormatter.format(dateFromKey(date));
+    if (title) title.textContent = `${dateLabel} 자료`;
+    if (status) status.textContent = `${items.length}건`;
+    if (!items.length) {
+      list.append(create('p', 'home-activity-empty', '표시할 자료가 없습니다.'));
+      return;
+    }
+    items.forEach((item) => {
+      const article = create('article', 'home-activity-item');
+      const meta = create('div', 'home-activity-item-meta');
+      meta.append(create('span', `home-activity-kind home-activity-kind--${item.kind_key || 'news'}`, escapeText(item.kind)));
+      meta.append(create('span', 'home-activity-source', escapeText(item.source)));
+      if (item.has_time && item.timestamp) meta.append(create('time', 'home-activity-time', hourFormatter.format(new Date(item.timestamp))));
+      else meta.append(create('span', 'home-activity-date-only', '발행 시각 미확인'));
+      const link = create('a', 'home-activity-item-title', escapeText(item.title));
+      link.href = item.url || 'news.html';
+      if (item.url) { link.target = '_blank'; link.rel = 'noreferrer'; }
+      article.append(meta, link);
+      if (Array.isArray(item.topics) && item.topics.length) article.append(create('p', 'home-activity-topics', item.topics.map((topic) => `#${topic}`).join(' ')));
+      list.append(article);
+    });
+  }
+
+  function renderDateList(date) {
+    selectedDate = date;
+    renderItems(dateList, dateTitle, dateStatus, date);
+  }
+
+  function renderDatePrompt() {
+    if (dateTitle) dateTitle.textContent = '날짜별 자료';
+    if (dateStatus) dateStatus.textContent = '';
+    if (dateList) dateList.replaceChildren();
+  }
+
+  function renderCalendar() {
+    if (!calendar || !payload || !visibleMonth) return;
+    calendar.replaceChildren();
+    const [year, month] = visibleMonth.split('-').map(Number);
+    const first = new Date(year, month - 1, 1);
+    const last = new Date(year, month, 0);
+    if (monthLabel) monthLabel.textContent = `${year}년 ${month}월`;
+    ['일', '월', '화', '수', '목', '금', '토'].forEach((weekday) => calendar.append(create('span', 'home-activity-weekday', weekday)));
+    for (let blank = 0; blank < first.getDay(); blank += 1) calendar.append(create('span', 'home-activity-day blank'));
+    for (let day = 1; day <= last.getDate(); day += 1) {
+      const date = dateKeyFromDate(new Date(year, month - 1, day));
+      const summary = summaryFor(date);
+      const isToday = date === payload.today;
+      const button = create('button', `home-activity-day${summary.count ? ' has-items' : ''}${isToday ? ' today' : ''}`, String(day));
+      button.type = 'button';
+      button.disabled = !summary.count;
+      button.setAttribute('aria-pressed', String(selectedDate === date));
+      button.setAttribute('aria-label', `${date} ${summary.count}건${summary.count ? `, ${formatKinds(summary.kinds)}` : ''}`);
+      if (summary.count) {
+        button.append(create('small', 'home-activity-day-count', `${summary.count}건`));
+        const kinds = formatKinds(summary.kinds);
+        if (kinds) button.append(create('small', 'home-activity-day-kinds', kinds));
+        button.addEventListener('click', () => {
+          renderDateList(date);
+          renderCalendar();
+          dateRecords?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        });
+      }
+      calendar.append(button);
+    }
+    const current = new Date(year, month - 1, 1);
+    const earliest = payload.months?.[payload.months.length - 1] || monthKey(current);
+    const latest = payload.months?.[0] || monthKey(current);
+    if (previous) previous.disabled = monthKey(current) <= earliest;
+    if (next) next.disabled = monthKey(current) >= latest;
+    renderMenuCounts();
+  }
+
+  previous?.addEventListener('click', () => { const [year, month] = visibleMonth.split('-').map(Number); visibleMonth = monthKey(new Date(year, month - 2, 1)); renderCalendar(); });
+  next?.addEventListener('click', () => { const [year, month] = visibleMonth.split('-').map(Number); visibleMonth = monthKey(new Date(year, month, 1)); renderCalendar(); });
+
+  fetch(endpoint, { cache: 'no-cache' })
+    .then((response) => response.ok ? response.json() : Promise.reject(new Error(`activity_calendar_${response.status}`)))
+    .then((data) => {
+      payload = data;
+      const initialDate = payload.today || `${payload.months?.[0] || '2026-01'}-01`;
+      visibleMonth = monthKey(dateFromKey(initialDate));
+      renderCalendar();
+      renderDatePrompt();
+    })
+    .catch(() => {
+      if (dateStatus) dateStatus.textContent = '날짜별 기록을 불러오지 못했습니다.';
+    });
+})();
+
+
+(() => {
   const endpoint = "";
   const scope = "public";
   function getStoredId(storage, key) {
@@ -1435,7 +1910,7 @@
     const summary = button.dataset.shareSummary || '';
     const path = button.dataset.sharePath || location.href;
     const url = new URL(path, location.href).href;
-    const lines = [title, meta, summary, '청년투게더에서 원문과 다음 확인 항목을 함께 확인해 보세요.', url].filter(Boolean);
+    const lines = [title, meta, summary, '청년투게더에서 원문과 관련 자료를 확인해 보세요.', url].filter(Boolean);
     return { title, text: lines.join('\n\n'), url };
   }
 

@@ -31,7 +31,11 @@ from youth_info_platform.constants import (
     CONTENT_DIRECTION_REPORT,
     CONTENT_DIRECTION_UNKNOWN,
 )
-from youth_info_platform.curation import classify_content_direction, is_public_interest_article
+from youth_info_platform.curation import (
+    classify_content_direction,
+    is_public_interest_article,
+    link_official_releases_and_related_coverage,
+)
 from youth_info_platform.io_utils import read_json
 
 PUBLIC_ARCHIVE_WINDOW_DAYS = 365
@@ -52,12 +56,17 @@ HOME_DAILY_STICKY_HOURS = 24
 HOME_WEEKLY_STICKY_HOURS = 72
 HOME_UPDATE_SNAPSHOT = RUNTIME_PIPELINE_ROOT / "home_update_snapshot.json"
 PUBLIC_ARTICLE_ARCHIVE = PUBLIC_CONTENT_ROOT / "public_article_archive.json"
+HOME_ACTIVITY_CALENDAR_FILENAME = "home_activity_calendar.json"
+HOME_ACTIVITY_ARCHIVE_DAYS = PUBLIC_ARCHIVE_WINDOW_DAYS
 HOME_HOT_KEYWORD_LIMIT = 8
 REMOTE_TEXT_CACHE: dict[str, str] = {}
 ILLUSTRATION_ROOT = "assets/illustrations"
 KOREA_ADM1_SVG = PUBLIC_WEB_ROOT / "assets" / "vendor" / "geoboundaries-kor-adm1.svg"
 KOREA_ADM1_DISPLAY_MAX_X = 860.0
-ASSET_VERSION = "20260826-functional-qa-13"
+ASSET_VERSION = "20260901-news-topic-two-lines-01"
+HOME_THUMBNAIL_CACHE_DIRNAME = "article-thumbnails"
+HOME_THUMBNAIL_DOWNLOAD_LIMIT = 18
+HOME_THUMBNAIL_MAX_BYTES = 4 * 1024 * 1024
 BRAND_MARK_SRC = f"assets/branding/youth-together-mark.svg?v={ASSET_VERSION}"
 MINISTRY_HOME_MARKS = {
     "고용노동부": ("https://www.moel.go.kr", "https://www.moel.go.kr/favicon.ico"),
@@ -80,9 +89,8 @@ MINISTRY_HOME_MARKS = {
     "여성가족부": ("https://www.mogef.go.kr", "https://www.mogef.go.kr/favicon.ico"),
     "성평등가족부": ("https://www.mogef.go.kr", "https://www.mogef.go.kr/favicon.ico"),
 }
-YOUTHSIDE_FOOTER_IMAGE_CANDIDATES = (
-    "assets/branding/youthside_logo_youth-group_compass_u-s-accent_horizontal_4x.png",
-)
+# 운영사 공식 로고의 원본 URL·파일이 검증되기 전에는 이전 운영사 로고를 노출하지 않는다.
+YOUTHSIDE_FOOTER_IMAGE_CANDIDATES: tuple[str, ...] = ()
 PUBLIC_ANALYTICS_ENDPOINT = os.getenv("PUBLIC_SITE_ANALYTICS_ENDPOINT", "").strip()
 PUBLIC_ANALYTICS_SCOPE = os.getenv("PUBLIC_SITE_ANALYTICS_SCOPE", "public").strip() or "public"
 PUBLIC_SUBSCRIPTION_ENDPOINT = os.getenv("PUBLIC_SITE_SUBSCRIPTION_ENDPOINT", "").strip()
@@ -342,6 +350,11 @@ CURATED_MAJOR_POLICY_WATCHLIST = [
 HOME_LEAD_ILLUSTRATION = {
     "src": f"{ILLUSTRATION_ROOT}/home-moabom-collection.svg?v={ASSET_VERSION}",
     "alt": "청년들이 봄꽃 아래에서 오늘의 기사와 정책 정보를 살펴보는 홈 화면 일러스트",
+}
+
+HOME_POLICY_WORKROOM_ILLUSTRATION = {
+    "src": f"{ILLUSTRATION_ROOT}/home-policy-workroom-20260829.png?v={ASSET_VERSION}",
+    "alt": "청년들이 정책 문서와 지역 정보를 함께 살피는 편집 일러스트",
 }
 
 PAGE_INTRO_ILLUSTRATIONS = {
@@ -10111,6 +10124,231 @@ DESIGN_OVERHAUL_CSS = """
 """
 
 
+HOME_LAYOUT_20260829_CSS = """
+  body[data-page="index.html"] .shell { padding: 0 0 88px; overflow: hidden; }
+  body[data-page="index.html"] .civic-home-hero, body[data-page="index.html"] .civic-task-strip, body[data-page="index.html"] .civic-briefing, body[data-page="index.html"] .civic-news-calendar, body[data-page="index.html"] .civic-collected-sources, body[data-page="index.html"] .civic-region-entry, body[data-page="index.html"] .civic-trust-section, body[data-page="index.html"] .civic-activity-archive { width: min(1180px, calc(100% - 64px)); margin-right: auto; margin-left: auto; }
+  .civic-home-hero { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(380px, .95fr); gap: 44px; align-items: center; min-height: 510px; padding: 72px 0 48px; }
+  .civic-eyebrow, .civic-story-kicker { margin: 0 0 12px; color: var(--accent); font-size: .74rem; font-weight: 800; letter-spacing: .09em; text-transform: uppercase; }
+  .civic-home-hero h1 { max-width: 660px; margin: 0; color: var(--deep-navy); font-size: clamp(2.45rem, 4.3vw, 4.25rem); font-weight: 750; letter-spacing: -.07em; line-height: 1.08; text-wrap: balance; word-break: keep-all; }
+  .civic-home-lead { max-width: 560px; margin: 20px 0 0; color: var(--muted); font-size: 1.05rem; line-height: 1.75; word-break: keep-all; }
+  .civic-home-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 28px; }
+  .civic-primary-action, .civic-secondary-action { display: inline-flex; min-height: 48px; align-items: center; justify-content: center; padding: 12px 17px; border: 1px solid var(--deep-navy); border-radius: 12px; font-size: .9rem; font-weight: 750; line-height: 1.3; text-align: center; }
+  .civic-primary-action { border-color: var(--accent); background: var(--accent); color: #fff; }
+  .civic-primary-action:hover, .civic-primary-action:focus-visible { border-color: var(--accent-strong); background: var(--accent-strong); color: #fff; }
+  .civic-secondary-action { background: transparent; color: var(--deep-navy); }
+  .civic-secondary-action:hover, .civic-secondary-action:focus-visible { background: var(--mint); color: var(--deep-navy); }
+  .civic-primary-action:focus-visible, .civic-secondary-action:focus-visible, .civic-task-strip a:focus-visible, .civic-briefing a:focus-visible, .civic-region-entry a:focus-visible { outline: 3px solid #102c32; outline-offset: 3px; }
+  .civic-home-freshness { margin: 16px 0 0; color: var(--muted); font-size: .78rem; line-height: 1.55; }
+  .civic-home-hero-art { position: relative; min-height: 360px; margin: 0; overflow: hidden; border: 1px solid var(--line); border-radius: 24px; background: #f2eee4; }
+  .civic-home-hero-art img { display: block; width: 100%; height: 100%; min-height: 360px; object-fit: cover; object-position: 68% center; }
+  .civic-task-strip { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); margin-top: 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+  .civic-task-strip a { min-height: 116px; padding: 24px 20px; border-right: 1px solid var(--line); background: rgba(255, 253, 248, .64); }
+  .civic-task-strip a:last-child { border-right: 0; } .civic-task-strip a:hover { background: var(--mint); } .civic-task-strip strong, .civic-task-strip span { display: block; } .civic-task-strip strong { color: var(--deep-navy); font-size: .98rem; } .civic-task-strip span { margin-top: 7px; color: var(--muted); font-size: .8rem; line-height: 1.5; }
+  .civic-briefing, .civic-trust-section { padding: 78px 0 0; }
+  .civic-section-head { display: flex; gap: 24px; align-items: end; justify-content: space-between; margin-bottom: 26px; }
+  .civic-section-head h1, .civic-section-head h2, .civic-region-entry h2 { max-width: 720px; margin: 0; color: var(--deep-navy); font-size: clamp(1.65rem, 2.6vw, 2.35rem); letter-spacing: -.055em; line-height: 1.18; word-break: keep-all; }
+  .civic-section-head > a { flex: none; color: var(--deep-navy); font-size: .88rem; font-weight: 750; }
+  .civic-briefing-grid { display: grid; grid-template-columns: minmax(0, 1.16fr) minmax(320px, .84fr); border-top: 2px solid var(--deep-navy); border-bottom: 1px solid var(--line); }
+  .civic-lead-story { padding: 34px 38px 34px 0; border-right: 1px solid var(--line); } .civic-lead-story h3, .civic-brief-row h3 { margin: 0; color: var(--deep-navy); word-break: keep-all; } .civic-lead-story h3 { max-width: 680px; font-size: clamp(1.55rem, 2.4vw, 2.25rem); letter-spacing: -.055em; line-height: 1.28; } .civic-lead-story h3 a:hover, .civic-brief-row h3 a:hover { color: var(--accent); } .civic-lead-story > p:not(.civic-story-kicker) { max-width: 620px; margin: 18px 0 0; color: var(--muted); line-height: 1.75; word-break: keep-all; }
+  .civic-story-foot { display: flex; gap: 14px; align-items: center; justify-content: space-between; margin-top: 28px; color: var(--muted); font-size: .78rem; } .civic-story-foot a { color: var(--deep-navy); font-weight: 750; white-space: nowrap; } .civic-brief-list { display: grid; } .civic-brief-row { padding: 24px 0 22px 30px; border-bottom: 1px solid var(--line); } .civic-brief-row:last-child { border-bottom: 0; } .civic-brief-row .civic-story-kicker { margin-bottom: 8px; font-size: .67rem; } .civic-brief-row h3 { font-size: 1rem; line-height: 1.5; } .civic-brief-row > p:not(.civic-story-kicker) { margin: 8px 0 0; color: var(--muted); font-size: .78rem; }
+  .civic-region-entry { display: grid; grid-template-columns: minmax(0, .88fr) minmax(360px, 1.12fr); gap: 44px; align-items: center; margin-top: 78px; padding: 48px; border: 1px solid var(--line); background: #e8f0ed; } .civic-region-entry > div > p:not(.civic-eyebrow) { max-width: 530px; margin: 16px 0 24px; color: var(--muted); line-height: 1.72; } .civic-region-labels { display: flex; flex-wrap: wrap; gap: 9px; align-content: center; } .civic-region-labels span { padding: 9px 12px; border: 1px solid rgba(16, 44, 50, .2); border-radius: 999px; background: rgba(255, 253, 248, .7); color: var(--deep-navy); font-size: .82rem; font-weight: 650; } .civic-region-labels span:nth-child(5n) { border-color: var(--deep-navy); background: var(--deep-navy); color: #fff; }
+  .civic-trust-section { padding-bottom: 28px; } .civic-trust-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); } .civic-trust-grid article { min-height: 178px; padding: 28px 28px 28px 0; border-right: 1px solid var(--line); } .civic-trust-grid article + article { padding-left: 28px; } .civic-trust-grid article:last-child { border-right: 0; } .civic-trust-grid strong { color: var(--deep-navy); font-size: 1.03rem; } .civic-trust-grid p { margin: 13px 0 0; color: var(--muted); font-size: .9rem; line-height: 1.68; word-break: keep-all; }
+  @media (max-width: 900px) { .civic-home-hero { grid-template-columns: 1fr; gap: 28px; min-height: 0; padding-top: 48px; } .civic-home-hero-art { order: -1; min-height: 280px; } .civic-home-hero-art img { min-height: 280px; object-position: 66% center; } .civic-briefing-grid, .civic-region-entry { grid-template-columns: 1fr; } .civic-lead-story { padding-right: 0; border-right: 0; border-bottom: 1px solid var(--line); } .civic-brief-row { padding-left: 0; } .civic-region-entry { gap: 30px; } }
+  .civic-activity { width: min(1180px, calc(100% - 64px)); margin: 0 auto; padding-top: 54px; }
+  .civic-activity .civic-section-head > div > p:last-child { max-width: 620px; margin: 12px 0 0; color: var(--muted); font-size: .92rem; line-height: 1.65; }
+  .home-activity-archive { margin-top: 40px; padding: 28px; border: 1px solid var(--line); border-radius: 20px; background: #fcfdfc; }
+  .home-activity-archive-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 20px; } .home-activity-archive-actions a { display: inline-flex; min-height: 44px; align-items: center; justify-content: center; padding: 10px 14px; border: 1px solid var(--line); border-radius: 999px; background: #fff; color: var(--deep-navy); font-size: .84rem; font-weight: 750; } .home-activity-archive-actions a:first-child { border-color: var(--deep-navy); background: var(--deep-navy); color: #fff; }
+  .article-related { margin: 14px 0 0; border-top: 1px solid var(--line); color: var(--muted); font-size: .84rem; line-height: 1.55; } .article-related summary { padding: 12px 0; color: var(--deep-navy); cursor: pointer; font-weight: 800; } .article-event-timeline { display: grid; gap: 10px; margin: 0 0 14px; padding: 0; list-style: none; } .article-event-timeline li { display: grid; grid-template-columns: 78px minmax(0, 1fr); gap: 8px; padding-left: 12px; border-left: 2px solid var(--mint); } .article-event-date { color: var(--muted); font-weight: 700; } .article-event-relation { display: inline-block; margin-right: 6px; color: var(--accent-strong); font-weight: 800; } .article-related a { color: var(--deep-navy); }
+  .civic-activity-archive { margin-top: 78px; padding: 28px; border-top: 2px solid var(--deep-navy); border-bottom: 1px solid var(--line); }
+  .home-activity-archive-head { display: flex; gap: 20px; align-items: center; justify-content: space-between; margin-bottom: 20px; }
+  .home-activity-archive-head h3, .home-activity-records h3 { margin: 0; color: var(--deep-navy); font-size: 1.2rem; letter-spacing: -.035em; }
+  .home-activity-archive-head p { margin: 8px 0 0; color: var(--muted); font-size: .86rem; line-height: 1.55; }
+  .home-activity-month-controls { display: flex; flex: none; gap: 10px; align-items: center; } .home-activity-month-controls strong { min-width: 104px; text-align: center; } .home-activity-month-controls button { display: grid; width: 38px; height: 38px; place-items: center; border: 1px solid var(--line); border-radius: 50%; background: #fff; color: var(--deep-navy); cursor: pointer; font: inherit; } .home-activity-month-controls button:disabled { opacity: .35; cursor: default; }
+  .home-activity-calendar { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 7px; } .home-activity-weekday { padding: 0 4px 5px; color: var(--muted); font-size: .72rem; font-weight: 750; text-align: center; }
+  .home-activity-day { display: grid; min-height: 76px; align-content: start; justify-items: start; gap: 4px; padding: 10px; border: 1px solid transparent; border-radius: 12px; background: transparent; color: #8a95a0; font: inherit; font-size: .86rem; text-align: left; } .home-activity-day.has-items { border-color: #d9e4e0; background: #fff; color: var(--deep-navy); cursor: pointer; } .home-activity-day.has-items:hover, .home-activity-day.has-items:focus-visible, .home-activity-day[aria-pressed="true"] { border-color: var(--accent); background: #fff3ed; outline: 0; } .home-activity-day.today { box-shadow: inset 0 0 0 1px var(--deep-navy); }
+  .home-activity-day-count { color: var(--accent-strong); font-size: .78rem; font-weight: 800; } .home-activity-day-kinds { color: var(--muted); font-size: .65rem; line-height: 1.35; } .home-activity-day.blank { min-height: 0; padding: 0; }
+  .home-activity-records { margin-top: 22px; padding: 28px; border-top: 2px solid var(--deep-navy); border-bottom: 1px solid var(--line); } .home-activity-records--date { margin-top: 22px; } .home-activity-records header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; } .home-activity-records header p { margin: 6px 0 0; color: var(--muted); font-size: .84rem; }
+  .home-activity-item { padding: 17px 0; border-bottom: 1px solid #e3e8e6; } .home-activity-item:last-child { border-bottom: 0; } .home-activity-item-meta { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; color: var(--muted); font-size: .75rem; } .home-activity-kind { font-weight: 800; } .home-activity-kind--official { color: #16705c; } .home-activity-kind--local, .home-activity-kind--local-plan { color: #3e6d9d; } .home-activity-kind--research { color: #86621e; } .home-activity-kind--opinion { color: #a65240; } .home-activity-time { margin-left: auto; color: var(--accent-strong); font-weight: 800; } .home-activity-date-only { color: #78838f; } .home-activity-item-title { display: block; margin-top: 8px; color: var(--deep-navy); font-size: 1.02rem; font-weight: 720; line-height: 1.55; word-break: keep-all; } .home-activity-item-title:hover { color: var(--accent-strong); } .home-activity-topics { margin: 7px 0 0; color: #a65342; font-size: .78rem; }
+  .home-activity-loading, .home-activity-empty { margin: 0; padding: 20px 0; color: var(--muted); font-size: .9rem; line-height: 1.6; }
+  /* 2026-08-31: home reads as an editorial front page, while retaining the existing palette and type scale. */
+  .civic-briefing--headline { padding-top: 46px; }
+  .civic-briefing-grid--headline { grid-template-columns: minmax(0, 1.18fr) minmax(250px, .52fr); }
+  .civic-headline-note { display: flex; flex-direction: column; justify-content: space-between; gap: 22px; padding: 34px 0 34px 30px; color: var(--deep-navy); }
+  .civic-headline-note strong { font-size: 1.02rem; line-height: 1.45; }
+  .civic-headline-note p { margin: 0; color: var(--muted); font-size: .86rem; line-height: 1.65; word-break: keep-all; }
+  .civic-headline-note a { color: var(--deep-navy); font-size: .86rem; font-weight: 750; }
+  .civic-news-calendar { display: grid; grid-template-columns: minmax(0, 1.08fr) minmax(320px, .92fr); gap: 42px; align-items: start; margin-top: 66px; }
+  .civic-latest-news { border-top: 2px solid var(--deep-navy); border-bottom: 1px solid var(--line); }
+  .civic-latest-news .civic-section-head { margin: 0; padding: 0 0 20px; border-bottom: 1px solid var(--line); }
+  .civic-latest-news .civic-brief-row { padding-left: 0; }
+  .civic-activity-archive--sidebar { width: auto !important; margin: 0; padding: 22px; border: 1px solid var(--line); background: #fcfdfc; }
+  .civic-activity-archive--sidebar .home-activity-archive-head { gap: 14px; align-items: flex-start; }
+  .civic-activity-archive--sidebar .home-activity-archive-head h2 { font-size: 1.35rem; }
+  .civic-activity-archive--sidebar .home-activity-month-controls { gap: 6px; }
+  .civic-activity-archive--sidebar .home-activity-month-controls strong { min-width: 78px; font-size: .84rem; }
+  .civic-activity-archive--sidebar .home-activity-month-controls button { width: 32px; height: 32px; }
+  .civic-activity-archive--sidebar .home-activity-calendar { gap: 5px; }
+  .civic-activity-archive--sidebar .home-activity-day { min-height: 62px; padding: 7px; font-size: .78rem; }
+  .civic-activity-archive--sidebar .home-activity-day-count { font-size: .72rem; }
+  .civic-activity-archive--sidebar .home-activity-day-kinds { display: none; }
+  .civic-activity-archive--sidebar .home-activity-records { margin-top: 18px; padding: 18px 0 0; border-top: 1px solid var(--line); border-bottom: 0; }
+  .civic-activity-archive--sidebar .home-activity-item { padding: 13px 0; }
+  .civic-activity-archive--sidebar .home-activity-item-title { font-size: .9rem; line-height: 1.5; }
+  .civic-collected-sources { margin-top: 74px; }
+  .civic-collected-sources > .civic-section-head { margin-bottom: 22px; }
+  .civic-collected-sources .civic-task-strip { width: 100%; }
+  .civic-task-strip a { display: flex; flex-direction: column; justify-content: center; }
+  .civic-task-strip em { display: block; margin-top: 13px; color: var(--accent-strong); font-size: .72rem; font-style: normal; font-weight: 750; }
+  .civic-region-entry--final { display: block; margin-top: 74px; text-align: center; }
+  .civic-region-entry--final > div > p:not(.civic-eyebrow) { margin-right: auto; margin-left: auto; }
+  .civic-region-entry--final .civic-secondary-action { min-width: 182px; }
+  @media (max-width: 900px) { .civic-news-calendar { grid-template-columns: 1fr; gap: 48px; } .civic-activity-archive--sidebar { width: 100% !important; } }
+  @media (max-width: 680px) { body[data-page="index.html"] .civic-home-hero, body[data-page="index.html"] .civic-task-strip, body[data-page="index.html"] .civic-briefing, body[data-page="index.html"] .civic-news-calendar, body[data-page="index.html"] .civic-collected-sources, body[data-page="index.html"] .civic-region-entry, body[data-page="index.html"] .civic-trust-section, body[data-page="index.html"] .civic-activity, body[data-page="index.html"] .civic-activity-archive { width: calc(100% - 32px); } .civic-home-hero { padding: 28px 0 32px; } .civic-home-hero h1 { font-size: clamp(2.15rem, 11vw, 2.8rem); } .civic-home-lead { font-size: .98rem; } .civic-home-actions { display: grid; grid-template-columns: 1fr; } .civic-primary-action, .civic-secondary-action { width: 100%; } .civic-home-hero-art { min-height: 225px; border-radius: 18px; } .civic-home-hero-art img { min-height: 225px; } .civic-task-strip { grid-template-columns: repeat(2, minmax(0, 1fr)); } .civic-task-strip a { min-height: 118px; padding: 18px 14px; border-bottom: 1px solid var(--line); } .civic-task-strip a:nth-child(2n) { border-right: 0; } .civic-task-strip a:nth-last-child(-n + 2) { border-bottom: 0; } .civic-briefing, .civic-trust-section, .civic-activity { padding-top: 54px; } .civic-section-head { align-items: flex-start; flex-direction: column; gap: 14px; margin-bottom: 20px; } .civic-section-head h1, .civic-section-head h2, .civic-region-entry h2 { font-size: 1.58rem; } .civic-lead-story { padding: 26px 0; } .civic-lead-story h3 { font-size: 1.48rem; } .civic-story-foot { align-items: flex-start; flex-direction: column; gap: 12px; } .civic-brief-row { padding: 20px 0; } .civic-region-entry { margin-top: 54px; padding: 28px 22px; } .civic-region-labels { gap: 7px; } .civic-region-labels span { padding: 8px 10px; font-size: .76rem; } .civic-trust-grid { grid-template-columns: 1fr; } .civic-trust-grid article, .civic-trust-grid article + article { min-height: 0; padding: 22px 0; border-right: 0; border-bottom: 1px solid var(--line); } .civic-trust-grid article:last-child { border-bottom: 0; } .civic-activity { margin-top: 0; } .civic-activity-archive { margin-top: 54px; padding: 20px; } .home-activity-archive, .home-activity-records { padding: 20px; } .home-activity-archive-head { align-items: flex-start; flex-direction: column; } .home-activity-month-controls { width: 100%; justify-content: space-between; } .home-activity-calendar { gap: 4px; } .home-activity-day { min-height: 62px; padding: 7px 5px; font-size: .78rem; } .home-activity-day-kinds { display: none; } .home-activity-day-count { font-size: .7rem; } .civic-briefing--headline { padding-top: 42px; } .civic-briefing-grid--headline { grid-template-columns: 1fr; } .civic-headline-note { padding: 22px 0; border-top: 1px solid var(--line); } .civic-news-calendar { margin-top: 54px; } .civic-activity-archive--sidebar { padding: 18px; } .civic-activity-archive--sidebar .home-activity-records { padding: 16px 0 0; } .civic-collected-sources { margin-top: 54px; } .civic-region-entry--final { margin-top: 54px; } }
+"""
+
+EDITORIAL_HEADER_NAV_CSS = """
+  /* 2026-09-01: navigation floats over the page so the article canvas remains wide. */
+  .editorial-header { border-bottom: 1px solid var(--line); background: #fffdf8; }
+  .editorial-header-inner { width: min(1440px, calc(100% - 64px)); display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); align-items: center; min-height: 148px; gap: 20px; margin: 0 auto; }
+  .editorial-lab-banner { display: block; grid-column: 1; width: 260px; justify-self: start; color: var(--deep-navy); text-decoration: none; }
+  .editorial-lab-banner img { display: block; width: 100%; height: 86px; object-fit: contain; object-position: left center; }
+  .editorial-lab-banner:focus-visible { outline: 3px solid var(--coral); outline-offset: 3px; }
+  .editorial-brand { grid-column: 2; color: var(--deep-navy); font-size: clamp(2.45rem, 4.4vw, 3.5rem); font-weight: 900; line-height: .98; letter-spacing: -.075em; text-align: center; white-space: nowrap; }
+  .editorial-header .global-search { grid-column: 3; justify-self: end; }
+  .editorial-header .topbar-clock { display: none; margin-left: auto; padding: 0; border: 0; background: transparent; color: var(--muted); box-shadow: none; }
+  .editorial-header .topbar-clock .live-clock-kicker { display: none; }
+  .editorial-header .topbar-clock .live-clock-date { font-size: .72rem; font-weight: 650; }
+  .editorial-header .topbar-clock .live-clock-time { margin-left: 8px; color: var(--deep-navy); font-size: .82rem; font-weight: 850; }
+  .editorial-site-frame { width: 100%; }
+  .editorial-floating-nav { position: fixed; top: 132px; left: 16px; z-index: 30; width: 166px; max-height: calc(100vh - 150px); overflow: auto; padding: 8px; border: 1px solid var(--line); border-radius: 14px; background: rgba(255, 253, 248, .97); box-shadow: 0 12px 30px rgba(18, 60, 52, .14); }
+  .editorial-floating-nav.is-dragging { user-select: none; box-shadow: 0 16px 38px rgba(18, 60, 52, .22); }
+  .editorial-floating-nav.is-collapsed { width: 46px; overflow: visible; }
+  .editorial-floating-nav.is-collapsed .editorial-primary-nav { display: none; }
+  .floating-nav-top { display: flex; align-items: center; justify-content: space-between; gap: 5px; }
+  .floating-nav-drag { display: inline-flex; align-items: center; justify-content: center; width: 24px; min-height: 30px; color: var(--muted); cursor: grab; font-size: 1rem; font-weight: 900; letter-spacing: -3px; touch-action: none; }
+  .editorial-floating-nav.is-dragging .floating-nav-drag { cursor: grabbing; }
+  .floating-nav-toggle { display: inline-flex; align-items: center; justify-content: center; width: 30px; min-height: 30px; padding: 0; border: 1px solid var(--line); border-radius: 8px; background: #fff; color: var(--deep-navy); font: inherit; font-size: 1.1rem; font-weight: 900; }
+  .floating-nav-toggle:hover { border-color: var(--accent); background: #eaf1ee; }
+  .editorial-primary-nav { display: flex; flex-direction: column; gap: 4px; align-items: stretch; margin-top: 7px; }
+  .editorial-primary-nav > a { display: flex; align-items: center; min-height: 40px; padding: 0 10px; border-left: 3px solid transparent; border-radius: 8px; color: var(--deep-navy); font-size: .8rem; font-weight: 750; line-height: 1.32; word-break: keep-all; }
+  .editorial-primary-nav > a:hover { border-left-color: var(--accent); background: #eaf1ee; text-decoration: none; }
+  .editorial-primary-nav > a.active { border-left-color: var(--coral); background: var(--deep-navy); color: #fff; }
+  .top-nav-emoji { display: inline-flex; width: 1.35rem; margin-right: 7px; align-items: center; justify-content: center; filter: saturate(.55); font-size: 1rem; line-height: 1; }
+  .editorial-primary-nav > a.active .top-nav-emoji { filter: saturate(.8) brightness(1.15); }
+  .editorial-primary-nav a:focus-visible, .editorial-menu-trigger:focus-visible, .floating-nav-toggle:focus-visible, .floating-nav-drag:focus-visible { outline: 3px solid var(--coral); outline-offset: 2px; }
+  .editorial-main-column { min-width: 0; }
+  .editorial-layout { width: min(1360px, calc(100% - 64px)); margin: 0 auto; }
+  .editorial-layout .shell { width: 100%; margin: 0; padding: 0 0 88px; background: transparent; }
+  body[data-page="index.html"] .civic-home-hero, body[data-page="index.html"] .civic-task-strip, body[data-page="index.html"] .civic-briefing, body[data-page="index.html"] .civic-news-calendar, body[data-page="index.html"] .civic-collected-sources, body[data-page="index.html"] .civic-region-entry, body[data-page="index.html"] .civic-trust-section, body[data-page="index.html"] .civic-activity-archive { width: min(1360px, calc(100% - 64px)); }
+  body[data-page="index.html"] .civic-task-strip em { color: var(--muted); letter-spacing: 0; }
+  .editorial-menu-trigger { display: none; min-width: 44px; min-height: 44px; border: 1px solid var(--deep-navy); background: transparent; color: var(--deep-navy); font: inherit; font-size: .78rem; font-weight: 850; }
+  @media (max-width: 900px) {
+    .editorial-header-inner { width: calc(100% - 32px); }
+    .editorial-site-frame { display: block; width: 100%; }
+    .editorial-header-inner { grid-template-columns: 44px minmax(0, 1fr) 44px; min-height: 78px; gap: 0; }
+    .editorial-lab-banner { display: none; }
+    .editorial-brand { grid-column: 2; font-size: 1.18rem; }
+    .editorial-header .global-search { display: none; }
+    .editorial-header .topbar-clock { display: none; }
+    .editorial-floating-nav { display: none; }
+    .editorial-layout { width: calc(100% - 32px); }
+    body[data-page="index.html"] .civic-home-hero, body[data-page="index.html"] .civic-task-strip, body[data-page="index.html"] .civic-briefing, body[data-page="index.html"] .civic-news-calendar, body[data-page="index.html"] .civic-collected-sources, body[data-page="index.html"] .civic-region-entry, body[data-page="index.html"] .civic-trust-section, body[data-page="index.html"] .civic-activity-archive { width: calc(100% - 32px); }
+    .editorial-menu-trigger { display: inline-flex; grid-column: 3; align-items: center; justify-content: center; margin-left: auto; }
+    .editorial-layout .shell { padding-bottom: 88px; }
+  }
+  /* Media fallback for sources that do not publish an og:image. */
+  .article-media.fallback { position: relative; display: flex; flex-direction: column; align-items: flex-start; justify-content: flex-end; gap: 5px; padding: 18px; box-sizing: border-box; color: var(--deep-navy); text-decoration: none; background: linear-gradient(135deg, #e8f2ef 0%, #f8eee4 100%); }
+  .article-media.fallback::before { content: ""; position: absolute; width: 110px; height: 110px; right: -24px; top: -28px; border-radius: 50%; background: rgba(255,255,255,.48); box-shadow: -42px 54px 0 -18px rgba(255,255,255,.4); }
+  .article-fallback-kicker, .article-fallback-title, .article-fallback-source { position: relative; z-index: 1; }
+  .article-fallback-kicker { color: var(--coral); font-size: .7rem; font-weight: 850; letter-spacing: .04em; }
+  .article-fallback-title { font-size: 1.05rem; line-height: 1.35; letter-spacing: -.035em; }
+  .article-fallback-source { color: var(--muted); font-size: .74rem; }
+  .article-media.fallback:hover { text-decoration: none; filter: saturate(1.04); }
+  .civic-lead-media { margin: 0 0 22px; max-width: 680px; }
+  .civic-lead-media .article-media { aspect-ratio: 16 / 7; border-radius: 14px; }
+  .civic-lead-media .article-fallback-title { font-size: 1.2rem; }
+  .civic-latest-now { display: flex; justify-content: center; align-items: center; margin: 0 0 24px; padding: 12px 0; border-top: 1px solid var(--deep-navy); border-bottom: 1px solid var(--line); color: var(--deep-navy); }
+  .civic-latest-now time { font-size: 1.05rem; font-weight: 850; letter-spacing: .04em; }
+  .civic-latest-news .civic-brief-list { display: grid; gap: 0; }
+  .civic-latest-news .civic-brief-row { padding: 18px 0; }
+  /* Keep the two home columns on one editorial baseline.  The calendar is a
+     peer of the news list, so it must not retain the legacy inset-card frame. */
+  .civic-news-calendar > .civic-latest-news, .civic-news-calendar > .civic-activity-archive--sidebar { height: 100%; box-sizing: border-box; }
+  .civic-news-calendar > .civic-latest-news { border-top: 0 !important; }
+  .civic-news-calendar > .civic-activity-archive--sidebar { margin: 0 !important; padding: 0 !important; border: 0 !important; background: transparent; }
+  .civic-news-calendar > .civic-activity-archive--sidebar .home-activity-archive-head { min-height: 66px; align-items: center !important; justify-content: space-between !important; margin: 0 0 18px; padding: 0; border-top: 2px solid var(--deep-navy); border-bottom: 1px solid var(--line); }
+  .home-activity-menu-counts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin-top: 18px; padding-top: 16px; border-top: 1px solid var(--line); }
+  .home-activity-menu-count { display: block; padding: 10px 11px; border: 1px solid var(--line); border-radius: 10px; color: var(--deep-navy); background: #fff; font-size: .78rem; font-weight: 750; text-decoration: none; }
+  .home-activity-menu-count:hover, .home-activity-menu-count:focus-visible { border-color: var(--deep-navy); background: #eaf1ee; text-decoration: none; }
+  @media (max-width: 680px) { .civic-lead-media { margin-bottom: 18px; } .civic-lead-media .article-media { aspect-ratio: 16 / 9; } }
+"""
+
+
+# Final brand layer: white is the reading surface; the two teal tones are
+# taken from the Right Policy Research Institute lockup.  Coral is reserved
+# for the one action/state that needs immediate attention.
+RIGHT_POLICY_COLOR_SYSTEM_CSS = r"""
+:root {
+  --brand-teal: #568087;
+  --brand-teal-deep: #324453;
+  --brand-accent: #c84d39;
+  --page-bg: #ffffff;
+  --app-bg: #ffffff;
+  --panel: #ffffff;
+  --surface: #ffffff;
+  --surface-container-low: #ffffff;
+  --surface-container-high: #eef5f4;
+  --surface-container-highest: #e2efed;
+  --panel-soft: #eef5f4;
+  --text: #263444;
+  --muted: #61717a;
+  --line: #d8e3e1;
+  --line-strong: #b8cfcb;
+  --deep-navy: #263444;
+  --deep-navy-soft: #324453;
+  --accent: #c84d39;
+  --accent-strong: #a83d2d;
+  --accent-soft: #f9e3dd;
+  --coral: #c84d39;
+  --mint: #e2efed;
+  --sky: #eef5f4;
+  --filter-accent: #c84d39;
+  --filter-accent-strong: #a83d2d;
+  --filter-active-bg: #324453;
+  --filter-active-border: #324453;
+  --filter-active-stroke: #324453;
+  --home-accent: #568087;
+  --home-accent-soft: rgba(86, 128, 135, .16);
+  --home-teal: #b8cfcb;
+  --home-teal-soft: rgba(184, 207, 203, .32);
+  --shadow: 0 12px 28px rgba(38, 52, 68, .08);
+  --shadow-soft: 0 5px 14px rgba(38, 52, 68, .05);
+}
+body, .app-layout, .shell, .editorial-header, .topbar { background: #ffffff; }
+body { background-image: none; color: var(--text); }
+.section-card, .info-card, .list-card, .filter-panel, .article-card,
+.editorial-floating-nav, .civic-ai-brief-recent,
+body[data-page="index.html"] .civic-activity-archive--sidebar { background: #ffffff; }
+.section-card, .info-card, .list-card, .filter-panel, .article-card,
+.editorial-header, .editorial-floating-nav { border-color: var(--line); }
+.editorial-floating-nav { box-shadow: 0 10px 26px rgba(38, 52, 68, .09); }
+.editorial-primary-nav > a:hover, .floating-nav-toggle:hover,
+.home-activity-menu-count:hover, .home-activity-menu-count:focus-visible { background: #eef5f4; }
+.editorial-primary-nav > a.active { border-left-color: var(--brand-accent); background: var(--brand-teal-deep); }
+.button.primary, .civic-primary-action, .filter-button.active,
+.home-activity-archive-actions a:first-child { border-color: var(--brand-accent); background: var(--brand-accent); color: #ffffff; }
+.button.primary:hover, .button.primary:focus-visible,
+.civic-primary-action:hover, .civic-primary-action:focus-visible { border-color: var(--accent-strong); background: var(--accent-strong); }
+.news-calendar-day.is-selected { border-color: var(--brand-teal-deep); box-shadow: inset 0 0 0 1px var(--brand-teal-deep); }
+.news-calendar-day.is-in-range { background: #e2efed; }
+.news-calendar-day small, .article-list-time, .civic-ai-brief-recent strong,
+.policy-brief-window-time strong, .home-activity-time { color: var(--brand-accent); }
+.article-media.fallback { background: #eef5f4; }
+.article-fallback-kicker { color: var(--brand-accent); }
+.civic-ai-brief-recent { background: #f6faf9; }
+"""
+
+
 PAGE_TEMPLATE = """<!doctype html>
 <html lang="ko">
 <head>
@@ -10127,30 +10365,32 @@ PAGE_TEMPLATE = """<!doctype html>
 </head>
 <body data-page="{active_page}" data-analytics-endpoint="{analytics_endpoint}">
   <a class="skip-link" href="#main-content">본문으로 건너뛰기</a>
-  <header class="topbar">
-    <div class="topbar-side">
+  <header class="editorial-header">
+    <div class="editorial-header-inner">
+      <a class="editorial-lab-banner" href="index.html" aria-label="적재적소 연구소 홈으로"><img src="assets/branding/right-policy-research-institute-banner.png?v={asset_version}" alt="적재적소 연구소"></a>
+      <a class="editorial-brand" href="index.html">적재적소 브리프</a>
       {global_search}
-      <a class="topbar-icon topbar-home-link" href="index.html" aria-label="홈">
-        <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
-          <path d="M4 11.5 12 5l8 6.5"></path>
-          <path d="M6.5 10.5V20h11V10.5"></path>
-          <path d="M10 20v-5h4v5"></path>
-        </svg>
-      </a>
       {live_clock_topbar}
-      {guide_link}
-      <a class="topbar-icon topbar-top-link" href="#page-top" aria-label="맨 위로">↑</a>
+      <button class="editorial-menu-trigger" type="button" data-mobile-menu-open="true" aria-label="전체 메뉴 열기">전체 메뉴</button>
     </div>
   </header>
-  <div class="app-layout">
-    <aside class="side-nav" aria-label="현재 페이지 위치 마커">
-      {side_nav}
+  <div class="editorial-site-frame">
+    <aside class="editorial-floating-nav is-collapsed" data-floating-nav aria-label="주요 메뉴">
+      <div class="floating-nav-top">
+        <span class="floating-nav-drag" data-floating-nav-drag aria-hidden="true">⠿</span>
+        <button class="floating-nav-toggle" type="button" data-floating-nav-toggle aria-expanded="false" aria-label="메뉴 펼치기">›</button>
+      </div>
+      <nav class="editorial-primary-nav" aria-label="주요 메뉴">{top_nav}</nav>
     </aside>
-    <main class="shell" id="main-content" tabindex="-1">
+    <div class="editorial-main-column">
+      <div class="editorial-layout">
+        <main class="shell" id="main-content" tabindex="-1">
     <span id="page-top" aria-hidden="true"></span>
     {content}
     <footer class="site-footer" id="site-footer" aria-label="운영 안내">{footer_note}</footer>
-    </main>
+        </main>
+      </div>
+    </div>
   </div>
   <nav class="bottom-nav" style="--bottom-nav-count: {bottom_nav_count};" aria-label="모바일 주요 메뉴">{bottom_nav}</nav>
   {mobile_menu}
@@ -10365,12 +10605,19 @@ BASE_SCRIPT = """
     const activeQuery = normalizeSearchQuery(
       selectedQuery ?? root.dataset.selectedSearchQuery ?? root.getAttribute('data-default-search-query') ?? ''
     );
+    let activeHourStart = root.dataset.selectedHourStart || root.dataset.selectedHour || 'all';
+    let activeHourEnd = root.dataset.selectedHourEnd || root.dataset.selectedHour || 'all';
+    if (activeHourStart !== 'all' && activeHourEnd !== 'all' && activeHourStart > activeHourEnd) {
+      [activeHourStart, activeHourEnd] = [activeHourEnd, activeHourStart];
+    }
     root.dataset.selectedDateStart = activeDateStart;
     root.dataset.selectedDateEnd = activeDateEnd;
     root.dataset.selectedRegion = activeRegion;
     root.dataset.selectedDirection = activeDirection;
     root.dataset.selectedTopic = activeTopic;
     root.dataset.selectedSearchQuery = activeQuery;
+    root.dataset.selectedHourStart = activeHourStart;
+    root.dataset.selectedHourEnd = activeHourEnd;
 
     const articleCards = Array.from(root.querySelectorAll('[data-article-date]'));
     const regionCounts = new Map();
@@ -10381,15 +10628,18 @@ BASE_SCRIPT = """
       const articleRegion = card.getAttribute('data-article-region') || '중앙';
       const articleDirection = card.getAttribute('data-article-direction') || 'unknown';
       const articleTopics = (card.getAttribute('data-article-topics') || '').split('|').filter(Boolean);
+      const articleHour = card.getAttribute('data-article-hour') || '';
       const isAfterStart = !activeDateStart || (articleDate && articleDate >= activeDateStart);
       const isBeforeEnd = !activeDateEnd || (articleDate && articleDate <= activeDateEnd);
       const dateMatch = !hasDateRange || (isAfterStart && isBeforeEnd);
       const regionMatch = activeRegion === 'all' || articleRegion === activeRegion;
       const directionMatch = activeDirection === 'all' || articleDirection === activeDirection;
       const topicMatch = activeTopic === 'all' || articleTopics.includes(activeTopic);
+      const hourMatch = (!activeHourStart || activeHourStart === 'all' || articleHour >= activeHourStart)
+        && (!activeHourEnd || activeHourEnd === 'all' || articleHour <= activeHourEnd);
       const searchMatch = cardMatchesSearch(card, activeQuery);
-      const isMatch = dateMatch && regionMatch && directionMatch && topicMatch && searchMatch;
-      if (dateMatch && directionMatch && topicMatch && searchMatch) {
+      const isMatch = dateMatch && regionMatch && directionMatch && topicMatch && hourMatch && searchMatch;
+      if (dateMatch && directionMatch && topicMatch && hourMatch && searchMatch) {
         regionCounts.set(articleRegion, (regionCounts.get(articleRegion) || 0) + 1);
       }
       card.hidden = !isMatch;
@@ -10409,6 +10659,8 @@ BASE_SCRIPT = """
             ? value === activeTopic
             : group === 'date'
               ? (value === 'all' ? !hasDateRange : activeDateStart === value && activeDateEnd === value)
+              : group === 'hour'
+                ? (activeHourStart === activeHourEnd && value === activeHourStart)
               : false;
       if (group === 'region' && value !== 'all') {
         updateRegionFilterButtonCount(button, regionCounts.get(value) || 0);
@@ -10436,7 +10688,7 @@ BASE_SCRIPT = """
     if (status) {
       const dateLabel = formatNewsDateRange(activeDateStart, activeDateEnd);
       const searchLabel = formatSearchLabel(activeQuery);
-      if (!hasDateRange && activeRegion === 'all' && activeDirection === 'all' && activeTopic === 'all' && !searchLabel) {
+      if (!hasDateRange && activeRegion === 'all' && activeDirection === 'all' && activeTopic === 'all' && activeHourStart === 'all' && activeHourEnd === 'all' && !searchLabel) {
         status.textContent = `전체 ${visibleCount}건을 보고 있습니다.`;
       } else {
         const parts = [];
@@ -10448,6 +10700,11 @@ BASE_SCRIPT = """
         }
         if (activeTopic !== 'all') {
           parts.push(`#${activeTopic}`);
+        }
+        if (activeHourStart !== 'all' || activeHourEnd !== 'all') {
+          parts.push(activeHourStart === activeHourEnd
+            ? activeHourStart
+            : `${activeHourStart === 'all' ? '처음' : activeHourStart}–${activeHourEnd === 'all' ? '마지막' : activeHourEnd}`);
         }
         if (searchLabel) {
           parts.push(searchLabel);
@@ -10835,6 +11092,163 @@ BASE_SCRIPT = """
     });
   }
 
+  function monthKeyFromDate(date) {
+    return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
+  }
+
+  function newsFilterStageValue(root, pendingKey, selectedKey, fallback = '') {
+    return root.dataset[pendingKey] ?? root.dataset[selectedKey] ?? fallback;
+  }
+
+  function syncNewsFilterStage(root) {
+    if (!root.querySelector('[data-news-range-filter]')) return;
+    const topic = newsFilterStageValue(root, 'pendingTopic', 'selectedTopic', 'all');
+    let hourStart = newsFilterStageValue(root, 'pendingHourStart', 'selectedHourStart', 'all');
+    let hourEnd = newsFilterStageValue(root, 'pendingHourEnd', 'selectedHourEnd', 'all');
+    if (hourStart !== 'all' && hourEnd !== 'all' && hourStart > hourEnd) {
+      [hourStart, hourEnd] = [hourEnd, hourStart];
+    }
+    const query = newsFilterStageValue(root, 'pendingSearchQuery', 'selectedSearchQuery', '');
+    root.querySelectorAll('[data-news-filter-stage="topic"]').forEach((button) => {
+      const active = (button.getAttribute('data-filter-value') || 'all') === topic;
+      button.classList.toggle('active', active);
+      button.setAttribute('aria-pressed', active ? 'true' : 'false');
+    });
+    const hourStartSelect = root.querySelector('[data-news-hour-start]');
+    const hourEndSelect = root.querySelector('[data-news-hour-end]');
+    if (hourStartSelect && hourStartSelect.value !== hourStart) hourStartSelect.value = hourStart;
+    if (hourEndSelect && hourEndSelect.value !== hourEnd) hourEndSelect.value = hourEnd;
+    const searchInput = root.querySelector('[data-news-search-stage]');
+    if (searchInput && searchInput.value !== query) searchInput.value = query;
+  }
+
+  function renderNewsRangeCalendar(root) {
+    const calendar = root.querySelector('[data-news-range-calendar]');
+    if (!calendar) return;
+    const dates = Array.from(root.querySelectorAll('[data-article-date]'))
+      .map((card) => card.getAttribute('data-article-date') || '')
+      .filter(Boolean)
+      .sort();
+    if (!dates.length) return;
+    const earliestMonth = dates[0].slice(0, 7);
+    const latestMonth = dates[dates.length - 1].slice(0, 7);
+    let visibleMonth = root.dataset.newsCalendarMonth || latestMonth;
+    if (visibleMonth < earliestMonth) visibleMonth = earliestMonth;
+    if (visibleMonth > latestMonth) visibleMonth = latestMonth;
+    root.dataset.newsCalendarMonth = visibleMonth;
+    const [year, month] = visibleMonth.split('-').map(Number);
+    const countByDate = new Map();
+    dates.forEach((date) => countByDate.set(date, (countByDate.get(date) || 0) + 1));
+    const pendingStart = root.dataset.pendingDateStart || root.dataset.selectedDateStart || '';
+    const pendingEnd = root.dataset.pendingDateEnd || root.dataset.selectedDateEnd || '';
+    const label = root.querySelector('[data-news-calendar-label]');
+    if (label) label.textContent = `${year}년 ${month}월`;
+    const previous = root.querySelector('[data-news-calendar-prev]');
+    const next = root.querySelector('[data-news-calendar-next]');
+    if (previous) previous.disabled = visibleMonth <= earliestMonth;
+    if (next) next.disabled = visibleMonth >= latestMonth;
+    calendar.replaceChildren();
+    ['일', '월', '화', '수', '목', '금', '토'].forEach((weekday) => {
+      const name = document.createElement('span');
+      name.className = 'news-calendar-weekday'; name.textContent = weekday; calendar.append(name);
+    });
+    const firstDay = new Date(year, month - 1, 1).getDay();
+    for (let blank = 0; blank < firstDay; blank += 1) {
+      const spacer = document.createElement('span'); spacer.className = 'news-calendar-day is-blank'; calendar.append(spacer);
+    }
+    const lastDay = new Date(year, month, 0).getDate();
+    for (let day = 1; day <= lastDay; day += 1) {
+      const date = `${visibleMonth}-${String(day).padStart(2, '0')}`;
+      const count = countByDate.get(date) || 0;
+      const button = document.createElement('button');
+      button.type = 'button'; button.className = 'news-calendar-day'; button.dataset.newsCalendarDate = date;
+      // A range endpoint can legitimately be a day with no matching article.
+      // Keep every calendar date selectable; the resulting empty range is a
+      // valid, explicit filter state rather than an unreachable one.
+      button.classList.toggle('is-empty', count === 0);
+      const inRange = pendingStart && pendingEnd && date >= pendingStart && date <= pendingEnd;
+      button.classList.toggle('is-selected', date === pendingStart || date === pendingEnd);
+      button.classList.toggle('is-in-range', Boolean(inRange && date !== pendingStart && date !== pendingEnd));
+      button.setAttribute('aria-pressed', String(date === pendingStart || date === pendingEnd));
+      button.setAttribute('aria-label', `${date} 기사 ${count}건, 날짜 선택`);
+      const dayNumber = document.createElement('span'); dayNumber.textContent = String(day);
+      const countLabel = document.createElement('small'); countLabel.textContent = `${count}건`;
+      button.append(dayNumber, countLabel); calendar.append(button);
+    }
+  }
+
+  function initializeNewsRangeFilters() {
+    document.querySelectorAll('[data-news-filter-root]').forEach((root) => {
+      if (!root.querySelector('[data-news-range-filter]')) return;
+      root.dataset.pendingDateStart = root.dataset.selectedDateStart || '';
+      root.dataset.pendingDateEnd = root.dataset.selectedDateEnd || '';
+      root.dataset.pendingTopic = root.dataset.selectedTopic || 'all';
+      root.dataset.pendingHourStart = root.dataset.selectedHourStart || root.dataset.selectedHour || 'all';
+      root.dataset.pendingHourEnd = root.dataset.selectedHourEnd || root.dataset.selectedHour || 'all';
+      root.dataset.pendingSearchQuery = root.dataset.selectedSearchQuery || '';
+      syncNewsFilterStage(root); renderNewsRangeCalendar(root);
+      root.addEventListener('click', (event) => {
+        const calendarMove = event.target.closest('[data-news-calendar-prev], [data-news-calendar-next]');
+        if (calendarMove) {
+          event.stopPropagation();
+          const [year, month] = (root.dataset.newsCalendarMonth || '').split('-').map(Number);
+          root.dataset.newsCalendarMonth = monthKeyFromDate(new Date(year, month - 1 + (calendarMove.hasAttribute('data-news-calendar-next') ? 1 : -1), 1));
+          renderNewsRangeCalendar(root); return;
+        }
+        const calendarDate = event.target.closest('[data-news-calendar-date]');
+        if (calendarDate) {
+          event.stopPropagation();
+          const value = calendarDate.dataset.newsCalendarDate || '';
+          const start = root.dataset.pendingDateStart || '';
+          const end = root.dataset.pendingDateEnd || '';
+          if (!start || !end || root.dataset.newsRangeAnchor !== 'true') {
+            root.dataset.pendingDateStart = value; root.dataset.pendingDateEnd = value; root.dataset.newsRangeAnchor = 'true';
+          } else {
+            root.dataset.pendingDateStart = value < start ? value : start;
+            root.dataset.pendingDateEnd = value < start ? start : value;
+            root.dataset.newsRangeAnchor = 'false';
+          }
+          // Date selection is a primary result control: show its matching
+          // articles immediately.  The Apply button still commits any staged
+          // hour, topic, and keyword changes alongside the chosen dates.
+          applyNewsFilters(
+            root,
+            root.dataset.pendingDateStart || '',
+            root.dataset.pendingDateEnd || '',
+            root.dataset.selectedRegion || 'all',
+            root.dataset.selectedDirection || 'all',
+            root.dataset.selectedTopic || 'all',
+            root.dataset.selectedSearchQuery || '',
+          );
+          renderNewsRangeCalendar(root); return;
+        }
+        const topic = event.target.closest('[data-news-filter-stage="topic"]');
+        if (topic) {
+          event.stopPropagation(); root.dataset.pendingTopic = topic.getAttribute('data-filter-value') || 'all'; syncNewsFilterStage(root); return;
+        }
+        if (event.target.closest('[data-news-filter-apply]')) {
+          event.stopPropagation();
+          root.dataset.selectedHourStart = root.dataset.pendingHourStart || 'all';
+          root.dataset.selectedHourEnd = root.dataset.pendingHourEnd || 'all';
+          applyNewsFilters(root, root.dataset.pendingDateStart || '', root.dataset.pendingDateEnd || '', root.dataset.selectedRegion || 'all', root.dataset.selectedDirection || 'all', root.dataset.pendingTopic || 'all', root.dataset.pendingSearchQuery || '');
+          syncNewsFilterStage(root); renderNewsRangeCalendar(root); return;
+        }
+        if (event.target.closest('[data-news-filter-reset]')) {
+          event.stopPropagation(); root.dataset.pendingDateStart = ''; root.dataset.pendingDateEnd = ''; root.dataset.newsRangeAnchor = 'false';
+          root.dataset.pendingTopic = 'all'; root.dataset.pendingHourStart = 'all'; root.dataset.pendingHourEnd = 'all'; root.dataset.pendingSearchQuery = '';
+          root.dataset.selectedHour = 'all'; root.dataset.selectedHourStart = 'all'; root.dataset.selectedHourEnd = 'all';
+          applyNewsFilters(root, '', '', 'all', 'all', 'all', ''); syncNewsFilterStage(root); renderNewsRangeCalendar(root);
+        }
+      });
+      const hourStartSelect = root.querySelector('[data-news-hour-start]');
+      const hourEndSelect = root.querySelector('[data-news-hour-end]');
+      if (hourStartSelect) hourStartSelect.addEventListener('change', () => { root.dataset.pendingHourStart = hourStartSelect.value || 'all'; syncNewsFilterStage(root); });
+      if (hourEndSelect) hourEndSelect.addEventListener('change', () => { root.dataset.pendingHourEnd = hourEndSelect.value || 'all'; syncNewsFilterStage(root); });
+      const searchInput = root.querySelector('[data-news-search-stage]');
+      if (searchInput) searchInput.addEventListener('input', () => { root.dataset.pendingSearchQuery = searchInput.value; });
+    });
+  }
+
   document.addEventListener('click', async (event) => {
     const guideDismiss = event.target.closest('[data-guide-dismiss]');
     if (guideDismiss) {
@@ -10906,6 +11320,9 @@ BASE_SCRIPT = """
       if (root) {
         const group = filterButton.getAttribute('data-filter-group') || 'date';
         const value = filterButton.getAttribute('data-filter-value') || 'all';
+        if (group === 'hour') {
+          root.dataset.selectedHour = value;
+        }
         applyNewsFilters(
           root,
           group === 'date'
@@ -10984,6 +11401,67 @@ BASE_SCRIPT = """
     if (!currentTab || !['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) {
       return;
     }
+
+    const calendarMove = event.target.closest('[data-news-calendar-prev], [data-news-calendar-next]');
+    if (calendarMove) {
+      const root = calendarMove.closest('[data-news-filter-root]');
+      if (root) {
+        const [year, month] = (root.dataset.newsCalendarMonth || '').split('-').map(Number);
+        const moved = new Date(year, month - 1 + (calendarMove.hasAttribute('data-news-calendar-next') ? 1 : -1), 1);
+        root.dataset.newsCalendarMonth = monthKeyFromDate(moved); renderNewsRangeCalendar(root);
+      }
+      return;
+    }
+
+    const calendarDate = event.target.closest('[data-news-calendar-date]');
+    if (calendarDate) {
+      const root = calendarDate.closest('[data-news-filter-root]');
+      const value = calendarDate.dataset.newsCalendarDate || '';
+      if (root && value) {
+        const start = root.dataset.pendingDateStart || '';
+        const end = root.dataset.pendingDateEnd || '';
+        if (!start || !end || root.dataset.newsRangeAnchor !== 'true') {
+          root.dataset.pendingDateStart = value; root.dataset.pendingDateEnd = value; root.dataset.newsRangeAnchor = 'true';
+        } else {
+          root.dataset.pendingDateStart = value < start ? value : start;
+          root.dataset.pendingDateEnd = value < start ? start : value;
+          root.dataset.newsRangeAnchor = 'false';
+        }
+        renderNewsRangeCalendar(root);
+      }
+      return;
+    }
+
+    const stagedTopic = event.target.closest('[data-news-filter-stage="topic"]');
+    if (stagedTopic) {
+      const root = stagedTopic.closest('[data-news-filter-root]');
+      if (root) { root.dataset.pendingTopic = stagedTopic.getAttribute('data-filter-value') || 'all'; syncNewsFilterStage(root); }
+      return;
+    }
+
+    const applyStagedFilters = event.target.closest('[data-news-filter-apply]');
+    if (applyStagedFilters) {
+      const root = applyStagedFilters.closest('[data-news-filter-root]');
+      if (root) {
+        root.dataset.selectedHourStart = root.dataset.pendingHourStart || 'all';
+        root.dataset.selectedHourEnd = root.dataset.pendingHourEnd || 'all';
+        applyNewsFilters(root, root.dataset.pendingDateStart || '', root.dataset.pendingDateEnd || '', root.dataset.selectedRegion || 'all', root.dataset.selectedDirection || 'all', root.dataset.pendingTopic || 'all', root.dataset.pendingSearchQuery || '');
+        syncNewsFilterStage(root); renderNewsRangeCalendar(root);
+      }
+      return;
+    }
+
+    const resetStagedFilters = event.target.closest('[data-news-filter-reset]');
+    if (resetStagedFilters) {
+      const root = resetStagedFilters.closest('[data-news-filter-root]');
+      if (root) {
+        root.dataset.pendingDateStart = ''; root.dataset.pendingDateEnd = ''; root.dataset.newsRangeAnchor = 'false';
+        root.dataset.pendingTopic = 'all'; root.dataset.pendingHourStart = 'all'; root.dataset.pendingHourEnd = 'all'; root.dataset.pendingSearchQuery = '';
+        root.dataset.selectedHour = 'all'; root.dataset.selectedHourStart = 'all'; root.dataset.selectedHourEnd = 'all';
+        applyNewsFilters(root, '', '', 'all', 'all', 'all', ''); syncNewsFilterStage(root); renderNewsRangeCalendar(root);
+      }
+      return;
+    }
     const isLocalTab = currentTab.hasAttribute('data-local-view-tab');
     const tabs = Array.from(document.querySelectorAll(isLocalTab ? '[data-local-view-tab]' : '[data-official-view-tab]'));
     const currentIndex = tabs.indexOf(currentTab);
@@ -11044,6 +11522,7 @@ BASE_SCRIPT = """
       queryFromUrl || root.getAttribute('data-default-search-query') || '',
     );
   });
+  initializeNewsRangeFilters();
 
   document.querySelectorAll('[data-policy-filter-root]').forEach((root) => {
     applyPolicyFilters(
@@ -11058,6 +11537,13 @@ BASE_SCRIPT = """
   });
 
   document.addEventListener('input', (event) => {
+    const stagedSearchInput = event.target.closest('[data-news-search-stage]');
+    if (stagedSearchInput) {
+      const root = stagedSearchInput.closest('[data-news-filter-root]');
+      if (root) root.dataset.pendingSearchQuery = stagedSearchInput.value;
+      return;
+    }
+
     const searchInput = event.target.closest('[data-news-search-input]');
     if (searchInput) {
       const root = searchInput.closest('[data-news-filter-root]');
@@ -11096,6 +11582,17 @@ BASE_SCRIPT = """
   });
 
   document.addEventListener('change', (event) => {
+    const hourSelect = event.target.closest('[data-news-hour-start], [data-news-hour-end]');
+    if (hourSelect) {
+      const root = hourSelect.closest('[data-news-filter-root]');
+      if (root) {
+        const key = hourSelect.hasAttribute('data-news-hour-end') ? 'pendingHourEnd' : 'pendingHourStart';
+        root.dataset[key] = hourSelect.value || 'all';
+        syncNewsFilterStage(root);
+      }
+      return;
+    }
+
     const dateInput = event.target.closest('[data-news-date-input]');
     if (dateInput) {
       const root = dateInput.closest('[data-news-filter-root]');
@@ -11655,6 +12152,231 @@ HOME_FLOW_SCRIPT = """
 })();
 """
 
+
+# The home archive is intentionally loaded from a compact public JSON file.
+# This keeps a growing archive out of the initial HTML and gives the future API
+# the same response shape to replace without a UI rewrite.
+HOME_ACTIVITY_CALENDAR_SCRIPT = """
+(() => {
+  const root = document.querySelector('[data-home-activity]');
+  if (!root) return;
+  const endpoint = root.dataset.activityUrl || 'home_activity_calendar.json';
+  const archiveRoot = document.querySelector('[data-home-activity-archive]');
+  const calendar = archiveRoot?.querySelector('[data-home-activity-calendar]');
+  const dateRecords = archiveRoot?.querySelector('[data-home-activity-date-records]');
+  const dateList = archiveRoot?.querySelector('[data-home-activity-date-list]');
+  const dateTitle = archiveRoot?.querySelector('[data-home-activity-date-list-title]');
+  const dateStatus = archiveRoot?.querySelector('[data-home-activity-date-status]');
+  const previous = archiveRoot?.querySelector('[data-home-activity-previous]');
+  const next = archiveRoot?.querySelector('[data-home-activity-next]');
+  const monthLabel = archiveRoot?.querySelector('[data-home-activity-month]');
+  const seoulFormatter = new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Seoul', year: 'numeric', month: '2-digit', day: '2-digit' });
+  const dayFormatter = new Intl.DateTimeFormat('ko-KR', { timeZone: 'Asia/Seoul', month: 'long', day: 'numeric', weekday: 'short' });
+  const hourFormatter = new Intl.DateTimeFormat('ko-KR', { timeZone: 'Asia/Seoul', hour: '2-digit', minute: '2-digit', hour12: false });
+  let payload = null;
+  let selectedDate = '';
+  let visibleMonth = null;
+
+  function escapeText(value) { return String(value || ''); }
+  function create(tag, className, text) {
+    const node = document.createElement(tag);
+    if (className) node.className = className;
+    if (text !== undefined) node.textContent = text;
+    return node;
+  }
+  function dateFromKey(key) { const [year, month, day] = key.split('-').map(Number); return new Date(year, month - 1, day); }
+  function dateKeyFromDate(date) { return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`; }
+  function monthKey(date) { return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`; }
+  function entriesFor(date) { return (payload?.items || []).filter((item) => item.date === date); }
+  function summaryFor(date) { return payload?.days?.[date] || { count: 0, kinds: {} }; }
+  function formatKinds(kinds) {
+    return Object.entries(kinds || {}).slice(0, 2).map(([kind, count]) => `${kind} ${count}`).join(' · ');
+  }
+  const menuLinks = {
+    news: ['뉴스', 'news.html'], opinion: ['기고·칼럼', 'opinion.html'], research: ['논문·연구', 'reports.html'],
+    official: ['정부부처', 'official.html'], local: ['지자체', 'local.html'], 'local-plan': ['지자체 계획', 'local.html'],
+    stats: ['정부조사·통계', 'tools.html'], hub: ['현장 목소리', 'hub.html']
+  };
+  function renderMenuCounts() {
+    const target = archiveRoot?.querySelector('[data-home-activity-menu-counts]');
+    if (!target || !payload || !visibleMonth) return;
+    const counts = {};
+    (payload.items || []).filter((item) => String(item.date || '').startsWith(visibleMonth)).forEach((item) => {
+      const key = item.kind_key || 'news'; counts[key] = (counts[key] || 0) + 1;
+    });
+    target.replaceChildren();
+    Object.entries(menuLinks).forEach(([key, [label, href]]) => {
+      const link = create('a', `home-activity-menu-count home-activity-menu-count--${key}`, `${label} ${counts[key] || 0}건`);
+      link.href = href; target.append(link);
+    });
+  }
+
+  function renderItems(list, title, status, date) {
+    if (!list || !payload) return;
+    let items = entriesFor(date);
+    list.replaceChildren();
+    const dateLabel = dayFormatter.format(dateFromKey(date));
+    if (title) title.textContent = `${dateLabel} 자료`;
+    if (status) status.textContent = `${items.length}건`;
+    if (!items.length) {
+      list.append(create('p', 'home-activity-empty', '표시할 자료가 없습니다.'));
+      return;
+    }
+    items.forEach((item) => {
+      const article = create('article', 'home-activity-item');
+      const meta = create('div', 'home-activity-item-meta');
+      meta.append(create('span', `home-activity-kind home-activity-kind--${item.kind_key || 'news'}`, escapeText(item.kind)));
+      meta.append(create('span', 'home-activity-source', escapeText(item.source)));
+      if (item.has_time && item.timestamp) meta.append(create('time', 'home-activity-time', hourFormatter.format(new Date(item.timestamp))));
+      else meta.append(create('span', 'home-activity-date-only', '발행 시각 미확인'));
+      const link = create('a', 'home-activity-item-title', escapeText(item.title));
+      link.href = item.url || 'news.html';
+      if (item.url) { link.target = '_blank'; link.rel = 'noreferrer'; }
+      article.append(meta, link);
+      if (Array.isArray(item.topics) && item.topics.length) article.append(create('p', 'home-activity-topics', item.topics.map((topic) => `#${topic}`).join(' ')));
+      list.append(article);
+    });
+  }
+
+  function renderDateList(date) {
+    selectedDate = date;
+    renderItems(dateList, dateTitle, dateStatus, date);
+  }
+
+  function renderDatePrompt() {
+    if (dateTitle) dateTitle.textContent = '날짜별 자료';
+    if (dateStatus) dateStatus.textContent = '';
+    if (dateList) dateList.replaceChildren();
+  }
+
+  function renderCalendar() {
+    if (!calendar || !payload || !visibleMonth) return;
+    calendar.replaceChildren();
+    const [year, month] = visibleMonth.split('-').map(Number);
+    const first = new Date(year, month - 1, 1);
+    const last = new Date(year, month, 0);
+    if (monthLabel) monthLabel.textContent = `${year}년 ${month}월`;
+    ['일', '월', '화', '수', '목', '금', '토'].forEach((weekday) => calendar.append(create('span', 'home-activity-weekday', weekday)));
+    for (let blank = 0; blank < first.getDay(); blank += 1) calendar.append(create('span', 'home-activity-day blank'));
+    for (let day = 1; day <= last.getDate(); day += 1) {
+      const date = dateKeyFromDate(new Date(year, month - 1, day));
+      const summary = summaryFor(date);
+      const isToday = date === payload.today;
+      const button = create('button', `home-activity-day${summary.count ? ' has-items' : ''}${isToday ? ' today' : ''}`, String(day));
+      button.type = 'button';
+      button.disabled = !summary.count;
+      button.setAttribute('aria-pressed', String(selectedDate === date));
+      button.setAttribute('aria-label', `${date} ${summary.count}건${summary.count ? `, ${formatKinds(summary.kinds)}` : ''}`);
+      if (summary.count) {
+        button.append(create('small', 'home-activity-day-count', `${summary.count}건`));
+        const kinds = formatKinds(summary.kinds);
+        if (kinds) button.append(create('small', 'home-activity-day-kinds', kinds));
+        button.addEventListener('click', () => {
+          renderDateList(date);
+          renderCalendar();
+          dateRecords?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        });
+      }
+      calendar.append(button);
+    }
+    const current = new Date(year, month - 1, 1);
+    const earliest = payload.months?.[payload.months.length - 1] || monthKey(current);
+    const latest = payload.months?.[0] || monthKey(current);
+    if (previous) previous.disabled = monthKey(current) <= earliest;
+    if (next) next.disabled = monthKey(current) >= latest;
+    renderMenuCounts();
+  }
+
+  previous?.addEventListener('click', () => { const [year, month] = visibleMonth.split('-').map(Number); visibleMonth = monthKey(new Date(year, month - 2, 1)); renderCalendar(); });
+  next?.addEventListener('click', () => { const [year, month] = visibleMonth.split('-').map(Number); visibleMonth = monthKey(new Date(year, month, 1)); renderCalendar(); });
+
+  fetch(endpoint, { cache: 'no-cache' })
+    .then((response) => response.ok ? response.json() : Promise.reject(new Error(`activity_calendar_${response.status}`)))
+    .then((data) => {
+      payload = data;
+      const initialDate = payload.today || `${payload.months?.[0] || '2026-01'}-01`;
+      visibleMonth = monthKey(dateFromKey(initialDate));
+      renderCalendar();
+      renderDatePrompt();
+    })
+    .catch(() => {
+      if (dateStatus) dateStatus.textContent = '날짜별 기록을 불러오지 못했습니다.';
+    });
+})();
+"""
+
+FLOATING_NAV_SCRIPT = """
+(() => {
+  const panel = document.querySelector('[data-floating-nav]');
+  const toggle = panel?.querySelector('[data-floating-nav-toggle]');
+  const handle = panel?.querySelector('[data-floating-nav-drag]');
+  if (!panel || !toggle || !handle) {
+    return;
+  }
+
+  function setCollapsed(collapsed) {
+    panel.classList.toggle('is-collapsed', collapsed);
+    toggle.setAttribute('aria-expanded', String(!collapsed));
+    toggle.setAttribute('aria-label', collapsed ? '메뉴 펼치기' : '메뉴 접기');
+    toggle.textContent = collapsed ? '›' : '‹';
+  }
+
+  toggle.addEventListener('click', () => setCollapsed(!panel.classList.contains('is-collapsed')));
+
+  let pointerId = null;
+  let originX = 0;
+  let originY = 0;
+  let originLeft = 0;
+  let originTop = 0;
+
+  function startDrag(event) {
+    if (event.button !== 0 || event.pointerType === 'mouse' && event.buttons !== 1) {
+      return;
+    }
+    const bounds = panel.getBoundingClientRect();
+    pointerId = event.pointerId;
+    originX = event.clientX;
+    originY = event.clientY;
+    originLeft = bounds.left;
+    originTop = bounds.top;
+    panel.style.right = 'auto';
+    panel.style.bottom = 'auto';
+    panel.classList.add('is-dragging');
+    handle.setPointerCapture?.(pointerId);
+    event.preventDefault();
+  }
+
+  function moveDrag(event) {
+    if (event.pointerId !== pointerId) {
+      return;
+    }
+    const maxLeft = Math.max(8, window.innerWidth - panel.offsetWidth - 8);
+    const maxTop = Math.max(8, window.innerHeight - panel.offsetHeight - 8);
+    const left = Math.min(maxLeft, Math.max(8, originLeft + event.clientX - originX));
+    const top = Math.min(maxTop, Math.max(8, originTop + event.clientY - originY));
+    panel.style.left = `${left}px`;
+    panel.style.top = `${top}px`;
+  }
+
+  function endDrag(event) {
+    if (event.pointerId !== pointerId) {
+      return;
+    }
+    if (handle.hasPointerCapture?.(pointerId)) {
+      handle.releasePointerCapture(pointerId);
+    }
+    pointerId = null;
+    panel.classList.remove('is-dragging');
+  }
+
+  handle.addEventListener('pointerdown', startDrag);
+  handle.addEventListener('pointermove', moveDrag);
+  handle.addEventListener('pointerup', endDrag);
+  handle.addEventListener('pointercancel', endDrag);
+})();
+"""
+
+
 MOBILE_MENU_SCRIPT = """
 (() => {
   const overlay = document.querySelector('[data-mobile-menu-overlay]');
@@ -11725,7 +12447,7 @@ MOBILE_MENU_SCRIPT = """
 
 
 def build_page_script() -> str:
-    return "\n".join((BASE_SCRIPT, MOBILE_MENU_SCRIPT, HOME_FLOW_SCRIPT, build_analytics_script(), build_product_event_script()))
+    return "\n".join((BASE_SCRIPT, FLOATING_NAV_SCRIPT, MOBILE_MENU_SCRIPT, HOME_FLOW_SCRIPT, HOME_ACTIVITY_CALENDAR_SCRIPT, build_analytics_script(), build_product_event_script()))
 
 
 # Public IA uses first-recognition labels; keep this order aligned with harness.md and its regression test.
@@ -11921,7 +12643,7 @@ def render_global_search() -> str:
     return (
         '<form class="global-search" action="news.html" method="get" role="search">'
         '<span class="global-search-icon" aria-hidden="true">⌕</span>'
-        '<input type="search" name="q" autocomplete="off" placeholder="정책·이슈 검색">'
+        '<input type="search" name="q" autocomplete="off" placeholder="무엇을 찾고 있나요?">'
         '</form>'
     )
 
@@ -11939,11 +12661,16 @@ def render_live_clock(variant: str) -> str:
 
 
 def render_top_nav(active_page: str) -> str:
+    emojis = {
+        "index.html": "⌂", "news.html": "▤", "trends.html": "↗", "opinion.html": "✎",
+        "official.html": "⌘", "local.html": "⌖", "reports.html": "▥", "tools.html": "▦", "hub.html": "♧",
+    }
     items = []
     for href, label in TOP_NAV_ITEMS:
         active = "active" if href == active_page else ""
         current = ' aria-current="page"' if active else ""
-        items.append(f'<a class="top-nav-link {active}" href="{href}"{current}>{html.escape(label)}</a>')
+        icon = html.escape(emojis.get(href, "•"))
+        items.append(f'<a class="top-nav-link {active}" href="{href}"{current}><span class="top-nav-emoji" aria-hidden="true">{icon}</span><span>{html.escape(label)}</span></a>')
     return "".join(items)
 
 
@@ -12069,9 +12796,9 @@ def render_side_nav(active_page: str) -> str:
         for label in ADMIN_NAV_PLACEHOLDERS
     )
     return f"""
-      <a class="side-brand" href="index.html" aria-label="청년동향실 홈으로 이동">
-        <strong>청년동향실</strong>
-        <span>by YOUTHSIDE</span>
+      <a class="side-brand" href="index.html" aria-label="적재적소 브리프 홈으로 이동">
+        <strong>적재적소 브리프</strong>
+        <span>적재적소 연구소 운영</span>
       </a>
       {render_live_clock("side")}
       <div class="side-menu-section">
@@ -12087,8 +12814,8 @@ def render_side_nav(active_page: str) -> str:
         </nav>
       </div>
       <a class="side-update-card" href="news.html">
-        <strong>동향 브리핑</strong>
-        <span>업무 전에 새로 들어온 청년정책과 현장 이슈를 확인합니다.</span>
+        <strong>오늘의 브리핑</strong>
+        <span>오늘 먼저 확인할 청년정책 변화와 현장 이슈를 봅니다.</span>
       </a>
     """
 
@@ -12176,9 +12903,9 @@ def render_guide_overlay(active_page: str) -> str:
     <div class="guide-dialog" role="dialog" aria-modal="true" aria-labelledby="guide-dialog-title">
       <span class="eyebrow">이용방법</span>
       <h2 id="guide-dialog-title">처음 오셨다면 이렇게 보시면 됩니다.</h2>
-      <p>오늘의 레이더에서 변화를 먼저 보고, 뉴스·기고·연구·정부·지자체 자료를 목적에 따라 나눠 확인합니다.</p>
+      <p>홈에서 오늘의 핵심 변화와 지역·의제별 자료를 고른 뒤, 필요하면 원문으로 이어서 봅니다.</p>
       <div class="list">
-        <div class="list-item"><strong>오늘의 레이더</strong><span>오늘 먼저 확인할 변화와 이슈를 빠르게 훑습니다.</span></div>
+        <div class="list-item"><strong>오늘의 핵심 변화</strong><span>대표 브리핑에서 먼저 확인할 변화와 출처를 봅니다.</span></div>
         <div class="list-item"><strong>뉴스</strong><span>일반 보도만 모아 지역·주제·날짜별로 확인합니다.</span></div>
         <div class="list-item"><strong>기고·칼럼·오피니언</strong><span>사실 보도와 필자의 관점·주장을 분리해 읽습니다.</span></div>
         <div class="list-item"><strong>정부 부처 자료실</strong><span>중앙부처 보도자료와 기본·시행계획 원문을 봅니다.</span></div>
@@ -12290,7 +13017,11 @@ def render_publisher_icon(article: dict) -> str:
 
 
 def render_article_media(article: dict) -> str:
-    image_url = normalize_media_url(article.get("image_url"), article_target_url(article))
+    raw_image_url = str(article.get("image_url") or "").strip()
+    # Generated home previews use a site-relative cache path.  Do not resolve
+    # it against the publisher URL, which would send the browser back to the
+    # external domain and reintroduce hotlink failures.
+    image_url = raw_image_url if raw_image_url.startswith("assets/") else normalize_media_url(raw_image_url, article_target_url(article))
     authority = normalize_inline_text(article.get("policy_authority") or article.get("source") or article.get("source_name"))
     source_host = (urllib.parse.urlparse(article_target_url(article)).hostname or "").lower()
     is_policy_briefing_release = source_host in {"korea.kr", "www.korea.kr"} and article.get("source_kind") == "official"
@@ -12314,18 +13045,31 @@ def render_article_media(article: dict) -> str:
             '</a>'
         )
     if not image_url:
-        return ""
+        # Not every publisher exposes an image in its feed or article HTML.
+        # Keep the card visually informative with a lightweight, linkable
+        # editorial tile instead of collapsing the media column entirely.
+        direction_label = content_direction_label(article_content_direction(article))
+        source_label = format_source_label(article.get("source") or article.get("source_name")) or "자료"
+        topic_label = article_topic_tags(article, limit=1)[0] if article_topic_tags(article, limit=1) else direction_label
+        title = html.escape(display_article_title(article, limit=72))
+        url = html.escape(article_target_url(article), quote=True)
+        return (
+            f'<a class="article-media fallback" href="{url}" target="_blank" rel="noreferrer" '
+            f'aria-label="{title} 기사 링크 바로가기">'
+            f'<span class="article-fallback-kicker">{html.escape(direction_label)}</span>'
+            f'<strong class="article-fallback-title">{html.escape(topic_label)}</strong>'
+            f'<small class="article-fallback-source">{html.escape(source_label)}</small>'
+            '</a>'
+        )
 
     url = html.escape(article_target_url(article))
     title = display_article_title(article)
     alt = normalize_inline_text(article.get("image_alt") or title)
     escaped_title = html.escape(title)
-    onerror = (
-        ' onerror="this.parentElement.hidden=true;'
-        "var c=this.closest('.article-card');"
-        "if(c){c.classList.remove('has-media');c.classList.add('no-media');}"
-        '"'
-    )
+    # A remote publisher can withdraw an image or reject browser hotlinking
+    # after the page has been generated. Keep the fixed media area visible so
+    # a missing image never collapses the article's scanning rhythm.
+    onerror = ' onerror="this.parentElement.classList.add(\'article-media--failed\');this.remove()"'
     return (
         f'<a class="article-media" href="{url}" target="_blank" rel="noreferrer" '
         f'aria-label="{escaped_title} 이미지와 기사 링크 바로가기">'
@@ -12529,6 +13273,71 @@ def is_research_report_menu_article(article: dict) -> bool:
     )
 
 
+def cache_home_thumbnail_assets(articles: list[dict], web_root: Path) -> dict[str, str]:
+    """Cache a small, visible home-page image set as static assets.
+
+    Publisher CDNs regularly block third-party image embedding.  The homepage
+    only needs a bounded editorial preview set, so cache those files during
+    static generation while retaining the original article URL for every click.
+    A failed download leaves the source image untouched; render_article_media()
+    then supplies its visible fallback state.
+    """
+    candidates: list[dict] = []
+    seen: set[str] = set()
+    for article in articles:
+        key = article_target_url(article) or article_identity_key(article)
+        image_url = normalize_media_url(article.get("image_url"), key)
+        if not key or not image_url or key in seen:
+            continue
+        seen.add(key)
+        candidates.append(article)
+        if len(candidates) >= HOME_THUMBNAIL_DOWNLOAD_LIMIT:
+            break
+
+    if not candidates:
+        return {}
+
+    cache_root = web_root / "assets" / HOME_THUMBNAIL_CACHE_DIRNAME
+    cache_root.mkdir(parents=True, exist_ok=True)
+    cached: dict[str, str] = {}
+    extension_by_type = {
+        "image/jpeg": "jpg",
+        "image/jpg": "jpg",
+        "image/png": "png",
+        "image/webp": "webp",
+        "image/gif": "gif",
+        "image/avif": "avif",
+    }
+    for article in candidates:
+        key = article_target_url(article) or article_identity_key(article)
+        image_url = normalize_media_url(article.get("image_url"), key)
+        if not key or not image_url:
+            continue
+        digest = hashlib.sha256(image_url.encode("utf-8")).hexdigest()[:20]
+        existing = next(cache_root.glob(f"{digest}.*"), None)
+        if existing:
+            cached[key] = f"assets/{HOME_THUMBNAIL_CACHE_DIRNAME}/{existing.name}?v={ASSET_VERSION}"
+            continue
+        try:
+            request = urllib.request.Request(
+                image_url,
+                headers={"User-Agent": "Mozilla/5.0 (compatible; YouthTogetherPreview/1.0)"},
+            )
+            with urllib.request.urlopen(request, timeout=8) as response:
+                content_type = (response.headers.get_content_type() or "").lower()
+                if content_type not in extension_by_type:
+                    continue
+                payload = response.read(HOME_THUMBNAIL_MAX_BYTES + 1)
+            if not payload or len(payload) > HOME_THUMBNAIL_MAX_BYTES:
+                continue
+            filename = f"{digest}.{extension_by_type[content_type]}"
+            (cache_root / filename).write_bytes(payload)
+            cached[key] = f"assets/{HOME_THUMBNAIL_CACHE_DIRNAME}/{filename}?v={ASSET_VERSION}"
+        except (OSError, urllib.error.URLError, ValueError):
+            continue
+    return cached
+
+
 def is_government_statistics_menu_article(article: dict) -> bool:
     """정부조사·통계에는 공식 생산기관의 청년 대상 결과만 넣는다."""
     if is_publicly_excluded(article):
@@ -12575,6 +13384,7 @@ def is_general_news_menu_article(article: dict) -> bool:
 
 
 def render_article_card(article: dict, extra_attrs: dict[str, str] | None = None) -> str:
+    compact_news_layout = bool(extra_attrs and "data-article-hour" in extra_attrs)
     media_html = render_article_media(article)
     media_state_class = "has-media" if media_html else "no-media"
     topic_tags = article_topic_tags(article)
@@ -12595,6 +13405,43 @@ def render_article_card(article: dict, extra_attrs: dict[str, str] | None = None
         if summary_text
         else ""
     )
+    related_articles = [
+        related
+        for related in (article.get("policy_event_items") or article.get("related_articles") or [])
+        if related.get("relation_type") in {"news_coverage", "official_follow_up"}
+    ]
+    related_html = ""
+    if related_articles:
+        relation_labels = {
+            "news_coverage": "언론 보도",
+            "official_follow_up": "후속 공식자료",
+        }
+        relation_counts = {
+            relation_type: sum(1 for related in related_articles if related.get("relation_type") == relation_type)
+            for relation_type in relation_labels
+        }
+        summary = " · ".join(
+            f"{relation_labels[relation_type]} {count}건"
+            for relation_type, count in relation_counts.items()
+            if count
+        )
+        related_links = "".join(
+            '<li><span class="article-event-date">{date}</span><a href="{url}" target="_blank" rel="noreferrer">'
+            '<span class="article-event-relation">{relation}</span>{source} · {title}</a></li>'.format(
+                date=html.escape(article_published_label(related) or "날짜 미확인"),
+                url=html.escape(str(related.get("url") or ""), quote=True),
+                relation=html.escape(relation_labels[related.get("relation_type")]),
+                source=html.escape(format_source_label(related.get("source")) or "출처 미확인"),
+                title=html.escape(display_article_title(related, 88)),
+            )
+            for related in related_articles[:8]
+            if related.get("url")
+        )
+        if related_links and summary:
+            related_html = (
+                f'<details class="article-related"><summary>이 사건의 자료 흐름 · {summary}</summary>'
+                f'<ul class="article-event-timeline">{related_links}</ul></details>'
+            )
     article_date = html.escape(article_date_value(article))
     attr_parts = [
         f'class="article-card {media_state_class}"',
@@ -12613,14 +13460,20 @@ def render_article_card(article: dict, extra_attrs: dict[str, str] | None = None
                 continue
             attr_parts.append(f'{key}="{html.escape(str(value), quote=True)}"')
     attr_text = " ".join(attr_parts)
+    article_time_html = ""
+    if extra_attrs and extra_attrs.get("data-article-hour"):
+        display_time = str(extra_attrs.get("data-article-display-time") or extra_attrs["data-article-hour"])
+        article_time_html = f'<time class="article-list-time" datetime="{html.escape(display_time)}">{html.escape(display_time)}</time>'
     return f"""
     <article {attr_text}>
+      {article_time_html}
       {media_html}
-      {render_article_meta(article)}
+      {render_article_meta(article, include_tags=not compact_news_layout, byline_first=compact_news_layout)}
       <h3><a class="article-title-link" href="{escaped_url}" target="_blank" rel="noreferrer" aria-label="{escaped_title} 링크 바로가기">{escaped_title}</a></h3>
       {badge_row}
       {summary_html}
-      {render_article_actions(article)}
+      {related_html}
+      {render_article_actions(article, include_link_button=not compact_news_layout)}
     </article>
     """
 
@@ -12966,9 +13819,49 @@ def article_exposure_datetime(article: dict) -> datetime | None:
     return None
 
 
+def article_has_exposure_time(article: dict) -> bool:
+    """Return whether the source supplied a time, rather than a date alone.
+
+    Date-only official documents parse as midnight for sorting, but must never
+    be presented as if they were published at 00:00 in the live hourly feed.
+    """
+    for field in ARTICLE_EXPOSURE_DATE_FIELDS:
+        value = normalize_inline_text(str(article.get(field) or ""))
+        if not value:
+            continue
+        if re.search(r"(?:T|\s)\d{1,2}:\d{2}", value):
+            return True
+    return False
+
+
+def article_news_time_attrs(article: dict) -> dict[str, str]:
+    """Separate the hourly filter bucket from the shown publisher minute."""
+    published_at = article_exposure_datetime(article)
+    if not published_at or not article_has_exposure_time(article):
+        return {}
+    return {
+        "data-article-hour": published_at.strftime("%H:00"),
+        "data-article-display-time": published_at.strftime("%H:%M"),
+    }
+
+
 def article_exposure_timestamp(article: dict) -> float:
     parsed = article_exposure_datetime(article)
     return parsed.timestamp() if parsed else 0.0
+
+
+def article_publisher_wall_timestamp(article: dict) -> float:
+    """Sort by the publisher's displayed wall-clock time.
+
+    Collected publishers do not encode timezone offsets consistently.  The
+    public news list therefore follows the same source-local date and time it
+    shows to readers instead of silently reordering only the UTC-labelled
+    records after timezone conversion.
+    """
+    parsed = article_exposure_datetime(article)
+    if not parsed:
+        return 0.0
+    return parsed.replace(tzinfo=timezone.utc).timestamp()
 
 
 def format_display_datetime(value: str | None) -> str:
@@ -14017,6 +14910,7 @@ def render_news_filter_panel(
     directions: list[str] | None = None,
     use_region_map: bool = True,
     timeline_mode: bool = False,
+    split_timeline: bool = False,
     filter_title: str = "기사 필터",
     region_counts: dict[str, int] | None = None,
 ) -> str:
@@ -14091,6 +14985,38 @@ def render_news_filter_panel(
             f'{html.escape(date[5:].replace("-", "."))}</button>'
             for date in timeline_dates
         )
+        if split_timeline:
+            hour_values = sorted({
+                article_exposure_datetime(article).astimezone(timezone(timedelta(hours=9))).strftime("%H:00")
+                for article in getattr(render_news_filter_panel, "_timeline_articles", [])
+                if article_exposure_datetime(article)
+            })
+            # Tags are one continuous, horizontally scrollable choice row.
+            # Splitting them into arbitrary rows makes the filter visually
+            # ambiguous and changes its height according to tag count.
+            staged_topic_buttons = "".join(topic_buttons).replace(
+                'data-news-filter="true"', 'data-news-filter-stage="topic"'
+            )
+            hour_options = ['<option value="all">전체</option>'] + [
+                f'<option value="{h}">{h}</option>' for h in hour_values
+            ]
+            return f"""
+        <section class="section" id="filters">
+          <article class="section-card filter-panel news-filter-panel news-filter-split">
+            <div class="news-filter-split-col news-filter-calendar" data-news-range-filter="true" data-news-calendar-month="{date_max[:7]}">
+              <div class="filter-head"><div><h3>날짜별 기사 기록</h3></div>{status_html}</div>
+              <div class="news-calendar-toolbar"><button type="button" class="news-calendar-nav" data-news-calendar-prev aria-label="이전 달">←</button><strong data-news-calendar-label></strong><button type="button" class="news-calendar-nav" data-news-calendar-next aria-label="다음 달">→</button></div>
+              <div class="news-range-calendar" data-news-range-calendar role="group" aria-label="날짜 또는 기간 선택"></div>
+            </div>
+            <div class="news-filter-split-col news-filter-controls">
+              <div class="filter-group"><span class="filter-group-label">시간대</span><div class="news-hour-range" role="group" aria-label="기사 시간대 범위"><label class="news-hour-field" for="news-hour-start"><span>시작</span><select id="news-hour-start" class="news-hour-select" data-news-hour-start>{''.join(hour_options)}</select></label><label class="news-hour-field" for="news-hour-end"><span>마지막</span><select id="news-hour-end" class="news-hour-select" data-news-hour-end>{''.join(hour_options)}</select></label></div></div>
+              <div class="filter-group"><span class="filter-group-label">해시태그</span><div class="news-topic-row" role="group" aria-label="해시태그 필터">{staged_topic_buttons}</div></div>
+              <div class="filter-group"><label class="filter-group-label" for="news-keyword-search">키워드 검색</label><label class="filter-search-wrap"><input id="news-keyword-search" class="filter-search-input" type="search" data-news-search-stage="true" placeholder="제목·요약·출처 검색"></label></div>
+              <div class="news-filter-actions"><button class="button primary" type="button" data-news-filter-apply>적용</button><button class="button ghost" type="button" data-news-filter-reset>필터 초기화</button></div>
+            </div>
+          </article>
+        </section>
+        """
         return f"""
         <section class="section" id="filters">
           <article class="section-card filter-panel news-filter-panel news-timeline-filter">
@@ -14264,7 +15190,13 @@ def summarize_article_text(article: dict, limit: int = 118) -> str:
     return truncate_text(text, limit)
 
 
-def render_article_meta(article: dict, category_label: str | None = None) -> str:
+def render_article_meta(
+    article: dict,
+    category_label: str | None = None,
+    *,
+    include_tags: bool = True,
+    byline_first: bool = False,
+) -> str:
     categories = article.get("categories", [])
     category = category_label or (categories[0] if categories else "미분류")
     category_aliases = {
@@ -14285,18 +15217,16 @@ def render_article_meta(article: dict, category_label: str | None = None) -> str
     source = format_source_label(article.get("source") or article.get("source_name"))
     published = article_published_label(article) or "날짜 미상"
     publisher_icon = render_publisher_icon(article)
-    return (
-        '<div class="article-meta">'
-        '<div class="article-meta-tags">'
-        f'{meta_pills}'
-        '</div>'
+    byline_html = (
         '<div class="article-byline">'
         f'<span class="meta-item">{publisher_icon}{html.escape(source)}</span>'
         '<span class="meta-divider" aria-hidden="true">•</span>'
         f'<span class="meta-item">{html.escape(published)}</span>'
         '</div>'
-        '</div>'
     )
+    tags_html = f'<div class="article-meta-tags">{meta_pills}</div>' if include_tags and meta_pills else ""
+    ordered_parts = byline_html + tags_html if byline_first else tags_html + byline_html
+    return f'<div class="article-meta">{ordered_parts}</div>'
 
 
 def compact_article_meta(article: dict) -> str:
@@ -14334,6 +15264,10 @@ def article_sort_key(article: dict) -> tuple[int, float]:
 
 def sort_articles_by_recency(articles: list[dict]) -> list[dict]:
     return sorted(articles, key=article_sort_key, reverse=True)
+
+
+def sort_news_articles_by_publisher_recency(articles: list[dict]) -> list[dict]:
+    return sorted(articles, key=article_publisher_wall_timestamp, reverse=True)
 
 
 def is_publicly_excluded(article: dict) -> bool:
@@ -16612,10 +17546,12 @@ def build_news_page(articles: list[dict], status: dict) -> str:
     page_updated_at = status.get("finished_at") or status.get("updated_at") or ""
     news_articles = [
         article
-        for article in sort_articles_by_recency(articles)
+        for article in sort_news_articles_by_publisher_recency(articles)
         if is_general_news_menu_article(article)
     ]
-    recent_news_articles = filter_recent_articles(news_articles, page_updated_at, NEWS_WINDOW_HOURS)
+    recent_news_articles = sort_news_articles_by_publisher_recency(
+        filter_recent_articles(news_articles, page_updated_at, NEWS_WINDOW_HOURS)
+    )
     date_options = collect_article_dates(recent_news_articles)
     region_options = collect_news_regions(recent_news_articles)
     topic_options = collect_news_topics(recent_news_articles)
@@ -16626,14 +17562,19 @@ def build_news_page(articles: list[dict], status: dict) -> str:
         media_key="news",
         title="청년 관련 뉴스 전체보기",
     )
+    render_news_filter_panel._timeline_articles = recent_news_articles
     news_filter_panel = render_news_filter_panel(
         region_options,
         topic_options,
         date_options,
         len(recent_news_articles),
         timeline_mode=True,
+        split_timeline=True,
     )
-    cards_html = "".join(render_article_card(article) for article in recent_news_articles)
+    cards_html = "".join(
+        render_article_card(article, article_news_time_attrs(article))
+        for article in recent_news_articles
+    )
     return f"""
     <div data-news-filter-root="news" data-default-date-start="" data-default-date-end="" data-default-region="all" data-default-direction="all" data-default-topic="all" data-default-search-query="">
       {page_intro}
@@ -16706,6 +17647,133 @@ def build_editorial_archive_page(
       </section>
     {filter_root_close}
     """
+
+
+def build_time_window_briefs(articles: list[dict], reference_value: str | None, window_hours: int = 2) -> list[dict]:
+    """Group today's exposed records into fixed KST two-hour briefing windows.
+
+    This is deliberately deterministic: it provides a reliable briefing even
+    when no external LLM/API key is configured.  A future provider can consume
+    the same window JSON without changing the page contract.
+    """
+    reference_dt = parse_iso_datetime(reference_value) or datetime.now(timezone(timedelta(hours=9)))
+    reference_dt = reference_dt.astimezone(timezone(timedelta(hours=9)))
+    today = reference_dt.date()
+    grouped: dict[tuple[int, int], list[dict]] = {}
+    for article in sort_articles_by_recency(articles):
+        published = article_exposure_datetime(article)
+        if not published or published.astimezone(timezone(timedelta(hours=9))).date() != today:
+            continue
+        local = published.astimezone(timezone(timedelta(hours=9)))
+        start_hour = (local.hour // window_hours) * window_hours
+        grouped.setdefault((start_hour, local.day), []).append(article)
+    briefs: list[dict] = []
+    for (start_hour, _day), records in sorted(grouped.items(), reverse=True):
+        end_hour = start_hour + window_hours
+        kind_counts: dict[str, int] = {}
+        for record in records:
+            label, _key = home_activity_kind(record)
+            kind_counts[label] = kind_counts.get(label, 0) + 1
+        top_kinds = sorted(kind_counts.items(), key=lambda item: (-item[1], item[0]))[:4]
+        official_count = sum(1 for record in records if record.get("is_official_source") or record.get("source_kind") == "official")
+        high_signal = sum(1 for record in records if int(record.get("importance_score") or 0) >= 70 or record.get("has_policy_operational_context"))
+        briefs.append({
+            "date": local.strftime("%Y-%m-%d"),
+            "start_hour": start_hour,
+            "end_hour": end_hour,
+            "count": len(records),
+            "records": records[:8],
+            "kind_counts": top_kinds,
+            "official_count": official_count,
+            "high_signal": high_signal,
+        })
+    return briefs
+
+
+def build_recent_time_window_briefs(articles: list[dict], window_hours: int = 2, limit: int = 24) -> list[dict]:
+    """Return the newest real two-hour windows across the published archive."""
+    grouped: dict[tuple[str, int], list[dict]] = {}
+    for article in sort_articles_by_recency(articles):
+        published = article_exposure_datetime(article)
+        if not published:
+            continue
+        local = published.astimezone(timezone(timedelta(hours=9)))
+        grouped.setdefault((local.strftime("%Y-%m-%d"), (local.hour // window_hours) * window_hours), []).append(article)
+    briefs: list[dict] = []
+    for (date, start_hour), records in sorted(grouped.items(), reverse=True)[:limit]:
+        kind_counts: dict[str, int] = {}
+        for record in records:
+            label, _key = home_activity_kind(record)
+            kind_counts[label] = kind_counts.get(label, 0) + 1
+        official_count = sum(1 for record in records if record.get("is_official_source") or record.get("source_kind") == "official")
+        high_signal = sum(1 for record in records if int(record.get("importance_score") or 0) >= 70 or record.get("has_policy_operational_context"))
+        briefs.append({
+            "date": date,
+            "start_hour": start_hour,
+            "end_hour": start_hour + window_hours,
+            "count": len(records),
+            "records": records[:8],
+            "kind_counts": sorted(kind_counts.items(), key=lambda item: (-item[1], item[0]))[:4],
+            "official_count": official_count,
+            "high_signal": high_signal,
+        })
+    return briefs
+
+
+def build_policy_trends_page(articles: list[dict], status: dict) -> str:
+    """Render the policy-trends menu as today's two-hour AI briefing room.
+
+    The current provider is rules-based and uses collected metadata.  No
+    external API is called implicitly; an API adapter may be added later using
+    ``build_time_window_briefs`` as its stable input.
+    """
+    page_updated_at = status.get("finished_at") or status.get("updated_at") or ""
+    briefs = build_recent_time_window_briefs(articles)
+    page_dt = parse_iso_datetime(page_updated_at) or datetime.now(timezone(timedelta(hours=9)))
+    page_dt = page_dt.astimezone(timezone(timedelta(hours=9)))
+    window_cards: list[str] = []
+    for brief in briefs:
+        brief_id = f'brief-{brief["date"].replace("-", "")}-{brief["start_hour"]:02d}'
+        first_article = brief["records"][0] if brief["records"] else None
+        hero_media = render_article_media(first_article) if first_article else ""
+        chips = "".join(f'<span class="badge">{html.escape(label)} {count}건</span>' for label, count in brief["kind_counts"])
+        rows = "".join(
+            f'<li><a href="{html.escape(article_target_url(article), quote=True)}" target="_blank" rel="noreferrer">'
+            f'{html.escape(display_article_title(article, limit=100))}</a><span>{html.escape(format_source_label(article.get("source")) or "출처 미확인")}</span></li>'
+            for article in brief["records"] if article_target_url(article)
+        )
+        signal = "공식 자료 중심" if brief["official_count"] else "언론·공개 자료 중심"
+        if brief["high_signal"]:
+            signal += f" · 정책 영향 신호 {brief['high_signal']}건"
+        window_cards.append(f'''
+        <article class="policy-brief-window" id="{brief_id}" data-brief-start="{brief['start_hour']:02d}:00">
+          <div class="policy-brief-window-time"><span>{brief['date'].replace('-', '.')} · {brief['start_hour']:02d}:00–{brief['end_hour']:02d}:00</span><strong>{brief['count']}건</strong></div>
+          <div class="policy-brief-window-body">
+            {f'<div class="policy-brief-window-media">{hero_media}</div>' if hero_media else ''}
+            <div><h2>{html.escape(display_article_title(first_article, limit=104)) if first_article else '이 시간대 수집 자료'}</h2><p class="policy-brief-signal">{html.escape(signal)}</p><div class="badge-row">{chips}</div></div>
+          </div>
+          <ul class="policy-brief-links">{rows or '<li>이 시간대의 원문 링크가 없습니다.</li>'}</ul>
+        </article>''')
+    empty = '<article class="policy-brief-empty"><h2>오늘 생성된 브리프가 없습니다</h2></article>'
+    return f'''
+    <section class="policy-brief-hero" aria-labelledby="policy-brief-title">
+      <img src="{HOME_POLICY_WORKROOM_ILLUSTRATION['src']}" alt="{HOME_POLICY_WORKROOM_ILLUSTRATION['alt']}">
+      <div><p>청년정책 AI 브리핑</p><h1 id="policy-brief-title">{page_dt.strftime('%Y년 %m월 %d일')} 브리프</h1><span>오늘 수집 자료 {sum(brief['count'] for brief in briefs)}건</span></div>
+    </section>
+    <section class="section policy-brief-room" id="main-list" aria-label="시간대별 브리프">
+      <div class="policy-brief-grid">{"".join(window_cards) or empty}</div>
+    </section>
+    '''
+
+
+def render_page_context_nav(active_page: str) -> str:
+    """Render page-local anchors as a compact horizontal index, not a second menu rail."""
+    config = SIDE_NAV_CONFIG.get(active_page, SIDE_NAV_CONFIG["news.html"])
+    links: list[str] = []
+    for index, (href, label) in enumerate(config["items"]):
+        current = ' aria-current="location"' if index == 0 else ""
+        links.append(f'<a href="{html.escape(href)}"{current}>{html.escape(label)}</a>')
+    return "".join(links)
 
 
 def build_opinion_page(articles: list[dict], status: dict) -> str:
@@ -18607,9 +19675,9 @@ def render_youthside_footer_image() -> str:
     if not image_src:
         return ""
     return f"""
-        <div class="site-footer-brand-image" aria-label="유스사이드 브랜드 이미지">
+        <div class="site-footer-brand-image" aria-label="적재적소 연구소 브랜드 이미지">
           <div class="site-footer-brand-image-frame">
-            <img src="{html.escape(image_src, quote=True)}" alt="유스사이드 로고" loading="lazy" decoding="async">
+            <img src="{html.escape(image_src, quote=True)}" alt="적재적소 연구소 로고" loading="lazy" decoding="async">
           </div>
         </div>
     """
@@ -18618,7 +19686,7 @@ def render_youthside_footer_image() -> str:
 def build_footer_note(contact_settings: dict[str, str]) -> str:
     copyright_text = (contact_settings.get("copyright_text") or "").strip()
     contact_email = (contact_settings.get("email") or "").strip()
-    base_text = copyright_text or "© 2026 유스사이드 · 박진감"
+    base_text = copyright_text or "© 2026 적재적소 연구소"
     contact_link = (
         f'<a href="{html.escape(CREATOR_CONTACT_URL, quote=True)}" '
         f'target="_blank" rel="noopener noreferrer">{html.escape(CREATOR_CONTACT_LABEL)}</a>'
@@ -18644,7 +19712,7 @@ def build_footer_note(contact_settings: dict[str, str]) -> str:
     footer_site_head = """
           <div class="site-footer-site-head">
             <strong>청년투게더</strong>
-            <span>by YOUTHSIDE</span>
+            <span>적재적소 연구소 운영</span>
           </div>
     """
     return f"""
@@ -18987,15 +20055,14 @@ a { text-underline-offset: .2em; }
 .briefing-deck { max-width: 760px; color: #4f5868; font-size: 1.0625rem; font-weight: 400; line-height: 1.85; }
 .briefing-meta { display: flex; flex-wrap: wrap; gap: 9px 18px; margin-top: 24px; color: #727b8b; font-size: .8125rem; font-weight: 500; }
 .briefing-body { display: grid; grid-template-columns: minmax(0, 700px) 230px; gap: 54px; max-width: 960px; margin: 0 auto; padding: 0 24px 120px; }
-.briefing-block { padding: 34px 0; border-top: 1px solid var(--brand-line); }
-.briefing-block h2 { margin: 0 0 16px; font-size: 1.5rem; font-weight: 700; letter-spacing: -.035em; }
-.briefing-block p { margin: 0; color: #3f4857; font-size: 1rem; font-weight: 400; line-height: 1.9; }
 .briefing-source { position: sticky; top: 100px; align-self: start; padding: 20px; border-radius: 16px; background: var(--brand-paper); }
 .briefing-source strong { display: block; margin-bottom: 10px; }
 .briefing-source p { margin: 0 0 14px; color: var(--brand-muted); font-size: .82rem; line-height: 1.65; }
-.briefing-nav { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 24px; }
+.briefing-related { padding-top: 4px; border-top: 1px solid var(--brand-line); }
+.briefing-related h2 { margin: 28px 0 16px; font-size: 1.25rem; font-weight: 700; letter-spacing: -.035em; }
+.briefing-nav { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 .briefing-nav a { padding: 18px; border: 1px solid var(--brand-line); border-radius: 14px; color: var(--brand-ink); font-weight: 800; text-decoration: none; }
-.site-footer { margin: 0 !important; padding: 42px 24px !important; border: 0 !important; background: #0f1219 !important; color: #d5d9e1 !important; }
+.site-footer { margin: 24px 0 0 !important; padding: 42px 24px !important; border: 0 !important; background: #0f1219 !important; color: #d5d9e1 !important; }
 .site-footer > * { max-width: var(--content-width); margin-left: auto; margin-right: auto; }
 .site-footer a { color: #fff !important; }
 .bottom-nav { display: none; }
@@ -19997,14 +21064,268 @@ body:not([data-page="index.html"]) .page-intro-title {
 }
 """
 
+POLICY_BRIEF_CSS = r"""
+/* Keep menu screens scannable: headings carry the meaning; repeated helper
+   paragraphs are hidden while article summaries and functional labels remain. */
+body:not([data-page="index.html"]) .page-intro-copy,
+body:not([data-page="index.html"]) .section-head > div > p:not(.eyebrow),
+body:not([data-page="index.html"]) .filter-head p,
+body:not([data-page="index.html"]) .section-card > p { display: none; }
+.civic-headline-note--brief { background: rgba(244, 250, 248, .7); }
+.civic-brief-kicker { color: var(--accent-strong); font-size: .76rem; font-weight: 800; letter-spacing: .02em; }
+/* Homepage: the archive is a peer of the latest list, not a narrow sidebar. */
+body[data-page="index.html"] .civic-news-calendar { grid-template-columns: minmax(0, 1fr) minmax(420px, 1fr); gap: 32px; align-items: stretch; }
+body[data-page="index.html"] .civic-activity-archive--sidebar { width: 100% !important; min-height: 100%; box-sizing: border-box; padding: 26px; }
+body[data-page="index.html"] .civic-activity-archive--sidebar .home-activity-calendar { gap: 8px; }
+body[data-page="index.html"] .civic-activity-archive--sidebar .home-activity-day { min-height: 72px; padding: 9px 7px; }
+body[data-page="index.html"] .civic-activity-archive--sidebar .home-activity-records { margin-top: 20px; padding-top: 16px; }
+body[data-page="index.html"] .home-activity-records--date header p { display: none; }
+body[data-page="index.html"] .home-activity-records--date header { margin-bottom: 8px; }
+body[data-page="index.html"] .home-activity-records--date > div:empty { display: none; }
+body[data-page="index.html"] .civic-latest-now { margin-bottom: 18px; }
+body[data-page="index.html"] .civic-latest-news .civic-brief-row { padding: 14px 0; }
+@media (max-width: 900px) { body[data-page="index.html"] .civic-news-calendar { grid-template-columns: 1fr; gap: 34px; } body[data-page="index.html"] .civic-activity-archive--sidebar { min-height: 0; } }
+.news-filter-split { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; }
+.news-filter-split-col { min-width: 0; }
+.news-filter-split-col + .news-filter-split-col { padding-left: 28px; border-left: 1px solid var(--line); }
+.news-filter-controls { display: grid; gap: 18px; align-content: start; }
+.news-filter-controls .filter-group { margin: 0; }
+.news-filter-calendar .filter-head { margin-bottom: 18px; }
+.news-filter-calendar .filter-status { margin-left: auto; white-space: nowrap; }
+.news-calendar-toolbar { display: flex; align-items: center; justify-content: center; gap: 12px; margin-bottom: 16px; color: var(--deep-navy); }
+.news-calendar-nav { width: 38px; height: 38px; border: 1px solid var(--line); border-radius: 50%; background: var(--surface); color: var(--deep-navy); font-size: 1.2rem; cursor: pointer; }
+.news-calendar-nav:disabled { opacity: .38; cursor: default; }
+.news-range-calendar { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 7px; }
+.news-calendar-weekday { padding: 5px 0; color: var(--muted); font-size: .78rem; font-weight: 800; text-align: center; }
+.news-calendar-day { min-height: 56px; display: grid; place-content: center; gap: 2px; border: 1px solid transparent; border-radius: 10px; background: transparent; color: var(--muted); font: inherit; font-size: .9rem; cursor: pointer; }
+.news-calendar-day:not(.is-blank):not(:disabled):hover { border-color: var(--deep-navy); color: var(--deep-navy); }
+.news-calendar-day small { color: var(--accent-strong); font-size: .68rem; font-weight: 800; }
+.news-calendar-day:disabled { opacity: .34; cursor: default; }
+.news-calendar-day.is-selected { border-color: var(--deep-navy); background: var(--surface); color: var(--deep-navy); font-weight: 800; box-shadow: inset 0 0 0 1px var(--deep-navy); }
+.news-calendar-day.is-in-range { background: var(--mint); color: var(--deep-navy); }
+.news-hour-range { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 8px; min-width: 0; }
+.news-hour-field { display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: center; gap: 8px; min-width: 0; color: var(--muted); font-size: .78rem; font-weight: 800; white-space: nowrap; }
+.news-hour-select { width: 100%; min-width: 0; min-height: 46px; padding: 0 10px; border: 1px solid var(--line); border-radius: 12px; background: var(--surface); color: var(--text); font: inherit; font-weight: 700; }
+.news-topic-row { display: flex; flex-wrap: wrap; align-content: flex-start; gap: 7px; min-width: 0; max-height: 85px; overflow: hidden; padding: 1px 0; }
+.news-topic-row::-webkit-scrollbar { display: none; }
+.news-topic-row .filter-button { flex: 0 0 auto; min-height: 38px; padding: 6px 10px; }
+.news-filter-actions { display: flex; align-items: center; justify-content: flex-end; gap: 10px; padding-top: 4px; }
+.news-filter-actions .button { min-height: 44px; }
+body[data-page="news.html"] .article-grid { grid-template-columns: 1fr; }
+body[data-page="news.html"] .article-card { display: grid; grid-template-columns: 86px 1fr; column-gap: 18px; align-items: start; }
+body[data-page="news.html"] .article-list-time { grid-column: 1; grid-row: 1; color: var(--accent-strong); font-weight: 800; font-variant-numeric: tabular-nums; }
+body[data-page="news.html"] .article-card .article-meta { grid-column: 2; grid-row: 3; }
+body[data-page="news.html"] .article-card .article-media { grid-column: 2; grid-row: 1; max-width: 220px; }
+body[data-page="news.html"] .article-card h3 { grid-column: 2; grid-row: 2; }
+body[data-page="news.html"] .article-card .badge-row { grid-column: 2; grid-row: 4; }
+body[data-page="news.html"] .article-card .article-summary { grid-column: 2; grid-row: 5; }
+body[data-page="news.html"] .article-card .article-actions { grid-column: 2; grid-row: 6; }
+@media (max-width: 800px) { .news-filter-split { grid-template-columns: 1fr; } .news-filter-split-col + .news-filter-split-col { padding-left: 0; border-left: 0; border-top: 1px solid var(--line); padding-top: 20px; } .news-filter-calendar .filter-head { align-items: flex-start; } .news-filter-calendar .filter-status { margin-left: 0; } .news-calendar-day { min-height: 48px; } body[data-page="news.html"] .article-card { grid-template-columns: 64px 1fr; } }
+/* News is a time-ordered reading list, not a feature-card grid.  Keep every
+   item to one compact, predictable line of evidence. */
+body[data-page="news.html"] .article-grid { display: grid; grid-template-columns: minmax(0, 1fr) !important; gap: 8px; align-items: start; }
+body[data-page="news.html"] .article-grid > .article-card,
+body[data-page="news.html"] .article-grid > .article-card.has-media:first-child {
+  display: grid !important;
+  grid-column: 1 / -1 !important;
+  grid-row: auto !important;
+  grid-template-columns: 74px 124px minmax(0, 1fr);
+  grid-template-rows: auto auto auto auto auto;
+  grid-template-areas:
+    "time media title"
+    "time media summary"
+    "time media meta"
+    "time media tags"
+    "time media actions";
+  min-height: 0 !important;
+  padding: 10px 16px !important;
+  gap: 0 16px;
+  border-radius: 12px;
+  overflow: visible;
+  background: var(--panel);
+  box-shadow: none;
+  transform: none;
+}
+body[data-page="news.html"] .article-grid > .article-card[hidden],
+body[data-page="news.html"] .article-grid > .article-card.has-media:first-child[hidden] { display: none !important; }
+body[data-page="news.html"] .article-grid > .article-card::after { display: none; }
+body[data-page="news.html"] .article-grid > .article-card > :not(.article-media) { margin-left: 0; margin-right: 0; }
+body[data-page="news.html"] .article-list-time { grid-area: time; align-self: start; padding-top: 3px; color: var(--accent-strong); font-size: .88rem; font-weight: 800; font-variant-numeric: tabular-nums; }
+body[data-page="news.html"] .article-card .article-media,
+body[data-page="news.html"] .article-grid > .article-card.has-media:first-child .article-media {
+  grid-area: media;
+  width: 124px;
+  height: 96px;
+  min-height: 0;
+  margin: 0;
+  border: 0;
+  border-radius: 7px;
+}
+body[data-page="news.html"] .article-card .article-thumbnail { width: 100%; height: 100%; object-fit: cover; }
+body[data-page="news.html"] .article-card h3,
+body[data-page="news.html"] .article-grid > .article-card.has-media:first-child h3 {
+  grid-area: title;
+  display: -webkit-box;
+  margin: 0;
+  overflow: hidden;
+  color: var(--deep-navy);
+  font-size: 1.02rem;
+  font-weight: 760;
+  line-height: 1.35;
+  letter-spacing: -.035em;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+}
+body[data-page="news.html"] .article-card .article-summary,
+body[data-page="news.html"] .article-grid > .article-card.has-media:first-child .article-summary {
+  grid-area: summary;
+  display: -webkit-box;
+  margin: 4px 0 0;
+  overflow: hidden;
+  color: #707b84;
+  font-size: .82rem;
+  line-height: 1.42;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+body[data-page="news.html"] .article-card .article-meta,
+body[data-page="news.html"] .article-grid > .article-card.has-media:first-child .article-meta { grid-area: meta; display: block; margin: 5px 0 0; }
+body[data-page="news.html"] .article-card .article-meta-tags { display: none; }
+body[data-page="news.html"] .article-card .article-byline { display: flex; gap: 6px; color: #87919a; font-size: .72rem; line-height: 1.25; }
+body[data-page="news.html"] .article-card .publisher-icon { width: 14px; height: 14px; }
+body[data-page="news.html"] .article-card .badge-row,
+body[data-page="news.html"] .article-grid > .article-card.has-media:first-child .badge-row { grid-area: tags; display: flex; margin: 5px 0 0; padding-right: 140px; gap: 5px; }
+body[data-page="news.html"] .article-card .badge { padding: 3px 6px; border-radius: 999px; font-size: .64rem; line-height: 1.2; }
+body[data-page="news.html"] .article-card .article-actions,
+body[data-page="news.html"] .article-grid > .article-card.has-media:first-child .article-actions {
+  grid-area: actions;
+  grid-column: auto;
+  grid-row: auto;
+  justify-self: end;
+  align-self: end;
+  max-width: 100%;
+  margin: 4px 0 0;
+  padding: 0;
+  border: 0;
+}
+body[data-page="news.html"] .article-card .article-actions .action-button { min-height: 25px; padding: 3px 8px; border-radius: 999px; font-size: .68rem; }
+body[data-page="news.html"] .article-card .article-feedback { grid-column: 3; margin: 2px 0 0; min-height: 0; font-size: .7rem; }
+body[data-page="news.html"] .article-card .article-related { grid-column: 3; margin: 4px 0 0; font-size: .72rem; }
+@media (max-width: 680px) {
+  body[data-page="news.html"] .article-grid > .article-card,
+  body[data-page="news.html"] .article-grid > .article-card.has-media:first-child { grid-template-columns: 48px 88px minmax(0, 1fr); gap: 0 10px; padding: 12px 10px !important; }
+  body[data-page="news.html"] .article-card .article-media,
+  body[data-page="news.html"] .article-grid > .article-card.has-media:first-child .article-media { width: 88px; height: 76px; }
+  body[data-page="news.html"] .article-list-time { font-size: .75rem; }
+  body[data-page="news.html"] .article-card h3,
+  body[data-page="news.html"] .article-grid > .article-card.has-media:first-child h3 { font-size: .9rem; }
+  body[data-page="news.html"] .article-card .article-summary,
+  body[data-page="news.html"] .article-grid > .article-card.has-media:first-child .article-summary { font-size: .74rem; }
+  body[data-page="news.html"] .article-card .article-actions .action-button { padding: 3px 6px; font-size: .63rem; }
+  body[data-page="news.html"] .article-card .badge-row,
+  body[data-page="news.html"] .article-grid > .article-card.has-media:first-child .badge-row { padding-right: 112px; }
+}
+.civic-ai-brief-home { width: min(1360px, calc(100% - 64px)); display: grid; grid-template-columns: minmax(0, 1.18fr) minmax(310px, .82fr); margin: 46px auto 0; border-top: 2px solid var(--deep-navy); border-bottom: 1px solid var(--line); }
+.civic-ai-brief-banner { position: relative; display: grid; min-height: 400px; overflow: hidden; color: #fff; text-decoration: none; isolation: isolate; }
+.civic-ai-brief-banner::after { content: ''; position: absolute; inset: 0; z-index: 1; background: linear-gradient(90deg, rgba(0,0,0,.76), rgba(0,0,0,.4) 64%, rgba(0,0,0,.16)); }
+.civic-ai-brief-banner img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center; z-index: 0; }
+.civic-ai-brief-banner span { position: relative; z-index: 2; align-self: end; max-width: 760px; padding: 42px; color: rgba(255,255,255,.94); font-size: clamp(1.8rem, 3.3vw, 3.4rem); font-weight: 900; letter-spacing: -.065em; line-height: 1.18; word-break: keep-all; text-shadow: 0 2px 16px rgba(0,0,0,.42); }
+.civic-ai-brief-banner:hover span, .civic-ai-brief-banner:focus-visible span { text-decoration: underline; text-underline-offset: .17em; }
+.civic-ai-brief-recent { display: flex; flex-direction: column; padding: 32px; background: #f4f8f6; }
+.civic-ai-brief-recent > div { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-bottom: 18px; border-bottom: 1px solid var(--line); }
+.civic-ai-brief-recent h2 { margin: 0; color: var(--deep-navy); font-size: 1.08rem; letter-spacing: -.035em; }
+.civic-ai-brief-recent > div a { color: var(--deep-navy); font-size: .78rem; font-weight: 800; text-decoration: none; white-space: nowrap; }
+.civic-ai-brief-recent ol { display: grid; flex: 1; grid-auto-rows: minmax(0, 1fr); margin: 0; padding: 0; list-style: none; }
+.civic-ai-brief-recent li { display: flex; align-items: center; border-bottom: 1px solid var(--line); }
+.civic-ai-brief-recent li:last-child { border-bottom: 0; }
+.civic-ai-brief-recent li a { display: flex; width: 100%; align-items: center; justify-content: space-between; gap: 12px; color: var(--deep-navy); text-decoration: none; }
+.civic-ai-brief-recent li a:hover time, .civic-ai-brief-recent li a:focus-visible time { text-decoration: underline; text-underline-offset: .16em; }
+.civic-ai-brief-recent time { font-size: .86rem; font-weight: 700; font-variant-numeric: tabular-nums; }
+.civic-ai-brief-recent strong { color: var(--accent-strong); font-size: .83rem; white-space: nowrap; }
+.civic-ai-brief-empty { color: var(--muted); font-size: .86rem; }
+body[data-page="trends.html"] .policy-brief-hero { position: relative; display: grid; min-height: 370px; overflow: hidden; width: min(1360px, calc(100% - 64px)); margin: 44px auto 0; color: #fff; isolation: isolate; }
+body[data-page="trends.html"] .policy-brief-hero::after { content: ''; position: absolute; inset: 0; z-index: 1; background: linear-gradient(90deg, rgba(0,0,0,.72), rgba(0,0,0,.18)); }
+body[data-page="trends.html"] .policy-brief-hero img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; }
+body[data-page="trends.html"] .policy-brief-hero > div { position: relative; z-index: 2; align-self: end; max-width: 790px; padding: 42px; }
+body[data-page="trends.html"] .policy-brief-hero p, body[data-page="trends.html"] .policy-brief-hero span { margin: 0; color: rgba(255,255,255,.86); font-size: .88rem; font-weight: 800; }
+body[data-page="trends.html"] .policy-brief-hero h1 { margin: 10px 0; color: #fff; font-size: clamp(2.3rem, 4.6vw, 4.6rem); letter-spacing: -.07em; line-height: 1.08; }
+.policy-brief-room { width: min(1100px, calc(100% - 64px)); margin: 48px auto 0; }
+.policy-brief-grid { display: grid; gap: 22px; }
+.policy-brief-window { padding: 26px 0; border-top: 2px solid var(--deep-navy); border-bottom: 1px solid var(--line); }
+.policy-brief-window-time { display: flex; align-items: baseline; justify-content: space-between; gap: 18px; color: var(--deep-navy); font-size: .92rem; font-weight: 800; }
+.policy-brief-window-time strong { color: var(--accent-strong); font-size: 1.05rem; }
+.policy-brief-window-body { display: grid; grid-template-columns: minmax(0, 1fr); gap: 20px; margin-top: 18px; }
+.policy-brief-window-media { max-width: 520px; }
+.policy-brief-window-media .article-media { aspect-ratio: 16 / 7; border-radius: 12px; }
+.policy-brief-window h2 { max-width: 860px; margin: 0; color: var(--deep-navy); font-size: clamp(1.35rem, 2.7vw, 2.35rem); letter-spacing: -.055em; line-height: 1.28; word-break: keep-all; }
+.policy-brief-signal { margin: 13px 0; color: var(--muted); font-size: .9rem; }
+.policy-brief-links { display: grid; gap: 0; margin: 22px 0 0; padding: 0; list-style: none; }
+.policy-brief-links li { display: grid; gap: 4px; padding: 13px 0; border-top: 1px solid var(--line); }
+.policy-brief-links a { color: var(--deep-navy); font-weight: 750; line-height: 1.5; text-decoration: none; }
+.policy-brief-links a:hover, .policy-brief-links a:focus-visible { text-decoration: underline; text-underline-offset: .16em; }
+.policy-brief-links span { color: var(--muted); font-size: .78rem; }
+.policy-brief-empty { padding: 80px 0; border-top: 2px solid var(--deep-navy); border-bottom: 1px solid var(--line); color: var(--muted); }
+@media (max-width: 800px) { .civic-ai-brief-home { width: calc(100% - 32px); grid-template-columns: 1fr; margin-top: 30px; } .civic-ai-brief-banner { min-height: 300px; } .civic-ai-brief-banner span { padding: 28px; font-size: 1.72rem; } .civic-ai-brief-recent { min-height: 290px; padding: 24px; } body[data-page="trends.html"] .policy-brief-hero, .policy-brief-room { width: calc(100% - 32px); } body[data-page="trends.html"] .policy-brief-hero { min-height: 300px; margin-top: 28px; } body[data-page="trends.html"] .policy-brief-hero > div { padding: 28px; } .policy-brief-room { margin-top: 32px; } }
+/* Newspaper-like home hierarchy: consistent section bars, compact titles, and muted previews. */
+.civic-ai-brief-banner span { display: grid; gap: 8px; max-width: none; padding-right: 24px; font-weight: 800; line-height: 1.14; white-space: normal; }
+.civic-ai-brief-banner span small, .civic-ai-brief-banner span strong { display: block; color: inherit; font: inherit; }
+.civic-ai-brief-banner span small { font-size: clamp(1.4rem, 2.3vw, 2.15rem); font-weight: 800; }
+.civic-ai-brief-banner span strong { font-size: clamp(2rem, 3vw, 2.6rem); font-weight: 900; letter-spacing: -.06em; }
+.civic-ai-brief-recent time { font-size: clamp(.574rem, 1.05vw, .89rem); font-weight: 800; letter-spacing: -.035em; }
+.civic-ai-brief-recent strong { font-size: .7rem; }
+@media (max-width: 800px) { .civic-ai-brief-banner span { gap: 5px; padding: 24px; letter-spacing: -.055em; } .civic-ai-brief-banner span small { font-size: clamp(1rem, 4.3vw, 1.3rem); } .civic-ai-brief-banner span strong { font-size: clamp(1.35rem, 6.2vw, 1.8rem); } .civic-ai-brief-recent time { font-size: .665rem; } .civic-ai-brief-recent strong { font-size: .602rem; } }
+.civic-home-section-bar, .civic-activity-archive--sidebar .home-activity-archive-head { display: flex; width: 100%; min-height: 66px; align-items: center; justify-content: space-between !important; gap: 18px; margin: 0; padding: 0; border-top: 2px solid var(--deep-navy); border-bottom: 1px solid var(--line); }
+.civic-activity-archive--sidebar .home-activity-archive-head h2 { margin-right: auto; }
+.civic-home-section-bar h2, .civic-activity-archive--sidebar .home-activity-archive-head h2 { margin: 0; color: var(--deep-navy); font-size: 1.32rem; font-weight: 780; letter-spacing: -.05em; }
+.civic-home-section-bar time { color: #6d7780; font-size: .82rem; font-weight: 650; font-variant-numeric: tabular-nums; }
+.civic-latest-news { border-top: 0; }
+.civic-latest-news .civic-section-head, .civic-latest-now { display: none; }
+.civic-latest-news .civic-brief-row { display: grid; grid-template-columns: 144px minmax(0, 1fr); gap: 18px; align-items: start; min-height: 108px; padding: 14px 0; border-bottom: 1px solid var(--line); }
+.civic-latest-news .civic-brief-thumbnail { min-width: 0; }
+.civic-latest-news .civic-brief-thumbnail .article-media { display: block; width: 100%; height: 108px; aspect-ratio: auto; overflow: hidden; border-radius: 7px; }
+.civic-latest-news .civic-brief-thumbnail .article-media > img.article-thumbnail { width: 100%; height: 100%; object-fit: cover; }
+.civic-latest-news .civic-brief-thumbnail .official-authority-media { align-items: center; justify-content: center; padding: 12px; }
+.civic-latest-news .civic-brief-thumbnail .official-authority-mark { width: 42px; height: 42px; }
+.civic-latest-news .civic-brief-thumbnail .official-authority-copy { display: none; }
+.civic-latest-news .civic-brief-thumbnail .article-media--failed { display: flex; align-items: flex-end; padding: 11px; box-sizing: border-box; background: #edf3f0; }
+.civic-latest-news .civic-brief-thumbnail .article-media--failed::after { content: "출처 이미지 미제공"; color: #53666b; font-size: .72rem; font-weight: 700; }
+.civic-latest-news .civic-brief-copy h3 { display: -webkit-box; margin: 0; overflow: hidden; color: var(--deep-navy); font-size: 1.02rem; font-weight: 740; letter-spacing: -.035em; line-height: 1.36; word-break: keep-all; -webkit-box-orient: vertical; -webkit-line-clamp: 1; }
+.civic-latest-news .civic-brief-copy h3 a { color: inherit; text-decoration: none; }
+.civic-latest-news .civic-brief-copy h3 a:hover, .civic-latest-news .civic-brief-copy h3 a:focus-visible { text-decoration: underline; text-underline-offset: .15em; }
+.civic-latest-news .civic-brief-copy > p { display: -webkit-box; margin: 6px 0 0; overflow: hidden; color: #707b84; font-size: .82rem; font-weight: 460; line-height: 1.45; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
+.civic-latest-news .civic-brief-copy time { display: block; margin-top: 7px; color: #87919a; font-size: .73rem; font-weight: 560; }
+.civic-latest-news .civic-related { margin-top: 9px; font-size: .76rem; }
+/* The calendar is the second editorial column, not an inset card: its title
+   bar must share the exact same top rule, baseline and horizontal edge as
+   today's articles. */
+.civic-activity-archive--sidebar { margin: 0; padding: 0; border: 0; background: transparent; }
+.civic-activity-archive--sidebar .home-activity-archive-head { min-height: 66px; margin: 0 0 18px; padding: 0; border-top: 2px solid var(--deep-navy); border-bottom: 1px solid var(--line); }
+.civic-activity-archive--sidebar .home-activity-month-controls strong { color: var(--deep-navy); font-weight: 720; }
+body[data-page="trends.html"] .policy-brief-hero h1 { font-size: clamp(2rem, 3.8vw, 3.55rem); font-weight: 800; }
+.policy-brief-window h2 { font-size: clamp(1.28rem, 2.2vw, 1.9rem); font-weight: 760; }
+.policy-brief-links a { font-size: .96rem; font-weight: 700; }
+.policy-brief-signal, .policy-brief-links span { color: #707b84; }
+@media (max-width: 800px) { .civic-home-section-bar, .civic-activity-archive--sidebar .home-activity-archive-head { min-height: 56px; } .civic-home-section-bar h2, .civic-activity-archive--sidebar .home-activity-archive-head h2 { font-size: 1.16rem; } .civic-home-section-bar time { font-size: .72rem; } .civic-latest-news .civic-brief-row { grid-template-columns: 104px minmax(0, 1fr); gap: 13px; min-height: 82px; padding: 13px 0; } .civic-latest-news .civic-brief-thumbnail .article-media { height: 82px; } .civic-latest-news .civic-brief-copy h3 { font-size: .93rem; } .civic-latest-news .civic-brief-copy > p { margin-top: 5px; font-size: .76rem; -webkit-line-clamp: 2; } .civic-latest-news .civic-brief-copy time { margin-top: 5px; font-size: .67rem; } }
+.policy-brief-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
+.policy-brief-window { min-width: 0; }
+.policy-brief-window .section-head { align-items: flex-start; }
+.policy-brief-window .section-head h3 { margin: 0; }
+.policy-brief-links { display: grid; gap: 10px; margin: 18px 0 0; padding: 0; list-style: none; }
+.policy-brief-links li { display: flex; flex-direction: column; gap: 2px; padding-top: 10px; border-top: 1px solid var(--line); }
+.policy-brief-links a { color: var(--text); font-weight: 700; text-decoration: none; }
+.policy-brief-links a:hover { text-decoration: underline; }
+.policy-brief-links span { color: var(--muted); font-size: .82rem; }
+@media (max-width: 800px) { .policy-brief-grid { grid-template-columns: 1fr; } }
+"""
+
 
 def render_soft_gate() -> str:
     return """
     <aside class="soft-gate" data-soft-gate hidden aria-labelledby="soft-gate-title">
       <button class="soft-gate-close" type="button" data-soft-gate-close aria-label="이 안내 닫기">×</button>
-      <p class="product-eyebrow">같은 의제의 자료를 4건 읽었습니다</p>
+      <p class="product-eyebrow">기사·공식자료 4건을 확인했습니다</p>
       <h2 id="soft-gate-title">다음 변화를 주 1회 이메일로 받으세요</h2>
-      <p class="soft-gate-copy">기사·공식자료 링크와 다음 확인 항목을 묶어 보냅니다. 이 안내를 닫아도 모든 자료를 계속 볼 수 있습니다.</p>
+      <p class="soft-gate-copy">기사·공식자료 링크를 묶어 보냅니다. 이 안내를 닫아도 모든 자료를 계속 볼 수 있습니다.</p>
       <form class="briefing-form" data-briefing-form data-source-screen="fourth_article_gate">
         <label>이메일<input type="email" name="email" autocomplete="email" required placeholder="name@example.com"></label>
         <label class="briefing-consent"><input type="checkbox" name="consent" required><span>청년정책 브리핑을 주 1회 이메일로 받습니다.</span></label>
@@ -20052,6 +21373,7 @@ PUBLIC_PAGE_TEMPLATE = """<!doctype html>
 PAGE_DESCRIPTIONS = {
     "index.html": "청년정책의 변화와 현장 소식을 판단과 제안에 쓸 수 있게 연결합니다.",
     "news.html": "지역과 의제별 청년정책 변화, 공식 발표와 후속 보도를 검색하고 확인합니다.",
+    "trends.html": "오늘 들어온 청년정책 자료를 2시간 단위 브리프로 묶어 핵심 흐름을 확인합니다.",
     "guide.html": "근거를 모으고 정책제안의 첫 문장을 만드는 단계별 실험실입니다.",
     "hub.html": "청년 참여기구와 현장 논의 기록을 지역과 의제별로 확인합니다.",
     "opinion.html": "청년정책을 둘러싼 검증 가능한 해설과 현장 관점을 모았습니다.",
@@ -20063,6 +21385,7 @@ PAGE_DESCRIPTIONS = {
 
 NAV_ITEMS = [
     ("news.html", "언론 기사"),
+    ("trends.html", "정책 동향"),
     ("opinion.html", "기고·칼럼·오피니언"),
     ("official.html", "정부 부처 자료실"),
     ("local.html", "지자체 자료실"),
@@ -20077,8 +21400,9 @@ BOTTOM_NAV_ITEMS = [
     ("local.html", "지자체"),
 ]
 PAGE_HEADINGS.update({
-    "index.html": "청년투게더",
+    "index.html": "적재적소 브리프",
     "news.html": "언론 기사",
+    "trends.html": "실시간 청년정책 AI 브리프",
     "guide.html": "정책제안 실험실",
     "hub.html": "현장 목소리",
     "opinion.html": "기고·칼럼·오피니언",
@@ -20086,8 +21410,9 @@ PAGE_HEADINGS.update({
     "about.html": "운영자·편집 기준",
 })
 SIDE_NAV_CONFIG.update({
-    "index.html": {"title": "홈", "description": "오늘의 자료", "items": [("#page-top", "처음"), ("#today-briefing", "날짜별 흐름"), ("#flow-stream", "오늘 들어온 자료"), ("#menu-updates", "메뉴별 최신 자료")]},
+    "index.html": {"title": "홈", "description": "오늘의 변화", "items": [("#page-top", "처음"), ("#today-briefing", "오늘 자료"), ("#activity-calendar", "날짜별 기록"), ("#article-discovery", "기사 탐색")]},
     "news.html": {"title": "언론 기사", "description": "날짜와 검색", "items": [("#page-top", "처음"), ("#filters", "날짜·검색"), ("#main-list", "기사 목록")]},
+    "trends.html": {"title": "실시간 청년정책 AI 브리프", "description": "2시간 단위 브리프", "items": [("#page-top", "처음"), ("#main-list", "시간대별 브리프")]},
     "guide.html": {"title": "정책제안 실험실", "description": "제안 준비", "items": [("#page-top", "처음"), ("#main-list", "제안 단계"), ("#evidence-check", "근거 점검")]},
     "hub.html": {"title": "현장 목소리", "description": "참여 기록", "items": [("#page-top", "처음"), ("#filters", "조건 설정"), ("#main-list", "참여 기록")]},
     "opinion.html": {"title": "기고·칼럼·오피니언", "description": "해설과 관점", "items": [("#page-top", "처음"), ("#main-list", "기고·칼럼 목록")]},
@@ -20123,12 +21448,6 @@ def _policy_stage(article: dict) -> str:
     if article.get("is_official_source") or article.get("source_kind") == "official":
         return "공식 발표"
     return "후속 보도"
-
-
-def _next_check(article: dict) -> str:
-    if article.get("is_official_source") or article.get("source_kind") == "official":
-        return "대상·시행일·담당기관과 후속 공고"
-    return "관련 기관의 공식 원문과 실제 후속 조치"
 
 
 def product_detail_filename(article: dict) -> str:
@@ -20189,14 +21508,12 @@ def render_policy_signal_card(article: dict) -> str:
     published = html.escape(article_published_label(article) or "발행일 미확인")
     region = html.escape(news_region_label(article) or "전국")
     stage = html.escape(_policy_stage(article))
-    next_check = html.escape(_next_check(article))
     return f"""
       <article class="policy-signal" data-preview-card data-region="{region}" data-topics="{html.escape('|'.join(article_topic_tags(article)), quote=True)}">
         <span class="signal-state">{stage}</span>
         <h3><a href="{detail_url}" data-event="briefing_open">{title}</a></h3>
         <p class="policy-signal-meta">{source} · {published} · {region}</p>
-        <p class="signal-question"><strong>다음 확인</strong><br>{next_check}</p>
-        <a class="signal-link" href="{detail_url}" data-event="briefing_open">맥락 읽기 →</a>
+        <a class="signal-link" href="{detail_url}" data-event="briefing_open">자료 보기 →</a>
         {render_product_share_button(article)}
       </article>
     """
@@ -20231,36 +21548,42 @@ def build_product_detail_page(article: dict, related_articles: list[dict], statu
     collected_raw = article.get("resolved_at") or status.get("finished_at") or status.get("updated_at") or ""
     collected = html.escape(format_display_datetime(collected_raw) or "수집 시각 미확인")
     original_url = html.escape(article_target_url(article), quote=True)
-    why_now = html.escape(
-        f"{region}의 {topic_text} 의제와 연결된 자료입니다. 발표나 보도 자체보다 대상, 시행 시점, 담당기관과 후속 조치가 실제로 확인되는지 함께 봐야 합니다."
-    )
+    event_related = [
+        item
+        for item in related_articles
+        if item.get("relation_type") in {"news_coverage", "official_follow_up"} and item.get("url")
+    ]
+    relation_labels = {"news_coverage": "언론 보도", "official_follow_up": "후속 공식자료"}
     related = "".join(
-        f'<a href="{html.escape(product_detail_filename(item), quote=True)}">{html.escape(display_article_title(item, 72))}</a>'
-        for item in related_articles[:2]
-    ) or '<a href="news.html">정책 동향 전체 보기</a>'
+        '<a href="{url}" target="_blank" rel="noreferrer"><span>{relation}</span>{title}</a>'.format(
+            url=html.escape(str(item.get("url") or ""), quote=True),
+            relation=html.escape(relation_labels[item.get("relation_type")]),
+            title=html.escape(display_article_title(item, 72)),
+        )
+        for item in event_related[:4]
+    ) or '<a href="news.html">전체 자료 보기</a>'
     source_action = (
-        f'<a class="product-button" href="{original_url}" target="_blank" rel="noreferrer" data-event="official_source_open">원문 확인</a>'
+        f'<a class="product-button" href="{original_url}" target="_blank" rel="noreferrer" data-event="official_source_open">원문 열기</a>'
         if original_url else '<p>연결 가능한 원문 주소가 없습니다.</p>'
     )
     return f"""
     <article>
       <header class="briefing-hero">
-        <a class="briefing-breadcrumb" href="news.html">정책 동향 / {stage}</a>
+        <a class="briefing-breadcrumb" href="news.html">← 목록으로</a>
         <h1>{title}</h1>
         <p class="briefing-deck">{excerpt}</p>
         <div class="briefing-meta"><span>{source}</span><span>{published}</span><span>{region}</span><span>{topic_text}</span></div>
       </header>
       <div class="briefing-body">
         <div>
-          <section class="briefing-block"><h2>왜 지금 확인해야 하나</h2><p>{why_now}</p></section>
-          <section class="briefing-block"><h2>현장에서 무엇이 막히는가</h2><p>현재 수집 데이터만으로 실행 장애를 확정할 수 없습니다. 원문에서 대상과 예외 조건을 확인하고, 담당기관·당사자 기록에서 전달과 집행의 간극을 별도로 검증해야 합니다.</p></section>
-          <section class="briefing-block"><h2>다음으로 확인할 것</h2><p>{html.escape(_next_check(article))}. 제목에 나타난 상태 분류는 탐색 보조값이며 행정적 확정 판단이 아닙니다.</p></section>
-          <section class="briefing-block"><h2>편집 기준과 한계</h2><p>공개된 제목, 본문 요약, 출처, 날짜, 지역·의제 분류를 바탕으로 구성했습니다. 자동 수집·분류에는 오류가 있을 수 있으며 중요한 의사결정은 반드시 원문과 최신 공식 발표를 기준으로 해야 합니다.</p></section>
-          <nav class="briefing-nav" aria-label="이어 읽기">{related}</nav>
+          <section class="briefing-related" aria-labelledby="related-title">
+            <h2 id="related-title">이 사건의 자료 흐름</h2>
+            <nav class="briefing-nav" aria-label="이 사건의 자료 흐름">{related}</nav>
+          </section>
         </div>
         <aside class="briefing-source" aria-label="자료 출처">
           <strong>자료 확인</strong>
-          <p>출처 {source}<br>발행 {published}<br>수집 {collected}<br>상태 {stage}</p>
+          <p>출처 {source}<br>발행 {published}<br>수집 {collected}<br>분류 {stage}</p>
           {source_action}
           {render_product_share_button(article, event_name="briefing_share_open")}
         </aside>
@@ -20317,7 +21640,7 @@ def build_product_event_script() -> str:
     const summary = button.dataset.shareSummary || '';
     const path = button.dataset.sharePath || location.href;
     const url = new URL(path, location.href).href;
-    const lines = [title, meta, summary, '청년투게더에서 원문과 다음 확인 항목을 함께 확인해 보세요.', url].filter(Boolean);
+    const lines = [title, meta, summary, '청년투게더에서 원문과 관련 자료를 확인해 보세요.', url].filter(Boolean);
     return { title, text: lines.join('\n\n'), url };
   }
 
@@ -20495,74 +21818,243 @@ def build_product_event_script() -> str:
 """
 
 
-def build_product_home_page(articles: list[dict], classified_articles: list[dict], status: dict, contact_settings: dict[str, str]) -> str:
-    timeline_home = build_home_page(articles, classified_articles, status, contact_settings)
-    latest_articles = sort_articles_by_recency(classified_articles or articles)
-    latest_per_menu = 3
+def home_activity_kind(article: dict) -> tuple[str, str]:
+    """Return the public home activity type without relying on colour alone."""
+    source_kind = normalize_inline_text(article.get("source_kind"))
+    source_channel = normalize_inline_text(article.get("source_channel"))
+    if is_government_statistics_menu_article(article):
+        return "정부조사·통계", "stats"
+    if is_research_report_menu_article(article):
+        return "연구·리포트", "research"
+    if source_kind in {"local", "regional_official", "municipal", "municipality"}:
+        return ("지역 계획", "local-plan") if source_channel == "policy_plan" else ("지자체 공식", "local")
+    if article.get("is_official_source") or source_kind == "official":
+        return "정부 공식", "official"
+    if is_opinion_menu_article(article):
+        return "기고·칼럼", "opinion"
+    if article.get("is_hub_candidate") or article.get("governance_scope"):
+        return "현장 목소리", "hub"
+    return "언론 기사", "news"
 
-    menu_feeds = [
-        ("언론 기사", "news.html", is_general_news_menu_article),
-        ("기고·칼럼·오피니언", "opinion.html", is_opinion_menu_article),
-        ("정부 부처 자료실", "official.html", is_central_government_press_release),
-        ("지자체 자료실", "local.html", lambda article: is_local_youth_press_release(article) or is_local_youth_plan_document(article)),
-        ("논문·연구·리포트", "reports.html", is_research_report_menu_article),
-        ("정부조사·통계", "tools.html", is_government_statistics_menu_article),
-        ("현장 목소리", "hub.html", lambda article: article in filter_hub_articles(latest_articles)),
-    ]
 
-    def unique_menu_articles(items: list[dict]) -> list[dict]:
-        unique: list[dict] = []
-        seen: set[str] = set()
-        for article in sort_articles_by_recency(items):
-            key = article_target_url(article) or normalize_inline_text(
-                clean_article_title(article.get("title"))
-            ).lower()
-            if not key or key in seen:
-                continue
-            seen.add(key)
-            unique.append(article)
-        return unique
+def build_home_activity_calendar_payload(articles: list[dict], reference_time: str | None) -> dict:
+    """Build a compact, public and API-ready calendar index for the home page."""
+    reference_dt = parse_iso_datetime(reference_time)
+    if not reference_dt:
+        reference_dt = max((article_exposure_datetime(article) for article in articles if article_exposure_datetime(article)), default=None)
+    if not reference_dt:
+        reference_dt = datetime.now(timezone(timedelta(hours=9)))
+    reference_dt = reference_dt.astimezone(timezone(timedelta(hours=9)))
+    today = reference_dt.strftime("%Y-%m-%d")
+    threshold = reference_dt.replace(hour=0, minute=0, second=0, microsecond=0) - timedelta(days=HOME_ACTIVITY_ARCHIVE_DAYS - 1)
 
-    def render_menu_feed_card(label: str, href: str, predicate) -> str:
-        selected = unique_menu_articles(
-            [article for article in latest_articles if predicate(article)]
-        )[:latest_per_menu]
-        if selected:
-            rows = "".join(
-                (
-                    f'<li><a href="{html.escape(article_target_url(article), quote=True)}" target="_blank" rel="noreferrer">'
-                    f'<strong>{html.escape(display_article_title(article, 76))}</strong>'
-                    f'<span>{html.escape(compact_article_meta(article))}</span></a></li>'
-                    if article_target_url(article)
-                    else f'<li><strong>{html.escape(display_article_title(article, 76))}</strong><span>{html.escape(compact_article_meta(article))}</span></li>'
-                )
-                for article in selected
+    items: list[dict] = []
+    seen: set[str] = set()
+    for article in sort_articles_by_recency(articles):
+        published_dt = article_exposure_datetime(article)
+        if not published_dt or article.get("is_noise") or is_publicly_excluded(article):
+            continue
+        published_dt = published_dt.astimezone(reference_dt.tzinfo)
+        if published_dt < threshold or published_dt > reference_dt:
+            continue
+        identity = home_article_key(article)
+        if not identity or identity in seen:
+            continue
+        seen.add(identity)
+        kind, kind_key = home_activity_kind(article)
+        items.append(
+            {
+                "date": published_dt.strftime("%Y-%m-%d"),
+                "timestamp": int(published_dt.timestamp() * 1000) if article_has_exposure_time(article) else None,
+                "has_time": article_has_exposure_time(article),
+                "title": display_article_title(article, 150),
+                "url": article_target_url(article),
+                "source": product_source_label(article),
+                "kind": kind,
+                "kind_key": kind_key,
+                "topics": article_topic_tags(article, limit=3),
+            }
+        )
+
+    items.sort(key=lambda item: (item["date"], item["timestamp"] or 0, item["title"]), reverse=True)
+    days: dict[str, dict] = {}
+    for item in items:
+        summary = days.setdefault(item["date"], {"count": 0, "kinds": {}})
+        summary["count"] += 1
+        summary["kinds"][item["kind"]] = summary["kinds"].get(item["kind"], 0) + 1
+    months = sorted({date[:7] for date in days}, reverse=True)
+    return {"today": today, "months": months, "days": days, "items": items}
+
+
+def build_product_home_page(
+    articles: list[dict],
+    classified_articles: list[dict],
+    status: dict,
+    contact_settings: dict[str, str],
+    activity_payload: dict | None = None,
+    thumbnail_urls: dict[str, str] | None = None,
+) -> str:
+    """Render the public home as a task-first editorial entry, not a timeline dashboard."""
+    page_updated_at = status.get("finished_at") or status.get("updated_at") or ""
+    all_articles = sort_articles_by_recency(classified_articles or articles)
+    selected_articles = sort_articles_by_recency(articles or all_articles)
+    seen: set[str] = set()
+    unique_articles: list[dict] = []
+    for article in [*selected_articles, *all_articles]:
+        key = article_target_url(article) or normalize_inline_text(clean_article_title(article.get("title"))).lower()
+        if not key or key in seen:
+            continue
+        seen.add(key)
+        cached_thumbnail = (thumbnail_urls or {}).get(key)
+        unique_articles.append({**article, "image_url": cached_thumbnail} if cached_thumbnail else article)
+
+    activity_payload = activity_payload or build_home_activity_calendar_payload(unique_articles, page_updated_at)
+    activity_today_count = int(activity_payload.get("days", {}).get(activity_payload.get("today", ""), {}).get("count", 0))
+    recent_briefs = build_recent_time_window_briefs(unique_articles, limit=5)
+    latest_brief = recent_briefs[0] if recent_briefs else None
+    def headline_score(article: dict) -> int:
+        """Rank public headline candidates by impact, authority and recency."""
+        score = int(article.get("importance_score") or 0)
+        if article.get("editorial_is_highlighted"):
+            score += 45
+        if article.get("is_official_source") or article.get("source_kind") in {"official", "statistics", "data"}:
+            score += 24
+        if article.get("source_channel") in {"central_official", "government_press_release"}:
+            score += 12
+        if article.get("substantive_promise") or article.get("has_policy_operational_context"):
+            score += 10
+        if article.get("is_public_interest_article"):
+            score += 8
+        # Research/report records remain available in their own menu; the
+        # homepage headline should default to a major announcement or policy
+        # change when one is present.
+        if is_research_report_menu_article(article):
+            score -= 22
+        if article.get("selection_bucket") == "official_policy":
+            score += 10
+        score += min(8, int(article.get("related_article_count") or 0))
+        published = article_exposure_datetime(article)
+        if published:
+            score += max(0, 6 - min(6, (datetime.now(published.tzinfo) - published).days))
+        return score
+
+    lead_article = max(unique_articles, key=headline_score, default=None)
+    latest_candidates = [article for article in unique_articles if article is not lead_article and is_general_news_menu_article(article)]
+    if len(latest_candidates) < 10:
+        latest_candidates.extend(
+            article for article in unique_articles
+            if article is not lead_article and article not in latest_candidates
+        )
+    # The home front page is a quick scan, while the full news page holds the
+    # complete stream.  Keep this column to five items so it closes on the
+    # same visual beat as the adjacent monthly archive.
+    supporting_articles = latest_candidates[:5]
+    now_dt = parse_iso_datetime(page_updated_at) or datetime.now(timezone(timedelta(hours=9)))
+    now_label = now_dt.astimezone(timezone(timedelta(hours=9))).strftime("%Y.%m.%d %H:%M")
+    def render_story(article: dict, *, lead: bool = False) -> str:
+        title = html.escape(display_article_title(article, 104 if lead else 76))
+        meta = html.escape(compact_article_meta(article))
+        excerpt = html.escape(product_article_excerpt(article, 220 if lead else 112))
+        href = html.escape(article_target_url(article), quote=True)
+        related_count = max(1, int(article.get("related_article_count") or 1))
+        related_items = article.get("related_articles") or []
+        related_html = ""
+        if related_count > 1:
+            source_links = "".join(
+                f'<li><a href="{html.escape(str(item.get("url") or ""), quote=True)}" target="_blank" rel="noopener">{html.escape(display_article_title(item, 72))} <span>{html.escape(format_source_label(item.get("source")))}</span></a></li>'
+                for item in related_items[:8]
+                if item.get("url")
             )
-        else:
-            rows = '<li class="home-menu-feed-empty">최근에 표시할 자료가 없습니다.</li>'
+            related_html = f'<details class="civic-related"><summary>관련 보도 {related_count - 1}건</summary><ul>{source_links or "<li>같은 내용의 관련 보도가 함께 수집되었습니다.</li>"}</ul></details>'
+        if lead:
+            lead_media = render_article_media(article)
+            return f"""
+            <article class="civic-lead-story">
+              {f'<div class="civic-lead-media">{lead_media}</div>' if lead_media else ''}
+              <h3><a href="{href}" target="_blank" rel="noreferrer" data-event="home_lead_story_open">{title}</a></h3>
+              <p>{excerpt}</p>
+              {related_html}
+              <div class="civic-story-foot"><span>{meta}</span><a href="{href}" target="_blank" rel="noreferrer">원문 보기 <span aria-hidden="true">→</span></a></div>
+            </article>
+            """
         return f"""
-        <article class="home-menu-feed-card">
-          <div class="home-menu-feed-head">
-            <h3>{html.escape(label)}</h3>
-            <a href="{html.escape(href, quote=True)}">전체 보기</a>
-          </div>
-          <ol class="home-menu-feed-list">{rows}</ol>
+        <article class="civic-brief-row">
+          <div class="civic-brief-thumbnail">{render_article_media(article)}</div>
+          <div class="civic-brief-copy"><h3><a href="{href}" target="_blank" rel="noreferrer" data-event="home_supporting_story_open">{title}</a></h3><p>{excerpt}</p><time>{meta}</time>{related_html}</div>
         </article>
         """
 
-    menu_feed_cards = "".join(render_menu_feed_card(*menu) for menu in menu_feeds)
+    if lead_article:
+        lead_story_html = render_story(lead_article, lead=True)
+    else:
+        lead_story_html = '<article class="civic-lead-story"><h3>표시할 청년 자료가 아직 없습니다.</h3><p>새 자료가 수집되면 이 영역에서 먼저 확인할 수 있습니다.</p></article>'
+    supporting_html = "".join(render_story(article) for article in supporting_articles)
+    if not supporting_html:
+        supporting_html = '<article class="civic-brief-row"><h3>함께 볼 자료가 아직 없습니다.</h3><p>수집된 자료가 늘어나면 이 목록에 표시됩니다.</p></article>'
+    region_labels = "".join(
+        f'<span>{region}</span>'
+        for region in ("서울", "부산", "대구", "인천", "광주", "대전", "울산", "세종", "경기", "강원", "충북", "충남", "전북", "전남", "경북", "경남", "제주")
+    )
+    def latest_menu_update(predicate) -> str:
+        candidates = [article for article in unique_articles if predicate(article)]
+        if not candidates:
+            return "최근 기록 없음"
+        published_at = article_exposure_datetime(sort_articles_by_recency(candidates)[0])
+        if not published_at:
+            return "최근 자료 날짜 확인 중"
+        return f"최근 자료 {published_at.strftime('%Y.%m.%d')}"
+
+    source_cards = (
+        ("official.html", "정부 부처 자료실", "중앙부처 보도자료와 계획", is_central_government_press_release),
+        ("local.html#local-policy-map", "지자체 자료실", "지역 정책·공지와 시행계획", lambda article: is_local_youth_press_release(article) or is_local_youth_plan_document(article)),
+        ("reports.html", "논문·연구·리포트", "연구기관·학술·정책 보고서", is_research_report_menu_article),
+        ("tools.html", "정부조사·통계", "공식 조사와 통계 원문", is_government_statistics_menu_article),
+    )
+    source_cards_html = "".join(
+        f'<a href="{href}"><strong>{html.escape(title)}</strong><span>{html.escape(description)}</span><em>{html.escape(latest_menu_update(predicate))}</em></a>'
+        for href, title, description, predicate in source_cards
+    )
+    def brief_anchor(brief: dict) -> str:
+        return f"brief-{brief.get('date', now_dt.strftime('%Y-%m-%d')).replace('-', '')}-{int(brief['start_hour']):02d}"
+
+    if latest_brief:
+        latest_brief_date = latest_brief.get("date", now_dt.strftime("%Y-%m-%d"))
+        latest_brief_datetime_label = (
+            f"{latest_brief_date[:4]}년 {int(latest_brief_date[5:7])}월 {int(latest_brief_date[8:])}일 "
+            f"{latest_brief['start_hour']:02d}시"
+        )
+        latest_brief_href = f"trends.html#{brief_anchor(latest_brief)}"
+    else:
+        latest_brief_datetime_label = "오늘"
+        latest_brief_href = "trends.html"
+    recent_brief_rows = "".join(
+        f'<li><a href="trends.html#{brief_anchor(brief)}"><time>{html.escape(str(brief.get("date", "")).replace("-", "."))} · {brief["start_hour"]:02d}:00–{brief["end_hour"]:02d}:00</time><strong>{brief["count"]}건</strong></a></li>'
+        for brief in recent_briefs[:5]
+    ) or '<li class="civic-ai-brief-empty">최근 브리프 생성 대기</li>'
     return f"""
-    {timeline_home}
-    <section class="home-menu-feed" id="menu-updates" aria-labelledby="menu-updates-title">
-      <div class="home-menu-feed-intro">
-        <div>
-          <p class="flow-eyebrow">메뉴별 최신 자료</p>
-          <h2 id="menu-updates-title">각 자료실에 새로 들어온 항목</h2>
-          <p>메뉴마다 최근 3건씩만 보여드립니다. 더 많은 자료는 각 메뉴에서 확인할 수 있습니다.</p>
-        </div>
-      </div>
-      <div class="home-menu-feed-grid">{menu_feed_cards}</div>
+    <section class="civic-ai-brief-home" aria-label="청년정책 AI 브리핑">
+      <a class="civic-ai-brief-banner" href="{html.escape(latest_brief_href, quote=True)}">
+        <img src="{HOME_POLICY_WORKROOM_ILLUSTRATION['src']}" alt="{HOME_POLICY_WORKROOM_ILLUSTRATION['alt']}">
+        <span><small>{html.escape(latest_brief_datetime_label)}</small><strong>청년정책 AI 브리핑 보러가기</strong></span>
+      </a>
+      <aside class="civic-ai-brief-recent" aria-labelledby="recent-briefs-title">
+        <div><h2 id="recent-briefs-title">최근 브리프</h2><a href="trends.html">전체 보기 <span aria-hidden="true">→</span></a></div>
+        <ol>{recent_brief_rows}</ol>
+      </aside>
     </section>
+
+    <section class="civic-news-calendar" id="today-briefing" data-home-activity data-activity-url="{HOME_ACTIVITY_CALENDAR_FILENAME}" data-activity-today="{html.escape(str(activity_payload.get('today', '')), quote=True)}" aria-label="오늘의 기사와 이달의 소식">
+      <section class="civic-latest-news" aria-label="최근 기사">
+        <header class="civic-home-section-bar"><h2>오늘의 기사</h2><time datetime="{html.escape(now_dt.astimezone(timezone(timedelta(hours=9))).isoformat(), quote=True)}">{html.escape(now_label)}</time></header>
+        <div class="civic-brief-list">{supporting_html}</div>
+      </section>
+      <section class="civic-activity-archive civic-activity-archive--sidebar" id="activity-calendar" data-home-activity-archive aria-labelledby="home-activity-calendar-title">
+        <header class="home-activity-archive-head"><h2 id="home-activity-calendar-title">이달의 소식</h2><div class="home-activity-month-controls"><button type="button" data-home-activity-previous aria-label="이전 달">←</button><strong data-home-activity-month>월</strong><button type="button" data-home-activity-next aria-label="다음 달">→</button></div></header>
+        <div class="home-activity-calendar" data-home-activity-calendar aria-label="월간 자료 아카이브"></div>
+        <nav class="home-activity-menu-counts" data-home-activity-menu-counts aria-label="메뉴별 업데이트"></nav>
+      </section>
+    </section>
+
     """
 
 
@@ -20592,7 +22084,7 @@ def build_product_about_page(contact_settings: dict[str, str]) -> str:
       <h1>누가, 어떤 기준으로 이 정보를 고르는가</h1>
       <p>청년투게더의 신뢰는 직함이나 말투가 아니라, 운영 주체와 선별 기준, 확인하지 못한 한계를 함께 공개하는 데서 시작합니다.</p>
     </header>
-    <section class="product-section tint" id="operator" aria-labelledby="operator-title"><div class="operator-page-grid"><div class="operator-page-label"><strong>박진감</strong><span>유스사이드 운영<br>전직 정부 공무원(6급)</span></div><div class="operator-page-copy"><p class="product-eyebrow">왜 이 일을 하는가</p><h2 id="operator-title">발표된 정책과 실제로 작동하는 정책 사이를 봅니다.</h2><p>공공부문에서 정책을 다루며 쌓은 실행 관점을 청년투게더의 편집 기준으로 사용합니다. 같은 문장도 담당기관, 예산, 지역, 시행 시점에 따라 다르게 작동하기 때문입니다.</p><p>개인 이력을 권위의 대체물로 쓰지 않습니다. 대신 어떤 자료를 골랐는지, 무엇을 사실로 확인했는지, 어디부터 해석인지, 다음에는 무엇을 검증해야 하는지를 화면에 남깁니다.</p></div></div></section>
+    <section class="product-section tint" id="operator" aria-labelledby="operator-title"><div class="operator-page-grid"><div class="operator-page-label"><strong>박진감</strong><span>적재적소 연구소 운영<br>전직 정부 공무원(6급)</span></div><div class="operator-page-copy"><p class="product-eyebrow">왜 이 일을 하는가</p><h2 id="operator-title">발표된 정책과 실제로 작동하는 정책 사이를 봅니다.</h2><p>공공부문에서 정책을 다루며 쌓은 실행 관점을 청년투게더의 편집 기준으로 사용합니다. 같은 문장도 담당기관, 예산, 지역, 시행 시점에 따라 다르게 작동하기 때문입니다.</p><p>개인 이력을 권위의 대체물로 쓰지 않습니다. 대신 어떤 자료를 골랐는지, 무엇을 사실로 확인했는지, 어디부터 해석인지, 다음에는 무엇을 검증해야 하는지를 화면에 남깁니다.</p></div></div></section>
     <section class="product-section" id="editorial-standard" aria-labelledby="standard-title"><div class="product-section-head"><div><p class="product-eyebrow">편집 기준</p><h2 id="standard-title">정보를 더 쌓기보다 판단 순서를 만듭니다</h2><p>각 자료는 아래 질문에 답할 수 있을 때 우선적으로 연결합니다.</p></div></div><div class="trust-grid"><article class="trust-card"><h3>무엇이 달라졌는가</h3><p>발표, 공고, 의견수렴, 시행, 후속 확인 가운데 현재 상태를 구분합니다.</p></article><article class="trust-card"><h3>누구에게 어디서 작동하는가</h3><p>대상, 지역, 담당기관과 실제 적용 조건을 확인합니다.</p></article><article class="trust-card"><h3>다음에 무엇을 볼 것인가</h3><p>후속 공고, 예산, 시행 결과와 현장 반응에서 검증할 질문을 남깁니다.</p></article></div></section>
     <section class="product-section warm" id="limits" aria-labelledby="limits-title"><div class="product-section-head"><div><p class="product-eyebrow">한계와 정정</p><h2 id="limits-title">완전하거나 실시간이라고 말하지 않습니다</h2><p>현재 서비스는 선별된 공개 자료를 자동 수집·분류한 뒤 화면에 연결합니다. 누락, 날짜 미확인, 분류 오류가 있을 수 있으며 중요한 판단은 공식 원문을 기준으로 해야 합니다. 오류나 빠진 맥락은 근거와 함께 알려주시면 확인 후 바로잡습니다.</p></div></div><div class="product-actions"><a class="product-button dark" href="{contact_href}" data-event="operator_correction_contact">정정·자료 제보</a><a class="product-button subtle" href="contact.html" data-event="operator_contact_open">운영 문의 안내</a></div></section>
     """
@@ -20647,9 +22139,9 @@ def build_product_news_page(articles: list[dict], status: dict) -> str:
     updated_at, collection_state = _product_status(status)
     return f"""
     <header class="editorial-page-head">
-      <p class="product-eyebrow">POLICY CHANGE JOURNAL</p>
+      <p class="product-eyebrow">정책 변화 기록</p>
       <h1>지역과 의제로 읽는 정책 변화</h1>
-      <p>공식 발표, 공고, 시행, 후속 보도를 한 화면에서 훑고 내부 상세에서 왜 중요한지와 다음 확인 질문까지 이어 읽습니다.</p>
+      <p>공식 발표, 공고, 시행, 후속 보도를 한 화면에서 확인하고 원문과 관련 자료로 이어집니다.</p>
       <nav class="topic-strip" aria-label="주요 의제">{topic_links}</nav>
     </header>
     <section class="editorial-feature" aria-label="주요 정책 변화">{feature_story or '<article class="feature-story"><h2>표시할 자료가 없습니다</h2></article>'}<div class="feature-rail">{rail}</div></section>
@@ -20670,7 +22162,7 @@ def write_page(
 ) -> None:
     assets_root = path.parent / "assets"
     assets_root.mkdir(parents=True, exist_ok=True)
-    site_css = BASE_CSS + DASHBOARD_TONE_CSS + DESIGN_OVERHAUL_CSS + PRODUCT_REBUILD_CSS + BRAND_NEW_CSS + LEAD_FUNNEL_CSS + READABILITY_REFINEMENT_CSS
+    site_css = BASE_CSS + DASHBOARD_TONE_CSS + DESIGN_OVERHAUL_CSS + PRODUCT_REBUILD_CSS + BRAND_NEW_CSS + LEAD_FUNNEL_CSS + READABILITY_REFINEMENT_CSS + POLICY_BRIEF_CSS + HOME_LAYOUT_20260829_CSS + EDITORIAL_HEADER_NAV_CSS + RIGHT_POLICY_COLOR_SYSTEM_CSS
     site_js = build_page_script()
     write_utf8_page(assets_root / "site.css", site_css)
     write_utf8_page(assets_root / "site.js", site_js)
@@ -20678,7 +22170,7 @@ def write_page(
         path,
         normalize_generated_html(
             PAGE_TEMPLATE.format(
-                page_title=html.escape("청년동향실" if active_page == "index.html" else f"{page_title} | 청년동향실"),
+                page_title=html.escape("적재적소 브리프" if active_page == "index.html" else f"{page_title} | 적재적소 브리프"),
                 page_description=html.escape(PAGE_DESCRIPTIONS.get(active_page, "청년정책과 현장 변화를 출처와 시간 흐름으로 확인합니다."), quote=True),
                 active_page=html.escape(active_page),
                 content_kind="briefing" if path.name.startswith("briefing-") else "page",
@@ -20692,6 +22184,7 @@ def write_page(
                 top_nav=render_top_nav(active_page),
                 live_clock_topbar=render_live_clock("topbar"),
                 side_nav=render_side_nav(active_page),
+                page_context_nav=render_page_context_nav(active_page),
                 global_search=render_global_search(),
                 guide_link="",
                 header_meta=render_header_meta(active_page, status),
@@ -20720,18 +22213,39 @@ def main() -> int:
     archived_public_articles = filter_public_articles(load_public_archive_articles())
     # Home still receives the current top selection. Menu pages use the archive,
     # so each scheduled collection extends rather than replaces public history.
-    classified_articles = merge_public_article_lists(archived_public_articles, current_public_articles)
+    classified_articles = link_official_releases_and_related_coverage(
+        merge_public_article_lists(archived_public_articles, current_public_articles)
+    )
     status = read_json(Path(args.status_input), default={})
     web_root = Path(args.output).parent
     web_root.mkdir(parents=True, exist_ok=True)
 
     contact_settings = load_contact_settings()
+    home_activity_payload = build_home_activity_calendar_payload(
+        classified_articles,
+        status.get("finished_at") or status.get("updated_at"),
+    )
+    write_utf8_page(
+        web_root / HOME_ACTIVITY_CALENDAR_FILENAME,
+        json.dumps(home_activity_payload, ensure_ascii=False, separators=(",", ":")),
+    )
+    home_thumbnail_urls = cache_home_thumbnail_assets(
+        sort_articles_by_recency([*articles, *classified_articles]),
+        web_root,
+    )
 
     write_page(
         web_root / "index.html",
         "홈",
         "index.html",
-        build_product_home_page(articles, classified_articles, status, contact_settings),
+        build_product_home_page(
+            articles,
+            classified_articles,
+            status,
+            contact_settings,
+            home_activity_payload,
+            home_thumbnail_urls,
+        ),
         status,
         contact_settings,
     )
@@ -20741,6 +22255,14 @@ def main() -> int:
         "언론 기사",
         "news.html",
         build_news_page(classified_articles, status),
+        status,
+        contact_settings,
+    )
+    write_page(
+        web_root / "trends.html",
+        "정책 동향",
+        "trends.html",
+        build_policy_trends_page(classified_articles, status),
         status,
         contact_settings,
     )
@@ -20874,20 +22396,8 @@ def main() -> int:
         seen_detail_files.add(filename)
         detail_articles.append(article)
 
-    for index, article in enumerate(detail_articles):
-        article_topics = set(article_topic_tags(article, 4))
-        related_articles = [
-            candidate
-            for candidate in detail_articles
-            if candidate is not article and article_topics.intersection(article_topic_tags(candidate, 4))
-        ][:2]
-        if len(related_articles) < 2:
-            neighbors = detail_articles[max(0, index - 1):index] + detail_articles[index + 1:index + 3]
-            for candidate in neighbors:
-                if candidate not in related_articles:
-                    related_articles.append(candidate)
-                if len(related_articles) == 2:
-                    break
+    for article in detail_articles:
+        related_articles = list(article.get("policy_event_items") or [])
         write_page(
             web_root / product_detail_filename(article),
             display_article_title(article, 70),

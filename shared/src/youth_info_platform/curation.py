@@ -618,6 +618,16 @@ def deduplicate_and_filter(articles: list[dict]) -> list[dict]:
         representative["related_sources"] = list(
             dict.fromkeys(article.get("source", "") for article in group if article.get("source"))
         )
+        representative["related_articles"] = [
+            {
+                "title": article.get("title", ""),
+                "url": article.get("url", ""),
+                "source": article.get("source", ""),
+                "published_date": article.get("published_date", ""),
+            }
+            for article in group
+            if article is not representative and article.get("url")
+        ]
         representative["discovered_from"] = list(
             dict.fromkeys(
                 origin
@@ -836,6 +846,265 @@ def classify_articles(articles: list[dict]) -> list[dict]:
         classified_article["is_public_interest_article"] = is_public_interest_article(classified_article, text)
         classified.append(classified_article)
     return classified
+
+
+# A repeated URL from one publisher is a duplicate.  A newsroom report about an
+# official release is not: it should remain reachable, but be presented under
+# the official original rather than as a competing top-level card.
+OFFICIAL_STORY_STOP_TOKENS = frozenset(
+    {
+        "청년",
+        "정책",
+        "지원",
+        "발표",
+        "보도",
+        "보도자료",
+        "자료",
+        "사업",
+        "계획",
+        "추진",
+        "정부",
+        "국가",
+        "대한민국",
+        "관련",
+        "위한",
+        "통해",
+        "이번",
+        "올해",
+        "내년",
+        "확대",
+        "마련",
+        "실시",
+        "개최",
+        "공개",
+        "대상",
+        "중심",
+        "함께",
+    }
+)
+
+POLICY_EVENT_GENERIC_TOKENS = frozenset(
+    {
+        "일자리",
+        "청년일자리",
+        "주거",
+        "월세",
+        "주택",
+        "예산",
+        "대책",
+        "종합대책",
+        "개편안",
+        "시행계획",
+        "지원사업",
+        "청년지원",
+        "청년정책",
+        "성장",
+        "확대",
+        "회복",
+        "추진전략",
+    }
+)
+
+
+def _official_story_tokens(article: dict[str, Any]) -> set[str]:
+    text = normalize_article_title(
+        " ".join(
+            value
+            for value in (
+                article.get("title"),
+                article.get("lead_text"),
+                article.get("summary"),
+            )
+            if value
+        )
+    )
+    return {
+        token.lower()
+        for token in re.findall(r"[가-힣A-Za-z0-9]{2,}", text)
+        if token.lower() not in OFFICIAL_STORY_STOP_TOKENS
+    }
+
+
+def _official_story_match_score(official: dict[str, Any], coverage: dict[str, Any]) -> int:
+    official_ts = _published_timestamp(selection_published_at(official))
+    coverage_ts = _published_timestamp(selection_published_at(coverage))
+    if official_ts and coverage_ts and abs(official_ts - coverage_ts) > 60 * 60 * 24 * 7:
+        return 0
+
+    official_tokens = _official_story_tokens(official)
+    coverage_tokens = _official_story_tokens(coverage)
+    shared = official_tokens & coverage_tokens
+    if len(shared) < 2:
+        return 0
+
+    # A long common phrase is strong evidence.  Short generic tokens alone are
+    # deliberately insufficient: they would merge unrelated youth-policy news.
+    official_title = re.sub(r"[^가-힣A-Za-z0-9]", "", normalize_article_title(official.get("title")))
+    coverage_text = re.sub(r"[^가-힣A-Za-z0-9]", "", _article_content_text(coverage))
+    has_shared_phrase = any(
+        len(token) >= 4 and token in official_title and token in coverage_text
+        for token in shared
+    )
+    strong_shared = {token for token in shared if len(token) >= 3}
+    if not has_shared_phrase and len(strong_shared) < 2:
+        return 0
+
+    authority = normalize_article_title(
+        official.get("policy_authority") or official.get("source") or official.get("source_name")
+    )
+    authority_mentioned = bool(authority and len(authority) >= 3 and authority in _article_content_text(coverage))
+    return len(strong_shared) * 3 + len(shared) + (4 if has_shared_phrase else 0) + (2 if authority_mentioned else 0)
+
+
+def _policy_event_relation_type(official: dict[str, Any], candidate: dict[str, Any]) -> str | None:
+    """Return a relationship only when one concrete policy event is evidenced.
+
+    Broad youth-policy topics must stay separate.  A news item can cover an
+    announcement made up to fourteen days earlier or later.  A second official
+    item is retained only when it is published after the representative release
+    and has a stronger title/content match, so parallel ministry releases are
+    not presented as a made-up implementation sequence.
+    """
+    candidate_is_official = bool(
+        candidate.get("is_official_source") or candidate.get("source_kind") == "official"
+    )
+    candidate_is_news = candidate.get("source_kind") == "news" and not candidate_is_official
+    if not candidate_is_news and not candidate_is_official:
+        return None
+    if candidate_is_official:
+        declared_parent_url = candidate.get("policy_event_parent_url") or candidate.get("official_release_url")
+        official_url = official.get("url") or ""
+        if not declared_parent_url or normalize_tracking_url(str(declared_parent_url)) != normalize_tracking_url(str(official_url)):
+            return None
+
+    official_ts = _published_timestamp(selection_published_at(official))
+    candidate_ts = _published_timestamp(selection_published_at(candidate))
+    if official_ts and candidate_ts:
+        elapsed_days = (candidate_ts - official_ts) / 86_400
+        if candidate_is_news and abs(elapsed_days) > 14:
+            return None
+        if candidate_is_official and not 0 < elapsed_days <= 180:
+            return None
+
+    score = _official_story_match_score(official, candidate)
+    if score < (12 if candidate_is_official else 9):
+        return None
+
+    official_tokens = _official_story_tokens(official)
+    candidate_tokens = _official_story_tokens(candidate)
+    shared_strong = {token for token in official_tokens & candidate_tokens if len(token) >= 3}
+    authority = normalize_article_title(
+        official.get("policy_authority") or official.get("source") or official.get("source_name")
+    )
+    distinctive_shared = shared_strong - POLICY_EVENT_GENERIC_TOKENS - {authority.lower()}
+    official_title = re.sub(r"[^가-힣A-Za-z0-9]", "", normalize_article_title(official.get("title")))
+    candidate_text = re.sub(r"[^가-힣A-Za-z0-9]", "", _article_content_text(candidate))
+    has_distinctive_phrase = any(
+        len(token) >= 4 and token in official_title and token in candidate_text
+        for token in distinctive_shared
+    )
+    authority_mentioned = bool(authority and len(authority) >= 3 and authority in _article_content_text(candidate))
+    if not distinctive_shared:
+        return None
+    if candidate_is_news and not (authority_mentioned and has_distinctive_phrase):
+        return None
+    if candidate_is_official and not (has_distinctive_phrase or len(distinctive_shared) >= 2):
+        return None
+    return "official_follow_up" if candidate_is_official else "news_coverage"
+
+
+def link_official_releases_and_related_coverage(articles: list[dict]) -> list[dict]:
+    """Build source-evidenced policy-event clusters around official releases.
+
+    A cluster has one representative official release and typed members:
+    ``news_coverage`` or ``official_follow_up``.  It deliberately ignores
+    generic ``related_articles`` carried by older records: those relations do
+    not prove a shared announcement and must not be displayed as a trend.
+    """
+    official_items = [
+        article
+        for article in articles
+        if article.get("is_official_source") or article.get("source_kind") == "official"
+    ]
+    if not official_items:
+        return [dict(article) for article in articles]
+
+    linked_by_official: dict[str, list[dict]] = {}
+    linked_member_keys: set[str] = set()
+    for candidate in articles:
+        candidate_key = article_identity_key(candidate)
+        if not candidate_key or candidate.get("article_type") in {"opinion", "research", "report", "paper", "thesis"}:
+            continue
+        if candidate in official_items:
+            comparable_officials = [official for official in official_items if official is not candidate]
+        else:
+            comparable_officials = official_items
+        matches = [
+            (_official_story_match_score(official, candidate), official)
+            for official in comparable_officials
+            if _policy_event_relation_type(official, candidate)
+        ]
+        candidate_is_news = candidate.get("source_kind") == "news" and not candidate.get("is_official_source")
+        score, official = max(
+            matches,
+            key=lambda match: (
+                match[0],
+                -_published_timestamp(selection_published_at(match[1])) if candidate_is_news else _published_timestamp(selection_published_at(match[1])),
+            ),
+            default=(0, None),
+        )
+        if not official:
+            continue
+        relation_type = _policy_event_relation_type(official, candidate)
+        if not relation_type:
+            continue
+        official_key = article_identity_key(official)
+        linked_by_official.setdefault(official_key, []).append(
+            {
+                "title": candidate.get("title", ""),
+                "url": candidate.get("url", ""),
+                "source": candidate.get("source", ""),
+                "published_date": selection_published_at(candidate) or "",
+                "relation_type": relation_type,
+            }
+        )
+        linked_member_keys.add(candidate_key)
+
+    linked_articles: list[dict] = []
+    for raw_article in articles:
+        article_key = article_identity_key(raw_article)
+        if article_key in linked_member_keys:
+            continue
+        article = dict(raw_article)
+        linked_members = linked_by_official.get(article_key, [])
+        if not linked_members:
+            linked_articles.append(article)
+            continue
+
+        related_by_key: dict[str, dict] = {}
+        for related in linked_members:
+            related_key = article_identity_key(related)
+            if related_key and related_key != article_key:
+                related_by_key[related_key] = related
+        related_articles = sorted(
+            related_by_key.values(),
+            key=lambda related: _published_timestamp(related.get("published_date")),
+        )
+        article["story_cluster_id"] = f"official:{article_key}"
+        article["story_cluster_role"] = "official_release"
+        article["policy_event_id"] = f"official:{article_key}"
+        article["policy_event_role"] = "official_release"
+        article["official_release_url"] = article.get("url") or ""
+        article["related_articles"] = related_articles
+        article["policy_event_items"] = related_articles
+        article["related_article_count"] = 1 + len(related_articles)
+        article["related_sources"] = list(
+            dict.fromkeys(
+                [article.get("source", ""), *[related.get("source", "") for related in related_articles]]
+            )
+        )
+        linked_articles.append(article)
+    return linked_articles
 
 
 def select_articles(articles: list[dict], limit: int = 10) -> tuple[list[dict], list[dict]]:

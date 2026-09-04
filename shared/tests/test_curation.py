@@ -17,6 +17,7 @@ from youth_info_platform.curation import (  # noqa: E402
     has_substantive_promise_signal,
     is_public_interest_article,
     is_excluded_hub_record,
+    link_official_releases_and_related_coverage,
     score_article,
     select_articles,
 )
@@ -279,6 +280,121 @@ class HomeSignalTests(unittest.TestCase):
         self.assertTrue(classified["campaign_political"])
         self.assertTrue(classified["campaign_attack"])
         self.assertFalse(classified["is_public_interest_article"])
+
+
+class OfficialReleaseCoverageLinkingTests(unittest.TestCase):
+    def test_official_release_is_representative_for_matching_news_coverage(self) -> None:
+        official = make_article(
+            title="2027 청년 주거 지원 종합대책 발표",
+            lead_text="국토교통부가 청년 월세와 주택 지원을 담은 2027 종합대책을 발표했다.",
+            url="https://molit.go.kr/press/2027-youth-housing",
+        )
+        official.update(source="국토교통부", source_kind="official", is_official_source=True)
+        coverage = make_article(
+            title="정부, 2027 청년 주거 지원 종합대책 발표…월세 지원 확대",
+            lead_text="국토교통부는 청년 월세 지원과 주택 공급 내용을 공개했다.",
+            url="https://news.example.com/youth-housing-2027",
+        )
+        coverage.update(source="테스트뉴스", source_kind="news")
+        same_topic_only = make_article(
+            title="청년 주거 정책 토론회 개최",
+            lead_text="청년 주거 정책 개선 방향을 논의하는 토론회가 열렸다.",
+            url="https://news.example.com/youth-housing-forum",
+        )
+        same_topic_only.update(source="다른뉴스", source_kind="news")
+
+        linked = link_official_releases_and_related_coverage([official, coverage, same_topic_only])
+
+        self.assertEqual(len(linked), 2)
+        representative = next(article for article in linked if article["url"] == official["url"])
+        self.assertEqual(representative["story_cluster_role"], "official_release")
+        self.assertEqual(representative["related_article_count"], 2)
+        self.assertEqual(representative["related_articles"][0]["url"], coverage["url"])
+        self.assertEqual(representative["related_articles"][0]["relation_type"], "news_coverage")
+        self.assertIn(same_topic_only["url"], {article["url"] for article in linked})
+
+    def test_policy_event_keeps_news_and_later_official_material_as_distinct_relations(self) -> None:
+        official = make_article(
+            title="2027 청년 주거 지원 종합대책 발표",
+            lead_text="국토교통부가 청년 월세와 주택 지원을 담은 2027 종합대책을 발표했다.",
+            url="https://molit.go.kr/press/2027-youth-housing",
+        )
+        official.update(source="국토교통부", source_kind="official", is_official_source=True)
+        coverage = make_article(
+            title="정부, 2027 청년 주거 지원 종합대책 발표…월세 지원 확대",
+            lead_text="국토교통부는 청년 월세 지원과 주택 공급 내용을 공개했다.",
+            url="https://news.example.com/youth-housing-2027",
+        )
+        follow_up = make_article(
+            title="2027 청년 주거 지원 종합대책 시행계획 공고",
+            lead_text="국토교통부가 2027 청년 주거 지원 종합대책의 월세와 주택 지원 시행계획을 공고했다.",
+            url="https://molit.go.kr/notice/2027-youth-housing",
+        )
+        follow_up.update(
+            source="국토교통부",
+            source_kind="official",
+            is_official_source=True,
+            published_date="2026-04-23T09:00:00+09:00",
+            policy_event_parent_url=official["url"],
+        )
+
+        linked = link_official_releases_and_related_coverage([official, coverage, follow_up])
+
+        self.assertEqual(len(linked), 1)
+        event = linked[0]
+        self.assertEqual(event["policy_event_role"], "official_release")
+        self.assertEqual(event["policy_event_id"], event["story_cluster_id"])
+        self.assertEqual(
+            [item["relation_type"] for item in event["policy_event_items"]],
+            ["news_coverage", "official_follow_up"],
+        )
+
+    def test_legacy_related_articles_do_not_be_promoted_to_policy_event_members(self) -> None:
+        official = make_article(
+            title="2027 청년 주거 지원 종합대책 발표",
+            lead_text="국토교통부가 청년 월세와 주택 지원을 담은 2027 종합대책을 발표했다.",
+        )
+        official.update(
+            source="국토교통부",
+            source_kind="official",
+            is_official_source=True,
+            related_articles=[{"title": "주제만 같은 과거 기사", "url": "https://news.example.com/old"}],
+        )
+        coverage = make_article(
+            title="정부, 2027 청년 주거 지원 종합대책 발표…월세 지원 확대",
+            lead_text="국토교통부는 청년 월세 지원과 주택 공급 내용을 공개했다.",
+        )
+
+        linked = link_official_releases_and_related_coverage([official, coverage])
+
+        self.assertEqual(len(linked), 1)
+        self.assertEqual([item["url"] for item in linked[0]["policy_event_items"]], [coverage["url"]])
+
+    def test_shared_authority_without_a_common_event_name_is_not_linked(self) -> None:
+        official = make_article(
+            title="고용노동부 장관 아세안 노동장관회의 참석",
+            lead_text="고용노동부 장관이 아세안 노동장관회의에 참석했다.",
+        )
+        official.update(source="고용노동부", source_kind="official", is_official_source=True)
+        coverage = make_article(
+            title="고용노동부와 지역대학 청년 취업 지원 협약",
+            lead_text="고용노동부가 지역대학과 청년 취업 지원 협약을 맺었다.",
+        )
+
+        linked = link_official_releases_and_related_coverage([official, coverage])
+
+        self.assertEqual([article["url"] for article in linked], [official["url"], coverage["url"]])
+
+    def test_news_without_an_official_release_is_not_removed(self) -> None:
+        coverage = make_article(
+            title="청년 주거 지원 대책 발표",
+            lead_text="청년 월세 지원 확대 방안을 보도했다.",
+            url="https://news.example.com/coverage-only",
+        )
+
+        linked = link_official_releases_and_related_coverage([coverage])
+
+        self.assertEqual(linked, [coverage])
 
 
 class ReferenceDeskPatternTests(unittest.TestCase):
