@@ -10279,8 +10279,10 @@ EDITORIAL_HEADER_NAV_CSS = """
   .civic-news-calendar > .civic-latest-news { border-top: 0 !important; }
   .civic-news-calendar > .civic-activity-archive--sidebar { margin: 0 !important; padding: 0 !important; border: 0 !important; background: transparent; }
   .civic-news-calendar > .civic-activity-archive--sidebar .home-activity-archive-head { min-height: 66px; align-items: center !important; justify-content: space-between !important; margin: 0 0 18px; padding: 0; border-top: 2px solid var(--deep-navy); border-bottom: 1px solid var(--line); }
-  .home-activity-menu-counts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin-top: 18px; padding-top: 16px; border-top: 1px solid var(--line); }
-  .home-activity-menu-count { display: block; padding: 10px 11px; border: 1px solid var(--line); border-radius: 10px; color: var(--deep-navy); background: #fff; font-size: .78rem; font-weight: 750; text-decoration: none; }
+  .home-activity-menu-counts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--line); }
+  .home-activity-menu-count { display: flex; min-height: 42px; box-sizing: border-box; align-items: center; justify-content: space-between; gap: 10px; padding: 8px 12px; border: 1px solid var(--line); border-radius: 9px; color: var(--deep-navy); background: #fff; font-size: .76rem; font-weight: 750; line-height: 1.3; text-decoration: none; }
+  .home-activity-menu-count-label { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .home-activity-menu-count-value { flex: none; color: var(--accent-strong); font-size: .88rem; font-weight: 850; letter-spacing: -.02em; }
   .home-activity-menu-count:hover, .home-activity-menu-count:focus-visible { border-color: var(--deep-navy); background: #eaf1ee; text-decoration: none; }
   @media (max-width: 680px) { .civic-lead-media { margin-bottom: 18px; } .civic-lead-media .article-media { aspect-ratio: 16 / 9; } }
 """
@@ -12204,13 +12206,21 @@ HOME_ACTIVITY_CALENDAR_SCRIPT = """
     const target = archiveRoot?.querySelector('[data-home-activity-menu-counts]');
     if (!target || !payload || !visibleMonth) return;
     const counts = {};
-    (payload.items || []).filter((item) => String(item.date || '').startsWith(visibleMonth)).forEach((item) => {
+    const selectedScope = selectedDate || '';
+    (payload.items || []).filter((item) => {
+      const itemDate = String(item.date || '');
+      return selectedScope ? itemDate === selectedScope : itemDate.startsWith(visibleMonth);
+    }).forEach((item) => {
       const key = item.kind_key || 'news'; counts[key] = (counts[key] || 0) + 1;
     });
     target.replaceChildren();
     Object.entries(menuLinks).forEach(([key, [label, href]]) => {
-      const link = create('a', `home-activity-menu-count home-activity-menu-count--${key}`, `${label} ${counts[key] || 0}건`);
+      const link = create('a', `home-activity-menu-count home-activity-menu-count--${key}`);
       link.href = href; target.append(link);
+      link.append(
+        create('span', 'home-activity-menu-count-label', label),
+        create('strong', 'home-activity-menu-count-value', `${counts[key] || 0}건`),
+      );
     });
   }
 
@@ -12290,8 +12300,15 @@ HOME_ACTIVITY_CALENDAR_SCRIPT = """
     renderMenuCounts();
   }
 
-  previous?.addEventListener('click', () => { const [year, month] = visibleMonth.split('-').map(Number); visibleMonth = monthKey(new Date(year, month - 2, 1)); renderCalendar(); });
-  next?.addEventListener('click', () => { const [year, month] = visibleMonth.split('-').map(Number); visibleMonth = monthKey(new Date(year, month, 1)); renderCalendar(); });
+  function changeMonth(offset) {
+    const [year, month] = visibleMonth.split('-').map(Number);
+    visibleMonth = monthKey(new Date(year, month - 1 + offset, 1));
+    selectedDate = '';
+    renderDatePrompt();
+    renderCalendar();
+  }
+  previous?.addEventListener('click', () => changeMonth(-1));
+  next?.addEventListener('click', () => changeMonth(1));
 
   fetch(endpoint, { cache: 'no-cache' })
     .then((response) => response.ok ? response.json() : Promise.reject(new Error(`activity_calendar_${response.status}`)))

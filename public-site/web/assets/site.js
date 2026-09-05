@@ -1713,13 +1713,21 @@
     const target = archiveRoot?.querySelector('[data-home-activity-menu-counts]');
     if (!target || !payload || !visibleMonth) return;
     const counts = {};
-    (payload.items || []).filter((item) => String(item.date || '').startsWith(visibleMonth)).forEach((item) => {
+    const selectedScope = selectedDate || '';
+    (payload.items || []).filter((item) => {
+      const itemDate = String(item.date || '');
+      return selectedScope ? itemDate === selectedScope : itemDate.startsWith(visibleMonth);
+    }).forEach((item) => {
       const key = item.kind_key || 'news'; counts[key] = (counts[key] || 0) + 1;
     });
     target.replaceChildren();
     Object.entries(menuLinks).forEach(([key, [label, href]]) => {
-      const link = create('a', `home-activity-menu-count home-activity-menu-count--${key}`, `${label} ${counts[key] || 0}건`);
+      const link = create('a', `home-activity-menu-count home-activity-menu-count--${key}`);
       link.href = href; target.append(link);
+      link.append(
+        create('span', 'home-activity-menu-count-label', label),
+        create('strong', 'home-activity-menu-count-value', `${counts[key] || 0}건`),
+      );
     });
   }
 
@@ -1799,8 +1807,15 @@
     renderMenuCounts();
   }
 
-  previous?.addEventListener('click', () => { const [year, month] = visibleMonth.split('-').map(Number); visibleMonth = monthKey(new Date(year, month - 2, 1)); renderCalendar(); });
-  next?.addEventListener('click', () => { const [year, month] = visibleMonth.split('-').map(Number); visibleMonth = monthKey(new Date(year, month, 1)); renderCalendar(); });
+  function changeMonth(offset) {
+    const [year, month] = visibleMonth.split('-').map(Number);
+    visibleMonth = monthKey(new Date(year, month - 1 + offset, 1));
+    selectedDate = '';
+    renderDatePrompt();
+    renderCalendar();
+  }
+  previous?.addEventListener('click', () => changeMonth(-1));
+  next?.addEventListener('click', () => changeMonth(1));
 
   fetch(endpoint, { cache: 'no-cache' })
     .then((response) => response.ok ? response.json() : Promise.reject(new Error(`activity_calendar_${response.status}`)))
