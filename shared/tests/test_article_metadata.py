@@ -76,6 +76,19 @@ class ArticleMetadataTests(unittest.TestCase):
 
         self.assertEqual(parsed["title"], "순천시, 청년 자산 형성 '희망디딤돌 통장' 본격 가동")
 
+    def test_parse_generic_article_page_reads_publisher_name(self) -> None:
+        parsed = parse_generic_article_page(
+            """
+            <html><head>
+              <meta property="og:title" content="청년 정책 기사" />
+              <meta property="og:site_name" content="테스트일보" />
+            </head><body><h1>청년 정책 기사</h1></body></html>
+            """,
+            "https://example.com/news/1",
+        )
+
+        self.assertEqual(parsed["publisher_name"], "테스트일보")
+
     def test_parse_generic_article_page_extracts_json_ld_published_time(self) -> None:
         parsed = parse_generic_article_page(
             """

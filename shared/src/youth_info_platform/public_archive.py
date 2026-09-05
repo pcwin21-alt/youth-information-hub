@@ -3,8 +3,14 @@ from __future__ import annotations
 from datetime import datetime, timedelta, timezone
 from typing import Any
 
-from youth_info_platform.article_metadata import article_identity_key, normalize_published_datetime
+from youth_info_platform.article_metadata import (
+    article_identity_key,
+    is_google_news_url,
+    normalize_article_title,
+    normalize_published_datetime,
+)
 from youth_info_platform.curation import is_public_interest_article
+from youth_info_platform.publisher_names import publisher_display_name
 
 
 SEOUL = timezone(timedelta(hours=9))
@@ -32,6 +38,7 @@ PUBLIC_ARTICLE_FIELDS = (
     "url",
     "canonical_url",
     "publisher_url",
+    "publisher_name",
     "feed_url",
     "portal_urls",
     "title",
@@ -176,6 +183,9 @@ def compact_public_article(article: dict[str, Any]) -> dict[str, Any]:
         if field in article and article[field] not in (None, "", [], {})
     }
     compact["archive_key"] = article_identity_key(article)
+    for field in ("source", "publisher_name"):
+        if compact.get(field):
+            compact[field] = publisher_display_name(str(compact[field]))
     # The incoming record already passed the public-exposure predicate. Store
     # that decision because the compact archive intentionally omits raw parser
     # signals that would otherwise be needed to calculate it again.
@@ -186,6 +196,50 @@ def compact_public_article(article: dict[str, Any]) -> dict[str, Any]:
     if body_text := compact.get("body_text"):
         compact["body_text"] = str(body_text)[:5000]
     return compact
+
+
+def public_story_identity_key(article: dict[str, Any]) -> str:
+    """Return a conservative second identity for unresolved portal duplicates.
+
+    Google News can emit the same publisher story under several wrapper URLs
+    when it matches more than one monitored query.  Those URLs are distinct
+    technical records, but they are not distinct articles.  The canonical URL
+    remains the primary identity; this key is used only when title, publisher,
+    and publication day all agree exactly.
+    """
+    title = normalize_article_title(article.get("title")).lower()
+    publisher = str(article.get("publisher_domain") or article.get("source") or "").strip().lower()
+    publisher = publisher.removeprefix("www.")
+    published_at = article_published_at(article)
+    publication_day = published_at[:10] if published_at else ""
+    if not title or not publisher or not publication_day:
+        return ""
+    return f"story:{title}|publisher:{publisher}|date:{publication_day}"
+
+
+def _archive_preference(article: dict[str, Any]) -> tuple[int, int, int, float]:
+    """Prefer a resolved publisher record without losing richer article data."""
+    resolved_url = any(
+        value and not is_google_news_url(str(value))
+        for value in (article.get("publisher_url"), article.get("canonical_url"))
+    )
+    metadata_count = sum(
+        bool(article.get(field))
+        for field in ("publisher_url", "publisher_domain", "image_url", "lead_text", "body_text")
+    )
+    published = parse_datetime(article_published_at(article) or article.get("published_at"))
+    timestamp = published.timestamp() if published else float("-inf")
+    return (int(resolved_url), metadata_count, len(str(article.get("title") or "")), timestamp)
+
+
+def merge_same_public_story(existing: dict[str, Any], incoming: dict[str, Any]) -> dict[str, Any]:
+    """Merge equivalent stories and retain the more useful public record."""
+    preferred, secondary = (
+        (incoming, existing)
+        if _archive_preference(incoming) >= _archive_preference(existing)
+        else (existing, incoming)
+    )
+    return merge_article(secondary, preferred)
 
 
 def merge_article(existing: dict[str, Any], incoming: dict[str, Any]) -> dict[str, Any]:
@@ -206,19 +260,33 @@ def merge_public_archive(
     research_retention_days: int = DEFAULT_RESEARCH_RETENTION_DAYS,
 ) -> list[dict[str, Any]]:
     by_key: dict[str, dict[str, Any]] = {}
+    story_to_key: dict[str, str] = {}
+
+    def merge_candidate(compact: dict[str, Any]) -> None:
+        key = str(compact.get("archive_key") or article_identity_key(compact)).strip()
+        if not key:
+            return
+        compact["archive_key"] = key
+        story_key = public_story_identity_key(compact)
+        matching_key = story_to_key.get(story_key) if story_key else None
+        if matching_key and matching_key in by_key:
+            merged = merge_same_public_story(by_key[matching_key], compact)
+            preferred_key = str(merged.get("archive_key") or matching_key).strip()
+            by_key.pop(matching_key, None)
+            by_key[preferred_key] = merged
+            story_to_key[story_key] = preferred_key
+            return
+        by_key[key] = merge_article(by_key.get(key, {}), compact)
+        if story_key:
+            story_to_key[story_key] = key
+
     for raw_article in existing_articles:
-        if not isinstance(raw_article, dict):
-            continue
-        key = str(raw_article.get("archive_key") or article_identity_key(raw_article)).strip()
-        if key:
-            by_key[key] = compact_public_article(raw_article)
+        if isinstance(raw_article, dict):
+            merge_candidate(compact_public_article(raw_article))
 
     for raw_article in incoming_articles:
-        if not isinstance(raw_article, dict) or not is_public_archive_article(raw_article):
-            continue
-        compact = compact_public_article(raw_article)
-        key = compact["archive_key"]
-        by_key[key] = merge_article(by_key.get(key, {}), compact)
+        if isinstance(raw_article, dict) and is_public_archive_article(raw_article):
+            merge_candidate(compact_public_article(raw_article))
 
     reference = now.astimezone(SEOUL) if now else datetime.now(SEOUL)
     retained: list[dict[str, Any]] = []

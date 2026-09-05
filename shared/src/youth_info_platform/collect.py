@@ -17,6 +17,7 @@ from urllib.parse import parse_qs, urlencode, urljoin, urlparse, urlunparse
 from bs4 import BeautifulSoup, Tag
 
 from .constants import YOUTH_RELATED_KEYWORDS
+from .publisher_names import PUBLISHER_DOMAIN_ALIASES, publisher_display_name
 from .sample_data import SAMPLE_ARTICLES, SAMPLE_VIDEOS
 
 
@@ -225,6 +226,11 @@ def strip_html(value: str) -> str:
     return plain
 
 
+def normalize_feed_publisher(value: str | None) -> str:
+    publisher = strip_html(value or "")
+    return publisher_display_name(publisher)
+
+
 def _normalize_feed_media_url(value: str | None, base_url: str | None = None) -> str | None:
     if not value:
         return None
@@ -307,7 +313,7 @@ def parse_feed(feed_text: str, source_name: str, source_kind: str) -> list[dict[
         source_node = item.find("source")
         if source_node is None:
             source_node = item.find("{http://www.w3.org/2005/Atom}source")
-        publisher = strip_html(
+        publisher = normalize_feed_publisher(
             _find_text(item, ["source", "{http://www.w3.org/2005/Atom}source"]) or ""
         )
         publisher_homepage_url = None

@@ -37,6 +37,7 @@ from youth_info_platform.curation import (
     link_official_releases_and_related_coverage,
 )
 from youth_info_platform.io_utils import read_json
+from youth_info_platform.publisher_names import publisher_display_name
 
 PUBLIC_ARCHIVE_WINDOW_DAYS = 365
 PUBLIC_ARCHIVE_WINDOW_HOURS = PUBLIC_ARCHIVE_WINDOW_DAYS * 24
@@ -13007,7 +13008,7 @@ def render_publisher_icon(article: dict) -> str:
             )
     if not icon_url:
         return ""
-    source = format_source_label(article.get("source") or article.get("source_name"))
+    source = article_publisher_label(article)
     alt = f"{source} 아이콘" if source else "언론사 아이콘"
     return (
         f'<img class="publisher-icon" src="{html.escape(icon_url)}" alt="{html.escape(alt)}" '
@@ -13016,7 +13017,7 @@ def render_publisher_icon(article: dict) -> str:
     )
 
 
-def render_article_media(article: dict) -> str:
+def render_article_media(article: dict, *, include_fallback_details: bool = True) -> str:
     raw_image_url = str(article.get("image_url") or "").strip()
     # Generated home previews use a site-relative cache path.  Do not resolve
     # it against the publisher URL, which would send the browser back to the
@@ -13048,11 +13049,16 @@ def render_article_media(article: dict) -> str:
         # Not every publisher exposes an image in its feed or article HTML.
         # Keep the card visually informative with a lightweight, linkable
         # editorial tile instead of collapsing the media column entirely.
-        direction_label = content_direction_label(article_content_direction(article))
-        source_label = format_source_label(article.get("source") or article.get("source_name")) or "자료"
-        topic_label = article_topic_tags(article, limit=1)[0] if article_topic_tags(article, limit=1) else direction_label
         title = html.escape(display_article_title(article, limit=72))
         url = html.escape(article_target_url(article), quote=True)
+        if not include_fallback_details:
+            return (
+                f'<a class="article-media fallback article-media--quiet" href="{url}" target="_blank" rel="noreferrer" '
+                f'aria-label="{title} 기사 링크 바로가기"></a>'
+            )
+        direction_label = content_direction_label(article_content_direction(article))
+        source_label = article_publisher_label(article) or "자료"
+        topic_label = article_topic_tags(article, limit=1)[0] if article_topic_tags(article, limit=1) else direction_label
         return (
             f'<a class="article-media fallback" href="{url}" target="_blank" rel="noreferrer" '
             f'aria-label="{title} 기사 링크 바로가기">'
@@ -13385,7 +13391,7 @@ def is_general_news_menu_article(article: dict) -> bool:
 
 def render_article_card(article: dict, extra_attrs: dict[str, str] | None = None) -> str:
     compact_news_layout = bool(extra_attrs and "data-article-hour" in extra_attrs)
-    media_html = render_article_media(article)
+    media_html = render_article_media(article, include_fallback_details=not compact_news_layout)
     media_state_class = "has-media" if media_html else "no-media"
     topic_tags = article_topic_tags(article)
     direction = article_content_direction(article)
@@ -13480,7 +13486,7 @@ def render_article_card(article: dict, extra_attrs: dict[str, str] | None = None
 
 def render_hub_article_meta(article: dict, category_label: str) -> str:
     detail_label = hub_scope_detail_label(article)
-    source = format_source_label(article.get("source") or article.get("source_name"))
+    source = article_publisher_label(article)
     published = article_published_label(article) or "날짜 미상"
     publisher_icon = render_publisher_icon(article)
     return (
@@ -15118,16 +15124,32 @@ def format_source_label(value: str | None) -> str:
     source = normalize_inline_text(value)
     if not source:
         return "출처 미상"
-    aliases = {
-        "v.daum.net": "다음 뉴스",
+    special_aliases = {
         "정책브리핑 RSS": "정책브리핑",
         "정책브리핑 청년정책 뉴스": "정책브리핑",
     }
-    if source in aliases:
-        return aliases[source]
+    if source in special_aliases:
+        return special_aliases[source]
+    normalized = publisher_display_name(source)
+    if normalized != source:
+        return normalized
     if source.startswith("www."):
         return source[4:]
     return source
+
+
+def article_publisher_label(article: dict) -> str:
+    """Use page-resolved publisher metadata before a feed fallback label."""
+    for value in (
+        article.get("publisher_name"),
+        article.get("source"),
+        article.get("source_name"),
+        article.get("publisher_domain"),
+    ):
+        label = format_source_label(value)
+        if label and label != "출처 미상":
+            return label
+    return "출처 미상"
 
 
 def summarize_article_text(article: dict, limit: int = 118) -> str:
@@ -15214,7 +15236,7 @@ def render_article_meta(
         f'<span class="meta-pill {"primary" if index == 0 else "subtle"}">{html.escape(label)}</span>'
         for index, label in enumerate(dict.fromkeys(label for label in meta_labels if label))
     )
-    source = format_source_label(article.get("source") or article.get("source_name"))
+    source = article_publisher_label(article)
     published = article_published_label(article) or "날짜 미상"
     publisher_icon = render_publisher_icon(article)
     byline_html = (
@@ -15231,15 +15253,12 @@ def render_article_meta(
 
 def compact_article_meta(article: dict) -> str:
     bits = []
-    source = format_source_label(article.get("source") or article.get("source_name"))
+    source = article_publisher_label(article)
     published = article_published_label(article)
     if source:
         bits.append(source)
     if published:
         bits.append(published)
-    region = article.get("region")
-    if region and region != "전국":
-        bits.append(region)
     return " · ".join(bits) or "기사 정보 없음"
 
 
@@ -21106,9 +21125,26 @@ body[data-page="index.html"] .civic-latest-news .civic-brief-row { padding: 14px
 .news-hour-range { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 8px; min-width: 0; }
 .news-hour-field { display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: center; gap: 8px; min-width: 0; color: var(--muted); font-size: .78rem; font-weight: 800; white-space: nowrap; }
 .news-hour-select { width: 100%; min-width: 0; min-height: 46px; padding: 0 10px; border: 1px solid var(--line); border-radius: 12px; background: var(--surface); color: var(--text); font: inherit; font-weight: 700; }
-.news-topic-row { display: flex; flex-wrap: wrap; align-content: flex-start; gap: 7px; min-width: 0; max-height: 85px; overflow: hidden; padding: 1px 0; }
+.news-topic-row {
+  --news-topic-chip-height: 42px;
+  display: flex;
+  flex-wrap: wrap;
+  align-content: flex-start;
+  gap: 7px;
+  min-width: 0;
+  height: calc(var(--news-topic-chip-height) * 2 + 7px);
+  max-height: calc(var(--news-topic-chip-height) * 2 + 7px);
+  overflow: hidden;
+  padding: 0;
+}
 .news-topic-row::-webkit-scrollbar { display: none; }
-.news-topic-row .filter-button { flex: 0 0 auto; min-height: 38px; padding: 6px 10px; }
+.news-topic-row .filter-button {
+  box-sizing: border-box;
+  flex: 0 0 auto;
+  min-height: var(--news-topic-chip-height);
+  height: var(--news-topic-chip-height);
+  padding: 0 10px;
+}
 .news-filter-actions { display: flex; align-items: center; justify-content: flex-end; gap: 10px; padding-top: 4px; }
 .news-filter-actions .button { min-height: 44px; }
 body[data-page="news.html"] .article-grid { grid-template-columns: 1fr; }

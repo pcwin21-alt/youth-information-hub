@@ -552,6 +552,7 @@ def normalize_article_record(article: dict[str, Any]) -> dict[str, Any]:
             "feed_url": feed_url,
             "canonical_url": canonical_url,
             "publisher_url": publisher_url,
+            "publisher_name": record.get("publisher_name"),
             "portal_urls": portal_urls,
             "publisher_domain": record.get("publisher_domain") or source_domain,
             "published_date": published_date,
@@ -993,6 +994,11 @@ def parse_generic_article_page(html_text: str, source_url: str) -> dict[str, Any
         or extract_meta_content(html_text, "description")
         or ""
     )
+    publisher_name = (
+        extract_meta_content(html_text, "og:site_name", "property")
+        or extract_meta_content(html_text, "application-name")
+        or None
+    )
     raw_section_parts = [
         extract_meta_content(html_text, "Classification"),
         extract_meta_content(html_text, "article:section1", "property"),
@@ -1035,6 +1041,7 @@ def parse_generic_article_page(html_text: str, source_url: str) -> dict[str, Any
         "title": title or None,
         "canonical_url": canonical_url,
         "publisher_url": publisher_url,
+        "publisher_name": publisher_name,
         "portal_urls": list(dict.fromkeys(portal_urls)),
         "publisher_domain": extract_domain(publisher_url or canonical or source_url),
         "publisher_published_at": published_at or None,
@@ -1101,6 +1108,7 @@ def resolve_article_metadata(
                 "title",
                 "canonical_url",
                 "publisher_url",
+                "publisher_name",
                 "publisher_domain",
                 "publisher_published_at",
                 "portal_published_at",

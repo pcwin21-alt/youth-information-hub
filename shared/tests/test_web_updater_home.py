@@ -66,6 +66,19 @@ class HomeSelectionTests(unittest.TestCase):
     def tearDown(self) -> None:
         self.tempdir.cleanup()
 
+    def test_compact_article_meta_omits_region(self) -> None:
+        article = make_article(
+            title="청년 정책 기사",
+            lead_text="청년 정책 기사 요약",
+            url="https://example.com/youth-policy",
+            region="서울",
+        )
+
+        self.assertEqual(
+            web_updater.compact_article_meta(article),
+            "테스트신문 · 2026-04-22 09:00",
+        )
+
     def test_local_government_marks_cover_every_tracked_metropolitan_region(self) -> None:
         self.assertEqual(len(web_updater.LOCAL_YOUTH_PLAN_REGIONS), 17)
         for region in web_updater.LOCAL_YOUTH_PLAN_REGIONS:
@@ -121,6 +134,40 @@ class HomeSelectionTests(unittest.TestCase):
 
         self.assertIn('src="assets/article-thumbnails/cache.jpg?v=test"', media_html)
         self.assertNotIn('publisher.example.com/article/assets', media_html)
+
+    def test_compact_news_fallback_does_not_repeat_publisher_or_tags(self) -> None:
+        article = make_article(
+            title="청년 주거 지원 기사",
+            lead_text="청년 주거 지원 내용을 안내합니다.",
+            url="https://example.com/news-without-image",
+            topic_tags=["주거"],
+        )
+        article["source"] = "donga.com"
+
+        media_html = web_updater.render_article_media(article, include_fallback_details=False)
+
+        self.assertIn('article-media--quiet', media_html)
+        self.assertNotIn("donga.com", media_html)
+        self.assertNotIn(">주거<", media_html)
+        self.assertNotIn("article-fallback-source", media_html)
+        self.assertNotIn("기사 이미지 없음", media_html)
+
+    def test_source_domain_is_rendered_as_publication_name(self) -> None:
+        self.assertEqual(web_updater.format_source_label("donga.com"), "동아일보")
+        self.assertEqual(web_updater.format_source_label("mssnews.com"), "중소벤처기업신문")
+
+    def test_page_resolved_publisher_name_takes_priority_in_article_meta(self) -> None:
+        article = make_article(
+            title="청년 정책 기사",
+            lead_text="청년 정책 기사 요약",
+            url="https://example.com/youth-policy",
+        )
+        article.update({"source": "example.com", "publisher_name": "테스트일보"})
+
+        meta_html = web_updater.render_article_meta(article, include_tags=False)
+
+        self.assertIn("테스트일보", meta_html)
+        self.assertNotIn("example.com", meta_html)
 
     def test_campaign_story_stays_out_of_today_but_substantive_promise_can_enter_weekly(self) -> None:
         daily_issue = make_article(
@@ -1242,6 +1289,22 @@ class HomeSelectionTests(unittest.TestCase):
         self.assertIn('data-news-hour-start', page_html)
         self.assertIn('data-news-hour-end', page_html)
         self.assertNotIn('>기간 설정</span>', page_html)
+        site_css = (
+            web_updater.BASE_CSS
+            + web_updater.DASHBOARD_TONE_CSS
+            + web_updater.DESIGN_OVERHAUL_CSS
+            + web_updater.PRODUCT_REBUILD_CSS
+            + web_updater.BRAND_NEW_CSS
+            + web_updater.LEAD_FUNNEL_CSS
+            + web_updater.READABILITY_REFINEMENT_CSS
+            + web_updater.POLICY_BRIEF_CSS
+            + web_updater.HOME_LAYOUT_20260829_CSS
+            + web_updater.EDITORIAL_HEADER_NAV_CSS
+            + web_updater.RIGHT_POLICY_COLOR_SYSTEM_CSS
+        )
+        self.assertIn('--news-topic-chip-height: 42px;', site_css)
+        self.assertIn('height: calc(var(--news-topic-chip-height) * 2 + 7px);', site_css)
+        self.assertIn('overflow: hidden;', site_css)
         self.assertIn('data-article-topics="주거|모집"', page_html)
         self.assertIn(">#주거</button>", page_html)
         self.assertIn('<div class="badge-row"><span class="badge">', page_html)

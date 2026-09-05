@@ -45,6 +45,41 @@ class PublicArchiveTests(unittest.TestCase):
         self.assertEqual(merged["articles"][0]["title"], "첫 기사 수정")
         self.assertEqual(merged["articles"][0]["summary"], "수정 요약")
 
+    def test_normalizes_known_publisher_domain_in_archive(self) -> None:
+        now = datetime(2026, 8, 28, 12, tzinfo=SEOUL)
+        payload = build_public_archive_payload(
+            {},
+            [article("제조AI 인력 양성", "2026-08-27T09:00:00+09:00", source="mssnews.com")],
+            now=now,
+        )
+
+        self.assertEqual(payload["articles"][0]["source"], "중소벤처기업신문")
+
+    def test_merges_duplicate_google_wrappers_for_the_same_publisher_story(self) -> None:
+        now = datetime(2026, 8, 28, 12, tzinfo=SEOUL)
+        first = article(
+            "청년문화패스 확대",
+            "2026-08-27T09:00:00+09:00",
+            url="https://news.google.com/rss/articles/first",
+            canonical_url="https://news.google.com/rss/articles/first",
+            publisher_domain="www.korea.kr",
+            source="대한민국 정책브리핑",
+        )
+        duplicate = article(
+            "청년문화패스 확대",
+            "2026-08-27T09:03:00+09:00",
+            url="https://news.google.com/rss/articles/second",
+            canonical_url="https://news.google.com/rss/articles/second",
+            publisher_domain="www.korea.kr",
+            source="대한민국 정책브리핑",
+            summary="더 풍부한 요약",
+        )
+
+        payload = build_public_archive_payload({}, [first, duplicate], now=now)
+
+        self.assertEqual(payload["article_count"], 1)
+        self.assertEqual(payload["articles"][0]["summary"], "더 풍부한 요약")
+
     def test_excludes_non_public_and_expired_articles(self) -> None:
         now = datetime(2026, 8, 28, 12, tzinfo=SEOUL)
         visible = article("공개", "2026-08-27T09:00:00+09:00")

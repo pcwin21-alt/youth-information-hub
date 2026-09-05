@@ -114,6 +114,34 @@ class NaverParserTests(unittest.TestCase):
         self.assertIsNone(article["published_date"])
         self.assertEqual(article["portal_published_at"], "2026-04-23T02:45:17+00:00")
 
+    def test_parse_feed_translates_google_publisher_domains_to_publication_names(self) -> None:
+        feed = """
+        <rss><channel><item>
+          <title>청년 주거 기사 - donga.com</title>
+          <link>https://news.google.com/rss/articles/example</link>
+          <source url="https://www.donga.com">donga.com</source>
+          <pubDate>Wed, 22 Apr 2026 09:00:00 +0900</pubDate>
+        </item></channel></rss>
+        """
+
+        articles = parse_feed(feed, "Google News youth policy", "news")
+
+        self.assertEqual(articles[0]["source"], "동아일보")
+
+    def test_parse_feed_translates_mssnews_domain_to_publication_name(self) -> None:
+        feed = """
+        <rss><channel><item>
+          <title>중기부 청년 취업 지원 확대 - mssnews.com</title>
+          <link>https://news.google.com/rss/articles/mssnews-example</link>
+          <source url="https://mssnews.com">mssnews.com</source>
+          <pubDate>Wed, 22 Apr 2026 09:00:00 +0900</pubDate>
+        </item></channel></rss>
+        """
+
+        articles = parse_feed(feed, "Google News youth policy", "news")
+
+        self.assertEqual(articles[0]["source"], "중소벤처기업신문")
+
     def test_parse_feed_extracts_media_thumbnail(self) -> None:
         feed = """
         <rss xmlns:media="http://search.yahoo.com/mrss/">
