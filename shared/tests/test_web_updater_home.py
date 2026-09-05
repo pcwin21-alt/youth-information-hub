@@ -809,7 +809,7 @@ class HomeSelectionTests(unittest.TestCase):
         self.assertIn("청년정책 실무자와 활동가가 변화 판단과 정책제안에 쓸 수 있는 맥락을 제공합니다.", footer_html)
         self.assertIn("관련 사이트", footer_html)
 
-        self.assertIn("적재적소 프리핑", footer_html)
+        self.assertIn("적재적소 브리핑", footer_html)
         self.assertIn("적재적소 연구소 운영", footer_html)
         self.assertIn("운영 목적 :", footer_html)
         self.assertIn("정보 기준 :", footer_html)
@@ -1411,7 +1411,7 @@ class ProductRebuildTests(unittest.TestCase):
         script = web_updater.build_product_event_script()
 
         self.assertIn("navigator.share", script)
-        self.assertIn("적재적소 프리핑에서 원문과 관련 자료를 확인해 보세요.", script)
+        self.assertIn("적재적소 브리핑에서 원문과 관련 자료를 확인해 보세요.", script)
         self.assertIn("카카오톡 대화창에 붙여넣으세요.", script)
 
     def test_product_detail_keeps_source_metadata_without_automatic_commentary(self) -> None:
@@ -1531,7 +1531,7 @@ class ProductRebuildTests(unittest.TestCase):
             page_html = output.read_text(encoding="utf-8")
 
         self.assertIn('<meta name="description" content="청년정책의 변화와 현장 소식을 판단과 제안에 쓸 수 있게 연결합니다.">', page_html)
-        self.assertIn('<title>적재적소 프리핑</title>', page_html)
+        self.assertIn('<title>적재적소 브리핑</title>', page_html)
         self.assertIn('assets/branding/right-policy-mark.svg', page_html)
         self.assertIn('href="https://rightpolicy.co.kr/"', page_html)
         self.assertIn('class="skip-link"', page_html)
