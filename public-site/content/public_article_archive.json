@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-09-06T05:34:17.984755+09:00",
+  "generated_at": "2026-09-06T08:15:40.844088+09:00",
   "retention_days": 365,
   "research_retention_days": 3650,
-  "article_count": 1249,
+  "article_count": 1250,
   "articles": [
     {
       "url": "https://news.google.com/rss/articles/CBMiakFVX3lxTE1fY2ZwYXdnUGRoN1pQWlFTdDAwdDMwOUlEeWdpRXMxVFNNUVN6WXlJOGIxTG90V3ItZm04bTlpWmR6OU5WQkF5REF5TlJpcFBDaGhiRW5lNWlnWG82Y3FHbjBTc1RjWGlDZnc?oc=5",
@@ -12,7 +12,7 @@
       "publisher_name": "고대신문",
       "feed_url": "https://news.google.com/rss/articles/CBMiakFVX3lxTE1fY2ZwYXdnUGRoN1pQWlFTdDAwdDMwOUlEeWdpRXMxVFNNUVN6WXlJOGIxTG90V3ItZm04bTlpWmR6OU5WQkF5REF5TlJpcFBDaGhiRW5lNWlnWG82Y3FHbjBTc1RjWGlDZnc?oc=5",
       "title": "고대신문",
-      "source": "kunews.ac.kr",
+      "source": "고대신문",
       "source_name": "구글뉴스 청년 칼럼·기고(30일)",
       "source_kind": "news",
       "publisher_domain": "www.kunews.ac.kr",
@@ -52,7 +52,7 @@
       "public_relevance_score": 15,
       "related_article_count": 1,
       "related_sources": [
-        "kunews.ac.kr"
+        "고대신문"
       ],
       "campaign_political": false,
       "substantive_promise": false,
@@ -144,6 +144,47 @@
       "missing_youth_content_signal": false,
       "archive_key": "https://news.google.com/rss/articles/CBMiVkFVX3lxTE9fcFdCcVlqa3RzOXBaNzJaZHhFYU1xU0pBTmVpUUVmRU50blpuaXhOQktvak5FWk1abnN4NTNjLWtBaWU0R0FtRFhUeC1SRXY5WlNkOUd3?oc=5",
       "published_at": "2026-09-05T09:00:00+00:00"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE1CWHRrYlJJOEpVMnZra28yNW9pTDN3d0JOdGgyelYxQmw2c1JfckRTTi1nNUxlSk95RUp1S0JWcV84RkVrMVlRdzJrZ1pYRDdRQ3Z6c09GeXNxUEXSAWBBVV95cUxNUzlLaFA3YjBhNTRyYU9nQWxsLXJRRE11OWVCVzVQS2pQXzZ2NWJMSnE1cVpQX1VxUkVGR0hSblRVVkNESkFfNVlxbkI5QjdUX1kzSThwVmVONDVDdVF0M2o?oc=5",
+      "canonical_url": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE1CWHRrYlJJOEpVMnZra28yNW9pTDN3d0JOdGgyelYxQmw2c1JfckRTTi1nNUxlSk95RUp1S0JWcV84RkVrMVlRdzJrZ1pYRDdRQ3Z6c09GeXNxUEXSAWBBVV95cUxNUzlLaFA3YjBhNTRyYU9nQWxsLXJRRE11OWVCVzVQS2pQXzZ2NWJMSnE1cVpQX1VxUkVGR0hSblRVVkNESkFfNVlxbkI5QjdUX1kzSThwVmVONDVDdVF0M2o?oc=5",
+      "feed_url": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE1CWHRrYlJJOEpVMnZra28yNW9pTDN3d0JOdGgyelYxQmw2c1JfckRTTi1nNUxlSk95RUp1S0JWcV84RkVrMVlRdzJrZ1pYRDdRQ3Z6c09GeXNxUEXSAWBBVV95cUxNUzlLaFA3YjBhNTRyYU9nQWxsLXJRRE11OWVCVzVQS2pQXzZ2NWJMSnE1cVpQX1VxUkVGR0hSblRVVkNESkFfNVlxbkI5QjdUX1kzSThwVmVONDVDdVF0M2o?oc=5",
+      "title": "노동장관, 제주 팝업스토어 방문…\"청년 도전·성장 적극 지원\" - yna.co.kr",
+      "source": "연합뉴스",
+      "source_name": "구글뉴스 청년 실용정보(7일)",
+      "source_kind": "news",
+      "publisher_domain": "www.yna.co.kr",
+      "portal_published_at": "2026-09-05T04:45:24+00:00",
+      "region": "제주",
+      "categories": [
+        "지역 이슈"
+      ],
+      "topic_tags": [
+        "노동"
+      ],
+      "content_direction": "report",
+      "lead_text": "노동장관, 제주 팝업스토어 방문…\"청년 도전·성장 적극 지원\" yna.co.kr",
+      "youth_excerpt": "노동장관, 제주 팝업스토어 방문…\"청년 도전·성장 적극 지원\" yna.co.kr",
+      "is_official_source": false,
+      "is_public_interest_article": true,
+      "is_hub_candidate": false,
+      "editorial_decision": "default",
+      "editorial_is_highlighted": false,
+      "selection_bucket": "regional_issue",
+      "importance_score": 22,
+      "public_relevance_score": 7,
+      "related_article_count": 1,
+      "related_sources": [
+        "연합뉴스"
+      ],
+      "campaign_political": false,
+      "substantive_promise": false,
+      "campaign_attack": false,
+      "weak_youth_signal": false,
+      "missing_youth_content_signal": false,
+      "archive_key": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE1CWHRrYlJJOEpVMnZra28yNW9pTDN3d0JOdGgyelYxQmw2c1JfckRTTi1nNUxlSk95RUp1S0JWcV84RkVrMVlRdzJrZ1pYRDdRQ3Z6c09GeXNxUEXSAWBBVV95cUxNUzlLaFA3YjBhNTRyYU9nQWxsLXJRRE11OWVCVzVQS2pQXzZ2NWJMSnE1cVpQX1VxUkVGR0hSblRVVkNESkFfNVlxbkI5QjdUX1kzSThwVmVONDVDdVF0M2o?oc=5",
+      "published_at": "2026-09-05T04:45:24+00:00",
+      "published_date": "2026-09-05T04:45:24+00:00"
     },
     {
       "url": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE1TOUtoUDdiMGE1NHJhT2dBbGwtclFETXU5ZUJXNVBLalBfNnY1YkxKcTVxWlBfVXFSRUZHSFJuVFVWQ0RKQV81WXFuQjlCN1RfWTNJOHBWZU40NUN1UXQzatIBYEFVX3lxTE1TOUtoUDdiMGE1NHJhT2dBbGwtclFETXU5ZUJXNVBLalBfNnY1YkxKcTVxWlBfVXFSRUZHSFJuVFVWQ0RKQV81WXFuQjlCN1RfWTNJOHBWZU40NUN1UXQzag?oc=5",
@@ -339,7 +380,7 @@
       "canonical_url": "https://news.google.com/rss/articles/CBMia0FVX3lxTFBfa0RyM0VqdEZxOS1rRWtaZ204U0k4Z3Q5ZWppVzdGT2NVcFlLN3ZWa19Ma2hHVTBvOWpmZzd2SnRveGRhc0pzZHAwUnhtN2J6bEN3VklIblVVUWpsWGZaZVFWR2tWS2o5allr0gFvQVVfeXFMTVdpMDVsQWcyVmRCcTBQam9mV0pzUGJuQzBFcVN2RGtVU3ZlR1NUTHhRcnJCWlJ4QlJqQnlBUXBSTGFhcWhFamVGRG9kdy1HY3c1TlYyamcyTktjNkVYYzV2Mzh4Q1hXeEFCLW9lcDMw?oc=5",
       "feed_url": "https://news.google.com/rss/articles/CBMia0FVX3lxTFBfa0RyM0VqdEZxOS1rRWtaZ204U0k4Z3Q5ZWppVzdGT2NVcFlLN3ZWa19Ma2hHVTBvOWpmZzd2SnRveGRhc0pzZHAwUnhtN2J6bEN3VklIblVVUWpsWGZaZVFWR2tWS2o5allr0gFvQVVfeXFMTVdpMDVsQWcyVmRCcTBQam9mV0pzUGJuQzBFcVN2RGtVU3ZlR1NUTHhRcnJCWlJ4QlJqQnlBUXBSTGFhcWhFamVGRG9kdy1HY3c1TlYyamcyTktjNkVYYzV2Mzh4Q1hXeEFCLW9lcDMw?oc=5",
       "title": "국고보조금 받는 기본소득당, 중소기업용 청년 일자리 보조금까지 7천만 원 수령",
-      "source": "더퍼블릭",
+      "source": "thepublic.kr",
       "source_name": "구글뉴스 청년 임금·보상(7일)",
       "source_kind": "news",
       "publisher_domain": "www.thepublic.kr",
@@ -356,8 +397,8 @@
         "고용"
       ],
       "content_direction": "report",
-      "lead_text": "국고보조금 받는 기본소득당, 중소기업용 청년 일자리 보조금까지 7천만 원 수령 더퍼블릭",
-      "youth_excerpt": "국고보조금 받는 기본소득당, 중소기업용 청년 일자리 보조금까지 7천만 원 수령 더퍼블릭",
+      "lead_text": "국고보조금 받는 기본소득당, 중소기업용 청년 일자리 보조금까지 7천만 원 수령 thepublic.kr",
+      "youth_excerpt": "국고보조금 받는 기본소득당, 중소기업용 청년 일자리 보조금까지 7천만 원 수령 thepublic.kr",
       "is_official_source": false,
       "is_public_interest_article": true,
       "is_hub_candidate": false,
@@ -368,7 +409,7 @@
       "public_relevance_score": 12,
       "related_article_count": 1,
       "related_sources": [
-        "더퍼블릭"
+        "thepublic.kr"
       ],
       "campaign_political": false,
       "substantive_promise": false,
@@ -408,7 +449,7 @@
       "editorial_decision": "default",
       "editorial_is_highlighted": false,
       "selection_bucket": "youth_issue",
-      "importance_score": 30,
+      "importance_score": 28,
       "public_relevance_score": 12,
       "related_article_count": 2,
       "related_sources": [
@@ -1591,7 +1632,7 @@
       "url": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE1hbmg2SGVldHVCYzRuaXUzOEw3R3JXMkQ1STdLYmFZMGRMLU40SkZpa21CLWViS0dqS1F5RzktUEZqRllXaHJUTDBaQmRKdGlaQ3VNZjV5Zmx5UWPSAWBBVV95cUxQaHYzZ1RGN1Qyb3J1bUdCck5SYTd4NXd2UEpXX1ExektVNHRocjNuVFlRZHA5Szl0U2FkUHdCdHBCand6cnVXZ2IwVUxUeUZpbjhDeVdPMHpCOS1aaHlPTWQ?oc=5",
       "canonical_url": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE1hbmg2SGVldHVCYzRuaXUzOEw3R3JXMkQ1STdLYmFZMGRMLU40SkZpa21CLWViS0dqS1F5RzktUEZqRllXaHJUTDBaQmRKdGlaQ3VNZjV5Zmx5UWPSAWBBVV95cUxQaHYzZ1RGN1Qyb3J1bUdCck5SYTd4NXd2UEpXX1ExektVNHRocjNuVFlRZHA5Szl0U2FkUHdCdHBCand6cnVXZ2IwVUxUeUZpbjhDeVdPMHpCOS1aaHlPTWQ?oc=5",
       "feed_url": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE1hbmg2SGVldHVCYzRuaXUzOEw3R3JXMkQ1STdLYmFZMGRMLU40SkZpa21CLWViS0dqS1F5RzktUEZqRllXaHJUTDBaQmRKdGlaQ3VNZjV5Zmx5UWPSAWBBVV95cUxQaHYzZ1RGN1Qyb3J1bUdCck5SYTd4NXd2UEpXX1ExektVNHRocjNuVFlRZHA5Szl0U2FkUHdCdHBCand6cnVXZ2IwVUxUeUZpbjhDeVdPMHpCOS1aaHlPTWQ?oc=5",
-      "title": "조은희 \"내년 청년문화예술패스 예산 22배 증가…재검토해야\"",
+      "title": "조은희 \"내년 청년문화예술패스 예산 22배 증가…재검토해야\" - yna.co.kr",
       "source": "연합뉴스",
       "source_name": "구글뉴스 청년 실용정보(7일)",
       "source_kind": "news",
@@ -1603,8 +1644,8 @@
         "청년은 지금"
       ],
       "content_direction": "report",
-      "lead_text": "조은희 \"내년 청년문화예술패스 예산 22배 증가…재검토해야\" 연합뉴스",
-      "youth_excerpt": "조은희 \"내년 청년문화예술패스 예산 22배 증가…재검토해야\" 연합뉴스",
+      "lead_text": "조은희 \"내년 청년문화예술패스 예산 22배 증가…재검토해야\" yna.co.kr",
+      "youth_excerpt": "조은희 \"내년 청년문화예술패스 예산 22배 증가…재검토해야\" yna.co.kr",
       "is_official_source": false,
       "is_public_interest_article": true,
       "is_hub_candidate": false,
@@ -1776,7 +1817,6 @@
       "source_name": "구글뉴스 청년 부채·금융(7일)",
       "source_kind": "news",
       "publisher_domain": "www.straightnews.co.kr",
-      "published_date": "2026-09-04T02:20:04+00:00",
       "portal_published_at": "2026-09-04T02:20:04+00:00",
       "region": "전국",
       "categories": [
@@ -1809,7 +1849,8 @@
       "weak_youth_signal": false,
       "missing_youth_content_signal": false,
       "archive_key": "https://news.google.com/rss/articles/CBMid0FVX3lxTE9wbXdDdHpzc2h1cGFMS3U4M0w2dHptQlVwUGNDUmg4NTJ6ZUtPa0oycnc3VHZtdUc4TTA0WkpxMTNRQzRCbHFTRTNTdmFFSUZvQ3dqakh0ckV1dmpmZ3pmcXE1RWl1b21SeWlXTEVaendLbU1QbWU40gF3QVVfeXFMT3Btd0N0enNzaHVwYUxLdTgzTDZ0em1CVXBQY0NSaDg1MnplS09rSjJydzdUdm11RzhNMDRaSnExM1FDNEJscVNFM1N2YUVJRm9Dd2pqSHRyRXV2amZnemZxcTVFaXVvbVJ5aVdMRVp6d0ttTVBtZTg?oc=5",
-      "published_at": "2026-09-04T02:20:04+00:00"
+      "published_at": "2026-09-04T02:20:04+00:00",
+      "published_date": "2026-09-04T02:20:04+00:00"
     },
     {
       "url": "https://news.google.com/rss/articles/CBMiU0FVX3lxTFBoRkFfUTNSVWRuaThHZjEtVjZraWs3cmxWXzNLMmJUUEhQcUg5cDRsYkZWMzlpRW5kN1doMERibDVOUmtQRWpUZlQ4ZGc3WFhxblNZ0gFYQVVfeXFMTzNsRk9vZm5HVkx5N3plUk1kT2ZhY1NuWjByN0d4YUVZbDQyczAxMEV5RVllRTdpVzVoNWFoYkVEQkQ0TnJxeTgwSVQzV3AtLTVid2dQRXhqTg?oc=5",
@@ -1948,7 +1989,7 @@
       "canonical_url": "https://news.google.com/rss/articles/CBMiUEFVX3lxTFB4LXIyZmlZLVcyXzdIMUh6aUFna3Y0RUN0N0JuYjJNV1dRdXRQZGViU3FCUDczY2xZVWlPeHVJeGpoWXltM1o2eEs5ZUt1QmJX?oc=5",
       "feed_url": "https://news.google.com/rss/articles/CBMiUEFVX3lxTFB4LXIyZmlZLVcyXzdIMUh6aUFna3Y0RUN0N0JuYjJNV1dRdXRQZGViU3FCUDczY2xZVWlPeHVJeGpoWXltM1o2eEs5ZUt1QmJX?oc=5",
       "title": "내년도 문체부 예산 9조원 돌파…청년 지원↑, 3천만 관광객 준비",
-      "source": "cpbc News",
+      "source": "news.cpbc.co.kr",
       "source_name": "구글뉴스 청년 실용정보(7일)",
       "source_kind": "news",
       "publisher_domain": "news.cpbc.co.kr",
@@ -1959,8 +2000,8 @@
         "청년은 지금"
       ],
       "content_direction": "report",
-      "lead_text": "내년도 문체부 예산 9조원 돌파…청년 지원↑, 3천만 관광객 준비 cpbc News",
-      "youth_excerpt": "내년도 문체부 예산 9조원 돌파…청년 지원↑, 3천만 관광객 준비 cpbc News",
+      "lead_text": "내년도 문체부 예산 9조원 돌파…청년 지원↑, 3천만 관광객 준비 news.cpbc.co.kr",
+      "youth_excerpt": "내년도 문체부 예산 9조원 돌파…청년 지원↑, 3천만 관광객 준비 news.cpbc.co.kr",
       "is_official_source": false,
       "is_public_interest_article": true,
       "is_hub_candidate": false,
@@ -1971,7 +2012,7 @@
       "public_relevance_score": 11,
       "related_article_count": 1,
       "related_sources": [
-        "cpbc News"
+        "news.cpbc.co.kr"
       ],
       "campaign_political": false,
       "substantive_promise": false,
@@ -2377,7 +2418,7 @@
       "url": "https://news.google.com/rss/articles/CBMidkFVX3lxTFBNVjloLXBTcUtJaHAxWlBHdGtWWU5icVZveFBTNjBsUVhMazRXcVhweUx6LTQwZ0wzbzV6VkgwbkFfT3V2Q0VLLU95dHV4UUx6M25XeGN5cVJJMVZMWVNhYVRvWC1QRXNFY1M5NWFsdjJZZGxQc3c?oc=5",
       "canonical_url": "https://news.google.com/rss/articles/CBMidkFVX3lxTFBNVjloLXBTcUtJaHAxWlBHdGtWWU5icVZveFBTNjBsUVhMazRXcVhweUx6LTQwZ0wzbzV6VkgwbkFfT3V2Q0VLLU95dHV4UUx6M25XeGN5cVJJMVZMWVNhYVRvWC1QRXNFY1M5NWFsdjJZZGxQc3c?oc=5",
       "feed_url": "https://news.google.com/rss/articles/CBMidkFVX3lxTFBNVjloLXBTcUtJaHAxWlBHdGtWWU5icVZveFBTNjBsUVhMazRXcVhweUx6LTQwZ0wzbzV6VkgwbkFfT3V2Q0VLLU95dHV4UUx6M25XeGN5cVJJMVZMWVNhYVRvWC1QRXNFY1M5NWFsdjJZZGxQc3c?oc=5",
-      "title": "與박해철 \"尹정부 4년간 청년일자리사업 예산 6천718억 불용\"",
+      "title": "與박해철 \"尹정부 4년간 청년일자리사업 예산 6천718억 불용\" - yna.co.kr",
       "source": "연합뉴스",
       "source_name": "구글뉴스 청년 고용·쉬었음(7일)",
       "source_kind": "news",
@@ -2395,8 +2436,8 @@
         "고용"
       ],
       "content_direction": "report",
-      "lead_text": "與박해철 \"尹정부 4년간 청년일자리사업 예산 6천718억 불용\" 연합뉴스",
-      "youth_excerpt": "與박해철 \"尹정부 4년간 청년일자리사업 예산 6천718억 불용\" 연합뉴스",
+      "lead_text": "與박해철 \"尹정부 4년간 청년일자리사업 예산 6천718억 불용\" yna.co.kr",
+      "youth_excerpt": "與박해철 \"尹정부 4년간 청년일자리사업 예산 6천718억 불용\" yna.co.kr",
       "is_official_source": false,
       "is_public_interest_article": true,
       "is_hub_candidate": false,
@@ -2509,7 +2550,7 @@
       "url": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE5KelB6V2ZBVnM2RVR1My1PeGEwS1F4eThIUm45Y2dUR2hadnNKbnF6d0pMZllCM0N2WDBBU2U2Z2pKcTlSRzhXMmNGWmJLcEZXWjF3WHE5cmRGbUNWNUZOVdIBYEFVX3lxTE5KelB6V2ZBVnM2RVR1My1PeGEwS1F4eThIUm45Y2dUR2hadnNKbnF6d0pMZllCM0N2WDBBU2U2Z2pKcTlSRzhXMmNGWmJLcEZXWjF3WHE5cmRGbUNWNUZOVQ?oc=5",
       "canonical_url": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE5KelB6V2ZBVnM2RVR1My1PeGEwS1F4eThIUm45Y2dUR2hadnNKbnF6d0pMZllCM0N2WDBBU2U2Z2pKcTlSRzhXMmNGWmJLcEZXWjF3WHE5cmRGbUNWNUZOVdIBYEFVX3lxTE5KelB6V2ZBVnM2RVR1My1PeGEwS1F4eThIUm45Y2dUR2hadnNKbnF6d0pMZllCM0N2WDBBU2U2Z2pKcTlSRzhXMmNGWmJLcEZXWjF3WHE5cmRGbUNWNUZOVQ?oc=5",
       "feed_url": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE5KelB6V2ZBVnM2RVR1My1PeGEwS1F4eThIUm45Y2dUR2hadnNKbnF6d0pMZllCM0N2WDBBU2U2Z2pKcTlSRzhXMmNGWmJLcEZXWjF3WHE5cmRGbUNWNUZOVdIBYEFVX3lxTE5KelB6V2ZBVnM2RVR1My1PeGEwS1F4eThIUm45Y2dUR2hadnNKbnF6d0pMZllCM0N2WDBBU2U2Z2pKcTlSRzhXMmNGWmJLcEZXWjF3WHE5cmRGbUNWNUZOVQ?oc=5",
-      "title": "청년의날 기념식 19일 청와대서 개최…참석자 모집",
+      "title": "청년의날 기념식 19일 청와대서 개최…참석자 모집 - yna.co.kr",
       "source": "연합뉴스",
       "source_name": "구글뉴스 청년 삶·심층(7일)",
       "source_kind": "news",
@@ -2527,8 +2568,8 @@
       "governance_activity_types": [
         "모집"
       ],
-      "lead_text": "청년의날 기념식 19일 청와대서 개최…참석자 모집 연합뉴스",
-      "youth_excerpt": "청년의날 기념식 19일 청와대서 개최…참석자 모집 연합뉴스",
+      "lead_text": "청년의날 기념식 19일 청와대서 개최…참석자 모집 yna.co.kr",
+      "youth_excerpt": "청년의날 기념식 19일 청와대서 개최…참석자 모집 yna.co.kr",
       "is_official_source": false,
       "is_public_interest_article": true,
       "is_hub_candidate": false,
@@ -2823,7 +2864,7 @@
       "url": "https://news.google.com/rss/articles/CBMiYEFVX3lxTFB4M0NnNkhocHFxNEs5bVJxeW5zNmZzRXBacnU0Sl85bW5kUHozMXVuREdHUEdBMTJodzRFNlFlSnc5YWc4ZTJFdGRZeVdBQUhwenlkb21fMVF3RUM1eEdYN9IBYEFVX3lxTFB4M0NnNkhocHFxNEs5bVJxeW5zNmZzRXBacnU0Sl85bW5kUHozMXVuREdHUEdBMTJodzRFNlFlSnc5YWc4ZTJFdGRZeVdBQUhwenlkb21fMVF3RUM1eEdYNw?oc=5",
       "canonical_url": "https://news.google.com/rss/articles/CBMiYEFVX3lxTFB4M0NnNkhocHFxNEs5bVJxeW5zNmZzRXBacnU0Sl85bW5kUHozMXVuREdHUEdBMTJodzRFNlFlSnc5YWc4ZTJFdGRZeVdBQUhwenlkb21fMVF3RUM1eEdYN9IBYEFVX3lxTFB4M0NnNkhocHFxNEs5bVJxeW5zNmZzRXBacnU0Sl85bW5kUHozMXVuREdHUEdBMTJodzRFNlFlSnc5YWc4ZTJFdGRZeVdBQUhwenlkb21fMVF3RUM1eEdYNw?oc=5",
       "feed_url": "https://news.google.com/rss/articles/CBMiYEFVX3lxTFB4M0NnNkhocHFxNEs5bVJxeW5zNmZzRXBacnU0Sl85bW5kUHozMXVuREdHUEdBMTJodzRFNlFlSnc5YWc4ZTJFdGRZeVdBQUhwenlkb21fMVF3RUM1eEdYN9IBYEFVX3lxTFB4M0NnNkhocHFxNEs5bVJxeW5zNmZzRXBacnU0Sl85bW5kUHozMXVuREdHUEdBMTJodzRFNlFlSnc5YWc4ZTJFdGRZeVdBQUhwenlkb21fMVF3RUM1eEdYNw?oc=5",
-      "title": "문체부 내년 예산안 9.6조 역대 최대…청년문화패스 전면 확대 8천억",
+      "title": "문체부 내년 예산안 9.6조 역대 최대…청년문화패스 전면 확대 8천억 - yna.co.kr",
       "source": "연합뉴스",
       "source_name": "구글뉴스 청년 실용정보(7일)",
       "source_kind": "news",
@@ -2835,8 +2876,8 @@
         "청년은 지금"
       ],
       "content_direction": "report",
-      "lead_text": "문체부 내년 예산안 9.6조 역대 최대…청년문화패스 전면 확대 8천억 연합뉴스",
-      "youth_excerpt": "...6조 역대 최대…청년문화패스 전면 확대 8천억 연합뉴스",
+      "lead_text": "문체부 내년 예산안 9.6조 역대 최대…청년문화패스 전면 확대 8천억 yna.co.kr",
+      "youth_excerpt": "...6조 역대 최대…청년문화패스 전면 확대 8천억 yna.co.kr",
       "is_official_source": false,
       "is_public_interest_article": true,
       "is_hub_candidate": false,
@@ -3253,7 +3294,7 @@
       "url": "https://news.google.com/rss/articles/CBMieEFVX3lxTE1MZTRRSUxEZUhsbTlRdzJ1NVZpbDgxTFlEeFNad2dUZ0NFeFQ4TE9aQ1htWEJCM3RMVHFqTllEM1U3Zm96X3BVMHYza2drSm1xdW1fbzFUQVR0aEpmWnRGbjR6VUFKdmNDYWxjVEFWWG9OZEFnYnl6T9IBeEFVX3lxTE1MZTRRSUxEZUhsbTlRdzJ1NVZpbDgxTFlEeFNad2dUZ0NFeFQ4TE9aQ1htWEJCM3RMVHFqTllEM1U3Zm96X3BVMHYza2drSm1xdW1fbzFUQVR0aEpmWnRGbjR6VUFKdmNDYWxjVEFWWG9OZEFnYnl6Tw?oc=5",
       "canonical_url": "https://news.google.com/rss/articles/CBMieEFVX3lxTE1MZTRRSUxEZUhsbTlRdzJ1NVZpbDgxTFlEeFNad2dUZ0NFeFQ4TE9aQ1htWEJCM3RMVHFqTllEM1U3Zm96X3BVMHYza2drSm1xdW1fbzFUQVR0aEpmWnRGbjR6VUFKdmNDYWxjVEFWWG9OZEFnYnl6T9IBeEFVX3lxTE1MZTRRSUxEZUhsbTlRdzJ1NVZpbDgxTFlEeFNad2dUZ0NFeFQ4TE9aQ1htWEJCM3RMVHFqTllEM1U3Zm96X3BVMHYza2drSm1xdW1fbzFUQVR0aEpmWnRGbjR6VUFKdmNDYWxjVEFWWG9OZEFnYnl6Tw?oc=5",
       "feed_url": "https://news.google.com/rss/articles/CBMieEFVX3lxTE1MZTRRSUxEZUhsbTlRdzJ1NVZpbDgxTFlEeFNad2dUZ0NFeFQ4TE9aQ1htWEJCM3RMVHFqTllEM1U3Zm96X3BVMHYza2drSm1xdW1fbzFUQVR0aEpmWnRGbjR6VUFKdmNDYWxjVEFWWG9OZEFnYnl6T9IBeEFVX3lxTE1MZTRRSUxEZUhsbTlRdzJ1NVZpbDgxTFlEeFNad2dUZ0NFeFQ4TE9aQ1htWEJCM3RMVHFqTllEM1U3Zm96X3BVMHYza2drSm1xdW1fbzFUQVR0aEpmWnRGbjR6VUFKdmNDYWxjVEFWWG9OZEFnYnl6Tw?oc=5",
-      "title": "\"지역 중소기업과 청년 상생\"…인력 지원계획 수립 - newsis.com",
+      "title": "\"지역 중소기업과 청년 상생\"…인력 지원계획 수립",
       "source": "뉴시스",
       "source_name": "구글뉴스 청년 임금·보상(7일)",
       "source_kind": "news",
@@ -3265,8 +3306,8 @@
         "정책 오피셜"
       ],
       "content_direction": "report",
-      "lead_text": "\"지역 중소기업과 청년 상생\"…인력 지원계획 수립 newsis.com",
-      "youth_excerpt": "\"지역 중소기업과 청년 상생\"…인력 지원계획 수립 newsis.com",
+      "lead_text": "\"지역 중소기업과 청년 상생\"…인력 지원계획 수립 뉴시스",
+      "youth_excerpt": "\"지역 중소기업과 청년 상생\"…인력 지원계획 수립 뉴시스",
       "is_official_source": false,
       "is_public_interest_article": true,
       "is_hub_candidate": false,
@@ -3414,9 +3455,9 @@
       "published_at": "2026-09-03T20:50:00+00:00"
     },
     {
-      "url": "https://news.google.com/rss/articles/CBMibEFVX3lxTE9RYVVnWExNVi10Z3RFTkI2RDBqN0E1VjVPazNrbmhHN05NcS1yZDMtTXpKbDJKUlVzMHdNNENmMktObTB1d0FzLVIzeDVpcGl3RkUwUnFVSS1wd2FqbE9ybER5eGpoMDRib0NpQ9IBbEFVX3lxTE9RYVVnWExNVi10Z3RFTkI2RDBqN0E1VjVPazNrbmhHN05NcS1yZDMtTXpKbDJKUlVzMHdNNENmMktObTB1d0FzLVIzeDVpcGl3RkUwUnFVSS1wd2FqbE9ybER5eGpoMDRib0NpQw?oc=5",
-      "canonical_url": "https://news.google.com/rss/articles/CBMibEFVX3lxTE9RYVVnWExNVi10Z3RFTkI2RDBqN0E1VjVPazNrbmhHN05NcS1yZDMtTXpKbDJKUlVzMHdNNENmMktObTB1d0FzLVIzeDVpcGl3RkUwUnFVSS1wd2FqbE9ybER5eGpoMDRib0NpQ9IBbEFVX3lxTE9RYVVnWExNVi10Z3RFTkI2RDBqN0E1VjVPazNrbmhHN05NcS1yZDMtTXpKbDJKUlVzMHdNNENmMktObTB1d0FzLVIzeDVpcGl3RkUwUnFVSS1wd2FqbE9ybER5eGpoMDRib0NpQw?oc=5",
-      "feed_url": "https://news.google.com/rss/articles/CBMibEFVX3lxTE9RYVVnWExNVi10Z3RFTkI2RDBqN0E1VjVPazNrbmhHN05NcS1yZDMtTXpKbDJKUlVzMHdNNENmMktObTB1d0FzLVIzeDVpcGl3RkUwUnFVSS1wd2FqbE9ybER5eGpoMDRib0NpQ9IBbEFVX3lxTE9RYVVnWExNVi10Z3RFTkI2RDBqN0E1VjVPazNrbmhHN05NcS1yZDMtTXpKbDJKUlVzMHdNNENmMktObTB1d0FzLVIzeDVpcGl3RkUwUnFVSS1wd2FqbE9ybER5eGpoMDRib0NpQw?oc=5",
+      "url": "https://news.google.com/rss/articles/CBMilgFBVV95cUxPcWViUHhSaG1QNGF1NndQbFlEQ3lLX01kOEZjVDFCeEpETFpwd1FnRndKMTR1YkFvY0NodkVhSVkxRnQ2dXViT0Z0N0tUN252Z1JlNktZa2xUS2FoMEp6VWtVVDNBMllaMml5RW9YMkU4MWRycWJqVkhGZ3JFOFlhX095ZnNFQ0pLVHhPdmhhdy02VGE2UHfSAWxBVV95cUxPUWFVZ1hMTVYtdGd0RU5CNkQwajdBNVY1T2sza25oRzdOTXEtcmQzLU16SmwySlJVczB3TTRDZjJLTm0wdXdBcy1SM3g1aXBpd0ZFMFJxVUktcHdhamxPcmxEeXhqaDA0Ym9DaUM?oc=5",
+      "canonical_url": "https://news.google.com/rss/articles/CBMilgFBVV95cUxPcWViUHhSaG1QNGF1NndQbFlEQ3lLX01kOEZjVDFCeEpETFpwd1FnRndKMTR1YkFvY0NodkVhSVkxRnQ2dXViT0Z0N0tUN252Z1JlNktZa2xUS2FoMEp6VWtVVDNBMllaMml5RW9YMkU4MWRycWJqVkhGZ3JFOFlhX095ZnNFQ0pLVHhPdmhhdy02VGE2UHfSAWxBVV95cUxPUWFVZ1hMTVYtdGd0RU5CNkQwajdBNVY1T2sza25oRzdOTXEtcmQzLU16SmwySlJVczB3TTRDZjJLTm0wdXdBcy1SM3g1aXBpd0ZFMFJxVUktcHdhamxPcmxEeXhqaDA0Ym9DaUM?oc=5",
+      "feed_url": "https://news.google.com/rss/articles/CBMilgFBVV95cUxPcWViUHhSaG1QNGF1NndQbFlEQ3lLX01kOEZjVDFCeEpETFpwd1FnRndKMTR1YkFvY0NodkVhSVkxRnQ2dXViT0Z0N0tUN252Z1JlNktZa2xUS2FoMEp6VWtVVDNBMllaMml5RW9YMkU4MWRycWJqVkhGZ3JFOFlhX095ZnNFQ0pLVHhPdmhhdy02VGE2UHfSAWxBVV95cUxPUWFVZ1hMTVYtdGd0RU5CNkQwajdBNVY1T2sza25oRzdOTXEtcmQzLU16SmwySlJVczB3TTRDZjJLTm0wdXdBcy1SM3g1aXBpd0ZFMFJxVUktcHdhamxPcmxEeXhqaDA0Ym9DaUM?oc=5",
       "title": "“청년일자리 민관 보조 맞춰야 해결”",
       "source": "국민일보",
       "source_name": "구글뉴스 청년 고용·쉬었음(7일)",
@@ -3454,7 +3495,7 @@
       "campaign_attack": false,
       "weak_youth_signal": false,
       "missing_youth_content_signal": false,
-      "archive_key": "https://news.google.com/rss/articles/CBMibEFVX3lxTE9RYVVnWExNVi10Z3RFTkI2RDBqN0E1VjVPazNrbmhHN05NcS1yZDMtTXpKbDJKUlVzMHdNNENmMktObTB1d0FzLVIzeDVpcGl3RkUwUnFVSS1wd2FqbE9ybER5eGpoMDRib0NpQ9IBbEFVX3lxTE9RYVVnWExNVi10Z3RFTkI2RDBqN0E1VjVPazNrbmhHN05NcS1yZDMtTXpKbDJKUlVzMHdNNENmMktObTB1d0FzLVIzeDVpcGl3RkUwUnFVSS1wd2FqbE9ybER5eGpoMDRib0NpQw?oc=5",
+      "archive_key": "https://news.google.com/rss/articles/CBMilgFBVV95cUxPcWViUHhSaG1QNGF1NndQbFlEQ3lLX01kOEZjVDFCeEpETFpwd1FnRndKMTR1YkFvY0NodkVhSVkxRnQ2dXViT0Z0N0tUN252Z1JlNktZa2xUS2FoMEp6VWtVVDNBMllaMml5RW9YMkU4MWRycWJqVkhGZ3JFOFlhX095ZnNFQ0pLVHhPdmhhdy02VGE2UHfSAWxBVV95cUxPUWFVZ1hMTVYtdGd0RU5CNkQwajdBNVY1T2sza25oRzdOTXEtcmQzLU16SmwySlJVczB3TTRDZjJLTm0wdXdBcy1SM3g1aXBpd0ZFMFJxVUktcHdhamxPcmxEeXhqaDA0Ym9DaUM?oc=5",
       "published_at": "2026-09-03T16:05:00+00:00"
     },
     {
@@ -4395,7 +4436,7 @@
       "canonical_url": "https://news.google.com/rss/articles/CBMibkFVX3lxTFBBYXd1UFFMeGw4Vzd1WVlWRVlYa3g3X29uQjR1VVBCdVdpbnZ1dm56bjBuSmFnVUstU2JDa3lZdEtkWC12aFE5aUt6V1FTX0loQ1BGOXQ0SzZhT1BxT3VUSDA1bnY2UC1zbXpSQU53?oc=5",
       "feed_url": "https://news.google.com/rss/articles/CBMibkFVX3lxTFBBYXd1UFFMeGw4Vzd1WVlWRVlYa3g3X29uQjR1VVBCdVdpbnZ1dm56bjBuSmFnVUstU2JDa3lZdEtkWC12aFE5aUt6V1FTX0loQ1BGOXQ0SzZhT1BxT3VUSDA1bnY2UC1zbXpSQU53?oc=5",
       "title": "현대차 등 10대그룹 인사수장 모였다…노동장관과 청년 일자리 확대 논의",
-      "source": "아시아투데이",
+      "source": "asiatoday.co.kr",
       "source_name": "구글뉴스 청년 고용·쉬었음(7일)",
       "source_kind": "news",
       "publisher_domain": "www.asiatoday.co.kr",
@@ -4413,8 +4454,8 @@
         "고용"
       ],
       "content_direction": "report",
-      "lead_text": "현대차 등 10대그룹 인사수장 모였다…노동장관과 청년 일자리 확대 논의 아시아투데이",
-      "youth_excerpt": "현대차 등 10대그룹 인사수장 모였다…노동장관과 청년 일자리 확대 논의 아시아투데이",
+      "lead_text": "현대차 등 10대그룹 인사수장 모였다…노동장관과 청년 일자리 확대 논의 asiatoday.co.kr",
+      "youth_excerpt": "현대차 등 10대그룹 인사수장 모였다…노동장관과 청년 일자리 확대 논의 asiatoday.co.kr",
       "is_official_source": false,
       "is_public_interest_article": true,
       "is_hub_candidate": false,
@@ -4425,7 +4466,7 @@
       "public_relevance_score": 12,
       "related_article_count": 1,
       "related_sources": [
-        "아시아투데이"
+        "asiatoday.co.kr"
       ],
       "campaign_political": false,
       "substantive_promise": false,
@@ -4481,7 +4522,7 @@
       "canonical_url": "https://news.google.com/rss/articles/CBMi3wJBVV95cUxORmdyakZKV2V6WXVUQXRCRlM0TlFDWkV1czZTVU5UN0JFM3Z5eXc4ZndQb3FHUEx5Vkp5aDVnaEMzZkV2dFN6TDU0LWt5a2RzWTN6aEdyc01JbFVIbzNyLWdJbGVOZmF6WHFfZHppNFFtRlJ1UUlZc0ZURHlnWEhPZE5qaFp0QjZjT2R4Y2psUF9iekhRVWU4YVJSeGdKOF83R1B6RkpPclFxWmQ2dl9rNDNBVDRaQy0zS2VsYmlQNWJCQUFqdkJFa05FNUhxelRpb0xPUGZkMlZHallDblBwSERIb2ItWWhNTi12VktSSkpHcVpCM2ZIMk5VSkFZQ3JWSWxRN2Zhd29tSS1TeHZlNnhPbzc1bUlYaHdDNG92T3ZQSWtPa25MU3g3bVRlTXNXWW5UdkNlWUdNamRRcnl5WlRwcE8xV25Ha05KZEwxZHdXYUktX3R2c0FRcGo3Wm8?oc=5",
       "feed_url": "https://news.google.com/rss/articles/CBMi3wJBVV95cUxORmdyakZKV2V6WXVUQXRCRlM0TlFDWkV1czZTVU5UN0JFM3Z5eXc4ZndQb3FHUEx5Vkp5aDVnaEMzZkV2dFN6TDU0LWt5a2RzWTN6aEdyc01JbFVIbzNyLWdJbGVOZmF6WHFfZHppNFFtRlJ1UUlZc0ZURHlnWEhPZE5qaFp0QjZjT2R4Y2psUF9iekhRVWU4YVJSeGdKOF83R1B6RkpPclFxWmQ2dl9rNDNBVDRaQy0zS2VsYmlQNWJCQUFqdkJFa05FNUhxelRpb0xPUGZkMlZHallDblBwSERIb2ItWWhNTi12VktSSkpHcVpCM2ZIMk5VSkFZQ3JWSWxRN2Zhd29tSS1TeHZlNnhPbzc1bUlYaHdDNG92T3ZQSWtPa25MU3g3bVRlTXNXWW5UdkNlWUdNamRRcnl5WlRwcE8xV25Ha05KZEwxZHdXYUktX3R2c0FRcGo3Wm8?oc=5",
       "title": "제천시, 청년 주택자금 대출이자 지원…최대 5년간 연 300만원",
-      "source": "데일리뉴스",
+      "source": "idailynews.co.kr",
       "source_name": "구글뉴스 청년 부채·금융(7일)",
       "source_kind": "news",
       "publisher_domain": "idailynews.co.kr",
@@ -4500,8 +4541,8 @@
         "부채"
       ],
       "content_direction": "report",
-      "lead_text": "제천시, 청년 주택자금 대출이자 지원…최대 5년간 연 300만원 데일리뉴스",
-      "youth_excerpt": "제천시, 청년 주택자금 대출이자 지원…최대 5년간 연 300만원 데일리뉴스",
+      "lead_text": "제천시, 청년 주택자금 대출이자 지원…최대 5년간 연 300만원 idailynews.co.kr",
+      "youth_excerpt": "제천시, 청년 주택자금 대출이자 지원…최대 5년간 연 300만원 idailynews.co.kr",
       "is_official_source": false,
       "is_public_interest_article": true,
       "is_hub_candidate": false,
@@ -4512,7 +4553,7 @@
       "public_relevance_score": 9,
       "related_article_count": 1,
       "related_sources": [
-        "데일리뉴스"
+        "idailynews.co.kr"
       ],
       "campaign_political": false,
       "substantive_promise": false,
@@ -5722,7 +5763,7 @@
       "url": "https://news.google.com/rss/articles/CBMieEFVX3lxTE5xVTRPT3AwbWdGNzdqNGcyd1VoellnSmZMVnRBOVktR1dFU1VRWm9EZkhqZkNSdFlKS3ZKSE1ySjcwUmFWdm9QOUZCTEc4YWpXQ3hhdjNlTlo0THhfellwX2dBQ0lYYWkxdTNSWUFSSnFHTlBwVXBwedIBeEFVX3lxTE5xVTRPT3AwbWdGNzdqNGcyd1VoellnSmZMVnRBOVktR1dFU1VRWm9EZkhqZkNSdFlKS3ZKSE1ySjcwUmFWdm9QOUZCTEc4YWpXQ3hhdjNlTlo0THhfellwX2dBQ0lYYWkxdTNSWUFSSnFHTlBwVXBweQ?oc=5",
       "canonical_url": "https://news.google.com/rss/articles/CBMieEFVX3lxTE5xVTRPT3AwbWdGNzdqNGcyd1VoellnSmZMVnRBOVktR1dFU1VRWm9EZkhqZkNSdFlKS3ZKSE1ySjcwUmFWdm9QOUZCTEc4YWpXQ3hhdjNlTlo0THhfellwX2dBQ0lYYWkxdTNSWUFSSnFHTlBwVXBwedIBeEFVX3lxTE5xVTRPT3AwbWdGNzdqNGcyd1VoellnSmZMVnRBOVktR1dFU1VRWm9EZkhqZkNSdFlKS3ZKSE1ySjcwUmFWdm9QOUZCTEc4YWpXQ3hhdjNlTlo0THhfellwX2dBQ0lYYWkxdTNSWUFSSnFHTlBwVXBweQ?oc=5",
       "feed_url": "https://news.google.com/rss/articles/CBMieEFVX3lxTE5xVTRPT3AwbWdGNzdqNGcyd1VoellnSmZMVnRBOVktR1dFU1VRWm9EZkhqZkNSdFlKS3ZKSE1ySjcwUmFWdm9QOUZCTEc4YWpXQ3hhdjNlTlo0THhfellwX2dBQ0lYYWkxdTNSWUFSSnFHTlBwVXBwedIBeEFVX3lxTE5xVTRPT3AwbWdGNzdqNGcyd1VoellnSmZMVnRBOVktR1dFU1VRWm9EZkhqZkNSdFlKS3ZKSE1ySjcwUmFWdm9QOUZCTEc4YWpXQ3hhdjNlTlo0THhfellwX2dBQ0lYYWkxdTNSWUFSSnFHTlBwVXBweQ?oc=5",
-      "title": "군 복무 청년 정책 개선방안 발표하는 김달원 청년정책조정실장 - newsis.com",
+      "title": "군 복무 청년 정책 개선방안 발표하는 김달원 청년정책조정실장",
       "source": "뉴시스",
       "source_name": "구글뉴스 청년정책(7일)",
       "source_kind": "news",
@@ -5737,8 +5778,8 @@
       "governance_activity_types": [
         "발표회"
       ],
-      "lead_text": "군 복무 청년 정책 개선방안 발표하는 김달원 청년정책조정실장 newsis.com",
-      "youth_excerpt": "군 복무 청년 정책 개선방안 발표하는 김달원 청년정책조정실장 newsis.com",
+      "lead_text": "군 복무 청년 정책 개선방안 발표하는 김달원 청년정책조정실장 뉴시스",
+      "youth_excerpt": "군 복무 청년 정책 개선방안 발표하는 김달원 청년정책조정실장 뉴시스",
       "is_official_source": false,
       "is_public_interest_article": true,
       "is_hub_candidate": false,
@@ -5763,7 +5804,7 @@
       "url": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE5rVGF6eWE2R0JTY0Q5NkhIbjhBNlBQMUVvQUMtUzRnX3RvWGptTGl5dGwtT0RTM3JBd3BKelBSODloZmdkVGJpYUo0NW5jWHpPbVhId1plQVk2Zkg2c0FqNNIBYEFVX3lxTE5rVGF6eWE2R0JTY0Q5NkhIbjhBNlBQMUVvQUMtUzRnX3RvWGptTGl5dGwtT0RTM3JBd3BKelBSODloZmdkVGJpYUo0NW5jWHpPbVhId1plQVk2Zkg2c0FqNA?oc=5",
       "canonical_url": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE5rVGF6eWE2R0JTY0Q5NkhIbjhBNlBQMUVvQUMtUzRnX3RvWGptTGl5dGwtT0RTM3JBd3BKelBSODloZmdkVGJpYUo0NW5jWHpPbVhId1plQVk2Zkg2c0FqNNIBYEFVX3lxTE5rVGF6eWE2R0JTY0Q5NkhIbjhBNlBQMUVvQUMtUzRnX3RvWGptTGl5dGwtT0RTM3JBd3BKelBSODloZmdkVGJpYUo0NW5jWHpPbVhId1plQVk2Zkg2c0FqNA?oc=5",
       "feed_url": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE5rVGF6eWE2R0JTY0Q5NkhIbjhBNlBQMUVvQUMtUzRnX3RvWGptTGl5dGwtT0RTM3JBd3BKelBSODloZmdkVGJpYUo0NW5jWHpPbVhId1plQVk2Zkg2c0FqNNIBYEFVX3lxTE5rVGF6eWE2R0JTY0Q5NkhIbjhBNlBQMUVvQUMtUzRnX3RvWGptTGl5dGwtT0RTM3JBd3BKelBSODloZmdkVGJpYUo0NW5jWHpPbVhId1plQVk2Zkg2c0FqNA?oc=5",
-      "title": "청년 일자리 확대 위한 간담회",
+      "title": "청년 일자리 확대 위한 간담회 - yna.co.kr",
       "source": "연합뉴스",
       "source_name": "구글뉴스 청년 고용·쉬었음(7일)",
       "source_kind": "news",
@@ -5784,8 +5825,8 @@
       "governance_activity_types": [
         "간담회"
       ],
-      "lead_text": "청년 일자리 확대 위한 간담회 연합뉴스",
-      "youth_excerpt": "청년 일자리 확대 위한 간담회 연합뉴스",
+      "lead_text": "청년 일자리 확대 위한 간담회 yna.co.kr",
+      "youth_excerpt": "청년 일자리 확대 위한 간담회 yna.co.kr",
       "is_official_source": false,
       "is_public_interest_article": true,
       "is_hub_candidate": false,
@@ -6190,7 +6231,7 @@
       "url": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE5JS0ZOOXBleFhoRFdUQkR6Qkc1VnRaWHp6RW5iWXptb05ocElBMXl2MnVNVkNqZ3FGWjRvMklqaHdKYlJFYTZwWUdDaUxiV2tlbjlhdnJpQll1dw?oc=5",
       "canonical_url": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE5JS0ZOOXBleFhoRFdUQkR6Qkc1VnRaWHp6RW5iWXptb05ocElBMXl2MnVNVkNqZ3FGWjRvMklqaHdKYlJFYTZwWUdDaUxiV2tlbjlhdnJpQll1dw?oc=5",
       "feed_url": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE5JS0ZOOXBleFhoRFdUQkR6Qkc1VnRaWHp6RW5iWXptb05ocElBMXl2MnVNVkNqZ3FGWjRvMklqaHdKYlJFYTZwWUdDaUxiV2tlbjlhdnJpQll1dw?oc=5",
-      "title": "김영훈 노동장관, 10대 그룹에 \"청년 일자리 확대\" 당부 - hankyung.com",
+      "title": "김영훈 노동장관, 10대 그룹에 \"청년 일자리 확대\" 당부",
       "source": "한국경제",
       "source_name": "구글뉴스 청년 고용·쉬었음(7일)",
       "source_kind": "news",
@@ -6209,8 +6250,8 @@
         "고용"
       ],
       "content_direction": "report",
-      "lead_text": "김영훈 노동장관, 10대 그룹에 \"청년 일자리 확대\" 당부 hankyung.com",
-      "youth_excerpt": "김영훈 노동장관, 10대 그룹에 \"청년 일자리 확대\" 당부 hankyung.com",
+      "lead_text": "김영훈 노동장관, 10대 그룹에 \"청년 일자리 확대\" 당부 한국경제",
+      "youth_excerpt": "김영훈 노동장관, 10대 그룹에 \"청년 일자리 확대\" 당부 한국경제",
       "is_official_source": false,
       "is_public_interest_article": true,
       "is_hub_candidate": false,
@@ -6235,7 +6276,7 @@
       "url": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE02ZUxqZTZpemlPcTd4Vks3TUs1SDIxZk90UTBnNkJwZmR1d1RRTE5DOUYyNE1LTzJCc0JGYmNfNmFLU3B4NXJ3SU1nNUd3TzJtT08wWGpNNFZlQQ?oc=5",
       "canonical_url": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE02ZUxqZTZpemlPcTd4Vks3TUs1SDIxZk90UTBnNkJwZmR1d1RRTE5DOUYyNE1LTzJCc0JGYmNfNmFLU3B4NXJ3SU1nNUd3TzJtT08wWGpNNFZlQQ?oc=5",
       "feed_url": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE02ZUxqZTZpemlPcTd4Vks3TUs1SDIxZk90UTBnNkJwZmR1d1RRTE5DOUYyNE1LTzJCc0JGYmNfNmFLU3B4NXJ3SU1nNUd3TzJtT08wWGpNNFZlQQ?oc=5",
-      "title": "정부•10대그룹 ‘원팀’, 청년 일자리 기회 대폭 확대 한뜻",
+      "title": "정부•10대그룹 ‘원팀’, 청년 일자리 기회 대폭 확대 한뜻 - viva100.com",
       "source": "브릿지경제",
       "source_name": "구글뉴스 청년 고용·쉬었음(7일)",
       "source_kind": "news",
@@ -6253,8 +6294,8 @@
         "고용"
       ],
       "content_direction": "report",
-      "lead_text": "정부•10대그룹 ‘원팀’, 청년 일자리 기회 대폭 확대 한뜻 브릿지경제",
-      "youth_excerpt": "정부•10대그룹 ‘원팀’, 청년 일자리 기회 대폭 확대 한뜻 브릿지경제",
+      "lead_text": "정부•10대그룹 ‘원팀’, 청년 일자리 기회 대폭 확대 한뜻 viva100.com",
+      "youth_excerpt": "정부•10대그룹 ‘원팀’, 청년 일자리 기회 대폭 확대 한뜻 viva100.com",
       "is_official_source": false,
       "is_public_interest_article": true,
       "is_hub_candidate": false,
@@ -6964,9 +7005,9 @@
       "published_at": "2026-09-03T02:55:48+00:00"
     },
     {
-      "url": "https://news.google.com/rss/articles/CBMiZkFVX3lxTE9mY3RNRV92LThSd3kxZWtlOXFYQ2JmNzBGOEV3WktEdXpHQndGM2NrblJkdEJXS2NJLU0tRl9Fb1BOMENlMk5NSmZrcExVSGN2X1ZZdmFzMVdlbHJ5eUJfQ1dDTExXZw?oc=5",
-      "canonical_url": "https://news.google.com/rss/articles/CBMiZkFVX3lxTE9mY3RNRV92LThSd3kxZWtlOXFYQ2JmNzBGOEV3WktEdXpHQndGM2NrblJkdEJXS2NJLU0tRl9Fb1BOMENlMk5NSmZrcExVSGN2X1ZZdmFzMVdlbHJ5eUJfQ1dDTExXZw?oc=5",
-      "feed_url": "https://news.google.com/rss/articles/CBMiZkFVX3lxTE9mY3RNRV92LThSd3kxZWtlOXFYQ2JmNzBGOEV3WktEdXpHQndGM2NrblJkdEJXS2NJLU0tRl9Fb1BOMENlMk5NSmZrcExVSGN2X1ZZdmFzMVdlbHJ5eUJfQ1dDTExXZw?oc=5",
+      "url": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE1FX2VHTkFaQXpZUmFtYlE4dnY1SkpEb0lVYmNfSjdDWjlWbnQxbjNMaThfMllhSWxCa09ObmdOQU9CbGJWRm1USmh1cE5Mdm9DUWxVWktFenBhTEU?oc=5",
+      "canonical_url": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE1FX2VHTkFaQXpZUmFtYlE4dnY1SkpEb0lVYmNfSjdDWjlWbnQxbjNMaThfMllhSWxCa09ObmdOQU9CbGJWRm1USmh1cE5Mdm9DUWxVWktFenBhTEU?oc=5",
+      "feed_url": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE1FX2VHTkFaQXpZUmFtYlE4dnY1SkpEb0lVYmNfSjdDWjlWbnQxbjNMaThfMllhSWxCa09ObmdOQU9CbGJWRm1USmh1cE5Mdm9DUWxVWktFenBhTEU?oc=5",
       "title": "대구시, 청년 학자금 대출 이자·신용 회복 지원",
       "source": "KBS 뉴스",
       "source_name": "구글뉴스 청년 부채·금융(7일)",
@@ -7005,7 +7046,7 @@
       "campaign_attack": false,
       "weak_youth_signal": false,
       "missing_youth_content_signal": false,
-      "archive_key": "https://news.google.com/rss/articles/CBMiZkFVX3lxTE9mY3RNRV92LThSd3kxZWtlOXFYQ2JmNzBGOEV3WktEdXpHQndGM2NrblJkdEJXS2NJLU0tRl9Fb1BOMENlMk5NSmZrcExVSGN2X1ZZdmFzMVdlbHJ5eUJfQ1dDTExXZw?oc=5",
+      "archive_key": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE1FX2VHTkFaQXpZUmFtYlE4dnY1SkpEb0lVYmNfSjdDWjlWbnQxbjNMaThfMllhSWxCa09ObmdOQU9CbGJWRm1USmh1cE5Mdm9DUWxVWktFenBhTEU?oc=5",
       "published_at": "2026-09-03T02:50:00+00:00"
     },
     {
@@ -7390,8 +7431,8 @@
         "부채"
       ],
       "content_direction": "report",
-      "lead_text": "신한금융, 청년 대출 성실상환하면 최대 300만원 지원 biz.heraldcorp.com",
-      "youth_excerpt": "신한금융, 청년 대출 성실상환하면 최대 300만원 지원 biz.heraldcorp.com",
+      "lead_text": "신한금융, 청년 대출 성실상환하면 최대 300만원 지원 헤럴드경제",
+      "youth_excerpt": "신한금융, 청년 대출 성실상환하면 최대 300만원 지원 헤럴드경제",
       "is_official_source": false,
       "is_public_interest_article": true,
       "is_hub_candidate": false,
@@ -7402,7 +7443,7 @@
       "public_relevance_score": 8,
       "related_article_count": 1,
       "related_sources": [
-        "biz.heraldcorp.com"
+        "헤럴드경제"
       ],
       "campaign_political": false,
       "substantive_promise": false,
@@ -7706,7 +7747,7 @@
       "editorial_decision": "default",
       "editorial_is_highlighted": false,
       "selection_bucket": "regional_issue",
-      "importance_score": 22,
+      "importance_score": 20,
       "public_relevance_score": 7,
       "related_article_count": 1,
       "related_sources": [
@@ -8387,14 +8428,15 @@
       "published_at": "2026-09-03T00:34:26+00:00"
     },
     {
-      "url": "https://news.google.com/rss/articles/CBMiVEFVX3lxTE96aWhPb19QMzRPaVdPUlpxblZjcE9MVmxIVFZocHpxSDZQeFppYlozUExsZWV0SFNvUzZiQUl5cEVBa2d1amtrNDZ4SWJzcmNCUkhvRg?oc=5",
-      "canonical_url": "https://news.google.com/rss/articles/CBMiVEFVX3lxTE96aWhPb19QMzRPaVdPUlpxblZjcE9MVmxIVFZocHpxSDZQeFppYlozUExsZWV0SFNvUzZiQUl5cEVBa2d1amtrNDZ4SWJzcmNCUkhvRg?oc=5",
-      "feed_url": "https://news.google.com/rss/articles/CBMiVEFVX3lxTE96aWhPb19QMzRPaVdPUlpxblZjcE9MVmxIVFZocHpxSDZQeFppYlozUExsZWV0SFNvUzZiQUl5cEVBa2d1amtrNDZ4SWJzcmNCUkhvRg?oc=5",
+      "url": "https://news.google.com/rss/articles/CBMiRkFVX3lxTE5DRE1pSklHa2FjNzRMM0g3ekZXd2tkWUZrR3Vhd3pidGdDZ0pKX2h2dThSRDl6YVJ5ejdoMkc5a1lTdDg4eGc?oc=5",
+      "canonical_url": "https://news.google.com/rss/articles/CBMiRkFVX3lxTE5DRE1pSklHa2FjNzRMM0g3ekZXd2tkWUZrR3Vhd3pidGdDZ0pKX2h2dThSRDl6YVJ5ejdoMkc5a1lTdDg4eGc?oc=5",
+      "feed_url": "https://news.google.com/rss/articles/CBMiRkFVX3lxTE5DRE1pSklHa2FjNzRMM0g3ekZXd2tkWUZrR3Vhd3pidGdDZ0pKX2h2dThSRDl6YVJ5ejdoMkc5a1lTdDg4eGc?oc=5",
       "title": "“대출 꼬박꼬박 갚았다면”…신한금융, 청년에 최대 300만원 돌려준다 - v.daum.net",
       "source": "다음 뉴스",
       "source_name": "구글뉴스 청년 부채·금융(7일)",
       "source_kind": "news",
       "publisher_domain": "v.daum.net",
+      "published_date": "2026-09-03T00:34:07+00:00",
       "portal_published_at": "2026-09-03T00:34:07+00:00",
       "region": "전국",
       "categories": [
@@ -8417,7 +8459,7 @@
       "selection_bucket": "youth_issue",
       "importance_score": 24,
       "public_relevance_score": 8,
-      "related_article_count": 1,
+      "related_article_count": 2,
       "related_sources": [
         "다음 뉴스"
       ],
@@ -8426,9 +8468,8 @@
       "campaign_attack": false,
       "weak_youth_signal": false,
       "missing_youth_content_signal": false,
-      "archive_key": "https://news.google.com/rss/articles/CBMiVEFVX3lxTE96aWhPb19QMzRPaVdPUlpxblZjcE9MVmxIVFZocHpxSDZQeFppYlozUExsZWV0SFNvUzZiQUl5cEVBa2d1amtrNDZ4SWJzcmNCUkhvRg?oc=5",
-      "published_at": "2026-09-03T00:34:07+00:00",
-      "published_date": "2026-09-03T00:34:07+00:00"
+      "archive_key": "https://news.google.com/rss/articles/CBMiRkFVX3lxTE5DRE1pSklHa2FjNzRMM0g3ekZXd2tkWUZrR3Vhd3pidGdDZ0pKX2h2dThSRDl6YVJ5ejdoMkc5a1lTdDg4eGc?oc=5",
+      "published_at": "2026-09-03T00:34:07+00:00"
     },
     {
       "url": "https://news.google.com/rss/articles/CBMiZEFVX3lxTE5YQmQ3d25sSndfOGxNQ2VGYmZnTWY2T19BWHlnRUN5d3JRaFB0MENfa0JldFBzN3diU19hczUwRE5qRjFtVkNoOUlOcHctUjhRaE9kcnM3RWQwV051cGtoZkRzdlc?oc=5",
@@ -8616,6 +8657,8 @@
       "source_name": "부산광역시 보도자료 청년 검색",
       "source_kind": "local",
       "publisher_domain": "www.busan.go.kr",
+      "publisher_icon_url": "https://www.busan.go.kr/favicon.ico",
+      "image_url": "https://www.busan.go.kr/humanframe/theme/busan22/assets/img/main/thumb_v2.jpg",
       "published_date": "2026-09-03T00:00:00+09:00",
       "publisher_published_at": "2026-09-03T00:00:00+09:00",
       "region": "부산",
@@ -8631,9 +8674,11 @@
       "issue_tags": [
         "고용"
       ],
+      "article_type": "official",
       "content_direction": "official_release",
       "lead_text": "청년이 끌리는 기업과 함께하는, 「2026 부산청년 메가(Mega) 채용박람회」 개최 청년정책과 | 최다정 | 051-888-7886 | 2026-09-03 ◈ 9.21. 10:00~17:00 벡스코 제2전시장에서 개최… 부산권 우수기업 100개사, 청년 구직자 1천여 명 참석 예정 ◈ 그동안 개별적으로 추진하던 취업박람회를 지·산·학 협력 기반의 대규모 통합 채용박람회로 개최 ◈ 우수기업 채용 면접 및 상담, 현직자 직무 라이브, 인공지능(AI) 기반 직무 컨설팅, 청년 힐링·체험 공간 운영 등 진행 ◈ 9.18.까지 누리집(https://megajob.kr)을",
       "youth_excerpt": "청년이 끌리는 기업과 함께하는, 「2026 부산청년 메가(Mega) 채용박람회」 개최 청년정책과 | 최다정 | 051-888-7886 | 2026-09-03 ◈ 9...",
+      "body_text": "시정관련 건의사항 또는 답변을 원하는 사항은 부산민원120 민원신청 을 이용하여 주세요. (우 47545) 부산광역시 연제구 중앙대로 1001(연산동) Copyright © Busan Metropolitan City. All rights reserved. 평일 08:30 ~ 18:30 야간․공휴일 당직실 전환",
       "is_official_source": true,
       "is_public_interest_article": true,
       "is_hub_candidate": false,
@@ -8652,11 +8697,7 @@
       "weak_youth_signal": false,
       "missing_youth_content_signal": false,
       "archive_key": "https://www.busan.go.kr/nbtnewsBU/1752526?curPage=&srchBeginDt=&srchEndDt=&srchKey=sj&srchText=청년",
-      "published_at": "2026-09-03T00:00:00+09:00",
-      "publisher_icon_url": "https://www.busan.go.kr/favicon.ico",
-      "image_url": "https://www.busan.go.kr/humanframe/theme/busan22/assets/img/main/thumb_v2.jpg",
-      "article_type": "official",
-      "body_text": "시정관련 건의사항 또는 답변을 원하는 사항은 부산민원120 민원신청 을 이용하여 주세요. (우 47545) 부산광역시 연제구 중앙대로 1001(연산동) Copyright © Busan Metropolitan City. All rights reserved. 평일 08:30 ~ 18:30 야간․공휴일 당직실 전환"
+      "published_at": "2026-09-03T00:00:00+09:00"
     },
     {
       "url": "https://www.mohw.go.kr/board.es?mid=a10503000000&bid=0027&act=view&list_no=1491791&tag=&nPage=1",
@@ -9862,7 +9903,7 @@
       "url": "https://news.google.com/rss/articles/CBMiWkFVX3lxTFBNZWpLYTVuWElyeWZTeDk0OEV6MmhiSXRsTmxmTS1JV3EtYzZOT0JWNHBHZjVHV3VmOHVlLXZialhXNUpjc0lwemlFOVJqRVBlNjZaRFhSNWtEdw?oc=5",
       "canonical_url": "https://news.google.com/rss/articles/CBMiWkFVX3lxTFBNZWpLYTVuWElyeWZTeDk0OEV6MmhiSXRsTmxmTS1JV3EtYzZOT0JWNHBHZjVHV3VmOHVlLXZialhXNUpjc0lwemlFOVJqRVBlNjZaRFhSNWtEdw?oc=5",
       "feed_url": "https://news.google.com/rss/articles/CBMiWkFVX3lxTFBNZWpLYTVuWElyeWZTeDk0OEV6MmhiSXRsTmxmTS1JV3EtYzZOT0JWNHBHZjVHV3VmOHVlLXZialhXNUpjc0lwemlFOVJqRVBlNjZaRFhSNWtEdw?oc=5",
-      "title": "청년 월세 부정수급 논란…4년간 나랏돈 2억 샜다 - hankyung.com",
+      "title": "청년 월세 부정수급 논란…4년간 나랏돈 2억 샜다",
       "source": "한국경제",
       "source_name": "구글뉴스 청년 주거·생활(7일)",
       "source_kind": "news",
@@ -9880,8 +9921,8 @@
         "주거"
       ],
       "content_direction": "report",
-      "lead_text": "청년 월세 부정수급 논란…4년간 나랏돈 2억 샜다 hankyung.com",
-      "youth_excerpt": "청년 월세 부정수급 논란…4년간 나랏돈 2억 샜다 hankyung.com",
+      "lead_text": "청년 월세 부정수급 논란…4년간 나랏돈 2억 샜다 한국경제",
+      "youth_excerpt": "청년 월세 부정수급 논란…4년간 나랏돈 2억 샜다 한국경제",
       "is_official_source": false,
       "is_public_interest_article": true,
       "is_hub_candidate": false,
@@ -10416,7 +10457,7 @@
       "canonical_url": "https://news.google.com/rss/articles/CBMiYkFVX3lxTE1sdmdxcDZhZUZHaENpRGV3NEpzRnZQLXFHdjhuS0lqWk4tYVRMSnNFcWJSempVY0ZRX3FLRW40YkVkSmhWMi02bjd6N09xdVdjcXJidk9sYU1XLUxueDdGem5n?oc=5",
       "feed_url": "https://news.google.com/rss/articles/CBMiYkFVX3lxTE1sdmdxcDZhZUZHaENpRGV3NEpzRnZQLXFHdjhuS0lqWk4tYVRMSnNFcWJSempVY0ZRX3FLRW40YkVkSmhWMi02bjd6N09xdVdjcXJidk9sYU1XLUxueDdGem5n?oc=5",
       "title": "대구 남구, 청년 전·월세 계약 전 위험요인 무료 점검 나서",
-      "source": "매일신문",
+      "source": "imaeil.com",
       "source_name": "구글뉴스 청년 주거·생활(7일)",
       "source_kind": "news",
       "publisher_domain": "www.imaeil.com",
@@ -10435,8 +10476,8 @@
         "주거"
       ],
       "content_direction": "report",
-      "lead_text": "대구 남구, 청년 전·월세 계약 전 위험요인 무료 점검 나서 매일신문",
-      "youth_excerpt": "대구 남구, 청년 전·월세 계약 전 위험요인 무료 점검 나서 매일신문",
+      "lead_text": "대구 남구, 청년 전·월세 계약 전 위험요인 무료 점검 나서 imaeil.com",
+      "youth_excerpt": "대구 남구, 청년 전·월세 계약 전 위험요인 무료 점검 나서 imaeil.com",
       "is_official_source": false,
       "is_public_interest_article": true,
       "is_hub_candidate": false,
@@ -10447,7 +10488,7 @@
       "public_relevance_score": 12,
       "related_article_count": 1,
       "related_sources": [
-        "매일신문"
+        "imaeil.com"
       ],
       "campaign_political": false,
       "substantive_promise": false,
@@ -10603,7 +10644,7 @@
       "url": "https://news.google.com/rss/articles/CBMiWkFVX3lxTFBPRkstTkpRU1Z6UUZhSFV5WEdnSjhCTENMcktFU0JVd1ZPMkxRbUxfeUp0SHplY1hMWlNjaW4tal83ZGtMdjd2OGN6S0d1dkw1eE9LcWo2Zk90QQ?oc=5",
       "canonical_url": "https://news.google.com/rss/articles/CBMiWkFVX3lxTFBPRkstTkpRU1Z6UUZhSFV5WEdnSjhCTENMcktFU0JVd1ZPMkxRbUxfeUp0SHplY1hMWlNjaW4tal83ZGtMdjd2OGN6S0d1dkw1eE9LcWo2Zk90QQ?oc=5",
       "feed_url": "https://news.google.com/rss/articles/CBMiWkFVX3lxTFBPRkstTkpRU1Z6UUZhSFV5WEdnSjhCTENMcktFU0JVd1ZPMkxRbUxfeUp0SHplY1hMWlNjaW4tal83ZGtMdjd2OGN6S0d1dkw1eE9LcWo2Zk90QQ?oc=5",
-      "title": "제천시, 청년 주거 안정 위해 대출 이자 지원 시작",
+      "title": "제천시, 청년 주거 안정 위해 대출 이자 지원 시작 - viva100.com",
       "source": "브릿지경제",
       "source_name": "구글뉴스 청년 부채·금융(7일)",
       "source_kind": "news",
@@ -10623,8 +10664,8 @@
         "부채"
       ],
       "content_direction": "report",
-      "lead_text": "제천시, 청년 주거 안정 위해 대출 이자 지원 시작 브릿지경제",
-      "youth_excerpt": "제천시, 청년 주거 안정 위해 대출 이자 지원 시작 브릿지경제",
+      "lead_text": "제천시, 청년 주거 안정 위해 대출 이자 지원 시작 viva100.com",
+      "youth_excerpt": "제천시, 청년 주거 안정 위해 대출 이자 지원 시작 viva100.com",
       "is_official_source": false,
       "is_public_interest_article": true,
       "is_hub_candidate": false,
@@ -11045,7 +11086,7 @@
       "url": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE5LMnRoV05ST3A2X0NnRjlYSnRqaVFna29aQzJDZDFHOG1Sb1ZrU1JCR0F2enBsSlRGYXBIWXR1YVNYWE5lVTk3RmJFNlVVQS1aT1FUX2cwMjRBMVXSAWBBVV95cUxQUFZ4NVZxTk1kb3I0TXdjMzZDMFhUbXZIcU1KcXcwMEg2WXBKeEJld2Z6Y2J2cUdfZ0p4eV9TZ3ZqZE1YN2FmXzViNExUUkhMOGNheEtEbkxtcHJlSlNneFA?oc=5",
       "canonical_url": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE5LMnRoV05ST3A2X0NnRjlYSnRqaVFna29aQzJDZDFHOG1Sb1ZrU1JCR0F2enBsSlRGYXBIWXR1YVNYWE5lVTk3RmJFNlVVQS1aT1FUX2cwMjRBMVXSAWBBVV95cUxQUFZ4NVZxTk1kb3I0TXdjMzZDMFhUbXZIcU1KcXcwMEg2WXBKeEJld2Z6Y2J2cUdfZ0p4eV9TZ3ZqZE1YN2FmXzViNExUUkhMOGNheEtEbkxtcHJlSlNneFA?oc=5",
       "feed_url": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE5LMnRoV05ST3A2X0NnRjlYSnRqaVFna29aQzJDZDFHOG1Sb1ZrU1JCR0F2enBsSlRGYXBIWXR1YVNYWE5lVTk3RmJFNlVVQS1aT1FUX2cwMjRBMVXSAWBBVV95cUxQUFZ4NVZxTk1kb3I0TXdjMzZDMFhUbXZIcU1KcXcwMEg2WXBKeEJld2Z6Y2J2cUdfZ0p4eV9TZ3ZqZE1YN2FmXzViNExUUkhMOGNheEtEbkxtcHJlSlNneFA?oc=5",
-      "title": "제천시, 청년 주택자금 대출이자 지원…연 최대 300만원",
+      "title": "제천시, 청년 주택자금 대출이자 지원…연 최대 300만원 - yna.co.kr",
       "source": "연합뉴스",
       "source_name": "구글뉴스 청년 부채·금융(7일)",
       "source_kind": "news",
@@ -11065,8 +11106,8 @@
         "부채"
       ],
       "content_direction": "report",
-      "lead_text": "제천시, 청년 주택자금 대출이자 지원…연 최대 300만원 연합뉴스",
-      "youth_excerpt": "제천시, 청년 주택자금 대출이자 지원…연 최대 300만원 연합뉴스",
+      "lead_text": "제천시, 청년 주택자금 대출이자 지원…연 최대 300만원 yna.co.kr",
+      "youth_excerpt": "제천시, 청년 주택자금 대출이자 지원…연 최대 300만원 yna.co.kr",
       "is_official_source": false,
       "is_public_interest_article": true,
       "is_hub_candidate": false,
@@ -11871,6 +11912,47 @@
       "published_at": "2026-09-02T00:38:00+00:00"
     },
     {
+      "url": "https://news.google.com/rss/articles/CBMiW0FVX3lxTFAtdDlXcE1UTzVMaUQ4d2g4dVV4Q3gyNG1XcGlRT2NTQ2tHdjc3NXBiaVBCWFdJOXlfUG9UWmNsUDFwSFkweWUzTzdRMU1jZTJCUzFWSDMxNW1qZmfSAWBBVV95cUxPT1BnSDdrNFhMS1FoNWJ1RVlJRDF6X1dUQ0MxQzlnS1RlbHNSRU1oUGJqY0t5Z0M3TU4xQ3B5T2lIb3htUkFDUEVBR203QnF6c2lROGdLSTZfRE1hRVhpdEE?oc=5",
+      "canonical_url": "https://news.google.com/rss/articles/CBMiW0FVX3lxTFAtdDlXcE1UTzVMaUQ4d2g4dVV4Q3gyNG1XcGlRT2NTQ2tHdjc3NXBiaVBCWFdJOXlfUG9UWmNsUDFwSFkweWUzTzdRMU1jZTJCUzFWSDMxNW1qZmfSAWBBVV95cUxPT1BnSDdrNFhMS1FoNWJ1RVlJRDF6X1dUQ0MxQzlnS1RlbHNSRU1oUGJqY0t5Z0M3TU4xQ3B5T2lIb3htUkFDUEVBR203QnF6c2lROGdLSTZfRE1hRVhpdEE?oc=5",
+      "feed_url": "https://news.google.com/rss/articles/CBMiW0FVX3lxTFAtdDlXcE1UTzVMaUQ4d2g4dVV4Q3gyNG1XcGlRT2NTQ2tHdjc3NXBiaVBCWFdJOXlfUG9UWmNsUDFwSFkweWUzTzdRMU1jZTJCUzFWSDMxNW1qZmfSAWBBVV95cUxPT1BnSDdrNFhMS1FoNWJ1RVlJRDF6X1dUQ0MxQzlnS1RlbHNSRU1oUGJqY0t5Z0M3TU4xQ3B5T2lIb3htUkFDUEVBR203QnF6c2lROGdLSTZfRE1hRVhpdEE?oc=5",
+      "title": "靑, 카이스트 前이사장·청년보좌역 초청해 '2080 대화' - yna.co.kr",
+      "source": "연합뉴스",
+      "source_name": "구글뉴스 거버넌스(30일)",
+      "source_kind": "news",
+      "publisher_domain": "www.yna.co.kr",
+      "published_date": "2026-09-02T00:37:34+00:00",
+      "portal_published_at": "2026-09-02T00:37:34+00:00",
+      "region": "전국",
+      "categories": [
+        "청년은 지금"
+      ],
+      "content_direction": "report",
+      "hub_topics": [
+        "청년보좌역"
+      ],
+      "lead_text": "靑, 카이스트 前이사장·청년보좌역 초청해 '2080 대화' yna.co.kr",
+      "youth_excerpt": "靑, 카이스트 前이사장·청년보좌역 초청해 '2080 대화' yna.co.kr",
+      "is_official_source": false,
+      "is_public_interest_article": true,
+      "is_hub_candidate": false,
+      "editorial_decision": "default",
+      "editorial_is_highlighted": false,
+      "selection_bucket": "youth_issue",
+      "importance_score": 17,
+      "public_relevance_score": 5,
+      "related_article_count": 1,
+      "related_sources": [
+        "연합뉴스"
+      ],
+      "campaign_political": false,
+      "substantive_promise": false,
+      "campaign_attack": false,
+      "weak_youth_signal": false,
+      "missing_youth_content_signal": false,
+      "archive_key": "https://news.google.com/rss/articles/CBMiW0FVX3lxTFAtdDlXcE1UTzVMaUQ4d2g4dVV4Q3gyNG1XcGlRT2NTQ2tHdjc3NXBiaVBCWFdJOXlfUG9UWmNsUDFwSFkweWUzTzdRMU1jZTJCUzFWSDMxNW1qZmfSAWBBVV95cUxPT1BnSDdrNFhMS1FoNWJ1RVlJRDF6X1dUQ0MxQzlnS1RlbHNSRU1oUGJqY0t5Z0M3TU4xQ3B5T2lIb3htUkFDUEVBR203QnF6c2lROGdLSTZfRE1hRVhpdEE?oc=5",
+      "published_at": "2026-09-02T00:37:34+00:00"
+    },
+    {
       "url": "https://news.google.com/rss/articles/CBMidEFVX3lxTE1Od1JBbkpLdnJVNGdPVHdCR21lZUw0TXJDQXdmODdVM3AwZEowUzMxRkhKbmhUMmpzbDhWUUx4b0g1SjFBalZaX2x1YnpRRFVDcC1xQ0FOaEdRS05HOVpZZENRMW5tOEwwbEJFb3VzRWIyb0xG?oc=5",
       "canonical_url": "https://news.google.com/rss/articles/CBMidEFVX3lxTE1Od1JBbkpLdnJVNGdPVHdCR21lZUw0TXJDQXdmODdVM3AwZEowUzMxRkhKbmhUMmpzbDhWUUx4b0g1SjFBalZaX2x1YnpRRFVDcC1xQ0FOaEdRS05HOVpZZENRMW5tOEwwbEJFb3VzRWIyb0xG?oc=5",
       "feed_url": "https://news.google.com/rss/articles/CBMidEFVX3lxTE1Od1JBbkpLdnJVNGdPVHdCR21lZUw0TXJDQXdmODdVM3AwZEowUzMxRkhKbmhUMmpzbDhWUUx4b0g1SjFBalZaX2x1YnpRRFVDcC1xQ0FOaEdRS05HOVpZZENRMW5tOEwwbEJFb3VzRWIyb0xG?oc=5",
@@ -11909,47 +11991,6 @@
       "weak_youth_signal": false,
       "missing_youth_content_signal": false,
       "archive_key": "https://news.google.com/rss/articles/CBMidEFVX3lxTE1Od1JBbkpLdnJVNGdPVHdCR21lZUw0TXJDQXdmODdVM3AwZEowUzMxRkhKbmhUMmpzbDhWUUx4b0g1SjFBalZaX2x1YnpRRFVDcC1xQ0FOaEdRS05HOVpZZENRMW5tOEwwbEJFb3VzRWIyb0xG?oc=5",
-      "published_at": "2026-09-02T00:37:34+00:00"
-    },
-    {
-      "url": "https://news.google.com/rss/articles/CBMiW0FVX3lxTFAtdDlXcE1UTzVMaUQ4d2g4dVV4Q3gyNG1XcGlRT2NTQ2tHdjc3NXBiaVBCWFdJOXlfUG9UWmNsUDFwSFkweWUzTzdRMU1jZTJCUzFWSDMxNW1qZmfSAWBBVV95cUxPT1BnSDdrNFhMS1FoNWJ1RVlJRDF6X1dUQ0MxQzlnS1RlbHNSRU1oUGJqY0t5Z0M3TU4xQ3B5T2lIb3htUkFDUEVBR203QnF6c2lROGdLSTZfRE1hRVhpdEE?oc=5",
-      "canonical_url": "https://news.google.com/rss/articles/CBMiW0FVX3lxTFAtdDlXcE1UTzVMaUQ4d2g4dVV4Q3gyNG1XcGlRT2NTQ2tHdjc3NXBiaVBCWFdJOXlfUG9UWmNsUDFwSFkweWUzTzdRMU1jZTJCUzFWSDMxNW1qZmfSAWBBVV95cUxPT1BnSDdrNFhMS1FoNWJ1RVlJRDF6X1dUQ0MxQzlnS1RlbHNSRU1oUGJqY0t5Z0M3TU4xQ3B5T2lIb3htUkFDUEVBR203QnF6c2lROGdLSTZfRE1hRVhpdEE?oc=5",
-      "feed_url": "https://news.google.com/rss/articles/CBMiW0FVX3lxTFAtdDlXcE1UTzVMaUQ4d2g4dVV4Q3gyNG1XcGlRT2NTQ2tHdjc3NXBiaVBCWFdJOXlfUG9UWmNsUDFwSFkweWUzTzdRMU1jZTJCUzFWSDMxNW1qZmfSAWBBVV95cUxPT1BnSDdrNFhMS1FoNWJ1RVlJRDF6X1dUQ0MxQzlnS1RlbHNSRU1oUGJqY0t5Z0M3TU4xQ3B5T2lIb3htUkFDUEVBR203QnF6c2lROGdLSTZfRE1hRVhpdEE?oc=5",
-      "title": "靑, 카이스트 前이사장·청년보좌역 초청해 '2080 대화'",
-      "source": "연합뉴스",
-      "source_name": "구글뉴스 거버넌스(30일)",
-      "source_kind": "news",
-      "publisher_domain": "www.yna.co.kr",
-      "published_date": "2026-09-02T00:37:34+00:00",
-      "portal_published_at": "2026-09-02T00:37:34+00:00",
-      "region": "전국",
-      "categories": [
-        "청년은 지금"
-      ],
-      "content_direction": "report",
-      "hub_topics": [
-        "청년보좌역"
-      ],
-      "lead_text": "靑, 카이스트 前이사장·청년보좌역 초청해 '2080 대화' 연합뉴스",
-      "youth_excerpt": "靑, 카이스트 前이사장·청년보좌역 초청해 '2080 대화' 연합뉴스",
-      "is_official_source": false,
-      "is_public_interest_article": true,
-      "is_hub_candidate": false,
-      "editorial_decision": "default",
-      "editorial_is_highlighted": false,
-      "selection_bucket": "youth_issue",
-      "importance_score": 17,
-      "public_relevance_score": 5,
-      "related_article_count": 1,
-      "related_sources": [
-        "연합뉴스"
-      ],
-      "campaign_political": false,
-      "substantive_promise": false,
-      "campaign_attack": false,
-      "weak_youth_signal": false,
-      "missing_youth_content_signal": false,
-      "archive_key": "https://news.google.com/rss/articles/CBMiW0FVX3lxTFAtdDlXcE1UTzVMaUQ4d2g4dVV4Q3gyNG1XcGlRT2NTQ2tHdjc3NXBiaVBCWFdJOXlfUG9UWmNsUDFwSFkweWUzTzdRMU1jZTJCUzFWSDMxNW1qZmfSAWBBVV95cUxPT1BnSDdrNFhMS1FoNWJ1RVlJRDF6X1dUQ0MxQzlnS1RlbHNSRU1oUGJqY0t5Z0M3TU4xQ3B5T2lIb3htUkFDUEVBR203QnF6c2lROGdLSTZfRE1hRVhpdEE?oc=5",
       "published_at": "2026-09-02T00:37:34+00:00"
     },
     {
@@ -15592,7 +15633,7 @@
       "canonical_url": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTE1tb2dRM3JrQ29vVWgzNkExWWFuZncwR2czZ1ZrSWE0TWI1Z0JvMXBqMU94Vk1IbU5MODhpbi1QREloTVhvZWdkOHJMWVVIc2Fvai02ald5cnJJNUtDZVJYLURGVmlnc28?oc=5",
       "feed_url": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTE1tb2dRM3JrQ29vVWgzNkExWWFuZncwR2czZ1ZrSWE0TWI1Z0JvMXBqMU94Vk1IbU5MODhpbi1QREloTVhvZWdkOHJMWVVIc2Fvai02ald5cnJJNUtDZVJYLURGVmlnc28?oc=5",
       "title": "청년 공공임대 10.6만호…저출생 ’3종 패키지’ 신설",
-      "source": "yonhapnewstv.co.kr",
+      "source": "연합뉴스TV",
       "source_name": "구글뉴스 청년 실용정보(7일)",
       "source_kind": "news",
       "publisher_domain": "www.yonhapnewstv.co.kr",
@@ -15606,8 +15647,8 @@
         "주거"
       ],
       "content_direction": "report",
-      "lead_text": "청년 공공임대 10.6만호…저출생 ’3종 패키지’ 신설 yonhapnewstv.co.kr",
-      "youth_excerpt": "청년 공공임대 10.6만호…저출생 ’3종 패키지’ 신설 yonhapnewstv.co.kr",
+      "lead_text": "청년 공공임대 10.6만호…저출생 ’3종 패키지’ 신설 연합뉴스TV",
+      "youth_excerpt": "청년 공공임대 10.6만호…저출생 ’3종 패키지’ 신설 연합뉴스TV",
       "is_official_source": false,
       "is_public_interest_article": true,
       "is_hub_candidate": false,
@@ -15618,7 +15659,7 @@
       "public_relevance_score": 7,
       "related_article_count": 1,
       "related_sources": [
-        "yonhapnewstv.co.kr"
+        "연합뉴스TV"
       ],
       "campaign_political": false,
       "substantive_promise": false,
@@ -16037,7 +16078,7 @@
       "url": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE9QNEdLWmEyWGthbE1YTDdxQXkzVTZsQzlYNWxLZWpXVE5idF9tc0RoN05PN005enZQOTE4NzRITmItU3YwOURheFBfSEl0bUdLS3hveHlwWjlxb3pRSlo0R9IBeEFVX3lxTE1qYkk0VDcxNWhaU0tDU185V1o1dmFTMEczRW5OV2M3RndRMTY3Y3lpRWNKQndGdnZwNEpRcTdQd0kxVTZ5Z2o0Rk5jTWZUY1kzb3ZiV19WOUFXSzRWX00wZ2x1dHVZUWZOYm9yaEZ0S05mQkZkbUhidA?oc=5",
       "canonical_url": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE9QNEdLWmEyWGthbE1YTDdxQXkzVTZsQzlYNWxLZWpXVE5idF9tc0RoN05PN005enZQOTE4NzRITmItU3YwOURheFBfSEl0bUdLS3hveHlwWjlxb3pRSlo0R9IBeEFVX3lxTE1qYkk0VDcxNWhaU0tDU185V1o1dmFTMEczRW5OV2M3RndRMTY3Y3lpRWNKQndGdnZwNEpRcTdQd0kxVTZ5Z2o0Rk5jTWZUY1kzb3ZiV19WOUFXSzRWX00wZ2x1dHVZUWZOYm9yaEZ0S05mQkZkbUhidA?oc=5",
       "feed_url": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE9QNEdLWmEyWGthbE1YTDdxQXkzVTZsQzlYNWxLZWpXVE5idF9tc0RoN05PN005enZQOTE4NzRITmItU3YwOURheFBfSEl0bUdLS3hveHlwWjlxb3pRSlo0R9IBeEFVX3lxTE1qYkk0VDcxNWhaU0tDU185V1o1dmFTMEczRW5OV2M3RndRMTY3Y3lpRWNKQndGdnZwNEpRcTdQd0kxVTZ5Z2o0Rk5jTWZUY1kzb3ZiV19WOUFXSzRWX00wZ2x1dHVZUWZOYm9yaEZ0S05mQkZkbUhidA?oc=5",
-      "title": "청년 공공임대 10.6만호…월세지원 소득요건 60%→100%[2027 예산안] - newsis.com",
+      "title": "청년 공공임대 10.6만호…월세지원 소득요건 60%→100%[2027 예산안]",
       "source": "뉴시스",
       "source_name": "구글뉴스 청년 주거·생활(7일)",
       "source_kind": "news",
@@ -16055,8 +16096,8 @@
         "주거"
       ],
       "content_direction": "report",
-      "lead_text": "청년 공공임대 10.6만호…월세지원 소득요건 60%→100%[2027 예산안] newsis.com",
-      "youth_excerpt": "청년 공공임대 10.6만호…월세지원 소득요건 60%→100%[2027 예산안] newsis.com",
+      "lead_text": "청년 공공임대 10.6만호…월세지원 소득요건 60%→100%[2027 예산안] 뉴시스",
+      "youth_excerpt": "청년 공공임대 10.6만호…월세지원 소득요건 60%→100%[2027 예산안] 뉴시스",
       "is_official_source": false,
       "is_public_interest_article": true,
       "is_hub_candidate": false,
@@ -16435,7 +16476,7 @@
       "url": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE5UUU9iUGlzUU5SODk1bmNwVmlGS1NaM1lmRFZJaXFJODExOXZSNXdmeUx0Qmdid3BZeVJOVUl3d0RRSEJqSEs1V0JwcHVkWXZweDFDUjhFTWQtYXPSAWBBVV95cUxOZjdjQzZjM1N4T3cxcEhFblN2LWxHQy1PYWFScnpQNEhibnFzQ2VxVUpfbk4wZnBPaHJVRVIxd0N0aUJobFlVY2ZzRzJpZ01QRG9GbGE1VjJ2UVI4MmNqS3U?oc=5",
       "canonical_url": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE5UUU9iUGlzUU5SODk1bmNwVmlGS1NaM1lmRFZJaXFJODExOXZSNXdmeUx0Qmdid3BZeVJOVUl3d0RRSEJqSEs1V0JwcHVkWXZweDFDUjhFTWQtYXPSAWBBVV95cUxOZjdjQzZjM1N4T3cxcEhFblN2LWxHQy1PYWFScnpQNEhibnFzQ2VxVUpfbk4wZnBPaHJVRVIxd0N0aUJobFlVY2ZzRzJpZ01QRG9GbGE1VjJ2UVI4MmNqS3U?oc=5",
       "feed_url": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE5UUU9iUGlzUU5SODk1bmNwVmlGS1NaM1lmRFZJaXFJODExOXZSNXdmeUx0Qmdid3BZeVJOVUl3d0RRSEJqSEs1V0JwcHVkWXZweDFDUjhFTWQtYXPSAWBBVV95cUxOZjdjQzZjM1N4T3cxcEhFblN2LWxHQy1PYWFScnpQNEhibnFzQ2VxVUpfbk4wZnBPaHJVRVIxd0N0aUJobFlVY2ZzRzJpZ01QRG9GbGE1VjJ2UVI4MmNqS3U?oc=5",
-      "title": "[2027예산] 첫 취업 지원…청년일자리에 7천억 늘려 3.3조 투입",
+      "title": "[2027예산] 첫 취업 지원…청년일자리에 7천억 늘려 3.3조 투입 - yna.co.kr",
       "source": "연합뉴스",
       "source_name": "구글뉴스 청년 고용·쉬었음(7일)",
       "source_kind": "news",
@@ -16453,8 +16494,8 @@
         "고용"
       ],
       "content_direction": "report",
-      "lead_text": "[2027예산] 첫 취업 지원…청년일자리에 7천억 늘려 3.3조 투입 연합뉴스",
-      "youth_excerpt": "[2027예산] 첫 취업 지원…청년일자리에 7천억 늘려 3.3조 투입 연합뉴스",
+      "lead_text": "[2027예산] 첫 취업 지원…청년일자리에 7천억 늘려 3.3조 투입 yna.co.kr",
+      "youth_excerpt": "[2027예산] 첫 취업 지원…청년일자리에 7천억 늘려 3.3조 투입 yna.co.kr",
       "is_official_source": false,
       "is_public_interest_article": true,
       "is_hub_candidate": false,
@@ -17240,15 +17281,16 @@
       "canonical_url": "https://news.google.com/rss/articles/CBMiakFVX3lxTE5yUFdnblJEbEt0dDl5Z2xQTnJHa0kyMWFYSEJEekdBT0dvdS03OGJqN1JXU0pzVjRkSGZod3NYLXpsYWFPRGJ3d1FMLUJUZmtfVjVhQW02QW81b2x1ZUlXYy1WYkpueUFrWXc?oc=5",
       "feed_url": "https://news.google.com/rss/articles/CBMiakFVX3lxTE5yUFdnblJEbEt0dDl5Z2xQTnJHa0kyMWFYSEJEekdBT0dvdS03OGJqN1JXU0pzVjRkSGZod3NYLXpsYWFPRGJ3d1FMLUJUZmtfVjVhQW02QW81b2x1ZUlXYy1WYkpueUFrWXc?oc=5",
       "title": "비아파트 공급 늘린다는데···서민·청년 전세대출은 '꽁꽁'",
-      "source": "seoulfn.com",
+      "source": "서울파이낸스",
       "source_name": "구글뉴스 청년 부채·금융(7일)",
       "source_kind": "news",
       "publisher_domain": "www.seoulfn.com",
       "published_date": "2026-09-01T01:10:15+00:00",
       "portal_published_at": "2026-09-01T01:10:15+00:00",
-      "region": "전국",
+      "region": "서울",
       "categories": [
-        "청년은 지금"
+        "청년은 지금",
+        "지역 이슈"
       ],
       "topic_tags": [
         "주거",
@@ -17259,19 +17301,19 @@
         "부채"
       ],
       "content_direction": "report",
-      "lead_text": "비아파트 공급 늘린다는데···서민·청년 전세대출은 '꽁꽁' seoulfn.com",
-      "youth_excerpt": "비아파트 공급 늘린다는데···서민·청년 전세대출은 '꽁꽁' seoulfn.com",
+      "lead_text": "비아파트 공급 늘린다는데···서민·청년 전세대출은 '꽁꽁' 서울파이낸스",
+      "youth_excerpt": "비아파트 공급 늘린다는데···서민·청년 전세대출은 '꽁꽁' 서울파이낸스",
       "is_official_source": false,
       "is_public_interest_article": true,
       "is_hub_candidate": false,
       "editorial_decision": "default",
       "editorial_is_highlighted": false,
       "selection_bucket": "youth_life_signal",
-      "importance_score": 34,
+      "importance_score": 38,
       "public_relevance_score": 13,
       "related_article_count": 1,
       "related_sources": [
-        "seoulfn.com"
+        "서울파이낸스"
       ],
       "campaign_political": false,
       "substantive_promise": false,
@@ -21620,7 +21662,7 @@
       "canonical_url": "https://news.google.com/rss/articles/CBMibkFVX3lxTFBHNzlNYjE5NnNXWE9JcVJUbjZVYkxjWkk4eVhlTUtJQkFpWnMxdlE4YTc0Y0VCNlkxbzNiZXpQX1hjNUFqNXFzaTZORXF1YTZzMXEtSHFpVjhORHlwd21PUVRueGJWOFdqY09Xb1BR?oc=5",
       "feed_url": "https://news.google.com/rss/articles/CBMibkFVX3lxTFBHNzlNYjE5NnNXWE9JcVJUbjZVYkxjWkk4eVhlTUtJQkFpWnMxdlE4YTc0Y0VCNlkxbzNiZXpQX1hjNUFqNXFzaTZORXF1YTZzMXEtSHFpVjhORHlwd21PUVRueGJWOFdqY09Xb1BR?oc=5",
       "title": "[사설] 43조 청년지원 예산, 일자리 창출 우선해야",
-      "source": "아시아투데이",
+      "source": "asiatoday.co.kr",
       "source_name": "구글뉴스 청년 칼럼·기고(30일)",
       "source_kind": "news",
       "publisher_domain": "www.asiatoday.co.kr",
@@ -21639,8 +21681,8 @@
       ],
       "article_type": "opinion",
       "content_direction": "column",
-      "lead_text": "[사설] 43조 청년지원 예산, 일자리 창출 우선해야 아시아투데이",
-      "youth_excerpt": "[사설] 43조 청년지원 예산, 일자리 창출 우선해야 아시아투데이",
+      "lead_text": "[사설] 43조 청년지원 예산, 일자리 창출 우선해야 asiatoday.co.kr",
+      "youth_excerpt": "[사설] 43조 청년지원 예산, 일자리 창출 우선해야 asiatoday.co.kr",
       "is_official_source": false,
       "is_public_interest_article": true,
       "is_hub_candidate": false,
@@ -21651,7 +21693,7 @@
       "public_relevance_score": 7,
       "related_article_count": 1,
       "related_sources": [
-        "아시아투데이"
+        "asiatoday.co.kr"
       ],
       "campaign_political": false,
       "substantive_promise": false,
@@ -22547,9 +22589,9 @@
       "published_at": "2026-08-30T07:17:19+00:00"
     },
     {
-      "url": "https://news.google.com/rss/articles/CBMiRkFVX3lxTE5LQzdpOG02RE1CMFdLd3htQ05WM0lXeXZlSnd3WTdZUWg0QlNwRnBzRzB3UmtzWlVLSG4yRWtlek5fd2JlZ0E?oc=5",
-      "canonical_url": "https://news.google.com/rss/articles/CBMiRkFVX3lxTE5LQzdpOG02RE1CMFdLd3htQ05WM0lXeXZlSnd3WTdZUWg0QlNwRnBzRzB3UmtzWlVLSG4yRWtlek5fd2JlZ0E?oc=5",
-      "feed_url": "https://news.google.com/rss/articles/CBMiRkFVX3lxTE5LQzdpOG02RE1CMFdLd3htQ05WM0lXeXZlSnd3WTdZUWg0QlNwRnBzRzB3UmtzWlVLSG4yRWtlek5fd2JlZ0E?oc=5",
+      "url": "https://news.google.com/rss/articles/CBMiS0FVX3lxTE0zcXlxTy1qUmtwTGtiVmdVTEw0cEM4VUU5c1Zfek1TR183ckNTQ1cwQzNvOVZLS1YxbmFmQ1FJRXpTMUdFaGlwMm5FVQ?oc=5",
+      "canonical_url": "https://news.google.com/rss/articles/CBMiS0FVX3lxTE0zcXlxTy1qUmtwTGtiVmdVTEw0cEM4VUU5c1Zfek1TR183ckNTQ1cwQzNvOVZLS1YxbmFmQ1FJRXpTMUdFaGlwMm5FVQ?oc=5",
+      "feed_url": "https://news.google.com/rss/articles/CBMiS0FVX3lxTE0zcXlxTy1qUmtwTGtiVmdVTEw0cEM4VUU5c1Zfek1TR183ckNTQ1cwQzNvOVZLS1YxbmFmQ1FJRXpTMUdFaGlwMm5FVQ?oc=5",
       "title": "[사설] 청년 새 일자리 역대 최소… 현금 지원으론 고용절벽 못 넘는다 - v.daum.net",
       "source": "다음 뉴스",
       "source_name": "구글뉴스 청년 칼럼·기고(30일)",
@@ -22589,7 +22631,7 @@
       "campaign_attack": false,
       "weak_youth_signal": false,
       "missing_youth_content_signal": false,
-      "archive_key": "https://news.google.com/rss/articles/CBMiRkFVX3lxTE5LQzdpOG02RE1CMFdLd3htQ05WM0lXeXZlSnd3WTdZUWg0QlNwRnBzRzB3UmtzWlVLSG4yRWtlek5fd2JlZ0E?oc=5",
+      "archive_key": "https://news.google.com/rss/articles/CBMiS0FVX3lxTE0zcXlxTy1qUmtwTGtiVmdVTEw0cEM4VUU5c1Zfek1TR183ckNTQ1cwQzNvOVZLS1YxbmFmQ1FJRXpTMUdFaGlwMm5FVQ?oc=5",
       "published_at": "2026-08-30T07:12:44+00:00"
     },
     {
@@ -22597,7 +22639,7 @@
       "canonical_url": "https://news.google.com/rss/articles/CBMibkFVX3lxTE94ZXVQTW8wX3B3cDdLdkpVOEZCY2ZhWWFDN1FUVDBfTHlfbDBCdlZmX0Fta3FjVVRVTmQ2ZXVpdG5DMS1keGxrSmM3WVBQMjBCYlo2Mlkta25jSWU5SUtMenNsZ1VLb0VXekoyR3dn?oc=5",
       "feed_url": "https://news.google.com/rss/articles/CBMibkFVX3lxTE94ZXVQTW8wX3B3cDdLdkpVOEZCY2ZhWWFDN1FUVDBfTHlfbDBCdlZmX0Fta3FjVVRVTmQ2ZXVpdG5DMS1keGxrSmM3WVBQMjBCYlo2Mlkta25jSWU5SUtMenNsZ1VLb0VXekoyR3dn?oc=5",
       "title": "[인터뷰] 김철훈 영도구청장 “수리조선에 AI·로봇 더해 청년 일자리 만들겠다”",
-      "source": "아시아투데이",
+      "source": "asiatoday.co.kr",
       "source_name": "구글뉴스 청년 삶·심층(7일)",
       "source_kind": "news",
       "publisher_domain": "www.asiatoday.co.kr",
@@ -22614,8 +22656,8 @@
         "고용"
       ],
       "content_direction": "insight",
-      "lead_text": "[인터뷰] 김철훈 영도구청장 “수리조선에 AI·로봇 더해 청년 일자리 만들겠다” 아시아투데이",
-      "youth_excerpt": "[인터뷰] 김철훈 영도구청장 “수리조선에 AI·로봇 더해 청년 일자리 만들겠다” 아시아투데이",
+      "lead_text": "[인터뷰] 김철훈 영도구청장 “수리조선에 AI·로봇 더해 청년 일자리 만들겠다” asiatoday.co.kr",
+      "youth_excerpt": "[인터뷰] 김철훈 영도구청장 “수리조선에 AI·로봇 더해 청년 일자리 만들겠다” asiatoday.co.kr",
       "is_official_source": false,
       "is_public_interest_article": true,
       "is_hub_candidate": false,
@@ -22626,7 +22668,7 @@
       "public_relevance_score": 16,
       "related_article_count": 1,
       "related_sources": [
-        "아시아투데이"
+        "asiatoday.co.kr"
       ],
       "campaign_political": false,
       "substantive_promise": false,
@@ -22640,7 +22682,7 @@
       "url": "https://news.google.com/rss/articles/CBMib0FVX3lxTE5uZ0R1aFY5VWx4M2NwTHNjQk5MTng0bGpMN25SNnZreUphdG9nblU4LVhkcnJLWE1mekplckEyTUtTTTY3M1F0T0lRLXJyNlVWVnktU1NjcWhUaDNYNkQ3a21DMkt1M3ZLQzZzTHM0cw?oc=5",
       "canonical_url": "https://news.google.com/rss/articles/CBMib0FVX3lxTE5uZ0R1aFY5VWx4M2NwTHNjQk5MTng0bGpMN25SNnZreUphdG9nblU4LVhkcnJLWE1mekplckEyTUtTTTY3M1F0T0lRLXJyNlVWVnktU1NjcWhUaDNYNkQ3a21DMkt1M3ZLQzZzTHM0cw?oc=5",
       "feed_url": "https://news.google.com/rss/articles/CBMib0FVX3lxTE5uZ0R1aFY5VWx4M2NwTHNjQk5MTng0bGpMN25SNnZreUphdG9nblU4LVhkcnJLWE1mekplckEyTUtTTTY3M1F0T0lRLXJyNlVWVnktU1NjcWhUaDNYNkQ3a21DMkt1M3ZLQzZzTHM0cw?oc=5",
-      "title": "[사설] 청년예산 43조, 나눠주기보다 일자리 확충 최선을",
+      "title": "[사설] 청년예산 43조, 나눠주기보다 일자리 확충 최선을 - kyongbuk.co.kr",
       "source": "경북일보",
       "source_name": "구글뉴스 청년 칼럼·기고(30일)",
       "source_kind": "news",
@@ -22672,7 +22714,7 @@
       "public_relevance_score": 7,
       "related_article_count": 1,
       "related_sources": [
-        "kyongbuk.co.kr"
+        "경북일보"
       ],
       "campaign_political": false,
       "substantive_promise": false,
@@ -22775,7 +22817,7 @@
       "canonical_url": "https://news.google.com/rss/articles/CBMiYkFVX3lxTE5KQ1ZQdjVJekJyWHphclpmbWw5TjFubmQwaW8wWUFSWnlHNFhxRk1WUWE4Y3hsZExDVEFJbUJGT3d1cXFfNlgxSWxkd3R2SzlJakc2TTlQMTY1ZElzRXpNT09R?oc=5",
       "feed_url": "https://news.google.com/rss/articles/CBMiYkFVX3lxTE5KQ1ZQdjVJekJyWHphclpmbWw5TjFubmQwaW8wWUFSWnlHNFhxRk1WUWE4Y3hsZExDVEFJbUJGT3d1cXFfNlgxSWxkd3R2SzlJakc2TTlQMTY1ZElzRXpNT09R?oc=5",
       "title": "[청년 취업 절벽] 신규 채용 역대 최저, 근로소득도 뒷걸음…2030세대 `이중고`",
-      "source": "매일신문",
+      "source": "imaeil.com",
       "source_name": "구글뉴스 청년 임금·보상(7일)",
       "source_kind": "news",
       "publisher_domain": "www.imaeil.com",
@@ -22793,8 +22835,8 @@
         "고용"
       ],
       "content_direction": "report",
-      "lead_text": "[청년 취업 절벽] 신규 채용 역대 최저, 근로소득도 뒷걸음…2030세대 `이중고` 매일신문",
-      "youth_excerpt": "[청년 취업 절벽] 신규 채용 역대 최저, 근로소득도 뒷걸음…2030세대 `이중고` 매일신문",
+      "lead_text": "[청년 취업 절벽] 신규 채용 역대 최저, 근로소득도 뒷걸음…2030세대 `이중고` imaeil.com",
+      "youth_excerpt": "[청년 취업 절벽] 신규 채용 역대 최저, 근로소득도 뒷걸음…2030세대 `이중고` imaeil.com",
       "is_official_source": false,
       "is_public_interest_article": true,
       "is_hub_candidate": false,
@@ -22805,7 +22847,7 @@
       "public_relevance_score": 12,
       "related_article_count": 1,
       "related_sources": [
-        "매일신문"
+        "imaeil.com"
       ],
       "campaign_political": false,
       "substantive_promise": false,
@@ -23080,6 +23122,51 @@
       "missing_youth_content_signal": false,
       "archive_key": "https://news.google.com/rss/articles/CBMib0FVX3lxTE9kUmNGUmt1cTl1UDNtc094QlhmZWs0bWRSaDdKZmxmT0xpSkJxY1lETmJ6b0ZJTUdOTjVmczdaY3pOUUhNNlFOR2lmRlVHNDl5dlNNdEpKdkppZEtiVlVNZUsxeWpNNENjZjA3QXhGVQ?oc=5",
       "published_at": "2026-08-30T04:50:00+00:00"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMie0FVX3lxTE8wWGNIZS1KMWIxbl91bENQWnVaY0RxTXhKeHE3X1pyTGZWaHBGaUVRS1BSTl9ua1otQU53cWM2U01ONmd2WnNkRG9UX2FYOWhiMm5LLWxHOWhxdzh0TWRtSGxPU2tCVTJNMEVZOG1IVGVTdmEyNVJPMFVnVQ?oc=5",
+      "canonical_url": "https://news.google.com/rss/articles/CBMie0FVX3lxTE8wWGNIZS1KMWIxbl91bENQWnVaY0RxTXhKeHE3X1pyTGZWaHBGaUVRS1BSTl9ua1otQU53cWM2U01ONmd2WnNkRG9UX2FYOWhiMm5LLWxHOWhxdzh0TWRtSGxPU2tCVTJNMEVZOG1IVGVTdmEyNVJPMFVnVQ?oc=5",
+      "feed_url": "https://news.google.com/rss/articles/CBMie0FVX3lxTE8wWGNIZS1KMWIxbl91bENQWnVaY0RxTXhKeHE3X1pyTGZWaHBGaUVRS1BSTl9ua1otQU53cWM2U01ONmd2WnNkRG9UX2FYOWhiMm5LLWxHOWhxdzh0TWRtSGxPU2tCVTJNMEVZOG1IVGVTdmEyNVJPMFVnVQ?oc=5",
+      "title": "2030 청년층 새 일자리 2만3000개 감소…근로소득도 줄어 - busan.com",
+      "source": "부산일보",
+      "source_name": "구글뉴스 2030 주거·소득(7일)",
+      "source_kind": "news",
+      "publisher_domain": "mobile.busan.com",
+      "portal_published_at": "2026-08-30T04:43:17+00:00",
+      "region": "전국",
+      "categories": [
+        "청년은 지금"
+      ],
+      "topic_tags": [
+        "취업",
+        "노동"
+      ],
+      "issue_tags": [
+        "고용"
+      ],
+      "content_direction": "report",
+      "lead_text": "2030 청년층 새 일자리 2만3000개 감소…근로소득도 줄어 busan.com",
+      "youth_excerpt": "2030 청년층 새 일자리 2만3000개 감소…근로소득도 줄어 busan.com",
+      "is_official_source": false,
+      "is_public_interest_article": true,
+      "is_hub_candidate": false,
+      "editorial_decision": "default",
+      "editorial_is_highlighted": false,
+      "selection_bucket": "youth_life_signal",
+      "importance_score": 51,
+      "public_relevance_score": 12,
+      "related_article_count": 1,
+      "related_sources": [
+        "부산일보"
+      ],
+      "campaign_political": false,
+      "substantive_promise": false,
+      "campaign_attack": false,
+      "weak_youth_signal": false,
+      "missing_youth_content_signal": false,
+      "archive_key": "https://news.google.com/rss/articles/CBMie0FVX3lxTE8wWGNIZS1KMWIxbl91bENQWnVaY0RxTXhKeHE3X1pyTGZWaHBGaUVRS1BSTl9ua1otQU53cWM2U01ONmd2WnNkRG9UX2FYOWhiMm5LLWxHOWhxdzh0TWRtSGxPU2tCVTJNMEVZOG1IVGVTdmEyNVJPMFVnVQ?oc=5",
+      "published_at": "2026-08-30T04:43:17+00:00",
+      "published_date": "2026-08-30T04:43:17+00:00"
     },
     {
       "url": "https://news.google.com/rss/articles/CBMid0FVX3lxTE5fM2pXQ005MFZZZ1ZzVG9jTDdZT3phX3lZVXVlLUtXZFBEV3JVLWNoS2dnMmtkZmdzRTlCYVVtZ2t5RlVqUFZlemJjdDJYRnF3R1diS2h1ZjhSVHZmQmczd3pYajZ4SUlab3FnZm5qVWNUMjRlZVpz?oc=5",
@@ -23406,7 +23493,7 @@
       "canonical_url": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTFA0SE9vd2xBMG5qR3NKNnVlSXpmbmxDdGY5WWpYVkdkUWQ1eHUycndsTHdGVzltTERHTDNKXzBQVHRZdVg2elZsbEdfTFpBUWJCaVlyY08wT3dZbS1RTEtURlNySTlqakE?oc=5",
       "feed_url": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTFA0SE9vd2xBMG5qR3NKNnVlSXpmbmxDdGY5WWpYVkdkUWQ1eHUycndsTHdGVzltTERHTDNKXzBQVHRZdVg2elZsbEdfTFpBUWJCaVlyY08wT3dZbS1RTEtURlNySTlqakE?oc=5",
       "title": "[청년발언대] 월급 받아도 독립은 먼 꿈…주거비에 짓눌린 청년들",
-      "source": "youthdaily.co.kr",
+      "source": "청년일보",
       "source_name": "구글뉴스 청년 주거·생활(7일)",
       "source_kind": "news",
       "publisher_domain": "www.youthdaily.co.kr",
@@ -23423,8 +23510,8 @@
         "주거"
       ],
       "content_direction": "report",
-      "lead_text": "[청년발언대] 월급 받아도 독립은 먼 꿈…주거비에 짓눌린 청년들 youthdaily.co.kr",
-      "youth_excerpt": "[청년발언대] 월급 받아도 독립은 먼 꿈…주거비에 짓눌린 청년들 youthdaily.co.kr",
+      "lead_text": "[청년발언대] 월급 받아도 독립은 먼 꿈…주거비에 짓눌린 청년들 청년일보",
+      "youth_excerpt": "[청년발언대] 월급 받아도 독립은 먼 꿈…주거비에 짓눌린 청년들 청년일보",
       "is_official_source": false,
       "is_public_interest_article": true,
       "is_hub_candidate": false,
@@ -23435,7 +23522,7 @@
       "public_relevance_score": 12,
       "related_article_count": 1,
       "related_sources": [
-        "youthdaily.co.kr"
+        "청년일보"
       ],
       "campaign_political": false,
       "substantive_promise": false,
@@ -23658,7 +23745,7 @@
       "editorial_decision": "default",
       "editorial_is_highlighted": false,
       "selection_bucket": "youth_life_signal",
-      "importance_score": 51,
+      "importance_score": 50,
       "public_relevance_score": 12,
       "related_article_count": 1,
       "related_sources": [
@@ -29782,7 +29869,7 @@
       "url": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE1YdlpnNmFVaE1xVE1GVEJvc1hJU2JQdFZCekpoWVcxbzIxSHhLY056T3dMbGdnQ3VqYjV6LThmQXpDcnp1cnUwbHBGMTd5YkFveDFsSDN6NUV2Yk3SAWBBVV95cUxQa3ZGVDVzUHYwSGJ3bG95b0F0alc1RXhxZnRHUmZKalhqWG9iQ3lYZ1NKY1hPdjBZUGNaZ2hGUlNBTVM0cDlGbmhGcVpCYk02cVdlTHB6Z1RzdWtiLXZZdU0?oc=5",
       "canonical_url": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE1YdlpnNmFVaE1xVE1GVEJvc1hJU2JQdFZCekpoWVcxbzIxSHhLY056T3dMbGdnQ3VqYjV6LThmQXpDcnp1cnUwbHBGMTd5YkFveDFsSDN6NUV2Yk3SAWBBVV95cUxQa3ZGVDVzUHYwSGJ3bG95b0F0alc1RXhxZnRHUmZKalhqWG9iQ3lYZ1NKY1hPdjBZUGNaZ2hGUlNBTVM0cDlGbmhGcVpCYk02cVdlTHB6Z1RzdWtiLXZZdU0?oc=5",
       "feed_url": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE1YdlpnNmFVaE1xVE1GVEJvc1hJU2JQdFZCekpoWVcxbzIxSHhLY056T3dMbGdnQ3VqYjV6LThmQXpDcnp1cnUwbHBGMTd5YkFveDFsSDN6NUV2Yk3SAWBBVV95cUxQa3ZGVDVzUHYwSGJ3bG95b0F0alc1RXhxZnRHUmZKalhqWG9iQ3lYZ1NKY1hPdjBZUGNaZ2hGUlNBTVM0cDlGbmhGcVpCYk02cVdlTHB6Z1RzdWtiLXZZdU0?oc=5",
-      "title": "이 대통령, '청년 예산 언박싱 2027' 주재",
+      "title": "이 대통령, '청년 예산 언박싱 2027' 주재 - yna.co.kr",
       "source": "연합뉴스",
       "source_name": "구글뉴스 거버넌스(30일)",
       "source_kind": "news",
@@ -29794,8 +29881,8 @@
         "청년은 지금"
       ],
       "content_direction": "report",
-      "lead_text": "이 대통령, '청년 예산 언박싱 2027' 주재 연합뉴스",
-      "youth_excerpt": "이 대통령, '청년 예산 언박싱 2027' 주재 연합뉴스",
+      "lead_text": "이 대통령, '청년 예산 언박싱 2027' 주재 yna.co.kr",
+      "youth_excerpt": "이 대통령, '청년 예산 언박싱 2027' 주재 yna.co.kr",
       "is_official_source": false,
       "is_public_interest_article": true,
       "is_hub_candidate": false,
@@ -31936,6 +32023,8 @@
       "source_name": "부산광역시 보도자료 청년 검색",
       "source_kind": "local",
       "publisher_domain": "www.busan.go.kr",
+      "publisher_icon_url": "https://www.busan.go.kr/favicon.ico",
+      "image_url": "https://www.busan.go.kr/humanframe/theme/busan22/assets/img/main/thumb_v2.jpg",
       "published_date": "2026-08-28T00:00:00+09:00",
       "publisher_published_at": "2026-08-28T00:00:00+09:00",
       "region": "부산",
@@ -31951,9 +32040,11 @@
       "issue_tags": [
         "고용"
       ],
+      "article_type": "official",
       "content_direction": "official_release",
       "lead_text": "세계시장 꿈꾸는 부산 청년 54명… 「부산 트레이드 루키」 제5기 수료식 개최 경제정책과 | 표경희 | 051-888-4818 | 2026-08-28 ◈ 8.28. 11:00 중구 부산무역회관에서 개최… 무역 교육 과정을 마친 지역 청년 54명의 수료를 축하하고, 이들이 무역 인재로서 첫발을 내딛는 것을 응원하기 위해 마련 ◈ 지난 2022년 1기부터 4기까지 총 199명의 수료생 중 159명 취업… 부산·울산·경남 지역 취업 비율이 62퍼센트로 가장 높았으며, 서울·경기와 해외까지 취업처 확대 ◈ 시, 교육 수료 이후에도 취업 컨설팅, 채용박람회 참가 지",
       "youth_excerpt": "세계시장 꿈꾸는 부산 청년 54명… 「부산 트레이드 루키」 제5기 수료식 개최 경제정책과 | 표경희 | 051-888-4818 | 2026-08-28 ◈ 8...",
+      "body_text": "시정관련 건의사항 또는 답변을 원하는 사항은 부산민원120 민원신청 을 이용하여 주세요. (우 47545) 부산광역시 연제구 중앙대로 1001(연산동) Copyright © Busan Metropolitan City. All rights reserved. 평일 08:30 ~ 18:30 야간․공휴일 당직실 전환",
       "is_official_source": true,
       "is_public_interest_article": true,
       "is_hub_candidate": false,
@@ -31972,11 +32063,7 @@
       "weak_youth_signal": false,
       "missing_youth_content_signal": false,
       "archive_key": "https://www.busan.go.kr/nbtnewsBU/1751524?curPage=&srchBeginDt=&srchEndDt=&srchKey=sj&srchText=청년",
-      "published_at": "2026-08-28T00:00:00+09:00",
-      "publisher_icon_url": "https://www.busan.go.kr/favicon.ico",
-      "image_url": "https://www.busan.go.kr/humanframe/theme/busan22/assets/img/main/thumb_v2.jpg",
-      "article_type": "official",
-      "body_text": "시정관련 건의사항 또는 답변을 원하는 사항은 부산민원120 민원신청 을 이용하여 주세요. (우 47545) 부산광역시 연제구 중앙대로 1001(연산동) Copyright © Busan Metropolitan City. All rights reserved. 평일 08:30 ~ 18:30 야간․공휴일 당직실 전환"
+      "published_at": "2026-08-28T00:00:00+09:00"
     },
     {
       "url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156775819&pageIndex=1&repCodeType=&repCode=&startDate=2025-08-30&endDate=2026-08-30&srchWord=청년&period=",
@@ -34839,6 +34926,8 @@
       "source_name": "부산광역시 보도자료 청년 검색",
       "source_kind": "local",
       "publisher_domain": "www.busan.go.kr",
+      "publisher_icon_url": "https://www.busan.go.kr/favicon.ico",
+      "image_url": "https://www.busan.go.kr/humanframe/theme/busan22/assets/img/main/thumb_v2.jpg",
       "published_date": "2026-08-27T00:00:00+09:00",
       "publisher_published_at": "2026-08-27T00:00:00+09:00",
       "region": "부산",
@@ -34849,12 +34938,14 @@
       "topic_tags": [
         "모집"
       ],
+      "article_type": "official",
       "content_direction": "official_release",
       "governance_activity_types": [
         "발표회"
       ],
       "lead_text": "부산 청년, 세계 무대로… \"2026 청년 월드클래스\" 최종 3명 선정 청년정책과 | 윤정근 | 051-888-7892 | 2026-08-27 ◈ 133명의 청년이 신청해 높은 관심 속에 진행… 서류심사·발표심사·공개심사 등 3단계 심사를 거쳐 최종 대상자 3명 선정 ◈ 공개심사에는 전문가 심사위원과 시민 심사단이 함께 참여… 다양한 시각을 반영해 심사의 공정성과 투명성 강화 ◈ 선정 청년에게 3년간 개인별 최대 1억 원의 역량개발비 지원… 교육 프로그램, 해외 연수, 국제 교류 등 기회 제공",
       "youth_excerpt": "부산 청년, 세계 무대로… \"2026 청년 월드클래스\" 최종 3명 선정 청년정책과 | 윤정근 | 051-888-7892 | 2026-08-27 ◈ 133명의 청년이 신청해 높은 관심 속에 진행… 서류심사·발표심사·공개심사 등 3단계 심사를 거쳐 최종 대상자 3명 선정 ◈ 공개심사에는 전문가 심사위원과 시민 심사단이 함께 참여… 다양한 시각을 반영해 심사의 공정성과 투명성 강화 ◈ 선정 청년에...",
+      "body_text": "시정관련 건의사항 또는 답변을 원하는 사항은 부산민원120 민원신청 을 이용하여 주세요. (우 47545) 부산광역시 연제구 중앙대로 1001(연산동) Copyright © Busan Metropolitan City. All rights reserved. 평일 08:30 ~ 18:30 야간․공휴일 당직실 전환",
       "is_official_source": true,
       "is_public_interest_article": true,
       "is_hub_candidate": false,
@@ -34873,11 +34964,7 @@
       "weak_youth_signal": false,
       "missing_youth_content_signal": false,
       "archive_key": "https://www.busan.go.kr/nbtnewsBU/1751283?curPage=&srchBeginDt=&srchEndDt=&srchKey=sj&srchText=청년",
-      "published_at": "2026-08-27T00:00:00+09:00",
-      "publisher_icon_url": "https://www.busan.go.kr/favicon.ico",
-      "image_url": "https://www.busan.go.kr/humanframe/theme/busan22/assets/img/main/thumb_v2.jpg",
-      "article_type": "official",
-      "body_text": "시정관련 건의사항 또는 답변을 원하는 사항은 부산민원120 민원신청 을 이용하여 주세요. (우 47545) 부산광역시 연제구 중앙대로 1001(연산동) Copyright © Busan Metropolitan City. All rights reserved. 평일 08:30 ~ 18:30 야간․공휴일 당직실 전환"
+      "published_at": "2026-08-27T00:00:00+09:00"
     },
     {
       "url": "https://www.opm.go.kr/opm/news/press-release.do?mode=view&articleNo=163235&srSearchVal=%EC%B2%AD%EB%85%84&article.offset=0&articleLimit=20",
@@ -43919,58 +44006,6 @@
       "published_at": "2026-08-21T00:00:00+09:00"
     },
     {
-      "url": "https://www.seoul.go.kr/news/news_report.do?nttNo=464325",
-      "canonical_url": "https://www.seoul.go.kr/realmnews/in/list.do",
-      "feed_url": "https://www.seoul.go.kr/news/news_report.do?nttNo=464325",
-      "title": "(석간) 서울미래인재재단, 취준 청년 ‘말하기 자신감’ 지원...이금희 아나운서 초청 1:1 코칭",
-      "source": "서울특별시 보도자료 청년 검색",
-      "source_name": "서울특별시 보도자료 청년 검색",
-      "source_kind": "local",
-      "publisher_domain": "www.seoul.go.kr",
-      "published_date": "2026-08-21T00:00:00+09:00",
-      "publisher_published_at": "2026-08-21T00:00:00+09:00",
-      "region": "서울",
-      "categories": [
-        "정책 오피셜",
-        "지역 이슈"
-      ],
-      "topic_tags": [
-        "모집"
-      ],
-      "issue_tags": [
-        "고용"
-      ],
-      "content_direction": "official_release",
-      "lead_text": "분야별 새소식, 시정소식문자알림서비스, 서울시 정책 뉴스, 공고, 보도·해명자료, 서울사랑, 내친구서울등의 정보 제공",
-      "youth_excerpt": "...페이스북 X 네이버블로그 URL 복사 닫기 본문 글자 크기 크게 변경 본문 글자 크기 작게 변경 (석간) 서울미래인재재단, 취준 청년 ‘말하기 자신감’ 지원...",
-      "is_official_source": false,
-      "is_public_interest_article": true,
-      "is_hub_candidate": false,
-      "editorial_decision": "default",
-      "editorial_is_highlighted": false,
-      "selection_bucket": "regional_issue",
-      "importance_score": 24,
-      "public_relevance_score": 11,
-      "related_article_count": 1,
-      "related_sources": [
-        "서울특별시 보도자료 청년 검색"
-      ],
-      "campaign_political": false,
-      "substantive_promise": false,
-      "campaign_attack": false,
-      "weak_youth_signal": false,
-      "missing_youth_content_signal": false,
-      "archive_key": "https://www.seoul.go.kr/realmnews/in/list.do",
-      "published_at": "2026-08-21T00:00:00+09:00",
-      "publisher_url": "https://www.seoul.go.kr/realmnews/in/list.do",
-      "publisher_icon_url": "https://www.seoul.go.kr/res_newseoul/images/icons/apple-touch-icon.png",
-      "image_url": "https://www.seoul.go.kr/res_newseoul/images/main/seoul_slogan.jpg",
-      "governance_activity_types": [
-        "모집"
-      ],
-      "body_text": "이 누리집은 대한민국 공식 전자정부 누리집입니다. 회원정보 조회·변경 등이 가능합니다. 발생일시 \"+OCCR_DTIME+\" 완료예정 \"+EXP_CLR_DTIME+\" 발생일시 \"+OCCR_DTIME+\" 완료예정 \"+EXP_CLR_DTIME+\" 발생일시 \"+OCCR_DTIME+\" 완료예정 \"+EXP_CLR_DTIME+\" 발생일시 \"+OCCR_DTIME+\" 완료예정 \"+EXP_CLR_DTIME+\" 원문URL :\" + oUrl + \" \" + html ); alert(\"해당 글이 html소스 형태로 클립보드에 복사 되었습니다.\\n블로그로 이동하셔서 Ctrl+V를 이용하여 직접 붙여 넣으시면 됩니다.\"); } else { prompt(\"이 글의 내용입니다. Ctrl+C를 눌러 클립보드로 복사하세요\", \" 원문URL :\" + url + \" \" + html ); } }); // 6) #btnPrint, #btnPrint2 클릭 document.addEventListener(\"click\", function (e) { var btn = e.target.closest && e.target.closest(\"#btnPrint, #btnPrint2\"); if (!btn) return; e.preventDefault(); window.print(); return false; }); }); function copyUrl(url) { if (!navigator.clipboard) { // navigator.clipboard가 지원되지 않는 브라우저용 fallback const textarea = document.createElement('textarea'); textarea.value = url; textarea.style.position = 'fixed'; // 화면에서 보이지 않게 고정 document.body.appendChild(textarea); textarea.focus(); textarea.select(); try { document.execCommand('copy'); alert('URL이 복사되었습니다.'); } catch (err) { alert('복사에 실패했습니다.'); } document.body.removeChild(textarea); } else { navigator.clipboard.writeText(url) .then(() => alert('URL이 복사되었습니다.')) .catch(() => alert('복사에 실패했습니다.')); } } function fnBbsGoPage(nttNo){ if(nttNo){ var queryString = fnBbsBuildQuery({set:{'nttNo':nttNo}}); location.href = queryString; } } /** * 쿼리스트링 파라미터 제외 / 변경 / 추가 * * @param {Object} options * - remove : Array | String 제외할 파라미터 * - set : Object 변경 또는 추가할 파라미터 {key: value} * * @returns {string} ?a=1&b=2 형태 쿼리스트링 */ function fnBbsBuildQuery(options) { options = options || {}; var removeKeys = options.remove || []; var setParams = options.set || {}; if (typeof removeKeys === 'string') { removeKeys = [removeKeys]; } var queryObj = {}; //1 기존 파라미터 파싱 if (location.search) { var params = location.search.substring(1).split('&'); for (var i = 0; i 1 ? decodeURIComponent(pair[1]) : ''; if (removeKeys.indexOf(key) === -1) { queryObj[key] = val; } } } //2 변경 또는 추가 for (var k in setParams) { if (setParams.hasOwnProperty(k)) { queryObj[k] = setParams[k]; } } //3 쿼리스트링 생성 var result = []; for (var key in queryObj) { if (queryObj.hasOwnProperty(key)) { result.push( encodeURIComponent(key) + '=' + encodeURIComponent(queryObj[key]) ); } } return result.length ? '?' + result.join('&') : ''; } //뷰스토리 적용 //file_url : 파일경로 //file_name : 파일명 파일경로에서 파일명을 추출할 수 없는 경우 파일명을 입력해주십시오 function fnBbsPreviewAjax(file_url , file_name ){ var apiKey = \"XXYPNDLVUGWBAN5LG7RO4W\"; var cc = \"sg\"; var fileUrl = encodeURIComponent(file_url); var fileName = encodeURIComponent(file_name); window.open(\"https://seoul.viewstory.net/previewAjax.do?apikey={0}&cc={1}&url={2}&fileName={3}\".format(apiKey,cc,fileUrl,fileName),\"a\", \"width=1200, height=1000, left=100, top=50\"); } function fnBbsPreListen(file_url , file_name){ var apiKey = \"XXYPNDLVUGWBAN5LG7RO4W\"; var cc = \"sg\"; var fileUrl = encodeURIComponent(file_url); var fileName = encodeURIComponent(file_name); window.open(\"https://seoul.viewstory.net/voiceOverAjax.do?apikey={0}&cc={1}&url={2}&fileName={3}\".format(apiKey,cc,fileUrl,fileName),\"a\", \"width=1200, height=1000, left=100, top=50\"); } String.prototype.format = function(){ var formatted = this; for( var arg in arguments ) { formatted = formatted.replace (\"{\"+ arg + \"}\", arguments[arg]); } return formatted; } 인쇄하기 공유하기 카카오톡 페이스북 X 네이버블로그 URL 복사 닫기 본문 글자 크기 크게 변경 본문 글자 크기 작게 변경 (석간) 서울미래인재재단, 취준 청년 ‘말하기 자신감’ 지원...이금희 아나운서 초청 1:1 코칭 담당부서 서울미래인재재단 서울미래인재재단 문의 등록일 2026-08-21 수정일 첨부파일 바로보기 바로듣기 첨부파일 (석간) 서울미래인재재단, 취준 청년 _말하기 자신감_ 지원… 이금희 아나운서 초청 11 코칭.hwp (450 KB Bytes, 다운로드: 249 회 ) 이 페이지에서 제공하는 정보에 대하여 만족하십니까? 서울특별시청 04524 서울특별시 중구 세종대로 110 [찾아오시는 길] 대표전화: 02-120 또는 02-731-2120 (365일 24시간) 대표전화: 02-120 또는 02-731-2120 (365일 24시간) © Seoul Metropolitan Government all rights reserved"
-    },
-    {
       "url": "https://news.google.com/rss/articles/CBMia0FVX3lxTE0zeUFlZDVKN2RwZHQ2cU9XQlNOZUhlSF9uUDdTTFlaNmRCcVA1cV9HNWd6LTBHYnNrU0tTVGp5VGttMWZjdVJFRmU3YktvaThoMkVfU3dRMHVLbllHWFo4VExKSTJvaUxOR18w?oc=5",
       "title": "한눈에 보는 전국 청년정책 - ‘2025년 지자체 청년정책 우수사례집’ 발간",
       "source": "뉴스데일리",
@@ -44027,22 +44062,43 @@
     {
       "url": "https://www.opm.go.kr/opm/news/press-release.do?mode=view&articleNo=163137&srSearchVal=%EC%B2%AD%EB%85%84&article.offset=0&articleLimit=20",
       "canonical_url": "https://www.opm.go.kr/opm/news/press-release.do?mode=view&articleNo=163137&srSearchVal=청년&article.offset=0&articleLimit=20",
+      "publisher_url": "https://www.opm.go.kr/opm/news/press-release.do?mode=view&articleNo=163137&srSearchVal=%EC%B2%AD%EB%85%84&article.offset=0&articleLimit=20",
       "feed_url": "https://www.opm.go.kr/opm/news/press-release.do?mode=view&articleNo=163137&srSearchVal=%EC%B2%AD%EB%85%84&article.offset=0&articleLimit=20",
       "title": "[보도자료] '2025년 지자체 청년정책 우수사례집' 발간",
       "source": "국무조정실 보도자료",
       "source_name": "국무조정실 보도자료",
       "source_kind": "official",
       "publisher_domain": "www.opm.go.kr",
+      "publisher_icon_url": "https://www.opm.go.kr/favicon.ico",
       "published_date": "2026-08-20T00:00:00+09:00",
       "publisher_published_at": "2026-08-20T00:00:00+09:00",
       "region": "전국",
       "categories": [
         "정책 오피셜"
       ],
+      "topic_tags": [
+        "취업",
+        "주거"
+      ],
+      "issue_tags": [
+        "고립·은둔",
+        "주거",
+        "부채",
+        "고용"
+      ],
       "article_type": "official",
       "content_direction": "official_release",
+      "governance_scope": "정부",
+      "governance_activity_types": [
+        "위원회"
+      ],
+      "hub_topics": [
+        "청년정책조정위원회"
+      ],
       "lead_text": "청년정책협력관실",
+      "summary": "[정책 오피셜 · 취업, 주거] [보도자료] '2025년 지자체 청년정책 우수사례집' 발간\n- 한눈에 보는 전국 청년정책 - ‘2025년 지자체 청년정책 우수사례집’ 발간 - 일자리·교육·주거·문화복지·참여권리 5대 분야 총 196개 수록 - 정책 공유 및 우수사업의 전국화 검토를 통해 청년들의 삶의 질 \n지역 서울 / 출처 국무조정실 보도자료",
       "youth_excerpt": "청년정책협력관실",
+      "body_text": "이 누리집은 대한민국 공식 전자정부 누리집입니다. 현재 페이지 인쇄 (새창열림) 공유하기 공유하기 페이스북 X 카카오톡 인스타그램 URL복사 보도자료 // [보도자료] '2025년 지자체 청년정책 우수사례집' 발간 작성자 : 보도자료관리자 등록일 : 2026.08.20 조회수 : 3267 260820 2025 지자체 청년정책 우수사례집_보도자료(최종).hwpx 260820 2025 지자체 청년정책 우수사례집_보도자료(최종).pdf ‘2025년 지자체 청년정책 우수사례집’ 발간 - 일자리·교육·주거·문화복지·참여권리 5대 분야 총 196개 수록 - 정책 공유 및 우수사업의 전국화 검토를 통해 청년들의 삶의 질 향상 기대 □ 국무조정실은 지난해 전국 지방자치단체에서 추진한 청년정책 중 우수사례를 발굴하고 이를 확산시키기 위해 「2025년 지자체 청년정책 우수사례집」을 발간했다고 밝혔다. □ 이번 사례집은 지역별로 다양하게 추진되고 있는 청년정책 중에서 실효성이 높고 타 지자체로의 확산 가능성이 높은 우수 사례들을 엄선한 것으로, ▴일자리 ▴교육 ▴주거 ▴문화복지 ▴참여권리 5대 분야 총 196개*의 정책내용을 알기쉽게 담았다. * 분야별 우수사례 : 196개(일자리 44, 교육 34, 주거 33, 문화복지 50, 참여권리 35) □ 분야별 우수사례로 ▴일자리 분야에서는 청년창업가 대상 성장단계별 최대 3천만원의 사업화자금과 맞춤형 교육을 지원한 ‘경북 청년CEO 도약지원 사업’, 구직 청년에게 AI분야 이론, 실무, 기업방문 등 직무훈련과 취·창업을 지원한 ‘서울 청년취업사관학교’, ㅇ ▴교육 분야에서는 고민 유형별 맞춤교육과 1:1 심층 코칭을 지원한 ‘서울 청년인생설계학교’, ▴주거 분야에서는 신혼부부에게 임대주택을 1일 1천원에 공급한 ‘인천 아이플러스 집드림’, ▴금융 분야에서는 고3학생 대상 자산관리, 현명한 소비 형성을 지원한 ‘충남 청년·사회초년생 금융교육’, ㅇ ▴문화복지 분야의 고립·은둔 청년의 일상회복과 사회진입을 촉진한 ‘경남 고립·은둔 청년 세상밖으로 한걸음’, ▴참여권리 분야에서는 도지사·청년 공동위원장 체제를 마련한 ‘충남 청년정책조정위원회’ 등이 있다. (자세한 내용 ⇒ 붙임1, 붙임2 참조) □ 이번 사례집은 청년 관련 중앙부처 및 지자체가 시행 착오를 줄이고 지역 특성에 맞는 최적의 청년정책을 설계하는 데 유용한 가이드라인이 될 것으로 기대된다. 특히, 단순한 사업 나열이 아니라 추진배경, 사업내용, 성과 및 기대효과 등을 구체적으로 제시하여 실무적인 활용도를 높였다. □ 김달원 청년정책조정실장은 “이번 우수 사례집 발간을 통해 전국 지방자치단체의 우수한 청년정책 사례들이 서로 공유될 뿐만 아니라, 중앙정부에서도 우수한 지자체 사업들은 적극 검토하여 전국화하는 방안을 모색하겠다. ”라고 밝혔다. □ 한편, 「2025년 전국 지방자치단체 청년정책 우수사례집」은 「온통청년 청년연구자료 게시판」을 통해 PDF파일로 내려받을 수 있다. (30107) 세종특별자치시 다솜로 261(어진동, 정부세종청사) 정부통합콜센터 - 국번없이 110 당직실 : 044-200-2860 COPYRIGHT(C) OFFICE FOR GOVERNMENT POLICY COORDINATION, PRIME MINISTER'S SECRETARIAT. ALL RIGHTS RESERVED 한나라의 공식적인 표상으로서 우리나라는 태극기·애국가·무궁화·국새·나라문장을 국가상징으로 하고 있습니다. * 국기는 매일·24시간 달 수 있음 본 자료는 반드시 국민의례 등 비영리공익 목적으로만 사용하여 주시기 바랍니다. 이 사이트는 자바스크립트를 지원하지 않으면 정상적으로 보이지 않을수 있습니다.",
       "is_official_source": true,
       "is_public_interest_article": true,
       "is_hub_candidate": false,
@@ -44061,28 +44117,7 @@
       "weak_youth_signal": false,
       "missing_youth_content_signal": false,
       "archive_key": "https://www.opm.go.kr/opm/news/press-release.do?mode=view&articleNo=163137&srSearchVal=청년&article.offset=0&articleLimit=20",
-      "published_at": "2026-08-20T00:00:00+09:00",
-      "publisher_url": "https://www.opm.go.kr/opm/news/press-release.do?mode=view&articleNo=163137&srSearchVal=%EC%B2%AD%EB%85%84&article.offset=0&articleLimit=20",
-      "publisher_icon_url": "https://www.opm.go.kr/favicon.ico",
-      "topic_tags": [
-        "취업",
-        "주거"
-      ],
-      "issue_tags": [
-        "고립·은둔",
-        "주거",
-        "부채",
-        "고용"
-      ],
-      "governance_scope": "정부",
-      "governance_activity_types": [
-        "위원회"
-      ],
-      "hub_topics": [
-        "청년정책조정위원회"
-      ],
-      "summary": "[정책 오피셜 · 취업, 주거] [보도자료] '2025년 지자체 청년정책 우수사례집' 발간\n- 한눈에 보는 전국 청년정책 - ‘2025년 지자체 청년정책 우수사례집’ 발간 - 일자리·교육·주거·문화복지·참여권리 5대 분야 총 196개 수록 - 정책 공유 및 우수사업의 전국화 검토를 통해 청년들의 삶의 질 \n지역 서울 / 출처 국무조정실 보도자료",
-      "body_text": "이 누리집은 대한민국 공식 전자정부 누리집입니다. 현재 페이지 인쇄 (새창열림) 공유하기 공유하기 페이스북 X 카카오톡 인스타그램 URL복사 보도자료 // [보도자료] '2025년 지자체 청년정책 우수사례집' 발간 작성자 : 보도자료관리자 등록일 : 2026.08.20 조회수 : 3267 260820 2025 지자체 청년정책 우수사례집_보도자료(최종).hwpx 260820 2025 지자체 청년정책 우수사례집_보도자료(최종).pdf ‘2025년 지자체 청년정책 우수사례집’ 발간 - 일자리·교육·주거·문화복지·참여권리 5대 분야 총 196개 수록 - 정책 공유 및 우수사업의 전국화 검토를 통해 청년들의 삶의 질 향상 기대 □ 국무조정실은 지난해 전국 지방자치단체에서 추진한 청년정책 중 우수사례를 발굴하고 이를 확산시키기 위해 「2025년 지자체 청년정책 우수사례집」을 발간했다고 밝혔다. □ 이번 사례집은 지역별로 다양하게 추진되고 있는 청년정책 중에서 실효성이 높고 타 지자체로의 확산 가능성이 높은 우수 사례들을 엄선한 것으로, ▴일자리 ▴교육 ▴주거 ▴문화복지 ▴참여권리 5대 분야 총 196개*의 정책내용을 알기쉽게 담았다. * 분야별 우수사례 : 196개(일자리 44, 교육 34, 주거 33, 문화복지 50, 참여권리 35) □ 분야별 우수사례로 ▴일자리 분야에서는 청년창업가 대상 성장단계별 최대 3천만원의 사업화자금과 맞춤형 교육을 지원한 ‘경북 청년CEO 도약지원 사업’, 구직 청년에게 AI분야 이론, 실무, 기업방문 등 직무훈련과 취·창업을 지원한 ‘서울 청년취업사관학교’, ㅇ ▴교육 분야에서는 고민 유형별 맞춤교육과 1:1 심층 코칭을 지원한 ‘서울 청년인생설계학교’, ▴주거 분야에서는 신혼부부에게 임대주택을 1일 1천원에 공급한 ‘인천 아이플러스 집드림’, ▴금융 분야에서는 고3학생 대상 자산관리, 현명한 소비 형성을 지원한 ‘충남 청년·사회초년생 금융교육’, ㅇ ▴문화복지 분야의 고립·은둔 청년의 일상회복과 사회진입을 촉진한 ‘경남 고립·은둔 청년 세상밖으로 한걸음’, ▴참여권리 분야에서는 도지사·청년 공동위원장 체제를 마련한 ‘충남 청년정책조정위원회’ 등이 있다. (자세한 내용 ⇒ 붙임1, 붙임2 참조) □ 이번 사례집은 청년 관련 중앙부처 및 지자체가 시행 착오를 줄이고 지역 특성에 맞는 최적의 청년정책을 설계하는 데 유용한 가이드라인이 될 것으로 기대된다. 특히, 단순한 사업 나열이 아니라 추진배경, 사업내용, 성과 및 기대효과 등을 구체적으로 제시하여 실무적인 활용도를 높였다. □ 김달원 청년정책조정실장은 “이번 우수 사례집 발간을 통해 전국 지방자치단체의 우수한 청년정책 사례들이 서로 공유될 뿐만 아니라, 중앙정부에서도 우수한 지자체 사업들은 적극 검토하여 전국화하는 방안을 모색하겠다. ”라고 밝혔다. □ 한편, 「2025년 전국 지방자치단체 청년정책 우수사례집」은 「온통청년 청년연구자료 게시판」을 통해 PDF파일로 내려받을 수 있다. (30107) 세종특별자치시 다솜로 261(어진동, 정부세종청사) 정부통합콜센터 - 국번없이 110 당직실 : 044-200-2860 COPYRIGHT(C) OFFICE FOR GOVERNMENT POLICY COORDINATION, PRIME MINISTER'S SECRETARIAT. ALL RIGHTS RESERVED 한나라의 공식적인 표상으로서 우리나라는 태극기·애국가·무궁화·국새·나라문장을 국가상징으로 하고 있습니다. * 국기는 매일·24시간 달 수 있음 본 자료는 반드시 국민의례 등 비영리공익 목적으로만 사용하여 주시기 바랍니다. 이 사이트는 자바스크립트를 지원하지 않으면 정상적으로 보이지 않을수 있습니다."
+      "published_at": "2026-08-20T00:00:00+09:00"
     },
     {
       "url": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE5nNjNGWWd6VFFwVnZneWNVX1FWQVc2c2c5VGRxSnhiZ3RfNF9FRkJuRmZyRzNQYlVGbVNhTGtQVVVobWFwMWd0N1BscnVZa2JCMF9IWll5bWl0cHhTdldWVw?oc=5",
@@ -44633,7 +44668,7 @@
     },
     {
       "url": "https://www.seoul.go.kr/news/news_report.do?nttNo=464075",
-      "canonical_url": "https://www.seoul.go.kr/news/news_report.do?nttNo=464075",
+      "canonical_url": "https://www.seoul.go.kr/realmnews/in/list.do",
       "feed_url": "https://www.seoul.go.kr/news/news_report.do?nttNo=464075",
       "title": "서울시, '청년 맞춤형 부동산 교육'으로 가을 이사철 전세사기 예방",
       "source": "서울특별시 보도자료 청년 검색",
@@ -44649,22 +44684,23 @@
         "지역 이슈"
       ],
       "topic_tags": [
-        "주거"
+        "주거",
+        "노동"
       ],
       "issue_tags": [
         "주거"
       ],
       "content_direction": "official_release",
-      "lead_text": "1528 서울시, '청년 맞춤형 부동산 교육'으로 가을 이사철 전세사기 예방 파일있음 토지관리과 2026-08-16",
-      "youth_excerpt": "1528 서울시, '청년 맞춤형 부동산 교육'으로 가을 이사철 전세사기 예방 파일있음 토지관리과 2026-08-16",
+      "lead_text": "분야별 새소식, 시정소식문자알림서비스, 서울시 정책 뉴스, 공고, 보도·해명자료, 서울사랑, 내친구서울등의 정보 제공",
+      "youth_excerpt": "...공유하기 카카오톡 페이스북 X 네이버블로그 URL 복사 닫기 본문 글자 크기 크게 변경 본문 글자 크기 작게 변경 서울시, '청년 맞춤형 부동산 교육'으로 가을 이사철 전세사기 예방 담당부서 도시공간본부 토지관리과 문의 등록일 2026-08-16 수정일 분류 주택 첨부파일 바로보기 바로듣기 첨부파일 서울시, _청년 맞춤형 부동산 교육_으로 가을 이사철 전세사기 예방...",
       "is_official_source": false,
       "is_public_interest_article": true,
       "is_hub_candidate": false,
       "editorial_decision": "default",
       "editorial_is_highlighted": false,
       "selection_bucket": "youth_life_signal",
-      "importance_score": 36,
-      "public_relevance_score": 12,
+      "importance_score": 41,
+      "public_relevance_score": 16,
       "related_article_count": 1,
       "related_sources": [
         "서울특별시 보도자료 청년 검색"
@@ -44674,8 +44710,15 @@
       "campaign_attack": false,
       "weak_youth_signal": false,
       "missing_youth_content_signal": false,
-      "archive_key": "https://www.seoul.go.kr/news/news_report.do?nttNo=464075",
-      "published_at": "2026-08-16T00:00:00+09:00"
+      "archive_key": "https://www.seoul.go.kr/realmnews/in/list.do",
+      "published_at": "2026-08-16T00:00:00+09:00",
+      "publisher_url": "https://www.seoul.go.kr/realmnews/in/list.do",
+      "publisher_icon_url": "https://www.seoul.go.kr/res_newseoul/images/icons/apple-touch-icon.png",
+      "image_url": "https://www.seoul.go.kr/res_newseoul/images/main/seoul_slogan.jpg",
+      "governance_activity_types": [
+        "회의"
+      ],
+      "body_text": "이 누리집은 대한민국 공식 전자정부 누리집입니다. 회원정보 조회·변경 등이 가능합니다. 발생일시 \"+OCCR_DTIME+\" 완료예정 \"+EXP_CLR_DTIME+\" 발생일시 \"+OCCR_DTIME+\" 완료예정 \"+EXP_CLR_DTIME+\" 발생일시 \"+OCCR_DTIME+\" 완료예정 \"+EXP_CLR_DTIME+\" 발생일시 \"+OCCR_DTIME+\" 완료예정 \"+EXP_CLR_DTIME+\" 원문URL :\" + oUrl + \" \" + html ); alert(\"해당 글이 html소스 형태로 클립보드에 복사 되었습니다.\\n블로그로 이동하셔서 Ctrl+V를 이용하여 직접 붙여 넣으시면 됩니다.\"); } else { prompt(\"이 글의 내용입니다. Ctrl+C를 눌러 클립보드로 복사하세요\", \" 원문URL :\" + url + \" \" + html ); } }); // 6) #btnPrint, #btnPrint2 클릭 document.addEventListener(\"click\", function (e) { var btn = e.target.closest && e.target.closest(\"#btnPrint, #btnPrint2\"); if (!btn) return; e.preventDefault(); window.print(); return false; }); }); function copyUrl(url) { if (!navigator.clipboard) { // navigator.clipboard가 지원되지 않는 브라우저용 fallback const textarea = document.createElement('textarea'); textarea.value = url; textarea.style.position = 'fixed'; // 화면에서 보이지 않게 고정 document.body.appendChild(textarea); textarea.focus(); textarea.select(); try { document.execCommand('copy'); alert('URL이 복사되었습니다.'); } catch (err) { alert('복사에 실패했습니다.'); } document.body.removeChild(textarea); } else { navigator.clipboard.writeText(url) .then(() => alert('URL이 복사되었습니다.')) .catch(() => alert('복사에 실패했습니다.')); } } function fnBbsGoPage(nttNo){ if(nttNo){ var queryString = fnBbsBuildQuery({set:{'nttNo':nttNo}}); location.href = queryString; } } /** * 쿼리스트링 파라미터 제외 / 변경 / 추가 * * @param {Object} options * - remove : Array | String 제외할 파라미터 * - set : Object 변경 또는 추가할 파라미터 {key: value} * * @returns {string} ?a=1&b=2 형태 쿼리스트링 */ function fnBbsBuildQuery(options) { options = options || {}; var removeKeys = options.remove || []; var setParams = options.set || {}; if (typeof removeKeys === 'string') { removeKeys = [removeKeys]; } var queryObj = {}; //1 기존 파라미터 파싱 if (location.search) { var params = location.search.substring(1).split('&'); for (var i = 0; i 1 ? decodeURIComponent(pair[1]) : ''; if (removeKeys.indexOf(key) === -1) { queryObj[key] = val; } } } //2 변경 또는 추가 for (var k in setParams) { if (setParams.hasOwnProperty(k)) { queryObj[k] = setParams[k]; } } //3 쿼리스트링 생성 var result = []; for (var key in queryObj) { if (queryObj.hasOwnProperty(key)) { result.push( encodeURIComponent(key) + '=' + encodeURIComponent(queryObj[key]) ); } } return result.length ? '?' + result.join('&') : ''; } //뷰스토리 적용 //file_url : 파일경로 //file_name : 파일명 파일경로에서 파일명을 추출할 수 없는 경우 파일명을 입력해주십시오 function fnBbsPreviewAjax(file_url , file_name ){ var apiKey = \"XXYPNDLVUGWBAN5LG7RO4W\"; var cc = \"sg\"; var fileUrl = encodeURIComponent(file_url); var fileName = encodeURIComponent(file_name); window.open(\"https://seoul.viewstory.net/previewAjax.do?apikey={0}&cc={1}&url={2}&fileName={3}\".format(apiKey,cc,fileUrl,fileName),\"a\", \"width=1200, height=1000, left=100, top=50\"); } function fnBbsPreListen(file_url , file_name){ var apiKey = \"XXYPNDLVUGWBAN5LG7RO4W\"; var cc = \"sg\"; var fileUrl = encodeURIComponent(file_url); var fileName = encodeURIComponent(file_name); window.open(\"https://seoul.viewstory.net/voiceOverAjax.do?apikey={0}&cc={1}&url={2}&fileName={3}\".format(apiKey,cc,fileUrl,fileName),\"a\", \"width=1200, height=1000, left=100, top=50\"); } String.prototype.format = function(){ var formatted = this; for( var arg in arguments ) { formatted = formatted.replace (\"{\"+ arg + \"}\", arguments[arg]); } return formatted; } 인쇄하기 공유하기 카카오톡 페이스북 X 네이버블로그 URL 복사 닫기 본문 글자 크기 크게 변경 본문 글자 크기 작게 변경 서울시, '청년 맞춤형 부동산 교육'으로 가을 이사철 전세사기 예방 담당부서 도시공간본부 토지관리과 문의 등록일 2026-08-16 수정일 분류 주택 첨부파일 바로보기 바로듣기 첨부파일 서울시, _청년 맞춤형 부동산 교육_으로 가을 이사철 전세사기 예방.hwp (1 MB Bytes, 다운로드: 137 회 ) 서울시, '청년 맞춤형 부동산 교육'으로 가을 이사철 전세사기 예방 - 9월 9일(수), 9월 청년 맞춤형 부동산 교육 개최… 전세사기 예방 실무 중심 교육 진행 - 상반기 교육 참여 만족도 97% 기록하며 높은 호응… 청년층 수요 반영해 지속 추진 - 계약 단계별 점검부터 보증보험 가입까지 교육, 희망자 대상 ‘1:1 전월세 맞춤 상담’ □ 서울시는 대학생과 사회 초년생 등 청년층이 전월세 계약 과정에서 발생할 수 있는 위험을 미리 파악하고 스스로 대응할 수 있도록 9 월 9 일 ( 수 ) 19 시 서울시청 본관 3 층 대회의실에서 ‘2026 제 3 회 청년 맞춤형 부동산 교육 ’ 을 개최한다 . □ 이번 교육은 가을 이사철을 앞두고 전월세 계약을 준비하는 청년들이 실제 계약 과정에서 무엇을 확인하고 , 어떤 상황에 주의해야 하는지 알 수 있도록 현장에서 자주 발생하는 "
     },
     {
       "url": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE1vcHFnWUtnWHpKekVJSVNqbVBta0pyLU9iYlBMbnQxNVhyVnRfcTBuTFNySmZKN3lzbk5uVjV5RDhncjRGNkFxbk9GTmF3Wk9rd1g3amstU1U4QWJNUkpLMQ?oc=5",
@@ -44726,12 +44769,14 @@
     {
       "url": "https://www.daejeon.go.kr/drh/board/boardNormalView.do?boardId=normal_0189&menuSeq=&searchCondition=title&searchKeyword=청년&pageIndex=1&recordCountPerPage=10&ntatcSeq=1520285548",
       "canonical_url": "https://www.daejeon.go.kr/drh/board/boardNormalView.do?boardId=normal_0189&menuSeq=&searchCondition=title&searchKeyword=청년&pageIndex=1&recordCountPerPage=10&ntatcSeq=1520285548",
+      "publisher_url": "https://www.daejeon.go.kr/drh/board/boardNormalView.do?boardId=normal_0189&menuSeq=&searchCondition=title&searchKeyword=청년&pageIndex=1&recordCountPerPage=10&ntatcSeq=1520285548",
       "feed_url": "https://www.daejeon.go.kr/drh/board/boardNormalView.do?boardId=normal_0189&menuSeq=&searchCondition=title&searchKeyword=청년&pageIndex=1&recordCountPerPage=10&ntatcSeq=1520285548",
       "title": "대전시, 전국 최초 청년공간 인공지능 전환 시범운영",
       "source": "대전광역시 보도자료 청년 검색",
       "source_name": "대전광역시 보도자료 청년 검색",
       "source_kind": "local",
       "publisher_domain": "www.daejeon.go.kr",
+      "publisher_icon_url": "https://www.daejeon.go.kr/images/drh/layout/common/favicon.ico",
       "published_date": "2026-08-14T00:00:00+09:00",
       "publisher_published_at": "2026-08-14T00:00:00+09:00",
       "region": "대전",
@@ -44749,6 +44794,7 @@
       "content_direction": "official_release",
       "lead_text": "675 대전시, 전국 최초 청년공간 인공지능 전환 시범운영 청년정책과 042-270-0821 2026-08-14 674",
       "youth_excerpt": "675 대전시, 전국 최초 청년공간 인공지능 전환 시범운영 청년정책과 042-270-0821 2026-08-14 674",
+      "body_text": "이 누리집은 대한민국 공식 전자정부 누리집입니다. 대전시 , 전국 최초 청년공간 인공지능 전환 시범운영 대전시는 전국 최초로 청년공간 인공지능 전환 (AX) 을 추진한다고 밝혔다 . ‘ 청년공간 인공지능 전환 (AX) 추진계획 ’ 에 따라 지난 7 월부터 12 월까지 관내 청년공간 10 개소에서 시범운영을 실시하며 , 청년의 인공지능 접근권과 활용 역량을 높이고 경제적 여건에 따른 활용 격차를 줄이기 위해 청년공간에 인공지능 보편복지 모델을 도입했다 . 이는 개인에게 인공지능 이용권을 지원하는 방식을 넘어 청년공간을 인공지능 거점으로 전환해 누구나 상시 이용할 수 있도록 한 것이다 . 과거 공공 와이파이가 공공서비스 혁신의 상징이었다면 , 이제는 인공지능 접근권이 새로운 공공서비스의 기준이 될 것이라는 판단에서다 . 청년은 청년공간에 마련된 무선인터넷 (WiFi) 환경에서 안내 화면에 접속해 챗지피티 (ChatGPT), 제미나이 (Gemini), 클로드 (Claude) 등 고성능 생성형 인공지능 서비스와 인공지능 도우미를 무료로 이용할 수 있다 . 이용 한도에 도달하면 경량 인공지능 모델로 전환돼 계속 이용할 수 있다 . 대전광역시가 창작한 \"대전시, 전국 최초 청년공간 인공지능 전환 시범운영!\" 저작물은 \"공공누리 1유형(출처표시)\" 조건에 따라 이용 할 수 있습니다. (35242) 대전광역시 서구 둔산로 100 (둔산동) (c) DAEJEON METROPOLITAN CITY. ALL RIGHTS RESERVED.",
       "is_official_source": false,
       "is_public_interest_article": true,
       "is_hub_candidate": false,
@@ -44767,10 +44813,7 @@
       "weak_youth_signal": false,
       "missing_youth_content_signal": false,
       "archive_key": "https://www.daejeon.go.kr/drh/board/boardNormalView.do?boardId=normal_0189&menuSeq=&searchCondition=title&searchKeyword=청년&pageIndex=1&recordCountPerPage=10&ntatcSeq=1520285548",
-      "published_at": "2026-08-14T00:00:00+09:00",
-      "publisher_url": "https://www.daejeon.go.kr/drh/board/boardNormalView.do?boardId=normal_0189&menuSeq=&searchCondition=title&searchKeyword=청년&pageIndex=1&recordCountPerPage=10&ntatcSeq=1520285548",
-      "publisher_icon_url": "https://www.daejeon.go.kr/images/drh/layout/common/favicon.ico",
-      "body_text": "이 누리집은 대한민국 공식 전자정부 누리집입니다. 대전시 , 전국 최초 청년공간 인공지능 전환 시범운영 대전시는 전국 최초로 청년공간 인공지능 전환 (AX) 을 추진한다고 밝혔다 . ‘ 청년공간 인공지능 전환 (AX) 추진계획 ’ 에 따라 지난 7 월부터 12 월까지 관내 청년공간 10 개소에서 시범운영을 실시하며 , 청년의 인공지능 접근권과 활용 역량을 높이고 경제적 여건에 따른 활용 격차를 줄이기 위해 청년공간에 인공지능 보편복지 모델을 도입했다 . 이는 개인에게 인공지능 이용권을 지원하는 방식을 넘어 청년공간을 인공지능 거점으로 전환해 누구나 상시 이용할 수 있도록 한 것이다 . 과거 공공 와이파이가 공공서비스 혁신의 상징이었다면 , 이제는 인공지능 접근권이 새로운 공공서비스의 기준이 될 것이라는 판단에서다 . 청년은 청년공간에 마련된 무선인터넷 (WiFi) 환경에서 안내 화면에 접속해 챗지피티 (ChatGPT), 제미나이 (Gemini), 클로드 (Claude) 등 고성능 생성형 인공지능 서비스와 인공지능 도우미를 무료로 이용할 수 있다 . 이용 한도에 도달하면 경량 인공지능 모델로 전환돼 계속 이용할 수 있다 . 대전광역시가 창작한 \"대전시, 전국 최초 청년공간 인공지능 전환 시범운영!\" 저작물은 \"공공누리 1유형(출처표시)\" 조건에 따라 이용 할 수 있습니다. (35242) 대전광역시 서구 둔산로 100 (둔산동) (c) DAEJEON METROPOLITAN CITY. ALL RIGHTS RESERVED."
+      "published_at": "2026-08-14T00:00:00+09:00"
     },
     {
       "url": "https://gnews.gg.go.kr/briefing/brief_gongbo_view.do?BS_CODE=S017&number=71231",
@@ -45397,12 +45440,15 @@
     {
       "url": "https://www.busan.go.kr/nbtnewsBU/1748420?curPage=&srchBeginDt=&srchEndDt=&srchKey=sj&srchText=청년",
       "canonical_url": "https://www.busan.go.kr/nbtnewsBU/1748420?curPage=&srchBeginDt=&srchEndDt=&srchKey=sj&srchText=청년",
+      "publisher_url": "https://www.busan.go.kr/nbtnewsBU/1748420?curPage=&srchBeginDt=&srchEndDt=&srchKey=sj&srchText=청년",
       "feed_url": "https://www.busan.go.kr/nbtnewsBU/1748420?curPage=&srchBeginDt=&srchEndDt=&srchKey=sj&srchText=청년",
       "title": "청년직원이 이끄는 혁신! \"부산 민·관·공 청년직원 교류협력체\" 출범 조직담당관 | 조은빈 | 051-888-1107 | 2026-08-11 ◈ 8.10. 16:00, 한국주택금융공사 보금자리홀에서 '부산 민·관·공 청년직원 교류협력체(스프링보드)' 출범식 개최 ◈ 조직문화 개선, 업무혁신, 지역사회 상생 등 공동과제 발굴·추진 ◈ 청년직원 주도의 민·관·공 협력 네트워크를 통해 조직의 변화와 혁신을 이끌고 기관 간 소통 활성화로 청년직원 교류협력 기반 마련",
       "source": "부산광역시 보도자료 청년 검색",
       "source_name": "부산광역시 보도자료 청년 검색",
       "source_kind": "local",
       "publisher_domain": "www.busan.go.kr",
+      "publisher_icon_url": "https://www.busan.go.kr/favicon.ico",
+      "image_url": "https://www.busan.go.kr/humanframe/theme/busan22/assets/img/main/thumb_v2.jpg",
       "published_date": "2026-08-11T00:00:00+09:00",
       "publisher_published_at": "2026-08-11T00:00:00+09:00",
       "region": "부산",
@@ -45419,12 +45465,14 @@
         "주거",
         "부채"
       ],
+      "article_type": "official",
       "content_direction": "official_release",
       "governance_activity_types": [
         "출범"
       ],
       "lead_text": "청년직원이 이끄는 혁신! \"부산 민·관·공 청년직원 교류협력체\" 출범 조직담당관 | 조은빈 | 051-888-1107 | 2026-08-11 ◈ 8.10. 16:00, 한국주택금융공사 보금자리홀에서 '부산 민·관·공 청년직원 교류협력체(스프링보드)' 출범식 개최 ◈ 조직문화 개선, 업무혁신, 지역사회 상생 등 공동과제 발굴·추진 ◈ 청년직원 주도의 민·관·공 협력 네트워크를 통해 조직의 변화와 혁신을 이끌고 기관 간 소통 활성화로 청년직원 교류협력 기반 마련",
       "youth_excerpt": "청년직원이 이끄는 혁신! \"부산 민·관·공 청년직원 교류협력체\" 출범 조직담당관 | 조은빈 | 051-888-1107 | 2026-08-11 ◈ 8.10. 16:00, 한국주택금융공사 보금자리홀에서 '부산 민·관·공 청년직원 교류협력체(스프링보드)' 출범식 개최 ◈ 조직문화 개선, 업무혁신, 지역사회 상생 등 공동과제 발굴·추진 ◈ 청년직원 주도의 민·관·공 협력 네트워크를 통해 조직의 변화...",
+      "body_text": "시정관련 건의사항 또는 답변을 원하는 사항은 부산민원120 민원신청 을 이용하여 주세요. (우 47545) 부산광역시 연제구 중앙대로 1001(연산동) Copyright © Busan Metropolitan City. All rights reserved. 평일 08:30 ~ 18:30 야간․공휴일 당직실 전환",
       "is_official_source": true,
       "is_public_interest_article": true,
       "is_hub_candidate": false,
@@ -45443,12 +45491,7 @@
       "weak_youth_signal": false,
       "missing_youth_content_signal": false,
       "archive_key": "https://www.busan.go.kr/nbtnewsBU/1748420?curPage=&srchBeginDt=&srchEndDt=&srchKey=sj&srchText=청년",
-      "published_at": "2026-08-11T00:00:00+09:00",
-      "publisher_url": "https://www.busan.go.kr/nbtnewsBU/1748420?curPage=&srchBeginDt=&srchEndDt=&srchKey=sj&srchText=청년",
-      "publisher_icon_url": "https://www.busan.go.kr/favicon.ico",
-      "image_url": "https://www.busan.go.kr/humanframe/theme/busan22/assets/img/main/thumb_v2.jpg",
-      "article_type": "official",
-      "body_text": "시정관련 건의사항 또는 답변을 원하는 사항은 부산민원120 민원신청 을 이용하여 주세요. (우 47545) 부산광역시 연제구 중앙대로 1001(연산동) Copyright © Busan Metropolitan City. All rights reserved. 평일 08:30 ~ 18:30 야간․공휴일 당직실 전환"
+      "published_at": "2026-08-11T00:00:00+09:00"
     },
     {
       "url": "https://news.google.com/rss/articles/CBMiWkFVX3lxTFBPMGM3TzNEODQ5clV1d3laUnRyOHUwY2ZZa0p6NGxKdlhjNDRLV0ZZMVpkVnZLVjhEdHRTSmUtbUtiSXAtSVVVMzVYSDk2WVNOaTc3dGMtR2JvZ9IBX0FVX3lxTE90a0t5dmtTdUNqeDFFNkhaYWoxVWdEb2hnVmNOMl9yUHJEMXJ3SF9uRTg0dlU5cjdHWG80eFMwR3lRcmM0bndCaDQ3amNxNFY3SUh4aWR0anl5QloycGxr?oc=5",
@@ -46279,12 +46322,15 @@
     {
       "url": "https://www.busan.go.kr/nbtnewsBU/1745821?curPage=&srchBeginDt=&srchEndDt=&srchKey=sj&srchText=청년",
       "canonical_url": "https://www.busan.go.kr/nbtnewsBU/1745821?curPage=&srchBeginDt=&srchEndDt=&srchKey=sj&srchText=청년",
+      "publisher_url": "https://www.busan.go.kr/nbtnewsBU/1745821?curPage=&srchBeginDt=&srchEndDt=&srchKey=sj&srchText=청년",
       "feed_url": "https://www.busan.go.kr/nbtnewsBU/1745821?curPage=&srchBeginDt=&srchEndDt=&srchKey=sj&srchText=청년",
       "title": "부산 청년 중개보수비 및 이사비 40만 원까지 지원… 8월 18일부터 모집 청년정책과 | 김현령 | 051-888-4614 | 2026-08-03 ◈ 올해부터 자격요건 완화(청년 1인가구→청년 세대주 가구), 신청서류 간소화(8종→3종) ◈ 부산시 전입 또는 부산시 내 이사한 18~39세 일하는 청년에게 부동산 중개보수와 실제 이사에 소요된 비용 최대 40만 원 지원 ◈ 기준중위소득 120퍼센트(%) 이하, 임대차 거래금액 1억 5천만 원 이하 청년 310명 모집 ◈ 8.3. 모집공고, 8.18. 10:00~8.24. 18:00 부산청년플랫폼(www.b",
       "source": "부산광역시 보도자료 청년 검색",
       "source_name": "부산광역시 보도자료 청년 검색",
       "source_kind": "local",
       "publisher_domain": "www.busan.go.kr",
+      "publisher_icon_url": "https://www.busan.go.kr/favicon.ico",
+      "image_url": "https://www.busan.go.kr/humanframe/theme/busan22/assets/img/main/thumb_v2.jpg",
       "published_date": "2026-08-03T00:00:00+09:00",
       "publisher_published_at": "2026-08-03T00:00:00+09:00",
       "region": "부산",
@@ -46296,12 +46342,14 @@
         "모집",
         "주거"
       ],
+      "article_type": "official",
       "content_direction": "official_release",
       "governance_activity_types": [
         "모집"
       ],
       "lead_text": "부산 청년 중개보수비 및 이사비 40만 원까지 지원… 8월 18일부터 모집 청년정책과 | 김현령 | 051-888-4614 | 2026-08-03 ◈ 올해부터 자격요건 완화(청년 1인가구→청년 세대주 가구), 신청서류 간소화(8종→3종) ◈ 부산시 전입 또는 부산시 내 이사한 18~39세 일하는 청년에게 부동산 중개보수와 실제 이사에 소요된 비용 최대 40만 원 지원 ◈ 기준중위소득 120퍼센트(%) 이하, 임대차 거래금액 1억 5천만 원 이하 청년 310명 모집 ◈ 8.3. 모집공고, 8.18. 10:00~8.24. 18:00 부산청년플랫폼(www.b",
       "youth_excerpt": "부산 청년 중개보수비 및 이사비 40만 원까지 지원… 8월 18일부터 모집 청년정책과 | 김현령 | 051-888-4614 | 2026-08-03 ◈ 올해부터 자격요건 완화(청년 1인가구→청년 세대주 가구), 신청서류 간소화(8종→3종) ◈ 부산시 전입 또는 부산시 내 이사한 18~39세 일하는 청년에게 부동산 중개보수와 실제 이사에 소요된 비용 최대 40만 원 지원 ◈ 기준중위소득 120퍼...",
+      "body_text": "시정관련 건의사항 또는 답변을 원하는 사항은 부산민원120 민원신청 을 이용하여 주세요. (우 47545) 부산광역시 연제구 중앙대로 1001(연산동) Copyright © Busan Metropolitan City. All rights reserved. 평일 08:30 ~ 18:30 야간․공휴일 당직실 전환",
       "is_official_source": true,
       "is_public_interest_article": true,
       "is_hub_candidate": false,
@@ -46320,27 +46368,27 @@
       "weak_youth_signal": false,
       "missing_youth_content_signal": false,
       "archive_key": "https://www.busan.go.kr/nbtnewsBU/1745821?curPage=&srchBeginDt=&srchEndDt=&srchKey=sj&srchText=청년",
-      "published_at": "2026-08-03T00:00:00+09:00",
-      "publisher_url": "https://www.busan.go.kr/nbtnewsBU/1745821?curPage=&srchBeginDt=&srchEndDt=&srchKey=sj&srchText=청년",
-      "publisher_icon_url": "https://www.busan.go.kr/favicon.ico",
-      "image_url": "https://www.busan.go.kr/humanframe/theme/busan22/assets/img/main/thumb_v2.jpg",
-      "article_type": "official",
-      "body_text": "시정관련 건의사항 또는 답변을 원하는 사항은 부산민원120 민원신청 을 이용하여 주세요. (우 47545) 부산광역시 연제구 중앙대로 1001(연산동) Copyright © Busan Metropolitan City. All rights reserved. 평일 08:30 ~ 18:30 야간․공휴일 당직실 전환"
+      "published_at": "2026-08-03T00:00:00+09:00"
     },
     {
       "url": "https://www.opm.go.kr/opm/news/press-release.do?mode=view&articleNo=162983&srSearchVal=%EC%B2%AD%EB%85%84&article.offset=0&articleLimit=20",
       "canonical_url": "https://www.opm.go.kr/opm/news/press-release.do?mode=view&articleNo=162983&srSearchVal=청년&article.offset=0&articleLimit=20",
+      "publisher_url": "https://www.opm.go.kr/opm/news/press-release.do?mode=view&articleNo=162983&srSearchVal=%EC%B2%AD%EB%85%84&article.offset=0&articleLimit=20",
       "feed_url": "https://www.opm.go.kr/opm/news/press-release.do?mode=view&articleNo=162983&srSearchVal=%EC%B2%AD%EB%85%84&article.offset=0&articleLimit=20",
       "title": "[보도자료] 정부위원회 청년위원 통합공모 실시",
       "source": "국무조정실 보도자료",
       "source_name": "국무조정실 보도자료",
       "source_kind": "official",
       "publisher_domain": "www.opm.go.kr",
+      "publisher_icon_url": "https://www.opm.go.kr/favicon.ico",
       "published_date": "2026-08-03T00:00:00+09:00",
       "publisher_published_at": "2026-08-03T00:00:00+09:00",
       "region": "전국",
       "categories": [
         "정책 오피셜"
+      ],
+      "topic_tags": [
+        "모집"
       ],
       "article_type": "official",
       "content_direction": "official_release",
@@ -46349,6 +46397,7 @@
       ],
       "lead_text": "청년정책협력관실",
       "youth_excerpt": "청년정책협력관실",
+      "body_text": "이 누리집은 대한민국 공식 전자정부 누리집입니다. 현재 페이지 인쇄 (새창열림) 공유하기 공유하기 페이스북 X 카카오톡 인스타그램 URL복사 보도자료 // [보도자료] 정부위원회 청년위원 통합공모 실시 작성자 : 보도자료관리자 등록일 : 2026.08.03 조회수 : 4027 260803 정부위원회 청년위원 통합공모 실시 보도자료.hwpx 260803 정부위원회 청년위원 통합공모 실시 보도자료.pdf - 청년위원 공모·선발계획, ‘청년인재DB’에서 한눈에 확인 - - 8~9월 중 국가지식정보위원회 등 7개 위원회, 청년위원 34명 공개모집 - 청년인재DB 가입 및 프로필 등록 후, 각 위원회 모집절차에 따라 참여 가능 □ 국무조정실은 청년의 정책 참여기회를 확대하고, 참여 희망 청년들의 정보 접근성을 높이기 위해, 8~10월 청년위원을 위촉할 계획이 있는 정부위원회의 모집계획을 8월 3일부터 ‘청년인재DB’(www.2030db.go.kr)를 통해 일괄 공개한다. ※ ’청년인재DB‘ 누리집(www.2030db.go.kr) 내 공지사항 게시하며, ’온통청년‘ 누리집(www.youthcenter.go.kr)에서도 연계 배너·팝업 공지 ㅇ 이는 그동안 부처별·위원회별로 모집 정보가 흩어져 있어 정부위원회참여를 희망하는 청년들이 “어느 위원회에서, 언제, 몇 명을 모집하는지” 파악하기 어려웠던 불편을 해소하기 위한 조치이다. ㅇ 앞으로 국무조정실은 정부위원회(현재 총 227개)의 청년위원 위촉 수요를 사전에 조사하고, 분기별로 모집정보를 ‘청년인재DB’에 통합 안내하여 청년들의 정책 참여를 적극 지원할 계획이다. □ 이번 통합공모에는 국가지식정보위원회(과기부) 등 6개 부처의 7개 위원회가 참여하며, 총 34명의 청년위원을 공개 모집한다. ㅇ 정부위원회에 참여를 희망하는 청년은 ‘청년인재DB’ 가입 및 본인의 프로필을 등록한 후, 각 위원회별 모집 절차에 따라 지원할 수 있다. ※ 향후에는 청년인재DB에서 직접 신청할 수 있도록 시스템을 개선할 예정 ㅇ 각 부처는 청년들의 서류 부담을 줄이고 신청 편의를 높이기 위해 선발 심사 시 청년인재DB에 등록된 프로필을 기본 심사서류로 활용할 계획이다. ※ 필요시, 위원회별 요건에 따라 별도 서류 제출 요구 □ 아울러, 일반 국민들도 해당 위원회의 민간위원으로 적합한 우수 청년을 직접 추천할 수 있도록 ‘국민추천제’*도 함께 운영한다. * 민간위원 등 특정직위 후보자를 국민으로부터 추천받아 인사에 활용(인사처) ㅇ 청년위원 추천을 희망하는 국민들은 인사혁신처 ‘국민추천제’ 누리집(www.hrdb.go.kr/OpenRecommend)을 통해 참여*할 수 있다. * 국민추천제 누리집 ’청년위원 추천‘ 팝업창에서 ’참여하기‘ 클릭, 위원회 선택 후 추천 □ 임기근 국무조정실장은 “정부 모든 정책에 청년이 참여하고 청년의 시각이 반영되어야 합니다. 이번 통합공모를 통해 다양한 청년들이 위원 모집에 적극적으로 참여할 수 있게 되고, 향후 정부위원회 청년위원 위촉비율(의무비율 20% 이상) 달성에도 기여할 것으로 기대됩니다.”라면서, ㅇ “청년인재DB를 중심으로 청년인재를 지속 발굴하고, 청년의 목소리가 정부 정책에 실질적으로 반영될 수 있도록 최선을 다하겠습니다.”라고 밝혔다. (30107) 세종특별자치시 다솜로 261(어진동, 정부세종청사) 정부통합콜센터 - 국번없이 110 당직실 : 044-200-2860 COPYRIGHT(C) OFFICE FOR GOVERNMENT POLICY COORDINATION, PRIME MINISTER'S SECRETARIAT. ALL RIGHTS RESERVED 한나라의 공식적인 표상으로서 우리나라는 태극기·애국가·무궁화·국새·나라문장을 국가상징으로 하고 있습니다. * 국기는 매일·24시간 달 수 있음 본 자료는 반드시 국민의례 등 비영리공익 목적으로만 사용하여 주시기 바랍니다. 이 사이트는 자바스크립트를 지원하지 않으면 정상적으로 보이지 않을수 있습니다.",
       "is_official_source": true,
       "is_public_interest_article": true,
       "is_hub_candidate": false,
@@ -46367,23 +46416,20 @@
       "weak_youth_signal": false,
       "missing_youth_content_signal": false,
       "archive_key": "https://www.opm.go.kr/opm/news/press-release.do?mode=view&articleNo=162983&srSearchVal=청년&article.offset=0&articleLimit=20",
-      "published_at": "2026-08-03T00:00:00+09:00",
-      "publisher_url": "https://www.opm.go.kr/opm/news/press-release.do?mode=view&articleNo=162983&srSearchVal=%EC%B2%AD%EB%85%84&article.offset=0&articleLimit=20",
-      "publisher_icon_url": "https://www.opm.go.kr/favicon.ico",
-      "topic_tags": [
-        "모집"
-      ],
-      "body_text": "이 누리집은 대한민국 공식 전자정부 누리집입니다. 현재 페이지 인쇄 (새창열림) 공유하기 공유하기 페이스북 X 카카오톡 인스타그램 URL복사 보도자료 // [보도자료] 정부위원회 청년위원 통합공모 실시 작성자 : 보도자료관리자 등록일 : 2026.08.03 조회수 : 4027 260803 정부위원회 청년위원 통합공모 실시 보도자료.hwpx 260803 정부위원회 청년위원 통합공모 실시 보도자료.pdf - 청년위원 공모·선발계획, ‘청년인재DB’에서 한눈에 확인 - - 8~9월 중 국가지식정보위원회 등 7개 위원회, 청년위원 34명 공개모집 - 청년인재DB 가입 및 프로필 등록 후, 각 위원회 모집절차에 따라 참여 가능 □ 국무조정실은 청년의 정책 참여기회를 확대하고, 참여 희망 청년들의 정보 접근성을 높이기 위해, 8~10월 청년위원을 위촉할 계획이 있는 정부위원회의 모집계획을 8월 3일부터 ‘청년인재DB’(www.2030db.go.kr)를 통해 일괄 공개한다. ※ ’청년인재DB‘ 누리집(www.2030db.go.kr) 내 공지사항 게시하며, ’온통청년‘ 누리집(www.youthcenter.go.kr)에서도 연계 배너·팝업 공지 ㅇ 이는 그동안 부처별·위원회별로 모집 정보가 흩어져 있어 정부위원회참여를 희망하는 청년들이 “어느 위원회에서, 언제, 몇 명을 모집하는지” 파악하기 어려웠던 불편을 해소하기 위한 조치이다. ㅇ 앞으로 국무조정실은 정부위원회(현재 총 227개)의 청년위원 위촉 수요를 사전에 조사하고, 분기별로 모집정보를 ‘청년인재DB’에 통합 안내하여 청년들의 정책 참여를 적극 지원할 계획이다. □ 이번 통합공모에는 국가지식정보위원회(과기부) 등 6개 부처의 7개 위원회가 참여하며, 총 34명의 청년위원을 공개 모집한다. ㅇ 정부위원회에 참여를 희망하는 청년은 ‘청년인재DB’ 가입 및 본인의 프로필을 등록한 후, 각 위원회별 모집 절차에 따라 지원할 수 있다. ※ 향후에는 청년인재DB에서 직접 신청할 수 있도록 시스템을 개선할 예정 ㅇ 각 부처는 청년들의 서류 부담을 줄이고 신청 편의를 높이기 위해 선발 심사 시 청년인재DB에 등록된 프로필을 기본 심사서류로 활용할 계획이다. ※ 필요시, 위원회별 요건에 따라 별도 서류 제출 요구 □ 아울러, 일반 국민들도 해당 위원회의 민간위원으로 적합한 우수 청년을 직접 추천할 수 있도록 ‘국민추천제’*도 함께 운영한다. * 민간위원 등 특정직위 후보자를 국민으로부터 추천받아 인사에 활용(인사처) ㅇ 청년위원 추천을 희망하는 국민들은 인사혁신처 ‘국민추천제’ 누리집(www.hrdb.go.kr/OpenRecommend)을 통해 참여*할 수 있다. * 국민추천제 누리집 ’청년위원 추천‘ 팝업창에서 ’참여하기‘ 클릭, 위원회 선택 후 추천 □ 임기근 국무조정실장은 “정부 모든 정책에 청년이 참여하고 청년의 시각이 반영되어야 합니다. 이번 통합공모를 통해 다양한 청년들이 위원 모집에 적극적으로 참여할 수 있게 되고, 향후 정부위원회 청년위원 위촉비율(의무비율 20% 이상) 달성에도 기여할 것으로 기대됩니다.”라면서, ㅇ “청년인재DB를 중심으로 청년인재를 지속 발굴하고, 청년의 목소리가 정부 정책에 실질적으로 반영될 수 있도록 최선을 다하겠습니다.”라고 밝혔다. (30107) 세종특별자치시 다솜로 261(어진동, 정부세종청사) 정부통합콜센터 - 국번없이 110 당직실 : 044-200-2860 COPYRIGHT(C) OFFICE FOR GOVERNMENT POLICY COORDINATION, PRIME MINISTER'S SECRETARIAT. ALL RIGHTS RESERVED 한나라의 공식적인 표상으로서 우리나라는 태극기·애국가·무궁화·국새·나라문장을 국가상징으로 하고 있습니다. * 국기는 매일·24시간 달 수 있음 본 자료는 반드시 국민의례 등 비영리공익 목적으로만 사용하여 주시기 바랍니다. 이 사이트는 자바스크립트를 지원하지 않으면 정상적으로 보이지 않을수 있습니다."
+      "published_at": "2026-08-03T00:00:00+09:00"
     },
     {
       "url": "https://www.busan.go.kr/nbtnewsBU/1745822?curPage=&srchBeginDt=&srchEndDt=&srchKey=sj&srchText=청년",
       "canonical_url": "https://www.busan.go.kr/nbtnewsBU/1745822?curPage=&srchBeginDt=&srchEndDt=&srchKey=sj&srchText=청년",
+      "publisher_url": "https://www.busan.go.kr/nbtnewsBU/1745822?curPage=&srchBeginDt=&srchEndDt=&srchKey=sj&srchText=청년",
       "feed_url": "https://www.busan.go.kr/nbtnewsBU/1745822?curPage=&srchBeginDt=&srchEndDt=&srchKey=sj&srchText=청년",
       "title": "8월 10일부터 \"부산청년 기쁨두배통장\" 참여자 6천 명 모집 청년정책과 | 김승혜 | 051-888-4611 | 2026-08-03 ◈ 부산 거주 일하는 청년(18~39세)이 2년 또는 3년간 월 10만 원 저축하면, 두 배 이상 되돌려 받을 수 있어 ◈ 청년 맞춤형 지원 확대… 특별중도해지 조건 완화(본인 임신·출산+배우자 출산), 금융역량 강화(온오프라인 금융교육+1:1 재무상담) ◈ 8.3. 모집공고, 8.10. 09:00~8.21. 18:00 참여자 6천 명 모집… 부산청년 기쁨두배통장 누리집(www.boogi2.kr)에서 온라인",
       "source": "부산광역시 보도자료 청년 검색",
       "source_name": "부산광역시 보도자료 청년 검색",
       "source_kind": "local",
       "publisher_domain": "www.busan.go.kr",
+      "publisher_icon_url": "https://www.busan.go.kr/favicon.ico",
+      "image_url": "https://www.busan.go.kr/humanframe/theme/busan22/assets/img/main/thumb_v2.jpg",
       "published_date": "2026-08-03T00:00:00+09:00",
       "publisher_published_at": "2026-08-03T00:00:00+09:00",
       "region": "부산",
@@ -46399,12 +46445,14 @@
       "issue_tags": [
         "부채"
       ],
+      "article_type": "official",
       "content_direction": "official_release",
       "governance_activity_types": [
         "모집"
       ],
       "lead_text": "8월 10일부터 \"부산청년 기쁨두배통장\" 참여자 6천 명 모집 청년정책과 | 김승혜 | 051-888-4611 | 2026-08-03 ◈ 부산 거주 일하는 청년(18~39세)이 2년 또는 3년간 월 10만 원 저축하면, 두 배 이상 되돌려 받을 수 있어 ◈ 청년 맞춤형 지원 확대… 특별중도해지 조건 완화(본인 임신·출산+배우자 출산), 금융역량 강화(온오프라인 금융교육+1:1 재무상담) ◈ 8.3. 모집공고, 8.10. 09:00~8.21. 18:00 참여자 6천 명 모집… 부산청년 기쁨두배통장 누리집(www.boogi2.kr)에서 온라인",
       "youth_excerpt": "8월 10일부터 \"부산청년 기쁨두배통장\" 참여자 6천 명 모집 청년정책과 | 김승혜 | 051-888-4611 | 2026-08-03 ◈ 부산 거주 일하는 청년(18~39세)이 2년 또는 3년간 월 10만 원 저축하면, 두 배 이상 되돌려 받을 수 있어 ◈ 청년 맞춤형 지원 확대… 특별중도해지 조건 완화(본인 임신·출산+배우자 출산), 금융역량 강화(온오프라인 금융교육+1:1 재무상담) ◈...",
+      "body_text": "시정관련 건의사항 또는 답변을 원하는 사항은 부산민원120 민원신청 을 이용하여 주세요. (우 47545) 부산광역시 연제구 중앙대로 1001(연산동) Copyright © Busan Metropolitan City. All rights reserved. 평일 08:30 ~ 18:30 야간․공휴일 당직실 전환",
       "is_official_source": true,
       "is_public_interest_article": true,
       "is_hub_candidate": false,
@@ -46423,12 +46471,7 @@
       "weak_youth_signal": false,
       "missing_youth_content_signal": false,
       "archive_key": "https://www.busan.go.kr/nbtnewsBU/1745822?curPage=&srchBeginDt=&srchEndDt=&srchKey=sj&srchText=청년",
-      "published_at": "2026-08-03T00:00:00+09:00",
-      "publisher_url": "https://www.busan.go.kr/nbtnewsBU/1745822?curPage=&srchBeginDt=&srchEndDt=&srchKey=sj&srchText=청년",
-      "publisher_icon_url": "https://www.busan.go.kr/favicon.ico",
-      "image_url": "https://www.busan.go.kr/humanframe/theme/busan22/assets/img/main/thumb_v2.jpg",
-      "article_type": "official",
-      "body_text": "시정관련 건의사항 또는 답변을 원하는 사항은 부산민원120 민원신청 을 이용하여 주세요. (우 47545) 부산광역시 연제구 중앙대로 1001(연산동) Copyright © Busan Metropolitan City. All rights reserved. 평일 08:30 ~ 18:30 야간․공휴일 당직실 전환"
+      "published_at": "2026-08-03T00:00:00+09:00"
     },
     {
       "url": "https://news.google.com/rss/articles/CBMiRkFVX3lxTE1jMExBODE1bXlReS1DeUVnSFhhcjlnNGxsQXZmeml0VnNrakRZVU9uemJvdG0zYncxMWpGMDE3bnlqZ2Vmenc?oc=5",
@@ -46478,12 +46521,15 @@
     {
       "url": "https://www.busan.go.kr/nbtnewsBU/1745116?curPage=&srchBeginDt=&srchEndDt=&srchKey=sj&srchText=청년",
       "canonical_url": "https://www.busan.go.kr/nbtnewsBU/1745116?curPage=&srchBeginDt=&srchEndDt=&srchKey=sj&srchText=청년",
+      "publisher_url": "https://www.busan.go.kr/nbtnewsBU/1745116?curPage=&srchBeginDt=&srchEndDt=&srchKey=sj&srchText=청년",
       "feed_url": "https://www.busan.go.kr/nbtnewsBU/1745116?curPage=&srchBeginDt=&srchEndDt=&srchKey=sj&srchText=청년",
       "title": "첫 컬렉팅, 10만 원으로 시작해요! 청년아트페어 개막 청년정책과 | 신수민 | 051-888-4624 | 2026-07-30 ◈ 올해 11회째 맞이한 청년아트페어… 8.4.~16. 신세계백화점 센텀시티점서 개최 ◈ 지역 39세 이하 청년 시각예술가 30명 참여, 484점 작품 전시·판매 ◈ 가상현실(VR) 퍼포먼스, 해설사(도슨트) 투어, 참여 작가 멘토링, 10만 원 이하 작품존 'UNDER 100,000' 등 다채로운 부대행사 운영",
       "source": "부산광역시 보도자료 청년 검색",
       "source_name": "부산광역시 보도자료 청년 검색",
       "source_kind": "local",
       "publisher_domain": "www.busan.go.kr",
+      "publisher_icon_url": "https://www.busan.go.kr/favicon.ico",
+      "image_url": "https://www.busan.go.kr/humanframe/theme/busan22/assets/img/main/thumb_v2.jpg",
       "published_date": "2026-07-30T00:00:00+09:00",
       "publisher_published_at": "2026-07-30T00:00:00+09:00",
       "region": "부산",
@@ -46492,9 +46538,14 @@
         "청년은 지금",
         "지역 이슈"
       ],
+      "topic_tags": [
+        "모집"
+      ],
+      "article_type": "official",
       "content_direction": "official_release",
       "lead_text": "첫 컬렉팅, 10만 원으로 시작해요! 청년아트페어 개막 청년정책과 | 신수민 | 051-888-4624 | 2026-07-30 ◈ 올해 11회째 맞이한 청년아트페어… 8.4.~16. 신세계백화점 센텀시티점서 개최 ◈ 지역 39세 이하 청년 시각예술가 30명 참여, 484점 작품 전시·판매 ◈ 가상현실(VR) 퍼포먼스, 해설사(도슨트) 투어, 참여 작가 멘토링, 10만 원 이하 작품존 'UNDER 100,000' 등 다채로운 부대행사 운영",
       "youth_excerpt": "...청년아트페어 개막 청년정책과 | 신수민 | 051-888-4624 | 2026-07-30 ◈ 올해 11회째 맞이한 청년아트페어… 8.4.~16. 신세계백화점 센텀시티점서 개최 ◈ 지역 39세 이하 청년 시각예술가 30명 참여, 484점 작품 전시·판매 ◈ 가상현실(VR) 퍼포먼스, 해설사(도슨트) 투어, 참여 작가 멘토링, 10만 원 이하 작품존 'UNDER 100,000' 등 다채로운 부...",
+      "body_text": "시정관련 건의사항 또는 답변을 원하는 사항은 부산민원120 민원신청 을 이용하여 주세요. (우 47545) 부산광역시 연제구 중앙대로 1001(연산동) Copyright © Busan Metropolitan City. All rights reserved. 평일 08:30 ~ 18:30 야간․공휴일 당직실 전환",
       "is_official_source": true,
       "is_public_interest_article": true,
       "is_hub_candidate": false,
@@ -46513,25 +46564,19 @@
       "weak_youth_signal": false,
       "missing_youth_content_signal": false,
       "archive_key": "https://www.busan.go.kr/nbtnewsBU/1745116?curPage=&srchBeginDt=&srchEndDt=&srchKey=sj&srchText=청년",
-      "published_at": "2026-07-30T00:00:00+09:00",
-      "publisher_url": "https://www.busan.go.kr/nbtnewsBU/1745116?curPage=&srchBeginDt=&srchEndDt=&srchKey=sj&srchText=청년",
-      "publisher_icon_url": "https://www.busan.go.kr/favicon.ico",
-      "image_url": "https://www.busan.go.kr/humanframe/theme/busan22/assets/img/main/thumb_v2.jpg",
-      "topic_tags": [
-        "모집"
-      ],
-      "article_type": "official",
-      "body_text": "시정관련 건의사항 또는 답변을 원하는 사항은 부산민원120 민원신청 을 이용하여 주세요. (우 47545) 부산광역시 연제구 중앙대로 1001(연산동) Copyright © Busan Metropolitan City. All rights reserved. 평일 08:30 ~ 18:30 야간․공휴일 당직실 전환"
+      "published_at": "2026-07-30T00:00:00+09:00"
     },
     {
       "url": "https://www.incheon.go.kr/IC010205/view?repSeq=DOM_0000000015243118&curPage=1&srchRepTitle=%EC%B2%AD%EB%85%84&srchRepContents=%EC%B2%AD%EB%85%84",
       "canonical_url": "https://www.incheon.go.kr/IC010205/view?repSeq=DOM_0000000015243118&curPage=1&srchRepTitle=청년&srchRepContents=청년",
+      "publisher_url": "https://www.incheon.go.kr/IC010205/view?repSeq=DOM_0000000015243118&curPage=1&srchRepTitle=%EC%B2%AD%EB%85%84&srchRepContents=%EC%B2%AD%EB%85%84",
       "feed_url": "https://www.incheon.go.kr/IC010205/view?repSeq=DOM_0000000015243118&curPage=1&srchRepTitle=%EC%B2%AD%EB%85%84&srchRepContents=%EC%B2%AD%EB%85%84",
       "title": "인천시, 청년․기업 잇는‘일경험 매칭데이’개최 인천광역시(시장 박찬대)는 7월 29일 송도컨벤시아 프리미어볼룸에서 직무교육을 수료한 청년과 지역기업이 참여하는 ‘2026년 인천 청년 일경험을 위한 기업 매칭데이(Matching Day)’를 개최했다고 밝혔다. 이번 행사는 청년에게 기업 현 제공일자 2026-07-29 제공부서 청년정책담당관",
       "source": "인천광역시 보도자료 청년 검색",
       "source_name": "인천광역시 보도자료 청년 검색",
       "source_kind": "local",
       "publisher_domain": "www.incheon.go.kr",
+      "publisher_icon_url": "https://www.incheon.go.kr/humanframe/globaltheme/assets/image/favicon/apple-touch-icon.png",
       "published_date": "2026-07-29T00:00:00+09:00",
       "publisher_published_at": "2026-07-29T00:00:00+09:00",
       "region": "인천",
@@ -46546,6 +46591,7 @@
       "content_direction": "official_release",
       "lead_text": "인천시, 청년․기업 잇는‘일경험 매칭데이’개최 인천광역시(시장 박찬대)는 7월 29일 송도컨벤시아 프리미어볼룸에서 직무교육을 수료한 청년과 지역기업이 참여하는 ‘2026년 인천 청년 일경험을 위한 기업 매칭데이(Matching Day)’를 개최했다고 밝혔다. 이번 행사는 청년에게 기업 현 제공일자 2026-07-29 제공부서 청년정책담당관",
       "youth_excerpt": "인천시, 청년․기업 잇는‘일경험 매칭데이’개최 인천광역시(시장 박찬대)는 7월 29일 송도컨벤시아 프리미어볼룸에서 직무교육을 수료한 청년과 지역기업이 참여하는 ‘2026년 인천 청년 일경험을 위한 기업 매칭데이(Matching Day)’를 개최했다고 밝혔다...",
+      "body_text": "이 누리집은 대한민국 공식 전자정부 누리집입니다. ' + pmenuList[kk].text + ' '; }else{ pmenuUri += ' ' + pmenuList[kk].text + ' '; } //pmenuUri += ' ' + pmenuList[kk].text + ' '; } } // console.log(pmenuUri); $(\"#lowerMenuPopupList\").html(pmenuUri); } $(function(){ $(\"[id*=menuPopup]\").click(function () { $('.mobile-nav-pop-wrap .item').removeClass('active'); $('#mobileMnPopup').show(); document.getElementsByTagName('body')[0].style.overflow = 'hidden'; $(this).addClass('active'); }); $('#popupClose').click(function () { $('.mobile-nav-pop-wrap .item').removeClass('active'); $('#mobileMnPopup').hide(); document.getElementsByTagName('body')[0].style.overflow = 'scroll'; }); }); function fn_mobileMoveHome(){ $(\".btn-view-menuall\").click(); $(\"#popupSitemap\").removeClass(\"is-active\"); } /* const user = navigator.userAgent; if ( user.indexOf(\"iPhone\") > -1 || user.indexOf(\"Android\") > -1 ) { console.log(\"mobile버젼\"); console.log(user); }else{ console.log(\"pc버젼\"); console.log(user); } */ Home 인천소식 보도/해명 보도자료 메뉴 이동 Home 인천소식 보도/해명 보도자료 메뉴1 메뉴2 --> 인천소식 새소식 주요행사정보 보도/해명 하위메뉴 열기 --> 하위메뉴 열기 --> --> 보도자료 설명자료 고시/공고/시보 하위메뉴 열기 --> 하위메뉴 열기 --> --> 고시공고 인천시보 반상회보 입법예고 매체 모음 카드뉴스 인천형 행정체제 개편 하위메뉴 열기 --> 하위메뉴 열기 --> --> 행정체제 개편 개요 공지사항 보도자료 홍보자료 보도자료 공유레이어열기 Home>인천소식>보도/해명>보도자료', '/IC010205');\"> 스크랩 페이스북 X 네이버블로그 카카오스토리 인스타그램 --> 주소복사 공유레이어닫기 인쇄 var menuTitle = \"보도자료\"; /* function f_fileView(attachFileSeq, attachFileDetailSeq, oriFileNm){ event.stopPropagation(); event.preventDefault(); fn_fileViewerUrl( oriFileNm, \"/comm/dmsFileDownload?attachFileSeq=\"+attachFileSeq+\"&attachFileDetailSeq=\"+attachFileDetailSeq ); } */ function f_fileViewer(attachPhysiclFileNm, attachFileNm){ event.stopPropagation(); event.preventDefault(); let fileExt = attachFileNm.substring(attachFileNm.indexOf('.')+1); let options = { 'fileExt' : fileExt ,'flpth' : '/data/dms' ,'streFileNm' : attachPhysiclFileNm } fn_fileViewer( options ); } 인천시, 청년․기업 잇는‘일경험 매칭데이’개최 -‘인천 청년도약기지’교육수료생 116명 대상‘현장 기업․직무 상담’- 담당부서 청년정책담당관 / 한정환 (032-440-4177) 제공일시 2026-07-29 조회수 874 --> 기업매칭데이 1.jpg 미리보기 다운로드 <!-- --> 4 (2) (14시) 인천시, 청년%U2024기업 잇는‘일경험 매칭데이’개최.hwpx 미리보기 다운로드 <!-- --> 기업매칭데이 3.jpg 미리보기 다운로드 <!-- --> 기업매칭데이 2.jpg 미리보기 다운로드 <!-- 이 게시물은 \"공공누리\" 의 자유이용허락 표시제도에 따라 이용할 수 있습니다. 이 페이지에서 제공하는 정보에 대하여 만족하십니까? 21554 인천광역시 남동구 정각로 29(구월동) TEL:(032)120 (유료) [찾아오시는 길] © Incheon Metropolitan City. All rights reserved.",
       "is_official_source": false,
       "is_public_interest_article": true,
       "is_hub_candidate": false,
@@ -46564,20 +46610,19 @@
       "weak_youth_signal": false,
       "missing_youth_content_signal": false,
       "archive_key": "https://www.incheon.go.kr/IC010205/view?repSeq=DOM_0000000015243118&curPage=1&srchRepTitle=청년&srchRepContents=청년",
-      "published_at": "2026-07-29T00:00:00+09:00",
-      "publisher_url": "https://www.incheon.go.kr/IC010205/view?repSeq=DOM_0000000015243118&curPage=1&srchRepTitle=%EC%B2%AD%EB%85%84&srchRepContents=%EC%B2%AD%EB%85%84",
-      "publisher_icon_url": "https://www.incheon.go.kr/humanframe/globaltheme/assets/image/favicon/apple-touch-icon.png",
-      "body_text": "이 누리집은 대한민국 공식 전자정부 누리집입니다. ' + pmenuList[kk].text + ' '; }else{ pmenuUri += ' ' + pmenuList[kk].text + ' '; } //pmenuUri += ' ' + pmenuList[kk].text + ' '; } } // console.log(pmenuUri); $(\"#lowerMenuPopupList\").html(pmenuUri); } $(function(){ $(\"[id*=menuPopup]\").click(function () { $('.mobile-nav-pop-wrap .item').removeClass('active'); $('#mobileMnPopup').show(); document.getElementsByTagName('body')[0].style.overflow = 'hidden'; $(this).addClass('active'); }); $('#popupClose').click(function () { $('.mobile-nav-pop-wrap .item').removeClass('active'); $('#mobileMnPopup').hide(); document.getElementsByTagName('body')[0].style.overflow = 'scroll'; }); }); function fn_mobileMoveHome(){ $(\".btn-view-menuall\").click(); $(\"#popupSitemap\").removeClass(\"is-active\"); } /* const user = navigator.userAgent; if ( user.indexOf(\"iPhone\") > -1 || user.indexOf(\"Android\") > -1 ) { console.log(\"mobile버젼\"); console.log(user); }else{ console.log(\"pc버젼\"); console.log(user); } */ Home 인천소식 보도/해명 보도자료 메뉴 이동 Home 인천소식 보도/해명 보도자료 메뉴1 메뉴2 --> 인천소식 새소식 주요행사정보 보도/해명 하위메뉴 열기 --> 하위메뉴 열기 --> --> 보도자료 설명자료 고시/공고/시보 하위메뉴 열기 --> 하위메뉴 열기 --> --> 고시공고 인천시보 반상회보 입법예고 매체 모음 카드뉴스 인천형 행정체제 개편 하위메뉴 열기 --> 하위메뉴 열기 --> --> 행정체제 개편 개요 공지사항 보도자료 홍보자료 보도자료 공유레이어열기 Home>인천소식>보도/해명>보도자료', '/IC010205');\"> 스크랩 페이스북 X 네이버블로그 카카오스토리 인스타그램 --> 주소복사 공유레이어닫기 인쇄 var menuTitle = \"보도자료\"; /* function f_fileView(attachFileSeq, attachFileDetailSeq, oriFileNm){ event.stopPropagation(); event.preventDefault(); fn_fileViewerUrl( oriFileNm, \"/comm/dmsFileDownload?attachFileSeq=\"+attachFileSeq+\"&attachFileDetailSeq=\"+attachFileDetailSeq ); } */ function f_fileViewer(attachPhysiclFileNm, attachFileNm){ event.stopPropagation(); event.preventDefault(); let fileExt = attachFileNm.substring(attachFileNm.indexOf('.')+1); let options = { 'fileExt' : fileExt ,'flpth' : '/data/dms' ,'streFileNm' : attachPhysiclFileNm } fn_fileViewer( options ); } 인천시, 청년․기업 잇는‘일경험 매칭데이’개최 -‘인천 청년도약기지’교육수료생 116명 대상‘현장 기업․직무 상담’- 담당부서 청년정책담당관 / 한정환 (032-440-4177) 제공일시 2026-07-29 조회수 874 --> 기업매칭데이 1.jpg 미리보기 다운로드 <!-- --> 4 (2) (14시) 인천시, 청년%U2024기업 잇는‘일경험 매칭데이’개최.hwpx 미리보기 다운로드 <!-- --> 기업매칭데이 3.jpg 미리보기 다운로드 <!-- --> 기업매칭데이 2.jpg 미리보기 다운로드 <!-- 이 게시물은 \"공공누리\" 의 자유이용허락 표시제도에 따라 이용할 수 있습니다. 이 페이지에서 제공하는 정보에 대하여 만족하십니까? 21554 인천광역시 남동구 정각로 29(구월동) TEL:(032)120 (유료) [찾아오시는 길] © Incheon Metropolitan City. All rights reserved."
+      "published_at": "2026-07-29T00:00:00+09:00"
     },
     {
       "url": "https://www.opm.go.kr/opm/news/press-release.do?mode=view&articleNo=162953&srSearchVal=%EC%B2%AD%EB%85%84&article.offset=0&articleLimit=20",
       "canonical_url": "https://www.opm.go.kr/opm/news/press-release.do?mode=view&articleNo=162953&srSearchVal=청년&article.offset=0&articleLimit=20",
+      "publisher_url": "https://www.opm.go.kr/opm/news/press-release.do?mode=view&articleNo=162953&srSearchVal=%EC%B2%AD%EB%85%84&article.offset=0&articleLimit=20",
       "feed_url": "https://www.opm.go.kr/opm/news/press-release.do?mode=view&articleNo=162953&srSearchVal=%EC%B2%AD%EB%85%84&article.offset=0&articleLimit=20",
       "title": "[보도자료] 한성숙 국무총리 주재 고립·은둔 청년 관련 간담회",
       "source": "국무조정실 보도자료",
       "source_name": "국무조정실 보도자료",
       "source_kind": "official",
       "publisher_domain": "www.opm.go.kr",
+      "publisher_icon_url": "https://www.opm.go.kr/favicon.ico",
       "published_date": "2026-07-29T00:00:00+09:00",
       "publisher_published_at": "2026-07-29T00:00:00+09:00",
       "region": "전국",
@@ -46597,7 +46642,9 @@
         "간담회"
       ],
       "lead_text": "청년정책기획관실",
+      "summary": "[정책 오피셜 · 주거, 복지] [보도자료] 한성숙 국무총리 주재 고립·은둔 청년 관련 간담회\n청년정책기획관실\n지역 서울 / 출처 국무조정실 보도자료",
       "youth_excerpt": "청년정책기획관실",
+      "body_text": "이 누리집은 대한민국 공식 전자정부 누리집입니다. 현재 페이지 인쇄 (새창열림) 공유하기 공유하기 페이스북 X 카카오톡 인스타그램 URL복사 보도자료 // [보도자료] 한성숙 국무총리 주재 고립·은둔 청년 관련 간담회 작성자 : 보도자료관리자 등록일 : 2026.07.29 조회수 : 4525 260729 고립은둔 청년 관련 간담회 보도자료.hwpx 260729 고립은둔 청년 관련 간담회 보도자료.pdf 한성숙 국무총리, 고립·은둔청년 관련 현장방문 및 간담회 개최 □ 한성숙 국무총리는 7월 29일(수) 오후, 서울 강북구에 위치한 고립·은둔 청년 관련 사회적기업인 ‘안무서운회사’와 고립·은둔청년들이 공동으로 거주하고 있는 ‘안무서운 쉐어하우스’를 방문한 후 고립·은둔 경험 청년들 및 복지부 등 관계자들과 14시부터 15시 30분까지 간담회를 개최하였다. * 일시/장소 : ’26.7.29.(수) 14:00 / ‘안무서운 회사’ 및 ‘안무서운 쉐어하우스’ 주요 참석자 : ‘안무서운회사’ 대표 유승규 외 고립·은둔 경험 청년 2인, 청년미래센터 종사자 3인, 현수엽 보건복지부 1차관 등 □ 한 총리는 앞서 7월 28일(화) 고립·은둔청년들에 대한 책을 쓴 기자들 및 학계 전문가들과 함께 티타임을 개최하여 의견을 청취하고 고립·은둔청년 증가의 심각성과 그 원인, 지원 방향 등을 먼저 논의한 바 있다. □ 이날 간담회에서 유승규 대표는 “고립·은둔청년 쉐어하우스는 SH공사의 매입임대주택 지원과 시민출자기금 ‘터무늬 있는 집’의 보증금 지원을 통해 운영하고 있으나, 이러한 지원을 받고 있는 사회적 기업은 거의 없으며 정부의 지원 확대가 필요하다”라고 하면서, ㅇ “고립·은둔 경험을 가진 안무서운회사 ‘은둔고수’들이 청년들과 함께 살면서 장기간 밀착케어해주기 때문에 고립·은둔청년들이 집 밖으로 나오는데 큰 도움을 준다”라면서 “민간의 경험과 노하우를 잘 활용하면 좋겠다”고 말했다. □ 한 총리는 은둔상태를 경험한 청년들로부터 생생한 목소리를 청취하고, 청년들이 닫았던 방문을 열고 세상 밖으로 나온 용기에 격려를 보냈다. □ 한 총리는 “많은 경험을 가지고 현장에서 기여하시는 분들은 점차 사라지고 새롭게 오신 분들은 시행착오를 겪는 일이 되풀이되지 않고, 사회적 자산이 쌓이도록 하는 것이 중요하다”라면서, ㅇ “민간부문이 경험과 노하우를 가지고 있으므로 고립·은둔청년들을 위한 프로그램을 만들어 시행해 보고 검증이 되면 이를 정부가 확산하는 등 민간과 공공간의 역할 분담을 통해 효율적으로 일하는 것이 좋겠다” 라고 말하였다. □ 앞으로도 한 총리는 청년 취·창업, 자산형성, 정책참여 등 청년들의 현장을 계속 방문하여 청년들의 어려움을 직접 확인하고 제안을 직접 들으면서 청년들의 삶을 개선해 나갈 계획이다. (30107) 세종특별자치시 다솜로 261(어진동, 정부세종청사) 정부통합콜센터 - 국번없이 110 당직실 : 044-200-2860 COPYRIGHT(C) OFFICE FOR GOVERNMENT POLICY COORDINATION, PRIME MINISTER'S SECRETARIAT. ALL RIGHTS RESERVED 한나라의 공식적인 표상으로서 우리나라는 태극기·애국가·무궁화·국새·나라문장을 국가상징으로 하고 있습니다. * 국기는 매일·24시간 달 수 있음 본 자료는 반드시 국민의례 등 비영리공익 목적으로만 사용하여 주시기 바랍니다. 이 사이트는 자바스크립트를 지원하지 않으면 정상적으로 보이지 않을수 있습니다.",
       "is_official_source": true,
       "is_public_interest_article": true,
       "is_hub_candidate": false,
@@ -46616,21 +46663,19 @@
       "weak_youth_signal": false,
       "missing_youth_content_signal": false,
       "archive_key": "https://www.opm.go.kr/opm/news/press-release.do?mode=view&articleNo=162953&srSearchVal=청년&article.offset=0&articleLimit=20",
-      "published_at": "2026-07-29T00:00:00+09:00",
-      "publisher_url": "https://www.opm.go.kr/opm/news/press-release.do?mode=view&articleNo=162953&srSearchVal=%EC%B2%AD%EB%85%84&article.offset=0&articleLimit=20",
-      "publisher_icon_url": "https://www.opm.go.kr/favicon.ico",
-      "summary": "[정책 오피셜 · 주거, 복지] [보도자료] 한성숙 국무총리 주재 고립·은둔 청년 관련 간담회\n청년정책기획관실\n지역 서울 / 출처 국무조정실 보도자료",
-      "body_text": "이 누리집은 대한민국 공식 전자정부 누리집입니다. 현재 페이지 인쇄 (새창열림) 공유하기 공유하기 페이스북 X 카카오톡 인스타그램 URL복사 보도자료 // [보도자료] 한성숙 국무총리 주재 고립·은둔 청년 관련 간담회 작성자 : 보도자료관리자 등록일 : 2026.07.29 조회수 : 4525 260729 고립은둔 청년 관련 간담회 보도자료.hwpx 260729 고립은둔 청년 관련 간담회 보도자료.pdf 한성숙 국무총리, 고립·은둔청년 관련 현장방문 및 간담회 개최 □ 한성숙 국무총리는 7월 29일(수) 오후, 서울 강북구에 위치한 고립·은둔 청년 관련 사회적기업인 ‘안무서운회사’와 고립·은둔청년들이 공동으로 거주하고 있는 ‘안무서운 쉐어하우스’를 방문한 후 고립·은둔 경험 청년들 및 복지부 등 관계자들과 14시부터 15시 30분까지 간담회를 개최하였다. * 일시/장소 : ’26.7.29.(수) 14:00 / ‘안무서운 회사’ 및 ‘안무서운 쉐어하우스’ 주요 참석자 : ‘안무서운회사’ 대표 유승규 외 고립·은둔 경험 청년 2인, 청년미래센터 종사자 3인, 현수엽 보건복지부 1차관 등 □ 한 총리는 앞서 7월 28일(화) 고립·은둔청년들에 대한 책을 쓴 기자들 및 학계 전문가들과 함께 티타임을 개최하여 의견을 청취하고 고립·은둔청년 증가의 심각성과 그 원인, 지원 방향 등을 먼저 논의한 바 있다. □ 이날 간담회에서 유승규 대표는 “고립·은둔청년 쉐어하우스는 SH공사의 매입임대주택 지원과 시민출자기금 ‘터무늬 있는 집’의 보증금 지원을 통해 운영하고 있으나, 이러한 지원을 받고 있는 사회적 기업은 거의 없으며 정부의 지원 확대가 필요하다”라고 하면서, ㅇ “고립·은둔 경험을 가진 안무서운회사 ‘은둔고수’들이 청년들과 함께 살면서 장기간 밀착케어해주기 때문에 고립·은둔청년들이 집 밖으로 나오는데 큰 도움을 준다”라면서 “민간의 경험과 노하우를 잘 활용하면 좋겠다”고 말했다. □ 한 총리는 은둔상태를 경험한 청년들로부터 생생한 목소리를 청취하고, 청년들이 닫았던 방문을 열고 세상 밖으로 나온 용기에 격려를 보냈다. □ 한 총리는 “많은 경험을 가지고 현장에서 기여하시는 분들은 점차 사라지고 새롭게 오신 분들은 시행착오를 겪는 일이 되풀이되지 않고, 사회적 자산이 쌓이도록 하는 것이 중요하다”라면서, ㅇ “민간부문이 경험과 노하우를 가지고 있으므로 고립·은둔청년들을 위한 프로그램을 만들어 시행해 보고 검증이 되면 이를 정부가 확산하는 등 민간과 공공간의 역할 분담을 통해 효율적으로 일하는 것이 좋겠다” 라고 말하였다. □ 앞으로도 한 총리는 청년 취·창업, 자산형성, 정책참여 등 청년들의 현장을 계속 방문하여 청년들의 어려움을 직접 확인하고 제안을 직접 들으면서 청년들의 삶을 개선해 나갈 계획이다. (30107) 세종특별자치시 다솜로 261(어진동, 정부세종청사) 정부통합콜센터 - 국번없이 110 당직실 : 044-200-2860 COPYRIGHT(C) OFFICE FOR GOVERNMENT POLICY COORDINATION, PRIME MINISTER'S SECRETARIAT. ALL RIGHTS RESERVED 한나라의 공식적인 표상으로서 우리나라는 태극기·애국가·무궁화·국새·나라문장을 국가상징으로 하고 있습니다. * 국기는 매일·24시간 달 수 있음 본 자료는 반드시 국민의례 등 비영리공익 목적으로만 사용하여 주시기 바랍니다. 이 사이트는 자바스크립트를 지원하지 않으면 정상적으로 보이지 않을수 있습니다."
+      "published_at": "2026-07-29T00:00:00+09:00"
     },
     {
       "url": "https://www.incheon.go.kr/IC010205/view?repSeq=DOM_0000000015228952&curPage=1&srchRepTitle=%EC%B2%AD%EB%85%84&srchRepContents=%EC%B2%AD%EB%85%84",
       "canonical_url": "https://www.incheon.go.kr/IC010205/view?repSeq=DOM_0000000015228952&curPage=1&srchRepTitle=청년&srchRepContents=청년",
+      "publisher_url": "https://www.incheon.go.kr/IC010205/view?repSeq=DOM_0000000015228952&curPage=1&srchRepTitle=%EC%B2%AD%EB%85%84&srchRepContents=%EC%B2%AD%EB%85%84",
       "feed_url": "https://www.incheon.go.kr/IC010205/view?repSeq=DOM_0000000015228952&curPage=1&srchRepTitle=%EC%B2%AD%EB%85%84&srchRepContents=%EC%B2%AD%EB%85%84",
       "title": "이미지 없음 인천시, '제물포 대학생 스토리텔러' 모집…청년 시선으로 지역 매력 알린다 인천광역시(시장 박찬대)가 제물포의 변화와 매력을 대학생의 시선으로 담아낼 ‘2026년 제물포 대학생 스토리텔러’를 모집한다고 밝혔다. 모집 기간은 7월 27일부터 8월 7일까지이며, 모집 인원은 10명 안팎이다. 개인 사회관계망서비스(SNS)를 운영하며 제물포에 제공일자 2026-07-28 제공부서 제물포르네상스개발과",
       "source": "인천광역시 보도자료 청년 검색",
       "source_name": "인천광역시 보도자료 청년 검색",
       "source_kind": "local",
       "publisher_domain": "www.incheon.go.kr",
+      "publisher_icon_url": "https://www.incheon.go.kr/humanframe/globaltheme/assets/image/favicon/apple-touch-icon.png",
       "published_date": "2026-07-28T00:00:00+09:00",
       "publisher_published_at": "2026-07-28T00:00:00+09:00",
       "region": "인천",
@@ -46647,6 +46692,7 @@
       ],
       "lead_text": "이미지 없음 인천시, '제물포 대학생 스토리텔러' 모집…청년 시선으로 지역 매력 알린다 인천광역시(시장 박찬대)가 제물포의 변화와 매력을 대학생의 시선으로 담아낼 ‘2026년 제물포 대학생 스토리텔러’를 모집한다고 밝혔다. 모집 기간은 7월 27일부터 8월 7일까지이며, 모집 인원은 10명 안팎이다. 개인 사회관계망서비스(SNS)를 운영하며 제물포에 제공일자 2026-07-28 제공부서 제물포르네상스개발과",
       "youth_excerpt": "이미지 없음 인천시, '제물포 대학생 스토리텔러' 모집…청년 시선으로 지역 매력 알린다 인천광역시(시장 박찬대)가 제물포의 변화와 매력을 대학생의 시선으로 담아낼 ‘2026년 제물포 대학생 스토리텔러’를 모집한다고 밝혔다...",
+      "body_text": "이 누리집은 대한민국 공식 전자정부 누리집입니다. ' + pmenuList[kk].text + ' '; }else{ pmenuUri += ' ' + pmenuList[kk].text + ' '; } //pmenuUri += ' ' + pmenuList[kk].text + ' '; } } // console.log(pmenuUri); $(\"#lowerMenuPopupList\").html(pmenuUri); } $(function(){ $(\"[id*=menuPopup]\").click(function () { $('.mobile-nav-pop-wrap .item').removeClass('active'); $('#mobileMnPopup').show(); document.getElementsByTagName('body')[0].style.overflow = 'hidden'; $(this).addClass('active'); }); $('#popupClose').click(function () { $('.mobile-nav-pop-wrap .item').removeClass('active'); $('#mobileMnPopup').hide(); document.getElementsByTagName('body')[0].style.overflow = 'scroll'; }); }); function fn_mobileMoveHome(){ $(\".btn-view-menuall\").click(); $(\"#popupSitemap\").removeClass(\"is-active\"); } /* const user = navigator.userAgent; if ( user.indexOf(\"iPhone\") > -1 || user.indexOf(\"Android\") > -1 ) { console.log(\"mobile버젼\"); console.log(user); }else{ console.log(\"pc버젼\"); console.log(user); } */ Home 인천소식 보도/해명 보도자료 메뉴 이동 Home 인천소식 보도/해명 보도자료 메뉴1 메뉴2 --> 인천소식 새소식 주요행사정보 보도/해명 하위메뉴 열기 --> 하위메뉴 열기 --> --> 보도자료 설명자료 고시/공고/시보 하위메뉴 열기 --> 하위메뉴 열기 --> --> 고시공고 인천시보 반상회보 입법예고 매체 모음 카드뉴스 인천형 행정체제 개편 하위메뉴 열기 --> 하위메뉴 열기 --> --> 행정체제 개편 개요 공지사항 보도자료 홍보자료 보도자료 공유레이어열기 Home>인천소식>보도/해명>보도자료', '/IC010205');\"> 스크랩 페이스북 X 네이버블로그 카카오스토리 인스타그램 --> 주소복사 공유레이어닫기 인쇄 var menuTitle = \"보도자료\"; /* function f_fileView(attachFileSeq, attachFileDetailSeq, oriFileNm){ event.stopPropagation(); event.preventDefault(); fn_fileViewerUrl( oriFileNm, \"/comm/dmsFileDownload?attachFileSeq=\"+attachFileSeq+\"&attachFileDetailSeq=\"+attachFileDetailSeq ); } */ function f_fileViewer(attachPhysiclFileNm, attachFileNm){ event.stopPropagation(); event.preventDefault(); let fileExt = attachFileNm.substring(attachFileNm.indexOf('.')+1); let options = { 'fileExt' : fileExt ,'flpth' : '/data/dms' ,'streFileNm' : attachPhysiclFileNm } fn_fileViewer( options ); } 인천시, '제물포 대학생 스토리텔러' 모집…청년 시선으로 지역 매력 알린다 -7월 27일부터 8월 7일까지 10명 내외 선발- 담당부서 제물포르네상스개발과 / 강수빈 (032-458-7334) 제공일시 2026-07-28 조회수 742 인천광역시(시장 박찬대)가 제물포의 변화와 매력을 대학생의 시선으로 담아낼 ‘2026년 제물포 대학생 스토리텔러’를 모집한다고 밝혔다. 모집 기간은 7월 27일부터 8월 7일까지이며, 모집 인원은 10명 안팎이다. 개인 사회관계망서비스(SNS)를 운영하며 제물포에 관심 있는 대학생이라면 누구나 지원할 수 있다. 지원 방법 등 자세한 사항은 인천시 누리집과 1883개항살롱 사회관계망서비스(SNS)에서 확인할 수 있다. 최종 선발 결과는 8월 12일 인천시 누리집에 공고할 예정이다. 선발된 스토리텔러는 올해 8월부터 12월까지 5개월간 활동한다. 이들은 제물포 전역의 명소, 상권, 축제, 체험공간 등 다양한 지역 자원을 주제로 콘텐츠를 제작하게 된다. 특히 올해는 상권, 체험공간, 지역 행사 등을 연계한 주제형 콘텐츠 발굴과 확산에 중점을 둔다. ‘여름의 제물포’처럼 개별 장소나 행사를 단편적으로 소개하는 방식에서 벗어나, 지역 자원을 하나의 흐름으로 엮어 제물포의 특색을 더욱 효과적으로 전달할 계획이다. 이선호 시 글로벌도시국장은 “청년들의 참신한 시각이 제물포의 새로운 매력을 발굴하고 지역에 활력을 더하는 계기가 되길 기대한다”라며 “관심 있는 대학생들의 많은 참여를 바란다”라고 말했다. 첨부파일 --> --> 2 (1) (8시 30분) 인천시, '제물포 대학생 스토리텔러' 모집…청년 시선으로 지역 매력 알린다.hwpx 미리보기 다운로드 <!-- 이 게시물은 \"공공누리\" 의 자유이용허락 표시제도에 따라 이용할 수 있습니다. 이 페이지에서 제공하는 정보에 대하여 만족하십니까? 21554 인천광역시 남동구 정각로 29(구월동) TEL:(032)120 (유료) [찾아오시는 길] © Incheon Metropolitan City. All rights reserved.",
       "is_official_source": false,
       "is_public_interest_article": true,
       "is_hub_candidate": false,
@@ -46665,10 +46711,7 @@
       "weak_youth_signal": false,
       "missing_youth_content_signal": false,
       "archive_key": "https://www.incheon.go.kr/IC010205/view?repSeq=DOM_0000000015228952&curPage=1&srchRepTitle=청년&srchRepContents=청년",
-      "published_at": "2026-07-28T00:00:00+09:00",
-      "publisher_url": "https://www.incheon.go.kr/IC010205/view?repSeq=DOM_0000000015228952&curPage=1&srchRepTitle=%EC%B2%AD%EB%85%84&srchRepContents=%EC%B2%AD%EB%85%84",
-      "publisher_icon_url": "https://www.incheon.go.kr/humanframe/globaltheme/assets/image/favicon/apple-touch-icon.png",
-      "body_text": "이 누리집은 대한민국 공식 전자정부 누리집입니다. ' + pmenuList[kk].text + ' '; }else{ pmenuUri += ' ' + pmenuList[kk].text + ' '; } //pmenuUri += ' ' + pmenuList[kk].text + ' '; } } // console.log(pmenuUri); $(\"#lowerMenuPopupList\").html(pmenuUri); } $(function(){ $(\"[id*=menuPopup]\").click(function () { $('.mobile-nav-pop-wrap .item').removeClass('active'); $('#mobileMnPopup').show(); document.getElementsByTagName('body')[0].style.overflow = 'hidden'; $(this).addClass('active'); }); $('#popupClose').click(function () { $('.mobile-nav-pop-wrap .item').removeClass('active'); $('#mobileMnPopup').hide(); document.getElementsByTagName('body')[0].style.overflow = 'scroll'; }); }); function fn_mobileMoveHome(){ $(\".btn-view-menuall\").click(); $(\"#popupSitemap\").removeClass(\"is-active\"); } /* const user = navigator.userAgent; if ( user.indexOf(\"iPhone\") > -1 || user.indexOf(\"Android\") > -1 ) { console.log(\"mobile버젼\"); console.log(user); }else{ console.log(\"pc버젼\"); console.log(user); } */ Home 인천소식 보도/해명 보도자료 메뉴 이동 Home 인천소식 보도/해명 보도자료 메뉴1 메뉴2 --> 인천소식 새소식 주요행사정보 보도/해명 하위메뉴 열기 --> 하위메뉴 열기 --> --> 보도자료 설명자료 고시/공고/시보 하위메뉴 열기 --> 하위메뉴 열기 --> --> 고시공고 인천시보 반상회보 입법예고 매체 모음 카드뉴스 인천형 행정체제 개편 하위메뉴 열기 --> 하위메뉴 열기 --> --> 행정체제 개편 개요 공지사항 보도자료 홍보자료 보도자료 공유레이어열기 Home>인천소식>보도/해명>보도자료', '/IC010205');\"> 스크랩 페이스북 X 네이버블로그 카카오스토리 인스타그램 --> 주소복사 공유레이어닫기 인쇄 var menuTitle = \"보도자료\"; /* function f_fileView(attachFileSeq, attachFileDetailSeq, oriFileNm){ event.stopPropagation(); event.preventDefault(); fn_fileViewerUrl( oriFileNm, \"/comm/dmsFileDownload?attachFileSeq=\"+attachFileSeq+\"&attachFileDetailSeq=\"+attachFileDetailSeq ); } */ function f_fileViewer(attachPhysiclFileNm, attachFileNm){ event.stopPropagation(); event.preventDefault(); let fileExt = attachFileNm.substring(attachFileNm.indexOf('.')+1); let options = { 'fileExt' : fileExt ,'flpth' : '/data/dms' ,'streFileNm' : attachPhysiclFileNm } fn_fileViewer( options ); } 인천시, '제물포 대학생 스토리텔러' 모집…청년 시선으로 지역 매력 알린다 -7월 27일부터 8월 7일까지 10명 내외 선발- 담당부서 제물포르네상스개발과 / 강수빈 (032-458-7334) 제공일시 2026-07-28 조회수 742 인천광역시(시장 박찬대)가 제물포의 변화와 매력을 대학생의 시선으로 담아낼 ‘2026년 제물포 대학생 스토리텔러’를 모집한다고 밝혔다. 모집 기간은 7월 27일부터 8월 7일까지이며, 모집 인원은 10명 안팎이다. 개인 사회관계망서비스(SNS)를 운영하며 제물포에 관심 있는 대학생이라면 누구나 지원할 수 있다. 지원 방법 등 자세한 사항은 인천시 누리집과 1883개항살롱 사회관계망서비스(SNS)에서 확인할 수 있다. 최종 선발 결과는 8월 12일 인천시 누리집에 공고할 예정이다. 선발된 스토리텔러는 올해 8월부터 12월까지 5개월간 활동한다. 이들은 제물포 전역의 명소, 상권, 축제, 체험공간 등 다양한 지역 자원을 주제로 콘텐츠를 제작하게 된다. 특히 올해는 상권, 체험공간, 지역 행사 등을 연계한 주제형 콘텐츠 발굴과 확산에 중점을 둔다. ‘여름의 제물포’처럼 개별 장소나 행사를 단편적으로 소개하는 방식에서 벗어나, 지역 자원을 하나의 흐름으로 엮어 제물포의 특색을 더욱 효과적으로 전달할 계획이다. 이선호 시 글로벌도시국장은 “청년들의 참신한 시각이 제물포의 새로운 매력을 발굴하고 지역에 활력을 더하는 계기가 되길 기대한다”라며 “관심 있는 대학생들의 많은 참여를 바란다”라고 말했다. 첨부파일 --> --> 2 (1) (8시 30분) 인천시, '제물포 대학생 스토리텔러' 모집…청년 시선으로 지역 매력 알린다.hwpx 미리보기 다운로드 <!-- 이 게시물은 \"공공누리\" 의 자유이용허락 표시제도에 따라 이용할 수 있습니다. 이 페이지에서 제공하는 정보에 대하여 만족하십니까? 21554 인천광역시 남동구 정각로 29(구월동) TEL:(032)120 (유료) [찾아오시는 길] © Incheon Metropolitan City. All rights reserved."
+      "published_at": "2026-07-28T00:00:00+09:00"
     },
     {
       "url": "https://news.google.com/rss/articles/CBMibkFVX3lxTE5hS01JYkdzbjdjQkR3anh6UXRLN3FHTzZtbmtyQ1lpTXFaYUdrTUM1SDYyMTlzeThWR21MV01Oa2lFSVZfeWdBeWRIREs1QU55aXQ5VFc2T1haMjFtS2pjQ1VHQnl5elVlZklieXhn?oc=5",
@@ -46728,12 +46771,14 @@
     {
       "url": "https://www.moel.go.kr/policy/policydata/view.do?bbs_seq=20260700851",
       "canonical_url": "https://www.moel.go.kr/policy/policydata/view.do?bbs_seq=20260700851",
+      "publisher_url": "https://www.moel.go.kr/policy/policydata/view.do?bbs_seq=20260700851",
       "feed_url": "https://www.moel.go.kr/policy/policydata/view.do?bbs_seq=20260700851",
       "title": "청년이라면 한 번쯤 꼭 읽어야 할 '알기 쉬운 청년 정책.zip'",
       "source": "고용노동부 정책자료 RSS",
       "source_name": "고용노동부 정책자료 RSS",
       "source_kind": "official",
       "publisher_domain": "고용노동부 정책자료 rss",
+      "publisher_icon_url": "https://www.moel.go.kr/images/favicon.ico",
       "published_date": "2026-07-24T14:25:57+09:00",
       "publisher_published_at": "2026-07-24T14:25:57+09:00",
       "region": "전국",
@@ -46741,9 +46786,17 @@
         "정책 오피셜",
         "청년은 지금"
       ],
+      "topic_tags": [
+        "취업",
+        "복지"
+      ],
+      "issue_tags": [
+        "고용"
+      ],
       "content_direction": "official_release",
       "lead_text": "청년이라면 한 번쯤 꼭 읽어야 할 '알기 쉬운 청년 정책.zip'",
       "youth_excerpt": "청년이라면 한 번쯤 꼭 읽어야 할 '알기 쉬운 청년 정책.zip'",
+      "body_text": "go.kr 주소를 사용하는 누리집은 대한민국 정부기관이 관리하는 누리집입니다. 이 밖에 or.kr 또는 .kr등 다른 도메인 주소를 사용하고 있다면 아래 URL에서 도메인 주소를 확인해 보세요. 웹 브라우저의 주소 입력창에 표시된 자물쇠 아이콘과 주소 앞 https://가 있는지 체크하여 보안적용이 되어 있는지 확인하세요. ' + $(\".menuSch_input\").val() + ' 에 대한 검색 결과입니다. 국민 누구나 원하는 일자리에서 마음껏 역량을 발휘하는 나라! 대표전화 1350 (유료, 평일 09시~18시) 당직실 전화 044-202-7999 (평일 18시~익일 09시, 주말 · 공휴일, '26.1.1.부터 재택당직 시행 중) * 평일 근무시간(09:00~18:00) 이후 업무상담은 제한될 수 있습니다. © Ministry of Employment and Labor. All rights reserved.",
       "is_official_source": true,
       "is_public_interest_article": true,
       "is_hub_candidate": false,
@@ -46762,17 +46815,7 @@
       "weak_youth_signal": false,
       "missing_youth_content_signal": false,
       "archive_key": "https://www.moel.go.kr/policy/policydata/view.do?bbs_seq=20260700851",
-      "published_at": "2026-07-24T14:25:57+09:00",
-      "publisher_url": "https://www.moel.go.kr/policy/policydata/view.do?bbs_seq=20260700851",
-      "publisher_icon_url": "https://www.moel.go.kr/images/favicon.ico",
-      "topic_tags": [
-        "취업",
-        "복지"
-      ],
-      "issue_tags": [
-        "고용"
-      ],
-      "body_text": "go.kr 주소를 사용하는 누리집은 대한민국 정부기관이 관리하는 누리집입니다. 이 밖에 or.kr 또는 .kr등 다른 도메인 주소를 사용하고 있다면 아래 URL에서 도메인 주소를 확인해 보세요. 웹 브라우저의 주소 입력창에 표시된 자물쇠 아이콘과 주소 앞 https://가 있는지 체크하여 보안적용이 되어 있는지 확인하세요. ' + $(\".menuSch_input\").val() + ' 에 대한 검색 결과입니다. 국민 누구나 원하는 일자리에서 마음껏 역량을 발휘하는 나라! 대표전화 1350 (유료, 평일 09시~18시) 당직실 전화 044-202-7999 (평일 18시~익일 09시, 주말 · 공휴일, '26.1.1.부터 재택당직 시행 중) * 평일 근무시간(09:00~18:00) 이후 업무상담은 제한될 수 있습니다. © Ministry of Employment and Labor. All rights reserved."
+      "published_at": "2026-07-24T14:25:57+09:00"
     },
     {
       "url": "https://news.google.com/rss/articles/CBMid0FVX3lxTE9RcnppZUFjaTdCQ3NjX25QVXExTjNYbmVsaThKZVJKdlJpbFRVeHo4TmcwcFAwWnFmTTA1S2FiWnJsbFF3S1o2YndJTS1HWG1TanVHTkk3Y3JZYWI5bVY0dGdRc0tGbzFUOE1nRmtnRWRhUTZGaEJn?oc=5",
@@ -46960,12 +47003,15 @@
     {
       "url": "https://www.busan.go.kr/nbtnewsBU/1742047?curPage=&srchBeginDt=&srchEndDt=&srchKey=sj&srchText=청년",
       "canonical_url": "https://www.busan.go.kr/nbtnewsBU/1742047?curPage=&srchBeginDt=&srchEndDt=&srchKey=sj&srchText=청년",
+      "publisher_url": "https://www.busan.go.kr/nbtnewsBU/1742047?curPage=&srchBeginDt=&srchEndDt=&srchKey=sj&srchText=청년",
       "feed_url": "https://www.busan.go.kr/nbtnewsBU/1742047?curPage=&srchBeginDt=&srchEndDt=&srchKey=sj&srchText=청년",
       "title": "해양수도 부산, 지역 청년기업 인공지능 기술력으로 세계 수산시장과 경쟁 인공지능소프트웨어과 | 정현태 | 051-888-7682 | 2026-07-21 ◈ 지역 청년기업 ㈜데이터스피라는 국내 민간기업 최초로 국제수산물 이력추적 표준기구(GDST) 호환 제품 인증 획득… 시-카이스트 공동 설립한 오토아이디랩 부산혁신연구소의 디지털전환 표준 기술 지원 받아 ◈ 시, 국제수산물 이력추적 표준기구(GDST) 인증 제품(설루션)을 통해 지역 산업과 공공 분야, 시민 생활 전반에 투명한 수산물 이력(데이터) 기반의 다양한 인공지능(AI) 기술의 적용과 서비스가 확대될",
       "source": "부산광역시 보도자료 청년 검색",
       "source_name": "부산광역시 보도자료 청년 검색",
       "source_kind": "local",
       "publisher_domain": "www.busan.go.kr",
+      "publisher_icon_url": "https://www.busan.go.kr/favicon.ico",
+      "image_url": "https://www.busan.go.kr/humanframe/theme/busan22/assets/img/main/thumb_v2.jpg",
       "published_date": "2026-07-21T00:00:00+09:00",
       "publisher_published_at": "2026-07-21T00:00:00+09:00",
       "region": "부산",
@@ -46973,9 +47019,14 @@
         "정책 오피셜",
         "지역 이슈"
       ],
+      "topic_tags": [
+        "모집"
+      ],
+      "article_type": "official",
       "content_direction": "official_release",
       "lead_text": "해양수도 부산, 지역 청년기업 인공지능 기술력으로 세계 수산시장과 경쟁 인공지능소프트웨어과 | 정현태 | 051-888-7682 | 2026-07-21 ◈ 지역 청년기업 ㈜데이터스피라는 국내 민간기업 최초로 국제수산물 이력추적 표준기구(GDST) 호환 제품 인증 획득… 시-카이스트 공동 설립한 오토아이디랩 부산혁신연구소의 디지털전환 표준 기술 지원 받아 ◈ 시, 국제수산물 이력추적 표준기구(GDST) 인증 제품(설루션)을 통해 지역 산업과 공공 분야, 시민 생활 전반에 투명한 수산물 이력(데이터) 기반의 다양한 인공지능(AI) 기술의 적용과 서비스가 확대될",
       "youth_excerpt": "해양수도 부산, 지역 청년기업 인공지능 기술력으로 세계 수산시장과 경쟁 인공지능소프트웨어과 | 정현태 | 051-888-7682 | 2026-07-21 ◈ 지역 청년기업 ㈜데이터스피라는 국내 민간기업 최초로 국제수산물 이력추적 표준기구(GDST) 호환 제품 인증 획득… 시-카이스트 공동 설립한 오토아이디랩 부산혁신연구소의 디지털전환 표준 기술 지원 받아 ◈ 시, 국제수산물 이력추적 표준기구(...",
+      "body_text": "시정관련 건의사항 또는 답변을 원하는 사항은 부산민원120 민원신청 을 이용하여 주세요. (우 47545) 부산광역시 연제구 중앙대로 1001(연산동) Copyright © Busan Metropolitan City. All rights reserved. 평일 08:30 ~ 18:30 야간․공휴일 당직실 전환",
       "is_official_source": true,
       "is_public_interest_article": true,
       "is_hub_candidate": false,
@@ -46994,25 +47045,20 @@
       "weak_youth_signal": false,
       "missing_youth_content_signal": false,
       "archive_key": "https://www.busan.go.kr/nbtnewsBU/1742047?curPage=&srchBeginDt=&srchEndDt=&srchKey=sj&srchText=청년",
-      "published_at": "2026-07-21T00:00:00+09:00",
-      "publisher_url": "https://www.busan.go.kr/nbtnewsBU/1742047?curPage=&srchBeginDt=&srchEndDt=&srchKey=sj&srchText=청년",
-      "publisher_icon_url": "https://www.busan.go.kr/favicon.ico",
-      "image_url": "https://www.busan.go.kr/humanframe/theme/busan22/assets/img/main/thumb_v2.jpg",
-      "topic_tags": [
-        "모집"
-      ],
-      "article_type": "official",
-      "body_text": "시정관련 건의사항 또는 답변을 원하는 사항은 부산민원120 민원신청 을 이용하여 주세요. (우 47545) 부산광역시 연제구 중앙대로 1001(연산동) Copyright © Busan Metropolitan City. All rights reserved. 평일 08:30 ~ 18:30 야간․공휴일 당직실 전환"
+      "published_at": "2026-07-21T00:00:00+09:00"
     },
     {
       "url": "https://www.busan.go.kr/nbtnewsBU/1742052?curPage=&srchBeginDt=&srchEndDt=&srchKey=sj&srchText=청년",
       "canonical_url": "https://www.busan.go.kr/nbtnewsBU/1742052?curPage=&srchBeginDt=&srchEndDt=&srchKey=sj&srchText=청년",
+      "publisher_url": "https://www.busan.go.kr/nbtnewsBU/1742052?curPage=&srchBeginDt=&srchEndDt=&srchKey=sj&srchText=청년",
       "feed_url": "https://www.busan.go.kr/nbtnewsBU/1742052?curPage=&srchBeginDt=&srchEndDt=&srchKey=sj&srchText=청년",
       "title": "부산시, 한국남부발전·부산중기청과 손잡고 청년 \"첫경력\" 지원 나선다! 청년정책과 | 허윤서 | 051-888-7882 | 2026-07-21 ◈ 7.21. 10:20 시청 영상회의실에서 「부산청년 상생협력 첫경력 보장 시범사업」 추진을 위한 업무협약 체결 ◈ 청끌기업과 특성화고·전문대 졸업예정 청년을 연계해 직무교육부터 최대 4개월 일경험, 취업까지 지원하는 부산형 첫경력 지원모델 첫 추진 ◈ 한국남부발전 지속가능경영(ESG) 상생협력기금 지원, 부산중기청 기업-청년 매칭데이 운영 등 기관별 역할 분담을 통한 협력체계 구축",
       "source": "부산광역시 보도자료 청년 검색",
       "source_name": "부산광역시 보도자료 청년 검색",
       "source_kind": "local",
       "publisher_domain": "www.busan.go.kr",
+      "publisher_icon_url": "https://www.busan.go.kr/favicon.ico",
+      "image_url": "https://www.busan.go.kr/humanframe/theme/busan22/assets/img/main/thumb_v2.jpg",
       "published_date": "2026-07-21T00:00:00+09:00",
       "publisher_published_at": "2026-07-21T00:00:00+09:00",
       "region": "부산",
@@ -47028,6 +47074,7 @@
       "issue_tags": [
         "고용"
       ],
+      "article_type": "official",
       "content_direction": "official_release",
       "governance_activity_types": [
         "회의",
@@ -47035,6 +47082,7 @@
       ],
       "lead_text": "부산시, 한국남부발전·부산중기청과 손잡고 청년 \"첫경력\" 지원 나선다! 청년정책과 | 허윤서 | 051-888-7882 | 2026-07-21 ◈ 7.21. 10:20 시청 영상회의실에서 「부산청년 상생협력 첫경력 보장 시범사업」 추진을 위한 업무협약 체결 ◈ 청끌기업과 특성화고·전문대 졸업예정 청년을 연계해 직무교육부터 최대 4개월 일경험, 취업까지 지원하는 부산형 첫경력 지원모델 첫 추진 ◈ 한국남부발전 지속가능경영(ESG) 상생협력기금 지원, 부산중기청 기업-청년 매칭데이 운영 등 기관별 역할 분담을 통한 협력체계 구축",
       "youth_excerpt": "부산시, 한국남부발전·부산중기청과 손잡고 청년 \"첫경력\" 지원 나선다! 청년정책과 | 허윤서 | 051-888-7882 | 2026-07-21 ◈ 7.21. 10:20 시청 영상회의실에서 「부산청년 상생협력 첫경력 보장 시범사업」 추진을 위한 업무협약 체결 ◈ 청끌기업과 특성화고·전문대 졸업예정 청년을 연계해 직무교육부터 최대 4개월 일경험, 취업까지 지원하는 부산형 첫경력 지원모델 첫 추진...",
+      "body_text": "시정관련 건의사항 또는 답변을 원하는 사항은 부산민원120 민원신청 을 이용하여 주세요. (우 47545) 부산광역시 연제구 중앙대로 1001(연산동) Copyright © Busan Metropolitan City. All rights reserved. 평일 08:30 ~ 18:30 야간․공휴일 당직실 전환",
       "is_official_source": true,
       "is_public_interest_article": true,
       "is_hub_candidate": false,
@@ -47053,12 +47101,7 @@
       "weak_youth_signal": false,
       "missing_youth_content_signal": false,
       "archive_key": "https://www.busan.go.kr/nbtnewsBU/1742052?curPage=&srchBeginDt=&srchEndDt=&srchKey=sj&srchText=청년",
-      "published_at": "2026-07-21T00:00:00+09:00",
-      "publisher_url": "https://www.busan.go.kr/nbtnewsBU/1742052?curPage=&srchBeginDt=&srchEndDt=&srchKey=sj&srchText=청년",
-      "publisher_icon_url": "https://www.busan.go.kr/favicon.ico",
-      "image_url": "https://www.busan.go.kr/humanframe/theme/busan22/assets/img/main/thumb_v2.jpg",
-      "article_type": "official",
-      "body_text": "시정관련 건의사항 또는 답변을 원하는 사항은 부산민원120 민원신청 을 이용하여 주세요. (우 47545) 부산광역시 연제구 중앙대로 1001(연산동) Copyright © Busan Metropolitan City. All rights reserved. 평일 08:30 ~ 18:30 야간․공휴일 당직실 전환"
+      "published_at": "2026-07-21T00:00:00+09:00"
     },
     {
       "url": "https://news.google.com/rss/articles/CBMiakFVX3lxTE1FUV9IYUxaaGJGZEtVNDFhekxXVDdKcDF2SVVBWFF6MHJWMjNQZ2drai1JQlRSREFYbGljT1VDOTZOUUdxMWFVb2hEd0ZiUG02ZV84akItSEp4dDZCUTI5X0l3RlJuOVgwdVE?oc=5",
@@ -47273,12 +47316,14 @@
     {
       "url": "https://www.incheon.go.kr/IC010205/view?repSeq=DOM_0000000015133234&curPage=1&srchRepTitle=%EC%B2%AD%EB%85%84&srchRepContents=%EC%B2%AD%EB%85%84",
       "canonical_url": "https://www.incheon.go.kr/IC010205/view?repSeq=DOM_0000000015133234&curPage=1&srchRepTitle=청년&srchRepContents=청년",
+      "publisher_url": "https://www.incheon.go.kr/IC010205/view?repSeq=DOM_0000000015133234&curPage=1&srchRepTitle=%EC%B2%AD%EB%85%84&srchRepContents=%EC%B2%AD%EB%85%84",
       "feed_url": "https://www.incheon.go.kr/IC010205/view?repSeq=DOM_0000000015133234&curPage=1&srchRepTitle=%EC%B2%AD%EB%85%84&srchRepContents=%EC%B2%AD%EB%85%84",
       "title": "인천시,‘2026 인차이나포럼 청년 서포터즈’모집, 한중 교류의 미래 이끈다 인천광역시(시장 박찬대)는 오는 9월 8일 개최되는‘2026 인차이나포럼 국제콘퍼런스’의 현장을 온·오프라인으로 생생하게 알릴‘2026 인차이나포럼 청년서포터즈’를 모집한다고 밝혔다. 이번 제7기 청년서포터즈는 한·중 교류와 국제학술회의(conference) 기획 제공일자 2026-07-13 제공부서 국제협력과",
       "source": "인천광역시 보도자료 청년 검색",
       "source_name": "인천광역시 보도자료 청년 검색",
       "source_kind": "local",
       "publisher_domain": "www.incheon.go.kr",
+      "publisher_icon_url": "https://www.incheon.go.kr/humanframe/globaltheme/assets/image/favicon/apple-touch-icon.png",
       "published_date": "2026-07-13T00:00:00+09:00",
       "publisher_published_at": "2026-07-13T00:00:00+09:00",
       "region": "인천",
@@ -47297,6 +47342,7 @@
       ],
       "lead_text": "인천시,‘2026 인차이나포럼 청년 서포터즈’모집, 한중 교류의 미래 이끈다 인천광역시(시장 박찬대)는 오는 9월 8일 개최되는‘2026 인차이나포럼 국제콘퍼런스’의 현장을 온·오프라인으로 생생하게 알릴‘2026 인차이나포럼 청년서포터즈’를 모집한다고 밝혔다. 이번 제7기 청년서포터즈는 한·중 교류와 국제학술회의(conference) 기획 제공일자 2026-07-13 제공부서 국제협력과",
       "youth_excerpt": "인천시,‘2026 인차이나포럼 청년 서포터즈’모집, 한중 교류의 미래 이끈다 인천광역시(시장 박찬대)는 오는 9월 8일 개최되는‘2026 인차이나포럼 국제콘퍼런스’의 현장을 온·오프라인으로 생생하게 알릴‘2026 인차이나포럼 청년서포터즈’를 모집한다고 밝혔다...",
+      "body_text": "이 누리집은 대한민국 공식 전자정부 누리집입니다. ' + pmenuList[kk].text + ' '; }else{ pmenuUri += ' ' + pmenuList[kk].text + ' '; } //pmenuUri += ' ' + pmenuList[kk].text + ' '; } } // console.log(pmenuUri); $(\"#lowerMenuPopupList\").html(pmenuUri); } $(function(){ $(\"[id*=menuPopup]\").click(function () { $('.mobile-nav-pop-wrap .item').removeClass('active'); $('#mobileMnPopup').show(); document.getElementsByTagName('body')[0].style.overflow = 'hidden'; $(this).addClass('active'); }); $('#popupClose').click(function () { $('.mobile-nav-pop-wrap .item').removeClass('active'); $('#mobileMnPopup').hide(); document.getElementsByTagName('body')[0].style.overflow = 'scroll'; }); }); function fn_mobileMoveHome(){ $(\".btn-view-menuall\").click(); $(\"#popupSitemap\").removeClass(\"is-active\"); } /* const user = navigator.userAgent; if ( user.indexOf(\"iPhone\") > -1 || user.indexOf(\"Android\") > -1 ) { console.log(\"mobile버젼\"); console.log(user); }else{ console.log(\"pc버젼\"); console.log(user); } */ Home 인천소식 보도/해명 보도자료 메뉴 이동 Home 인천소식 보도/해명 보도자료 메뉴1 메뉴2 --> 인천소식 새소식 주요행사정보 보도/해명 하위메뉴 열기 --> 하위메뉴 열기 --> --> 보도자료 설명자료 고시/공고/시보 하위메뉴 열기 --> 하위메뉴 열기 --> --> 고시공고 인천시보 반상회보 입법예고 매체 모음 카드뉴스 인천형 행정체제 개편 하위메뉴 열기 --> 하위메뉴 열기 --> --> 행정체제 개편 개요 공지사항 보도자료 홍보자료 보도자료 공유레이어열기 Home>인천소식>보도/해명>보도자료', '/IC010205');\"> 스크랩 페이스북 X 네이버블로그 카카오스토리 인스타그램 --> 주소복사 공유레이어닫기 인쇄 var menuTitle = \"보도자료\"; /* function f_fileView(attachFileSeq, attachFileDetailSeq, oriFileNm){ event.stopPropagation(); event.preventDefault(); fn_fileViewerUrl( oriFileNm, \"/comm/dmsFileDownload?attachFileSeq=\"+attachFileSeq+\"&attachFileDetailSeq=\"+attachFileDetailSeq ); } */ function f_fileViewer(attachPhysiclFileNm, attachFileNm){ event.stopPropagation(); event.preventDefault(); let fileExt = attachFileNm.substring(attachFileNm.indexOf('.')+1); let options = { 'fileExt' : fileExt ,'flpth' : '/data/dms' ,'streFileNm' : attachPhysiclFileNm } fn_fileViewer( options ); } 인천시,‘2026 인차이나포럼 청년 서포터즈’모집, 한중 교류의 미래 이끈다 -7월 13일부터 24일까지 접수, 국제콘퍼런스 홍보 이끌 청년 20명 선발- 담당부서 국제협력과 / 한현희 (032-440-3232) 제공일시 2026-07-13 조회수 1260 --> 홍보 포스터.jpg 미리보기 다운로드 <!-- --> 3 (1) (8시 30분) 인천시,‘2026 인차이나포럼 청년 서포터즈’모집, 한중 교류의 미래 이끈다.hwpx 미리보기 다운로드 <!-- 이 게시물은 \"공공누리\" 의 자유이용허락 표시제도에 따라 이용할 수 있습니다. 이 페이지에서 제공하는 정보에 대하여 만족하십니까? 21554 인천광역시 남동구 정각로 29(구월동) TEL:(032)120 (유료) [찾아오시는 길] © Incheon Metropolitan City. All rights reserved.",
       "is_official_source": false,
       "is_public_interest_article": true,
       "is_hub_candidate": false,
@@ -47315,20 +47361,20 @@
       "weak_youth_signal": false,
       "missing_youth_content_signal": false,
       "archive_key": "https://www.incheon.go.kr/IC010205/view?repSeq=DOM_0000000015133234&curPage=1&srchRepTitle=청년&srchRepContents=청년",
-      "published_at": "2026-07-13T00:00:00+09:00",
-      "publisher_url": "https://www.incheon.go.kr/IC010205/view?repSeq=DOM_0000000015133234&curPage=1&srchRepTitle=%EC%B2%AD%EB%85%84&srchRepContents=%EC%B2%AD%EB%85%84",
-      "publisher_icon_url": "https://www.incheon.go.kr/humanframe/globaltheme/assets/image/favicon/apple-touch-icon.png",
-      "body_text": "이 누리집은 대한민국 공식 전자정부 누리집입니다. ' + pmenuList[kk].text + ' '; }else{ pmenuUri += ' ' + pmenuList[kk].text + ' '; } //pmenuUri += ' ' + pmenuList[kk].text + ' '; } } // console.log(pmenuUri); $(\"#lowerMenuPopupList\").html(pmenuUri); } $(function(){ $(\"[id*=menuPopup]\").click(function () { $('.mobile-nav-pop-wrap .item').removeClass('active'); $('#mobileMnPopup').show(); document.getElementsByTagName('body')[0].style.overflow = 'hidden'; $(this).addClass('active'); }); $('#popupClose').click(function () { $('.mobile-nav-pop-wrap .item').removeClass('active'); $('#mobileMnPopup').hide(); document.getElementsByTagName('body')[0].style.overflow = 'scroll'; }); }); function fn_mobileMoveHome(){ $(\".btn-view-menuall\").click(); $(\"#popupSitemap\").removeClass(\"is-active\"); } /* const user = navigator.userAgent; if ( user.indexOf(\"iPhone\") > -1 || user.indexOf(\"Android\") > -1 ) { console.log(\"mobile버젼\"); console.log(user); }else{ console.log(\"pc버젼\"); console.log(user); } */ Home 인천소식 보도/해명 보도자료 메뉴 이동 Home 인천소식 보도/해명 보도자료 메뉴1 메뉴2 --> 인천소식 새소식 주요행사정보 보도/해명 하위메뉴 열기 --> 하위메뉴 열기 --> --> 보도자료 설명자료 고시/공고/시보 하위메뉴 열기 --> 하위메뉴 열기 --> --> 고시공고 인천시보 반상회보 입법예고 매체 모음 카드뉴스 인천형 행정체제 개편 하위메뉴 열기 --> 하위메뉴 열기 --> --> 행정체제 개편 개요 공지사항 보도자료 홍보자료 보도자료 공유레이어열기 Home>인천소식>보도/해명>보도자료', '/IC010205');\"> 스크랩 페이스북 X 네이버블로그 카카오스토리 인스타그램 --> 주소복사 공유레이어닫기 인쇄 var menuTitle = \"보도자료\"; /* function f_fileView(attachFileSeq, attachFileDetailSeq, oriFileNm){ event.stopPropagation(); event.preventDefault(); fn_fileViewerUrl( oriFileNm, \"/comm/dmsFileDownload?attachFileSeq=\"+attachFileSeq+\"&attachFileDetailSeq=\"+attachFileDetailSeq ); } */ function f_fileViewer(attachPhysiclFileNm, attachFileNm){ event.stopPropagation(); event.preventDefault(); let fileExt = attachFileNm.substring(attachFileNm.indexOf('.')+1); let options = { 'fileExt' : fileExt ,'flpth' : '/data/dms' ,'streFileNm' : attachPhysiclFileNm } fn_fileViewer( options ); } 인천시,‘2026 인차이나포럼 청년 서포터즈’모집, 한중 교류의 미래 이끈다 -7월 13일부터 24일까지 접수, 국제콘퍼런스 홍보 이끌 청년 20명 선발- 담당부서 국제협력과 / 한현희 (032-440-3232) 제공일시 2026-07-13 조회수 1260 --> 홍보 포스터.jpg 미리보기 다운로드 <!-- --> 3 (1) (8시 30분) 인천시,‘2026 인차이나포럼 청년 서포터즈’모집, 한중 교류의 미래 이끈다.hwpx 미리보기 다운로드 <!-- 이 게시물은 \"공공누리\" 의 자유이용허락 표시제도에 따라 이용할 수 있습니다. 이 페이지에서 제공하는 정보에 대하여 만족하십니까? 21554 인천광역시 남동구 정각로 29(구월동) TEL:(032)120 (유료) [찾아오시는 길] © Incheon Metropolitan City. All rights reserved."
+      "published_at": "2026-07-13T00:00:00+09:00"
     },
     {
       "url": "https://www.busan.go.kr/nbtnewsBU/1740278?curPage=&srchBeginDt=&srchEndDt=&srchKey=sj&srchText=청년",
       "canonical_url": "https://www.busan.go.kr/nbtnewsBU/1740278?curPage=&srchBeginDt=&srchEndDt=&srchKey=sj&srchText=청년",
+      "publisher_url": "https://www.busan.go.kr/nbtnewsBU/1740278?curPage=&srchBeginDt=&srchEndDt=&srchKey=sj&srchText=청년",
       "feed_url": "https://www.busan.go.kr/nbtnewsBU/1740278?curPage=&srchBeginDt=&srchEndDt=&srchKey=sj&srchText=청년",
       "title": "부산시, 2026년 청년고용우수기업 5개사 선정! 청년정책과 | 허윤서 | 051-888-7882 | 2026-07-13 ◈ 7.13. 11:00 시청 국제의전실에서 '2026년 청년고용우수기업 인증서 수여식' 개최 ◈ 올해 청년고용우수기업에 금오기전㈜, ㈜소셜빈, ㈜씨넷, ㈜아이큐랩, ㈜한미유압기계 5개사 선정 ◈ 선정된 기업에는 인증서 및 인증현판 수여, 좋은일터강화지원금 4천만 원 지원, 신규 취득 사업용 부동산 취득세 감면, 지방세 세무조사 유예 등 각종 혜택 제공 ◈ 전 시장, “청년고용우수기업은 단순한 인증사업이 아니",
       "source": "부산광역시 보도자료 청년 검색",
       "source_name": "부산광역시 보도자료 청년 검색",
       "source_kind": "local",
       "publisher_domain": "www.busan.go.kr",
+      "publisher_icon_url": "https://www.busan.go.kr/favicon.ico",
+      "image_url": "https://www.busan.go.kr/humanframe/theme/busan22/assets/img/main/thumb_v2.jpg",
       "published_date": "2026-07-13T00:00:00+09:00",
       "publisher_published_at": "2026-07-13T00:00:00+09:00",
       "region": "부산",
@@ -47344,9 +47390,11 @@
       "issue_tags": [
         "고용"
       ],
+      "article_type": "official",
       "content_direction": "official_release",
       "lead_text": "부산시, 2026년 청년고용우수기업 5개사 선정! 청년정책과 | 허윤서 | 051-888-7882 | 2026-07-13 ◈ 7.13. 11:00 시청 국제의전실에서 '2026년 청년고용우수기업 인증서 수여식' 개최 ◈ 올해 청년고용우수기업에 금오기전㈜, ㈜소셜빈, ㈜씨넷, ㈜아이큐랩, ㈜한미유압기계 5개사 선정 ◈ 선정된 기업에는 인증서 및 인증현판 수여, 좋은일터강화지원금 4천만 원 지원, 신규 취득 사업용 부동산 취득세 감면, 지방세 세무조사 유예 등 각종 혜택 제공 ◈ 전 시장, “청년고용우수기업은 단순한 인증사업이 아니",
       "youth_excerpt": "부산시, 2026년 청년고용우수기업 5개사 선정! 청년정책과 | 허윤서 | 051-888-7882 | 2026-07-13 ◈ 7.13. 11:00 시청 국제의전실에서 '2026년 청년고용우수기업 인증서 수여식' 개최 ◈ 올해 청년고용우수기업에 금오기전㈜, ㈜소셜빈, ㈜씨넷, ㈜아이큐랩, ㈜한미유압기계 5개사 선정 ◈ 선정된 기업에는 인증서 및 인증현판 수여, 좋은일터강화지원금 4천만 원 지원...",
+      "body_text": "시정관련 건의사항 또는 답변을 원하는 사항은 부산민원120 민원신청 을 이용하여 주세요. (우 47545) 부산광역시 연제구 중앙대로 1001(연산동) Copyright © Busan Metropolitan City. All rights reserved. 평일 08:30 ~ 18:30 야간․공휴일 당직실 전환",
       "is_official_source": true,
       "is_public_interest_article": true,
       "is_hub_candidate": false,
@@ -47365,12 +47413,7 @@
       "weak_youth_signal": false,
       "missing_youth_content_signal": false,
       "archive_key": "https://www.busan.go.kr/nbtnewsBU/1740278?curPage=&srchBeginDt=&srchEndDt=&srchKey=sj&srchText=청년",
-      "published_at": "2026-07-13T00:00:00+09:00",
-      "publisher_url": "https://www.busan.go.kr/nbtnewsBU/1740278?curPage=&srchBeginDt=&srchEndDt=&srchKey=sj&srchText=청년",
-      "publisher_icon_url": "https://www.busan.go.kr/favicon.ico",
-      "image_url": "https://www.busan.go.kr/humanframe/theme/busan22/assets/img/main/thumb_v2.jpg",
-      "article_type": "official",
-      "body_text": "시정관련 건의사항 또는 답변을 원하는 사항은 부산민원120 민원신청 을 이용하여 주세요. (우 47545) 부산광역시 연제구 중앙대로 1001(연산동) Copyright © Busan Metropolitan City. All rights reserved. 평일 08:30 ~ 18:30 야간․공휴일 당직실 전환"
+      "published_at": "2026-07-13T00:00:00+09:00"
     },
     {
       "url": "https://www.incheon.go.kr/IC010205/view?repSeq=DOM_0000000015129928&curPage=1&srchRepTitle=%EC%B2%AD%EB%85%84&srchRepContents=%EC%B2%AD%EB%85%84",
@@ -47421,12 +47464,14 @@
     {
       "url": "https://www.incheon.go.kr/IC010205/view?repSeq=DOM_0000000015129924&curPage=1&srchRepTitle=%EC%B2%AD%EB%85%84&srchRepContents=%EC%B2%AD%EB%85%84",
       "canonical_url": "https://www.incheon.go.kr/IC010205/view?repSeq=DOM_0000000015129924&curPage=1&srchRepTitle=청년&srchRepContents=청년",
+      "publisher_url": "https://www.incheon.go.kr/IC010205/view?repSeq=DOM_0000000015129924&curPage=1&srchRepTitle=%EC%B2%AD%EB%85%84&srchRepContents=%EC%B2%AD%EB%85%84",
       "feed_url": "https://www.incheon.go.kr/IC010205/view?repSeq=DOM_0000000015129924&curPage=1&srchRepTitle=%EC%B2%AD%EB%85%84&srchRepContents=%EC%B2%AD%EB%85%84",
       "title": "인천 남동산단, 문화·청년 날개 달았다 인천광역시(시장 박찬대)는 산업단지의 경쟁력 회복과 지역 활력 제고를 위해 추진해 온 ‘남동 문화선도산단 조성’ 사업이 국토교통부·산업통상자원부·문화체육관광부가 공동으로 주관한 2026년도 문화선도산단 공모에서 최종 선정됐다고 10일 밝혔다. 인천시는 그동안 산 제공일자 2026-07-11 제공부서 산업입지과",
       "source": "인천광역시 보도자료 청년 검색",
       "source_name": "인천광역시 보도자료 청년 검색",
       "source_kind": "local",
       "publisher_domain": "www.incheon.go.kr",
+      "publisher_icon_url": "https://www.incheon.go.kr/humanframe/globaltheme/assets/image/favicon/apple-touch-icon.png",
       "published_date": "2026-07-11T00:00:00+09:00",
       "publisher_published_at": "2026-07-11T00:00:00+09:00",
       "region": "인천",
@@ -47434,9 +47479,16 @@
         "정책 오피셜",
         "지역 이슈"
       ],
+      "topic_tags": [
+        "모집"
+      ],
       "content_direction": "official_release",
+      "governance_activity_types": [
+        "출범"
+      ],
       "lead_text": "인천 남동산단, 문화·청년 날개 달았다 인천광역시(시장 박찬대)는 산업단지의 경쟁력 회복과 지역 활력 제고를 위해 추진해 온 ‘남동 문화선도산단 조성’ 사업이 국토교통부·산업통상자원부·문화체육관광부가 공동으로 주관한 2026년도 문화선도산단 공모에서 최종 선정됐다고 10일 밝혔다. 인천시는 그동안 산 제공일자 2026-07-11 제공부서 산업입지과",
       "youth_excerpt": "인천 남동산단, 문화·청년 날개 달았다 인천광역시(시장 박찬대)는 산업단지의 경쟁력 회복과 지역 활력 제고를 위해 추진해 온 ‘남동 문화선도산단 조성’ 사업이 국토교통부·산업통상자원부·문화체육관광부가 공동으로 주관한 2026년도 문화선도산단 공모에서 최종 선정됐다고 10일 밝혔다...",
+      "body_text": "이 누리집은 대한민국 공식 전자정부 누리집입니다. ' + pmenuList[kk].text + ' '; }else{ pmenuUri += ' ' + pmenuList[kk].text + ' '; } //pmenuUri += ' ' + pmenuList[kk].text + ' '; } } // console.log(pmenuUri); $(\"#lowerMenuPopupList\").html(pmenuUri); } $(function(){ $(\"[id*=menuPopup]\").click(function () { $('.mobile-nav-pop-wrap .item').removeClass('active'); $('#mobileMnPopup').show(); document.getElementsByTagName('body')[0].style.overflow = 'hidden'; $(this).addClass('active'); }); $('#popupClose').click(function () { $('.mobile-nav-pop-wrap .item').removeClass('active'); $('#mobileMnPopup').hide(); document.getElementsByTagName('body')[0].style.overflow = 'scroll'; }); }); function fn_mobileMoveHome(){ $(\".btn-view-menuall\").click(); $(\"#popupSitemap\").removeClass(\"is-active\"); } /* const user = navigator.userAgent; if ( user.indexOf(\"iPhone\") > -1 || user.indexOf(\"Android\") > -1 ) { console.log(\"mobile버젼\"); console.log(user); }else{ console.log(\"pc버젼\"); console.log(user); } */ Home 인천소식 보도/해명 보도자료 메뉴 이동 Home 인천소식 보도/해명 보도자료 메뉴1 메뉴2 --> 인천소식 새소식 주요행사정보 보도/해명 하위메뉴 열기 --> 하위메뉴 열기 --> --> 보도자료 설명자료 고시/공고/시보 하위메뉴 열기 --> 하위메뉴 열기 --> --> 고시공고 인천시보 반상회보 입법예고 매체 모음 카드뉴스 인천형 행정체제 개편 하위메뉴 열기 --> 하위메뉴 열기 --> --> 행정체제 개편 개요 공지사항 보도자료 홍보자료 보도자료 공유레이어열기 Home>인천소식>보도/해명>보도자료', '/IC010205');\"> 스크랩 페이스북 X 네이버블로그 카카오스토리 인스타그램 --> 주소복사 공유레이어닫기 인쇄 var menuTitle = \"보도자료\"; /* function f_fileView(attachFileSeq, attachFileDetailSeq, oriFileNm){ event.stopPropagation(); event.preventDefault(); fn_fileViewerUrl( oriFileNm, \"/comm/dmsFileDownload?attachFileSeq=\"+attachFileSeq+\"&attachFileDetailSeq=\"+attachFileDetailSeq ); } */ function f_fileViewer(attachPhysiclFileNm, attachFileNm){ event.stopPropagation(); event.preventDefault(); let fileExt = attachFileNm.substring(attachFileNm.indexOf('.')+1); let options = { 'fileExt' : fileExt ,'flpth' : '/data/dms' ,'streFileNm' : attachPhysiclFileNm } fn_fileViewer( options ); } 인천 남동산단, 문화·청년 날개 달았다 -인천시, 2026년 문화선도산단 공모 최종 선정 587억 투입 ‘남동 WINGS’ 본격 가동- 담당부서 산업입지과 / 정강용 (032-440-4267) 제공일시 2026-07-11 조회수 1661 --> 이미지.png 미리보기 다운로드 <!-- --> 2 (1) (14시) 인천 남동산단 문화청년 날개 달았다.hwpx 미리보기 다운로드 <!-- 이 게시물은 \"공공누리\" 의 자유이용허락 표시제도에 따라 이용할 수 있습니다. 이 페이지에서 제공하는 정보에 대하여 만족하십니까? 21554 인천광역시 남동구 정각로 29(구월동) TEL:(032)120 (유료) [찾아오시는 길] © Incheon Metropolitan City. All rights reserved.",
       "is_official_source": false,
       "is_public_interest_article": true,
       "is_hub_candidate": false,
@@ -47455,16 +47507,7 @@
       "weak_youth_signal": false,
       "missing_youth_content_signal": false,
       "archive_key": "https://www.incheon.go.kr/IC010205/view?repSeq=DOM_0000000015129924&curPage=1&srchRepTitle=청년&srchRepContents=청년",
-      "published_at": "2026-07-11T00:00:00+09:00",
-      "publisher_url": "https://www.incheon.go.kr/IC010205/view?repSeq=DOM_0000000015129924&curPage=1&srchRepTitle=%EC%B2%AD%EB%85%84&srchRepContents=%EC%B2%AD%EB%85%84",
-      "publisher_icon_url": "https://www.incheon.go.kr/humanframe/globaltheme/assets/image/favicon/apple-touch-icon.png",
-      "topic_tags": [
-        "모집"
-      ],
-      "governance_activity_types": [
-        "출범"
-      ],
-      "body_text": "이 누리집은 대한민국 공식 전자정부 누리집입니다. ' + pmenuList[kk].text + ' '; }else{ pmenuUri += ' ' + pmenuList[kk].text + ' '; } //pmenuUri += ' ' + pmenuList[kk].text + ' '; } } // console.log(pmenuUri); $(\"#lowerMenuPopupList\").html(pmenuUri); } $(function(){ $(\"[id*=menuPopup]\").click(function () { $('.mobile-nav-pop-wrap .item').removeClass('active'); $('#mobileMnPopup').show(); document.getElementsByTagName('body')[0].style.overflow = 'hidden'; $(this).addClass('active'); }); $('#popupClose').click(function () { $('.mobile-nav-pop-wrap .item').removeClass('active'); $('#mobileMnPopup').hide(); document.getElementsByTagName('body')[0].style.overflow = 'scroll'; }); }); function fn_mobileMoveHome(){ $(\".btn-view-menuall\").click(); $(\"#popupSitemap\").removeClass(\"is-active\"); } /* const user = navigator.userAgent; if ( user.indexOf(\"iPhone\") > -1 || user.indexOf(\"Android\") > -1 ) { console.log(\"mobile버젼\"); console.log(user); }else{ console.log(\"pc버젼\"); console.log(user); } */ Home 인천소식 보도/해명 보도자료 메뉴 이동 Home 인천소식 보도/해명 보도자료 메뉴1 메뉴2 --> 인천소식 새소식 주요행사정보 보도/해명 하위메뉴 열기 --> 하위메뉴 열기 --> --> 보도자료 설명자료 고시/공고/시보 하위메뉴 열기 --> 하위메뉴 열기 --> --> 고시공고 인천시보 반상회보 입법예고 매체 모음 카드뉴스 인천형 행정체제 개편 하위메뉴 열기 --> 하위메뉴 열기 --> --> 행정체제 개편 개요 공지사항 보도자료 홍보자료 보도자료 공유레이어열기 Home>인천소식>보도/해명>보도자료', '/IC010205');\"> 스크랩 페이스북 X 네이버블로그 카카오스토리 인스타그램 --> 주소복사 공유레이어닫기 인쇄 var menuTitle = \"보도자료\"; /* function f_fileView(attachFileSeq, attachFileDetailSeq, oriFileNm){ event.stopPropagation(); event.preventDefault(); fn_fileViewerUrl( oriFileNm, \"/comm/dmsFileDownload?attachFileSeq=\"+attachFileSeq+\"&attachFileDetailSeq=\"+attachFileDetailSeq ); } */ function f_fileViewer(attachPhysiclFileNm, attachFileNm){ event.stopPropagation(); event.preventDefault(); let fileExt = attachFileNm.substring(attachFileNm.indexOf('.')+1); let options = { 'fileExt' : fileExt ,'flpth' : '/data/dms' ,'streFileNm' : attachPhysiclFileNm } fn_fileViewer( options ); } 인천 남동산단, 문화·청년 날개 달았다 -인천시, 2026년 문화선도산단 공모 최종 선정 587억 투입 ‘남동 WINGS’ 본격 가동- 담당부서 산업입지과 / 정강용 (032-440-4267) 제공일시 2026-07-11 조회수 1661 --> 이미지.png 미리보기 다운로드 <!-- --> 2 (1) (14시) 인천 남동산단 문화청년 날개 달았다.hwpx 미리보기 다운로드 <!-- 이 게시물은 \"공공누리\" 의 자유이용허락 표시제도에 따라 이용할 수 있습니다. 이 페이지에서 제공하는 정보에 대하여 만족하십니까? 21554 인천광역시 남동구 정각로 29(구월동) TEL:(032)120 (유료) [찾아오시는 길] © Incheon Metropolitan City. All rights reserved."
+      "published_at": "2026-07-11T00:00:00+09:00"
     },
     {
       "url": "https://news.google.com/rss/articles/CBMidEFVX3lxTFA1VWd4NzhYVVRkYnRzY0UtNm1rTHgtRVB6c3FzUzFqMkFGOHVVWV95UDQ3ZjJoVGtRQm4wRTRaYTdQQzkwNG9nNXo1bzBCd1RMVDFsMG4teVdTUDZSdTRJbnBmSkUzUW90LXU0YWJQd0dpVy120gF0QVVfeXFMUDVVZ3g3OFhVVGRidHNjRS02bWtMeC1FUHpzcXNTMWoyQUY4dVVZX3lQNDdmMmhUa1FCbjBFNFphN1BDOTA0b2c1ejVvMEJ3VExUMWwwbi15V1NQNlJ1NElucGZKRTNRb3QtdTRhYlB3R2lXLXY?oc=5",
@@ -47604,12 +47647,14 @@
     {
       "url": "https://www.incheon.go.kr/IC010205/view?repSeq=DOM_0000000015113485&curPage=1&srchRepTitle=%EC%B2%AD%EB%85%84&srchRepContents=%EC%B2%AD%EB%85%84",
       "canonical_url": "https://www.incheon.go.kr/IC010205/view?repSeq=DOM_0000000015113485&curPage=1&srchRepTitle=청년&srchRepContents=청년",
+      "publisher_url": "https://www.incheon.go.kr/IC010205/view?repSeq=DOM_0000000015113485&curPage=1&srchRepTitle=%EC%B2%AD%EB%85%84&srchRepContents=%EC%B2%AD%EB%85%84",
       "feed_url": "https://www.incheon.go.kr/IC010205/view?repSeq=DOM_0000000015113485&curPage=1&srchRepTitle=%EC%B2%AD%EB%85%84&srchRepContents=%EC%B2%AD%EB%85%84",
       "title": "이미지 없음 인천시, 사회연대경제 청년 일경험 시범사업 참여기업 모집 인천광역시(시장 박찬대)는 지역 사회연대경제 조직의 경쟁력을 강화하고 미취업 청년들에게 실질적인 직무 경험을 제공하기 위해 ‘사회연대경제 청년 일경험 시범사업’의 참여기업 모집에 나선다. 이번 모집은 향후 선발될 인천지역 청년 59명과의 매칭을 위한 것으로, 참 제공일자 2026-07-09 제공부서 사회적경제과",
       "source": "인천광역시 보도자료 청년 검색",
       "source_name": "인천광역시 보도자료 청년 검색",
       "source_kind": "local",
       "publisher_domain": "www.incheon.go.kr",
+      "publisher_icon_url": "https://www.incheon.go.kr/humanframe/globaltheme/assets/image/favicon/apple-touch-icon.png",
       "published_date": "2026-07-09T00:00:00+09:00",
       "publisher_published_at": "2026-07-09T00:00:00+09:00",
       "region": "인천",
@@ -47631,6 +47676,7 @@
       ],
       "lead_text": "이미지 없음 인천시, 사회연대경제 청년 일경험 시범사업 참여기업 모집 인천광역시(시장 박찬대)는 지역 사회연대경제 조직의 경쟁력을 강화하고 미취업 청년들에게 실질적인 직무 경험을 제공하기 위해 ‘사회연대경제 청년 일경험 시범사업’의 참여기업 모집에 나선다. 이번 모집은 향후 선발될 인천지역 청년 59명과의 매칭을 위한 것으로, 참 제공일자 2026-07-09 제공부서 사회적경제과",
       "youth_excerpt": "이미지 없음 인천시, 사회연대경제 청년 일경험 시범사업 참여기업 모집 인천광역시(시장 박찬대)는 지역 사회연대경제 조직의 경쟁력을 강화하고 미취업 청년들에게 실질적인 직무 경험을 제공하기 위해 ‘사회연대경제 청년 일경험 시범사업’의 참여기업 모집에 나선다...",
+      "body_text": "이 누리집은 대한민국 공식 전자정부 누리집입니다. ' + pmenuList[kk].text + ' '; }else{ pmenuUri += ' ' + pmenuList[kk].text + ' '; } //pmenuUri += ' ' + pmenuList[kk].text + ' '; } } // console.log(pmenuUri); $(\"#lowerMenuPopupList\").html(pmenuUri); } $(function(){ $(\"[id*=menuPopup]\").click(function () { $('.mobile-nav-pop-wrap .item').removeClass('active'); $('#mobileMnPopup').show(); document.getElementsByTagName('body')[0].style.overflow = 'hidden'; $(this).addClass('active'); }); $('#popupClose').click(function () { $('.mobile-nav-pop-wrap .item').removeClass('active'); $('#mobileMnPopup').hide(); document.getElementsByTagName('body')[0].style.overflow = 'scroll'; }); }); function fn_mobileMoveHome(){ $(\".btn-view-menuall\").click(); $(\"#popupSitemap\").removeClass(\"is-active\"); } /* const user = navigator.userAgent; if ( user.indexOf(\"iPhone\") > -1 || user.indexOf(\"Android\") > -1 ) { console.log(\"mobile버젼\"); console.log(user); }else{ console.log(\"pc버젼\"); console.log(user); } */ Home 인천소식 보도/해명 보도자료 메뉴 이동 Home 인천소식 보도/해명 보도자료 메뉴1 메뉴2 --> 인천소식 새소식 주요행사정보 보도/해명 하위메뉴 열기 --> 하위메뉴 열기 --> --> 보도자료 설명자료 고시/공고/시보 하위메뉴 열기 --> 하위메뉴 열기 --> --> 고시공고 인천시보 반상회보 입법예고 매체 모음 카드뉴스 인천형 행정체제 개편 하위메뉴 열기 --> 하위메뉴 열기 --> --> 행정체제 개편 개요 공지사항 보도자료 홍보자료 보도자료 공유레이어열기 Home>인천소식>보도/해명>보도자료', '/IC010205');\"> 스크랩 페이스북 X 네이버블로그 카카오스토리 인스타그램 --> 주소복사 공유레이어닫기 인쇄 var menuTitle = \"보도자료\"; /* function f_fileView(attachFileSeq, attachFileDetailSeq, oriFileNm){ event.stopPropagation(); event.preventDefault(); fn_fileViewerUrl( oriFileNm, \"/comm/dmsFileDownload?attachFileSeq=\"+attachFileSeq+\"&attachFileDetailSeq=\"+attachFileDetailSeq ); } */ function f_fileViewer(attachPhysiclFileNm, attachFileNm){ event.stopPropagation(); event.preventDefault(); let fileExt = attachFileNm.substring(attachFileNm.indexOf('.')+1); let options = { 'fileExt' : fileExt ,'flpth' : '/data/dms' ,'streFileNm' : attachPhysiclFileNm } fn_fileViewer( options ); } 인천시, 사회연대경제 청년 일경험 시범사업 참여기업 모집 -기업당 최대 4명 배정, 인건비(월 234만 원)·운영비·멘토수당 지원- 담당부서 사회적경제과 / 서승희 (032-440-4913) 제공일시 2026-07-09 조회수 951 인천광역시(시장 박찬대)는 지역 사회연대경제 조직의 경쟁력을 강화하고 미취업 청년들에게 실질적인 직무 경험을 제공하기 위해 ‘사회연대경제 청년 일경험 시범사업’의 참여기업 모집에 나선다. 이번 모집은 향후 선발될 인천지역 청년 59명과의 매칭을 위한 것으로, 참여기업을 먼저 선정한 뒤 청년을 모집·배치하는 방식으로 진행된다. 시는 참여기업의 신청을 받아 적격성 심사를 거쳐 최종 참여기업을 선정할 계획이다. 모집 대상은 인천에 소재한 마을기업, 협동조합, 고용인원 10명 미만의 사회연대경제 관련 비영리법인 및 단체 등이다. 선정된 기업에는 조직 규모와 직무 설계 수준 등을 고려해 기업당 최대 4명의 청년 인턴이 배정된다. 참여기업에는 인턴십 운영에 필요한 예산이 지원된다. 청년 1인당 월 234만 원의 인건비를 포함해 기업 운영비 월 20만 원, 멘토수당 월 15만 원과 4대 보험료 기업부담분이 지급된다. 인턴십은 일반 과업을 수행하는 ‘취업형’과 신규 직무를 기획·실행하는 ‘일자리창조형’ 중 선택할 수 있으며, 기업 선정과 청년 매칭이 완료되면 청년들은 각 참여기업에 배치돼 약 4개월간 일경험 프로그램에 참여하게 된다. 참여를 희망하는 기업은 오는 7월 13일까지 신청서와 운영계획서 등 관련 서류를 구비해 인천광역시사회적경제지원센터 전자우편(home@ insehub.or.kr)으로 제출하면 된다. 김상길 시 경제산업본부장은 “지역 사회 문제를 해결하고 새로운 가치를 창출하는 사회연대경제는 인천 경제의 균형 발전을 위한 핵심 동력”이라며, “이번 사업이 청년들에게는 양질의 일경험 기회를 제공하고, 사회연대경제 조직에는 우수 인재를 확보해 성장의 기반을 마련하는 계기가 되길 기대한다” 라고 말했다. 이어 \"앞으로도 청년과 사회연대경제 조직이 함께 성장할 수 있는 다양한 지원사업을 확대해 지속 가능한 사회연대경제 생태계 조성에 최선을 다하겠다\"라고 밝혔다. 기타 자세한 사항은 인천광역시사회적경제지원센터(032-725-3305)로 문의하면 된다. 첨부파일 --> --> 1 (1) (8시 30분) 인천시 사회연대경제 청년 일경험 시범사업 참여기업 모집.hwpx 미리보기 다운로드 <!-- 이 게시물은 \"공공누리\" 의 자유이용허락 표시제도에 따라 이용할 수 있습니다. 이 페이지에서 제공하는 정보에 대하여 만족하십니까? 21554 인천광역시 남동구 정각로 29(구월동) TEL:(032)120 (유료) [찾아오시는 길] © Incheon Metropolitan City. All rights reserved.",
       "is_official_source": false,
       "is_public_interest_article": true,
       "is_hub_candidate": false,
@@ -47649,10 +47695,7 @@
       "weak_youth_signal": false,
       "missing_youth_content_signal": false,
       "archive_key": "https://www.incheon.go.kr/IC010205/view?repSeq=DOM_0000000015113485&curPage=1&srchRepTitle=청년&srchRepContents=청년",
-      "published_at": "2026-07-09T00:00:00+09:00",
-      "publisher_url": "https://www.incheon.go.kr/IC010205/view?repSeq=DOM_0000000015113485&curPage=1&srchRepTitle=%EC%B2%AD%EB%85%84&srchRepContents=%EC%B2%AD%EB%85%84",
-      "publisher_icon_url": "https://www.incheon.go.kr/humanframe/globaltheme/assets/image/favicon/apple-touch-icon.png",
-      "body_text": "이 누리집은 대한민국 공식 전자정부 누리집입니다. ' + pmenuList[kk].text + ' '; }else{ pmenuUri += ' ' + pmenuList[kk].text + ' '; } //pmenuUri += ' ' + pmenuList[kk].text + ' '; } } // console.log(pmenuUri); $(\"#lowerMenuPopupList\").html(pmenuUri); } $(function(){ $(\"[id*=menuPopup]\").click(function () { $('.mobile-nav-pop-wrap .item').removeClass('active'); $('#mobileMnPopup').show(); document.getElementsByTagName('body')[0].style.overflow = 'hidden'; $(this).addClass('active'); }); $('#popupClose').click(function () { $('.mobile-nav-pop-wrap .item').removeClass('active'); $('#mobileMnPopup').hide(); document.getElementsByTagName('body')[0].style.overflow = 'scroll'; }); }); function fn_mobileMoveHome(){ $(\".btn-view-menuall\").click(); $(\"#popupSitemap\").removeClass(\"is-active\"); } /* const user = navigator.userAgent; if ( user.indexOf(\"iPhone\") > -1 || user.indexOf(\"Android\") > -1 ) { console.log(\"mobile버젼\"); console.log(user); }else{ console.log(\"pc버젼\"); console.log(user); } */ Home 인천소식 보도/해명 보도자료 메뉴 이동 Home 인천소식 보도/해명 보도자료 메뉴1 메뉴2 --> 인천소식 새소식 주요행사정보 보도/해명 하위메뉴 열기 --> 하위메뉴 열기 --> --> 보도자료 설명자료 고시/공고/시보 하위메뉴 열기 --> 하위메뉴 열기 --> --> 고시공고 인천시보 반상회보 입법예고 매체 모음 카드뉴스 인천형 행정체제 개편 하위메뉴 열기 --> 하위메뉴 열기 --> --> 행정체제 개편 개요 공지사항 보도자료 홍보자료 보도자료 공유레이어열기 Home>인천소식>보도/해명>보도자료', '/IC010205');\"> 스크랩 페이스북 X 네이버블로그 카카오스토리 인스타그램 --> 주소복사 공유레이어닫기 인쇄 var menuTitle = \"보도자료\"; /* function f_fileView(attachFileSeq, attachFileDetailSeq, oriFileNm){ event.stopPropagation(); event.preventDefault(); fn_fileViewerUrl( oriFileNm, \"/comm/dmsFileDownload?attachFileSeq=\"+attachFileSeq+\"&attachFileDetailSeq=\"+attachFileDetailSeq ); } */ function f_fileViewer(attachPhysiclFileNm, attachFileNm){ event.stopPropagation(); event.preventDefault(); let fileExt = attachFileNm.substring(attachFileNm.indexOf('.')+1); let options = { 'fileExt' : fileExt ,'flpth' : '/data/dms' ,'streFileNm' : attachPhysiclFileNm } fn_fileViewer( options ); } 인천시, 사회연대경제 청년 일경험 시범사업 참여기업 모집 -기업당 최대 4명 배정, 인건비(월 234만 원)·운영비·멘토수당 지원- 담당부서 사회적경제과 / 서승희 (032-440-4913) 제공일시 2026-07-09 조회수 951 인천광역시(시장 박찬대)는 지역 사회연대경제 조직의 경쟁력을 강화하고 미취업 청년들에게 실질적인 직무 경험을 제공하기 위해 ‘사회연대경제 청년 일경험 시범사업’의 참여기업 모집에 나선다. 이번 모집은 향후 선발될 인천지역 청년 59명과의 매칭을 위한 것으로, 참여기업을 먼저 선정한 뒤 청년을 모집·배치하는 방식으로 진행된다. 시는 참여기업의 신청을 받아 적격성 심사를 거쳐 최종 참여기업을 선정할 계획이다. 모집 대상은 인천에 소재한 마을기업, 협동조합, 고용인원 10명 미만의 사회연대경제 관련 비영리법인 및 단체 등이다. 선정된 기업에는 조직 규모와 직무 설계 수준 등을 고려해 기업당 최대 4명의 청년 인턴이 배정된다. 참여기업에는 인턴십 운영에 필요한 예산이 지원된다. 청년 1인당 월 234만 원의 인건비를 포함해 기업 운영비 월 20만 원, 멘토수당 월 15만 원과 4대 보험료 기업부담분이 지급된다. 인턴십은 일반 과업을 수행하는 ‘취업형’과 신규 직무를 기획·실행하는 ‘일자리창조형’ 중 선택할 수 있으며, 기업 선정과 청년 매칭이 완료되면 청년들은 각 참여기업에 배치돼 약 4개월간 일경험 프로그램에 참여하게 된다. 참여를 희망하는 기업은 오는 7월 13일까지 신청서와 운영계획서 등 관련 서류를 구비해 인천광역시사회적경제지원센터 전자우편(home@ insehub.or.kr)으로 제출하면 된다. 김상길 시 경제산업본부장은 “지역 사회 문제를 해결하고 새로운 가치를 창출하는 사회연대경제는 인천 경제의 균형 발전을 위한 핵심 동력”이라며, “이번 사업이 청년들에게는 양질의 일경험 기회를 제공하고, 사회연대경제 조직에는 우수 인재를 확보해 성장의 기반을 마련하는 계기가 되길 기대한다” 라고 말했다. 이어 \"앞으로도 청년과 사회연대경제 조직이 함께 성장할 수 있는 다양한 지원사업을 확대해 지속 가능한 사회연대경제 생태계 조성에 최선을 다하겠다\"라고 밝혔다. 기타 자세한 사항은 인천광역시사회적경제지원센터(032-725-3305)로 문의하면 된다. 첨부파일 --> --> 1 (1) (8시 30분) 인천시 사회연대경제 청년 일경험 시범사업 참여기업 모집.hwpx 미리보기 다운로드 <!-- 이 게시물은 \"공공누리\" 의 자유이용허락 표시제도에 따라 이용할 수 있습니다. 이 페이지에서 제공하는 정보에 대하여 만족하십니까? 21554 인천광역시 남동구 정각로 29(구월동) TEL:(032)120 (유료) [찾아오시는 길] © Incheon Metropolitan City. All rights reserved."
+      "published_at": "2026-07-09T00:00:00+09:00"
     },
     {
       "url": "https://www.opm.go.kr/opm/news/press-release.do?mode=view&articleNo=162777&srSearchVal=%EC%B2%AD%EB%85%84&article.offset=0&articleLimit=20",
@@ -49615,12 +49658,14 @@
     {
       "url": "https://www.incheon.go.kr/IC010205/view?repSeq=DOM_0000000014979400&curPage=1&srchRepTitle=%EC%B2%AD%EB%85%84&srchRepContents=%EC%B2%AD%EB%85%84",
       "canonical_url": "https://www.incheon.go.kr/IC010205/view?repSeq=DOM_0000000014979400&curPage=1&srchRepTitle=청년&srchRepContents=청년",
+      "publisher_url": "https://www.incheon.go.kr/IC010205/view?repSeq=DOM_0000000014979400&curPage=1&srchRepTitle=%EC%B2%AD%EB%85%84&srchRepContents=%EC%B2%AD%EB%85%84",
       "feed_url": "https://www.incheon.go.kr/IC010205/view?repSeq=DOM_0000000014979400&curPage=1&srchRepTitle=%EC%B2%AD%EB%85%84&srchRepContents=%EC%B2%AD%EB%85%84",
       "title": "인천시, 「찾아가는 청년주거 상담소」 성황리에 개최 인천광역시는 국토교통부와 함께 6월 18일 인천광역시청 대회의실에서 「2026년 찾아가는 청년주거 상담소」를 성황리에 개최했다고 밝혔다. 이번 행사는 청년층의 주거비 부담 증가와 전세사기 등 주거 관련 피해 예방을 위해 청년들에게 공공주택, 주거금융, 청약제도 등 제공일자 2026-06-19 제공부서 청년정책담당관",
       "source": "인천광역시 보도자료 청년 검색",
       "source_name": "인천광역시 보도자료 청년 검색",
       "source_kind": "local",
       "publisher_domain": "www.incheon.go.kr",
+      "publisher_icon_url": "https://www.incheon.go.kr/humanframe/globaltheme/assets/image/favicon/apple-touch-icon.png",
       "published_date": "2026-06-19T00:00:00+09:00",
       "publisher_published_at": "2026-06-19T00:00:00+09:00",
       "region": "인천",
@@ -49643,6 +49688,7 @@
       ],
       "lead_text": "인천시, 「찾아가는 청년주거 상담소」 성황리에 개최 인천광역시는 국토교통부와 함께 6월 18일 인천광역시청 대회의실에서 「2026년 찾아가는 청년주거 상담소」를 성황리에 개최했다고 밝혔다. 이번 행사는 청년층의 주거비 부담 증가와 전세사기 등 주거 관련 피해 예방을 위해 청년들에게 공공주택, 주거금융, 청약제도 등 제공일자 2026-06-19 제공부서 청년정책담당관",
       "youth_excerpt": "인천시, 「찾아가는 청년주거 상담소」 성황리에 개최 인천광역시는 국토교통부와 함께 6월 18일 인천광역시청 대회의실에서 「2026년 찾아가는 청년주거 상담소」를 성황리에 개최했다고 밝혔다...",
+      "body_text": "이 누리집은 대한민국 공식 전자정부 누리집입니다. ' + pmenuList[kk].text + ' '; }else{ pmenuUri += ' ' + pmenuList[kk].text + ' '; } //pmenuUri += ' ' + pmenuList[kk].text + ' '; } } // console.log(pmenuUri); $(\"#lowerMenuPopupList\").html(pmenuUri); } $(function(){ $(\"[id*=menuPopup]\").click(function () { $('.mobile-nav-pop-wrap .item').removeClass('active'); $('#mobileMnPopup').show(); document.getElementsByTagName('body')[0].style.overflow = 'hidden'; $(this).addClass('active'); }); $('#popupClose').click(function () { $('.mobile-nav-pop-wrap .item').removeClass('active'); $('#mobileMnPopup').hide(); document.getElementsByTagName('body')[0].style.overflow = 'scroll'; }); }); function fn_mobileMoveHome(){ $(\".btn-view-menuall\").click(); $(\"#popupSitemap\").removeClass(\"is-active\"); } /* const user = navigator.userAgent; if ( user.indexOf(\"iPhone\") > -1 || user.indexOf(\"Android\") > -1 ) { console.log(\"mobile버젼\"); console.log(user); }else{ console.log(\"pc버젼\"); console.log(user); } */ Home 인천소식 보도/해명 보도자료 메뉴 이동 Home 인천소식 보도/해명 보도자료 메뉴1 메뉴2 --> 인천소식 새소식 주요행사정보 보도/해명 하위메뉴 열기 --> 하위메뉴 열기 --> --> 보도자료 설명자료 고시/공고/시보 하위메뉴 열기 --> 하위메뉴 열기 --> --> 고시공고 인천시보 반상회보 입법예고 매체 모음 카드뉴스 인천형 행정체제 개편 하위메뉴 열기 --> 하위메뉴 열기 --> --> 행정체제 개편 개요 공지사항 보도자료 홍보자료 보도자료 공유레이어열기 Home>인천소식>보도/해명>보도자료', '/IC010205');\"> 스크랩 페이스북 X 네이버블로그 카카오스토리 인스타그램 --> 주소복사 공유레이어닫기 인쇄 var menuTitle = \"보도자료\"; /* function f_fileView(attachFileSeq, attachFileDetailSeq, oriFileNm){ event.stopPropagation(); event.preventDefault(); fn_fileViewerUrl( oriFileNm, \"/comm/dmsFileDownload?attachFileSeq=\"+attachFileSeq+\"&attachFileDetailSeq=\"+attachFileDetailSeq ); } */ function f_fileViewer(attachPhysiclFileNm, attachFileNm){ event.stopPropagation(); event.preventDefault(); let fileExt = attachFileNm.substring(attachFileNm.indexOf('.')+1); let options = { 'fileExt' : fileExt ,'flpth' : '/data/dms' ,'streFileNm' : attachPhysiclFileNm } fn_fileViewer( options ); } 인천시, 「찾아가는 청년주거 상담소」 성황리에 개최 -청년 맞춤형 주거상담으로 주거 고민 해소 지원- 담당부서 청년정책담당관 / 이성호 (032-440-4174) 제공일시 2026-06-19 조회수 1021 --> 관련 사진.jpg 미리보기 다운로드 <!-- --> 3 (1) (8시 30분) 인천시, 「찾아가는 청년주거 상담소」 성황리에 개최.hwpx 미리보기 다운로드 <!-- 이 게시물은 \"공공누리\" 의 자유이용허락 표시제도에 따라 이용할 수 있습니다. 이 페이지에서 제공하는 정보에 대하여 만족하십니까? 21554 인천광역시 남동구 정각로 29(구월동) TEL:(032)120 (유료) [찾아오시는 길] © Incheon Metropolitan City. All rights reserved.",
       "is_official_source": false,
       "is_public_interest_article": true,
       "is_hub_candidate": false,
@@ -49661,20 +49707,20 @@
       "weak_youth_signal": false,
       "missing_youth_content_signal": false,
       "archive_key": "https://www.incheon.go.kr/IC010205/view?repSeq=DOM_0000000014979400&curPage=1&srchRepTitle=청년&srchRepContents=청년",
-      "published_at": "2026-06-19T00:00:00+09:00",
-      "publisher_url": "https://www.incheon.go.kr/IC010205/view?repSeq=DOM_0000000014979400&curPage=1&srchRepTitle=%EC%B2%AD%EB%85%84&srchRepContents=%EC%B2%AD%EB%85%84",
-      "publisher_icon_url": "https://www.incheon.go.kr/humanframe/globaltheme/assets/image/favicon/apple-touch-icon.png",
-      "body_text": "이 누리집은 대한민국 공식 전자정부 누리집입니다. ' + pmenuList[kk].text + ' '; }else{ pmenuUri += ' ' + pmenuList[kk].text + ' '; } //pmenuUri += ' ' + pmenuList[kk].text + ' '; } } // console.log(pmenuUri); $(\"#lowerMenuPopupList\").html(pmenuUri); } $(function(){ $(\"[id*=menuPopup]\").click(function () { $('.mobile-nav-pop-wrap .item').removeClass('active'); $('#mobileMnPopup').show(); document.getElementsByTagName('body')[0].style.overflow = 'hidden'; $(this).addClass('active'); }); $('#popupClose').click(function () { $('.mobile-nav-pop-wrap .item').removeClass('active'); $('#mobileMnPopup').hide(); document.getElementsByTagName('body')[0].style.overflow = 'scroll'; }); }); function fn_mobileMoveHome(){ $(\".btn-view-menuall\").click(); $(\"#popupSitemap\").removeClass(\"is-active\"); } /* const user = navigator.userAgent; if ( user.indexOf(\"iPhone\") > -1 || user.indexOf(\"Android\") > -1 ) { console.log(\"mobile버젼\"); console.log(user); }else{ console.log(\"pc버젼\"); console.log(user); } */ Home 인천소식 보도/해명 보도자료 메뉴 이동 Home 인천소식 보도/해명 보도자료 메뉴1 메뉴2 --> 인천소식 새소식 주요행사정보 보도/해명 하위메뉴 열기 --> 하위메뉴 열기 --> --> 보도자료 설명자료 고시/공고/시보 하위메뉴 열기 --> 하위메뉴 열기 --> --> 고시공고 인천시보 반상회보 입법예고 매체 모음 카드뉴스 인천형 행정체제 개편 하위메뉴 열기 --> 하위메뉴 열기 --> --> 행정체제 개편 개요 공지사항 보도자료 홍보자료 보도자료 공유레이어열기 Home>인천소식>보도/해명>보도자료', '/IC010205');\"> 스크랩 페이스북 X 네이버블로그 카카오스토리 인스타그램 --> 주소복사 공유레이어닫기 인쇄 var menuTitle = \"보도자료\"; /* function f_fileView(attachFileSeq, attachFileDetailSeq, oriFileNm){ event.stopPropagation(); event.preventDefault(); fn_fileViewerUrl( oriFileNm, \"/comm/dmsFileDownload?attachFileSeq=\"+attachFileSeq+\"&attachFileDetailSeq=\"+attachFileDetailSeq ); } */ function f_fileViewer(attachPhysiclFileNm, attachFileNm){ event.stopPropagation(); event.preventDefault(); let fileExt = attachFileNm.substring(attachFileNm.indexOf('.')+1); let options = { 'fileExt' : fileExt ,'flpth' : '/data/dms' ,'streFileNm' : attachPhysiclFileNm } fn_fileViewer( options ); } 인천시, 「찾아가는 청년주거 상담소」 성황리에 개최 -청년 맞춤형 주거상담으로 주거 고민 해소 지원- 담당부서 청년정책담당관 / 이성호 (032-440-4174) 제공일시 2026-06-19 조회수 1021 --> 관련 사진.jpg 미리보기 다운로드 <!-- --> 3 (1) (8시 30분) 인천시, 「찾아가는 청년주거 상담소」 성황리에 개최.hwpx 미리보기 다운로드 <!-- 이 게시물은 \"공공누리\" 의 자유이용허락 표시제도에 따라 이용할 수 있습니다. 이 페이지에서 제공하는 정보에 대하여 만족하십니까? 21554 인천광역시 남동구 정각로 29(구월동) TEL:(032)120 (유료) [찾아오시는 길] © Incheon Metropolitan City. All rights reserved."
+      "published_at": "2026-06-19T00:00:00+09:00"
     },
     {
       "url": "https://www.busan.go.kr/nbtnewsBU/1734826?curPage=&srchBeginDt=&srchEndDt=&srchKey=sj&srchText=청년",
       "canonical_url": "https://www.busan.go.kr/nbtnewsBU/1734826?curPage=&srchBeginDt=&srchEndDt=&srchKey=sj&srchText=청년",
+      "publisher_url": "https://www.busan.go.kr/nbtnewsBU/1734826?curPage=&srchBeginDt=&srchEndDt=&srchKey=sj&srchText=청년",
       "feed_url": "https://www.busan.go.kr/nbtnewsBU/1734826?curPage=&srchBeginDt=&srchEndDt=&srchKey=sj&srchText=청년",
       "title": "부산시, 미취업 청년 189명 대상 \"사회연대경제 청년 일경험 시범사업\" 본격 추진 중소상공인지원과 | 최재명 | 0518884767 | 2026-06-19 ◈ 6.24.까지 참여기업 모집 후 6.29.~7.3. 참여 청년 모집… 사회연대경제 조직과 청년을 연결해 현장 중심의 일 경험 기회를 제공하고, 직무 역량 강화와 경력 형성을 지원하기 위해 마련 ◈ 총사업비 29억 원을 투입해 '취업형'과 '일자리창조형'으로 구분해 운영… 월 최대 234만 원의 임금이 지급되며, 사전 직무교육 등 다양한 지원 제공 ◈ 시, 청년 일자리 확대·미취업 청년의 직무역량 강화·사회",
       "source": "부산광역시 보도자료 청년 검색",
       "source_name": "부산광역시 보도자료 청년 검색",
       "source_kind": "local",
       "publisher_domain": "www.busan.go.kr",
+      "publisher_icon_url": "https://www.busan.go.kr/favicon.ico",
+      "image_url": "https://www.busan.go.kr/humanframe/theme/busan22/assets/img/main/thumb_v2.jpg",
       "published_date": "2026-06-19T00:00:00+09:00",
       "publisher_published_at": "2026-06-19T00:00:00+09:00",
       "region": "부산",
@@ -49690,12 +49736,14 @@
       "issue_tags": [
         "고용"
       ],
+      "article_type": "official",
       "content_direction": "official_release",
       "governance_activity_types": [
         "모집"
       ],
       "lead_text": "부산시, 미취업 청년 189명 대상 \"사회연대경제 청년 일경험 시범사업\" 본격 추진 중소상공인지원과 | 최재명 | 0518884767 | 2026-06-19 ◈ 6.24.까지 참여기업 모집 후 6.29.~7.3. 참여 청년 모집… 사회연대경제 조직과 청년을 연결해 현장 중심의 일 경험 기회를 제공하고, 직무 역량 강화와 경력 형성을 지원하기 위해 마련 ◈ 총사업비 29억 원을 투입해 '취업형'과 '일자리창조형'으로 구분해 운영… 월 최대 234만 원의 임금이 지급되며, 사전 직무교육 등 다양한 지원 제공 ◈ 시, 청년 일자리 확대·미취업 청년의 직무역량 강화·사회",
       "youth_excerpt": "부산시, 미취업 청년 189명 대상 \"사회연대경제 청년 일경험 시범사업\" 본격 추진 중소상공인지원과 | 최재명 | 0518884767 | 2026-06-19 ◈ 6...",
+      "body_text": "시정관련 건의사항 또는 답변을 원하는 사항은 부산민원120 민원신청 을 이용하여 주세요. (우 47545) 부산광역시 연제구 중앙대로 1001(연산동) Copyright © Busan Metropolitan City. All rights reserved. 평일 08:30 ~ 18:30 야간․공휴일 당직실 전환",
       "is_official_source": true,
       "is_public_interest_article": true,
       "is_hub_candidate": false,
@@ -49714,12 +49762,7 @@
       "weak_youth_signal": false,
       "missing_youth_content_signal": false,
       "archive_key": "https://www.busan.go.kr/nbtnewsBU/1734826?curPage=&srchBeginDt=&srchEndDt=&srchKey=sj&srchText=청년",
-      "published_at": "2026-06-19T00:00:00+09:00",
-      "publisher_url": "https://www.busan.go.kr/nbtnewsBU/1734826?curPage=&srchBeginDt=&srchEndDt=&srchKey=sj&srchText=청년",
-      "publisher_icon_url": "https://www.busan.go.kr/favicon.ico",
-      "image_url": "https://www.busan.go.kr/humanframe/theme/busan22/assets/img/main/thumb_v2.jpg",
-      "article_type": "official",
-      "body_text": "시정관련 건의사항 또는 답변을 원하는 사항은 부산민원120 민원신청 을 이용하여 주세요. (우 47545) 부산광역시 연제구 중앙대로 1001(연산동) Copyright © Busan Metropolitan City. All rights reserved. 평일 08:30 ~ 18:30 야간․공휴일 당직실 전환"
+      "published_at": "2026-06-19T00:00:00+09:00"
     },
     {
       "url": "http://www.4th.kr/news/articleView.html?idxno=2113404",
@@ -52506,6 +52549,7 @@
     {
       "url": "http://repository.kihasa.re.kr/handle/201002/33560",
       "canonical_url": "http://repository.kihasa.re.kr/handle/201002/33560",
+      "publisher_url": "http://repository.kihasa.re.kr/handle/201002/33560",
       "feed_url": "http://repository.kihasa.re.kr/handle/201002/33560",
       "title": "정책 대상으로서의 청년, 무엇을 어떻게 파악할 것인가?",
       "source": "보건·복지 Issue & Focus",
@@ -52542,12 +52586,12 @@
       "weak_youth_signal": false,
       "missing_youth_content_signal": false,
       "archive_key": "http://repository.kihasa.re.kr/handle/201002/33560",
-      "published_at": "2020-01-20T00:00:00+09:00",
-      "publisher_url": "http://repository.kihasa.re.kr/handle/201002/33560"
+      "published_at": "2020-01-20T00:00:00+09:00"
     },
     {
       "url": "https://papersearch.net/google_link/fulltext.asp?file_name=30606130.pdf",
       "canonical_url": "https://papersearch.net/google_link/fulltext.asp?file_name=30606130.pdf",
+      "publisher_url": "https://papersearch.net/google_link/fulltext.asp?file_name=30606130.pdf",
       "feed_url": "https://papersearch.net/google_link/fulltext.asp?file_name=30606130.pdf",
       "title": "대구광역시 청년 정책 평가 분석: 대구형 청년보장제(Youth Guarantee)를 중심으로",
       "source": "한국정책학회 추계학술발표논문집",
@@ -52585,8 +52629,7 @@
       "weak_youth_signal": false,
       "missing_youth_content_signal": false,
       "archive_key": "https://papersearch.net/google_link/fulltext.asp?file_name=30606130.pdf",
-      "published_at": "2020-01-01T00:00:00+09:00",
-      "publisher_url": "https://papersearch.net/google_link/fulltext.asp?file_name=30606130.pdf"
+      "published_at": "2020-01-01T00:00:00+09:00"
     }
   ]
 }
