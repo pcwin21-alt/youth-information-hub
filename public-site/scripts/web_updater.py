@@ -68,7 +68,8 @@ ASSET_VERSION = "20260901-news-topic-two-lines-01"
 HOME_THUMBNAIL_CACHE_DIRNAME = "article-thumbnails"
 HOME_THUMBNAIL_DOWNLOAD_LIMIT = 18
 HOME_THUMBNAIL_MAX_BYTES = 4 * 1024 * 1024
-BRAND_MARK_SRC = f"assets/branding/youth-together-mark.svg?v={ASSET_VERSION}"
+BRAND_MARK_SRC = f"assets/branding/right-policy-mark.svg?v={ASSET_VERSION}"
+RIGHT_POLICY_HOME_URL = "https://rightpolicy.co.kr/"
 MINISTRY_HOME_MARKS = {
     "고용노동부": ("https://www.moel.go.kr", "https://www.moel.go.kr/favicon.ico"),
     "기후에너지환경부": ("https://www.me.go.kr", "https://www.me.go.kr/favicon.ico"),
@@ -10362,14 +10363,15 @@ PAGE_TEMPLATE = """<!doctype html>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="icon" type="image/svg+xml" href="{brand_mark_src}">
+  <link rel="apple-touch-icon" href="{brand_mark_src}">
   <link rel="stylesheet" href="assets/site.css?v={asset_version}">
 </head>
 <body data-page="{active_page}" data-analytics-endpoint="{analytics_endpoint}">
   <a class="skip-link" href="#main-content">본문으로 건너뛰기</a>
   <header class="editorial-header">
     <div class="editorial-header-inner">
-      <a class="editorial-lab-banner" href="index.html" aria-label="적재적소 연구소 홈으로"><img src="assets/branding/right-policy-research-institute-banner.png?v={asset_version}" alt="적재적소 연구소"></a>
-      <a class="editorial-brand" href="index.html">적재적소 브리프</a>
+      <a class="editorial-lab-banner" href="https://rightpolicy.co.kr/" aria-label="적재적소 연구소 홈페이지로"><img src="assets/branding/right-policy-research-institute-banner.png?v={asset_version}" alt="적재적소 연구소"></a>
+      <a class="editorial-brand" href="https://rightpolicy.co.kr/">적재적소 프리핑</a>
       {global_search}
       {live_clock_topbar}
       <button class="editorial-menu-trigger" type="button" data-mobile-menu-open="true" aria-label="전체 메뉴 열기">전체 메뉴</button>
@@ -12631,7 +12633,7 @@ def nav_label(active_page: str) -> str:
 
 
 def page_heading(active_page: str) -> str:
-    return "청년투게더"
+    return "적재적소 프리핑"
 
 
 def render_guide_link(active_page: str) -> str:
@@ -12797,8 +12799,8 @@ def render_side_nav(active_page: str) -> str:
         for label in ADMIN_NAV_PLACEHOLDERS
     )
     return f"""
-      <a class="side-brand" href="index.html" aria-label="적재적소 브리프 홈으로 이동">
-        <strong>적재적소 브리프</strong>
+      <a class="side-brand" href="https://rightpolicy.co.kr/" aria-label="적재적소 연구소 홈페이지로 이동">
+        <strong>적재적소 프리핑</strong>
         <span>적재적소 연구소 운영</span>
       </a>
       {render_live_clock("side")}
@@ -19504,7 +19506,7 @@ def build_tools_page(articles: list[dict], status: dict) -> str:
 
 
 def build_privacy_page(contact_settings: dict[str, str]) -> str:
-    organization = html.escape(contact_settings.get("organization_name", "청년투게더"))
+    organization = html.escape(contact_settings.get("organization_name", "적재적소 연구소"))
     contact_email = html.escape(contact_settings.get("email", ""))
     updated_at = html.escape(format_display_datetime(contact_settings.get("updated_at")))
     page_intro = render_compact_intro(
@@ -19516,7 +19518,7 @@ def build_privacy_page(contact_settings: dict[str, str]) -> str:
     return f"""
     {page_intro}
     <section class="section" id="main-list">
-      {render_list_block("처리 목적과 항목", "청년투게더는 공개 정보 제공과 문의 응대에 필요한 범위에서만 정보를 처리합니다.", [
+      {render_list_block("처리 목적과 항목", "적재적소 프리핑은 공개 정보 제공과 문의 응대에 필요한 범위에서만 정보를 처리합니다.", [
         ("사이트 이용 로그", "분석 주소가 연결된 경우 방문 페이지, 접속 시각, 브라우저·기기 정보, 참조 URL, 세션 식별자"),
         ("주간 브리핑 신청", "이메일, 선택한 역할·지역·의제, 수신 동의·확인·중지 시각, 신청 화면"),
         ("문의·제보", "이메일 주소, 이름 또는 단체명, 문의 내용, 첨부 링크처럼 이용자가 직접 제공한 정보"),
@@ -19556,7 +19558,7 @@ def build_privacy_page(contact_settings: dict[str, str]) -> str:
 
 
 def build_terms_page(contact_settings: dict[str, str]) -> str:
-    organization = html.escape(contact_settings.get("organization_name", "청년투게더"))
+    organization = html.escape(contact_settings.get("organization_name", "적재적소 연구소"))
     contact_email = html.escape(contact_settings.get("email", ""))
     page_intro = render_compact_intro(
         "이용약관",
@@ -19567,7 +19569,7 @@ def build_terms_page(contact_settings: dict[str, str]) -> str:
     return f"""
     {page_intro}
     <section class="section" id="main-list">
-      {render_list_block("서비스 성격", "청년투게더는 공개 기사, 정부·지자체 발표, 연구·통계 자료를 수집·분류해 안내하는 정보 서비스입니다.", [
+      {render_list_block("서비스 성격", "적재적소 프리핑은 공개 기사, 정부·지자체 발표, 연구·통계 자료를 수집·분류해 안내하는 정보 서비스입니다.", [
         ("원문 우선", "신청, 지원, 법적 판단, 일정 확인은 반드시 원문 링크와 해당 기관 공지를 기준으로 합니다."),
         ("자동 분류", "일부 요약, 분류, 날짜 추출은 자동화되어 오류가 있을 수 있으며 정정 요청을 받을 수 있습니다."),
         ("콘텐츠 제작", "내부 운영자가 선별한 기사는 카드뉴스, 블로그, 보고서 등 후속 콘텐츠의 원천 자료로 활용될 수 있습니다."),
@@ -19730,7 +19732,7 @@ def build_footer_note(contact_settings: dict[str, str]) -> str:
     footer_left = footer_brand_image
     footer_site_head = """
           <div class="site-footer-site-head">
-            <strong>청년투게더</strong>
+            <strong>적재적소 프리핑</strong>
             <span>적재적소 연구소 운영</span>
           </div>
     """
@@ -21384,13 +21386,14 @@ PUBLIC_PAGE_TEMPLATE = """<!doctype html>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="icon" type="image/svg+xml" href="{brand_mark_src}">
+  <link rel="apple-touch-icon" href="{brand_mark_src}">
   <link rel="stylesheet" href="assets/site.css?v={asset_version}">
 </head>
 <body data-page="{active_page}" data-content-kind="{content_kind}" data-analytics-endpoint="{analytics_endpoint}" data-subscription-endpoint="{subscription_endpoint}">
   <a class="skip-link" href="#main-content">본문으로 건너가기</a>
   <header class="site-header">
     <div class="site-header-inner">
-      <a class="brand-lockup" href="index.html"><img src="{brand_mark_src}" alt=""><span>청년투게더</span></a>
+      <a class="brand-lockup" href="https://rightpolicy.co.kr/" aria-label="적재적소 연구소 홈페이지로"><img src="{brand_mark_src}" alt=""><span>적재적소 프리핑</span></a>
       <nav aria-label="주요 메뉴">{top_nav}</nav>
       <button class="mobile-menu-trigger" type="button" data-mobile-menu-open="true" aria-label="전체 메뉴 열기">☰</button>
     </div>
@@ -21413,9 +21416,9 @@ PAGE_DESCRIPTIONS = {
     "guide.html": "근거를 모으고 정책제안의 첫 문장을 만드는 단계별 실험실입니다.",
     "hub.html": "청년 참여기구와 현장 논의 기록을 지역과 의제별로 확인합니다.",
     "opinion.html": "청년정책을 둘러싼 검증 가능한 해설과 현장 관점을 모았습니다.",
-    "institution.html": "공공기관의 청년정책 변화 판단, 보고, 협업을 위한 청년투게더 안내입니다.",
-    "about.html": "청년투게더를 운영하는 박진감과 정책 정보를 고르는 편집 기준을 공개합니다.",
-    "contact.html": "청년투게더 운영 문의, 자료 제보, 정정 요청과 기관 협업 접수 안내입니다.",
+    "institution.html": "공공기관의 청년정책 변화 판단, 보고, 협업을 위한 적재적소 프리핑 안내입니다.",
+    "about.html": "적재적소 연구소의 운영·편집 기준을 공개합니다.",
+    "contact.html": "적재적소 연구소 운영 문의, 자료 제보, 정정 요청과 기관 협업 접수 안내입니다.",
 }
 
 
@@ -21436,7 +21439,7 @@ BOTTOM_NAV_ITEMS = [
     ("local.html", "지자체"),
 ]
 PAGE_HEADINGS.update({
-    "index.html": "적재적소 브리프",
+    "index.html": "적재적소 프리핑",
     "news.html": "언론 기사",
     "trends.html": "실시간 청년정책 AI 브리프",
     "guide.html": "정책제안 실험실",
@@ -21676,7 +21679,7 @@ def build_product_event_script() -> str:
     const summary = button.dataset.shareSummary || '';
     const path = button.dataset.sharePath || location.href;
     const url = new URL(path, location.href).href;
-    const lines = [title, meta, summary, '청년투게더에서 원문과 관련 자료를 확인해 보세요.', url].filter(Boolean);
+    const lines = [title, meta, summary, '적재적소 프리핑에서 원문과 관련 자료를 확인해 보세요.', url].filter(Boolean);
     return { title, text: lines.join('\n\n'), url };
   }
 
@@ -22118,9 +22121,9 @@ def build_product_about_page(contact_settings: dict[str, str]) -> str:
     <header class="editorial-page-head">
       <p class="product-eyebrow">운영자·편집 기준</p>
       <h1>누가, 어떤 기준으로 이 정보를 고르는가</h1>
-      <p>청년투게더의 신뢰는 직함이나 말투가 아니라, 운영 주체와 선별 기준, 확인하지 못한 한계를 함께 공개하는 데서 시작합니다.</p>
+      <p>적재적소 프리핑의 신뢰는 운영 주체와 선별 기준, 확인하지 못한 한계를 함께 공개하는 데서 시작합니다.</p>
     </header>
-    <section class="product-section tint" id="operator" aria-labelledby="operator-title"><div class="operator-page-grid"><div class="operator-page-label"><strong>박진감</strong><span>적재적소 연구소 운영<br>전직 정부 공무원(6급)</span></div><div class="operator-page-copy"><p class="product-eyebrow">왜 이 일을 하는가</p><h2 id="operator-title">발표된 정책과 실제로 작동하는 정책 사이를 봅니다.</h2><p>공공부문에서 정책을 다루며 쌓은 실행 관점을 청년투게더의 편집 기준으로 사용합니다. 같은 문장도 담당기관, 예산, 지역, 시행 시점에 따라 다르게 작동하기 때문입니다.</p><p>개인 이력을 권위의 대체물로 쓰지 않습니다. 대신 어떤 자료를 골랐는지, 무엇을 사실로 확인했는지, 어디부터 해석인지, 다음에는 무엇을 검증해야 하는지를 화면에 남깁니다.</p></div></div></section>
+    <section class="product-section tint" id="operator" aria-labelledby="operator-title"><div class="operator-page-grid"><div class="operator-page-label"><strong>적재적소 연구소</strong><span>운영·편집 주체</span></div><div class="operator-page-copy"><p class="product-eyebrow">운영 기준</p><h2 id="operator-title">발표된 정책과 실제로 작동하는 정책 사이를 봅니다.</h2><p>적재적소 연구소는 공공정책의 실행 관점을 적재적소 프리핑의 편집 기준으로 사용합니다. 같은 문장도 담당기관, 예산, 지역, 시행 시점에 따라 다르게 작동하기 때문입니다.</p><p>어떤 자료를 골랐는지, 무엇을 사실로 확인했는지, 어디부터 해석인지, 다음에는 무엇을 검증해야 하는지를 화면에 남깁니다.</p></div></div></section>
     <section class="product-section" id="editorial-standard" aria-labelledby="standard-title"><div class="product-section-head"><div><p class="product-eyebrow">편집 기준</p><h2 id="standard-title">정보를 더 쌓기보다 판단 순서를 만듭니다</h2><p>각 자료는 아래 질문에 답할 수 있을 때 우선적으로 연결합니다.</p></div></div><div class="trust-grid"><article class="trust-card"><h3>무엇이 달라졌는가</h3><p>발표, 공고, 의견수렴, 시행, 후속 확인 가운데 현재 상태를 구분합니다.</p></article><article class="trust-card"><h3>누구에게 어디서 작동하는가</h3><p>대상, 지역, 담당기관과 실제 적용 조건을 확인합니다.</p></article><article class="trust-card"><h3>다음에 무엇을 볼 것인가</h3><p>후속 공고, 예산, 시행 결과와 현장 반응에서 검증할 질문을 남깁니다.</p></article></div></section>
     <section class="product-section warm" id="limits" aria-labelledby="limits-title"><div class="product-section-head"><div><p class="product-eyebrow">한계와 정정</p><h2 id="limits-title">완전하거나 실시간이라고 말하지 않습니다</h2><p>현재 서비스는 선별된 공개 자료를 자동 수집·분류한 뒤 화면에 연결합니다. 누락, 날짜 미확인, 분류 오류가 있을 수 있으며 중요한 판단은 공식 원문을 기준으로 해야 합니다. 오류나 빠진 맥락은 근거와 함께 알려주시면 확인 후 바로잡습니다.</p></div></div><div class="product-actions"><a class="product-button dark" href="{contact_href}" data-event="operator_correction_contact">정정·자료 제보</a><a class="product-button subtle" href="contact.html" data-event="operator_contact_open">운영 문의 안내</a></div></section>
     """
@@ -22206,7 +22209,7 @@ def write_page(
         path,
         normalize_generated_html(
             PAGE_TEMPLATE.format(
-                page_title=html.escape("적재적소 브리프" if active_page == "index.html" else f"{page_title} | 적재적소 브리프"),
+                page_title=html.escape("적재적소 프리핑" if active_page == "index.html" else f"{page_title} | 적재적소 프리핑"),
                 page_description=html.escape(PAGE_DESCRIPTIONS.get(active_page, "청년정책과 현장 변화를 출처와 시간 흐름으로 확인합니다."), quote=True),
                 active_page=html.escape(active_page),
                 content_kind="briefing" if path.name.startswith("briefing-") else "page",

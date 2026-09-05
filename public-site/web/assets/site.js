@@ -1910,7 +1910,7 @@
     const summary = button.dataset.shareSummary || '';
     const path = button.dataset.sharePath || location.href;
     const url = new URL(path, location.href).href;
-    const lines = [title, meta, summary, '청년투게더에서 원문과 관련 자료를 확인해 보세요.', url].filter(Boolean);
+    const lines = [title, meta, summary, '적재적소 프리핑에서 원문과 관련 자료를 확인해 보세요.', url].filter(Boolean);
     return { title, text: lines.join('\n\n'), url };
   }
 
