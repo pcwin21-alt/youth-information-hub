@@ -1339,6 +1339,16 @@ class HomeSelectionTests(unittest.TestCase):
 
 
 class ProductRebuildTests(unittest.TestCase):
+    def test_editorial_title_routes_to_public_home_and_lab_banner_stays_external(self) -> None:
+        self.assertIn(
+            'class="editorial-brand" href="index.html" aria-label="적재적소 브리핑 홈으로"',
+            web_updater.PAGE_TEMPLATE,
+        )
+        self.assertIn(
+            'class="editorial-lab-banner" href="https://rightpolicy.co.kr/"',
+            web_updater.PAGE_TEMPLATE,
+        )
+
     def test_product_home_prioritizes_first_actions_and_editorial_briefing(self) -> None:
         article = make_article(
             title="서울 청년 주거 지원 시행계획 발표",

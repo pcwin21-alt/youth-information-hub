@@ -10373,7 +10373,7 @@ PAGE_TEMPLATE = """<!doctype html>
   <header class="editorial-header">
     <div class="editorial-header-inner">
       <a class="editorial-lab-banner" href="https://rightpolicy.co.kr/" aria-label="적재적소 연구소 홈페이지로"><img src="assets/branding/right-policy-research-institute-banner.png?v={asset_version}" alt="적재적소 연구소"></a>
-      <a class="editorial-brand" href="https://rightpolicy.co.kr/">적재적소 브리핑</a>
+      <a class="editorial-brand" href="index.html" aria-label="적재적소 브리핑 홈으로">적재적소 브리핑</a>
       {global_search}
       {live_clock_topbar}
       <button class="editorial-menu-trigger" type="button" data-mobile-menu-open="true" aria-label="전체 메뉴 열기">전체 메뉴</button>
