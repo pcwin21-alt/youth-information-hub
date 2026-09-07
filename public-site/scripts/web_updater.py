@@ -1874,6 +1874,11 @@ BASE_CSS = """
     box-sizing: border-box;
     opacity: 0.92;
   }
+  .article-media.fallback.article-media--topic .article-thumbnail {
+    object-fit: cover;
+    padding: 0;
+    opacity: 1;
+  }
   .article-media.fallback:hover .article-thumbnail,
   .article-media.fallback:focus-visible .article-thumbnail {
     transform: scale(1.015);
