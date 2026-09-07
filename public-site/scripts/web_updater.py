@@ -12438,15 +12438,18 @@ HOME_ACTIVITY_CALENDAR_SCRIPT = """
       const date = dateKeyFromDate(new Date(year, month - 1, day));
       const summary = summaryFor(date);
       const isToday = date === payload.today;
-      const button = create('button', `home-activity-day${summary.count ? ' has-items' : ''}${isToday ? ' today' : ''}`, String(day));
+      const isSelectable = Boolean(summary.count) || isToday;
+      const button = create('button', `home-activity-day${isSelectable ? ' has-items' : ''}${isToday ? ' today' : ''}`, String(day));
       button.type = 'button';
-      button.disabled = !summary.count;
+      button.disabled = !isSelectable;
       button.setAttribute('aria-pressed', String(selectedDate === date));
       button.setAttribute('aria-label', `${date} ${summary.count}건${summary.count ? `, ${formatKinds(summary.kinds)}` : ''}`);
       if (summary.count) {
         button.append(create('small', 'home-activity-day-count', `${summary.count}건`));
         const kinds = formatKinds(summary.kinds);
         if (kinds) button.append(create('small', 'home-activity-day-kinds', kinds));
+      }
+      if (isSelectable) {
         button.addEventListener('click', () => {
           renderDateList(date);
           renderCalendar();

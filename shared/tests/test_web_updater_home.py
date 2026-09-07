@@ -76,6 +76,18 @@ class HomeSelectionTests(unittest.TestCase):
             script,
         )
 
+    def test_home_calendar_keeps_today_selectable_after_another_date_is_selected(self) -> None:
+        script = web_updater.HOME_ACTIVITY_CALENDAR_SCRIPT
+
+        self.assertIn(
+            "const isSelectable = Boolean(summary.count) || isToday;\n"
+            "      const button = create('button', `home-activity-day${isSelectable ? ' has-items' : ''}${isToday ? ' today' : ''}`, String(day));\n"
+            "      button.type = 'button';\n"
+            "      button.disabled = !isSelectable;",
+            script,
+        )
+        self.assertIn("if (isSelectable) {\n        button.addEventListener('click'", script)
+
     def test_compact_article_meta_omits_region(self) -> None:
         article = make_article(
             title="청년 정책 기사",
