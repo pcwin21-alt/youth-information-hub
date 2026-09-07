@@ -68,6 +68,41 @@ ASSET_VERSION = "20260901-news-topic-two-lines-01"
 HOME_THUMBNAIL_CACHE_DIRNAME = "article-thumbnails"
 HOME_THUMBNAIL_DOWNLOAD_LIMIT = 18
 HOME_THUMBNAIL_MAX_BYTES = 4 * 1024 * 1024
+TOPIC_FALLBACK_IMAGE_ROOT = "assets/topic-fallbacks"
+TOPIC_FALLBACK_IMAGES = {
+    "취업": ("employment.png", "청년 취업 상담"),
+    "주거": ("housing.png", "청년 주거 상담"),
+    "노동": ("labor.png", "청년 노동 상담"),
+    "금융": ("finance.png", "청년 금융 상담"),
+    "청년센터": ("youth-center.png", "청년센터 활동"),
+    "청년참여": ("participation.png", "청년 정책 참여"),
+    "모집": ("recruitment.png", "청년 지원사업 신청"),
+    "복지": ("welfare.png", "청년 복지 상담"),
+    "창업": ("entrepreneurship.png", "청년 창업 준비"),
+    "지역정착": ("regional-settlement.png", "청년 지역정착 활동"),
+}
+ISSUE_TAG_TOPIC_ALIASES = {
+    "고용": "취업",
+    "구직단념": "취업",
+    "청년실업": "취업",
+    "부채": "금융",
+    "학자금": "금융",
+    "고립·은둔": "복지",
+    "고립": "복지",
+    "은둔": "복지",
+    "청년센터 운영": "청년센터",
+    "청년정책 참여": "청년참여",
+    "정책 제안": "청년참여",
+}
+SOURCE_KIND_FALLBACK_IMAGES = {
+    "official": ("official.png", "정부 정책 자료"),
+    "research": ("research.png", "청년 연구 자료"),
+    "local": ("local.png", "지역 청년 현장"),
+    "news": ("news.png", "청년 정책 뉴스"),
+}
+NEWS_TOPIC_FILTER_ORDER = [
+    "취업", "주거", "노동", "금융", "청년센터", "청년참여", "모집", "복지", "창업", "지역정착",
+]
 BRAND_MARK_SRC = f"assets/branding/right-policy-mark.svg?v={ASSET_VERSION}"
 RIGHT_POLICY_HOME_URL = "https://rightpolicy.co.kr/"
 MINISTRY_HOME_MARKS = {
@@ -13161,6 +13196,20 @@ def render_article_media(article: dict, *, include_fallback_details: bool = True
     authority = normalize_inline_text(article.get("policy_authority") or article.get("source") or article.get("source_name"))
     source_host = (urllib.parse.urlparse(article_target_url(article)).hostname or "").lower()
     is_policy_briefing_release = source_host in {"korea.kr", "www.korea.kr"} and article.get("source_kind") == "official"
+    if not image_url and (fallback_image := article_fallback_image(article)):
+        image_path, image_alt = fallback_image
+        url = html.escape(article_target_url(article), quote=True)
+        title = html.escape(display_article_title(article, limit=72))
+        media_class = "article-media fallback article-media--topic"
+        if not include_fallback_details:
+            media_class += " article-media--quiet"
+        return (
+            f'<a class="{media_class}" href="{url}" target="_blank" rel="noreferrer" '
+            f'aria-label="{title} 기사 링크 바로가기">'
+            f'<img class="article-thumbnail" src="{html.escape(image_path, quote=True)}" alt="{html.escape(image_alt)}" '
+            'loading="lazy" decoding="async">'
+            '</a>'
+        )
     if is_policy_briefing_release or (article.get("source_kind") == "official" and not image_url):
         homepage, mark_url = MINISTRY_HOME_MARKS.get(authority, ("", ""))
         source_url = homepage or article_target_url(article)
@@ -14079,6 +14128,20 @@ def article_topic_tags(article: dict, limit: int = 2) -> list[str]:
     return [tag for tag in dict.fromkeys(tags) if tag][:limit]
 
 
+def article_fallback_image(article: dict) -> tuple[str, str] | None:
+    for topic in article_topic_tags(article, limit=8):
+        if image := TOPIC_FALLBACK_IMAGES.get(topic):
+            return f"{TOPIC_FALLBACK_IMAGE_ROOT}/{image[0]}", image[1]
+    for issue_tag in article.get("issue_tags") or []:
+        topic = ISSUE_TAG_TOPIC_ALIASES.get(normalize_inline_text(issue_tag))
+        if topic and (image := TOPIC_FALLBACK_IMAGES.get(topic)):
+            return f"{TOPIC_FALLBACK_IMAGE_ROOT}/{image[0]}", image[1]
+    image = SOURCE_KIND_FALLBACK_IMAGES.get(normalize_inline_text(article.get("source_kind")).lower())
+    if image:
+        return f"{TOPIC_FALLBACK_IMAGE_ROOT}/{image[0]}", image[1]
+    return None
+
+
 def article_published_label(article: dict) -> str:
     for value in (
         article.get("publisher_published_at"),
@@ -14128,7 +14191,9 @@ def collect_news_topics(articles: list[dict]) -> list[str]:
     for article in articles:
         for topic in article_topic_tags(article):
             counts[topic] = counts.get(topic, 0) + 1
-    return sorted(counts, key=lambda topic: (-counts[topic], topic))
+    ordered = [topic for topic in NEWS_TOPIC_FILTER_ORDER if topic in counts or topic == "청년참여"]
+    extras = sorted((topic for topic in counts if topic not in NEWS_TOPIC_FILTER_ORDER), key=lambda topic: (-counts[topic], topic))
+    return [*ordered, *extras]
 
 
 def collect_news_directions(articles: list[dict]) -> list[str]:

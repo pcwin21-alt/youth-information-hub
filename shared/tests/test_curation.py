@@ -146,6 +146,16 @@ class HomeSignalTests(unittest.TestCase):
 
         self.assertEqual(classified["topic_tags"], ["주거", "모집"])
 
+    def test_youth_participation_is_classified_as_a_topic(self) -> None:
+        article = make_article(
+            title="청년정책네트워크, 청년 주거 정책 제안 공개",
+            lead_text="청년위원회 참여자들이 지역 청년 주거 정책 개선안을 제안했다.",
+        )
+
+        classified = classify_articles([article])[0]
+
+        self.assertIn("청년참여", classified["topic_tags"])
+
     def test_content_direction_is_assigned_without_ai(self) -> None:
         cases = [
             (

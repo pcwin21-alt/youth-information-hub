@@ -162,6 +162,23 @@ class HomeSelectionTests(unittest.TestCase):
         self.assertNotIn("article-fallback-source", media_html)
         self.assertNotIn("기사 이미지 없음", media_html)
 
+    def test_topic_fallback_uses_real_category_image(self) -> None:
+        article = make_article(
+            title="청년 주거 지원 기사",
+            lead_text="청년 주거 지원 내용을 안내합니다.",
+            url="https://example.com/news-without-image",
+            topic_tags=["주거"],
+        )
+
+        media_html = web_updater.render_article_media(article)
+
+        self.assertIn('src="assets/topic-fallbacks/housing.png"', media_html)
+        self.assertIn('alt="청년 주거 상담"', media_html)
+        self.assertNotIn("article-fallback-source", media_html)
+
+    def test_news_topics_include_youth_participation_filter(self) -> None:
+        self.assertIn("청년참여", web_updater.collect_news_topics([]))
+
     def test_source_domain_is_rendered_as_publication_name(self) -> None:
         self.assertEqual(web_updater.format_source_label("donga.com"), "동아일보")
         self.assertEqual(web_updater.format_source_label("mssnews.com"), "중소벤처기업신문")
