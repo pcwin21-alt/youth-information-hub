@@ -68,7 +68,7 @@ ASSET_VERSION = "20260901-news-topic-two-lines-01"
 HOME_THUMBNAIL_CACHE_DIRNAME = "article-thumbnails"
 HOME_THUMBNAIL_DOWNLOAD_LIMIT = 18
 HOME_THUMBNAIL_MAX_BYTES = 4 * 1024 * 1024
-TOPIC_FALLBACK_IMAGE_ROOT = "assets/topic-fallbacks"
+TOPIC_FALLBACK_IMAGE_ROOT = "assets/topic-fallbacks-illustrated"
 TOPIC_FALLBACK_IMAGES = {
     "취업": ("employment.png", "청년 취업 상담"),
     "주거": ("housing.png", "청년 주거 상담"),

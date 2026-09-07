@@ -172,7 +172,7 @@ class HomeSelectionTests(unittest.TestCase):
 
         media_html = web_updater.render_article_media(article)
 
-        self.assertIn('src="assets/topic-fallbacks/housing.png"', media_html)
+        self.assertIn('src="assets/topic-fallbacks-illustrated/housing.png"', media_html)
         self.assertIn('alt="청년 주거 상담"', media_html)
         self.assertNotIn("article-fallback-source", media_html)
 
