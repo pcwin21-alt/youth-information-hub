@@ -66,6 +66,16 @@ class HomeSelectionTests(unittest.TestCase):
     def tearDown(self) -> None:
         self.tempdir.cleanup()
 
+    def test_home_calendar_defaults_menu_counts_to_today(self) -> None:
+        script = web_updater.HOME_ACTIVITY_CALENDAR_SCRIPT
+
+        self.assertIn(
+            "const initialDate = payload.today || `${payload.months?.[0] || '2026-01'}-01`;\n"
+            "      selectedDate = initialDate;\n"
+            "      visibleMonth = monthKey(dateFromKey(initialDate));",
+            script,
+        )
+
     def test_compact_article_meta_omits_region(self) -> None:
         article = make_article(
             title="청년 정책 기사",

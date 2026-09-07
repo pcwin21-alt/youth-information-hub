@@ -12430,6 +12430,7 @@ HOME_ACTIVITY_CALENDAR_SCRIPT = """
     .then((data) => {
       payload = data;
       const initialDate = payload.today || `${payload.months?.[0] || '2026-01'}-01`;
+      selectedDate = initialDate;
       visibleMonth = monthKey(dateFromKey(initialDate));
       renderCalendar();
       renderDatePrompt();
