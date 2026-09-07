@@ -40,6 +40,7 @@ PUBLISHER_DOMAIN_ALIASES = {
     "ikld.kr": "국토일보",
     "joongang.co.kr": "중앙일보",
     "khan.co.kr": "경향신문",
+    "kgnews.co.kr": "경기신문",
     "koreaittimes.com": "코리아IT타임스",
     "koreancenter.or.kr": "연합뉴스 한민족센터",
     "kyongbuk.co.kr": "경북일보",
