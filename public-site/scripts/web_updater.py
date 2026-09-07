@@ -10353,6 +10353,121 @@ body[data-page="index.html"] .civic-activity-archive--sidebar { background: #fff
 """
 
 
+# Final accessibility layer.  This must remain last: the generated pages use
+# several legacy visual layers, but reading text must never inherit their
+# smaller type or denser leading.
+KRDS_TYPOGRAPHY_CSS = r"""
+/* KRDS pass: structure first; readable body text is at least 16px / 150%. */
+:root {
+  --type-display: clamp(2.25rem, 4vw, 3.75rem);
+  --type-h1: clamp(2rem, 3vw, 2.75rem);
+  --type-h2: clamp(1.5rem, 2vw, 2rem);
+  --type-h3: 1.25rem;
+  --type-body: 1rem;
+  --type-meta: 0.875rem;
+  --leading-display: 1.15;
+  --leading-heading: 1.25;
+  --leading-body: 1.6;
+}
+
+body {
+  font-size: 16px;
+  font-weight: 400;
+  line-height: var(--leading-body);
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 700;
+}
+
+h1, .flow-hero-title, .spotlight-lead-title {
+  font-size: var(--type-h1);
+  line-height: var(--leading-heading);
+}
+
+h2, .home-overview h2, .section-head h2, .youth-metrics-head h2,
+.home-application-head h2, .home-briefing-head h2, .mobile-menu-head h2 {
+  font-size: var(--type-h2);
+  font-weight: 700;
+  line-height: var(--leading-heading);
+}
+
+h3, .article-card h3, .section-card h3, .info-card h3, .list-card h3,
+.resource-card h3, .home-overview-column h3, .home-briefing-subhead h3 {
+  font-size: var(--type-h3);
+  font-weight: 700;
+  line-height: 1.35;
+}
+
+/* Legacy page-specific selectors are intentionally more specific than the
+   shared visual layers.  Keep their layout only; they may not shrink reading
+   text or create a new heading weight below this final accessibility layer. */
+main h1 { font-size: var(--type-h1) !important; font-weight: 700 !important; line-height: var(--leading-heading) !important; }
+main h2 { font-size: var(--type-h2) !important; font-weight: 700 !important; line-height: var(--leading-heading) !important; }
+main h3 { font-size: var(--type-h3) !important; font-weight: 700 !important; line-height: 1.35 !important; }
+
+/* Paragraphs are reading content.  Metadata and controls retain dedicated
+   roles below, so small labels cannot silently become explanatory copy. */
+p, .article-summary, .article-feedback, .hero-copy, .home-briefing-copy,
+.home-briefing-summary, .flow-hero-copy, .spotlight-lead-summary,
+.section-head p, .section-card p, .info-card p, .list-card p,
+.resource-card p, .home-support-copy, .home-section-copy, .guide-dialog p,
+.welcome-panel span, .welcome-note p, .spotlight-story span, .spotlight-note span,
+.spotlight-route span, .home-briefing-subhead p {
+  font-size: var(--type-body);
+  font-weight: 400;
+  line-height: var(--leading-body);
+}
+
+main p {
+  font-size: var(--type-body) !important;
+  font-weight: 400 !important;
+  line-height: var(--leading-body) !important;
+}
+
+/* Dates, sources and compact state labels are supplementary, never the only
+   place where a required action or recovery path is explained. */
+.article-meta, .article-byline, .article-summary + .article-feedback,
+.hero-feature-meta, .home-briefing-date, .home-meta-line,
+.site-footer-meta, .site-footer-related-list, .home-support-metric-meta,
+.home-support-note, .article-fallback-source, .home-keyword-heading span,
+.home-urgent-meta, .home-glance-label, .youth-metric-label {
+  font-size: var(--type-meta);
+  font-weight: 400;
+  line-height: 1.5;
+}
+
+.button, .guide-link, .filter-button, .filter-search-input, .date-input,
+.home-briefing-tab, .mobile-menu-link, .editorial-primary-nav > a,
+.home-activity-menu-count {
+  font-size: 0.875rem;
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+.editorial-brand, .flow-hero-title, .home-briefing-title,
+.side-nav .side-brand strong, .side-brand strong {
+  font-weight: 700;
+}
+
+@media (max-width: 900px) {
+  .editorial-brand { font-size: 1.25rem; line-height: 1.2; }
+}
+"""
+
+
 PAGE_TEMPLATE = """<!doctype html>
 <html lang="ko">
 <head>
@@ -10363,7 +10478,7 @@ PAGE_TEMPLATE = """<!doctype html>
   <title>{page_title}</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
   <link rel="icon" type="image/svg+xml" href="{brand_mark_src}">
   <link rel="apple-touch-icon" href="{brand_mark_src}">
   <link rel="stylesheet" href="assets/site.css?v={asset_version}">
@@ -21331,7 +21446,10 @@ body[data-page="trends.html"] .policy-brief-hero h1 { margin: 10px 0; color: #ff
 @media (max-width: 800px) { .civic-ai-brief-banner span { gap: 5px; padding: 24px; letter-spacing: -.055em; } .civic-ai-brief-banner span small { font-size: clamp(1rem, 4.3vw, 1.3rem); } .civic-ai-brief-banner span strong { font-size: clamp(1.35rem, 6.2vw, 1.8rem); } .civic-ai-brief-recent time { font-size: .665rem; } .civic-ai-brief-recent strong { font-size: .602rem; } }
 .civic-home-section-bar, .civic-activity-archive--sidebar .home-activity-archive-head { display: flex; width: 100%; min-height: 66px; align-items: center; justify-content: space-between !important; gap: 18px; margin: 0; padding: 0; border-top: 2px solid var(--deep-navy); border-bottom: 1px solid var(--line); }
 .civic-activity-archive--sidebar .home-activity-archive-head h2 { margin-right: auto; }
+.civic-home-section-title { display: inline-flex; min-width: 0; align-items: center; gap: 14px; }
 .civic-home-section-bar h2, .civic-activity-archive--sidebar .home-activity-archive-head h2 { margin: 0; color: var(--deep-navy); font-size: 1.32rem; font-weight: 780; letter-spacing: -.05em; }
+.civic-home-section-link { color: var(--accent-strong); font-size: .8rem; font-weight: 760; text-decoration: none; white-space: nowrap; }
+.civic-home-section-link:hover, .civic-home-section-link:focus-visible { color: var(--deep-navy); text-decoration: underline; text-underline-offset: .18em; }
 .civic-home-section-bar time { color: #6d7780; font-size: .82rem; font-weight: 650; font-variant-numeric: tabular-nums; }
 .civic-latest-news { border-top: 0; }
 .civic-latest-news .civic-section-head, .civic-latest-now { display: none; }
@@ -21360,7 +21478,7 @@ body[data-page="trends.html"] .policy-brief-hero h1 { font-size: clamp(2rem, 3.8
 .policy-brief-window h2 { font-size: clamp(1.28rem, 2.2vw, 1.9rem); font-weight: 760; }
 .policy-brief-links a { font-size: .96rem; font-weight: 700; }
 .policy-brief-signal, .policy-brief-links span { color: #707b84; }
-@media (max-width: 800px) { .civic-home-section-bar, .civic-activity-archive--sidebar .home-activity-archive-head { min-height: 56px; } .civic-home-section-bar h2, .civic-activity-archive--sidebar .home-activity-archive-head h2 { font-size: 1.16rem; } .civic-home-section-bar time { font-size: .72rem; } .civic-latest-news .civic-brief-row { grid-template-columns: 104px minmax(0, 1fr); gap: 13px; min-height: 82px; padding: 13px 0; } .civic-latest-news .civic-brief-thumbnail .article-media { height: 82px; } .civic-latest-news .civic-brief-copy h3 { font-size: .93rem; } .civic-latest-news .civic-brief-copy > p { margin-top: 5px; font-size: .76rem; -webkit-line-clamp: 2; } .civic-latest-news .civic-brief-copy time { margin-top: 5px; font-size: .67rem; } }
+@media (max-width: 800px) { .civic-home-section-bar, .civic-activity-archive--sidebar .home-activity-archive-head { min-height: 56px; } .civic-home-section-title { gap: 9px; } .civic-home-section-bar h2, .civic-activity-archive--sidebar .home-activity-archive-head h2 { font-size: 1.16rem; } .civic-home-section-link { font-size: .72rem; } .civic-home-section-bar time { font-size: .72rem; } .civic-latest-news .civic-brief-row { grid-template-columns: 104px minmax(0, 1fr); gap: 13px; min-height: 82px; padding: 13px 0; } .civic-latest-news .civic-brief-thumbnail .article-media { height: 82px; } .civic-latest-news .civic-brief-copy h3 { font-size: .93rem; } .civic-latest-news .civic-brief-copy > p { margin-top: 5px; font-size: .76rem; -webkit-line-clamp: 2; } .civic-latest-news .civic-brief-copy time { margin-top: 5px; font-size: .67rem; } }
 .policy-brief-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
 .policy-brief-window { min-width: 0; }
 .policy-brief-window .section-head { align-items: flex-start; }
@@ -22088,6 +22206,7 @@ def build_product_home_page(
         for brief in recent_briefs[:5]
     ) or '<li class="civic-ai-brief-empty">최근 브리프 생성 대기</li>'
     return f"""
+    <h1 class="visually-hidden">적재적소 브리핑</h1>
     <section class="civic-ai-brief-home" aria-label="청년정책 AI 브리핑">
       <a class="civic-ai-brief-banner" href="{html.escape(latest_brief_href, quote=True)}">
         <img src="{HOME_POLICY_WORKROOM_ILLUSTRATION['src']}" alt="{HOME_POLICY_WORKROOM_ILLUSTRATION['alt']}">
@@ -22101,7 +22220,7 @@ def build_product_home_page(
 
     <section class="civic-news-calendar" id="today-briefing" data-home-activity data-activity-url="{HOME_ACTIVITY_CALENDAR_FILENAME}" data-activity-today="{html.escape(str(activity_payload.get('today', '')), quote=True)}" aria-label="오늘의 기사와 이달의 소식">
       <section class="civic-latest-news" aria-label="최근 기사">
-        <header class="civic-home-section-bar"><h2>오늘의 기사</h2><time datetime="{html.escape(now_dt.astimezone(timezone(timedelta(hours=9))).isoformat(), quote=True)}">{html.escape(now_label)}</time></header>
+        <header class="civic-home-section-bar"><div class="civic-home-section-title"><h2>오늘의 기사</h2><a class="civic-home-section-link" href="news.html">전체 기사 <span aria-hidden="true">→</span></a></div><time datetime="{html.escape(now_dt.astimezone(timezone(timedelta(hours=9))).isoformat(), quote=True)}">{html.escape(now_label)}</time></header>
         <div class="civic-brief-list">{supporting_html}</div>
       </section>
       <section class="civic-activity-archive civic-activity-archive--sidebar" id="activity-calendar" data-home-activity-archive aria-labelledby="home-activity-calendar-title">
@@ -22218,7 +22337,7 @@ def write_page(
 ) -> None:
     assets_root = path.parent / "assets"
     assets_root.mkdir(parents=True, exist_ok=True)
-    site_css = BASE_CSS + DASHBOARD_TONE_CSS + DESIGN_OVERHAUL_CSS + PRODUCT_REBUILD_CSS + BRAND_NEW_CSS + LEAD_FUNNEL_CSS + READABILITY_REFINEMENT_CSS + POLICY_BRIEF_CSS + HOME_LAYOUT_20260829_CSS + EDITORIAL_HEADER_NAV_CSS + RIGHT_POLICY_COLOR_SYSTEM_CSS
+    site_css = BASE_CSS + DASHBOARD_TONE_CSS + DESIGN_OVERHAUL_CSS + PRODUCT_REBUILD_CSS + BRAND_NEW_CSS + LEAD_FUNNEL_CSS + READABILITY_REFINEMENT_CSS + POLICY_BRIEF_CSS + HOME_LAYOUT_20260829_CSS + EDITORIAL_HEADER_NAV_CSS + RIGHT_POLICY_COLOR_SYSTEM_CSS + KRDS_TYPOGRAPHY_CSS
     site_js = build_page_script()
     write_utf8_page(assets_root / "site.css", site_css)
     write_utf8_page(assets_root / "site.js", site_js)

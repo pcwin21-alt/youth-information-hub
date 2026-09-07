@@ -1378,6 +1378,7 @@ class ProductRebuildTests(unittest.TestCase):
         self.assertNotIn('class="civic-task-strip"', page_html)
         self.assertIn('id="today-briefing"', page_html)
         self.assertIn('id="activity-calendar"', page_html)
+        self.assertIn('class="civic-home-section-link" href="news.html">전체 기사', page_html)
         self.assertLess(page_html.index('<section class="civic-ai-brief-home"'), page_html.index('id="today-briefing"'))
         self.assertNotIn('id="article-discovery"', page_html)
         self.assertIn("청년정책 AI 브리핑 보러가기", page_html)
