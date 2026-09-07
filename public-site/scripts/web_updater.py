@@ -1874,6 +1874,14 @@ BASE_CSS = """
     box-sizing: border-box;
     opacity: 0.92;
   }
+  .article-media.fallback.article-media--topic {
+    display: block;
+    padding: 0;
+    background: transparent;
+  }
+  .article-media.fallback.article-media--topic::before {
+    display: none;
+  }
   .article-media.fallback.article-media--topic .article-thumbnail {
     object-fit: cover;
     padding: 0;
