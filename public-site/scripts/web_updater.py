@@ -22302,7 +22302,7 @@ def build_product_home_page(
 
     <section class="civic-news-calendar" id="today-briefing" data-home-activity data-activity-url="{HOME_ACTIVITY_CALENDAR_FILENAME}" data-activity-today="{html.escape(str(activity_payload.get('today', '')), quote=True)}" aria-label="오늘의 기사와 이달의 소식">
       <section class="civic-latest-news" aria-label="최근 기사">
-        <header class="civic-home-section-bar"><div class="civic-home-section-title"><h2>오늘의 기사</h2><a class="civic-home-section-link" href="news.html">전체 기사 <span aria-hidden="true">→</span></a></div><time datetime="{html.escape(now_dt.astimezone(timezone(timedelta(hours=9))).isoformat(), quote=True)}">{html.escape(now_label)}</time></header>
+        <header class="civic-home-section-bar"><div class="civic-home-section-title"><h2>오늘의 기사</h2><time datetime="{html.escape(now_dt.astimezone(timezone(timedelta(hours=9))).isoformat(), quote=True)}">{html.escape(now_label)}</time></div><a class="civic-home-section-link" href="news.html">전체 기사 <span aria-hidden="true">→</span></a></header>
         <div class="civic-brief-list">{supporting_html}</div>
       </section>
       <section class="civic-activity-archive civic-activity-archive--sidebar" id="activity-calendar" data-home-activity-archive aria-labelledby="home-activity-calendar-title">
