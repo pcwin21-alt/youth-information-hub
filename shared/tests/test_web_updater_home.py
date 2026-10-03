@@ -4,6 +4,7 @@ import importlib.util
 import sys
 import tempfile
 import unittest
+from unittest.mock import patch
 from pathlib import Path
 
 
@@ -433,7 +434,7 @@ class HomeSelectionTests(unittest.TestCase):
 
         self.assertIn('data-home-activity', page_html)
         self.assertIn('data-activity-url="home_activity_calendar.json"', page_html)
-        self.assertIn('청년정책 AI 브리핑 보러가기', page_html)
+        self.assertIn('전체 동향 살펴보기', page_html)
         self.assertNotIn('날짜별 기록', page_html)
         self.assertNotIn('data-home-activity-date-records', page_html)
         self.assertLess(page_html.index('id="today-briefing"'), page_html.index('id="activity-calendar"'))
@@ -1035,8 +1036,8 @@ class HomeSelectionTests(unittest.TestCase):
             web_updater.TOP_NAV_ITEMS,
             [
                 ("index.html", "홈"),
-                ("news.html", "언론 기사"),
                 ("trends.html", "정책 동향"),
+                ("news.html", "언론 기사"),
                 ("opinion.html", "기고·칼럼·오피니언"),
                 ("official.html", "정부 부처 자료실"),
                 ("local.html", "지자체 자료실"),
@@ -1065,14 +1066,14 @@ class HomeSelectionTests(unittest.TestCase):
         self.assertIn("현재는 소개용 임시 페이지", institution_html)
 
     def test_mobile_navigation_uses_three_primary_links_and_full_menu_sheet(self) -> None:
-        bottom_nav = web_updater.render_bottom_nav("official.html")
+        bottom_nav = web_updater.render_bottom_nav("trends.html")
         mobile_menu = web_updater.render_mobile_menu("official.html")
 
         self.assertEqual(len(web_updater.BOTTOM_NAV_ITEMS), 3)
         self.assertEqual(bottom_nav.count("<a "), 3)
         self.assertIn('data-mobile-menu-open="true"', bottom_nav)
         self.assertIn("<span>전체</span>", bottom_nav)
-        self.assertIn('class="active" href="official.html"', bottom_nav)
+        self.assertIn('class="active" href="trends.html"', bottom_nav)
         self.assertIn(
             'class="active" type="button"',
             web_updater.render_bottom_nav("opinion.html"),
@@ -1419,14 +1420,14 @@ class ProductRebuildTests(unittest.TestCase):
         self.assertIn('id="activity-calendar"', page_html)
         self.assertIn('class="civic-home-section-link" href="news.html">전체 기사', page_html)
         self.assertLess(
-            page_html.index('<time datetime=', page_html.index('<h2>오늘의 기사</h2>')),
+            page_html.index('<time datetime=', page_html.index('<h2>최근 기사</h2>')),
             page_html.index('class="civic-home-section-link" href="news.html">전체 기사'),
         )
-        self.assertLess(page_html.index('<section class="civic-ai-brief-home"'), page_html.index('id="today-briefing"'))
+        self.assertLess(page_html.index('<section class="trend-digest"'), page_html.index('id="today-briefing"'))
         self.assertNotIn('id="article-discovery"', page_html)
-        self.assertIn("청년정책 AI 브리핑 보러가기", page_html)
+        self.assertIn("전체 동향 살펴보기", page_html)
         self.assertNotIn("서울 청년 주거 지원 시행계획 발표", page_html)
-        self.assertIn('href="trends.html#brief-', page_html)
+        self.assertIn('href="trends.html"', page_html)
         self.assertNotIn('id="editorial-standard"', page_html)
         self.assertNotIn("자료를 고르는 기준을 함께 공개합니다.", page_html)
         self.assertNotIn('id="interest-builder"', page_html)
@@ -1554,10 +1555,12 @@ class ProductRebuildTests(unittest.TestCase):
             }],
         )
 
-        trends_html = web_updater.build_policy_trends_page([official], {"finished_at": "2026-08-08T12:00:00+09:00"})
+        original_digest = web_updater.build_digest
+        with patch.object(web_updater, "build_digest", side_effect=lambda articles, updated: original_digest(articles, updated, now=web_updater.parse_iso_datetime(updated))):
+            trends_html = web_updater.build_policy_trends_page([official], {"finished_at": "2026-08-08T12:00:00+09:00"})
         news_html = web_updater.build_news_page([official], {"finished_at": "2026-08-08T12:00:00+09:00"})
 
-        self.assertIn("청년정책 AI 브리핑", trends_html)
+        self.assertIn("최근 7일, 청년정책 소식", trends_html)
         self.assertIn(official["title"], trends_html)
         self.assertIn("08:00–10:00", trends_html)
         self.assertNotIn('id="official-story-bundles"', news_html)
