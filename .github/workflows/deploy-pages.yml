@@ -14,6 +14,11 @@ on:
         required: false
         type: boolean
         default: false
+      render_from_archive:
+        description: "Regenerate UI from the saved public archive without collecting or fetching thumbnails"
+        required: false
+        type: boolean
+        default: false
   schedule:
     # Run off the top-of-hour congestion window (KST every hour at :17).
     - cron: "17 * * * *"
@@ -56,12 +61,22 @@ jobs:
         shell: bash
         run: |
           use_prebuilt_site=false
+          render_from_archive=false
+          if [[ "${{ github.event_name }}" == "workflow_dispatch" && "${{ github.event.inputs.render_from_archive }}" == "true" ]]; then
+            render_from_archive=true
+            use_prebuilt_site=true
+          fi
           if [[ "${{ github.event_name }}" == "workflow_dispatch" && "${{ github.event.inputs.use_prebuilt_site }}" == "true" ]]; then
             use_prebuilt_site=true
           elif [[ "${{ github.event_name }}" == "push" && "${{ github.event.head_commit.message }}" == *"[deploy-prebuilt]"* ]]; then
             use_prebuilt_site=true
           fi
           echo "use_prebuilt_site=$use_prebuilt_site" >> "$GITHUB_OUTPUT"
+          echo "render_from_archive=$render_from_archive" >> "$GITHUB_OUTPUT"
+
+      - name: Render UI from public archive
+        if: ${{ steps.deploy_mode.outputs.render_from_archive == 'true' }}
+        run: python public-site/scripts/web_updater.py --archive-only --skip-thumbnail-fetch
 
       - name: Run pipeline
         if: ${{ steps.deploy_mode.outputs.use_prebuilt_site != 'true' }}
