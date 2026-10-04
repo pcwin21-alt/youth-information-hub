@@ -14,7 +14,8 @@ from pathlib import Path
 
 from _bootstrap import PUBLIC_CONFIG_ROOT, PUBLIC_CONTENT_ROOT, PUBLIC_WEB_ROOT, RUNTIME_PIPELINE_ROOT
 
-from trend_digest import build_digest, render_digest, render_home_digest, DIGEST_CSS, DIGEST_JS
+from menu_presentation import MENU_PAGES, MENU_CSS, MENU_JS, render_archive_controls, render_policy_controls
+from trend_digest import clean_title as digest_clean_title, build_digest, render_digest, render_home_digest, DIGEST_CSS, DIGEST_JS
 
 from youth_info_platform.article_metadata import (
     article_identity_key,
@@ -13676,12 +13677,12 @@ def render_article_card(article: dict, extra_attrs: dict[str, str] | None = None
     <article {attr_text}>
       {article_time_html}
       {media_html}
-      {render_article_meta(article, include_tags=not compact_news_layout, byline_first=compact_news_layout)}
+      {render_article_meta(article, include_tags=False, byline_first=True)}
       <h3><a class="article-title-link" href="{escaped_url}" target="_blank" rel="noreferrer" aria-label="{escaped_title} 링크 바로가기">{escaped_title}</a></h3>
       {badge_row}
       {summary_html}
       {related_html}
-      {render_article_actions(article, include_link_button=not compact_news_layout)}
+      {render_article_actions(article, include_link_button=True)}
     </article>
     """
 
@@ -14620,52 +14621,8 @@ def render_announcement_filter_panel(
     status_in_head = status_html if use_region_map else ""
     status_after_stack = "" if use_region_map else status_html
 
-    return f"""
-    <section class="section" id="filters">
-      <article class="section-card filter-panel{' has-region-map' if use_region_map else ''}">
-        <div class="filter-head">
-          <h3>자료 필터</h3>
-          {status_in_head}
-        </div>
-        <div class="{stack_class}">
-          {map_column_open}
-          <div class="filter-group filter-group-scope filter-group-region-map wide">
-            <span class="filter-group-label" data-policy-scope-label="true">{html.escape(scope_label)}</span>
-            {scope_controls_html}
-          </div>
-          {map_column_close}
-          <div class="filter-group filter-group-type wide">
-            <span class="filter-group-label">유형</span>
-            <div class="filter-controls">{''.join(type_buttons)}</div>
-          </div>
-          <div class="filter-group filter-group-search">
-            <span class="filter-group-label">검색</span>
-            <label class="filter-search-wrap">
-              <input class="filter-search-input" type="search" data-policy-search-input="true" placeholder="{html.escape(search_placeholder)}">
-            </label>
-          </div>
-          <div class="filter-group filter-group-date">
-            <span class="filter-group-label">기간</span>
-            <div class="date-picker-row">
-              <button class="filter-button active" type="button" data-policy-filter="true" data-filter-group="date" data-filter-value="all" aria-pressed="true">전체</button>
-              <div class="date-range-fields">
-                <label class="date-input-wrap" data-policy-date-launch="true">
-                  <span class="date-picker-label">시작일</span>
-                  <input class="date-input" type="date" data-policy-date-input="true" data-date-role="start" {date_input_attrs_text}>
-                </label>
-                <label class="date-input-wrap" data-policy-date-launch="true">
-                  <span class="date-picker-label">종료일</span>
-                  <input class="date-input" type="date" data-policy-date-input="true" data-date-role="end" {date_input_attrs_text}>
-                </label>
-              </div>
-            </div>
-          </div>
-          {control_column_close}
-        </div>
-        {status_after_stack}
-      </article>
-    </section>
-    """
+    groups_html = f'<div class="menu-filter-group"><span data-policy-scope-label="true">{html.escape(scope_label)}</span><div>{scope_controls_html}</div></div><div class="menu-filter-group"><span>유형</span><div>{"".join(type_buttons)}</div></div>'
+    return render_policy_controls(groups_html, date_input_attrs_text, len(articles))
 
 
 def render_hub_filter_panel(
@@ -14736,52 +14693,8 @@ def render_hub_filter_panel(
         date_input_attrs.append('disabled="true"')
     date_input_attrs_text = " ".join(date_input_attrs)
 
-    return f"""
-    <section class="section" id="filters">
-      <article class="section-card filter-panel">
-        <div class="filter-head">
-          <h3>활동 필터</h3>
-        </div>
-        <div class="filter-stack">
-          <div class="filter-group filter-group-group wide">
-            <span class="filter-group-label">구분</span>
-            <div class="filter-controls">{''.join(group_buttons)}</div>
-          </div>
-          <div class="filter-group filter-group-scope wide">
-            <span class="filter-group-label" data-policy-scope-label="true">세부 구분</span>
-            <div class="filter-controls">{''.join(scope_buttons)}</div>
-          </div>
-          <div class="filter-group filter-group-type wide">
-            <span class="filter-group-label">활동</span>
-            <div class="filter-controls">{''.join(type_buttons)}</div>
-          </div>
-          <div class="filter-group filter-group-search">
-            <span class="filter-group-label">검색</span>
-            <label class="filter-search-wrap">
-              <input class="filter-search-input" type="search" data-policy-search-input="true" placeholder="기사 제목, 요약, 출처 검색">
-            </label>
-          </div>
-          <div class="filter-group filter-group-date">
-            <span class="filter-group-label">기간</span>
-            <div class="date-picker-row">
-              <button class="filter-button active" type="button" data-policy-filter="true" data-filter-group="date" data-filter-value="all" aria-pressed="true">전체</button>
-              <div class="date-range-fields">
-                <label class="date-input-wrap" data-policy-date-launch="true">
-                  <span class="date-picker-label">시작일</span>
-                  <input class="date-input" type="date" data-policy-date-input="true" data-date-role="start" {date_input_attrs_text}>
-                </label>
-                <label class="date-input-wrap" data-policy-date-launch="true">
-                  <span class="date-picker-label">종료일</span>
-                  <input class="date-input" type="date" data-policy-date-input="true" data-date-role="end" {date_input_attrs_text}>
-                </label>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="filter-status" data-policy-filter-status>전체 {len(all_records)}건을 보고 있습니다.</div>
-      </article>
-    </section>
-    """
+    groups_html = f'<div class="menu-filter-group"><span>구분</span><div>{"".join(group_buttons)}</div></div><div class="menu-filter-group"><span data-policy-scope-label="true">세부 구분</span><div>{"".join(scope_buttons)}</div></div><div class="menu-filter-group"><span>활동</span><div>{"".join(type_buttons)}</div></div>'
+    return render_policy_controls(groups_html, date_input_attrs_text, len(all_records))
 
 
 def is_local_policy_update(article: dict) -> bool:
@@ -17799,15 +17712,7 @@ def build_news_page(articles: list[dict], status: dict) -> str:
         media_key="news",
         title="청년 관련 뉴스 전체보기",
     )
-    render_news_filter_panel._timeline_articles = recent_news_articles
-    news_filter_panel = render_news_filter_panel(
-        region_options,
-        topic_options,
-        date_options,
-        len(recent_news_articles),
-        timeline_mode=True,
-        split_timeline=True,
-    )
+    news_filter_panel = render_archive_controls(region_options, topic_options, date_options, len(recent_news_articles), include_hours=True)
     cards_html = "".join(
         render_article_card(article, article_news_time_attrs(article))
         for article in recent_news_articles
@@ -17852,13 +17757,8 @@ def build_editorial_archive_page(
     recent = filter_recent_articles(selected, page_updated_at, archive_window_hours)
     filter_panel = ""
     if include_filters:
-        filter_panel = render_news_filter_panel(
-            collect_news_regions(recent),
-            collect_news_topics(recent),
-            collect_article_dates(recent),
-            len(recent),
-            directions=collect_news_directions(recent),
-            region_counts=collect_article_region_counts(recent),
+        filter_panel = render_archive_controls(
+            collect_news_regions(recent), collect_news_topics(recent), collect_article_dates(recent), len(recent)
         )
     cards_html = "".join(render_article_card(article) for article in recent)
     filter_root_open = (
@@ -17994,7 +17894,8 @@ def build_policy_trends_page(articles: list[dict], status: dict) -> str:
         </article>''')
     empty = '<article class="policy-brief-empty"><h2>최근 수집 기록이 없습니다</h2></article>'
     return f'''
-    {render_digest(digest, illustration=HOME_POLICY_WORKROOM_ILLUSTRATION)}
+    {render_compact_intro("최근 동향", "최근 7일 자료를 의제별로 묶었습니다. 시행 여부와 후속 변화는 원문에서 확인하세요.", media_key="news", title="최근 7일, 청년정책 소식")}
+    {render_digest(digest, show_header=False)}
     <details class="trend-archive" id="collection-log"><summary>시간대별 수집 기록 확인</summary>
       <p>최근 7일 자료의 수집 시각별 기록입니다. 서로 다른 이슈가 함께 포함될 수 있습니다.</p>
       <div class="policy-brief-grid">{"".join(window_cards) or empty}</div>
@@ -18023,7 +17924,7 @@ def build_opinion_page(articles: list[dict], status: dict) -> str:
         empty_title="최근 확인된 관점 글이 없습니다",
         empty_body="청년 맥락과 필자 관점이 함께 확인된 글이 수집되면 표시됩니다.",
         predicate=is_opinion_menu_article,
-        include_filters=False,
+        include_filters=True,
     )
 
 
@@ -18038,7 +17939,7 @@ def build_reports_page(articles: list[dict], status: dict) -> str:
         empty_title="최근 확인된 논문·연구·리포트가 없습니다",
         empty_body="연구·조사·보고서 신호와 청년 관련성이 함께 확인되면 표시됩니다.",
         predicate=is_research_report_menu_article,
-        include_filters=False,
+        include_filters=True,
         archive_window_hours=RESEARCH_ARCHIVE_WINDOW_HOURS,
     )
 
@@ -18752,7 +18653,11 @@ def build_official_page(articles: list[dict], status: dict) -> str:
         </div>
         <span class="mini-link" aria-disabled="true">{len(central_press_releases)}건</span>
       </div>
+      <div data-news-filter-root="official" data-default-region="all" data-default-topic="all" data-default-direction="all">
+      {render_archive_controls(collect_news_regions(central_press_releases), collect_news_topics(central_press_releases), collect_article_dates(central_press_releases), len(central_press_releases))}
       {central_grid}
+      <article class="info-card" data-news-empty-state="true" hidden><h3>조건에 맞는 자료가 없습니다</h3><p>필터를 초기화하거나 다른 키워드를 입력하세요.</p></article>
+      </div>
     </section>
     <section class="section" id="official-policy-plans" role="tabpanel" aria-labelledby="official-view-tab-plans" data-official-view-panel="plans" hidden>
       <div class="section-head">
@@ -19693,6 +19598,7 @@ def build_tools_page(articles: list[dict], status: dict) -> str:
     )
     return f"""
     {page_intro}
+    <section class="section menu-controls" aria-label="자료 검색"><div class="menu-search"><label>키워드 검색<input type="search" data-resource-search placeholder="자료명·기관·설명 검색"></label><button type="button" data-resource-reset>필터 초기화</button></div><p class="filter-status" data-resource-status role="status"></p></section>
     <section class="section" id="youth-stat-releases">
       <div class="section-head">
         <div>
@@ -22204,7 +22110,15 @@ def build_product_home_page(
     # The home front page is a quick scan, while the full news page holds the
     # complete stream.  Keep this column to five items so it closes on the
     # same visual beat as the adjacent monthly archive.
-    supporting_articles = latest_candidates[:5]
+    home_digest = build_digest([*articles, *classified_articles], page_updated_at)
+    highlighted_urls = {
+        url for issue in home_digest["issues"][:5] for row in issue["records"]
+        for url in (row.get("url"), row.get("canonical_url"), row.get("digest_url")) if url
+    }
+    highlighted_titles = {re.sub(r"\W", "", row["title"]).casefold() for issue in home_digest["issues"][:5] for row in issue["records"]}
+    supporting_articles = [article for article in latest_candidates
+        if article_target_url(article) not in highlighted_urls
+        and re.sub(r"\W", "", digest_clean_title(article)).casefold() not in highlighted_titles][:5]
     now_dt = parse_iso_datetime(page_updated_at) or datetime.now(timezone(timedelta(hours=9)))
     now_label = now_dt.astimezone(timezone(timedelta(hours=9))).strftime("%Y.%m.%d %H:%M")
     def render_story(article: dict, *, lead: bool = False) -> str:
@@ -22274,11 +22188,11 @@ def build_product_home_page(
         for href, title, description, predicate in source_cards
     )
     return f"""
-    {render_home_digest(build_digest([*articles, *classified_articles], status.get("finished_at") or status.get("updated_at")), HOME_POLICY_WORKROOM_ILLUSTRATION)}
+    {render_home_digest(home_digest, HOME_POLICY_WORKROOM_ILLUSTRATION)}
 
-    <section class="civic-news-calendar" id="today-briefing" data-home-activity data-activity-url="{HOME_ACTIVITY_CALENDAR_FILENAME}" data-activity-today="{html.escape(str(activity_payload.get('today', '')), quote=True)}" aria-label="최근 기사와 이달의 소식">
-      <section class="civic-latest-news" aria-label="최근 기사">
-        <header class="civic-home-section-bar"><div class="civic-home-section-title"><h2>최근 기사</h2><time datetime="{html.escape(now_dt.astimezone(timezone(timedelta(hours=9))).isoformat(), quote=True)}">{html.escape(now_label)}</time></div><a class="civic-home-section-link" href="news.html">전체 기사 <span aria-hidden="true">→</span></a></header>
+    <section class="civic-news-calendar" id="today-briefing" data-home-activity data-activity-url="{HOME_ACTIVITY_CALENDAR_FILENAME}" data-activity-today="{html.escape(str(activity_payload.get('today', '')), quote=True)}" aria-label="더 살펴볼 소식과 이달의 기록">
+      <section class="civic-latest-news" aria-label="더 살펴볼 소식">
+        <header class="civic-home-section-bar"><div class="civic-home-section-title"><h2>더 살펴볼 소식</h2><time datetime="{html.escape(now_dt.astimezone(timezone(timedelta(hours=9))).isoformat(), quote=True)}">{html.escape(now_label)}</time></div><a class="civic-home-section-link" href="news.html">전체 기사 <span aria-hidden="true">→</span></a></header>
         <div class="civic-brief-list">{supporting_html}</div>
       </section>
       <section class="civic-activity-archive civic-activity-archive--sidebar" id="activity-calendar" data-home-activity-archive aria-labelledby="home-activity-calendar-title">
@@ -22334,7 +22248,7 @@ def build_product_cases_page(articles: list[dict], status: dict) -> str:
         empty_title="최근 확인된 관점 글이 없습니다",
         empty_body="청년 맥락과 필자 관점이 함께 확인된 글이 수집되면 표시됩니다.",
         predicate=is_opinion_menu_article,
-        include_filters=False,
+        include_filters=True,
     )
 
 
@@ -22396,8 +22310,10 @@ def write_page(
     assets_root = path.parent / "assets"
     assets_root.mkdir(parents=True, exist_ok=True)
     site_css = BASE_CSS + DASHBOARD_TONE_CSS + DESIGN_OVERHAUL_CSS + PRODUCT_REBUILD_CSS + BRAND_NEW_CSS + LEAD_FUNNEL_CSS + READABILITY_REFINEMENT_CSS + POLICY_BRIEF_CSS + HOME_LAYOUT_20260829_CSS + EDITORIAL_HEADER_NAV_CSS + RIGHT_POLICY_COLOR_SYSTEM_CSS + KRDS_TYPOGRAPHY_CSS
-    site_css += DIGEST_CSS
-    site_js = build_page_script() + DIGEST_JS
+    site_css += DIGEST_CSS + MENU_CSS
+    site_js = build_page_script() + DIGEST_JS + MENU_JS
+    if active_page in MENU_PAGES:
+        content = f'<div class="menu-layout">{content}</div>'
     write_utf8_page(assets_root / "site.css", site_css)
     write_utf8_page(assets_root / "site.js", site_js)
     write_utf8_page(
