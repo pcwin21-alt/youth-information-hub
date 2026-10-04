@@ -21685,6 +21685,7 @@ def _product_status(status: dict) -> tuple[str, str]:
     timestamp = status.get("finished_at") or status.get("updated_at") or status.get("started_at") or ""
     state = str(status.get("state") or "unknown")
     state_labels = {
+        "archive_snapshot": "기존 공개 자료로 화면 갱신",
         "completed": "자료 수집 완료",
         "success": "자료 수집 완료",
         "running": "수집 작업 시작됨 · 완료 시각 없음",
@@ -22433,23 +22434,42 @@ def write_page(
     )
 
 
+def archive_render_inputs() -> tuple[list[dict], dict]:
+    """Render a saved public snapshot without claiming a new collection run."""
+    payload = read_json(PUBLIC_ARTICLE_ARCHIVE, default={})
+    if not isinstance(payload, dict) or not isinstance(payload.get("articles"), list):
+        raise ValueError("archive_render_requires_public_snapshot")
+    articles = filter_public_articles([row for row in payload["articles"] if isinstance(row, dict)])
+    snapshot_at = payload.get("generated_at")
+    if not articles or parse_iso_datetime(snapshot_at) is None:
+        raise ValueError("archive_render_requires_articles_and_snapshot_timestamp")
+    return sort_articles_by_recency(articles), {
+        "state": "archive_snapshot", "finished_at": snapshot_at, "render_source": "public_archive",
+    }
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--input", default=str(RUNTIME_PIPELINE_ROOT / "step5_summarized.json"))
     parser.add_argument("--status-input", default=str(RUNTIME_PIPELINE_ROOT / "pipeline_status.json"))
     parser.add_argument("--output", default=str(PUBLIC_WEB_ROOT / "index.html"))
+    parser.add_argument("--archive-only", action="store_true", help="Render the saved public archive without reading current pipeline selections")
+    parser.add_argument("--skip-thumbnail-fetch", action="store_true", help="Keep rendering offline; use built-in or existing media")
     args = parser.parse_args()
 
-    articles = filter_public_articles(read_json(Path(args.input), default=[]))
-    current_classified_articles = read_json(RUNTIME_PIPELINE_ROOT / "step3_classified.json", default=articles)
-    current_public_articles = filter_public_articles(current_classified_articles)
-    archived_public_articles = filter_public_articles(load_public_archive_articles())
-    # Home still receives the current top selection. Menu pages use the archive,
-    # so each scheduled collection extends rather than replaces public history.
-    classified_articles = link_official_releases_and_related_coverage(
-        merge_public_article_lists(archived_public_articles, current_public_articles)
-    )
-    status = read_json(Path(args.status_input), default={})
+    if args.archive_only:
+        articles, status = archive_render_inputs()
+        classified_articles = link_official_releases_and_related_coverage(articles)
+    else:
+        articles = filter_public_articles(read_json(Path(args.input), default=[]))
+        current_classified_articles = read_json(RUNTIME_PIPELINE_ROOT / "step3_classified.json", default=articles)
+        current_public_articles = filter_public_articles(current_classified_articles)
+        archived_public_articles = filter_public_articles(load_public_archive_articles())
+        # Menu pages retain public history while home receives top selections.
+        classified_articles = link_official_releases_and_related_coverage(
+            merge_public_article_lists(archived_public_articles, current_public_articles)
+        )
+        status = read_json(Path(args.status_input), default={})
     web_root = Path(args.output).parent
     web_root.mkdir(parents=True, exist_ok=True)
 
@@ -22462,7 +22482,7 @@ def main() -> int:
         web_root / HOME_ACTIVITY_CALENDAR_FILENAME,
         json.dumps(home_activity_payload, ensure_ascii=False, separators=(",", ":")),
     )
-    home_thumbnail_urls = cache_home_thumbnail_assets(
+    home_thumbnail_urls = {} if args.skip_thumbnail_fetch else cache_home_thumbnail_assets(
         sort_articles_by_recency([*articles, *classified_articles]),
         web_root,
     )

@@ -1596,5 +1596,23 @@ class ProductRebuildTests(unittest.TestCase):
         self.assertNotIn('visitor_id:', page_html)
 
 
+class ArchiveRenderTests(unittest.TestCase):
+    def test_snapshot_timestamp_is_preserved_without_new_collection_claim(self):
+        article = make_article(title="청년 주거 정책 발표", lead_text="청년 주거 지원 발표", url="https://example.org/archive")
+        payload = {"generated_at": "2026-10-04T10:00:00+09:00", "articles": [article]}
+        with patch.object(web_updater, "read_json", return_value=payload):
+            articles, status = web_updater.archive_render_inputs()
+        self.assertEqual(1, len(articles))
+        self.assertEqual(payload["generated_at"], status["finished_at"])
+        self.assertEqual("archive_snapshot", status["state"])
+        self.assertEqual("기존 공개 자료로 화면 갱신", web_updater._product_status(status)[1])
+
+    def test_missing_empty_or_undated_archive_fails_closed(self):
+        for payload in ({}, {"articles": []}, {"articles": [{"title": "청년 정책", "url": "https://example.org"}], "generated_at": "bad-date"}):
+            with self.subTest(payload=payload), patch.object(web_updater, "read_json", return_value=payload):
+                with self.assertRaises(ValueError):
+                    web_updater.archive_render_inputs()
+
+
 if __name__ == "__main__":
     unittest.main()
