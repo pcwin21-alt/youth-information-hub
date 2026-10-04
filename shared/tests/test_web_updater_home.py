@@ -68,6 +68,22 @@ class HomeSelectionTests(unittest.TestCase):
     def tearDown(self) -> None:
         self.tempdir.cleanup()
 
+    def test_home_secondary_list_excludes_all_highlighted_sources_and_titles(self):
+        from datetime import datetime
+        rows = [make_article(title=f"청년 주거 지원 소식 {i}", lead_text="지원 일정 안내", url=f"https://example.com/news-{i}", published_date=f"2026-10-04T0{9-i}:00:00+09:00") for i in range(8)]
+        duplicate = dict(rows[0], url="https://example.com/alternate", published_date="2026-10-04T01:00:00+09:00")
+        rows.append(duplicate)
+        digest = web_updater.build_digest(rows, "2026-10-04T10:00:00+09:00", now=datetime.fromisoformat("2026-10-04T10:00:00+09:00"))
+        with patch.object(web_updater, "build_digest", return_value=digest):
+            page = web_updater.build_product_home_page(rows, rows, {"finished_at":"2026-10-04T10:00:00+09:00"}, {})
+        secondary = page.split('id="today-briefing"', 1)[1]
+        for issue in digest["issues"][:5]:
+            for row in issue["records"]:
+                self.assertNotIn(row["digest_url"], secondary)
+        self.assertIn("https://example.com/news-5", secondary)
+        self.assertIn("https://example.com/news-7", secondary)
+        self.assertEqual(1, page.count('href="trends.html"'))
+
     def test_home_calendar_defaults_menu_counts_to_today(self) -> None:
         script = web_updater.HOME_ACTIVITY_CALENDAR_SCRIPT
 
@@ -1157,14 +1173,14 @@ class HomeSelectionTests(unittest.TestCase):
         self.assertNotIn(research["title"], news_html)
         self.assertIn(opinion["title"], opinion_html)
         self.assertNotIn(general_news["title"], opinion_html)
-        self.assertNotIn('id="filters"', opinion_html)
+        self.assertIn('id="filters"', opinion_html)
         self.assertNotIn('filter-region-map-svg', opinion_html)
-        self.assertNotIn('data-news-filter-root="opinion"', opinion_html)
+        self.assertIn('data-news-filter-root="opinion"', opinion_html)
         self.assertIn(research["title"], reports_html)
         self.assertNotIn(opinion["title"], reports_html)
-        self.assertNotIn('id="filters"', reports_html)
+        self.assertIn('id="filters"', reports_html)
         self.assertNotIn('filter-region-map-svg', reports_html)
-        self.assertNotIn('data-news-filter-root="reports"', reports_html)
+        self.assertIn('data-news-filter-root="reports"', reports_html)
         self.assertIn(central["title"], official_html)
         self.assertNotIn(local["title"], official_html)
         self.assertIn(local["title"], local_html)
@@ -1316,20 +1332,13 @@ class HomeSelectionTests(unittest.TestCase):
 
         page_html = web_updater.build_news_page([article], {"finished_at": self.reference_time})
 
-        self.assertIn('class="section-card filter-panel news-filter-panel news-filter-split"', page_html)
-        self.assertIn('>날짜별 기사 기록</h3>', page_html)
-        self.assertIn('data-news-range-calendar', page_html)
-        self.assertIn('data-news-calendar-month="2026-04"', page_html)
-        self.assertIn('data-news-filter-apply', page_html)
-        self.assertIn('data-news-filter-reset', page_html)
-        self.assertNotIn('class="filter-region-map-svg"', page_html)
-        self.assertNotIn('data-filter-group="region"', page_html)
-        self.assertNotIn('data-filter-group="direction"', page_html)
+        self.assertIn('class="section menu-controls"', page_html)
+        self.assertIn('data-news-search-input', page_html)
+        self.assertIn('data-menu-reset', page_html)
+        self.assertIn('data-news-date-input', page_html)
+        self.assertIn('data-filter-group="region"', page_html)
         self.assertIn('data-filter-group="topic" data-filter-value="주거"', page_html)
-        self.assertIn('>키워드 검색</label>', page_html)
-        self.assertIn('data-news-hour-start', page_html)
-        self.assertIn('data-news-hour-end', page_html)
-        self.assertNotIn('>기간 설정</span>', page_html)
+        self.assertNotIn('data-news-search-stage', page_html)
         site_css = (
             web_updater.BASE_CSS
             + web_updater.DASHBOARD_TONE_CSS
@@ -1347,7 +1356,7 @@ class HomeSelectionTests(unittest.TestCase):
         self.assertIn('height: calc(var(--news-topic-chip-height) * 2 + 7px);', site_css)
         self.assertIn('overflow: hidden;', site_css)
         self.assertIn('data-article-topics="주거|모집"', page_html)
-        self.assertIn(">#주거</button>", page_html)
+        self.assertIn(">주거</button>", page_html)
         self.assertIn('<div class="badge-row"><span class="badge">', page_html)
         self.assertIn(">주거</span>", page_html)
         self.assertNotIn('<div class="article-meta-tags"><span class="meta-pill primary">주거</span>', page_html)
@@ -1421,7 +1430,7 @@ class ProductRebuildTests(unittest.TestCase):
         self.assertIn('id="activity-calendar"', page_html)
         self.assertIn('class="civic-home-section-link" href="news.html">전체 기사', page_html)
         self.assertLess(
-            page_html.index('<time datetime=', page_html.index('<h2>최근 기사</h2>')),
+            page_html.index('<time datetime=', page_html.index('<h2>더 살펴볼 소식</h2>')),
             page_html.index('class="civic-home-section-link" href="news.html">전체 기사'),
         )
         self.assertLess(page_html.index('<section class="civic-ai-brief-home'), page_html.index('id="today-briefing"'))

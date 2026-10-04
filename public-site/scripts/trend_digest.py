@@ -78,11 +78,11 @@ def render_home_digest(digest, illustration):
     ) or '<li class="civic-ai-brief-empty">최근 7일 자료가 없습니다. 전체 자료실에서 지난 소식을 확인하세요.</li>'
     return f'''<section class="civic-ai-brief-home trend-home" id="main-list" aria-label="최근 청년정책 동향">
       <a class="civic-ai-brief-banner" href="trends.html"><img src="{esc(illustration['src'], quote=True)}" alt="{esc(illustration['alt'], quote=True)}"><div class="trend-hero-copy"><small>적재적소 브리프</small><h1>최근 7일,<br>청년정책 소식</h1><em>전체 동향 살펴보기 →</em><time>{esc(freshness)}</time></div></a>
-      <aside class="civic-ai-brief-recent"><div><h2>최근 동향</h2><a href="trends.html">전체 보기 →</a></div><ol>{rows}</ol></aside>
+      <aside class="civic-ai-brief-recent"><div><h2>최근 동향</h2></div><ol>{rows}</ol></aside>
     </section>'''
 
 
-def render_digest(digest, compact=False, illustration=None):
+def render_digest(digest, compact=False, illustration=None, show_header=True):
     esc = html.escape
     issues = digest["issues"][:5] if compact else digest["issues"]
     updated = digest["updated"]
@@ -116,8 +116,8 @@ def render_digest(digest, compact=False, illustration=None):
     more = '<button type="button" data-trend-more hidden>더 보기</button>' if not compact else ""
     action = '<a class="product-button" href="trends.html">전체 동향 살펴보기 →</a>' if compact else ""
     hero = f'<section class="policy-brief-hero" aria-labelledby="policy-brief-title"><img src="{esc(illustration["src"], quote=True)}" alt="{esc(illustration["alt"], quote=True)}"><div><p>적재적소 브리프</p><h1 id="policy-brief-title" aria-label="최근 7일, 청년정책 소식">최근 7일,<br>청년정책 소식</h1><span>{esc(freshness)}</span></div></section>' if illustration else ""
-    header = '' if hero else f'<header><h1>최근 7일, 청년정책 소식</h1><p class="trend-freshness">{esc(freshness)}</p></header>'
-    return hero + f'<section class="trend-digest" id="main-list" data-trend-digest>{header}<h2 class="trend-section-title">관심 의제의 소식 찾기</h2>{filters}<p data-trend-count role="status">{len(issues)}개 제목 묶음 · 같은 제목의 중복 자료 통합</p><h2 class="visually-hidden">최근 동향 자료</h2><div class="trend-items">{"".join(cards) or empty}</div><p data-trend-no-results hidden>조건에 맞는 자료가 없습니다. 필터를 초기화하거나 다른 키워드를 입력하세요.</p>{more}{action}</section>'
+    header = '' if hero or not show_header else f'<header><h1>최근 7일, 청년정책 소식</h1><p class="trend-freshness">{esc(freshness)}</p></header>'
+    return hero + f'<section class="trend-digest" id="main-list" data-trend-digest>{header}<h2 class="trend-section-title">관심 의제의 소식 찾기</h2>{filters}<p class="trend-freshness">{esc(freshness)}</p><p data-trend-count role="status">{len(issues)}개 제목 묶음 · 같은 제목의 중복 자료 통합</p><h2 class="visually-hidden">최근 동향 자료</h2><div class="trend-items">{"".join(cards) or empty}</div><p data-trend-no-results hidden>조건에 맞는 자료가 없습니다. 필터를 초기화하거나 다른 키워드를 입력하세요.</p>{more}{action}</section>'
 
 
 DIGEST_CSS = """
