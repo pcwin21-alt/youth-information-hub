@@ -14,6 +14,8 @@ from pathlib import Path
 
 from _bootstrap import PUBLIC_CONFIG_ROOT, PUBLIC_CONTENT_ROOT, PUBLIC_WEB_ROOT, RUNTIME_PIPELINE_ROOT
 
+from trend_digest import build_digest, render_digest, DIGEST_CSS, DIGEST_JS
+
 from youth_info_platform.article_metadata import (
     article_identity_key,
     extract_youth_preview_text,
@@ -17963,7 +17965,9 @@ def build_policy_trends_page(articles: list[dict], status: dict) -> str:
     ``build_time_window_briefs`` as its stable input.
     """
     page_updated_at = status.get("finished_at") or status.get("updated_at") or ""
-    briefs = build_recent_time_window_briefs(articles)
+    digest = build_digest(articles, page_updated_at)
+    digest_articles = [row for issue in digest["issues"] for row in issue["records"]]
+    briefs = build_recent_time_window_briefs(digest_articles)
     page_dt = parse_iso_datetime(page_updated_at) or datetime.now(timezone(timedelta(hours=9)))
     page_dt = page_dt.astimezone(timezone(timedelta(hours=9)))
     window_cards: list[str] = []
@@ -17978,8 +17982,7 @@ def build_policy_trends_page(articles: list[dict], status: dict) -> str:
             for article in brief["records"] if article_target_url(article)
         )
         signal = "공식 자료 중심" if brief["official_count"] else "언론·공개 자료 중심"
-        if brief["high_signal"]:
-            signal += f" · 정책 영향 신호 {brief['high_signal']}건"
+        signal += " · 수집 기록 (중요도·시행 여부 미검증)"
         window_cards.append(f'''
         <article class="policy-brief-window" id="{brief_id}" data-brief-start="{brief['start_hour']:02d}:00">
           <div class="policy-brief-window-time"><span>{brief['date'].replace('-', '.')} · {brief['start_hour']:02d}:00–{brief['end_hour']:02d}:00</span><strong>{brief['count']}건</strong></div>
@@ -17989,15 +17992,13 @@ def build_policy_trends_page(articles: list[dict], status: dict) -> str:
           </div>
           <ul class="policy-brief-links">{rows or '<li>이 시간대의 원문 링크가 없습니다.</li>'}</ul>
         </article>''')
-    empty = '<article class="policy-brief-empty"><h2>오늘 생성된 브리프가 없습니다</h2></article>'
+    empty = '<article class="policy-brief-empty"><h2>최근 수집 기록이 없습니다</h2></article>'
     return f'''
-    <section class="policy-brief-hero" aria-labelledby="policy-brief-title">
-      <img src="{HOME_POLICY_WORKROOM_ILLUSTRATION['src']}" alt="{HOME_POLICY_WORKROOM_ILLUSTRATION['alt']}">
-      <div><p>청년정책 AI 브리핑</p><h1 id="policy-brief-title">{page_dt.strftime('%Y년 %m월 %d일')} 브리프</h1><span>오늘 수집 자료 {sum(brief['count'] for brief in briefs)}건</span></div>
-    </section>
-    <section class="section policy-brief-room" id="main-list" aria-label="시간대별 브리프">
+    {render_digest(digest)}
+    <details class="trend-archive" id="collection-log"><summary>시간대별 수집 기록 확인</summary>
+      <p>최근 7일 자료의 수집 시각별 기록입니다. 서로 다른 이슈가 함께 포함될 수 있습니다.</p>
       <div class="policy-brief-grid">{"".join(window_cards) or empty}</div>
-    </section>
+    </details>
     '''
 
 
@@ -21629,7 +21630,7 @@ PUBLIC_PAGE_TEMPLATE = """<!doctype html>
 PAGE_DESCRIPTIONS = {
     "index.html": "청년정책의 변화와 현장 소식을 판단과 제안에 쓸 수 있게 연결합니다.",
     "news.html": "지역과 의제별 청년정책 변화, 공식 발표와 후속 보도를 검색하고 확인합니다.",
-    "trends.html": "오늘 들어온 청년정책 자료를 2시간 단위 브리프로 묶어 핵심 흐름을 확인합니다.",
+    "trends.html": "최근 7일 청년정책 자료를 의제로 탐색하고 원문과 검토 상태를 확인합니다.",
     "guide.html": "근거를 모으고 정책제안의 첫 문장을 만드는 단계별 실험실입니다.",
     "hub.html": "청년 참여기구와 현장 논의 기록을 지역과 의제별로 확인합니다.",
     "opinion.html": "청년정책을 둘러싼 검증 가능한 해설과 현장 관점을 모았습니다.",
@@ -21640,8 +21641,8 @@ PAGE_DESCRIPTIONS = {
 
 
 NAV_ITEMS = [
-    ("news.html", "언론 기사"),
     ("trends.html", "정책 동향"),
+    ("news.html", "언론 기사"),
     ("opinion.html", "기고·칼럼·오피니언"),
     ("official.html", "정부 부처 자료실"),
     ("local.html", "지자체 자료실"),
@@ -21652,13 +21653,13 @@ NAV_ITEMS = [
 TOP_NAV_ITEMS = [("index.html", "홈"), *NAV_ITEMS]
 BOTTOM_NAV_ITEMS = [
     ("index.html", "홈"),
-    ("official.html", "정부"),
-    ("local.html", "지자체"),
+    ("trends.html", "동향"),
+    ("news.html", "기사"),
 ]
 PAGE_HEADINGS.update({
     "index.html": "적재적소 브리프",
     "news.html": "언론 기사",
-    "trends.html": "실시간 청년정책 AI 브리프",
+    "trends.html": "최근 청년정책 동향",
     "guide.html": "정책제안 실험실",
     "hub.html": "현장 목소리",
     "opinion.html": "기고·칼럼·오피니언",
@@ -21666,9 +21667,9 @@ PAGE_HEADINGS.update({
     "about.html": "운영자·편집 기준",
 })
 SIDE_NAV_CONFIG.update({
-    "index.html": {"title": "홈", "description": "오늘의 변화", "items": [("#page-top", "처음"), ("#today-briefing", "오늘 자료"), ("#activity-calendar", "날짜별 기록"), ("#article-discovery", "기사 탐색")]},
+    "index.html": {"title": "홈", "description": "최근 동향", "items": [("#main-list", "최근 동향"), ("#today-briefing", "최근 기사"), ("#activity-calendar", "날짜별 기록")]},
     "news.html": {"title": "언론 기사", "description": "날짜와 검색", "items": [("#page-top", "처음"), ("#filters", "날짜·검색"), ("#main-list", "기사 목록")]},
-    "trends.html": {"title": "실시간 청년정책 AI 브리프", "description": "2시간 단위 브리프", "items": [("#page-top", "처음"), ("#main-list", "시간대별 브리프")]},
+    "trends.html": {"title": "최근 청년정책 동향", "description": "최근 7일 · 의제별 탐색", "items": [("#main-list", "최근 동향"), ("#collection-log", "수집 기록")]},
     "guide.html": {"title": "정책제안 실험실", "description": "제안 준비", "items": [("#page-top", "처음"), ("#main-list", "제안 단계"), ("#evidence-check", "근거 점검")]},
     "hub.html": {"title": "현장 목소리", "description": "참여 기록", "items": [("#page-top", "처음"), ("#filters", "조건 설정"), ("#main-list", "참여 기록")]},
     "opinion.html": {"title": "기고·칼럼·오피니언", "description": "해설과 관점", "items": [("#page-top", "처음"), ("#main-list", "기고·칼럼 목록")]},
@@ -22166,8 +22167,6 @@ def build_product_home_page(
 
     activity_payload = activity_payload or build_home_activity_calendar_payload(unique_articles, page_updated_at)
     activity_today_count = int(activity_payload.get("days", {}).get(activity_payload.get("today", ""), {}).get("count", 0))
-    recent_briefs = build_recent_time_window_briefs(unique_articles, limit=5)
-    latest_brief = recent_briefs[0] if recent_briefs else None
     def headline_score(article: dict) -> int:
         """Rank public headline candidates by impact, authority and recency."""
         score = int(article.get("importance_score") or 0)
@@ -22210,7 +22209,10 @@ def build_product_home_page(
     def render_story(article: dict, *, lead: bool = False) -> str:
         title = html.escape(display_article_title(article, 104 if lead else 76))
         meta = html.escape(compact_article_meta(article))
-        excerpt = html.escape(product_article_excerpt(article, 220 if lead else 112))
+        raw_excerpt = product_article_excerpt(article, 220 if lead else 112)
+        title_key = re.sub(r"\W", "", html.unescape(title))
+        excerpt_key = re.sub(r"\W", "", raw_excerpt)
+        excerpt = "" if title_key and (excerpt_key.startswith(title_key) or title_key.startswith(excerpt_key)) else html.escape(raw_excerpt)
         href = html.escape(article_target_url(article), quote=True)
         related_count = max(1, int(article.get("related_article_count") or 1))
         related_items = article.get("related_articles") or []
@@ -22270,39 +22272,12 @@ def build_product_home_page(
         f'<a href="{href}"><strong>{html.escape(title)}</strong><span>{html.escape(description)}</span><em>{html.escape(latest_menu_update(predicate))}</em></a>'
         for href, title, description, predicate in source_cards
     )
-    def brief_anchor(brief: dict) -> str:
-        return f"brief-{brief.get('date', now_dt.strftime('%Y-%m-%d')).replace('-', '')}-{int(brief['start_hour']):02d}"
-
-    if latest_brief:
-        latest_brief_date = latest_brief.get("date", now_dt.strftime("%Y-%m-%d"))
-        latest_brief_datetime_label = (
-            f"{latest_brief_date[:4]}년 {int(latest_brief_date[5:7])}월 {int(latest_brief_date[8:])}일 "
-            f"{latest_brief['start_hour']:02d}시"
-        )
-        latest_brief_href = f"trends.html#{brief_anchor(latest_brief)}"
-    else:
-        latest_brief_datetime_label = "오늘"
-        latest_brief_href = "trends.html"
-    recent_brief_rows = "".join(
-        f'<li><a href="trends.html#{brief_anchor(brief)}"><time>{html.escape(str(brief.get("date", "")).replace("-", "."))} · {brief["start_hour"]:02d}:00–{brief["end_hour"]:02d}:00</time><strong>{brief["count"]}건</strong></a></li>'
-        for brief in recent_briefs[:5]
-    ) or '<li class="civic-ai-brief-empty">최근 브리프 생성 대기</li>'
     return f"""
-    <h1 class="visually-hidden">적재적소 브리프</h1>
-    <section class="civic-ai-brief-home" aria-label="청년정책 AI 브리핑">
-      <a class="civic-ai-brief-banner" href="{html.escape(latest_brief_href, quote=True)}">
-        <img src="{HOME_POLICY_WORKROOM_ILLUSTRATION['src']}" alt="{HOME_POLICY_WORKROOM_ILLUSTRATION['alt']}">
-        <span><small>{html.escape(latest_brief_datetime_label)}</small><strong>청년정책 AI 브리핑 보러가기</strong></span>
-      </a>
-      <aside class="civic-ai-brief-recent" aria-labelledby="recent-briefs-title">
-        <div><h2 id="recent-briefs-title">최근 브리프</h2><a href="trends.html">전체 보기 <span aria-hidden="true">→</span></a></div>
-        <ol>{recent_brief_rows}</ol>
-      </aside>
-    </section>
+    {render_digest(build_digest([*articles, *classified_articles], status.get("finished_at") or status.get("updated_at")), compact=True)}
 
-    <section class="civic-news-calendar" id="today-briefing" data-home-activity data-activity-url="{HOME_ACTIVITY_CALENDAR_FILENAME}" data-activity-today="{html.escape(str(activity_payload.get('today', '')), quote=True)}" aria-label="오늘의 기사와 이달의 소식">
+    <section class="civic-news-calendar" id="today-briefing" data-home-activity data-activity-url="{HOME_ACTIVITY_CALENDAR_FILENAME}" data-activity-today="{html.escape(str(activity_payload.get('today', '')), quote=True)}" aria-label="최근 기사와 이달의 소식">
       <section class="civic-latest-news" aria-label="최근 기사">
-        <header class="civic-home-section-bar"><div class="civic-home-section-title"><h2>오늘의 기사</h2><time datetime="{html.escape(now_dt.astimezone(timezone(timedelta(hours=9))).isoformat(), quote=True)}">{html.escape(now_label)}</time></div><a class="civic-home-section-link" href="news.html">전체 기사 <span aria-hidden="true">→</span></a></header>
+        <header class="civic-home-section-bar"><div class="civic-home-section-title"><h2>최근 기사</h2><time datetime="{html.escape(now_dt.astimezone(timezone(timedelta(hours=9))).isoformat(), quote=True)}">{html.escape(now_label)}</time></div><a class="civic-home-section-link" href="news.html">전체 기사 <span aria-hidden="true">→</span></a></header>
         <div class="civic-brief-list">{supporting_html}</div>
       </section>
       <section class="civic-activity-archive civic-activity-archive--sidebar" id="activity-calendar" data-home-activity-archive aria-labelledby="home-activity-calendar-title">
@@ -22420,7 +22395,8 @@ def write_page(
     assets_root = path.parent / "assets"
     assets_root.mkdir(parents=True, exist_ok=True)
     site_css = BASE_CSS + DASHBOARD_TONE_CSS + DESIGN_OVERHAUL_CSS + PRODUCT_REBUILD_CSS + BRAND_NEW_CSS + LEAD_FUNNEL_CSS + READABILITY_REFINEMENT_CSS + POLICY_BRIEF_CSS + HOME_LAYOUT_20260829_CSS + EDITORIAL_HEADER_NAV_CSS + RIGHT_POLICY_COLOR_SYSTEM_CSS + KRDS_TYPOGRAPHY_CSS
-    site_js = build_page_script()
+    site_css += DIGEST_CSS
+    site_js = build_page_script() + DIGEST_JS
     write_utf8_page(assets_root / "site.css", site_css)
     write_utf8_page(assets_root / "site.js", site_js)
     write_utf8_page(

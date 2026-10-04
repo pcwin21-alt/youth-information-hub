@@ -1,0 +1,15 @@
+# Routing and delivery record
+
+Project: 동향 파악을 세 독자군 공통 첫 과업으로 확정한 기존 보완안과 후속 실사이트 확인·고도화 요청. 입력→행동→수락 증거→출력은 ../trend-awareness-upgrade.md 참조.
+
+always: canonical AGENTS/00_START_HERE, Skill Router, Brain의 Project 우선·검증 태도.
+active: codex-delivery-loop(기능·화면 수정과 브라우저 검수), KRDS 웹 타이포그래피(제목 구조·본문·focus·반응형), Source(실사이트 관찰·데이터 분류·미검증 구분), Eval(Global·디자인 UX·KRDS의 수정 범위).
+reference: website-minimal-interview와 이전 기획 산출물. 이미 확정한 과업을 재질문하지 않음. 신규 제품 발굴이 아닌 승인된 기존 화면 개선이므로 시장·레퍼런스 발굴 반복은 제외.
+excluded: Brain/Style 정본 수정, 회원/구독/결제/GA4/히트맵, 외부 수집·메시지 발송, 서브에이전트, 다른 작업 채팅의 파일 변경.
+drift: 기존 화면은 시간대 수집량을 정책 브리프로 표현. 데이터에 사건 단위 변경·시행 검증이 없어 이를 의미 검증 완료로 표시하지 않음.
+
+작업 격리: 원본 저장소의 기존 변경을 보존하고 origin/main에서 codex/trend-awareness 브랜치와 별도 worktree 생성. 다른 진행 중 기획/구현을 합치거나 덮어쓰지 않음.
+
+Global: 목적·독자·매체·출력·범위 고정; 관찰과 추론 구분; 출처 링크 보존; 근거 없는 시행·영향 표현 제거; 로컬 검증과 외부 배포 구분.
+Domain: 변경 영역의 16px/1.5 이상 행간·400/700·H1 하나·원문/빈 결과/복구·390/640/1280px 반응형 확인. 실제 200% zoom·스크린리더·독자 효용 실험은 미검증으로 공개.
+판정: 로컬 구현 검토 가능. 출시 검증은 pending. 후속 정책 사건 데이터와 변화 비교는 별도 미완료.
