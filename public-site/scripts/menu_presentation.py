@@ -81,8 +81,8 @@ MENU_CSS = """
 #main-content .menu-layout .resource-card{box-shadow:none;border:1px solid var(--line);border-radius:8px;padding:24px;background:white;color:var(--deep-navy)}
 #main-content .menu-layout .resource-card h3{font-size:19px;font-weight:700;line-height:1.5}
 #main-content .menu-layout .resource-card p{display:block;font-size:16px;line-height:1.6}
+@media(max-width:900px){body .editorial-menu-trigger{display:none!important}}
 @media(max-width:800px){
- body .editorial-menu-trigger{display:none!important}
  #main-content .menu-layout .page-intro-card{padding:20px;margin-top:20px;min-height:0}
  #main-content .menu-layout .page-intro-title{font-size:24px}
  #main-content .menu-layout .page-intro-media{display:none}
