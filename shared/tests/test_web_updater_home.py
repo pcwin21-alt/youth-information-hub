@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import importlib.util
+import re
 import sys
 import tempfile
 import unittest
@@ -1423,7 +1424,7 @@ class ProductRebuildTests(unittest.TestCase):
             page_html.index('<time datetime=', page_html.index('<h2>최근 기사</h2>')),
             page_html.index('class="civic-home-section-link" href="news.html">전체 기사'),
         )
-        self.assertLess(page_html.index('<section class="trend-digest"'), page_html.index('id="today-briefing"'))
+        self.assertLess(page_html.index('<section class="civic-ai-brief-home'), page_html.index('id="today-briefing"'))
         self.assertNotIn('id="article-discovery"', page_html)
         self.assertIn("전체 동향 살펴보기", page_html)
         self.assertNotIn("서울 청년 주거 지원 시행계획 발표", page_html)
@@ -1606,6 +1607,16 @@ class ArchiveRenderTests(unittest.TestCase):
         self.assertEqual(payload["generated_at"], status["finished_at"])
         self.assertEqual("archive_snapshot", status["state"])
         self.assertEqual("기존 공개 자료로 화면 갱신", web_updater._product_status(status)[1])
+
+    def test_asset_version_changes_when_shared_style_changes(self):
+        with tempfile.TemporaryDirectory() as tempdir:
+            output = Path(tempdir) / "index.html"
+            web_updater.write_page(output, "홈", "index.html", "<h1>홈</h1>", {}, {})
+            before = re.search(r'assets/site.css\?v=([^"\s]+)', output.read_text(encoding="utf-8")).group(1)
+            with patch.object(web_updater, "DIGEST_CSS", web_updater.DIGEST_CSS + "\n/* revised */"):
+                web_updater.write_page(output, "홈", "index.html", "<h1>홈</h1>", {}, {})
+            after = re.search(r'assets/site.css\?v=([^"\s]+)', output.read_text(encoding="utf-8")).group(1)
+            self.assertNotEqual(before, after)
 
     def test_missing_empty_or_undated_archive_fails_closed(self):
         for payload in ({}, {"articles": []}, {"articles": [{"title": "청년 정책", "url": "https://example.org"}], "generated_at": "bad-date"}):

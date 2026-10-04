@@ -65,7 +65,24 @@ def build_digest(articles, updated_at, now=None):
     return {"issues": issues, "updated": updated, "reference": reference, "stale": not updated or reference - updated > timedelta(hours=24)}
 
 
-def render_digest(digest, compact=False):
+def render_home_digest(digest, illustration):
+    """Keep the existing illustrated editorial hero and pale-green recent rail."""
+    esc = html.escape
+    updated = digest["updated"]
+    freshness = f"마지막 수집 {updated:%Y.%m.%d %H:%M} KST" if updated else "수집 시각 미확인"
+    if digest["stale"]:
+        freshness += " · 수집 상태 확인 필요"
+    rows = "".join(
+        f'<li><a href="trends.html#{issue["id"]}"><div><small>{esc(issue["topic"])} · {issue["records"][0]["digest_date"]:%m.%d}</small><strong>{esc(issue["records"][0]["title"])}</strong></div><span aria-hidden="true">→</span></a></li>'
+        for issue in digest["issues"][:5]
+    ) or '<li class="civic-ai-brief-empty">최근 7일 자료가 없습니다. 전체 자료실에서 지난 소식을 확인하세요.</li>'
+    return f'''<section class="civic-ai-brief-home trend-home" id="main-list" aria-label="최근 청년정책 동향">
+      <a class="civic-ai-brief-banner" href="trends.html"><img src="{esc(illustration['src'], quote=True)}" alt="{esc(illustration['alt'], quote=True)}"><div class="trend-hero-copy"><small>적재적소 브리프</small><h1>최근 7일,<br>청년정책 소식</h1><em>전체 동향 살펴보기 →</em><time>{esc(freshness)}</time></div></a>
+      <aside class="civic-ai-brief-recent"><div><h2>최근 동향</h2><a href="trends.html">전체 보기 →</a></div><ol>{rows}</ol></aside>
+    </section>'''
+
+
+def render_digest(digest, compact=False, illustration=None):
     esc = html.escape
     issues = digest["issues"][:5] if compact else digest["issues"]
     updated = digest["updated"]
@@ -98,17 +115,30 @@ def render_digest(digest, compact=False):
     empty = '<p>최근 7일에 해당하는 청년정책 자료가 없습니다. <a href="news.html">전체 자료 확인</a></p>'
     more = '<button type="button" data-trend-more hidden>더 보기</button>' if not compact else ""
     action = '<a class="product-button" href="trends.html">전체 동향 살펴보기 →</a>' if compact else ""
-    return f'<section class="trend-digest" id="main-list" data-trend-digest><header><p class="trend-meta">적재적소 브리프 · 동향 파악</p><h{1}>최근 7일, 청년정책 소식</h{1}><p>관심 의제의 새 발표와 보도를 살펴보고, 원문에서 적용 조건을 확인하세요.</p><p class="trend-freshness">{esc(freshness)}</p></header>{filters}<p data-trend-count role="status">{len(issues)}개 제목 묶음 · 같은 제목의 중복 자료 통합</p><h2 class="visually-hidden">최근 동향 자료</h2><div class="trend-items">{"".join(cards) or empty}</div><p data-trend-no-results hidden>조건에 맞는 자료가 없습니다. 필터를 초기화하거나 다른 키워드를 입력하세요.</p>{more}{action}</section>'
+    hero = f'<section class="policy-brief-hero" aria-labelledby="policy-brief-title"><img src="{esc(illustration["src"], quote=True)}" alt="{esc(illustration["alt"], quote=True)}"><div><p>적재적소 브리프</p><h1 id="policy-brief-title" aria-label="최근 7일, 청년정책 소식">최근 7일,<br>청년정책 소식</h1><span>{esc(freshness)}</span></div></section>' if illustration else ""
+    header = '' if hero else f'<header><h1>최근 7일, 청년정책 소식</h1><p class="trend-freshness">{esc(freshness)}</p></header>'
+    return hero + f'<section class="trend-digest" id="main-list" data-trend-digest>{header}<h2 class="trend-section-title">관심 의제의 소식 찾기</h2>{filters}<p data-trend-count role="status">{len(issues)}개 제목 묶음 · 같은 제목의 중복 자료 통합</p><h2 class="visually-hidden">최근 동향 자료</h2><div class="trend-items">{"".join(cards) or empty}</div><p data-trend-no-results hidden>조건에 맞는 자료가 없습니다. 필터를 초기화하거나 다른 키워드를 입력하세요.</p>{more}{action}</section>'
 
 
 DIGEST_CSS = """
-.trend-digest{margin:24px 0 40px;padding:24px;background:#fff;border-top:4px solid #2457b2;color:#172333}
+.trend-home .trend-hero-copy{position:relative;z-index:2;align-self:end;display:grid;padding:32px;gap:12px;color:#fff;text-shadow:0 2px 12px #0006}
+.trend-home .trend-hero-copy small{font-size:16px;font-weight:400}
+.trend-home .civic-ai-brief-banner h1{font-size:clamp(26px,3vw,36px);font-weight:700;line-height:1.3;margin:0;color:#fff}
+.trend-home .civic-ai-brief-banner em{font-size:16px;line-height:1.5;font-style:normal;font-weight:700}
+.trend-home .civic-ai-brief-banner time{font-size:14px;font-weight:400;line-height:1.5;letter-spacing:normal}
+.trend-home .civic-ai-brief-recent li{padding:12px 0}.trend-home .civic-ai-brief-recent li a div{min-width:0}.trend-home .civic-ai-brief-recent small{display:block;font-size:14px;color:var(--muted);margin-bottom:5px}
+.trend-home .civic-ai-brief-recent strong{display:block;white-space:normal;font-size:16px;line-height:1.5;font-weight:700;color:var(--deep-navy);overflow-wrap:anywhere}
+.trend-home .civic-ai-brief-recent{padding:24px}.trend-home .civic-ai-brief-recent strong{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden}.trend-home .civic-ai-brief-recent small{line-height:1.5}.trend-home .civic-ai-brief-recent li{padding:8px 0}.trend-home .civic-ai-brief-recent h2{font-size:20px}.trend-home .civic-ai-brief-recent>div a{font-size:14px;font-weight:700}
+body[data-page="trends.html"] .policy-brief-hero{min-height:270px}body[data-page="trends.html"] .policy-brief-hero h1{font-size:clamp(26px,3vw,36px);font-weight:700;line-height:1.3}body[data-page="trends.html"] .policy-brief-hero p,body[data-page="trends.html"] .policy-brief-hero span{font-size:14px;font-weight:400;line-height:1.5}
+.trend-digest{width:min(1360px,calc(100% - 64px));box-sizing:border-box;margin:32px auto 40px;padding:24px 0;background:transparent;border-top:2px solid var(--deep-navy);color:var(--deep-navy)}
 .trend-digest{font-size:16px;line-height:1.6;font-weight:400}.trend-digest h1,.trend-digest h2{font-weight:700;font-size:clamp(24px,4vw,34px);margin:8px 0 12px;line-height:1.3}
 .trend-digest header>p{line-height:1.6}.trend-meta{color:#31578c;font-size:14px;margin:0 0 8px}.trend-freshness{color:#536174;font-size:14px}
-.trend-items{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 28px;margin:16px 0 24px}
+.trend-items{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 28px;margin:16px 0 24px}.trend-digest .trend-section-title{font-size:24px}.trend-item a{color:var(--deep-navy)}.trend-meta{color:var(--accent-strong)}.trend-controls{padding:18px;background:#f4f8f6}.trend-archive{width:min(1360px,calc(100% - 64px));margin:auto}
 .trend-item{padding:20px 0;border-top:1px solid #dbe2ec;min-width:0;scroll-margin-top:110px}.trend-item h3{font-weight:700;font-size:19px;line-height:1.5;margin:0 0 12px;overflow-wrap:anywhere}.trend-item a{color:#193f78;text-decoration:underline;text-underline-offset:3px}
-.trend-item[hidden]{display:none}.trend-stage{font-size:16px;line-height:1.5;color:#536174}.trend-item details{font-size:16px;line-height:1.7}.trend-item summary{cursor:pointer;color:#193f78}.trend-item li{margin:8px 0}.trend-controls{display:flex;flex-wrap:wrap;gap:12px;align-items:end;margin:24px 0}.trend-controls label{display:grid;gap:6px}.trend-controls input,.trend-controls select,.trend-controls button{font:inherit;padding:10px;border:1px solid #aab7c9;border-radius:4px;background:white;min-height:44px}.trend-digest :focus-visible{outline:3px solid #2457b2;outline-offset:3px}.trend-digest [data-trend-more]{font:inherit;min-height:44px;padding:10px 20px;background:white;border:1px solid #aab7c9;cursor:pointer}.trend-archive>summary{cursor:pointer;font-size:20px;padding:20px 0}.trend-archive .policy-brief-grid{margin-top:16px}
-@media(max-width:640px){.trend-digest{padding:18px 16px;margin-top:12px}.trend-items{grid-template-columns:1fr}.trend-controls{display:grid;grid-template-columns:1fr}.trend-controls input{width:100%;box-sizing:border-box}}
+.trend-item[hidden]{display:none}.trend-stage{font-size:16px;line-height:1.5;color:#536174}.trend-item details{font-size:16px;line-height:1.7}.trend-item summary{cursor:pointer;color:#193f78}.trend-item li{margin:8px 0}.trend-controls{display:flex;flex-wrap:wrap;gap:12px;align-items:end;margin:24px 0}.trend-controls label{display:grid;gap:6px}.trend-controls input,.trend-controls select,.trend-controls button{font:inherit;padding:10px;border:1px solid #aab7c9;border-radius:4px;background:white;min-height:44px}.trend-home :focus-visible{outline:3px solid var(--accent-strong);outline-offset:3px}.trend-digest :focus-visible{outline:3px solid var(--accent-strong);outline-offset:3px}.trend-digest [data-trend-more]{font:inherit;min-height:44px;padding:10px 20px;background:white;border:1px solid #aab7c9;cursor:pointer}.trend-archive>summary{cursor:pointer;font-size:20px;padding:20px 0}.trend-archive .policy-brief-grid{margin-top:16px}
+@media(max-width:800px){.trend-home .civic-ai-brief-banner{min-height:240px}.trend-home .trend-hero-copy{padding:24px}.trend-home .civic-ai-brief-recent{min-height:0;padding:20px}.trend-home .civic-ai-brief-recent li:nth-child(n+4){display:none}body[data-page="trends.html"] .policy-brief-hero{min-height:210px}.trend-digest,.trend-archive{width:calc(100% - 32px)}}
+@media(max-width:640px){.trend-digest{padding:18px 0;margin-top:24px}.trend-items{grid-template-columns:1fr}.trend-controls{display:grid;grid-template-columns:1fr}.trend-controls input{width:100%;box-sizing:border-box}}
+.trend-meta{color:var(--accent-strong)}.trend-item a{color:var(--deep-navy)}.trend-item{border-color:var(--line)}
 """
 
 DIGEST_JS = """

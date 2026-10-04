@@ -14,7 +14,7 @@ from pathlib import Path
 
 from _bootstrap import PUBLIC_CONFIG_ROOT, PUBLIC_CONTENT_ROOT, PUBLIC_WEB_ROOT, RUNTIME_PIPELINE_ROOT
 
-from trend_digest import build_digest, render_digest, DIGEST_CSS, DIGEST_JS
+from trend_digest import build_digest, render_digest, render_home_digest, DIGEST_CSS, DIGEST_JS
 
 from youth_info_platform.article_metadata import (
     article_identity_key,
@@ -17994,7 +17994,7 @@ def build_policy_trends_page(articles: list[dict], status: dict) -> str:
         </article>''')
     empty = '<article class="policy-brief-empty"><h2>최근 수집 기록이 없습니다</h2></article>'
     return f'''
-    {render_digest(digest)}
+    {render_digest(digest, illustration=HOME_POLICY_WORKROOM_ILLUSTRATION)}
     <details class="trend-archive" id="collection-log"><summary>시간대별 수집 기록 확인</summary>
       <p>최근 7일 자료의 수집 시각별 기록입니다. 서로 다른 이슈가 함께 포함될 수 있습니다.</p>
       <div class="policy-brief-grid">{"".join(window_cards) or empty}</div>
@@ -22274,7 +22274,7 @@ def build_product_home_page(
         for href, title, description, predicate in source_cards
     )
     return f"""
-    {render_digest(build_digest([*articles, *classified_articles], status.get("finished_at") or status.get("updated_at")), compact=True)}
+    {render_home_digest(build_digest([*articles, *classified_articles], status.get("finished_at") or status.get("updated_at")), HOME_POLICY_WORKROOM_ILLUSTRATION)}
 
     <section class="civic-news-calendar" id="today-briefing" data-home-activity data-activity-url="{HOME_ACTIVITY_CALENDAR_FILENAME}" data-activity-today="{html.escape(str(activity_payload.get('today', '')), quote=True)}" aria-label="최근 기사와 이달의 소식">
       <section class="civic-latest-news" aria-label="최근 기사">
@@ -22410,7 +22410,7 @@ def write_page(
                 content_kind="briefing" if path.name.startswith("briefing-") else "page",
                 analytics_endpoint=html.escape(PUBLIC_ANALYTICS_ENDPOINT, quote=True),
                 subscription_endpoint=html.escape(PUBLIC_SUBSCRIPTION_ENDPOINT, quote=True),
-                asset_version=html.escape(ASSET_VERSION, quote=True),
+                asset_version=hashlib.sha256((site_css + site_js).encode("utf-8")).hexdigest()[:12],
                 styles="",
                 brand_mark_src=html.escape(BRAND_MARK_SRC),
                 script="",
