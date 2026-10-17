@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-10-17T14:45:15.532931+09:00",
+  "generated_at": "2026-10-17T19:51:03.690270+09:00",
   "retention_days": 365,
   "research_retention_days": 3650,
-  "article_count": 3785,
+  "article_count": 3786,
   "articles": [
     {
       "url": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE9UNHRMdUxIWEdUbE91aWNOM2NZa0hiaTFPVTFZZEFJMzdtX1E2WnlPZE9JZ1NZdXotQW1mOXo1U21aeFBQeXlEeFZpbGRMMnhONTN0eW4wVW9seWJlTWwzcTE5UlZWMjky?oc=5",
@@ -14,6 +14,7 @@
       "source_name": "구글뉴스 청년 고용·쉬었음(7일)",
       "source_kind": "news",
       "publisher_domain": "www.idjnews.kr",
+      "published_date": "2026-10-17T04:00:00+00:00",
       "portal_published_at": "2026-10-17T04:00:00+00:00",
       "region": "전국",
       "categories": [
@@ -46,8 +47,57 @@
       "weak_youth_signal": false,
       "missing_youth_content_signal": false,
       "archive_key": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE9UNHRMdUxIWEdUbE91aWNOM2NZa0hiaTFPVTFZZEFJMzdtX1E2WnlPZE9JZ1NZdXotQW1mOXo1U21aeFBQeXlEeFZpbGRMMnhONTN0eW4wVW9seWJlTWwzcTE5UlZWMjky?oc=5",
-      "published_at": "2026-10-17T04:00:00+00:00",
-      "published_date": "2026-10-17T04:00:00+00:00"
+      "published_at": "2026-10-17T04:00:00+00:00"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE01amk5OFBqTlROOUhhV0VMWFBTVVFvLVdtcmoxdUNRakFsVDA3ZVJxQkswSEpXdFh2OEZEQ09oX2twN2liQ2dXOEtSUHUwcjM4RjJXTHZpTkJaSkZfeEpwSXFTTzNqV2g2?oc=5",
+      "canonical_url": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE01amk5OFBqTlROOUhhV0VMWFBTVVFvLVdtcmoxdUNRakFsVDA3ZVJxQkswSEpXdFh2OEZEQ09oX2twN2liQ2dXOEtSUHUwcjM4RjJXTHZpTkJaSkZfeEpwSXFTTzNqV2g2?oc=5",
+      "feed_url": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE01amk5OFBqTlROOUhhV0VMWFBTVVFvLVdtcmoxdUNRakFsVDA3ZVJxQkswSEpXdFh2OEZEQ09oX2twN2liQ2dXOEtSUHUwcjM4RjJXTHZpTkJaSkZfeEpwSXFTTzNqV2g2?oc=5",
+      "title": "\"경기도 오산시, 청년·신혼부부 위한 주택 대출이자 지원 프로그램 모집 시작\"",
+      "source": "공감신문",
+      "source_name": "구글뉴스 청년 부채·금융(7일)",
+      "source_kind": "news",
+      "publisher_domain": "www.gokorea.kr",
+      "portal_published_at": "2026-10-17T03:00:41+00:00",
+      "region": "경기",
+      "categories": [
+        "청년은 지금",
+        "지역 이슈"
+      ],
+      "topic_tags": [
+        "주거",
+        "금융"
+      ],
+      "issue_tags": [
+        "주거",
+        "부채"
+      ],
+      "content_direction": "report",
+      "governance_activity_types": [
+        "모집"
+      ],
+      "lead_text": "\"경기도 오산시, 청년·신혼부부 위한 주택 대출이자 지원 프로그램 모집 시작\" 공감신문",
+      "youth_excerpt": "\"경기도 오산시, 청년·신혼부부 위한 주택 대출이자 지원 프로그램 모집 시작\" 공감신문",
+      "is_official_source": false,
+      "is_public_interest_article": true,
+      "is_hub_candidate": false,
+      "editorial_decision": "default",
+      "editorial_is_highlighted": false,
+      "selection_bucket": "regional_issue",
+      "importance_score": 44,
+      "public_relevance_score": 17,
+      "related_article_count": 1,
+      "related_sources": [
+        "공감신문"
+      ],
+      "campaign_political": false,
+      "substantive_promise": false,
+      "campaign_attack": false,
+      "weak_youth_signal": false,
+      "missing_youth_content_signal": false,
+      "archive_key": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE01amk5OFBqTlROOUhhV0VMWFBTVVFvLVdtcmoxdUNRakFsVDA3ZVJxQkswSEpXdFh2OEZEQ09oX2twN2liQ2dXOEtSUHUwcjM4RjJXTHZpTkJaSkZfeEpwSXFTTzNqV2g2?oc=5",
+      "published_at": "2026-10-17T03:00:41+00:00",
+      "published_date": "2026-10-17T03:00:41+00:00"
     },
     {
       "url": "https://news.google.com/rss/articles/CBMia0FVX3lxTFBEeGZCVUliRkpKQmVlSlF1UTU4SURLYWJCRk9WcDY1cncwMEJjVlk4ZGpWQ2syUEJNaEhDdUU4cjg4R0ZJckNHZ0ZRTk5WWGFkVG00VkMzc2JRM0FNYXltYjJtMGdlS3ctakU0?oc=5",
@@ -58,6 +108,7 @@
       "source_name": "구글뉴스 청년 삶·심층(7일)",
       "source_kind": "news",
       "publisher_domain": "www.hanaronews.kr",
+      "published_date": "2026-10-16T23:41:41+00:00",
       "portal_published_at": "2026-10-16T23:41:41+00:00",
       "region": "전국",
       "categories": [
@@ -90,8 +141,7 @@
       "weak_youth_signal": false,
       "missing_youth_content_signal": false,
       "archive_key": "https://news.google.com/rss/articles/CBMia0FVX3lxTFBEeGZCVUliRkpKQmVlSlF1UTU4SURLYWJCRk9WcDY1cncwMEJjVlk4ZGpWQ2syUEJNaEhDdUU4cjg4R0ZJckNHZ0ZRTk5WWGFkVG00VkMzc2JRM0FNYXltYjJtMGdlS3ctakU0?oc=5",
-      "published_at": "2026-10-16T23:41:41+00:00",
-      "published_date": "2026-10-16T23:41:41+00:00"
+      "published_at": "2026-10-16T23:41:41+00:00"
     },
     {
       "url": "https://news.google.com/rss/articles/CBMiXEFVX3lxTFAyRm9EcTFrSm5sR1F4TzZzcDE3WHpHTGNkZllDMndBOE1kWFFtQXpuNEZ6YVRNODhQZ3VuNjJMMXhzTkxxdG1kR01yQTExQlJZb0hGUjhqNm9GQlBK?oc=5",
@@ -357,7 +407,7 @@
       "editorial_decision": "default",
       "editorial_is_highlighted": false,
       "selection_bucket": "youth_life_signal",
-      "importance_score": 39,
+      "importance_score": 37,
       "public_relevance_score": 12,
       "related_article_count": 1,
       "related_sources": [
@@ -407,7 +457,7 @@
       "editorial_decision": "default",
       "editorial_is_highlighted": false,
       "selection_bucket": "official_policy",
-      "importance_score": 23,
+      "importance_score": 21,
       "public_relevance_score": 7,
       "related_article_count": 1,
       "related_sources": [
@@ -497,7 +547,7 @@
       "editorial_decision": "default",
       "editorial_is_highlighted": false,
       "selection_bucket": "youth_research_signal",
-      "importance_score": 42,
+      "importance_score": 40,
       "public_relevance_score": 16,
       "related_article_count": 1,
       "related_sources": [
@@ -552,7 +602,7 @@
       "editorial_decision": "default",
       "editorial_is_highlighted": false,
       "selection_bucket": "official_policy",
-      "importance_score": 41,
+      "importance_score": 39,
       "public_relevance_score": 14,
       "related_article_count": 1,
       "related_sources": [
@@ -596,7 +646,7 @@
       "editorial_decision": "default",
       "editorial_is_highlighted": false,
       "selection_bucket": "youth_issue",
-      "importance_score": 30,
+      "importance_score": 28,
       "public_relevance_score": 12,
       "related_article_count": 1,
       "related_sources": [
@@ -640,7 +690,7 @@
       "editorial_decision": "default",
       "editorial_is_highlighted": false,
       "selection_bucket": "youth_research_signal",
-      "importance_score": 42,
+      "importance_score": 40,
       "public_relevance_score": 16,
       "related_article_count": 1,
       "related_sources": [
@@ -684,7 +734,7 @@
       "editorial_decision": "default",
       "editorial_is_highlighted": false,
       "selection_bucket": "youth_life_signal",
-      "importance_score": 35,
+      "importance_score": 33,
       "public_relevance_score": 12,
       "related_article_count": 1,
       "related_sources": [
@@ -707,6 +757,7 @@
       "source_name": "구글뉴스 청년 부채·금융(7일)",
       "source_kind": "news",
       "publisher_domain": "mbnmoney.mbn.co.kr",
+      "published_date": "2026-10-16T06:41:00+00:00",
       "portal_published_at": "2026-10-16T06:41:00+00:00",
       "region": "전국",
       "categories": [
@@ -729,7 +780,7 @@
       "editorial_decision": "default",
       "editorial_is_highlighted": false,
       "selection_bucket": "youth_issue",
-      "importance_score": 29,
+      "importance_score": 27,
       "public_relevance_score": 9,
       "related_article_count": 1,
       "related_sources": [
@@ -741,8 +792,7 @@
       "weak_youth_signal": false,
       "missing_youth_content_signal": false,
       "archive_key": "https://news.google.com/rss/articles/CBMia0FVX3lxTE16OHlwSklGQ3VWbWd4S2d1ZTJIU1lKc1Y0Wkt0bEdhQl9LcGRZTTEwQlJUd0dOXzB6Sk1fcHRDcDFmbzZSRmthck93N19BcjBSWkNVX2k4T2VzU0xqcjVCTVVCaDVlZlp6NjFz?oc=5",
-      "published_at": "2026-10-16T06:41:00+00:00",
-      "published_date": "2026-10-16T06:41:00+00:00"
+      "published_at": "2026-10-16T06:41:00+00:00"
     },
     {
       "url": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE1iOElyaWRvSHhYTldSUnFBUUdQNXpNTDdiZGJBelNsUlhuNVU3bHhXU3RXWTJQYlpUTzhLVmg1VlBPQTJJVHNtaTh4YjRNc05KbEhmS0JyWXNHY0hJVXdCZE5ON3B4OEpY?oc=5",
@@ -820,7 +870,7 @@
       "editorial_decision": "default",
       "editorial_is_highlighted": false,
       "selection_bucket": "youth_issue",
-      "importance_score": 34,
+      "importance_score": 32,
       "public_relevance_score": 15,
       "related_article_count": 1,
       "related_sources": [
@@ -866,7 +916,7 @@
       "editorial_decision": "default",
       "editorial_is_highlighted": false,
       "selection_bucket": "youth_life_signal",
-      "importance_score": 42,
+      "importance_score": 40,
       "public_relevance_score": 17,
       "related_article_count": 1,
       "related_sources": [
@@ -915,7 +965,7 @@
       "editorial_decision": "default",
       "editorial_is_highlighted": false,
       "selection_bucket": "official_policy",
-      "importance_score": 27,
+      "importance_score": 25,
       "public_relevance_score": 7,
       "related_article_count": 1,
       "related_sources": [
@@ -1004,7 +1054,7 @@
       "editorial_decision": "default",
       "editorial_is_highlighted": false,
       "selection_bucket": "youth_issue",
-      "importance_score": 30,
+      "importance_score": 28,
       "public_relevance_score": 12,
       "related_article_count": 1,
       "related_sources": [
@@ -1048,7 +1098,7 @@
       "editorial_decision": "default",
       "editorial_is_highlighted": false,
       "selection_bucket": "youth_research_signal",
-      "importance_score": 42,
+      "importance_score": 40,
       "public_relevance_score": 16,
       "related_article_count": 1,
       "related_sources": [
@@ -1094,7 +1144,7 @@
       "editorial_decision": "default",
       "editorial_is_highlighted": false,
       "selection_bucket": "youth_research_signal",
-      "importance_score": 50,
+      "importance_score": 48,
       "public_relevance_score": 17,
       "related_article_count": 1,
       "related_sources": [
@@ -1677,7 +1727,7 @@
       "editorial_decision": "default",
       "editorial_is_highlighted": false,
       "selection_bucket": "youth_life_signal",
-      "importance_score": 51,
+      "importance_score": 49,
       "public_relevance_score": 11,
       "related_article_count": 1,
       "related_sources": [
@@ -2206,8 +2256,6 @@
       "source_name": "정책브리핑 정부부처 청년 보도자료",
       "source_kind": "official",
       "publisher_domain": "www.korea.kr",
-      "publisher_icon_url": "https://www.korea.kr/images/common/favicon.ico",
-      "image_url": "https://www.korea.kr/images/event/korea_logo_2024.jpg",
       "published_date": "2026-10-16T08:00:00+09:00",
       "publisher_published_at": "2026-10-16T08:00:00+09:00",
       "region": "전국",
@@ -2222,12 +2270,8 @@
         "고용"
       ],
       "content_direction": "official_release",
-      "governance_activity_types": [
-        "발표회"
-      ],
       "lead_text": "[2026년9월고용동향]▣15~64세고용률(OECD비교기준)은70.6%로전년동월대비0.2%p상승▣실업률은2.0%로전년동월대비0.1%p하락○실업자는600천명으로전년동월대비3만4천 - 정책브리핑 | 브리핑룸 | 보도자료",
       "youth_excerpt": "...4%) 감소 ○ 청년 층 실업률은 5.4%로 전년동월대비 0.6%p 상승 ○ 계절조정 실업률은 2.6%로 전월대비 0.1%p 하락 ▣ 2026년 9월 취업자는 29,266천명으로 전년동월대비 ...",
-      "body_text": "이 누리집은 대한민국 공식 전자정부 누리집입니다. ssec2609(통합).pdf 바로보기 내려받기 ssec2609.hwpx 바로보기 내려받기 ssec2609(통계표).pdf 바로보기 내려받기 ssec2609(통계표).xlsx 바로보기 내려받기 “이 자료는 국가데이터처의 보도자료를 전재하여 제공함을 알려드립니다.” 단, 텍스트를 제외한 사진·이미지·일러스트·동영상 등 자료의 대부분은 정책브리핑이 저작권을 보유하고 있지 않으므로, 이용 전 해당 저작권자의 허락을 반드시 받으셔야 합니다. 정책브리핑 게시물 운영원칙에 따라 다음과 같은 게시물은 삭제 또는 계정이 차단 될 수 있습니다. © Ministry of Culture, Sports and Tourism . All rights reserved",
       "is_official_source": true,
       "is_public_interest_article": true,
       "is_hub_candidate": false,
@@ -2246,7 +2290,13 @@
       "weak_youth_signal": false,
       "missing_youth_content_signal": false,
       "archive_key": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156785387",
-      "published_at": "2026-10-16T08:00:00+09:00"
+      "published_at": "2026-10-16T08:00:00+09:00",
+      "publisher_icon_url": "https://www.korea.kr/images/common/favicon.ico",
+      "image_url": "https://www.korea.kr/images/event/korea_logo_2024.jpg",
+      "governance_activity_types": [
+        "발표회"
+      ],
+      "body_text": "이 누리집은 대한민국 공식 전자정부 누리집입니다. ssec2609(통합).pdf 바로보기 내려받기 ssec2609.hwpx 바로보기 내려받기 ssec2609(통계표).pdf 바로보기 내려받기 ssec2609(통계표).xlsx 바로보기 내려받기 “이 자료는 국가데이터처의 보도자료를 전재하여 제공함을 알려드립니다.” 단, 텍스트를 제외한 사진·이미지·일러스트·동영상 등 자료의 대부분은 정책브리핑이 저작권을 보유하고 있지 않으므로, 이용 전 해당 저작권자의 허락을 반드시 받으셔야 합니다. 정책브리핑 게시물 운영원칙에 따라 다음과 같은 게시물은 삭제 또는 계정이 차단 될 수 있습니다. © Ministry of Culture, Sports and Tourism . All rights reserved"
     },
     {
       "url": "https://news.google.com/rss/articles/CBMib0FVX3lxTE0zMUIzMzhmeXEzYWFoYmQwMC05NFY0dkhUdmRGUXJoWWtKYWVFVUZoZHlTOWkyMXZWamNNeUNydVdyLWI5NEkzejUxTFNadWZrZ21sbE1KQ25LeG4yREJjbl9DY2I0TlBScXVlZmtKZw?oc=5",
@@ -2731,6 +2781,8 @@
       "source_name": "정책브리핑 정부부처 청년 보도자료",
       "source_kind": "official",
       "publisher_domain": "www.korea.kr",
+      "publisher_icon_url": "https://www.korea.kr/images/common/favicon.ico",
+      "image_url": "https://www.korea.kr/images/event/korea_logo_2024.jpg",
       "published_date": "2026-10-16T00:00:00+09:00",
       "publisher_published_at": "2026-10-16T00:00:00+09:00",
       "region": "전국",
@@ -2747,8 +2799,15 @@
         "부채"
       ],
       "content_direction": "official_release",
+      "governance_activity_types": [
+        "회의",
+        "위원회",
+        "발표회",
+        "출범"
+      ],
       "lead_text": "내 집 어디에, 언제 공급되나 주택공급, 계획부터 성과까지 정례적으로 공개합니다 - 주택공급 정례 브리핑 본격 가동공급실적전망과 사업별 추진상황 공개 - 수도권 9.9만호 이상 - 정책브리핑 | 브리핑룸 | 보도자료",
       "youth_excerpt": "...내년부터 청년 월세 지원 에 대한 소득기준 을 완화 하고, 기존 전세임대 대비 지원한도 등이 완화된 청년 보편형 전세임대 를 신설 한다. 신혼부부 에 대해서는 ...",
+      "body_text": "이 누리집은 대한민국 공식 전자정부 누리집입니다. 261016(보도참고) “내 집 어디에 언제 공급되나” 주택공급 계획부터 성과까지 정례적으로 공개합니다.hwpx 바로보기 내려받기 261016(보도참고) “내 집 어디에 언제 공급되나” 주택공급 계획부터 성과까지 정례적으로 공개합니다.pdf 바로보기 내려받기 261016[별첨1] 제1차 주택공급 정책 브리프.pdf 바로보기 내려받기 261016[별첨2] 전월세시장 안정과제 추진상황(재배포).pdf 바로보기 내려받기 261016 (브리핑문) 제1차 주택공급 정례브리핑.hwp 바로보기 내려받기 “이 자료는 금융위원회의 보도자료를 전재하여 제공함을 알려드립니다.” 단, 텍스트를 제외한 사진·이미지·일러스트·동영상 등 자료의 대부분은 정책브리핑이 저작권을 보유하고 있지 않으므로, 이용 전 해당 저작권자의 허락을 반드시 받으셔야 합니다. 정책브리핑 게시물 운영원칙에 따라 다음과 같은 게시물은 삭제 또는 계정이 차단 될 수 있습니다. © Ministry of Culture, Sports and Tourism . All rights reserved",
       "is_official_source": true,
       "is_public_interest_article": true,
       "is_hub_candidate": false,
@@ -2767,16 +2826,7 @@
       "weak_youth_signal": false,
       "missing_youth_content_signal": false,
       "archive_key": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156785511",
-      "published_at": "2026-10-16T00:00:00+09:00",
-      "publisher_icon_url": "https://www.korea.kr/images/common/favicon.ico",
-      "image_url": "https://www.korea.kr/images/event/korea_logo_2024.jpg",
-      "governance_activity_types": [
-        "회의",
-        "위원회",
-        "발표회",
-        "출범"
-      ],
-      "body_text": "이 누리집은 대한민국 공식 전자정부 누리집입니다. 261016(보도참고) “내 집 어디에 언제 공급되나” 주택공급 계획부터 성과까지 정례적으로 공개합니다.hwpx 바로보기 내려받기 261016(보도참고) “내 집 어디에 언제 공급되나” 주택공급 계획부터 성과까지 정례적으로 공개합니다.pdf 바로보기 내려받기 261016[별첨1] 제1차 주택공급 정책 브리프.pdf 바로보기 내려받기 261016[별첨2] 전월세시장 안정과제 추진상황(재배포).pdf 바로보기 내려받기 261016 (브리핑문) 제1차 주택공급 정례브리핑.hwp 바로보기 내려받기 “이 자료는 금융위원회의 보도자료를 전재하여 제공함을 알려드립니다.” 단, 텍스트를 제외한 사진·이미지·일러스트·동영상 등 자료의 대부분은 정책브리핑이 저작권을 보유하고 있지 않으므로, 이용 전 해당 저작권자의 허락을 반드시 받으셔야 합니다. 정책브리핑 게시물 운영원칙에 따라 다음과 같은 게시물은 삭제 또는 계정이 차단 될 수 있습니다. © Ministry of Culture, Sports and Tourism . All rights reserved"
+      "published_at": "2026-10-16T00:00:00+09:00"
     },
     {
       "url": "https://news.google.com/rss/articles/CBMibkFVX3lxTE9xT0xRZG5abWdqUGdzckxUUGk5NDlkVzlwa184NEpNaGFVYS1iVGd6T0l1dm9lNnkyUG1ITDE1bHkzS0xaMXI2SUxQN2VvMFJ3UkpHVjJiRDRNOFBUZDAyMThVWWlhSW85WmlJa013?oc=5",
@@ -3767,6 +3817,7 @@
       "source_name": "구글뉴스 청년 실용정보(7일)",
       "source_kind": "news",
       "publisher_domain": "www.smarttoday.co.kr",
+      "published_date": "2026-10-15T04:39:00+00:00",
       "portal_published_at": "2026-10-15T04:39:00+00:00",
       "region": "전국",
       "categories": [
@@ -3796,8 +3847,7 @@
       "weak_youth_signal": false,
       "missing_youth_content_signal": false,
       "archive_key": "https://news.google.com/rss/articles/CBMiX0FVX3lxTE9lOVJPVVQxa2dtMlFEeGthYkNodTN6VkNWZlJmeVhSRUp5a0htRmMtVnJVZnBDR2h5U0FMSHBHTFhFM1BhdWZYTXV6VGVUUndGaHZkT1JGd3pwbkNtelRF?oc=5",
-      "published_at": "2026-10-15T04:39:00+00:00",
-      "published_date": "2026-10-15T04:39:00+00:00"
+      "published_at": "2026-10-15T04:39:00+00:00"
     },
     {
       "url": "https://news.google.com/rss/articles/CBMiXkFVX3lxTFBiYVZnX2NhMTQ2dU9vekFLcUwzNUlIa0tJamJpTlFoai14Tk15WndtZ1EwSEhmY2VqUHJSWW5qNWE1cVJ5cjROTkN0SjE4VE1mY215dWRwQm51OVI0Z3c?oc=5",
@@ -3805,7 +3855,7 @@
       "feed_url": "https://news.google.com/rss/articles/CBMiXkFVX3lxTFBiYVZnX2NhMTQ2dU9vekFLcUwzNUlIa0tJamJpTlFoai14Tk15WndtZ1EwSEhmY2VqUHJSWW5qNWE1cVJ5cjROTkN0SjE4VE1mY215dWRwQm51OVI0Z3c?oc=5",
       "title": "[충북] 충북·청년재단, 청년 지역 정착·자립 지원",
       "source": "YTN",
-      "source_name": "구글뉴스 청년정책(7일)",
+      "source_name": "구글뉴스 청년 실용정보(7일)",
       "source_kind": "news",
       "publisher_domain": "www.ytn.co.kr",
       "published_date": "2026-10-15T04:29:00+00:00",
@@ -4461,6 +4511,7 @@
       "source_name": "구글뉴스 청년 부채·금융(7일)",
       "source_kind": "news",
       "publisher_domain": "www.yna.co.kr",
+      "published_date": "2026-10-15T01:43:00+00:00",
       "portal_published_at": "2026-10-15T01:43:00+00:00",
       "region": "전국",
       "categories": [
@@ -4497,8 +4548,7 @@
       "weak_youth_signal": false,
       "missing_youth_content_signal": false,
       "archive_key": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE9CZk0xVEdSNkh2d1ZWWmhjb2lBXzZ6ZVlMT1Y1cEgzeERuT3NQOUZNdFR0WG5fSWd4ZmJQcjROT19HY2NOQy13X2tyWnpxU05LQ3B4bkpkYjRwT3PSAWBBVV95cUxPeTh6aGVWZ0ZxcjlZUXVrUVJ4NlBwUC1CdDI5by1xbTJiRlkxYzFLQWM4Y2hZV1JXbVE1U2dnRDhlaGY4emx0RVcxTGh6bjBGMjBXbWcwb1hEbkM5VzB6SjM?oc=5",
-      "published_at": "2026-10-15T01:43:00+00:00",
-      "published_date": "2026-10-15T01:43:00+00:00"
+      "published_at": "2026-10-15T01:43:00+00:00"
     },
     {
       "url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156785316&pageIndex=1&repCodeType=&repCode=&startDate=2025-10-17&endDate=2026-10-17&srchWord=청년&period=",
@@ -4783,6 +4833,8 @@
       "source_name": "정책브리핑 정부부처 청년 보도자료",
       "source_kind": "official",
       "publisher_domain": "www.korea.kr",
+      "publisher_icon_url": "https://www.korea.kr/images/common/favicon.ico",
+      "image_url": "https://www.korea.kr/images/event/korea_logo_2024.jpg",
       "published_date": "2026-10-15T10:14:04+09:00",
       "publisher_published_at": "2026-10-15T10:14:04+09:00",
       "region": "서울",
@@ -4799,8 +4851,13 @@
         "고용"
       ],
       "content_direction": "official_release",
+      "governance_activity_types": [
+        "간담회",
+        "발표회"
+      ],
       "lead_text": "- 노동부 장관과 함께하는 '청년 프리랜서 오픈마이크' 개최 -  고용노동부(장관 김영훈)는 10월 15일(목) 서울고용노동청 1층 청년ON라운지에서 청년 프리랜서와 함께하는  - 정책브리핑 | 브리핑룸 | 보도자료",
       "youth_excerpt": "- 노동부 장관과 함께하는 '청년 프리랜서 오픈마이크' 개최 - 고용노동부(장관 김영훈)는 10월 15일(목) 서울고용노동청 1층 청년ON라운지에서 청년 프리랜서와 함께하는 - 정책브리핑 | 브리핑룸 | 보도자료",
+      "body_text": "이 누리집은 대한민국 공식 전자정부 누리집입니다. 261015_보도자료_청년 프리랜서 간담회.pdf 바로보기 내려받기 261015_보도자료_청년 프리랜서 간담회.hwpx 바로보기 내려받기 “이 자료는 고용노동부의 보도자료를 전재하여 제공함을 알려드립니다.” 단, 텍스트를 제외한 사진·이미지·일러스트·동영상 등 자료의 대부분은 정책브리핑이 저작권을 보유하고 있지 않으므로, 이용 전 해당 저작권자의 허락을 반드시 받으셔야 합니다. 정책브리핑 게시물 운영원칙에 따라 다음과 같은 게시물은 삭제 또는 계정이 차단 될 수 있습니다. © Ministry of Culture, Sports and Tourism . All rights reserved",
       "is_official_source": true,
       "is_public_interest_article": true,
       "is_hub_candidate": false,
@@ -4819,14 +4876,7 @@
       "weak_youth_signal": false,
       "missing_youth_content_signal": false,
       "archive_key": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156785267",
-      "published_at": "2026-10-15T10:14:04+09:00",
-      "publisher_icon_url": "https://www.korea.kr/images/common/favicon.ico",
-      "image_url": "https://www.korea.kr/images/event/korea_logo_2024.jpg",
-      "governance_activity_types": [
-        "간담회",
-        "발표회"
-      ],
-      "body_text": "이 누리집은 대한민국 공식 전자정부 누리집입니다. 261015_보도자료_청년 프리랜서 간담회.pdf 바로보기 내려받기 261015_보도자료_청년 프리랜서 간담회.hwpx 바로보기 내려받기 “이 자료는 고용노동부의 보도자료를 전재하여 제공함을 알려드립니다.” 단, 텍스트를 제외한 사진·이미지·일러스트·동영상 등 자료의 대부분은 정책브리핑이 저작권을 보유하고 있지 않으므로, 이용 전 해당 저작권자의 허락을 반드시 받으셔야 합니다. 정책브리핑 게시물 운영원칙에 따라 다음과 같은 게시물은 삭제 또는 계정이 차단 될 수 있습니다. © Ministry of Culture, Sports and Tourism . All rights reserved"
+      "published_at": "2026-10-15T10:14:04+09:00"
     },
     {
       "url": "https://news.google.com/rss/articles/CBMicEFVX3lxTE1fZFdmOV9jLVNqUjJGOU55bjRRWTdPYUVhRUp6STRQX3pkb2JFLUVleWlJZ3U5ZGplcjd0S3JFNDgxay1yWVR5V29ENmtmc3JYazZTVFo3VFFWVjQ4SlVINlJHME1hMll3ZnVvSDd0WFY?oc=5",
@@ -5564,8 +5614,6 @@
       "source_name": "정책브리핑 정부부처 청년 보도자료",
       "source_kind": "official",
       "publisher_domain": "www.korea.kr",
-      "publisher_icon_url": "https://www.korea.kr/images/common/favicon.ico",
-      "image_url": "https://www.korea.kr/images/event/korea_logo_2024.jpg",
       "published_date": "2026-10-15T00:00:00+09:00",
       "publisher_published_at": "2026-10-15T00:00:00+09:00",
       "region": "전국",
@@ -5587,7 +5635,6 @@
       ],
       "lead_text": "2026년 9월 가계대출 동향(잠정) 및 가계부채 점검회의 개최  ◇ '26.9월 全 금융권 가계대출은 △2.2조원 감소하여 '25.12월(△1.2조원) 이후 처음으로 순감   - 정책브리핑 | 브리핑룸 | 보도자료",
       "youth_excerpt": "...13일) 후속조치 이행 점검 강화 ➊ 보금자리론 결혼페널티 해소 및 청년 특례 전세대출보증 시행 (10.19일) ➋ 신축 입주단지 집단대출 (이주비, 중도금, 잔금대출) 취급 현황 점검 ※ 【관련 국정과제】 58. 금융안정과 ...",
-      "body_text": "이 누리집은 대한민국 공식 전자정부 누리집입니다. 261015(보도자료) 2026년 9월 가계대출 동향(잠정) 및 ｢가계부채 점검회의｣ 개최.hwpx 바로보기 내려받기 261015(보도자료) 2026년 9월 가계대출 동향(잠정) 및 ｢가계부채 점검회의｣ 개최.pdf 바로보기 내려받기 “이 자료는 금융위원회의 보도자료를 전재하여 제공함을 알려드립니다.” 단, 텍스트를 제외한 사진·이미지·일러스트·동영상 등 자료의 대부분은 정책브리핑이 저작권을 보유하고 있지 않으므로, 이용 전 해당 저작권자의 허락을 반드시 받으셔야 합니다. 정책브리핑 게시물 운영원칙에 따라 다음과 같은 게시물은 삭제 또는 계정이 차단 될 수 있습니다. © Ministry of Culture, Sports and Tourism . All rights reserved",
       "is_official_source": true,
       "is_public_interest_article": true,
       "is_hub_candidate": false,
@@ -5606,7 +5653,10 @@
       "weak_youth_signal": false,
       "missing_youth_content_signal": false,
       "archive_key": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156785312",
-      "published_at": "2026-10-15T00:00:00+09:00"
+      "published_at": "2026-10-15T00:00:00+09:00",
+      "publisher_icon_url": "https://www.korea.kr/images/common/favicon.ico",
+      "image_url": "https://www.korea.kr/images/event/korea_logo_2024.jpg",
+      "body_text": "이 누리집은 대한민국 공식 전자정부 누리집입니다. 261015(보도자료) 2026년 9월 가계대출 동향(잠정) 및 ｢가계부채 점검회의｣ 개최.hwpx 바로보기 내려받기 261015(보도자료) 2026년 9월 가계대출 동향(잠정) 및 ｢가계부채 점검회의｣ 개최.pdf 바로보기 내려받기 “이 자료는 금융위원회의 보도자료를 전재하여 제공함을 알려드립니다.” 단, 텍스트를 제외한 사진·이미지·일러스트·동영상 등 자료의 대부분은 정책브리핑이 저작권을 보유하고 있지 않으므로, 이용 전 해당 저작권자의 허락을 반드시 받으셔야 합니다. 정책브리핑 게시물 운영원칙에 따라 다음과 같은 게시물은 삭제 또는 계정이 차단 될 수 있습니다. © Ministry of Culture, Sports and Tourism . All rights reserved"
     },
     {
       "url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156785246&pageIndex=1&repCodeType=&repCode=&startDate=2025-10-17&endDate=2026-10-17&srchWord=청년&period=",
@@ -5618,8 +5668,6 @@
       "source_name": "정책브리핑 정부부처 청년 보도자료",
       "source_kind": "official",
       "publisher_domain": "www.korea.kr",
-      "publisher_icon_url": "https://www.korea.kr/images/common/favicon.ico",
-      "image_url": "https://www.korea.kr/images/event/korea_logo_2024.jpg",
       "published_date": "2026-10-15T00:00:00+09:00",
       "publisher_published_at": "2026-10-15T00:00:00+09:00",
       "region": "전국",
@@ -5630,14 +5678,8 @@
         "복지"
       ],
       "content_direction": "official_release",
-      "governance_activity_types": [
-        "회의",
-        "위원회",
-        "발표회"
-      ],
       "lead_text": "10월 14일 한겨레 출산율 넘어 인구감소 '적응'으로...10만 청년 돌봄 전문직 양성도 관련 보도에 대해 아래와 같이 설명 드립니다.   1. 기사 주요내용  □ 10월 1 - 정책브리핑 | 브리핑룸 | 보도자료",
       "youth_excerpt": "...10만 청년 돌봄 전문직 양성도 관련 보도에 대해 아래와 같이 설명 드립니다. 1. 기사 주요내용 □ 10월 1 - 정책브리핑 | 브리핑룸 | 보도자료",
-      "body_text": "이 누리집은 대한민국 공식 전자정부 누리집입니다. [인구전략위원회](10.14.수 배포 즉시 보도) (한겨레) 출산율 넘어 인구감소 적응 으로 보도설명자료.pdf 바로보기 내려받기 [인구전략위원회](10.14.수 배포 즉시 보도) (한겨레) 출산율 넘어 인구감소 적응 으로 보도설명자료.hwpx 바로보기 내려받기 “이 자료는 인구전략위원회의 보도자료를 전재하여 제공함을 알려드립니다.” 단, 텍스트를 제외한 사진·이미지·일러스트·동영상 등 자료의 대부분은 정책브리핑이 저작권을 보유하고 있지 않으므로, 이용 전 해당 저작권자의 허락을 반드시 받으셔야 합니다. 정책브리핑 게시물 운영원칙에 따라 다음과 같은 게시물은 삭제 또는 계정이 차단 될 수 있습니다. © Ministry of Culture, Sports and Tourism . All rights reserved",
       "is_official_source": true,
       "is_public_interest_article": true,
       "is_hub_candidate": false,
@@ -5656,7 +5698,15 @@
       "weak_youth_signal": false,
       "missing_youth_content_signal": false,
       "archive_key": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156785246",
-      "published_at": "2026-10-15T00:00:00+09:00"
+      "published_at": "2026-10-15T00:00:00+09:00",
+      "publisher_icon_url": "https://www.korea.kr/images/common/favicon.ico",
+      "image_url": "https://www.korea.kr/images/event/korea_logo_2024.jpg",
+      "governance_activity_types": [
+        "회의",
+        "위원회",
+        "발표회"
+      ],
+      "body_text": "이 누리집은 대한민국 공식 전자정부 누리집입니다. [인구전략위원회](10.14.수 배포 즉시 보도) (한겨레) 출산율 넘어 인구감소 적응 으로 보도설명자료.pdf 바로보기 내려받기 [인구전략위원회](10.14.수 배포 즉시 보도) (한겨레) 출산율 넘어 인구감소 적응 으로 보도설명자료.hwpx 바로보기 내려받기 “이 자료는 인구전략위원회의 보도자료를 전재하여 제공함을 알려드립니다.” 단, 텍스트를 제외한 사진·이미지·일러스트·동영상 등 자료의 대부분은 정책브리핑이 저작권을 보유하고 있지 않으므로, 이용 전 해당 저작권자의 허락을 반드시 받으셔야 합니다. 정책브리핑 게시물 운영원칙에 따라 다음과 같은 게시물은 삭제 또는 계정이 차단 될 수 있습니다. © Ministry of Culture, Sports and Tourism . All rights reserved"
     },
     {
       "url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156785244&pageIndex=1&repCodeType=&repCode=&startDate=2025-10-16&endDate=2026-10-16&srchWord=청년&period=",
@@ -5908,7 +5958,7 @@
       "editorial_decision": "default",
       "editorial_is_highlighted": false,
       "selection_bucket": "youth_issue",
-      "importance_score": 21,
+      "importance_score": 19,
       "public_relevance_score": 7,
       "related_article_count": 1,
       "related_sources": [
@@ -5952,7 +6002,7 @@
       "editorial_decision": "default",
       "editorial_is_highlighted": false,
       "selection_bucket": "youth_issue",
-      "importance_score": 28,
+      "importance_score": 26,
       "public_relevance_score": 12,
       "related_article_count": 1,
       "related_sources": [
@@ -6083,7 +6133,7 @@
       "editorial_decision": "default",
       "editorial_is_highlighted": false,
       "selection_bucket": "opinion",
-      "importance_score": 23,
+      "importance_score": 21,
       "public_relevance_score": 7,
       "related_article_count": 1,
       "related_sources": [
@@ -6121,7 +6171,7 @@
       "editorial_decision": "default",
       "editorial_is_highlighted": false,
       "selection_bucket": "youth_issue",
-      "importance_score": 21,
+      "importance_score": 19,
       "public_relevance_score": 7,
       "related_article_count": 1,
       "related_sources": [
@@ -6167,7 +6217,7 @@
       "editorial_decision": "default",
       "editorial_is_highlighted": false,
       "selection_bucket": "regional_issue",
-      "importance_score": 28,
+      "importance_score": 26,
       "public_relevance_score": 8,
       "related_article_count": 1,
       "related_sources": [
@@ -6339,7 +6389,7 @@
       "editorial_decision": "default",
       "editorial_is_highlighted": false,
       "selection_bucket": "regional_issue",
-      "importance_score": 20,
+      "importance_score": 18,
       "public_relevance_score": 7,
       "related_article_count": 1,
       "related_sources": [
@@ -6429,7 +6479,7 @@
       "editorial_decision": "default",
       "editorial_is_highlighted": false,
       "selection_bucket": "youth_issue",
-      "importance_score": 28,
+      "importance_score": 26,
       "public_relevance_score": 12,
       "related_article_count": 1,
       "related_sources": [
@@ -6523,7 +6573,7 @@
       "editorial_decision": "default",
       "editorial_is_highlighted": false,
       "selection_bucket": "regional_issue",
-      "importance_score": 28,
+      "importance_score": 26,
       "public_relevance_score": 8,
       "related_article_count": 1,
       "related_sources": [
@@ -6614,7 +6664,7 @@
       "editorial_decision": "default",
       "editorial_is_highlighted": false,
       "selection_bucket": "youth_issue",
-      "importance_score": 36,
+      "importance_score": 34,
       "public_relevance_score": 16,
       "related_article_count": 1,
       "related_sources": [
@@ -7884,7 +7934,7 @@
       "editorial_decision": "default",
       "editorial_is_highlighted": false,
       "selection_bucket": "youth_issue",
-      "importance_score": 28,
+      "importance_score": 26,
       "public_relevance_score": 12,
       "related_article_count": 1,
       "related_sources": [
@@ -17349,7 +17399,6 @@
       "source_name": "구글뉴스 청년 칼럼·기고(30일)",
       "source_kind": "news",
       "publisher_domain": "www.ablenews.co.kr",
-      "published_date": "2026-10-08T08:57:00+00:00",
       "portal_published_at": "2026-10-08T08:57:00+00:00",
       "region": "전국",
       "categories": [
@@ -17379,7 +17428,8 @@
       "weak_youth_signal": false,
       "missing_youth_content_signal": false,
       "archive_key": "https://news.google.com/rss/articles/CBMibkFVX3lxTFBmS01iZ1QwUE5KZXlLd1RScUZGNnVXU00wandSdjhhSDhWQU02TUZ6TG5NdkUyYi1LY1k3SzBSMFg1cVVSOWROQzFvS2NXQXlmWlFCWng2aXoxbTNMcjd0RW5LRE1PQjNkeWhic2ZB0gFyQVVfeXFMUHZVQkNCaThCa1RLTlp2OEQ4WnpzcVU3YlBMNFhjOW1WUUZIVjQ1Vkczdm04UTJnMU9nS0NMYzV4NV83MGNDR3NWMnNZR0drMV9CWmZYZmxoSExwdXhFaGZyd0pBSFl6Y0lzak5ud0hkOGt3?oc=5",
-      "published_at": "2026-10-08T08:57:00+00:00"
+      "published_at": "2026-10-08T08:57:00+00:00",
+      "published_date": "2026-10-08T08:57:00+00:00"
     },
     {
       "url": "https://news.google.com/rss/articles/CBMiZEFVX3lxTFBMN2JVOTB2YzU4RjFzMG5tVnpLWjBGSTk4RzEwdjBHVEN2R3ZXTnFzc0FZNFFjTi16X002NEd5MG9PZERNNElFelFCTC01Sm9BUURXNTlXY0NtanFXdUJOT0dnVFQ?oc=5",
@@ -20335,6 +20385,54 @@
       "published_at": "2026-10-07T07:48:49+00:00"
     },
     {
+      "url": "https://news.google.com/rss/articles/CBMib0FVX3lxTE1rNVNEb2hmQU85TGo5ZlAzaTB6VjBFRTNkY0MxWTROVHp6Z1RpZnEyekVXNUV3bGxqaS1oTG9CeV9uaUlaTFBINFN2ajNfcHJMOUV3Qll6c0dMVjc5Q0d6T2lCWm9lZmxDMFdnYzh6VQ?oc=5",
+      "canonical_url": "https://news.google.com/rss/articles/CBMib0FVX3lxTE1rNVNEb2hmQU85TGo5ZlAzaTB6VjBFRTNkY0MxWTROVHp6Z1RpZnEyekVXNUV3bGxqaS1oTG9CeV9uaUlaTFBINFN2ajNfcHJMOUV3Qll6c0dMVjc5Q0d6T2lCWm9lZmxDMFdnYzh6VQ?oc=5",
+      "feed_url": "https://news.google.com/rss/articles/CBMib0FVX3lxTE1rNVNEb2hmQU85TGo5ZlAzaTB6VjBFRTNkY0MxWTROVHp6Z1RpZnEyekVXNUV3bGxqaS1oTG9CeV9uaUlaTFBINFN2ajNfcHJMOUV3Qll6c0dMVjc5Q0d6T2lCWm9lZmxDMFdnYzh6VQ?oc=5",
+      "title": "[사설] 청년은 미래적금이 아니라 일자리를 원한다",
+      "source": "경북일보",
+      "source_name": "구글뉴스 청년 칼럼·기고(30일)",
+      "source_kind": "news",
+      "publisher_domain": "www.kyongbuk.co.kr",
+      "published_date": "2026-10-07T07:38:42+00:00",
+      "portal_published_at": "2026-10-07T07:38:42+00:00",
+      "region": "경북",
+      "categories": [
+        "청년은 지금",
+        "논평·기고",
+        "지역 이슈"
+      ],
+      "topic_tags": [
+        "취업",
+        "금융"
+      ],
+      "issue_tags": [
+        "고용"
+      ],
+      "article_type": "opinion",
+      "content_direction": "column",
+      "lead_text": "[사설] 청년은 미래적금이 아니라 일자리를 원한다 경북일보",
+      "youth_excerpt": "[사설] 청년은 미래적금이 아니라 일자리를 원한다 경북일보",
+      "is_official_source": false,
+      "is_public_interest_article": true,
+      "is_hub_candidate": false,
+      "editorial_decision": "default",
+      "editorial_is_highlighted": false,
+      "selection_bucket": "opinion",
+      "importance_score": 24,
+      "public_relevance_score": 7,
+      "related_article_count": 1,
+      "related_sources": [
+        "경북일보"
+      ],
+      "campaign_political": false,
+      "substantive_promise": false,
+      "campaign_attack": false,
+      "weak_youth_signal": false,
+      "missing_youth_content_signal": false,
+      "archive_key": "https://news.google.com/rss/articles/CBMib0FVX3lxTE1rNVNEb2hmQU85TGo5ZlAzaTB6VjBFRTNkY0MxWTROVHp6Z1RpZnEyekVXNUV3bGxqaS1oTG9CeV9uaUlaTFBINFN2ajNfcHJMOUV3Qll6c0dMVjc5Q0d6T2lCWm9lZmxDMFdnYzh6VQ?oc=5",
+      "published_at": "2026-10-07T07:38:42+00:00"
+    },
+    {
       "url": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE9zZC14QUdjWGJGbHNKejZnX2Juc0Z3OHItek90M1YtY3dXNXFGaHR1QUU2SXpwTUcxbnpNeFRWcmxicjlObTd4QWl0QWtFaS1sN21rV0wxaW5qaWJJZm03WjVSTDhGbzRx?oc=5",
       "canonical_url": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE9zZC14QUdjWGJGbHNKejZnX2Juc0Z3OHItek90M1YtY3dXNXFGaHR1QUU2SXpwTUcxbnpNeFRWcmxicjlObTd4QWl0QWtFaS1sN21rV0wxaW5qaWJJZm03WjVSTDhGbzRx?oc=5",
       "feed_url": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE9zZC14QUdjWGJGbHNKejZnX2Juc0Z3OHItek90M1YtY3dXNXFGaHR1QUU2SXpwTUcxbnpNeFRWcmxicjlObTd4QWl0QWtFaS1sN21rV0wxaW5qaWJJZm03WjVSTDhGbzRx?oc=5",
@@ -20645,53 +20743,6 @@
       "missing_youth_content_signal": false,
       "archive_key": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156784543",
       "published_at": "2026-10-07T16:00:00+09:00"
-    },
-    {
-      "url": "https://news.google.com/rss/articles/CBMib0FVX3lxTE1rNVNEb2hmQU85TGo5ZlAzaTB6VjBFRTNkY0MxWTROVHp6Z1RpZnEyekVXNUV3bGxqaS1oTG9CeV9uaUlaTFBINFN2ajNfcHJMOUV3Qll6c0dMVjc5Q0d6T2lCWm9lZmxDMFdnYzh6VQ?oc=5",
-      "canonical_url": "https://news.google.com/rss/articles/CBMib0FVX3lxTE1rNVNEb2hmQU85TGo5ZlAzaTB6VjBFRTNkY0MxWTROVHp6Z1RpZnEyekVXNUV3bGxqaS1oTG9CeV9uaUlaTFBINFN2ajNfcHJMOUV3Qll6c0dMVjc5Q0d6T2lCWm9lZmxDMFdnYzh6VQ?oc=5",
-      "feed_url": "https://news.google.com/rss/articles/CBMib0FVX3lxTE1rNVNEb2hmQU85TGo5ZlAzaTB6VjBFRTNkY0MxWTROVHp6Z1RpZnEyekVXNUV3bGxqaS1oTG9CeV9uaUlaTFBINFN2ajNfcHJMOUV3Qll6c0dMVjc5Q0d6T2lCWm9lZmxDMFdnYzh6VQ?oc=5",
-      "title": "[사설] 청년은 미래적금이 아니라 일자리를 원한다 - kyongbuk.co.kr",
-      "source": "경북일보",
-      "source_name": "구글뉴스 청년 칼럼·기고(30일)",
-      "source_kind": "news",
-      "publisher_domain": "www.kyongbuk.co.kr",
-      "published_date": "2026-10-07T07:00:00+00:00",
-      "portal_published_at": "2026-10-07T07:00:00+00:00",
-      "region": "전국",
-      "categories": [
-        "청년은 지금",
-        "논평·기고"
-      ],
-      "topic_tags": [
-        "취업",
-        "금융"
-      ],
-      "issue_tags": [
-        "고용"
-      ],
-      "article_type": "opinion",
-      "content_direction": "column",
-      "lead_text": "[사설] 청년은 미래적금이 아니라 일자리를 원한다 kyongbuk.co.kr",
-      "youth_excerpt": "[사설] 청년은 미래적금이 아니라 일자리를 원한다 kyongbuk.co.kr",
-      "is_official_source": false,
-      "is_public_interest_article": true,
-      "is_hub_candidate": false,
-      "editorial_decision": "default",
-      "editorial_is_highlighted": false,
-      "selection_bucket": "opinion",
-      "importance_score": 20,
-      "public_relevance_score": 7,
-      "related_article_count": 1,
-      "related_sources": [
-        "경북일보"
-      ],
-      "campaign_political": false,
-      "substantive_promise": false,
-      "campaign_attack": false,
-      "weak_youth_signal": false,
-      "missing_youth_content_signal": false,
-      "archive_key": "https://news.google.com/rss/articles/CBMib0FVX3lxTE1rNVNEb2hmQU85TGo5ZlAzaTB6VjBFRTNkY0MxWTROVHp6Z1RpZnEyekVXNUV3bGxqaS1oTG9CeV9uaUlaTFBINFN2ajNfcHJMOUV3Qll6c0dMVjc5Q0d6T2lCWm9lZmxDMFdnYzh6VQ?oc=5",
-      "published_at": "2026-10-07T07:00:00+00:00"
     },
     {
       "url": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE9fRS1zanJiZWVuUXF4bTBZNmJKb0hkREFJMEQ5Y3AxU1dwUjJiU3FCMVlmaURyV09PbmFlMUZiUmlydkhGRHR6S3lnM2NxREtTeHczbVJPTUlTMkp1NnRWbVcyZm5JemJa?oc=5",
