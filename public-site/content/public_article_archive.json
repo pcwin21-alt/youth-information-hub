@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-10-17T19:51:03.690270+09:00",
+  "generated_at": "2026-10-17T23:22:55.652766+09:00",
   "retention_days": 365,
   "research_retention_days": 3650,
-  "article_count": 3786,
+  "article_count": 3787,
   "articles": [
     {
       "url": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE9UNHRMdUxIWEdUbE91aWNOM2NZa0hiaTFPVTFZZEFJMzdtX1E2WnlPZE9JZ1NZdXotQW1mOXo1U21aeFBQeXlEeFZpbGRMMnhONTN0eW4wVW9seWJlTWwzcTE5UlZWMjky?oc=5",
@@ -58,6 +58,7 @@
       "source_name": "구글뉴스 청년 부채·금융(7일)",
       "source_kind": "news",
       "publisher_domain": "www.gokorea.kr",
+      "published_date": "2026-10-17T03:00:41+00:00",
       "portal_published_at": "2026-10-17T03:00:41+00:00",
       "region": "경기",
       "categories": [
@@ -96,8 +97,51 @@
       "weak_youth_signal": false,
       "missing_youth_content_signal": false,
       "archive_key": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE01amk5OFBqTlROOUhhV0VMWFBTVVFvLVdtcmoxdUNRakFsVDA3ZVJxQkswSEpXdFh2OEZEQ09oX2twN2liQ2dXOEtSUHUwcjM4RjJXTHZpTkJaSkZfeEpwSXFTTzNqV2g2?oc=5",
-      "published_at": "2026-10-17T03:00:41+00:00",
-      "published_date": "2026-10-17T03:00:41+00:00"
+      "published_at": "2026-10-17T03:00:41+00:00"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMic0FVX3lxTE1lQWVtWEhlQnVVYVg1bFNib29IOFZwbmZDX0dGbTl1dzRhZzFMbE9MRGxOTlFxQXVwbnB1T24zRXRPZEFPck5Lak13eFVYTUJMZXRkSmZQSFhYYUtuSkJIeC14VUdKbDRVS0kxdXc5ZENRM1k?oc=5",
+      "canonical_url": "https://news.google.com/rss/articles/CBMic0FVX3lxTE1lQWVtWEhlQnVVYVg1bFNib29IOFZwbmZDX0dGbTl1dzRhZzFMbE9MRGxOTlFxQXVwbnB1T24zRXRPZEFPck5Lak13eFVYTUJMZXRkSmZQSFhYYUtuSkJIeC14VUdKbDRVS0kxdXc5ZENRM1k?oc=5",
+      "feed_url": "https://news.google.com/rss/articles/CBMic0FVX3lxTE1lQWVtWEhlQnVVYVg1bFNib29IOFZwbmZDX0dGbTl1dzRhZzFMbE9MRGxOTlFxQXVwbnB1T24zRXRPZEFPck5Lak13eFVYTUJMZXRkSmZQSFhYYUtuSkJIeC14VUdKbDRVS0kxdXc5ZENRM1k?oc=5",
+      "title": "하남시, 청년특화주택 수요조사…27일까지",
+      "source": "동방일보",
+      "source_name": "구글뉴스 청년 삶·심층(7일)",
+      "source_kind": "news",
+      "publisher_domain": "www.dongbangilbo.co.kr",
+      "portal_published_at": "2026-10-17T02:47:49+00:00",
+      "region": "전국",
+      "categories": [
+        "청년은 지금"
+      ],
+      "topic_tags": [
+        "주거"
+      ],
+      "issue_tags": [
+        "주거"
+      ],
+      "content_direction": "insight",
+      "lead_text": "하남시, 청년특화주택 수요조사…27일까지 동방일보",
+      "youth_excerpt": "하남시, 청년특화주택 수요조사…27일까지 동방일보",
+      "is_official_source": false,
+      "is_public_interest_article": true,
+      "is_hub_candidate": false,
+      "editorial_decision": "default",
+      "editorial_is_highlighted": false,
+      "selection_bucket": "youth_research_signal",
+      "importance_score": 42,
+      "public_relevance_score": 16,
+      "related_article_count": 1,
+      "related_sources": [
+        "동방일보"
+      ],
+      "campaign_political": false,
+      "substantive_promise": false,
+      "campaign_attack": false,
+      "weak_youth_signal": false,
+      "missing_youth_content_signal": false,
+      "archive_key": "https://news.google.com/rss/articles/CBMic0FVX3lxTE1lQWVtWEhlQnVVYVg1bFNib29IOFZwbmZDX0dGbTl1dzRhZzFMbE9MRGxOTlFxQXVwbnB1T24zRXRPZEFPck5Lak13eFVYTUJMZXRkSmZQSFhYYUtuSkJIeC14VUdKbDRVS0kxdXc5ZENRM1k?oc=5",
+      "published_at": "2026-10-17T02:47:49+00:00",
+      "published_date": "2026-10-17T02:47:49+00:00"
     },
     {
       "url": "https://news.google.com/rss/articles/CBMia0FVX3lxTFBEeGZCVUliRkpKQmVlSlF1UTU4SURLYWJCRk9WcDY1cncwMEJjVlk4ZGpWQ2syUEJNaEhDdUU4cjg4R0ZJckNHZ0ZRTk5WWGFkVG00VkMzc2JRM0FNYXltYjJtMGdlS3ctakU0?oc=5",
@@ -307,7 +351,7 @@
       "editorial_decision": "default",
       "editorial_is_highlighted": false,
       "selection_bucket": "youth_issue",
-      "importance_score": 25,
+      "importance_score": 23,
       "public_relevance_score": 7,
       "related_article_count": 1,
       "related_sources": [
@@ -361,7 +405,7 @@
       "editorial_decision": "default",
       "editorial_is_highlighted": false,
       "selection_bucket": "official_policy",
-      "importance_score": 37,
+      "importance_score": 35,
       "public_relevance_score": 14,
       "related_article_count": 1,
       "related_sources": [
@@ -4560,8 +4604,6 @@
       "source_name": "정책브리핑 정부부처 청년 보도자료",
       "source_kind": "official",
       "publisher_domain": "www.korea.kr",
-      "publisher_icon_url": "https://www.korea.kr/images/common/favicon.ico",
-      "image_url": "https://www.korea.kr/images/event/korea_logo_2024.jpg",
       "published_date": "2026-10-15T10:39:07+09:00",
       "publisher_published_at": "2026-10-15T10:39:07+09:00",
       "region": "경기",
@@ -4576,7 +4618,6 @@
       ],
       "lead_text": "통일부·경기도·프리드리히 에버트 재단, '2026 DMZ OPEN 에코피스포럼' 공동개최(10.28.)  - 프랑스 지리학자 발레리 줄레조 교수 기조연설, 통일부 장관·경기도지 - 정책브리핑 | 브리핑룸 | 보도자료",
       "youth_excerpt": "...□ 이번 포럼은 현장을 찾는 국민과 청년 들이 DMZ의 생태·평화적 가치를 체감하고 소통할 수 있는 장으로 꾸며진다. 특히 행사장에는 통일부가 제작한 'DMZ 빅게임'* 체험존이 설치되어 ...",
-      "body_text": "이 누리집은 대한민국 공식 전자정부 누리집입니다. 261015 (합동 보도자료) 2026 DMZ OPEN 에코피스포럼 공동개최.hwp 바로보기 내려받기 261015 (합동 보도자료) 2026 DMZ OPEN 에코피스포럼 공동개최.pdf 바로보기 내려받기 “이 자료는 통일부의 보도자료를 전재하여 제공함을 알려드립니다.” 단, 텍스트를 제외한 사진·이미지·일러스트·동영상 등 자료의 대부분은 정책브리핑이 저작권을 보유하고 있지 않으므로, 이용 전 해당 저작권자의 허락을 반드시 받으셔야 합니다. 정책브리핑 게시물 운영원칙에 따라 다음과 같은 게시물은 삭제 또는 계정이 차단 될 수 있습니다. © Ministry of Culture, Sports and Tourism . All rights reserved",
       "is_official_source": true,
       "is_public_interest_article": true,
       "is_hub_candidate": false,
@@ -4595,7 +4636,10 @@
       "weak_youth_signal": false,
       "missing_youth_content_signal": false,
       "archive_key": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156785316",
-      "published_at": "2026-10-15T10:39:07+09:00"
+      "published_at": "2026-10-15T10:39:07+09:00",
+      "publisher_icon_url": "https://www.korea.kr/images/common/favicon.ico",
+      "image_url": "https://www.korea.kr/images/event/korea_logo_2024.jpg",
+      "body_text": "이 누리집은 대한민국 공식 전자정부 누리집입니다. 261015 (합동 보도자료) 2026 DMZ OPEN 에코피스포럼 공동개최.hwp 바로보기 내려받기 261015 (합동 보도자료) 2026 DMZ OPEN 에코피스포럼 공동개최.pdf 바로보기 내려받기 “이 자료는 통일부의 보도자료를 전재하여 제공함을 알려드립니다.” 단, 텍스트를 제외한 사진·이미지·일러스트·동영상 등 자료의 대부분은 정책브리핑이 저작권을 보유하고 있지 않으므로, 이용 전 해당 저작권자의 허락을 반드시 받으셔야 합니다. 정책브리핑 게시물 운영원칙에 따라 다음과 같은 게시물은 삭제 또는 계정이 차단 될 수 있습니다. © Ministry of Culture, Sports and Tourism . All rights reserved"
     },
     {
       "url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156785271&pageIndex=1&repCodeType=&repCode=&startDate=2025-10-17&endDate=2026-10-17&srchWord=청년&period=",
@@ -4833,8 +4877,6 @@
       "source_name": "정책브리핑 정부부처 청년 보도자료",
       "source_kind": "official",
       "publisher_domain": "www.korea.kr",
-      "publisher_icon_url": "https://www.korea.kr/images/common/favicon.ico",
-      "image_url": "https://www.korea.kr/images/event/korea_logo_2024.jpg",
       "published_date": "2026-10-15T10:14:04+09:00",
       "publisher_published_at": "2026-10-15T10:14:04+09:00",
       "region": "서울",
@@ -4851,13 +4893,8 @@
         "고용"
       ],
       "content_direction": "official_release",
-      "governance_activity_types": [
-        "간담회",
-        "발표회"
-      ],
       "lead_text": "- 노동부 장관과 함께하는 '청년 프리랜서 오픈마이크' 개최 -  고용노동부(장관 김영훈)는 10월 15일(목) 서울고용노동청 1층 청년ON라운지에서 청년 프리랜서와 함께하는  - 정책브리핑 | 브리핑룸 | 보도자료",
       "youth_excerpt": "- 노동부 장관과 함께하는 '청년 프리랜서 오픈마이크' 개최 - 고용노동부(장관 김영훈)는 10월 15일(목) 서울고용노동청 1층 청년ON라운지에서 청년 프리랜서와 함께하는 - 정책브리핑 | 브리핑룸 | 보도자료",
-      "body_text": "이 누리집은 대한민국 공식 전자정부 누리집입니다. 261015_보도자료_청년 프리랜서 간담회.pdf 바로보기 내려받기 261015_보도자료_청년 프리랜서 간담회.hwpx 바로보기 내려받기 “이 자료는 고용노동부의 보도자료를 전재하여 제공함을 알려드립니다.” 단, 텍스트를 제외한 사진·이미지·일러스트·동영상 등 자료의 대부분은 정책브리핑이 저작권을 보유하고 있지 않으므로, 이용 전 해당 저작권자의 허락을 반드시 받으셔야 합니다. 정책브리핑 게시물 운영원칙에 따라 다음과 같은 게시물은 삭제 또는 계정이 차단 될 수 있습니다. © Ministry of Culture, Sports and Tourism . All rights reserved",
       "is_official_source": true,
       "is_public_interest_article": true,
       "is_hub_candidate": false,
@@ -4876,7 +4913,14 @@
       "weak_youth_signal": false,
       "missing_youth_content_signal": false,
       "archive_key": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156785267",
-      "published_at": "2026-10-15T10:14:04+09:00"
+      "published_at": "2026-10-15T10:14:04+09:00",
+      "publisher_icon_url": "https://www.korea.kr/images/common/favicon.ico",
+      "image_url": "https://www.korea.kr/images/event/korea_logo_2024.jpg",
+      "governance_activity_types": [
+        "간담회",
+        "발표회"
+      ],
+      "body_text": "이 누리집은 대한민국 공식 전자정부 누리집입니다. 261015_보도자료_청년 프리랜서 간담회.pdf 바로보기 내려받기 261015_보도자료_청년 프리랜서 간담회.hwpx 바로보기 내려받기 “이 자료는 고용노동부의 보도자료를 전재하여 제공함을 알려드립니다.” 단, 텍스트를 제외한 사진·이미지·일러스트·동영상 등 자료의 대부분은 정책브리핑이 저작권을 보유하고 있지 않으므로, 이용 전 해당 저작권자의 허락을 반드시 받으셔야 합니다. 정책브리핑 게시물 운영원칙에 따라 다음과 같은 게시물은 삭제 또는 계정이 차단 될 수 있습니다. © Ministry of Culture, Sports and Tourism . All rights reserved"
     },
     {
       "url": "https://news.google.com/rss/articles/CBMicEFVX3lxTE1fZFdmOV9jLVNqUjJGOU55bjRRWTdPYUVhRUp6STRQX3pkb2JFLUVleWlJZ3U5ZGplcjd0S3JFNDgxay1yWVR5V29ENmtmc3JYazZTVFo3VFFWVjQ4SlVINlJHME1hMll3ZnVvSDd0WFY?oc=5",
@@ -5614,6 +5658,8 @@
       "source_name": "정책브리핑 정부부처 청년 보도자료",
       "source_kind": "official",
       "publisher_domain": "www.korea.kr",
+      "publisher_icon_url": "https://www.korea.kr/images/common/favicon.ico",
+      "image_url": "https://www.korea.kr/images/event/korea_logo_2024.jpg",
       "published_date": "2026-10-15T00:00:00+09:00",
       "publisher_published_at": "2026-10-15T00:00:00+09:00",
       "region": "전국",
@@ -5635,6 +5681,7 @@
       ],
       "lead_text": "2026년 9월 가계대출 동향(잠정) 및 가계부채 점검회의 개최  ◇ '26.9월 全 금융권 가계대출은 △2.2조원 감소하여 '25.12월(△1.2조원) 이후 처음으로 순감   - 정책브리핑 | 브리핑룸 | 보도자료",
       "youth_excerpt": "...13일) 후속조치 이행 점검 강화 ➊ 보금자리론 결혼페널티 해소 및 청년 특례 전세대출보증 시행 (10.19일) ➋ 신축 입주단지 집단대출 (이주비, 중도금, 잔금대출) 취급 현황 점검 ※ 【관련 국정과제】 58. 금융안정과 ...",
+      "body_text": "이 누리집은 대한민국 공식 전자정부 누리집입니다. 261015(보도자료) 2026년 9월 가계대출 동향(잠정) 및 ｢가계부채 점검회의｣ 개최.hwpx 바로보기 내려받기 261015(보도자료) 2026년 9월 가계대출 동향(잠정) 및 ｢가계부채 점검회의｣ 개최.pdf 바로보기 내려받기 “이 자료는 금융위원회의 보도자료를 전재하여 제공함을 알려드립니다.” 단, 텍스트를 제외한 사진·이미지·일러스트·동영상 등 자료의 대부분은 정책브리핑이 저작권을 보유하고 있지 않으므로, 이용 전 해당 저작권자의 허락을 반드시 받으셔야 합니다. 정책브리핑 게시물 운영원칙에 따라 다음과 같은 게시물은 삭제 또는 계정이 차단 될 수 있습니다. © Ministry of Culture, Sports and Tourism . All rights reserved",
       "is_official_source": true,
       "is_public_interest_article": true,
       "is_hub_candidate": false,
@@ -5653,10 +5700,7 @@
       "weak_youth_signal": false,
       "missing_youth_content_signal": false,
       "archive_key": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156785312",
-      "published_at": "2026-10-15T00:00:00+09:00",
-      "publisher_icon_url": "https://www.korea.kr/images/common/favicon.ico",
-      "image_url": "https://www.korea.kr/images/event/korea_logo_2024.jpg",
-      "body_text": "이 누리집은 대한민국 공식 전자정부 누리집입니다. 261015(보도자료) 2026년 9월 가계대출 동향(잠정) 및 ｢가계부채 점검회의｣ 개최.hwpx 바로보기 내려받기 261015(보도자료) 2026년 9월 가계대출 동향(잠정) 및 ｢가계부채 점검회의｣ 개최.pdf 바로보기 내려받기 “이 자료는 금융위원회의 보도자료를 전재하여 제공함을 알려드립니다.” 단, 텍스트를 제외한 사진·이미지·일러스트·동영상 등 자료의 대부분은 정책브리핑이 저작권을 보유하고 있지 않으므로, 이용 전 해당 저작권자의 허락을 반드시 받으셔야 합니다. 정책브리핑 게시물 운영원칙에 따라 다음과 같은 게시물은 삭제 또는 계정이 차단 될 수 있습니다. © Ministry of Culture, Sports and Tourism . All rights reserved"
+      "published_at": "2026-10-15T00:00:00+09:00"
     },
     {
       "url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156785246&pageIndex=1&repCodeType=&repCode=&startDate=2025-10-17&endDate=2026-10-17&srchWord=청년&period=",
@@ -5668,6 +5712,8 @@
       "source_name": "정책브리핑 정부부처 청년 보도자료",
       "source_kind": "official",
       "publisher_domain": "www.korea.kr",
+      "publisher_icon_url": "https://www.korea.kr/images/common/favicon.ico",
+      "image_url": "https://www.korea.kr/images/event/korea_logo_2024.jpg",
       "published_date": "2026-10-15T00:00:00+09:00",
       "publisher_published_at": "2026-10-15T00:00:00+09:00",
       "region": "전국",
@@ -5678,8 +5724,14 @@
         "복지"
       ],
       "content_direction": "official_release",
+      "governance_activity_types": [
+        "회의",
+        "위원회",
+        "발표회"
+      ],
       "lead_text": "10월 14일 한겨레 출산율 넘어 인구감소 '적응'으로...10만 청년 돌봄 전문직 양성도 관련 보도에 대해 아래와 같이 설명 드립니다.   1. 기사 주요내용  □ 10월 1 - 정책브리핑 | 브리핑룸 | 보도자료",
       "youth_excerpt": "...10만 청년 돌봄 전문직 양성도 관련 보도에 대해 아래와 같이 설명 드립니다. 1. 기사 주요내용 □ 10월 1 - 정책브리핑 | 브리핑룸 | 보도자료",
+      "body_text": "이 누리집은 대한민국 공식 전자정부 누리집입니다. [인구전략위원회](10.14.수 배포 즉시 보도) (한겨레) 출산율 넘어 인구감소 적응 으로 보도설명자료.pdf 바로보기 내려받기 [인구전략위원회](10.14.수 배포 즉시 보도) (한겨레) 출산율 넘어 인구감소 적응 으로 보도설명자료.hwpx 바로보기 내려받기 “이 자료는 인구전략위원회의 보도자료를 전재하여 제공함을 알려드립니다.” 단, 텍스트를 제외한 사진·이미지·일러스트·동영상 등 자료의 대부분은 정책브리핑이 저작권을 보유하고 있지 않으므로, 이용 전 해당 저작권자의 허락을 반드시 받으셔야 합니다. 정책브리핑 게시물 운영원칙에 따라 다음과 같은 게시물은 삭제 또는 계정이 차단 될 수 있습니다. © Ministry of Culture, Sports and Tourism . All rights reserved",
       "is_official_source": true,
       "is_public_interest_article": true,
       "is_hub_candidate": false,
@@ -5698,15 +5750,7 @@
       "weak_youth_signal": false,
       "missing_youth_content_signal": false,
       "archive_key": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156785246",
-      "published_at": "2026-10-15T00:00:00+09:00",
-      "publisher_icon_url": "https://www.korea.kr/images/common/favicon.ico",
-      "image_url": "https://www.korea.kr/images/event/korea_logo_2024.jpg",
-      "governance_activity_types": [
-        "회의",
-        "위원회",
-        "발표회"
-      ],
-      "body_text": "이 누리집은 대한민국 공식 전자정부 누리집입니다. [인구전략위원회](10.14.수 배포 즉시 보도) (한겨레) 출산율 넘어 인구감소 적응 으로 보도설명자료.pdf 바로보기 내려받기 [인구전략위원회](10.14.수 배포 즉시 보도) (한겨레) 출산율 넘어 인구감소 적응 으로 보도설명자료.hwpx 바로보기 내려받기 “이 자료는 인구전략위원회의 보도자료를 전재하여 제공함을 알려드립니다.” 단, 텍스트를 제외한 사진·이미지·일러스트·동영상 등 자료의 대부분은 정책브리핑이 저작권을 보유하고 있지 않으므로, 이용 전 해당 저작권자의 허락을 반드시 받으셔야 합니다. 정책브리핑 게시물 운영원칙에 따라 다음과 같은 게시물은 삭제 또는 계정이 차단 될 수 있습니다. © Ministry of Culture, Sports and Tourism . All rights reserved"
+      "published_at": "2026-10-15T00:00:00+09:00"
     },
     {
       "url": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156785244&pageIndex=1&repCodeType=&repCode=&startDate=2025-10-16&endDate=2026-10-16&srchWord=청년&period=",
@@ -6796,7 +6840,7 @@
       "editorial_decision": "default",
       "editorial_is_highlighted": false,
       "selection_bucket": "regional_issue",
-      "importance_score": 32,
+      "importance_score": 30,
       "public_relevance_score": 12,
       "related_article_count": 1,
       "related_sources": [
@@ -8216,7 +8260,7 @@
       "editorial_decision": "default",
       "editorial_is_highlighted": false,
       "selection_bucket": "youth_issue",
-      "importance_score": 28,
+      "importance_score": 26,
       "public_relevance_score": 12,
       "related_article_count": 1,
       "related_sources": [
@@ -8938,7 +8982,7 @@
       "feed_url": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE45NmZGVHFfQl8ydi1SZ2tCeEo3eXRsTEthZ3o0dVFYNGtjV3lHN0JYN29sMDVQeDY0emVkdnFwSzM5TDJoSDVrbmJwbTVSYTFsWWJXZTFSaUtWX1U?oc=5",
       "title": "취업상담부터 정책 신청까지…대진대, 청년 고용지원 한자리",
       "source": "경기일보",
-      "source_name": "구글뉴스 청년정책(7일)",
+      "source_name": "구글뉴스 청년 실용정보(7일)",
       "source_kind": "news",
       "publisher_domain": "www.kyeonggi.com",
       "published_date": "2026-10-13T06:13:15+00:00",
@@ -9028,7 +9072,7 @@
       "feed_url": "https://news.google.com/rss/articles/CBMiUEFVX3lxTE9mSV93VmpGSWhxazV6Skt5QUdiSFpKZjNBb2pMMnZmVlhVNDA4dUNXY3ZuUHpCS21QZ1N2QUFkNWRVQ0hKaXMtZ1FteDN4ZVQw?oc=5",
       "title": "청년일자리도약장려금 청년 5명 중 1명 조기 퇴사…박정 \"사업 재설계해야\"",
       "source": "cpbc News",
-      "source_name": "구글뉴스 청년 임금·보상(7일)",
+      "source_name": "구글뉴스 청년 고용·쉬었음(7일)",
       "source_kind": "news",
       "publisher_domain": "news.cpbc.co.kr",
       "published_date": "2026-10-13T05:59:00+00:00",
@@ -9052,7 +9096,7 @@
       "editorial_decision": "default",
       "editorial_is_highlighted": false,
       "selection_bucket": "youth_issue",
-      "importance_score": 46,
+      "importance_score": 26,
       "public_relevance_score": 12,
       "related_article_count": 1,
       "related_sources": [
@@ -9697,7 +9741,7 @@
       "feed_url": "https://news.google.com/rss/articles/CBMiY0FVX3lxTE1qNGJ3Ql9DUXBHR3k0UVhUdHdpTXRBdUEyTmRNYUJ1MWZiOE04Qjc3R2haX1VPRkNBcFItejN4ZmFyUU1nQk00b2twdUNfNzIzSXliRmtqSHN3emxYTGowSVdVdw?oc=5",
       "title": "노동부, 내년 'AI 첫 일자리' 시범사업…청년 경력 형성 지원",
       "source": "뉴스1",
-      "source_name": "구글뉴스 청년 실용정보(7일)",
+      "source_name": "구글뉴스 청년 고용·쉬었음(7일)",
       "source_kind": "news",
       "publisher_domain": "www.news1.kr",
       "published_date": "2026-10-13T01:43:14+00:00",
@@ -9722,8 +9766,8 @@
       "editorial_decision": "default",
       "editorial_is_highlighted": false,
       "selection_bucket": "youth_issue",
-      "importance_score": 24,
-      "public_relevance_score": 8,
+      "importance_score": 26,
+      "public_relevance_score": 12,
       "related_article_count": 1,
       "related_sources": [
         "뉴스1"
@@ -17399,6 +17443,7 @@
       "source_name": "구글뉴스 청년 칼럼·기고(30일)",
       "source_kind": "news",
       "publisher_domain": "www.ablenews.co.kr",
+      "published_date": "2026-10-08T08:57:00+00:00",
       "portal_published_at": "2026-10-08T08:57:00+00:00",
       "region": "전국",
       "categories": [
@@ -17428,8 +17473,7 @@
       "weak_youth_signal": false,
       "missing_youth_content_signal": false,
       "archive_key": "https://news.google.com/rss/articles/CBMibkFVX3lxTFBmS01iZ1QwUE5KZXlLd1RScUZGNnVXU00wandSdjhhSDhWQU02TUZ6TG5NdkUyYi1LY1k3SzBSMFg1cVVSOWROQzFvS2NXQXlmWlFCWng2aXoxbTNMcjd0RW5LRE1PQjNkeWhic2ZB0gFyQVVfeXFMUHZVQkNCaThCa1RLTlp2OEQ4WnpzcVU3YlBMNFhjOW1WUUZIVjQ1Vkczdm04UTJnMU9nS0NMYzV4NV83MGNDR3NWMnNZR0drMV9CWmZYZmxoSExwdXhFaGZyd0pBSFl6Y0lzak5ud0hkOGt3?oc=5",
-      "published_at": "2026-10-08T08:57:00+00:00",
-      "published_date": "2026-10-08T08:57:00+00:00"
+      "published_at": "2026-10-08T08:57:00+00:00"
     },
     {
       "url": "https://news.google.com/rss/articles/CBMiZEFVX3lxTFBMN2JVOTB2YzU4RjFzMG5tVnpLWjBGSTk4RzEwdjBHVEN2R3ZXTnFzc0FZNFFjTi16X002NEd5MG9PZERNNElFelFCTC01Sm9BUURXNTlXY0NtanFXdUJOT0dnVFQ?oc=5",
