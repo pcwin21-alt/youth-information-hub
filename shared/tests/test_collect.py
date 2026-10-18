@@ -20,6 +20,8 @@ from youth_info_platform.collect import (  # noqa: E402
     collect_videos_with_status,
     detect_source_access_issue,
     fetch_url_via_curl,
+    fetch_naver_news_items,
+    naver_continuation_url,
     get_source_parser,
     parse_feed,
     parse_korea_press_release_list,
@@ -67,6 +69,68 @@ NAVER_HTML = """
 
 
 class NaverParserTests(unittest.TestCase):
+    @patch('youth_info_platform.collect.fetch_url')
+    def test_later_page_failure_preserves_items_and_reports_partial(self, fetch_mock):
+        fetch_mock.side_effect = [NAVER_HTML, RuntimeError('unavailable')]
+        items, manifest = collect_articles_with_manifest([{
+            'name': 'test', 'enabled': True, 'kind': 'news', 'parser': 'naver_news_search',
+            'url': 'https://search.naver.com/?query=test', 'limit': 20}])
+        self.assertEqual(len(items), 1)
+        self.assertTrue(items[0]['collection_partial'])
+        self.assertEqual(manifest['sources'][0]['status'], 'partial_result')
+        self.assertEqual(manifest['failed_sources'], 1)
+
+    @patch('youth_info_platform.collect.fetch_url')
+    def test_follows_observed_xload_url_and_decodes_json_html(self, fetch_mock):
+        next_url = 'https://s.search.naver.com/p/newssearch/4/api/tab/more?query=test&start=11'
+        first = NAVER_HTML + '<script>new XLoad({"url":' + json.dumps(next_url) + '})</script>'
+        second_html = NAVER_HTML.replace('202604201200000001', '202604201200000002')
+        fetch_mock.side_effect = [first, json.dumps({'collection': [{'html': second_html}], 'url': next_url})]
+        result = fetch_naver_news_items({'name': 'test', 'parser': 'naver_news_search', 'url': 'https://search.naver.com/?query=test', 'limit': 20})
+        self.assertEqual(len(result), 2)
+        self.assertEqual(fetch_mock.call_args_list[1].args[0], next_url)
+        self.assertEqual(fetch_mock.call_count, 2)
+
+    def test_continuation_cannot_change_host_or_query(self):
+        original = 'https://search.naver.com/?query=test'
+        for url in ['https://evil.example/p/newssearch/4/api/tab/more?query=test',
+                    'https://s.search.naver.com/p/newssearch/4/api/tab/more?query=other']:
+            self.assertIsNone(naver_continuation_url(json.dumps({'url': url}), original))
+
+    def test_current_naver_profile_ignores_icon_accessibility_copy(self):
+        payload = '''<div><div data-sds-comp="Profile">
+        <a data-heatmap-target=".prof" href="https://media.naver.com/press/001"><img/><span>새 창 열림</span></a>
+        <a data-heatmap-target=".prof" href="https://media.naver.com/press/001"><span>연합뉴스</span><span>새 창 열림</span></a>
+        <span>3분 전</span></div><div>
+        <a data-heatmap-target=".tit" href="https://www.yna.co.kr/view/1"><span>청년정책 변경</span><span>새 창 열림</span></a>
+        <a data-heatmap-target=".body" href="https://www.yna.co.kr/view/1">청년 지원 변경<span>새 창 열림</span></a>
+        </div></div>'''
+        items = parse_naver_news_search(payload, 'https://search.naver.com/?query=test', 'search', 'news')
+        self.assertEqual(len(items), 1)
+        self.assertEqual(items[0]['source'], '연합뉴스')
+        self.assertEqual(items[0]['publisher_name'], '연합뉴스')
+        self.assertEqual(items[0]['title'], '청년정책 변경')
+        self.assertEqual(items[0]['lead_text'], '청년 지원 변경')
+
+    @patch('youth_info_platform.collect.fetch_url', return_value='<html/>')
+    @patch('youth_info_platform.collect.parse_source_payload')
+    def test_short_page_does_not_terminate_pagination_before_new_results(self, parse_mock, _fetch_mock):
+        parse_mock.side_effect = [
+            [{'url': f'https://example.com/{i}'} for i in range(8)],
+            [{'url': f'https://example.com/{i}'} for i in range(8, 12)],
+        ]
+        items = fetch_naver_news_items({'url': 'https://search.naver.com/?query=test', 'limit': 12})
+        self.assertEqual(len(items), 12)
+        self.assertEqual(parse_mock.call_count, 2)
+
+    @patch('youth_info_platform.collect.fetch_url', return_value='<html/>')
+    @patch('youth_info_platform.collect.parse_source_payload')
+    def test_repeated_page_stops_bounded_pagination(self, parse_mock, _fetch_mock):
+        parse_mock.return_value = [{'url': 'https://example.com/1'}]
+        items = fetch_naver_news_items({'url': 'https://search.naver.com/?query=test', 'limit': 100})
+        self.assertEqual(len(items), 1)
+        self.assertEqual(parse_mock.call_count, 2)
+
     def test_parse_naver_news_search_extracts_expected_fields(self) -> None:
         now = datetime(2026, 4, 20, 17, 0, tzinfo=timezone(timedelta(hours=9)))
 
@@ -546,6 +610,17 @@ class FetchUrlTests(unittest.TestCase):
 
 
 class CollectionManifestTests(unittest.TestCase):
+    def test_dormant_captcha_and_login_script_does_not_block_search(self):
+        payload = NAVER_HTML + '<script>var captchaApi="https://captcha.nid.naver.com/image"; var message="로그인이 필요합니다.";</script>'
+        self.assertIsNone(detect_source_access_issue(payload))
+
+    def test_actual_captcha_redirect_remains_blocked(self):
+        payload = '<script type="text/javascript">location.replace("https://captcha.search.daum.net/show?redirect=example")</script>'
+        self.assertEqual(detect_source_access_issue(payload), 'blocked')
+
+    def test_visible_short_challenge_remains_blocked(self):
+        self.assertEqual(detect_source_access_issue('<html><h1>CAPTCHA</h1><p>Verify you are human</p></html>'), 'blocked')
+
     def test_detect_source_access_issue_distinguishes_block_and_auth(self) -> None:
         self.assertEqual(detect_source_access_issue("<title>Access Denied</title>"), "blocked")
         self.assertEqual(detect_source_access_issue("로그인이 필요합니다."), "auth_required")

@@ -172,6 +172,7 @@
       "parser": "naver_news_search",
       "url": "https://search.naver.com/search.naver?where=news&sort=1&photo=0&field=0&nso=so:dd,p:1w,a:all&query=%EC%B2%AD%EB%85%84",
       "include_keywords": [
+        "청년",
         "청년정책",
         "청년 정책",
         "청년 지원",
@@ -338,6 +339,16 @@
         "스포츠"
       ],
       "limit": 50
+    },
+    {
+      "name": "네이버뉴스 청년정책 붙여쓰기(1주)",
+      "kind": "news",
+      "enabled": true,
+      "parser": "naver_news_search",
+      "url": "https://search.naver.com/search.naver?where=news&sort=1&nso=so:dd,p:1w,a:all&query=%EC%B2%AD%EB%85%84%EC%A0%95%EC%B1%85",
+      "source_focus": "portal_keyword_coverage",
+      "exclude_keywords": ["청소년", "초등", "중학생", "고등학생"],
+      "limit": 60
     },
     {
       "name": "네이버뉴스 청년정책(1주)",
@@ -897,6 +908,26 @@
       "limit": 35
     },
     {
+      "name": "구글뉴스 청년 전체(7일)",
+      "kind": "news",
+      "enabled": true,
+      "parser": "rss",
+      "url": "https://news.google.com/rss/search?q=%EC%B2%AD%EB%85%84%20when%3A7d&hl=ko&gl=KR&ceid=KR:ko",
+      "source_focus": "portal_keyword_coverage",
+      "exclude_keywords": ["청소년", "초등", "중학생", "고등학생", "유소년"],
+      "limit": 100
+    },
+    {
+      "name": "구글뉴스 청년정책 붙여쓰기(7일)",
+      "kind": "news",
+      "enabled": true,
+      "parser": "rss",
+      "url": "https://news.google.com/rss/search?q=%EC%B2%AD%EB%85%84%EC%A0%95%EC%B1%85%20when%3A7d&hl=ko&gl=KR&ceid=KR:ko",
+      "source_focus": "portal_keyword_coverage",
+      "exclude_keywords": ["청소년", "초등", "중학생", "고등학생"],
+      "limit": 100
+    },
+    {
       "name": "구글뉴스 청년정책(7일)",
       "kind": "news",
       "enabled": true,
@@ -908,7 +939,7 @@
         "중학생",
         "고등학생"
       ],
-      "limit": 30
+      "limit": 100
     },
     {
       "name": "구글뉴스 청년 삶·심층(7일)",

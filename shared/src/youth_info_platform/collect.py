@@ -107,13 +107,33 @@ class SourceAccessError(RuntimeError):
 def detect_source_access_issue(payload: str) -> str | None:
     """Classify known soft blocks; this deliberately does not attempt a bypass."""
 
-    normalized = re.sub(r"\s+", " ", payload).lower()
-    if len(strip_html(payload)) < 2000 and any(marker in normalized for marker in (
+    # Search pages include dormant captcha/login code in their shared bundles.
+    # Inspect rendered copy, not script strings, unless the entire response is
+    # an actual short redirect to a challenge (as observed on Daum).
+    # Valid feed XML is data, not an access wall. Parse it as XML rather than
+    # treating an article mentioning access/captcha as the site's response.
+    if re.match(r"\s*(?:<\?xml[^>]*>\s*)?<(?:rss|feed)\b", payload):
+        try:
+            ET.fromstring(payload)
+            return None
+        except ET.ParseError:
+            pass
+    soup = BeautifulSoup(payload, "html.parser")
+    redirect_to_challenge = bool(re.search(
+        r"(?:location\.(?:replace|assign)\s*\(|location(?:\.href)?\s*=)\s*['\"]https?://captcha\.",
+        payload, re.IGNORECASE,
+    ))
+    for element in soup(["script", "style", "template"]):
+        element.decompose()
+    normalized = re.sub(r"\s+", " ", soup.get_text(" ", strip=True)).lower()
+    if redirect_to_challenge and len(normalized) < 200:
+        return "blocked"
+    if len(normalized) < 2000 and any(marker in normalized for marker in (
         "요청하신 페이지를 찾을 수 없습니다",
         "요청하신 페이지를 찾을 수가 없습니다",
     )):
         return "fetch_error"
-    if any(
+    if len(normalized) < 2000 and any(
         marker in normalized
         for marker in (
             "captcha",
@@ -127,7 +147,7 @@ def detect_source_access_issue(payload: str) -> str | None:
         )
     ):
         return "blocked"
-    if any(
+    if len(normalized) < 2000 and any(
         marker in normalized
         for marker in (
             "로그인이 필요",
@@ -543,13 +563,20 @@ def parse_naver_news_search(
     *,
     now: datetime | None = None,
 ) -> list[dict[str, Any]]:
+    page_text = naver_response_html(page_text)
     soup = BeautifulSoup(page_text, "html.parser")
     reference_time = now or datetime.now().astimezone()
     articles: list[dict[str, Any]] = []
     seen_urls: set[str] = set()
 
-    for span in soup.find_all("span", class_=lambda value: _class_contains(value, "sds-comps-text-type-headline1")):
-        title_anchor = span.find_parent("a", href=True)
+    # The heatmap role survives class-name/layout revisions. Keep the older
+    # headline span as a fallback for stored snapshots.
+    title_anchors = list(soup.select('a[data-heatmap-target=".tit"][href], a.news_tit[href]'))
+    title_anchors.extend(
+        span.find_parent("a", href=True)
+        for span in soup.find_all("span", class_=lambda value: _class_contains(value, "sds-comps-text-type-headline1"))
+    )
+    for title_anchor in title_anchors:
         if title_anchor is None:
             continue
         url = html.unescape(title_anchor["href"]).strip()
@@ -558,7 +585,7 @@ def parse_naver_news_search(
         if url in seen_urls:
             continue
 
-        title = strip_html(span.get_text(" ", strip=True))
+        title = _naver_visible_text(title_anchor)
         if not title:
             continue
 
@@ -568,7 +595,7 @@ def parse_naver_news_search(
             summary_anchor = content_root.find("a", attrs={"data-heatmap-target": ".body"}, href=True)
         lead_text = ""
         if summary_anchor is not None:
-            lead_text = strip_html(summary_anchor.get_text(" ", strip=True))
+            lead_text = _naver_visible_text(summary_anchor)
 
         profile_block = _find_naver_profile_block(title_anchor)
         source = source_name
@@ -590,6 +617,8 @@ def parse_naver_news_search(
                 "source_url": source_url or base_url,
                 "published_date": published_date,
                 "lead_text": lead_text[:400],
+                "publisher_name": source if source != source_name else None,
+                "search_query": parse_qs(urlparse(base_url).query).get("query", [""])[0],
             }
         )
         seen_urls.add(url)
@@ -1028,15 +1057,19 @@ def _extract_naver_profile_link(profile_block: Tag) -> str | None:
     return href or None
 
 
+def _naver_visible_text(node: Tag) -> str:
+    return re.sub(r"\s+", " ", node.get_text(" ", strip=True).replace("새 창 열림", "")).strip()
+
+
 def _extract_naver_publisher(profile_block: Tag) -> str | None:
-    profile_anchor = profile_block.find("a", attrs={"data-heatmap-target": ".prof"}, href=True)
-    if profile_anchor is not None:
-        publisher = strip_html(profile_anchor.get_text(" ", strip=True))
-        if publisher:
+    # The first .prof anchor may be an icon with only a screen-reader hint.
+    for profile_anchor in profile_block.find_all("a", attrs={"data-heatmap-target": ".prof"}, href=True):
+        publisher = _naver_visible_text(profile_anchor)
+        if publisher and publisher not in NAVER_IGNORED_TEXTS:
             return publisher
 
     for token in (strip_html(text) for text in profile_block.stripped_strings):
-        if token in NAVER_IGNORED_TEXTS:
+        if token in NAVER_IGNORED_TEXTS or token == "새 창 열림":
             continue
         if _looks_like_published_token(token):
             continue
@@ -1160,6 +1193,39 @@ def build_paginated_source_url(base_url: str, *, start: int) -> str:
     return urlunparse(parsed._replace(query=urlencode(query, doseq=True)))
 
 
+def naver_response_html(payload: str) -> str:
+    if not payload.lstrip().startswith("{"):
+        return payload
+    data = json.loads(payload)
+    return "\n".join(
+        item["html"] for item in data.get("collection", [])
+        if isinstance(item, dict) and isinstance(item.get("html"), str)
+    )
+
+
+def naver_continuation_url(payload: str, original_url: str) -> str | None:
+    candidate = None
+    if payload.lstrip().startswith("{"):
+        candidate = json.loads(payload).get("url")
+    else:
+        # XLoad's public continuation URL is embedded as a JSON string.
+        for match in re.finditer(r'"url"\s*:\s*("(?:\\.|[^"\\])*")', payload):
+            value = json.loads(match.group(1))
+            if "/api/tab/more?" in value:
+                candidate = value
+                break
+    if not isinstance(candidate, str):
+        return None
+    parsed = urlparse(candidate)
+    query = parse_qs(parsed.query)
+    expected = parse_qs(urlparse(original_url).query).get("query")
+    if (parsed.scheme != "https" or parsed.hostname != "s.search.naver.com"
+            or not parsed.path.startswith("/p/newssearch/") or not parsed.path.endswith("/api/tab/more")
+            or not expected or query.get("query") != expected):
+        return None
+    return candidate
+
+
 def fetch_source_items(source: dict[str, Any]) -> list[dict[str, Any]]:
     parser_name = str(source.get("parser") or "rss")
     if parser_name == "naver_news_search":
@@ -1175,27 +1241,45 @@ def fetch_naver_news_items(source: dict[str, Any]) -> list[dict[str, Any]]:
     limit = int(source.get("limit", 10))
     collected: list[dict[str, Any]] = []
     seen_urls: set[str] = set()
+    next_url = None
+    visited_pages: set[str] = set()
 
     for start in range(1, limit + 1, 10):
-        page_url = build_paginated_source_url(source["url"], start=start)
-        payload = fetch_url(page_url)
-        require_usable_source_payload(payload)
-        page_source = {**source, "url": page_url}
-        page_items = parse_source_payload(payload, page_source)
+        page_url = next_url or build_paginated_source_url(source["url"], start=start)
+        if page_url in visited_pages:
+            break
+        visited_pages.add(page_url)
+        try:
+            payload = fetch_url(page_url)
+            require_usable_source_payload(payload)
+            require_usable_source_payload(naver_response_html(payload))
+            page_source = {**source, "url": page_url}
+            page_items = parse_source_payload(payload, page_source)
+        except Exception as error:
+            if not collected:
+                raise
+            # A later page failure must not discard already fetched pages.
+            # Keep the partial status visible in the manifest, never as ok.
+            return [{**item, "collection_partial": True,
+                     "collection_warning": f"later_page:{classify_collection_error(error)}"}
+                    for item in collected]
         if not page_items:
             break
 
+        added = 0
         for item in page_items:
             url = item.get("url") or ""
             if not url or url in seen_urls:
                 continue
             collected.append(item)
             seen_urls.add(url)
+            added += 1
             if len(collected) >= limit:
                 return collected
 
-        if len(page_items) < 10:
+        if not added:
             break
+        next_url = naver_continuation_url(payload, source["url"])
 
     return collected
 
@@ -1253,7 +1337,7 @@ def collect_articles_with_manifest(
                     "kind": source.get("kind"),
                     "parser": source.get("parser"),
                     "source_url": source.get("url"),
-                    "status": "ok" if selected_items else "empty_result",
+                    "status": "partial_result" if any(item.get("collection_partial") for item in items) else "ok" if selected_items else "empty_result",
                     "elapsed_seconds": round(time.monotonic() - started, 3),
                     "fetched_items": len(items),
                     "filtered_items": len(filtered_items),
