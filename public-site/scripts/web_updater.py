@@ -68,7 +68,7 @@ REMOTE_TEXT_CACHE: dict[str, str] = {}
 ILLUSTRATION_ROOT = "assets/illustrations"
 KOREA_ADM1_SVG = PUBLIC_WEB_ROOT / "assets" / "vendor" / "geoboundaries-kor-adm1.svg"
 KOREA_ADM1_DISPLAY_MAX_X = 860.0
-ASSET_VERSION = "20260901-news-topic-two-lines-01"
+ASSET_VERSION = "20261018-institute-logo-01"
 HOME_THUMBNAIL_CACHE_DIRNAME = "article-thumbnails"
 HOME_THUMBNAIL_DOWNLOAD_LIMIT = 18
 HOME_THUMBNAIL_MAX_BYTES = 4 * 1024 * 1024
@@ -108,6 +108,8 @@ NEWS_TOPIC_FILTER_ORDER = [
     "취업", "주거", "노동", "금융", "청년센터", "청년참여", "모집", "복지", "창업", "지역정착",
 ]
 BRAND_MARK_SRC = f"assets/branding/right-policy-mark.svg?v={ASSET_VERSION}"
+INSTITUTE_LOGO_PATH = "assets/branding/right-policy-institute-logo-20261018.png"
+INSTITUTE_LOGO_SRC = f"{INSTITUTE_LOGO_PATH}?v={ASSET_VERSION}"
 RIGHT_POLICY_HOME_URL = "https://rightpolicy.co.kr/"
 MINISTRY_HOME_MARKS = {
     "고용노동부": ("https://www.moel.go.kr", "https://www.moel.go.kr/favicon.ico"),
@@ -130,8 +132,8 @@ MINISTRY_HOME_MARKS = {
     "여성가족부": ("https://www.mogef.go.kr", "https://www.mogef.go.kr/favicon.ico"),
     "성평등가족부": ("https://www.mogef.go.kr", "https://www.mogef.go.kr/favicon.ico"),
 }
-# 운영사 공식 로고의 원본 URL·파일이 검증되기 전에는 이전 운영사 로고를 노출하지 않는다.
-YOUTHSIDE_FOOTER_IMAGE_CANDIDATES: tuple[str, ...] = ()
+# 2026-10-18: rightpolicy.co.kr/file/388489206의 공식 로고 원본을 그대로 보관한다.
+YOUTHSIDE_FOOTER_IMAGE_CANDIDATES: tuple[str, ...] = (INSTITUTE_LOGO_PATH,)
 PUBLIC_ANALYTICS_ENDPOINT = os.getenv("PUBLIC_SITE_ANALYTICS_ENDPOINT", "").strip()
 PUBLIC_ANALYTICS_SCOPE = os.getenv("PUBLIC_SITE_ANALYTICS_SCOPE", "public").strip() or "public"
 PUBLIC_SUBSCRIPTION_ENDPOINT = os.getenv("PUBLIC_SITE_SUBSCRIPTION_ENDPOINT", "").strip()
@@ -10539,7 +10541,7 @@ PAGE_TEMPLATE = """<!doctype html>
   <a class="skip-link" href="#main-content">본문으로 건너뛰기</a>
   <header class="editorial-header">
     <div class="editorial-header-inner">
-      <a class="editorial-lab-banner" href="https://rightpolicy.co.kr/" aria-label="적재적소 연구소 홈페이지로"><img src="assets/branding/right-policy-research-institute-banner.png?v={asset_version}" alt="적재적소 연구소"></a>
+      <a class="editorial-lab-banner" href="https://rightpolicy.co.kr/" aria-label="적재적소 연구소 홈페이지로"><img src="{institute_logo_src}" alt="적재적소 연구소" width="845" height="325" decoding="async"></a>
       <a class="editorial-brand" href="index.html" aria-label="적재적소 브리프 홈으로">적재적소 브리프</a>
       {global_search}
       {live_clock_topbar}
@@ -19822,7 +19824,7 @@ def render_youthside_footer_image() -> str:
     return f"""
         <div class="site-footer-brand-image" aria-label="적재적소 연구소 브랜드 이미지">
           <div class="site-footer-brand-image-frame">
-            <img src="{html.escape(image_src, quote=True)}" alt="적재적소 연구소 로고" loading="lazy" decoding="async">
+            <a href="{RIGHT_POLICY_HOME_URL}" aria-label="적재적소 연구소 홈페이지로"><img src="{html.escape(image_src, quote=True)}" alt="적재적소 연구소 로고" width="845" height="325" loading="lazy" decoding="async"></a>
           </div>
         </div>
     """
@@ -22332,6 +22334,7 @@ def write_page(
                 asset_version=hashlib.sha256((site_css + site_js).encode("utf-8")).hexdigest()[:12],
                 styles="",
                 brand_mark_src=html.escape(BRAND_MARK_SRC),
+                institute_logo_src=html.escape(INSTITUTE_LOGO_SRC, quote=True),
                 script="",
                 page_heading=html.escape(page_heading(active_page)),
                 top_nav=render_top_nav(active_page),
