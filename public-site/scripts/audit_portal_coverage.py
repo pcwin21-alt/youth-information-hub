@@ -210,7 +210,7 @@ def analyse(snapshot_dir, archive, raw=None, sources=None):
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--output-dir", required=True)
-    parser.add_argument("--archive", default=str(PUBLIC_CONTENT_ROOT / "public_article_archive.json"))
+    parser.add_argument("--archive", help="Explicit comparison archive; otherwise freeze the first archive snapshot")
     parser.add_argument("--raw")
     parser.add_argument("--reuse-snapshots", action="store_true")
     parser.add_argument("--report-name", default="coverage_report.json")
@@ -218,6 +218,11 @@ def main():
     args = parser.parse_args()
     output = Path(args.output_dir)
     output.mkdir(parents=True, exist_ok=True)
+    archive_snapshot = output / "archive_snapshot.json"
+    if not args.archive:
+        if not archive_snapshot.exists():
+            dump(archive_snapshot, json.loads((PUBLIC_CONTENT_ROOT / "public_article_archive.json").read_text(encoding="utf-8")))
+        args.archive = str(archive_snapshot)
     if args.baseline_revision:
         source_text = subprocess.run(["git", "show", args.baseline_revision + ":shared/src/youth_info_platform/collect.py"], capture_output=True, text=True, encoding="utf-8", check=True).stdout
         module = types.ModuleType("youth_info_platform._baseline_collect")
@@ -275,6 +280,7 @@ def main():
         dump(output / "snapshots.json", pages)
     report, candidates, classified = analyse(output, args.archive, args.raw, sources)
     report["collector_revision"] = args.baseline_revision or "working_tree"
+    report["archive_sha256"] = hashlib.sha256(Path(args.archive).read_bytes()).hexdigest()
     prefix = Path(args.report_name).stem
     report["raw_replay_path"] = prefix + "_candidates.json"
     report["classified_replay_path"] = prefix + "_classified.json"

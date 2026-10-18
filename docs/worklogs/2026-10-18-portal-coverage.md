@@ -56,11 +56,14 @@ Always: canonical identity_harness의 AGENTS·Brain·Skill Router. Active: colle
 - 공개 응답을 다시 읽는 기본 검색 6개 경로: 전부 `ok`, 원시 후보 508건(검색어 간 중복 포함). 네이버 청년 112, 붙여쓰기 정책 60, 띄어쓰기 정책 39, 구글 세 경로 각 99건. URL 변화와 시각 차이 때문에 고정 스냅샷의 수와 같을 필요는 없다.
 - 위 원시 입력을 별도 경로에서 실제 dedup_filter/run_curator로 처리했다. 214건 분류, 자동 선별·요약 10건, 운영 레이더 77건. 최종 공개 적합 판정은 작품 홍보 1건을 제외한 191건이다. 최종 분류는 `final_classified.json`이며 앞선 `step3.json`의 192건 판정과 구분한다. 주 작업 폴더 DB·production runtime을 덮어쓰지 않았다.
 - 배포용 별도 worktree에서 최초 아카이브와 최종 분류 214건을 병합했다. 공개 적합성·중복 정리를 거친 누적 건수는 3,615→3,719이다(중간 3,720건에서 작품 홍보 1건 제외). 이는 기본 포털 6경로의 부분 갱신이며 전체 87개 소스의 새 실행 성공이 아니다.
-- 회귀 테스트: 배포 checkout 207개 통과. 정상 검색의 dormant CAPTCHA, 실제 CAPTCHA 이동, 발행사 접근성 안내, JSON 더 보기, 호스트/검색어 이탈, 반복 페이지, 뒤 페이지 실패 보존, 한국시간 날짜·발행사 동일성, 지원 근거와 단순 의회 사진 기사, 허구 줄거리와 실제 예술인 지원을 포함한다.
+- 회귀 테스트: 배포 checkout 208개 통과. 정상 검색의 dormant CAPTCHA, 실제 CAPTCHA 이동, 발행사 접근성 안내, JSON 더 보기, 호스트/검색어 이탈, 반복 페이지, 뒤 페이지 실패 보존, 한국시간 날짜·발행사 동일성, 지원 근거와 단순 의회 사진 기사, 허구 줄거리와 실제 예술인 지원, 반복 감사의 기준 아카이브 고정을 포함한다.
 - Public Site CI와 Institution Site CI는 첫 수집 코드 커밋 `169ccdc`에서 성공했다.
-- 전체 소스 재수집 시도 https://github.com/pcwin21-alt/youth-information-hub/actions/runs/39095515495 는 광범위한 소스 실행과 이번 기본 포털 검증을 구분하기 위해 취소했다. 완료된 전체 수집으로 보고하지 않는다. 대신 실제로 성공한 기본 포털 6경로의 원시 입력→분류→아카이브 병합을 배포 데이터로 사용하고 별도 archive-only 렌더 배포를 검증한다. 이 기록 시점에는 최종 배포 확인 전이다.
+- 전체 소스 재수집 시도 https://github.com/pcwin21-alt/youth-information-hub/actions/runs/39095515495 는 광범위한 소스 실행과 이번 기본 포털 검증을 구분하기 위해 취소했다. 완료된 전체 수집으로 보고하지 않는다. 대신 실제로 성공한 기본 포털 6경로의 원시 입력→분류→아카이브 병합을 배포 데이터로 사용했다. 중간 렌더 실행 39096147640은 최종 작품 홍보 필터를 반영한 버전으로 대체하기 위해 취소했다.
+- 최종 배포 https://github.com/pcwin21-alt/youth-information-hub/actions/runs/39096269213 는 `ba537bf`에서 성공했다. 2026-10-18 13:14 KST 실제 홈·뉴스 HTTP 200 확인. 뉴스 HTML은 12,224,920→12,630,692바이트, 기사 제목 2,880→2,978개다. 실제 뉴스 목록에서 지원 근거 기사는 존재하고 문제의 넷플릭스 신예스타 홍보 기사는 없다. 지정한 출처 요소에서 ‘새 창 열림’ 단독 표기는 0개다.
+- 변경 전후 대조는 같은 `archive_snapshot.json`과 해시로 고정한다. 갱신 뒤 아카이브와 비교하려면 `--archive`를 명시하고 별도 보고서명을 사용한다. 기존 보고서를 새 데이터로 조용히 덮어써 성능 개선처럼 보이게 하지 않는다.
 - 변경 전 사이트의 news.html은 HTTP 200, 12,224,920바이트·제목 2,880개였다. site-data/pipeline_status.json은 9월 5일의 오래된 완료 상태라 최신 수집 증거로 쓰지 않는다. 이 부분 갱신을 전체 수집 시각처럼 덮어쓰지도 않는다.
 - 증거: `runtime/portal-audit/2026-10-18-v2/{snapshots,before_report,after_report}.json`, 보고서별 `_candidates.json`·`_classified.json`, `live-configured/`의 원시 입력·매니페스트·실제 분류 산출물.
+- 최종 증거: 같은 경로의 `final_refresh_summary.json`, `final_public_archive.json`, `deployed_verification.json`. 중간 `portal_candidates.json`, `portal_classified.json`은 초기 실험 파일이며 최종 결과로 사용하지 않는다.
 
 ## 경계와 잔여 위험
 
