@@ -40,7 +40,8 @@ from youth_info_platform.curation import (
     link_official_releases_and_related_coverage,
 )
 from youth_info_platform.io_utils import read_json
-from youth_info_platform.publisher_names import publisher_display_name
+from youth_info_platform.publisher_names import publisher_display_name, article_publisher_name
+from youth_info_platform.public_archive import deduplicate_public_stories
 
 PUBLIC_ARCHIVE_WINDOW_DAYS = 365
 PUBLIC_ARCHIVE_WINDOW_HOURS = PUBLIC_ARCHIVE_WINDOW_DAYS * 24
@@ -15271,6 +15272,8 @@ def format_source_label(value: str | None) -> str:
 
 def article_publisher_label(article: dict) -> str:
     """Use page-resolved publisher metadata before a feed fallback label."""
+    if name := article_publisher_name(article):
+        return name
     for value in (
         article.get("publisher_name"),
         article.get("source"),
@@ -15459,7 +15462,7 @@ def merge_public_article_lists(*article_lists: list[dict]) -> list[dict]:
                 **existing,
                 **{name: value for name, value in article.items() if value not in (None, "", [], {})},
             }
-    return sort_articles_by_recency(list(by_key.values()))
+    return sort_articles_by_recency(deduplicate_public_stories(list(by_key.values())))
 
 
 def resolve_freshness_hours(status: dict, default: int = 24) -> int:

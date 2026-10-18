@@ -3,6 +3,7 @@ from __future__ import annotations
 import re
 from datetime import datetime
 from typing import Any
+from .publisher_names import article_publisher_name
 
 from .article_metadata import (
     article_identity_key,
@@ -13,6 +14,7 @@ from .article_metadata import (
     has_explicit_opinion_marker,
     infer_region,
     is_google_news_url,
+    is_portal_url,
     normalize_article_title,
     normalize_article_record,
     normalize_tracking_url,
@@ -591,7 +593,6 @@ def normalize_url(url: str) -> str:
 
 def deduplicate_and_filter(articles: list[dict]) -> list[dict]:
     groups: list[list[dict[str, Any]]] = []
-    seen_keys: set[str] = set()
 
     for raw_article in articles:
         article = normalize_article_record(raw_article)
@@ -599,13 +600,8 @@ def deduplicate_and_filter(articles: list[dict]) -> list[dict]:
         if not _is_candidate(article):
             continue
 
-        identity = article_identity_key(article)
-        if identity in seen_keys:
-            continue
-        seen_keys.add(identity)
-
         for group in groups:
-            if any(_is_same_story(existing, article) for existing in group):
+            if all(_is_same_story(existing, article) for existing in group):
                 group.append(article)
                 break
         else:
@@ -627,7 +623,7 @@ def deduplicate_and_filter(articles: list[dict]) -> list[dict]:
                 "published_date": article.get("published_date", ""),
             }
             for article in group
-            if article is not representative and article.get("url")
+            if article.get("url") != representative.get("url") and article.get("url")
         ]
         representative["discovered_from"] = list(
             dict.fromkeys(
@@ -1705,10 +1701,15 @@ def _is_same_story(left: dict[str, Any], right: dict[str, Any]) -> bool:
 
     left_domain = left.get("publisher_domain") or left.get("source")
     right_domain = right.get("publisher_domain") or right.get("source")
-    if left_domain and right_domain and str(left_domain).lower() != str(right_domain).lower():
+    if (
+        left_domain
+        and right_domain
+        and str(left_domain).lower() != str(right_domain).lower()
+        and not (_is_portal_or_aggregator_article(left) or _is_portal_or_aggregator_article(right))
+    ):
         return False
 
-    if title_similarity(left.get("title"), right.get("title")) < 0.92:
+    if title_similarity(_story_title(left), _story_title(right)) < 0.92:
         return False
 
     left_ts = _published_timestamp(selection_published_at(left))
@@ -1716,6 +1717,34 @@ def _is_same_story(left: dict[str, Any], right: dict[str, Any]) -> bool:
     if left_ts and right_ts and abs(left_ts - right_ts) > 60 * 60 * 48:
         return False
     return True
+
+
+def _is_portal_or_aggregator_article(article: dict[str, Any]) -> bool:
+    """Return true for records that may re-publish another outlet's story."""
+    urls = (
+        article.get("url"),
+        article.get("canonical_url"),
+        article.get("publisher_url"),
+    )
+    for url in urls[1:] + urls[:1]:
+        if url and not is_google_news_url(url):
+            return is_portal_url(url)
+
+    domain = str(article.get("publisher_domain") or "").lower()
+    if domain and "." in domain:
+        return is_portal_url(f"https://{domain}") or is_google_news_url(f"https://{domain}")
+    return not article_publisher_name(article) and any(is_google_news_url(url) for url in urls if url)
+
+
+def _story_title(article: dict[str, Any]) -> str:
+    """Normalize a title for story matching without retaining portal branding."""
+    title = _strip_source_markers(article.get("title", "") or "", article)
+    return re.sub(
+        r"\s*[-|·]\s*(?:v\.daum\.net|news\.v\.daum\.net|n\.news\.naver\.com|news\.naver\.com)\s*$",
+        "",
+        title,
+        flags=re.IGNORECASE,
+    ).strip()
 
 
 def _article_content_text(article: dict[str, Any]) -> str:
@@ -1828,7 +1857,7 @@ def _representative_sort_key(article: dict[str, Any]) -> tuple[Any, ...]:
         1,
     )
     has_publisher_url = 0 if article.get("publisher_url") else 1
-    google_wrapper_penalty = 1 if is_google_news_url(article.get("url")) else 0
+    intermediary_penalty = 1 if _is_portal_or_aggregator_article(article) else 0
     enriched_penalty = 0 if article.get("body_text") else 1
     official_rank = 0 if article.get("source_kind") == "official" else 1
     timestamp = -_published_timestamp(selection_published_at(article))
@@ -1837,7 +1866,7 @@ def _representative_sort_key(article: dict[str, Any]) -> tuple[Any, ...]:
         official_rank,
         source_origin_rank,
         has_publisher_url,
-        google_wrapper_penalty,
+        intermediary_penalty,
         enriched_penalty,
         source_rank,
         issue_score,

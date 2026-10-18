@@ -7,6 +7,7 @@ import os
 import re
 import shutil
 import subprocess
+import time
 import urllib.request
 import xml.etree.ElementTree as ET
 from datetime import datetime, timedelta, timezone
@@ -17,7 +18,7 @@ from urllib.parse import parse_qs, urlencode, urljoin, urlparse, urlunparse
 from bs4 import BeautifulSoup, Tag
 
 from .constants import YOUTH_RELATED_KEYWORDS
-from .publisher_names import PUBLISHER_DOMAIN_ALIASES, publisher_display_name
+from .publisher_names import PUBLISHER_DOMAIN_ALIASES, publisher_display_name, clean_publisher_title
 from .sample_data import SAMPLE_ARTICLES, SAMPLE_VIDEOS
 
 
@@ -332,6 +333,7 @@ def parse_feed(feed_text: str, source_name: str, source_kind: str) -> list[dict[
             item,
             [
                 "pubDate",
+                "{http://www.w3.org/2005/Atom}published",
                 "published",
                 "updated",
                 "{http://www.w3.org/2005/Atom}updated",
@@ -341,8 +343,7 @@ def parse_feed(feed_text: str, source_name: str, source_kind: str) -> list[dict[
         if not title or not url:
             continue
         cleaned_title = strip_html(title)
-        if publisher and cleaned_title.endswith(f" - {publisher}"):
-            cleaned_title = cleaned_title[: -(len(publisher) + 3)].strip()
+        cleaned_title = clean_publisher_title(cleaned_title, {"source": publisher, "publisher_domain": urlparse(publisher_homepage_url or "").hostname})
         for suffix in ["> 뉴스", "| 뉴스", "- 뉴스"]:
             if cleaned_title.endswith(suffix):
                 cleaned_title = cleaned_title[: -len(suffix)].strip()
@@ -1220,6 +1221,7 @@ def collect_articles_with_manifest(
     articles: list[dict[str, Any]] = []
     source_manifest: list[dict[str, Any]] = []
     for source in sources:
+        started = time.monotonic()
         if not source.get("enabled", False):
             source_manifest.append(
                 {
@@ -1247,6 +1249,7 @@ def collect_articles_with_manifest(
                     "parser": source.get("parser"),
                     "source_url": source.get("url"),
                     "status": "ok" if selected_items else "empty_result",
+                    "elapsed_seconds": round(time.monotonic() - started, 3),
                     "fetched_items": len(items),
                     "filtered_items": len(filtered_items),
                     "collected_items": len(selected_items),
@@ -1264,6 +1267,7 @@ def collect_articles_with_manifest(
                     "filtered_items": 0,
                     "collected_items": 0,
                     "error_type": error.__class__.__name__,
+                    "elapsed_seconds": round(time.monotonic() - started, 3),
                 }
             )
             continue

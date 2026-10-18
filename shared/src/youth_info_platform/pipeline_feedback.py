@@ -212,7 +212,7 @@ def normalize_source_kind(entry: dict[str, Any]) -> str:
 
 def source_health_metrics(source_health: dict[str, Any]) -> dict[str, Any]:
     sources = [entry for entry in source_health.get("sources", []) if isinstance(entry, dict)]
-    errors = [entry for entry in sources if str(entry.get("status") or "").startswith("error")]
+    errors = [entry for entry in sources if str(entry.get("status") or "").startswith("error") or entry.get("status") in {"blocked", "fetch_error", "auth_required", "unsupported_parser"}]
     official_sources = [entry for entry in sources if normalize_source_kind(entry) == "official"]
     local_sources = [entry for entry in sources if normalize_source_kind(entry) == "local"]
     news_sources = [entry for entry in sources if normalize_source_kind(entry) == "news"]
@@ -234,7 +234,7 @@ def source_health_metrics(source_health: dict[str, Any]) -> dict[str, Any]:
             for entry in errors
         ],
         "official_filtered_items": sum(int(entry.get("filtered_items") or 0) for entry in official_sources),
-        "official_total_items": sum(int(entry.get("total_items") or 0) for entry in official_sources),
+        "official_total_items": sum(int(entry.get("total_items", entry.get("fetched_items", 0)) or 0) for entry in official_sources),
         "news_filtered_items": sum(int(entry.get("filtered_items") or 0) for entry in news_sources),
         "local_filtered_items": sum(int(entry.get("filtered_items") or 0) for entry in local_sources),
         "local_regions_with_items": sorted(region for region in local_regions if region),
@@ -245,7 +245,7 @@ def source_health_metrics(source_health: dict[str, Any]) -> dict[str, Any]:
                 "status": entry.get("status"),
             }
             for entry in sources
-            if str(entry.get("status") or "") == "ok" and int(entry.get("total_items") or 0) == 0
+            if str(entry.get("status") or "") == "ok" and int(entry.get("total_items", entry.get("fetched_items", 0)) or 0) == 0
         ],
     }
 
@@ -275,6 +275,13 @@ def build_metrics(
     status = read_json(pipeline_root / "pipeline_status.json", default={}) or {}
     date_audit = read_json(pipeline_root / "article_date_audit.json", default={}) or {}
     source_health = read_json(pipeline_root / "source_healthcheck.json", default={}) or {}
+    collection_manifest = read_json(pipeline_root / "source_collection_manifest.json", default={}) or {}
+    health_generated = source_health.get("generated_at")
+    collection_generated = collection_manifest.get("generated_at")
+    if collection_generated and (
+        not health_generated or (age_hours(health_generated, reference) or 0) > (age_hours(collection_generated, reference) or 0)
+    ):
+        source_health = collection_manifest
     index_html = read_text_if_exists(web_root / "index.html")
     missing_html = [file_name for file_name in PUBLIC_HTML_FILES if not (web_root / file_name).exists()]
 

@@ -10,7 +10,7 @@ from youth_info_platform.article_metadata import (
     normalize_published_datetime,
 )
 from youth_info_platform.curation import is_public_interest_article
-from youth_info_platform.publisher_names import publisher_display_name
+from youth_info_platform.publisher_names import publisher_display_name, article_publisher_name, clean_publisher_title, PORTAL_DOMAINS, publisher_host
 
 
 SEOUL = timezone(timedelta(hours=9))
@@ -183,6 +183,9 @@ def compact_public_article(article: dict[str, Any]) -> dict[str, Any]:
         if field in article and article[field] not in (None, "", [], {})
     }
     compact["archive_key"] = article_identity_key(article)
+    compact["title"] = clean_publisher_title(compact.get("title"), compact)
+    if name := article_publisher_name(compact):
+        compact["publisher_name"] = name
     for field in ("source", "publisher_name"):
         if compact.get(field):
             compact[field] = publisher_display_name(str(compact[field]))
@@ -207,8 +210,8 @@ def public_story_identity_key(article: dict[str, Any]) -> str:
     remains the primary identity; this key is used only when title, publisher,
     and publication day all agree exactly.
     """
-    title = normalize_article_title(article.get("title")).lower()
-    publisher = str(article.get("publisher_domain") or article.get("source") or "").strip().lower()
+    title = clean_publisher_title(article.get("title"), article).lower()
+    publisher = article_publisher_name(article) or str(article.get("publisher_domain") or article.get("source") or "").strip().lower()
     publisher = publisher.removeprefix("www.")
     published_at = article_published_at(article)
     publication_day = published_at[:10] if published_at else ""
@@ -220,8 +223,8 @@ def public_story_identity_key(article: dict[str, Any]) -> str:
 def _archive_preference(article: dict[str, Any]) -> tuple[int, int, int, float]:
     """Prefer a resolved publisher record without losing richer article data."""
     resolved_url = any(
-        value and not is_google_news_url(str(value))
-        for value in (article.get("publisher_url"), article.get("canonical_url"))
+        value and publisher_host(str(value)) not in PORTAL_DOMAINS
+        for value in (article.get("publisher_url"), article.get("canonical_url"), article.get("url"))
     )
     metadata_count = sum(
         bool(article.get(field))
@@ -232,6 +235,38 @@ def _archive_preference(article: dict[str, Any]) -> tuple[int, int, int, float]:
     return (int(resolved_url), metadata_count, len(str(article.get("title") or "")), timestamp)
 
 
+def deduplicate_public_stories(articles: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    """Collapse archive/feed copies, without joining independent publishers.
+
+    Exact cleaned title and publication day are required. Unknown portal copies
+    are attached only when the title/day identifies one observed publisher.
+    """
+    buckets: dict[tuple[str, str], list[dict[str, Any]]] = {}
+    for raw in articles:
+        item = dict(raw)
+        item["title"] = clean_publisher_title(item.get("title"), item)
+        if name := article_publisher_name(item):
+            item["publisher_name"] = name
+        date = parse_datetime(article_published_at(item) or item.get("published_at"))
+        title = normalize_article_title(item.get("title")).casefold()
+        # Undated/untitled records must never collapse into one anonymous group.
+        key = (title, date.date().isoformat()) if title and date else (article_identity_key(item), "")
+        buckets.setdefault(key, []).append(item)
+    result = []
+    for bucket in buckets.values():
+        names = {article_publisher_name(item) for item in bucket} - {""}
+        groups: dict[str, dict] = {}
+        for item in bucket:
+            name = article_publisher_name(item)
+            publisher = name or (next(iter(names)) if len(names) == 1 else str(item.get("publisher_domain") or item.get("source") or article_identity_key(item)))
+            if publisher in groups:
+                groups[publisher] = merge_same_public_story(groups[publisher], item)
+            else:
+                groups[publisher] = item
+        result.extend(groups.values())
+    return result
+
+
 def merge_same_public_story(existing: dict[str, Any], incoming: dict[str, Any]) -> dict[str, Any]:
     """Merge equivalent stories and retain the more useful public record."""
     preferred, secondary = (
@@ -239,6 +274,8 @@ def merge_same_public_story(existing: dict[str, Any], incoming: dict[str, Any]) 
         if _archive_preference(incoming) >= _archive_preference(existing)
         else (existing, incoming)
     )
+    if article_identity_key(secondary) != article_identity_key(preferred):
+        secondary = {key: value for key, value in secondary.items() if key not in {"url", "canonical_url", "publisher_url", "feed_url", "archive_key", "publisher_domain", "publisher_name", "source", "publisher_published_at", "published_date"}}
     return merge_article(secondary, preferred)
 
 
@@ -290,7 +327,7 @@ def merge_public_archive(
 
     reference = now.astimezone(SEOUL) if now else datetime.now(SEOUL)
     retained: list[dict[str, Any]] = []
-    for article in by_key.values():
+    for article in deduplicate_public_stories(list(by_key.values())):
         published = parse_datetime(article_published_at(article) or article.get("published_at"))
         if published is None:
             continue

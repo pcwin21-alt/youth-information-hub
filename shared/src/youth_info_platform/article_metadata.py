@@ -11,6 +11,7 @@ from urllib.parse import parse_qsl, urljoin, urlparse, urlunparse
 
 from .collect import fetch_url, strip_html
 from .constants import OPINION_KEYWORDS, REGIONS, YOUTH_KEYWORDS
+from .publisher_names import article_publisher_name, clean_publisher_title
 
 
 GOOGLE_NEWS_HOSTS = {"news.google.com"}
@@ -586,6 +587,9 @@ def normalize_article_record(article: dict[str, Any]) -> dict[str, Any]:
             "drop_reason": record.get("drop_reason"),
         }
     )
+    if name := article_publisher_name(record):
+        record["publisher_name"] = name
+    record["title"] = clean_publisher_title(record.get("title"), record)
     return record
 
 
@@ -606,8 +610,10 @@ def article_identity_key(article: dict[str, Any]) -> str:
 
 
 def preferred_article_url(article: dict[str, Any]) -> str:
-    if article.get("publisher_url"):
-        return article["publisher_url"]
+    for field in ("publisher_url", "canonical_url", "url"):
+        value = article.get(field)
+        if value and not is_portal_url(value) and not is_google_news_url(value):
+            return value
     portal_urls = article.get("portal_urls") or []
     if portal_urls:
         return portal_urls[0]
@@ -999,6 +1005,23 @@ def parse_generic_article_page(html_text: str, source_url: str) -> dict[str, Any
         or extract_meta_content(html_text, "application-name")
         or None
     )
+    # Portals often put their own brand in og:site_name. Article-scoped
+    # structured publisher metadata identifies the actual newsroom instead.
+    for script in re.findall(r'<script\b[^>]*type=["\x27]application/ld\+json["\x27][^>]*>(.*?)</script>', html_text, re.I | re.S):
+        try:
+            structured = json.loads(script)
+        except (ValueError, TypeError):
+            continue
+        for node in _iter_json_ld_nodes(structured):
+            types = node.get("@type", []) or []
+            types = [types] if isinstance(types, str) else types
+            if not isinstance(types, list):
+                continue
+            if not any(kind in {"NewsArticle", "Article", "ReportageNewsArticle"} for kind in types):
+                continue
+            publisher = node.get("publisher")
+            if isinstance(publisher, dict) and publisher.get("name"):
+                publisher_name = str(publisher["name"])
     raw_section_parts = [
         extract_meta_content(html_text, "Classification"),
         extract_meta_content(html_text, "article:section1", "property"),
@@ -1033,6 +1056,17 @@ def parse_generic_article_page(html_text: str, source_url: str) -> dict[str, Any
             publisher_url = canonical
     if not publisher_url and not is_portal_url(source_url) and source_host not in GOOGLE_NEWS_HOSTS:
         publisher_url = source_url
+
+    if is_portal_url(source_url) and not publisher_url:
+        for anchor in re.findall(r"<a\b[^>]*>.*?</a>", html_text, re.I | re.S):
+            if not re.search(r"기사\s*원문|언론사\s*원문", strip_html(anchor)):
+                continue
+            href = parse_html_attributes(anchor.split(">", 1)[0]).get("href")
+            candidate = urljoin(source_url, href or "")
+            if urlparse(candidate).scheme in {"http", "https"} and not is_portal_url(candidate) and not is_google_news_url(candidate):
+                publisher_url = candidate
+                canonical_url = normalize_tracking_url(candidate)
+                break
 
     merged_text = " ".join(part for part in [title or "", description, section, body_text] if part)
     location_tags = extract_location_tags(merged_text)
@@ -1175,7 +1209,7 @@ def resolve_article_metadata(
     if excerpt := extract_youth_preview_text(updated):
         updated["youth_excerpt"] = excerpt
     updated["resolved_at"] = datetime.now().astimezone().isoformat()
-    return updated
+    return normalize_article_record(updated)
 
 
 def enrich_articles_for_curation(
@@ -1191,6 +1225,7 @@ def enrich_articles_for_curation(
         range(len(articles)),
         key=lambda index: articles[index].get("publisher_published_at")
         or articles[index].get("published_date")
+        or articles[index].get("portal_published_at")
         or "",
         reverse=True,
     )

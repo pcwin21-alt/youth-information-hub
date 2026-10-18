@@ -3,6 +3,12 @@
 from __future__ import annotations
 
 from urllib.parse import urlparse
+import re
+import html
+
+
+PORTAL_DOMAINS = frozenset({"news.google.com", "v.daum.net", "news.v.daum.net", "news.naver.com", "n.news.naver.com", "news.nate.com"})
+PLACEHOLDER_PUBLISHERS = frozenset({"새 창 열림", "출처 미상", "미상", "google news", "구글 뉴스", "daum", "다음 뉴스", "네이버 뉴스", "네이트 뉴스"})
 
 
 # Only map domains whose publication identity is established from the
@@ -90,4 +96,42 @@ def publisher_display_name(value: str | None) -> str:
     if "://" in candidate:
         candidate = urlparse(candidate).netloc or candidate
     domain = candidate.lower().split("/")[0].removeprefix("www.")
-    return PUBLISHER_DOMAIN_ALIASES.get(domain, raw)
+    for known in sorted(PUBLISHER_DOMAIN_ALIASES, key=len, reverse=True):
+        if domain == known or domain.endswith("." + known):
+            return PUBLISHER_DOMAIN_ALIASES[known]
+    return raw
+
+
+def publisher_host(value: str | None) -> str:
+    raw = str(value or "").strip().lower()
+    return (urlparse(raw if "://" in raw else "https://" + raw).hostname or "").removeprefix("www.")
+
+
+def article_publisher_name(article: dict) -> str:
+    """Use observed publisher evidence; a portal label is not a newspaper."""
+    candidates = []
+    for key in ("publisher_url", "canonical_url", "url", "publisher_domain", "source_url"):
+        value = str(article.get(key) or "")
+        host = publisher_host(value)
+        if host and host not in PORTAL_DOMAINS:
+            label = publisher_display_name(host)
+            if label != host:
+                candidates.append(label)
+    candidates.extend([article.get("publisher_name"), article.get("source")])
+    for value in candidates:
+        label = publisher_display_name(value)
+        if label and label.casefold() not in PLACEHOLDER_PUBLISHERS and publisher_host(label) not in PORTAL_DOMAINS:
+            return label
+    return ""
+
+
+def clean_publisher_title(title: str | None, article: dict) -> str:
+    text = re.sub(r"\s+", " ", html.unescape(str(title or ""))).strip()
+    labels = set(PORTAL_DOMAINS)
+    for field in ("source", "publisher_name", "publisher_domain"):
+        if value := article.get(field):
+            labels.update((str(value).strip(), publisher_display_name(value)))
+    for label in sorted(labels, key=len, reverse=True):
+        if label:
+            text = re.sub(r"\s+[-|–—]\s*" + re.escape(label) + r"\s*$", "", text, flags=re.IGNORECASE)
+    return text.strip()

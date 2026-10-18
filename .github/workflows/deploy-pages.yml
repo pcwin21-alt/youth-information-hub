@@ -104,6 +104,9 @@ jobs:
       - name: Verify generated artifacts
         run: python public-site/scripts/verify_site_artifacts.py --min-articles 1 --min-news-cards 0
 
+      - name: Audit accumulated article quality
+        run: python public-site/scripts/audit_collection_quality.py --output-dir runtime/quality-audit/latest
+
       - name: Upload verification reports
         if: always()
         uses: actions/upload-artifact@v4
@@ -114,6 +117,9 @@ jobs:
             runtime/pipeline/pipeline_status.json
             runtime/pipeline/step5_summarized.json
             runtime/pipeline/ops_radar.json
+            runtime/pipeline/source_collection_manifest.json
+            runtime/pipeline/pipeline_feedback_report.json
+            runtime/quality-audit/latest/quality_report.json
           if-no-files-found: ignore
 
       - name: Prepare Pages artifact
