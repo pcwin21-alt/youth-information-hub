@@ -78,6 +78,20 @@ class PoliticalHubInclusionTests(unittest.TestCase):
 
 
 class HomeSignalTests(unittest.TestCase):
+    def test_fiction_plot_labour_keywords_do_not_make_cast_release_public(self):
+        article = make_article(
+            title="넷플릭스 '일' 냈다…신예스타 모아 돌아오는 신작",
+            lead_text="공개되는 호러 시리즈는 청년이 노동 현장에 투입되는 이야기를 그린다.",
+        )
+        self.assertFalse(classify_articles([article])[0]['is_public_interest_article'])
+
+    def test_actual_youth_artist_support_is_not_removed_as_fiction_release(self):
+        article = make_article(
+            title="청년 예술인 지원사업, 드라마 캐스팅 교육 참여자 모집",
+            lead_text="청년 배우의 교육과 취업을 지원하는 사업의 신청을 받는다.",
+        )
+        self.assertTrue(classify_articles([article])[0]['is_public_interest_article'])
+
     def test_explicit_youth_support_legal_basis_survives_sparse_portal_snippet(self):
         article = make_article(
             title='성남시의회 김주현 의원, 청년 AI·디지털 역량 지원 근거 마련',

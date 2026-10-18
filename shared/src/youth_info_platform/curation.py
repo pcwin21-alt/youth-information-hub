@@ -545,6 +545,15 @@ def is_public_interest_article(article: dict[str, Any], text: str | None = None)
     )
     research_source = str(article.get("source_kind") or "").strip().lower() == "research"
     is_research_record = article_type in {"research", "paper", "report", "thesis"}
+    # A fictional young character's working conditions are not evidence about
+    # actual youth labour. Broad portal discovery must not promote cast/teaser
+    # releases merely because their plot contains youth and employment words.
+    if not article.get("is_official_source") and article_type != "opinion":
+        release_title = re.search(r"신예스타|캐스팅|제작발표회|첫\s*방송|예고편|티저|신작.{0,8}공개", _article_title_text(article))
+        fiction_context = re.search(r"드라마|시리즈|극본|극중|호러", prominent)
+        actual_policy = re.search(r"청년\s*(?:정책|예술인|지원사업)|노동\s*(?:실태|권리)|지원\s*(?:사업|공고|대상)", prominent)
+        if release_title and fiction_context and not actual_policy:
+            return False
     if article.get("is_noise") and not (article_type == "opinion" and explicit_opinion):
         return False
     # 칼럼은 일반 보도와 다른 메뉴에서 다루되, 제목·섹션에 드러난 편집물이고
