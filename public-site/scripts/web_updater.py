@@ -15444,7 +15444,7 @@ def filter_public_articles(articles: list[dict]) -> list[dict]:
 def load_public_archive_articles() -> list[dict]:
     payload = read_json(PUBLIC_ARTICLE_ARCHIVE, default={})
     articles = payload.get("articles", []) if isinstance(payload, dict) else []
-    return [article for article in articles if isinstance(article, dict)]
+    return deduplicate_public_stories([article for article in articles if isinstance(article, dict)])
 
 
 def merge_public_article_lists(*article_lists: list[dict]) -> list[dict]:
@@ -22362,7 +22362,7 @@ def archive_render_inputs() -> tuple[list[dict], dict]:
     snapshot_at = payload.get("generated_at")
     if not articles or parse_iso_datetime(snapshot_at) is None:
         raise ValueError("archive_render_requires_articles_and_snapshot_timestamp")
-    return sort_articles_by_recency(articles), {
+    return sort_articles_by_recency(deduplicate_public_stories(articles)), {
         "state": "archive_snapshot", "finished_at": snapshot_at, "render_source": "public_archive",
     }
 

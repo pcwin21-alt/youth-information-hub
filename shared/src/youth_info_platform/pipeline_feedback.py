@@ -311,7 +311,8 @@ def build_metrics(
             **public_news_candidate_metrics(classified_articles),
             "home_government_trends": extract_home_government_trends_count(index_html),
             "home_latest_news": extract_home_glance_count(index_html, "가장 최근 뉴스"),
-            "brand_ok": "청년정책 모아봄" in index_html,
+            "brand_ok": any(label in index_html for label in ("적재적소 브리프", "청년정책 모아봄")),
+            "home_government_metric_applicable": "civic-home-hero" not in index_html or "home-glance-value" in index_html,
         },
     }
 
@@ -610,7 +611,7 @@ def build_findings(metrics: dict[str, Any], thresholds: dict[str, int] | None = 
             )
         )
     home_government_trends = public_html.get("home_government_trends")
-    if home_government_trends is None:
+    if public_html.get("home_government_metric_applicable", True) and home_government_trends is None:
         findings.append(
             finding(
                 "critical",
@@ -620,7 +621,7 @@ def build_findings(metrics: dict[str, Any], thresholds: dict[str, int] | None = 
                 "`web_updater.py` 홈 섹션 마크업 또는 `home-glance` 렌더링을 확인합니다.",
             )
         )
-    elif home_government_trends < thresholds["min_home_government_trends"]:
+    elif public_html.get("home_government_metric_applicable", True) and home_government_trends < thresholds["min_home_government_trends"]:
         findings.append(
             finding(
                 "critical",

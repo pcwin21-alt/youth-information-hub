@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import sys
 import unittest
+import tempfile
 from unittest.mock import patch
 from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
@@ -11,7 +12,7 @@ from youth_info_platform.collect import parse_feed, detect_source_access_issue
 from youth_info_platform.curation import deduplicate_and_filter
 from youth_info_platform.public_archive import deduplicate_public_stories
 from youth_info_platform.publisher_names import article_publisher_name, publisher_display_name
-from youth_info_platform.pipeline_feedback import source_health_metrics
+from youth_info_platform.pipeline_feedback import source_health_metrics, build_metrics
 
 
 def record(url, source="조선일보", **extra):
@@ -20,6 +21,27 @@ def record(url, source="조선일보", **extra):
 
 
 class CollectionQualityTests(unittest.TestCase):
+    def test_archive_only_render_cleans_old_titles_and_duplicate_wrappers(self):
+        sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "public-site" / "scripts"))
+        import web_updater
+        first = {**record("https://news.google.com/rss/articles/1"), "is_public_interest_article": True}
+        second = {**first, "url": "https://news.google.com/rss/articles/2", "title": first["title"] + " - 조선일보"}
+        with patch.object(web_updater, "read_json", return_value={"generated_at": "2026-10-17T10:00:00+09:00", "articles": [first, second]}):
+            items = web_updater.load_public_archive_articles()
+            if hasattr(web_updater, "archive_render_inputs"):
+                items, status = web_updater.archive_render_inputs()
+        self.assertEqual(len(items), 1)
+        self.assertEqual(items[0]["title"], first["title"])
+        self.assertEqual(items[0]["publisher_name"], "조선일보")
+
+    def test_current_home_brand_does_not_require_the_retired_home_widget(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            (root / "index.html").write_text('<title>적재적소 브리프</title><section class="civic-home-hero"></section>', encoding="utf-8")
+            metrics = build_metrics(pipeline_root=root, web_root=root)
+        self.assertTrue(metrics["public_html"]["brand_ok"])
+        self.assertFalse(metrics["public_html"]["home_government_metric_applicable"])
+
     def test_http_200_error_page_is_not_a_healthy_empty_source(self):
         self.assertEqual(detect_source_access_issue("<html><title>서울특별시청 에러페이지</title><p>요청하신 페이지를 찾을 수 없습니다.</p></html>"), "fetch_error")
 
