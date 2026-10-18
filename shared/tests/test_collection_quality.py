@@ -7,7 +7,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
 from youth_info_platform.article_metadata import normalize_article_record, preferred_article_url, parse_generic_article_page
-from youth_info_platform.collect import parse_feed
+from youth_info_platform.collect import parse_feed, detect_source_access_issue
 from youth_info_platform.curation import deduplicate_and_filter
 from youth_info_platform.public_archive import deduplicate_public_stories
 from youth_info_platform.publisher_names import article_publisher_name, publisher_display_name
@@ -20,6 +20,9 @@ def record(url, source="조선일보", **extra):
 
 
 class CollectionQualityTests(unittest.TestCase):
+    def test_http_200_error_page_is_not_a_healthy_empty_source(self):
+        self.assertEqual(detect_source_access_issue("<html><title>서울특별시청 에러페이지</title><p>요청하신 페이지를 찾을 수 없습니다.</p></html>"), "fetch_error")
+
     def test_specific_mobile_domain_and_placeholder(self):
         self.assertEqual(publisher_display_name("https://m.biz.chosun.com/news/1"), "조선비즈")
         self.assertEqual(article_publisher_name(record("https://www.chosun.com/news/1", publisher_name="새 창 열림")), "조선일보")

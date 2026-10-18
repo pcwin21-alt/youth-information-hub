@@ -3,7 +3,9 @@
     {
       "name": "정책브리핑 RSS",
       "kind": "official",
-      "enabled": true,
+      "enabled": false,
+      "disabled_reason": "RSS service discontinued by publisher on 2026-07-01; official HTML sources remain enabled",
+      "retired_notice_url": "https://www.korea.kr/etc/noticeView.do?newsId=132038885",
       "parser": "rss",
       "url": "https://www.korea.kr/rss/policy.xml",
       "include_youth_related": true,

@@ -108,6 +108,11 @@ def detect_source_access_issue(payload: str) -> str | None:
     """Classify known soft blocks; this deliberately does not attempt a bypass."""
 
     normalized = re.sub(r"\s+", " ", payload).lower()
+    if len(strip_html(payload)) < 2000 and any(marker in normalized for marker in (
+        "요청하신 페이지를 찾을 수 없습니다",
+        "요청하신 페이지를 찾을 수가 없습니다",
+    )):
+        return "fetch_error"
     if any(
         marker in normalized
         for marker in (
