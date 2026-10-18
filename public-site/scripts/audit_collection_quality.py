@@ -11,12 +11,12 @@ import urllib.request
 
 from _bootstrap import PUBLIC_CONTENT_ROOT, RUNTIME_PIPELINE_ROOT
 from bs4 import BeautifulSoup
-from youth_info_platform.public_archive import deduplicate_public_stories
+from youth_info_platform.public_archive import deduplicate_public_stories, public_publisher_key
 from youth_info_platform.publisher_names import article_publisher_name, clean_publisher_title
 
 
 def metrics(items):
-    titles = Counter((clean_publisher_title(x.get("title"), x), str(x.get("published_date") or x.get("portal_published_at") or "")[:10], article_publisher_name(x)) for x in items)
+    titles = Counter((clean_publisher_title(x.get("title"), x), str(x.get("published_date") or x.get("portal_published_at") or "")[:10], public_publisher_key(x)) for x in items)
     return {
         "articles": len(items),
         "missing_publisher_name_field": sum(not x.get("publisher_name") for x in items),

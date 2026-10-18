@@ -44,6 +44,10 @@ class CollectionQualityTests(unittest.TestCase):
         self.assertEqual(len(deduplicate_public_stories(items)), 3)
         self.assertEqual(len(deduplicate_and_filter([items[2], *items[:2]])), 2)
 
+    def test_unknown_direct_publisher_is_not_treated_as_a_portal(self):
+        items = [record("https://chosun.com/news/1"), record("https://unknown.example/news/2", source="unknown.example")]
+        self.assertEqual(len(deduplicate_public_stories(items)), 2)
+
     def test_portal_copy_keeps_original_identity_without_inheriting_portal_canonical(self):
         original = record("https://chosun.com/news/1")
         portal = record("https://v.daum.net/v/2", source="Daum", canonical_url="https://v.daum.net/v/2")

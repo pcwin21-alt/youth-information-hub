@@ -235,6 +235,16 @@ def _archive_preference(article: dict[str, Any]) -> tuple[int, int, int, float]:
     return (int(resolved_url), metadata_count, len(str(article.get("title") or "")), timestamp)
 
 
+def public_publisher_key(article: dict[str, Any]) -> str:
+    for field in ("publisher_url", "canonical_url", "url", "publisher_domain", "source_url"):
+        host = publisher_host(article.get(field))
+        if "." in host and host not in PORTAL_DOMAINS:
+            label = publisher_display_name(host)
+            return "publisher:" + label if label != host else "domain:" + host
+    name = article_publisher_name(article)
+    return "publisher:" + name if name else ""
+
+
 def deduplicate_public_stories(articles: list[dict[str, Any]]) -> list[dict[str, Any]]:
     """Collapse archive/feed copies, without joining independent publishers.
 
@@ -254,10 +264,10 @@ def deduplicate_public_stories(articles: list[dict[str, Any]]) -> list[dict[str,
         buckets.setdefault(key, []).append(item)
     result = []
     for bucket in buckets.values():
-        names = {article_publisher_name(item) for item in bucket} - {""}
+        names = {public_publisher_key(item) for item in bucket} - {""}
         groups: dict[str, dict] = {}
         for item in bucket:
-            name = article_publisher_name(item)
+            name = public_publisher_key(item)
             publisher = name or (next(iter(names)) if len(names) == 1 else str(item.get("publisher_domain") or item.get("source") or article_identity_key(item)))
             if publisher in groups:
                 groups[publisher] = merge_same_public_story(groups[publisher], item)
