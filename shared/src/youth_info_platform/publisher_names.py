@@ -61,6 +61,7 @@ PUBLISHER_DOMAIN_ALIASES = {
     "news.sbs.co.kr": "SBS 뉴스",
     "news1.kr": "뉴스1",
     "newscj.com": "천지일보",
+    "newfilenews.com": "최신뉴스",
     "newneek.co": "뉴닉",
     "newsis.com": "뉴시스",
     "newsnjeju.com": "뉴스제주",
