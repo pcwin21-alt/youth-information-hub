@@ -78,6 +78,21 @@ class PoliticalHubInclusionTests(unittest.TestCase):
 
 
 class HomeSignalTests(unittest.TestCase):
+    def test_explicit_youth_support_legal_basis_survives_sparse_portal_snippet(self):
+        article = make_article(
+            title='성남시의회 김주현 의원, 청년 AI·디지털 역량 지원 근거 마련',
+            lead_text='성남시의회 김주현 의원, 청년 AI·디지털 역량 지원 근거 마련',
+        )
+        classified = classify_articles(deduplicate_and_filter([article]))[0]
+        self.assertTrue(classified['has_direct_helpful_youth_signal'])
+        self.assertTrue(classified['is_public_interest_article'])
+
+    def test_councillor_photo_visit_without_policy_change_is_not_rescued(self):
+        article = make_article(title='시의회 의원, 청년들과 사진 촬영', lead_text='의원이 지역 청년들과 기념사진을 촬영했다.')
+        classified = classify_articles([article])[0]
+        self.assertFalse(classified['has_direct_helpful_youth_signal'])
+        self.assertFalse(classified['is_public_interest_article'])
+
     def test_campaign_political_signal_detected_for_election_article(self) -> None:
         text = "서울시장 후보가 청년 공약 발표와 유세 일정을 공개했다."
 

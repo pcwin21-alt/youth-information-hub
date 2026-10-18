@@ -7,10 +7,21 @@ import unittest
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / 'public-site/scripts'))
-from audit_portal_coverage import article_index, match_article, naver_reference
+from audit_portal_coverage import article_index, match_article, naver_reference, source_query
 
 
 class PortalCoverageTests(unittest.TestCase):
+    def test_config_covers_plain_joined_and_spaced_queries_on_both_providers(self):
+        sources = json.loads((ROOT / 'public-site/config/source_config.yaml').read_text(encoding='utf-8'))['sources']
+        expected = {'청년', '청년정책', '청년 정책'}
+        for provider in ('naver', 'google'):
+            matching = [source for source in sources if source.get('enabled') and
+                        (source.get('parser') == 'naver_news_search' if provider == 'naver'
+                         else 'news.google.com/rss/search' in source.get('url', ''))]
+            self.assertTrue(expected.issubset({source_query(source) for source in matching}))
+            if provider == 'google':
+                self.assertTrue(all(source.get('limit', 0) >= 100 for source in matching if source_query(source) in expected))
+
     def test_title_match_requires_publisher_and_kst_day(self):
         original = {'title': '청년 주거 지원', 'source': '연합뉴스',
                     'url': 'https://www.yna.co.kr/1', 'published_date': '2026-10-17T23:30:00+00:00'}

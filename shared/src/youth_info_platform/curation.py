@@ -428,6 +428,11 @@ def has_direct_helpful_youth_signal(article: dict[str, Any], text: str, prominen
     prominent = prominent_text or _article_prominent_text(article)
     if _contains_any(prominent, PUBLIC_HELPFUL_DIRECT_KEYWORDS):
         return True
+    # Search snippets may omit "사업/시행" while clearly describing the legal
+    # basis for youth support. Keep that narrow policy signal without making
+    # an ordinary councillor visit or a distant body-only mention sufficient.
+    if re.search(r"청년[^.!?\n]{0,45}(?:지원\s*근거|법적\s*근거|조례\s*제정|조례안)", prominent):
+        return True
     return has_youth_keyword_signal(prominent) and has_strong_youth_context(prominent)
 
 

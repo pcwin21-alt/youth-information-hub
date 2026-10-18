@@ -225,6 +225,12 @@ def main():
         exec(compile(source_text, "baseline_collect.py", "exec"), module.__dict__)
         for name in ("detect_source_access_issue", "parse_naver_news_search", "parse_feed", "apply_source_filters"):
             globals()[name] = getattr(module, name)
+        curation_text = subprocess.run(["git", "show", args.baseline_revision + ":shared/src/youth_info_platform/curation.py"], capture_output=True, text=True, encoding="utf-8", check=True).stdout
+        curation = types.ModuleType("youth_info_platform._baseline_curation")
+        curation.__package__ = "youth_info_platform"
+        exec(compile(curation_text, "baseline_curation.py", "exec"), curation.__dict__)
+        for name in ("deduplicate_and_filter", "classify_articles"):
+            globals()[name] = getattr(curation, name)
         sources = json.loads(subprocess.run(["git", "show", args.baseline_revision + ":public-site/config/source_config.yaml"], capture_output=True, text=True, encoding="utf-8", check=True).stdout)["sources"]
     else:
         sources = load_source_config(str(Path(__file__).resolve().parents[1] / "config/source_config.yaml"))
