@@ -55,6 +55,11 @@ class CollectionQualityTests(unittest.TestCase):
         rich = {**first, "body_text": "청년 월세 지원 기준과 신청 방법을 설명합니다."}
         self.assertEqual(deduplicate_and_filter([first, rich])[0]["body_text"], rich["body_text"])
 
+    def test_portal_publisher_url_field_does_not_outrank_an_original(self):
+        portal = record("https://v.daum.net/v/1", source="Daum", publisher_url="https://v.daum.net/v/1")
+        original = record("https://chosun.com/news/1")
+        self.assertEqual(deduplicate_and_filter([portal, original])[0]["url"], original["url"])
+
     def test_collection_manifest_does_not_create_false_empty_official_alarm(self):
         metrics = source_health_metrics({"sources": [{"kind": "official", "status": "ok", "name": "공식 발표", "fetched_items": 10, "filtered_items": 2}]})
         self.assertEqual(metrics["official_total_items"], 10)

@@ -1856,7 +1856,8 @@ def _representative_sort_key(article: dict[str, Any]) -> tuple[Any, ...]:
         str(article.get("source_origin") or ""),
         1,
     )
-    has_publisher_url = 0 if article.get("publisher_url") else 1
+    publisher_url = article.get("publisher_url")
+    has_publisher_url = 0 if publisher_url and not is_portal_url(publisher_url) and not is_google_news_url(publisher_url) else 1
     intermediary_penalty = 1 if _is_portal_or_aggregator_article(article) else 0
     enriched_penalty = 0 if article.get("body_text") else 1
     official_rank = 0 if article.get("source_kind") == "official" else 1
