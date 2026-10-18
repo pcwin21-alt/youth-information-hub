@@ -20,6 +20,7 @@ PORTAL_HOSTS = {
     "news.v.daum.net",
     "n.news.naver.com",
     "news.naver.com",
+    "news.nate.com",
 }
 SEOUL_DISTRICTS = [
     "강남",

@@ -24,6 +24,7 @@ class CollectionQualityTests(unittest.TestCase):
         self.assertEqual(publisher_display_name("https://m.biz.chosun.com/news/1"), "조선비즈")
         self.assertEqual(article_publisher_name(record("https://www.chosun.com/news/1", publisher_name="새 창 열림")), "조선일보")
         self.assertEqual(article_publisher_name(record("https://v.daum.net/v/1", source="Daum")), "")
+        self.assertEqual(article_publisher_name(record("https://unknown.example/news/1", source="unknown.example")), "")
 
     def test_normalization_repairs_feed_title_and_publisher_without_network(self):
         item = normalize_article_record(dict(url="https://news.google.com/rss/articles/1", source="조선일보", title="청년 월세 지원 기준 확대 - 조선일보"))

@@ -120,6 +120,8 @@ def article_publisher_name(article: dict) -> str:
     candidates.extend([article.get("publisher_name"), article.get("source")])
     for value in candidates:
         label = publisher_display_name(value)
+        if "://" in label or re.fullmatch(r"(?:www\.)?[\w.-]+\.[a-z]{2,}", label, re.I):
+            continue
         if label and label.casefold() not in PLACEHOLDER_PUBLISHERS and publisher_host(label) not in PORTAL_DOMAINS:
             return label
     return ""
